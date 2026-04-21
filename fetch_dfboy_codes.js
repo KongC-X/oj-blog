@@ -142,29 +142,21 @@ function getLoggedInUsername(html) {
 // 从题目页面提取【当前用户】最新C++ AC提交的source id
 // 关键修复：必须过滤用户名，只取自己的提交！
 // ============================================================
-function extractMyCppACSourceId(html, myUsername) {
-  // 按 <tr> 切分，找到包含 通过(AC) + /solution/source 的行
+function extractAllACSourceIds(html, myUsername) {
+  // 按 <tr> 切分，找到所有包含 通过(AC) + /solution/source 的行
   const trBlocks = html.split(/<tr[^>]*>/);
-  let myAcIds = [];
+  let acIds = [];
 
   for (const tr of trBlocks) {
-    // 检查是否包含"通过"标记
     const isAC = tr.includes('通过') && (tr.includes('text-success') || tr.includes('label-success'));
     if (!isAC) continue;
-
-    // 检查这个 tr 是否包含用户名链接
-    // 如果 tr 内有 user/view?id= 链接，说明是多人提交列表的行，需要按用户名过滤
     const hasUserInRow = /user\/view\?id=\d+/.test(tr);
     if (hasUserInRow && myUsername && !tr.includes(myUsername)) continue;
-
-    // 提取 source id
     const srcMatch = tr.match(/\/solution\/source\?id=(\d+)/);
-    if (srcMatch) myAcIds.push(srcMatch[1]);
+    if (srcMatch) acIds.push(srcMatch[1]);
   }
 
-  if (myAcIds.length === 0) return null;
-  // 返回第一个（最新的）
-  return myAcIds[0];
+  return acIds; // 返回全部（按时间从新到旧）
 }
 
 // ============================================================
@@ -308,21 +300,31 @@ async function main() {
         continue;
       }
       
-      // 提取【当前用户】的AC source id
-      const sourceId = extractMyCppACSourceId(probPage.body, myUsername);
-      if (!sourceId) {
+      // 提取【当前用户】的所有 AC source id（按时间从新到旧）
+      const allSourceIds = extractAllACSourceIds(probPage.body, myUsername);
+      if (allSourceIds.length === 0) {
         console.log(`${progress} #${pid} ⚠️ 未找到你的AC提交记录`);
         noCode++;
         await sleep(300);
         continue;
       }
       
-      // 获取代码
-      const srcPage = await httpGet(`/solution/source?id=${sourceId}`);
-      const code = extractCodeFromSource(srcPage.body);
+      // 遍历所有 AC 提交，找到第一个 C++ 代码（可能最新的是 Python）
+      let code = null;
+      let usedSourceId = null;
+      for (const sid of allSourceIds) {
+        const srcPage = await httpGet(`/solution/source?id=${sid}`);
+        const fetchedCode = extractCodeFromSource(srcPage.body);
+        if (fetchedCode && fetchedCode.length >= 10 && isCppCode(fetchedCode)) {
+          code = fetchedCode;
+          usedSourceId = sid;
+          break;
+        }
+        await sleep(200);
+      }
       
-      if (!code || code.length < 10 || !isCppCode(code)) {
-        console.log(`${progress} #${pid} ⚠️ 代码无效或非C++`);
+      if (!code) {
+        console.log(`${progress} #${pid} ⚠️ 无C++ AC记录 (${allSourceIds.length}条AC均为非C++)`);
         noCode++;
         await sleep(300);
         continue;
