@@ -20,9 +20,10 @@ const BASE_URL = 'https://oj.czos.cn';
 const OUTPUT_DIR = path.join(__dirname, 'solutions/dfboy');
 const USERNAME = process.env.DFBOY_USER || '';
 const PASSWORD = process.env.DFBOY_PASS || '';
+const COOKIE_OVERRIDE = process.env.DFBOY_COOKIE || '';
 
-if (!USERNAME || !PASSWORD) {
-  console.error('请设置环境变量 DFBOY_USER 和 DFBOY_PASS');
+if (!USERNAME && !PASSWORD && !COOKIE_OVERRIDE) {
+  console.error('请设置环境变量 DFBOY_COOKIE 或 DFBOY_USER + DFBOY_PASS');
   process.exit(1);
 }
 
@@ -131,7 +132,10 @@ function getLoggedInUsername(html) {
   // 另一种模式
   const m2 = html.match(/>([^<]+)\s*<\/a>\s*<[^>]*logout/);
   if (m2) return m2[1].trim();
-  return USERNAME; // fallback: 用登录用户名
+  // 从个人主页 h1 提取
+  const m3 = html.match(/<h[1-3][^>]*>([^<]+)<\/h[1-3]/);
+  if (m3) return m3[1].trim();
+  return USERNAME || ''; // fallback
 }
 
 // ============================================================
@@ -139,24 +143,25 @@ function getLoggedInUsername(html) {
 // 关键修复：必须过滤用户名，只取自己的提交！
 // ============================================================
 function extractMyCppACSourceId(html, myUsername) {
-  // 按 <tr> 切分，找到包含用户名 + 通过(AC) + /solution/source 的行
+  // 按 <tr> 切分，找到包含 通过(AC) + /solution/source 的行
   const trBlocks = html.split(/<tr[^>]*>/);
   let myAcIds = [];
-  
+
   for (const tr of trBlocks) {
-    // 检查是否包含"通过"标记（text-success 或 "通过"文字）
+    // 检查是否包含"通过"标记
     const isAC = tr.includes('通过') && (tr.includes('text-success') || tr.includes('label-success'));
     if (!isAC) continue;
-    
-    // 检查是否是当前用户的提交
-    // 用户名通常在 <td> 或 <a href="/user/view?id=XXX"> 用户名 </a> 中
-    if (myUsername && !tr.includes(myUsername)) continue;
-    
+
+    // 检查这个 tr 是否包含用户名链接
+    // 如果 tr 内有 user/view?id= 链接，说明是多人提交列表的行，需要按用户名过滤
+    const hasUserInRow = /user\/view\?id=\d+/.test(tr);
+    if (hasUserInRow && myUsername && !tr.includes(myUsername)) continue;
+
     // 提取 source id
     const srcMatch = tr.match(/\/solution\/source\?id=(\d+)/);
     if (srcMatch) myAcIds.push(srcMatch[1]);
   }
-  
+
   if (myAcIds.length === 0) return null;
   // 返回第一个（最新的）
   return myAcIds[0];
@@ -184,7 +189,7 @@ function isCppCode(code) {
   if (!code) return false;
   const trimmed = code.trim();
   const hasCppFeature = ['#include', 'using namespace', 'int main', 'cout', 'cin', 'printf', 'scanf', 'endl'].some(k => trimmed.includes(k));
-  const hasPythonFeature = [/print\s*\(/, /input\s*\(/, 'def ', /^import /m].some(r => r.test(trimmed));
+  const hasPythonFeature = [/print\s*\(/, /input\s*\(/, /\bdef\s/, /^import\s/m].some(r => r.test(trimmed));
   return hasCppFeature && !hasPythonFeature;
 }
 
@@ -249,15 +254,31 @@ function findMissingCodeFiles() {
 // ============================================================
 async function main() {
   console.log('🚀 东方博宜OJ AC代码补全工具');
-  console.log(`👤 用户: ${USERNAME}`);
+
+  // 1. 登录（Cookie 直接注入 或 用户名密码登录）
+  if (COOKIE_OVERRIDE) {
+    // 直接注入 Cookie，跳过登录
+    COOKIE_OVERRIDE.split(';').forEach(s => {
+      const p = s.trim();
+      const i = p.indexOf('=');
+      if (i > 0) cookieJar[p.slice(0, i)] = p.slice(i + 1);
+    });
+    console.log('🔑 使用 Cookie 直接注入，跳过登录');
+  } else {
+    console.log(`👤 用户: ${USERNAME}`);
+    const ok = await login();
+    if (!ok) process.exit(1);
+  }
   
-  // 1. 登录
-  const ok = await login();
-  if (!ok) process.exit(1);
-  
-  // 2. 获取当前用户名
+  // 2. 获取当前用户名（从首页提取 user id，然后访问个人主页）
   const home = await httpGet('/');
-  const myUsername = getLoggedInUsername(home.body);
+  const uidMatch = home.body.match(/user\/view\?id=(\d+)/);
+  let myUsername = '';
+  if (uidMatch) {
+    const profilePage = await httpGet(`/user/view?id=${uidMatch[1]}`);
+    myUsername = getLoggedInUsername(profilePage.body);
+  }
+  if (!myUsername) myUsername = USERNAME || '(unknown)';
   console.log(`📌 当前用户名: ${myUsername}`);
   
   // 3. 扫描缺代码文件
