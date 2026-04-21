@@ -1,0 +1,69 @@
+{
+  "site": {
+    "title": "我的博客",
+    "subtitle": "代码 · 技术 · 思考",
+    "author": "博主",
+    "description": "一个关于技术与编程的个人博客",
+    "navLinks": [
+      { "label": "首页", "href": "#/" },
+      { "label": "标签", "href": "#/tags" },
+      { "label": "关于", "href": "#/about" }
+    ]
+  },
+  "posts": [
+    {
+      "id": "hello-world",
+      "title": "Hello World — 博客的第一篇文章",
+      "summary": "欢迎来到我的技术博客。在这里，我将分享编程心得、技术探索和项目经验。",
+      "date": "2026-04-16",
+      "tags": ["随笔", "博客"],
+      "cover": "",
+      "content": "# Hello World\n\n欢迎来到我的技术博客！\n\n这是第一篇文章，用来测试博客的各项功能：\n\n- **Markdown 渲染**\n- **代码高亮**\n- **标签分类**\n- **响应式布局**\n\n## 为什么写博客\n\n写博客是一种很好的学习方式。通过将知识整理成文字，不仅能加深自己的理解，还能帮助到其他人。\n\n> 教是最好的学。 — 费曼\n\n## 代码示例\n\n下面是一个简单的 JavaScript 示例：\n\n```javascript\nfunction fibonacci(n) {\n  if (n <= 1) return n;\n  let a = 0, b = 1;\n  for (let i = 2; i <= n; i++) {\n    [a, b] = [b, a + b];\n  }\n  return b;\n}\n\nconsole.log(fibonacci(10)); // 55\n```\n\n## Python 示例\n\n```python\ndef quicksort(arr):\n    if len(arr) <= 1:\n        return arr\n    pivot = arr[len(arr) // 2]\n    left = [x for x in arr if x < pivot]\n    middle = [x for x in arr if x == pivot]\n    right = [x for x in arr if x > pivot]\n    return quicksort(left) + middle + quicksort(right)\n\nprint(quicksort([3, 6, 8, 10, 1, 2, 1]))\n```\n\n## 总结\n\n这是博客的开始，后续会持续更新更多技术文章。敬请期待！"
+    },
+    {
+      "id": "css-modern-layout",
+      "title": "现代 CSS 布局技巧：Grid 与 Flexbox 实战",
+      "summary": "深入探讨 CSS Grid 和 Flexbox 的高级用法，掌握现代网页布局的核心技能。",
+      "date": "2026-04-15",
+      "tags": ["CSS", "前端", "布局"],
+      "cover": "",
+      "content": "# 现代 CSS 布局技巧\n\nCSS Grid 和 Flexbox 是现代前端开发的两大布局利器。本文将通过实际案例展示它们的高级用法。\n\n## Flexbox：一维布局之王\n\nFlexbox 擅长处理一维方向的元素排列：\n\n```css\n.container {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 1rem;\n}\n\n.item {\n  flex: 1;\n  min-width: 0;\n}\n```\n\n### 常见 Flex 模式\n\n1. **居中布局** — `justify-content: center; align-items: center;`\n2. **等分空间** — `flex: 1`\n3. **自适应换行** — `flex-wrap: wrap`\n\n## CSS Grid：二维布局革命\n\nGrid 让复杂布局变得简洁优雅：\n\n```css\n.grid-layout {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n  grid-template-rows: auto;\n  gap: 2rem;\n}\n```\n\n### 实用 Grid 技巧\n\n```css\n/* 圣杯布局 */\n.holy-grail {\n  display: grid;\n  grid-template:\n    \"header header header\" auto\n    \"sidebar main aside\" 1fr\n    \"footer footer footer\" auto\n    / 200px 1fr 200px;\n  min-height: 100vh;\n}\n```\n\n## 两者如何选择\n\n| 场景 | 推荐 | 原因 |\n|------|------|------|\n| 导航栏 | Flexbox | 一维排列 |\n| 卡片网格 | Grid | 二维控制 |\n| 表单布局 | Flexbox | 行内对齐 |\n| 页面整体 | Grid | 区域划分 |\n\n## 总结\n\n- **Flexbox** 用于一维方向的内容排列\n- **Grid** 用于二维的页面级布局\n- 两者可以嵌套组合使用，发挥最大威力"
+    },
+    {
+      "id": "javascript-async",
+      "title": "深入理解 JavaScript 异步编程",
+      "summary": "从回调到 Promise 再到 async/await，全面梳理 JavaScript 异步编程的演进之路。",
+      "date": "2026-04-14",
+      "tags": ["JavaScript", "前端", "异步"],
+      "cover": "",
+      "content": "# 深入理解 JavaScript 异步编程\n\nJavaScript 是单线程语言，异步编程是它的核心特性之一。让我们从历史演进的角度来理解它。\n\n## 回调地狱\n\n最早期的异步处理方式：\n\n```javascript\ngetUser(id, function(user) {\n  getPosts(user.id, function(posts) {\n    getComments(posts[0].id, function(comments) {\n      // 回调地狱...\n    });\n  });\n});\n```\n\n## Promise：链式调用\n\nES6 引入的 Promise 解决了回调地狱：\n\n```javascript\ngetUser(id)\n  .then(user => getPosts(user.id))\n  .then(posts => getComments(posts[0].id))\n  .then(comments => console.log(comments))\n  .catch(err => console.error(err));\n```\n\n### Promise 组合\n\n```javascript\n// 并行执行\nconst [users, posts] = await Promise.all([\n  fetchUsers(),\n  fetchPosts()\n]);\n\n// 竞速执行\nconst fastest = await Promise.race([\n  fetchFromCDN(),\n  fetchFromOrigin()\n]);\n```\n\n## async/await：同步的写法\n\nES2017 让异步代码看起来像同步：\n\n```javascript\nasync function loadDashboard() {\n  try {\n    const user = await getUser(id);\n    const posts = await getPosts(user.id);\n    const comments = await getComments(posts[0].id);\n    return { user, posts, comments };\n  } catch (error) {\n    console.error('加载失败:', error);\n  }\n}\n```\n\n## 事件循环\n\n理解事件循环是掌握异步的关键：\n\n1. **调用栈** — 执行同步代码\n2. **微任务队列** — Promise.then, queueMicrotask\n3. **宏任务队列** — setTimeout, setInterval, I/O\n\n```javascript\nconsole.log('1');\nsetTimeout(() => console.log('2'), 0);\nPromise.resolve().then(() => console.log('3'));\nconsole.log('4');\n// 输出顺序: 1, 4, 3, 2\n```\n\n## 总结\n\n- 回调 → Promise → async/await 是演进的三个阶段\n- 理解事件循环才能真正掌握异步\n- 善用 `Promise.all` / `Promise.race` 提升并发效率"
+    },
+    {
+      "id": "git-workflow",
+      "title": "Git 工作流最佳实践",
+      "summary": "团队协作中的 Git 分支策略、Commit 规范和 Code Review 流程总结。",
+      "date": "2026-04-12",
+      "tags": ["Git", "工具", "协作"],
+      "cover": "",
+      "content": "# Git 工作流最佳实践\n\n好的 Git 工作流能让团队协作更加顺畅。本文总结了几种主流的分支策略和最佳实践。\n\n## 分支策略\n\n### Git Flow\n\n```bash\ngit checkout -b feature/user-auth develop\ngit commit -m \"feat: add user authentication\"\ngit checkout develop\ngit merge --no-ff feature/user-auth\n```\n\n### Trunk Based Development\n\n更简洁的方式：\n\n```bash\ngit checkout -b short-lived-feature main\n# 快速开发，频繁合并\ngit checkout main\ngit merge short-lived-feature\n```\n\n## Commit 规范\n\n使用 Conventional Commits：\n\n```bash\ngit commit -m \"feat: add user login API\"\ngit commit -m \"fix: resolve memory leak in worker\"\ngit commit -m \"docs: update README installation guide\"\ngit commit -m \"refactor: simplify database connection pool\"\ngit commit -m \"test: add unit tests for auth module\"\n```\n\n### Commit 类型\n\n| 类型 | 说明 |\n|------|------|\n| `feat` | 新功能 |\n| `fix` | Bug 修复 |\n| `docs` | 文档更新 |\n| `refactor` | 代码重构 |\n| `test` | 测试相关 |\n| `chore` | 构建/工具变更 |\n\n## .gitconfig 推荐配置\n\n```ini\n[alias]\n  st = status\n  co = checkout\n  br = branch\n  ci = commit\n  lg = log --oneline --graph --decorate --all\n  amend = commit --amend --no-edit\n```\n\n## 总结\n\n- 选择适合团队规模的分支策略\n- 严格遵守 Commit 规范\n- Code Review 是质量保障的关键环节"
+    },
+    {
+      "id": "docker-guide",
+      "title": "Docker 容器化入门指南",
+      "summary": "从零开始学习 Docker，掌握镜像构建、容器管理和 Docker Compose 编排。",
+      "date": "2026-04-10",
+      "tags": ["Docker", "DevOps", "容器"],
+      "cover": "",
+      "content": "# Docker 容器化入门指南\n\nDocker 让应用的构建、分发和运行变得标准化。本文是面向开发者的入门教程。\n\n## 核心概念\n\n- **镜像 (Image)** — 应用的只读模板\n- **容器 (Container)** — 镜像的运行实例\n- **Dockerfile** — 构建镜像的脚本\n- **Compose** — 多容器编排工具\n\n## 编写 Dockerfile\n\n```dockerfile\n# 多阶段构建\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\n\nFROM node:20-alpine\nWORKDIR /app\nCOPY --from=builder /app/node_modules ./node_modules\nCOPY . .\nEXPOSE 3000\nCMD [\"node\", \"server.js\"]\n```\n\n## Docker Compose\n\n```yaml\nversion: '3.8'\nservices:\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - db\n    environment:\n      - DATABASE_URL=postgres://user:pass@db:5432/mydb\n\n  db:\n    image: postgres:16-alpine\n    volumes:\n      - pgdata:/var/lib/postgresql/data\n    environment:\n      - POSTGRES_USER=user\n      - POSTGRES_PASSWORD=pass\n      - POSTGRES_DB=mydb\n\nvolumes:\n  pgdata:\n```\n\n## 常用命令\n\n```bash\n# 构建并启动\ndocker compose up -d --build\n\n# 查看日志\ndocker compose logs -f app\n\n# 进入容器\ndocker compose exec app sh\n\n# 清理资源\ndocker system prune -a\n```\n\n## 最佳实践\n\n1. **使用多阶段构建** 减小镜像体积\n2. **利用缓存层** 优化构建速度\n3. **不要在镜像中存储密钥**\n4. **使用 .dockerignore** 排除无关文件\n\n## 总结\n\nDocker 是现代开发不可或缺的工具，掌握它能显著提升开发和部署效率。"
+    }
+  ],
+  "about": {
+    "name": "博主",
+    "bio": "一个热爱技术的开发者，擅长 Web 前端和后端开发。喜欢探索新技术，乐于分享编程经验。",
+    "skills": ["JavaScript", "TypeScript", "React", "Vue", "Node.js", "Python", "Docker", "Git"],
+    "links": {
+      "GitHub": "https://github.com",
+      "Email": "mailto:hello@example.com"
+    }
+  }
+}
