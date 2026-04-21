@@ -34,7 +34,7 @@ function extractMeta(filePath, content) {
   let title = problemId;
   let tags = [];
   let difficulty = '';
-  let training = '';
+  let training = [];
   
   // 解析 YAML front matter（如果有）
   const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n/);
@@ -50,7 +50,21 @@ function extractMeta(filePath, content) {
       tags = tagsMatch[1].split(',').map(t => t.trim().replace(/^["']|["']$/g, ''));
     }
     if (diffMatch) difficulty = diffMatch[1].trim();
-    if (trainingMatch) training = trainingMatch[1].trim().replace(/^["']|["']$/g, '');
+    if (trainingMatch) {
+      // training 可能是 JSON 数组 ["题单1","题单2"] 或单字符串
+      const raw = trainingMatch[1].trim();
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          training = parsed.map(t => String(t).trim());
+        } else {
+          training = [String(parsed).trim()];
+        }
+      } catch {
+        // 不是JSON，当作逗号分隔处理
+        training = raw.split(',').map(t => t.trim().replace(/^["']|["']$/g, '')).filter(Boolean);
+      }
+    }
   } else {
     // 没有 front matter 时从第一个标题提取标题
     const h1Match = content.match(/^#\s+(.+)/m);
@@ -158,13 +172,15 @@ function build() {
     problems,
   };
 
-  // 构建训练题单统计
+  // 构建训练题单统计（training 现在是数组）
   problems.forEach(p => {
-    if (p.training) {
+    if (p.training && p.training.length > 0) {
       if (!index.trainingBySource[p.source]) index.trainingBySource[p.source] = {};
       const tb = index.trainingBySource[p.source];
-      if (!tb[p.training]) tb[p.training] = 0;
-      tb[p.training]++;
+      for (const t of p.training) {
+        if (!tb[t]) tb[t] = 0;
+        tb[t]++;
+      }
     }
   });
   
