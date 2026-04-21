@@ -181,7 +181,9 @@ function isCppCode(code) {
   if (!code) return false;
   const trimmed = code.trim();
   const hasCppFeature = ['#include', 'using namespace', 'int main', 'cout', 'cin', 'printf', 'scanf', 'endl'].some(k => trimmed.includes(k));
-  const hasPythonFeature = [/print\s*\(/, /input\s*\(/, /\bdef\s/, /^import\s/m].some(r => r.test(trimmed));
+  // Python特征：只检查def关键字和行首import（不用print/input，因为C++也常见void print()等）
+  // C++代码有 #include/int main/using namespace 等强特征，配合Python特征交叉验证足够准确
+  const hasPythonFeature = [/\bdef\s/, /^import\s/m].some(r => r.test(trimmed));
   return hasCppFeature && !hasPythonFeature;
 }
 
