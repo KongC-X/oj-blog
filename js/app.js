@@ -744,7 +744,7 @@
           </div>
           <div class="problem-badges">
             ${dc ? `<span class="problem-diff-badge" style="background:${dc.bg};color:${dc.color};">${escapeHtml(p.difficulty)}</span>` : ''}
-            ${p.training ? `<span class="problem-training-badge">${escapeHtml(p.training)}</span>` : ''}
+            ${p.training && p.training.length ? `<span class="problem-training-badge">${p.training.map(t => escapeHtml(t)).join(' · ')}</span>` : ''}
             <span class="problem-source ${sourceClass}">${escapeHtml(p.source)}</span>
           </div>
         </div>
@@ -837,10 +837,10 @@
                 <span class="sidebar-info-label">难度</span>
                 <span class="sidebar-info-value" style="color:${dc.color};">${escapeHtml(problem.difficulty)}</span>
               </div>` : ''}
-              ${problem.training ? `
+              ${problem.training && problem.training.length ? `
               <div class="sidebar-info-row">
                 <span class="sidebar-info-label">题单</span>
-                <span class="sidebar-info-value" style="font-size:0.78rem;">${escapeHtml(problem.training)}</span>
+                <span class="sidebar-info-value" style="font-size:0.78rem;">${problem.training.map(t => escapeHtml(t)).join(' · ')}</span>
               </div>` : ''}
               <div class="sidebar-info-row">
                 <span class="sidebar-info-label">更新日期</span>
@@ -1030,15 +1030,19 @@
   function renderTrainingList(problems, source) {
     const trainingCount = {};
     problems.forEach(p => {
-      const t = p.training || '未分类';
-      trainingCount[t] = (trainingCount[t] || 0) + 1;
+      // training 是数组，每个元素单独计数
+      const trainings = Array.isArray(p.training) ? p.training : (p.training ? [p.training] : []);
+      if (trainings.length === 0) {
+        trainingCount['未分类'] = (trainingCount['未分类'] || 0) + 1;
+      } else {
+        trainings.forEach(t => {
+          trainingCount[t] = (trainingCount[t] || 0) + 1;
+        });
+      }
     });
 
-    // 按分类文件顺序排列（洛谷用预定义顺序，东方博宜按数量降序）
-    // 空字符串也视为未分类
-    const unclassifiedCount = (trainingCount['未分类'] || 0) + (trainingCount[''] || 0);
-    const unclassified = unclassifiedCount;
-    const classified = Object.entries(trainingCount).filter(([k]) => k !== '未分类' && k !== '');
+    const unclassified = trainingCount['未分类'] || 0;
+    const classified = Object.entries(trainingCount).filter(([k]) => k !== '未分类');
 
     let sorted;
     const orderList = source === 'luogu' ? LUOGU_TRAINING_ORDER : DFBOY_TRAINING_ORDER;
@@ -1142,8 +1146,9 @@
     const isUnclassified = training === '未分类';
     const problems = INDEX.problems.filter(p => {
       if (p.source !== sourceName) return false;
-      if (isUnclassified) return !p.training || p.training === '未分类';
-      return p.training === training;
+      const trainings = Array.isArray(p.training) ? p.training : (p.training ? [p.training] : []);
+      if (isUnclassified) return trainings.length === 0;
+      return trainings.includes(training);
     })
       .sort((a, b) => (parseInt(a.numId) || 0) - (parseInt(b.numId) || 0));
 
