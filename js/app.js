@@ -16,76 +16,65 @@
   //   - 本地 server.js 端口 8766 上 /api/* → 后端服务（同源）
   const IS_CLOUDFLARE = location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
   const API_BASE = '';
-  let HAS_BACKEND = !IS_CLOUDFLARE; // Cloudflare 上一直有 Functions
+  // Cloudflare Pages 无后端：直接显示静态内容
+  // 本地开发时 server.js 提供后端服务（需登录）
+  const HAS_BACKEND = !IS_CLOUDFLARE;
 
   let INDEX = null;
   let currentFilter = 'all';
   let searchQuery = '';
-  let userRole = null; // 'user' | 'admin'
+  let userRole = null;
 
   // ========== Init ==========
   async function init() {
     initTheme();
 
-    if (!isAuthenticated()) {
-      // Cloudflare 上 Functions 始终在线，直接显示登录页
-      // 本地开发时探测后端是否可用
-      let backendOk = false;
-
-      if (IS_CLOUDFLARE) {
-        backendOk = true;
-
-        // 🔥 后台预热 Functions（无阻塞） — 避免登录时冷启动慢
-        fetch(API_BASE + '/api/me', {
-          headers: { 'Authorization': 'Bearer warmup' }
-        }).catch(() => {});
-      } else {
-        try {
-          const ctrl = new AbortController();
-          const timer = setTimeout(() => ctrl.abort(), 1500);
-          const res = await fetch(API_BASE + '/api/me', {
-            signal: ctrl.signal,
-            headers: { 'Authorization': 'Bearer probe' }
-          });
-          clearTimeout(timer);
-          if (res.status === 401 || res.ok) backendOk = true;
-          else throw new Error('non-ok');
-        } catch {
-          backendOk = false;
-        }
-      }
-
-      HAS_BACKEND = backendOk;
-
+    if (HAS_BACKEND) {
+      // 本地模式：先探测后端
+      const backendOk = await probeBackend();
       if (backendOk) {
-        // 后端在线，显示登录页
+        // 后端在线，走登录流程
         renderHeader();
         initBackToTop();
         renderAuth();
-      } else {
-        // 后端不可用，跳过登录，只读模式
-        HAS_BACKEND = false;
-        userRole = 'user';
-        await loadIndex();
-        renderHeader();
-        initBackToTop();
-        router();
+        window.addEventListener('hashchange', () => {
+          if (!isAuthenticated() && HAS_BACKEND) return;
+          router();
+        });
+        return;
       }
-    } else {
-      // 已有 session
-      const session = getSession();
-      if (session) userRole = session.role;
-      renderHeader();
-      initBackToTop();
-      await loadIndex();
-      router();
+      // 后端不可用，降级为只读
     }
 
+    // Cloudflare 模式 或 本地降级：直接显示题解
+    renderHeader();
+    initBackToTop();
+    // 先显示骨架/加载提示，数据到了自动刷新
+    router();
+    await loadIndex();
+    router();
+
     window.addEventListener('hashchange', () => {
-      if (!isAuthenticated() && HAS_BACKEND) return;
-      if (!HAS_BACKEND && !INDEX) { router(); return; }
+      if (!INDEX) { router(); return; }
       router();
     });
+  }
+
+  /** 探测本地后端是否可用 */
+  async function probeBackend() {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 1500);
+      const res = await fetch(API_BASE + '/api/me', {
+        signal: ctrl.signal,
+        headers: { 'Authorization': 'Bearer probe' }
+      });
+      clearTimeout(timer);
+      return res.status === 401 || res.ok;
+    } catch {
+      return false;
+    }
+  }
 
     // Ctrl/Cmd + K 快捷搜索
     document.addEventListener('keydown', (e) => {
