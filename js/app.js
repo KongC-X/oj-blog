@@ -214,10 +214,11 @@
       if (result.role) {
         // 登录成功 → 秒进（先显示骨架屏，后台加载数据）
         renderHeader();
-        document.getElementById('app').innerHTML = '<div class="loading-screen" style="text-align:center;padding:80px 20px;color:var(--text-secondary);"><div style="font-size:2rem;margin-bottom:1rem;">⏳</div><div>加载题解数据...</div></div>';
-        router();
+        document.getElementById('app').innerHTML = renderSkeleton();
         loadIndex().then(() => router()).catch(() => router());
       } else if (result.backendDown) {
+        btn.disabled = false;
+        btn.textContent = '进入';
         error.textContent = '后端服务未启动，仅可浏览题解';
         // 降级模式：以普通用户身份进入（只能查看）
         userRole = 'user';
@@ -225,6 +226,8 @@
         renderHeader();
         router();
       } else {
+        btn.disabled = false;
+        btn.textContent = '进入';
         error.textContent = result.error || '密码错误';
         input.classList.add('shake');
         setTimeout(() => input.classList.remove('shake'), 400);
@@ -835,6 +838,33 @@
 
     window.addEventListener('scroll', update, { passive: true });
     update();
+  }
+
+  // ========== 骨架屏（登录后立即显示，数据加载完成后替换） ==========
+  function renderSkeleton() {
+    const card = (i) => `
+      <div class="solution-card skeleton-card">
+        <div class="skeleton-line skeleton-title" style="width: ${60 + Math.random() * 30}%"></div>
+        <div class="skeleton-line" style="width: ${40 + Math.random() * 40}%;margin-top:8px"></div>
+        <div class="skeleton-line" style="width: ${30 + Math.random() * 30}%;margin-top:8px"></div>
+      </div>
+    `;
+    return `
+      <div class="page">
+        <div class="search-bar skeleton-search">
+          <div class="skeleton-line" style="width:100%;height:36px;border-radius:18px"></div>
+        </div>
+        <div class="stats-bar skeleton-stats">
+          ${[1,2,3,4].map(() => '<div class="skeleton-stat"><div class="skeleton-line" style="width:40px;height:16px;margin:0 auto"></div><div class="skeleton-line" style="width:60px;height:12px;margin:4px auto 0"></div></div>').join('')}
+        </div>
+        <div class="filter-tabs skeleton-tabs">
+          ${[1,2,3,4,5].map(() => '<div class="skeleton-line" style="width:60px;height:28px;border-radius:14px;display:inline-block;margin:0 4px"></div>').join('')}
+        </div>
+        <div class="solutions-grid">
+          ${[1,2,3,4,5,6].map(card).join('')}
+        </div>
+      </div>
+    `;
   }
 
   // ========== Pages ==========
