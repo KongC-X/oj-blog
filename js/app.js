@@ -259,7 +259,6 @@
   function renderHeader() {
     const header = document.getElementById('header');
     const admin = isAdmin();
-    const cloudMode = !HAS_BACKEND;
     header.innerHTML = `
       <div class="header-inner">
         <div class="logo" onclick="location.hash='#/'">
@@ -285,11 +284,11 @@
               }
             </svg>
           </button>
-          ${cloudMode ? '' : `<button class="icon-btn" id="logoutBtn" title="退出登录">
+          <button class="icon-btn" id="logoutBtn" title="退出登录">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
-          </button>`}
+          </button>
         </div>
       </div>
     `;
