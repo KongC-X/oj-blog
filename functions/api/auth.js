@@ -1,18 +1,25 @@
 /**
- * Cloudflare Pages Function — 登录鉴权
+ * Cloudflare Pages Function — 登录鉴权（双权限）
  *
  * POST /api/auth
  *   Body: { password: string }
- *   Success: { token: string, role: "admin" }
+ *   Success: { token: string, role: "user" | "admin" }
  *   Error:   { error: string }
  *
+ * 权限说明：
+ *   - 密码为 oi2026（硬编码） → 普通用户，只能看题解
+ *   - 密码为 AUTH_PASSWORD 环境变量值 → 管理员，可使用更新题解等功能
+ *
  * 需要设置的环境变量（Cloudflare Pages 面板 → Settings → Environment Variables）：
- *   AUTH_PASSWORD  — 管理员密码（必填，默认 oi2026）
+ *   AUTH_PASSWORD  — 管理员密码（当前为 zym2026）
  *   TOKEN_SECRET   — Token 签名密钥（必填，建议随机字符串）
  */
 
 // Token 有效期（毫秒）
 const TOKEN_EXPIRE_MS = 24 * 60 * 60 * 1000; // 24 小时
+
+// 普通用户密码（硬编码，只能看题解）
+const USER_PASSWORD = 'oi2026';
 
 export async function onRequest(context) {
   const { request, env } = context;
@@ -44,19 +51,29 @@ export async function onRequest(context) {
     });
   }
 
-  // 验证密码
-  const validPassword = env.AUTH_PASSWORD || 'oi2026';
-  if (password !== validPassword) {
+  // 双权限验证：
+  // 1. 管理员密码（来自环境变量 AUTH_PASSWORD）
+  // 2. 普通用户密码（硬编码 oi2026）
+  const adminPassword = env.AUTH_PASSWORD;
+  let role = null;
+
+  if (password === adminPassword) {
+    role = 'admin';
+  } else if (password === USER_PASSWORD) {
+    role = 'user';
+  }
+
+  if (!role) {
     return new Response(JSON.stringify({ error: '密码错误' }), {
       status: 401,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  // 签发 Token（HMAC-SHA256 签名，stateless，无需 KV 存储）
-  const token = await createToken(env.TOKEN_SECRET || 'default-token-secret-change-me');
+  // 签发 Token（携带角色信息）
+  const token = await createToken(role, env.TOKEN_SECRET || 'default-token-secret-change-me');
 
-  return new Response(JSON.stringify({ token, role: 'admin' }), {
+  return new Response(JSON.stringify({ token, role }), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
@@ -69,9 +86,9 @@ export async function onRequest(context) {
  * 创建带过期时间的 HMAC 签名 Token
  * 格式：base64(timestamp.json).base64(signature)
  */
-async function createToken(secret) {
+async function createToken(role, secret) {
   const timestamp = Date.now() + TOKEN_EXPIRE_MS;
-  const payload = JSON.stringify({ role: 'admin', exp: timestamp });
+  const payload = JSON.stringify({ role, exp: timestamp });
 
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
