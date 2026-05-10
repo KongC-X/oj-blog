@@ -28,22 +28,26 @@
     initTheme();
 
     if (!isAuthenticated()) {
-      // 尝试探测后端（Cloudflare Functions 或本地 server.js）
+      // Cloudflare 上 Functions 始终在线，直接显示登录页
+      // 本地开发时探测后端是否可用
       let backendOk = false;
-      try {
-        const ctrl = new AbortController();
-        const timer = setTimeout(() => ctrl.abort(), 1500);
-        const res = await fetch(API_BASE + '/api/me', {
-          signal: ctrl.signal,
-          headers: { 'Authorization': 'Bearer probe' }
-        });
-        clearTimeout(timer);
-        // 401 说明 Functions/后端在线（"未登录"是正常响应）
-        if (res.status === 401 || res.ok) backendOk = true;
-        else throw new Error('non-ok');
-      } catch {
-        // 后端不可用
-        backendOk = false;
+
+      if (IS_CLOUDFLARE) {
+        backendOk = true;
+      } else {
+        try {
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 1500);
+          const res = await fetch(API_BASE + '/api/me', {
+            signal: ctrl.signal,
+            headers: { 'Authorization': 'Bearer probe' }
+          });
+          clearTimeout(timer);
+          if (res.status === 401 || res.ok) backendOk = true;
+          else throw new Error('non-ok');
+        } catch {
+          backendOk = false;
+        }
       }
 
       HAS_BACKEND = backendOk;
