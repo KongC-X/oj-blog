@@ -116,17 +116,22 @@
   }
 
   // ========== Auth ==========
+  // ========== 预计算密码哈希（SHA-256，用于客户端秒级登录） ==========
+  const USER_PASSWORD_HASH = '2636a2b5647674ef0490d6e7b9ae84a2488806e1de0cab5637c4d0401c8080dd'; // oi2026
+  const ADMIN_PASSWORD_HASH = '12238c24b6f74e3faabcb4769d2a7a746de8424ef5a0212afdb413d39beb9198'; // zym2026
+  let adminPassword = ''; // 内存中的管理员密码（仅用于更新题解时传给服务器验证）
+
   function getSession() {
     const raw = localStorage.getItem('oj-session');
     if (!raw) return null;
     try {
-      const { token, role, timestamp } = JSON.parse(raw);
+      const { role, timestamp } = JSON.parse(raw);
       // 24小时过期
       if (Date.now() - timestamp > 24 * 60 * 60 * 1000) {
         localStorage.removeItem('oj-session');
         return null;
       }
-      return { token, role, timestamp };
+      return { role, timestamp };
     } catch { return null; }
   }
 
@@ -138,35 +143,38 @@
     return userRole === 'admin';
   }
 
-  function setSession(token, role) {
+  function setSession(role) {
     userRole = role;
-    localStorage.setItem('oj-session', JSON.stringify({ token, role, timestamp: Date.now() }));
+    localStorage.setItem('oj-session', JSON.stringify({ role, timestamp: Date.now() }));
   }
 
   function clearSession() {
     userRole = null;
+    adminPassword = '';
     localStorage.removeItem('oj-session');
   }
 
+  /** 客户端认证（零网络请求，秒级响应） */
   async function authenticate(password) {
     try {
-      const res = await fetch(API_BASE + '/api/auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        return { role: null, error: data.error || '认证失败' };
+      // SHA-256 哈希比对
+      const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
+      const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+      if (hashHex === ADMIN_PASSWORD_HASH) {
+        adminPassword = password; // 保存密码，供更新题解时服务器验证
+        setSession('admin');
+        return { role: 'admin' };
       }
-      const data = await res.json();
-      if (data.token) {
-        setSession(data.token, data.role);
-        return { role: data.role };
+
+      if (hashHex === USER_PASSWORD_HASH) {
+        setSession('user');
+        return { role: 'user' };
       }
-      return { role: null, error: '认证失败' };
+
+      return { role: null, error: '密码错误' };
     } catch {
-      // 后端不可用，降级为本地模式
+      // 浏览器不支持 crypto.subtle
       HAS_BACKEND = false;
       return { role: null, backendDown: true };
     }
@@ -1533,8 +1541,7 @@
   }
 
   function getAuthToken() {
-    const session = getSession();
-    return session ? session.token : null;
+    return adminPassword; // 返回内存中的管理员密码
   }
 
   function startUpdate(source, params) {
@@ -1551,8 +1558,8 @@
       'all': 'allBtn',
     };
 
-    const token = getAuthToken();
-    if (!token) { alert('登录已过期，请重新登录'); clearSession(); renderHeader(); renderAuth(); return; }
+    const pw = getAuthToken();
+    if (!pw) { alert('登录已过期，请重新登录'); clearSession(); renderHeader(); renderAuth(); return; }
 
     const resultEl = document.getElementById(resultMap[source]);
     const btn = document.getElementById(btnMap[source]);
@@ -1566,11 +1573,8 @@
 
     fetch(API_BASE + '/api/trigger-update', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(params),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.assign({}, params, { admin_password: pw })),
     })
     .then(async res => {
       const data = await res.json();

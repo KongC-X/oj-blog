@@ -32,33 +32,7 @@ export async function onRequest(context) {
     });
   }
 
-  // ==================== 鉴权 ====================
-  const auth = request.headers.get('Authorization') || '';
-  const token = auth.replace('Bearer ', '').trim();
-
-  if (!token) {
-    return new Response(JSON.stringify({ error: '未登录，请先登录' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const session = await verifyToken(token, env.TOKEN_SECRET || 'default-token-secret-change-me');
-  if (!session) {
-    return new Response(JSON.stringify({ error: '登录已过期，请重新登录' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  if (session.role !== 'admin') {
-    return new Response(JSON.stringify({ error: '需要管理员权限' }), {
-      status: 403,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  // ==================== 参数验证 ====================
+  // ==================== 鉴权（支持密码或 Token 两种方式） ====================
   let body;
   try {
     body = await request.json();
@@ -69,7 +43,52 @@ export async function onRequest(context) {
     });
   }
 
-  const { source, luogu_cookie, dfboy_user, dfboy_pass, force } = body;
+  // 方式一：请求体中的 admin_password（前端客户端认证）
+  if (body.admin_password) {
+    const adminPassword = env.AUTH_PASSWORD;
+    if (!adminPassword) {
+      return new Response(JSON.stringify({ error: '服务器未配置管理员密码' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    if (body.admin_password !== adminPassword) {
+      return new Response(JSON.stringify({ error: '管理员密码错误，请重新登录' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+    // 密码验证通过，继续执行
+  } else {
+    // 方式二：Authorization 头中的 Token（兼容旧版）
+    const auth = request.headers.get('Authorization') || '';
+    const token = auth.replace('Bearer ', '').trim();
+
+    if (!token) {
+      return new Response(JSON.stringify({ error: '未登录，请先登录' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    const session = await verifyToken(token, env.TOKEN_SECRET || 'default-token-secret-change-me');
+    if (!session) {
+      return new Response(JSON.stringify({ error: '登录已过期，请重新登录' }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
+    if (session.role !== 'admin') {
+      return new Response(JSON.stringify({ error: '需要管理员权限' }), {
+        status: 403,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
+  // ==================== 参数验证 ====================
+  const { source, luogu_cookie, dfboy_user, dfboy_pass, force, admin_password } = body;
 
   // 验证 source
   const validSources = ['luogu', 'dfboy', 'all', 'rebuild'];
