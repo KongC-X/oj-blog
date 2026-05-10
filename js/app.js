@@ -211,12 +211,12 @@
       btn.disabled = true;
       btn.textContent = '验证中...';
       const result = await authenticate(pw);
-      btn.disabled = false;
-      btn.textContent = '进入';
       if (result.role) {
-        await loadIndex();
+        // 登录成功 → 秒进（先显示骨架屏，后台加载数据）
         renderHeader();
+        document.getElementById('app').innerHTML = '<div class="loading-screen" style="text-align:center;padding:80px 20px;color:var(--text-secondary);"><div style="font-size:2rem;margin-bottom:1rem;">⏳</div><div>加载题解数据...</div></div>';
         router();
+        loadIndex().then(() => router()).catch(() => router());
       } else if (result.backendDown) {
         error.textContent = '后端服务未启动，仅可浏览题解';
         // 降级模式：以普通用户身份进入（只能查看）
@@ -840,6 +840,9 @@
   // ========== Pages ==========
 
   function renderHome() {
+    if (!INDEX) {
+      return '<div class="loading-screen" style="text-align:center;padding:80px 20px;color:var(--text-secondary);"><div style="font-size:2rem;margin-bottom:1rem;">⏳</div><div>加载题解数据...</div></div>';
+    }
     const sources = INDEX.sources || [];
     const sourceCount = {};
     INDEX.problems.forEach(p => { sourceCount[p.source] = (sourceCount[p.source] || 0) + 1; });
