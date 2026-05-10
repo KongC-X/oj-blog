@@ -174,9 +174,7 @@ a:hover { color: var(--accent-secondary); }
   pointer-events: none;
 }
 
-/* ---------- Particles ---------- */
-#particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.28; }
-[data-theme="light"] #particles { opacity: 0.10; }
+
 
 /* ---------- Header ---------- */
 .header {
@@ -355,11 +353,27 @@ a:hover { color: var(--accent-secondary); }
 }
 .search-input:focus ~ .search-icon { color: var(--accent); }
 
+/* 有内容时隐藏 shortcut，显示清空按钮 */
+.search-input:not(:placeholder-shown) ~ .search-shortcut { opacity: 0; pointer-events: none; }
+.search-clear {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--text-muted); color: var(--bg-primary);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity 0.15s, background 0.15s;
+  font-size: 12px; line-height: 1;
+}
+.search-clear:hover { background: var(--accent); }
+.search-input:not(:placeholder-shown) ~ .search-clear { opacity: 1; pointer-events: auto; }
+.search-input:not(:placeholder-shown) ~ .search-shortcut { opacity: 0; pointer-events: none; }
+
 .search-shortcut {
   position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
   padding: 2px 7px; background: var(--bg-secondary); border: 1px solid var(--border);
   border-radius: var(--radius-xs); color: var(--text-muted); font-size: 0.68rem;
   font-family: var(--font-mono); pointer-events: none;
+  transition: opacity 0.15s;
 }
 
 /* ---------- Stats Bar ---------- */

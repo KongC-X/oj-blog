@@ -11,37 +11,67 @@
   'use strict';
 
   // ========== 配置 ==========
-  const CONFIG = {
-    // 访问密码（SHA-256 哈希后的值）
-    // 默认密码: "oi2026"
-    // 你可以修改这个哈希值，或用下方 generateHash() 生成新密码
-    passwordHash: 'a4e4b9c7f3d2e1a8b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6',
-    // 使用简单对比（生产环境建议换SHA-256）
-    useSimplePassword: true,
-    simplePassword: 'oi2026',
-    // 会话超时（毫秒），24小时
-    sessionTimeout: 24 * 60 * 60 * 1000,
-  };
+  // 只有在 localhost 环境下才尝试连后端（本地开发/运行 server.js 时）
+  // 在线云端（任何非 localhost 域名）直接走纯静态模式，0 延迟
+  const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  const API_BASE = IS_LOCAL ? (location.port === '8766' ? '' : 'http://localhost:8766') : '';
 
   let INDEX = null;
   let currentFilter = 'all';
   let searchQuery = '';
+  let userRole = null; // 'user' | 'admin'
 
   // ========== Init ==========
   async function init() {
     initTheme();
-    renderHeader();
-    initBackToTop();
 
     if (!isAuthenticated()) {
-      renderAuth();
+      if (IS_LOCAL) {
+        // 本地环境：探测后端是否在线（1.5秒超时）
+        try {
+          const ctrl = new AbortController();
+          const timer = setTimeout(() => ctrl.abort(), 1500);
+          const res = await fetch(API_BASE + '/api/health', { signal: ctrl.signal });
+          clearTimeout(timer);
+          if (res.ok) {
+            // 后端在线，显示登录页
+            renderHeader();
+            initBackToTop();
+            renderAuth();
+          } else {
+            throw new Error('non-ok');
+          }
+        } catch {
+          // 本地后端不可用，跳过登录
+          backendAvailable = false;
+          userRole = 'user';
+          await loadIndex();
+          renderHeader();
+          initBackToTop();
+          router();
+        }
+      } else {
+        // 在线云端：直接跳过登录，0 延迟
+        backendAvailable = false;
+        userRole = 'user';
+        await loadIndex();
+        renderHeader();
+        initBackToTop();
+        router();
+      }
     } else {
+      // 已有 session
+      const session = getSession();
+      if (session) userRole = session.role;
+      renderHeader();
+      initBackToTop();
       await loadIndex();
       router();
     }
 
     window.addEventListener('hashchange', () => {
-      if (!isAuthenticated()) return;
+      if (!isAuthenticated() && backendAvailable) return;
+      if (!backendAvailable && !INDEX) { router(); return; }
       router();
     });
 
@@ -74,25 +104,63 @@
   }
 
   // ========== Auth ==========
-  function isAuthenticated() {
-    const session = localStorage.getItem('oj-session');
-    if (!session) return false;
+  function getSession() {
+    const raw = localStorage.getItem('oj-session');
+    if (!raw) return null;
     try {
-      const { timestamp } = JSON.parse(session);
-      return Date.now() - timestamp < CONFIG.sessionTimeout;
-    } catch { return false; }
+      const { token, role, timestamp } = JSON.parse(raw);
+      // 24小时过期
+      if (Date.now() - timestamp > 24 * 60 * 60 * 1000) {
+        localStorage.removeItem('oj-session');
+        return null;
+      }
+      return { token, role, timestamp };
+    } catch { return null; }
   }
 
-  function authenticate(password) {
-    if (CONFIG.useSimplePassword) {
-      return password === CONFIG.simplePassword;
+  function isAuthenticated() {
+    return getSession() !== null;
+  }
+
+  function isAdmin() {
+    return userRole === 'admin';
+  }
+
+  function setSession(token, role) {
+    userRole = role;
+    localStorage.setItem('oj-session', JSON.stringify({ token, role, timestamp: Date.now() }));
+  }
+
+  function clearSession() {
+    userRole = null;
+    localStorage.removeItem('oj-session');
+  }
+
+  // 后端是否可用
+  let backendAvailable = true;
+
+  async function authenticate(password) {
+    try {
+      const res = await fetch(API_BASE + '/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        return { role: null, error: data.error || '认证失败' };
+      }
+      const data = await res.json();
+      if (data.token) {
+        setSession(data.token, data.role);
+        return { role: data.role };
+      }
+      return { role: null, error: '认证失败' };
+    } catch {
+      // 后端不可用，降级为本地模式
+      backendAvailable = false;
+      return { role: null, backendDown: true };
     }
-    // SHA-256 比对模式（预留）
-    return false;
-  }
-
-  function setSession() {
-    localStorage.setItem('oj-session', JSON.stringify({ timestamp: Date.now() }));
   }
 
   function renderAuth() {
@@ -107,7 +175,7 @@
           </div>
           <h2 class="auth-title">章老师的OJ题解站</h2>
           <p class="auth-subtitle">请输入访问密码</p>
-          <input type="password" class="auth-input" id="authPassword" 
+          <input type="password" class="auth-input" id="authPassword"
                  placeholder="输入密码…" autocomplete="current-password">
           <button class="auth-btn" id="authBtn">进入</button>
           <div class="auth-error" id="authError"></div>
@@ -123,12 +191,24 @@
     async function tryLogin() {
       const pw = input.value;
       if (!pw) { error.textContent = '请输入密码'; return; }
-      if (authenticate(pw)) {
-        setSession();
+      btn.disabled = true;
+      btn.textContent = '验证中...';
+      const result = await authenticate(pw);
+      btn.disabled = false;
+      btn.textContent = '进入';
+      if (result.role) {
         await loadIndex();
+        renderHeader();
+        router();
+      } else if (result.backendDown) {
+        error.textContent = '后端服务未启动，仅可浏览题解';
+        // 降级模式：以普通用户身份进入（只能查看）
+        userRole = 'user';
+        await loadIndex();
+        renderHeader();
         router();
       } else {
-        error.textContent = '密码错误';
+        error.textContent = result.error || '密码错误';
         input.classList.add('shake');
         setTimeout(() => input.classList.remove('shake'), 400);
       }
@@ -178,6 +258,8 @@
   // ========== Header ==========
   function renderHeader() {
     const header = document.getElementById('header');
+    const admin = isAdmin();
+    const cloudMode = !backendAvailable;
     header.innerHTML = `
       <div class="header-inner">
         <div class="logo" onclick="location.hash='#/'">
@@ -190,8 +272,9 @@
         <nav class="nav" id="mainNav">
           <a class="nav-link" href="#/" data-nav>全部题解</a>
           <a class="nav-link" href="#/tags" data-nav>标签分类</a>
-          <a class="nav-link" href="#/guide" data-nav>使用指南</a>
-          <a class="nav-link nav-link-update" href="#/update" data-nav>更新题解</a>
+          ${admin ? `<a class="nav-link" href="#/guide" data-nav>使用指南</a>
+          <a class="nav-link nav-link-update" href="#/update" data-nav>更新题解</a>` : ''}
+          <a class="nav-link" href="#/about" data-nav>关于网站</a>
         </nav>
         <div class="nav-actions" id="navActions">
           <button class="icon-btn" id="themeToggle" title="切换主题">
@@ -202,20 +285,24 @@
               }
             </svg>
           </button>
-          <button class="icon-btn" id="logoutBtn" title="退出登录">
+          ${cloudMode ? '' : `<button class="icon-btn" id="logoutBtn" title="退出登录">
             <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
-          </button>
+          </button>`}
         </div>
       </div>
     `;
 
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('oj-session');
-      renderAuth();
-    });
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        clearSession();
+        renderHeader();
+        renderAuth();
+      });
+    }
 
     // Theme icon observer
     new MutationObserver(() => {
@@ -255,19 +342,50 @@
   }
 
   // ========== Data ==========
+  // 带重试的 fetch（应对龙虾云连接不稳定）
+  async function robustFetch(url, retries, timeout) {
+    retries = retries || 2;
+    timeout = timeout || 10000;
+    for (let i = 0; i <= retries; i++) {
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), timeout);
+        const res = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (res.ok) return res;
+        if (i === retries) throw new Error('HTTP ' + res.status);
+      } catch (e) {
+        if (i === retries) throw e;
+        await new Promise(r => setTimeout(r, 600 * (i + 1)));
+      }
+    }
+  }
+
   async function loadIndex() {
     try {
-      const res = await fetch('data/index.json?t=' + Date.now());
+      const res = await robustFetch('data/index.json?t=' + Date.now(), 2, 15000);
       INDEX = await res.json();
     } catch (e) {
       console.error('Failed to load index.json:', e);
       INDEX = { problems: [], sources: [], allTags: [], totalProblems: 0 };
+      // 显示错误提示（只在有 app 容器时）
+      const app = document.getElementById('app');
+      if (app && !app.querySelector('.load-error')) {
+        app.innerHTML = '<div class="load-error" style="text-align:center;padding:80px 20px;color:var(--text-secondary);">' +
+          '<p style="font-size:1.1rem;margin-bottom:12px;">数据加载失败</p>' +
+          '<p style="font-size:0.85rem;">网络不稳定，请刷新页面重试</p>' +
+          '<button onclick="location.reload()" style="margin-top:20px;padding:8px 24px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-primary);cursor:pointer;">刷新重试</button>' +
+          '</div>';
+      }
     }
   }
 
   // ========== Router ==========
   function router() {
-    if (!isAuthenticated()) { renderAuth(); return; }
+    if (!backendAvailable && !INDEX) {
+      // 云端模式：数据还没加载完，不渲染
+      return;
+    }
 
     const hash = location.hash || '#/';
     const app = document.getElementById('app');
@@ -296,10 +414,14 @@
       const tag = decodeURIComponent(hash.replace('#/tag/', ''));
       app.innerHTML = renderTagFilter(tag);
     } else if (hash === '#/guide') {
+      if (!isAdmin()) { app.innerHTML = render404(); return; }
       app.innerHTML = renderGuide();
     } else if (hash === '#/update') {
+      if (!isAdmin()) { app.innerHTML = render404(); return; }
       app.innerHTML = renderUpdatePage();
       bindUpdateEvents();
+    } else if (hash === '#/about') {
+      app.innerHTML = renderAbout();
     } else {
       app.innerHTML = render404();
     }
@@ -531,8 +653,34 @@
     } catch (e) {
       console.error('Markdown render error:', e);
     }
-    // 最基础回退
-    return content.replace(/\n/g, '<br>');
+    // marked 未加载时的回退：简易正则解析，至少保证代码块正确渲染
+    return fallbackMarkdown(content);
+  }
+
+  // marked 未加载时的简易 Markdown → HTML 转换
+  function fallbackMarkdown(md) {
+    let html = escapeHtml(md);
+    // 代码块（必须在行内 code 之前）
+    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
+      code = code.replace(/^\n|\n$/g, '');
+      return '<pre><code class="hljs language-' + (lang || 'cpp') + '">' + code + '</code></pre>';
+    });
+    // 行内代码
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // 标题
+    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+    // 粗体、斜体
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // 换行
+    html = html.replace(/\n\n/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+    html = '<p>' + html + '</p>';
+    // 清理空段落
+    html = html.replace(/<p>\s*<\/p>/g, '');
+    return html;
   }
 
   function addCopyButtons() {
@@ -567,22 +715,38 @@
       const btn = header.querySelector('.copy-btn');
       btn.addEventListener('click', () => {
         const text = code ? code.textContent : pre.textContent;
-        navigator.clipboard.writeText(text).then(() => {
+
+        function onCopied() {
           btn.textContent = '已复制 ✓';
           btn.classList.add('copied');
           setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
-        }).catch(() => {
-          // 降级方案
-          const textarea = document.createElement('textarea');
-          textarea.value = text;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textarea);
-          btn.textContent = '已复制 ✓';
-          btn.classList.add('copied');
-          setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('copied'); }, 2000);
-        });
+        }
+
+        function fallbackCopy() {
+          // HTTP 环境下 navigator.clipboard 不可用，用 execCommand 降级
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            onCopied();
+          } catch (e) {
+            btn.textContent = '复制失败';
+            setTimeout(() => { btn.textContent = '复制'; }, 2000);
+          }
+        }
+
+        // 优先使用 Clipboard API（HTTPS/localhost），否则降级
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(onCopied).catch(fallbackCopy);
+        } else {
+          fallbackCopy();
+        }
       });
     });
 
@@ -674,6 +838,7 @@
               <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
             </svg>
           </span>
+          <span class="search-clear" data-action="clear-search">&times;</span>
           <span class="search-shortcut">⌘K</span>
         </div>
 
@@ -876,7 +1041,7 @@
     }
 
     try {
-      const res = await fetch('solutions/' + problem.filePath + '?t=' + Date.now());
+      const res = await robustFetch('solutions/' + problem.filePath + '?t=' + Date.now(), 2, 10000);
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
@@ -1132,10 +1297,11 @@
           <input type="text" class="search-input filter-search-input"
                  placeholder="在 ${escapeHtml(difficulty)} 中搜索…" autocomplete="off">
           <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:middle;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span class="search-clear" data-action="clear-search">&times;</span>
         </div>
-        <div class="problem-list" id="problemList"
-             data-problems='${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}'>
+        <div class="problem-list" id="problemList">
           ${renderProblemList(problems)}
+          <script type="application/json" id="problemsData">${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}</script>
         </div>
       </div>
     `;
@@ -1166,10 +1332,11 @@
           <input type="text" class="search-input filter-search-input"
                  placeholder="在 ${escapeHtml(training)} 中搜索…" autocomplete="off">
           <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:middle;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span class="search-clear" data-action="clear-search">&times;</span>
         </div>
-        <div class="problem-list" id="problemList"
-             data-problems='${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}'>
+        <div class="problem-list" id="problemList">
           ${renderProblemList(problems)}
+          <script type="application/json" id="problemsData">${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}</script>
         </div>
       </div>
     `;
@@ -1193,22 +1360,17 @@
           <input type="text" class="search-input filter-search-input"
                  placeholder="在 #${escapeHtml(tag)} 中搜索…" autocomplete="off">
           <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:middle;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span class="search-clear" data-action="clear-search">&times;</span>
         </div>
-        <div class="problem-list" id="problemList"
-             data-problems='${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}'>
+        <div class="problem-list" id="problemList">
           ${renderProblemList(problems)}
+          <script type="application/json" id="problemsData">${JSON.stringify(problems.map(p => ({id:p.id, numId:p.numId, title:p.title, tags:p.tags, difficulty:p.difficulty, training:p.training, source:p.source, readTime:p.readTime})))}</script>
         </div>
       </div>
     `;
   }
 
   // ========== 更新题解页 ==========
-  const API_BASE = (() => {
-    // 自动检测后端地址：如果当前是 server.js 托管（端口8766），则用同源；否则默认 localhost:8766
-    if (location.port === '8766') return '';
-    return 'http://localhost:8766';
-  })();
-
   let currentUpdateTask = null;
   let updateEventSource = null;
 
@@ -1251,14 +1413,14 @@
               </div>
             </div>
 
-            <!-- 东方博宜卡片 -->
+            <!-- 东方博宜卡片（一个按钮搞定） -->
             <div class="update-card" id="dfboyCard">
               <div class="update-card-header">
                 <span class="update-card-dot dfboy-dot"></span>
                 <h3>东方博宜</h3>
               </div>
               <div class="update-card-body">
-                <p class="update-card-desc">登录东方博宜OJ，自动爬取所有AC题目的描述，从服务器获取AC代码并写入 md 文件。</p>
+                <p class="update-card-desc">一键完成：爬取题目描述 → 爬取AC代码 → 重建索引。全流程自动串行执行。</p>
                 <div class="update-field">
                   <label>账号 <span class="update-hint">（必填）</span></label>
                   <input type="text" id="dfboyUser" placeholder="输入你的东方博宜OJ账号" autocomplete="off">
@@ -1271,14 +1433,9 @@
                   <input type="checkbox" id="dfboyForce">
                   <span>强制重新生成所有文件（包括已存在的）</span>
                 </label>
-                <div class="update-btn-group">
-                  <button class="update-btn" id="dfboyBtn" data-source="dfboy">
-                    更新题目描述
-                  </button>
-                  <button class="update-btn update-btn-secondary" id="dfboyCodesBtn" data-source="dfboy-codes">
-                    更新AC代码
-                  </button>
-                </div>
+                <button class="update-btn" id="dfboyBtn" data-source="dfboy">
+                  开始更新东方博宜题解
+                </button>
               </div>
               <div class="update-log-section" id="dfboyLogSection" style="display:none;">
                 <div class="update-log-header">
@@ -1318,9 +1475,9 @@
               <li><strong>后端服务</strong>：需要先启动 <code>node server.js</code>（默认端口 8766），否则无法执行更新</li>
               <li><strong>洛谷 Cookie</strong>：需要包含登录凭证的完整 Cookie，不是只有一个 <code>_uid</code></li>
               <li><strong>洛谷反爬</strong>：洛谷有反爬虫机制（C3VK），脚本会自动处理，如果大量失败请更新 Cookie</li>
-              <li><strong>东方博宜</strong>：输入你的账号密码，脚本会自动登录并爬取题目描述</li>
-              <li><strong>更新时间</strong>：洛谷 400+ 道题约需 5-10 分钟，东方博宜 900+ 道题约需 3-5 分钟</li>
-              <li><strong>数据安全</strong>：Cookie 和密码只传给你自己的服务器，不会发送到任何第三方</li>
+              <li><strong>东方博宜</strong>：输入你的账号密码，脚本会自动登录并爬取题目描述和AC代码</li>
+              <li><strong>更新时间</strong>：洛谷 400+ 道题约需 5-10 分钟，东方博宜 900+ 道题约需 8-15 分钟</li>
+              <li><strong>数据安全</strong>：Cookie 和密码只传给你自己的后端服务器，不会发送到任何第三方</li>
             </ul>
           </div>
         </div>
@@ -1337,7 +1494,7 @@
       startUpdate('luogu', { cookie, force });
     });
 
-    // 东方博宜更新题目描述
+    // 东方博宜更新（一键完成：描述+代码）
     document.getElementById('dfboyBtn')?.addEventListener('click', () => {
       const username = document.getElementById('dfboyUser').value.trim();
       const password = document.getElementById('dfboyPass').value;
@@ -1346,56 +1503,46 @@
       startUpdate('dfboy', { username, password, force });
     });
 
-    // 东方博宜更新AC代码
-    document.getElementById('dfboyCodesBtn')?.addEventListener('click', () => {
-      const username = document.getElementById('dfboyUser').value.trim();
-      const password = document.getElementById('dfboyPass').value;
-      if (!username || !password) { alert('请填写东方博宜账号和密码'); return; }
-      startUpdate('dfboy-codes', { username, password });
-    });
-
     // 重建索引
     document.getElementById('buildBtn')?.addEventListener('click', () => {
       startUpdate('build', {});
     });
   }
 
+  function getAuthToken() {
+    const session = getSession();
+    return session ? session.token : null;
+  }
+
   function startUpdate(source, params) {
-    // 确定日志容器
     const logMap = {
       'luogu': { section: 'luoguLogSection', log: 'luoguLog', status: 'luoguLogStatus', btn: 'luoguBtn' },
       'dfboy': { section: 'dfboyLogSection', log: 'dfboyLog', status: 'dfboyLogStatus', btn: 'dfboyBtn' },
-      'dfboy-codes': { section: 'dfboyLogSection', log: 'dfboyLog', status: 'dfboyLogStatus', btn: 'dfboyCodesBtn' },
       'build': { section: 'buildLogSection', log: 'buildLog', status: 'buildLogStatus', btn: 'buildBtn' },
     };
     const targets = logMap[source];
     if (!targets) return;
+
+    const token = getAuthToken();
+    if (!token) { alert('登录已过期，请重新登录'); clearSession(); renderHeader(); renderAuth(); return; }
 
     const section = document.getElementById(targets.section);
     const logEl = document.getElementById(targets.log);
     const statusEl = document.getElementById(targets.status);
     const btn = document.getElementById(targets.btn);
 
-    // 显示日志区域，清空之前的日志
     section.style.display = 'block';
     logEl.innerHTML = '';
     statusEl.textContent = '⏳ 运行中...';
     statusEl.className = 'update-log-status running';
 
-    // 禁用按钮
     if (btn) { btn.disabled = true; btn.classList.add('disabled'); }
 
-    // 关闭之前的SSE连接
     if (updateEventSource) { updateEventSource.close(); updateEventSource = null; }
 
-    // 获取密码用于API鉴权
-    const token = CONFIG.simplePassword;
-
-    // 调用API
     const apiUrls = {
       'luogu': '/api/update/luogu',
       'dfboy': '/api/update/dfboy',
-      'dfboy-codes': '/api/update/dfboy-codes',
       'build': '/api/build',
     };
 
@@ -1407,8 +1554,19 @@
       },
       body: JSON.stringify(params),
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(async res => {
+      const data = await res.json();
+      // 401/403 → 清除会话回到登录
+      if ((res.status === 401 || res.status === 403) && data.error) {
+        logEl.innerHTML += `<div class="log-line log-error">❌ 权限不足：${escapeHtml(data.error)}</div>`;
+        clearSession();
+        renderHeader();
+        renderAuth();
+        statusEl.textContent = '❌ 失败';
+        statusEl.className = 'update-log-status error';
+        if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
+        return;
+      }
       if (data.error) {
         logEl.innerHTML += `<div class="log-line log-error">❌ ${escapeHtml(data.error)}</div>`;
         statusEl.textContent = '❌ 失败';
@@ -1416,16 +1574,18 @@
         if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
         return;
       }
+      return data;
+    })
+    .then(data => {
+      if (!data) return;
 
-      // 连接SSE获取实时日志
-      updateEventSource = new EventSource(API_BASE + `/api/update/stream/${data.taskId}`);
+      updateEventSource = new EventSource(API_BASE + `/api/update/stream/${data.taskId}?token=${encodeURIComponent(token)}`);
 
       updateEventSource.onmessage = (event) => {
         try {
           const msg = JSON.parse(event.data);
           if (msg.type === 'log') {
             appendLog(logEl, msg.text);
-            // 自动滚到底部
             logEl.scrollTop = logEl.scrollHeight;
           } else if (msg.type === 'end') {
             updateEventSource.close();
@@ -1439,13 +1599,10 @@
             }
             if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
           }
-        } catch (e) {
-          // 忽略解析错误
-        }
+        } catch (e) {}
       };
 
       updateEventSource.onerror = () => {
-        // SSE连接错误，可能是后端未启动
         appendLog(logEl, '⚠️ 实时日志连接断开，请检查后端服务是否在运行');
         appendLog(logEl, '   提示: 在 blog 目录下执行 node server.js 启动后端');
         if (updateEventSource) { updateEventSource.close(); updateEventSource = null; }
@@ -1575,7 +1732,68 @@ int main() { ... }
     `;
   }
 
-  // ========== Events ==========
+  
+  function renderAbout() {
+    return `
+      <div class="page">
+        <div class="guide-container">
+          <h2 class="guide-title">
+            <span class="guide-title-icon">🌐</span> 关于网站
+          </h2>
+
+          <div class="guide-section">
+            <h3>📖 网站简介</h3>
+            <p>本站收录了 <strong>洛谷</strong> 和 <strong>东方博宜OJ</strong> 的 C++ 题解，涵盖入门到省选级别的各类算法题目。所有题解均由章老师精心编写，配有详细的题目描述、解题思路和完整代码。</p>
+          </div>
+
+          <div class="guide-section">
+            <h3>📊 数据概览</h3>
+            <ul>
+              <li>洛谷题解：<strong>${INDEX ? INDEX.problems.filter(p => p.source === '洛谷').length : '...'} 道</strong></li>
+              <li>东方博宜题解：<strong>${INDEX ? INDEX.problems.filter(p => p.source === '东方博宜').length : '...'} 道</strong></li>
+              <li>总计：<strong>${INDEX ? INDEX.totalProblems : '...'} 道题解</strong></li>
+            </ul>
+          </div>
+
+          <div class="guide-section">
+            <h3>🔍 使用方法</h3>
+            <ol>
+              <li>在首页<strong>搜索框</strong>中输入题号、题名或标签关键词即可快速查找</li>
+              <li>点击<strong>标签分类</strong>可按难度或题单浏览题目</li>
+              <li>进入题解详情页，查看题目描述、解题思路和代码</li>
+              <li>代码块右上角有<strong>复制按钮</strong>，方便复制代码</li>
+              <li>支持 <kbd>⌘K</kbd> / <kbd>Ctrl+K</kbd> 快捷键快速搜索</li>
+            </ol>
+          </div>
+
+          <div class="guide-section">
+            <h3>⚡ 功能特性</h3>
+            <ul>
+              <li>按<strong>来源</strong>筛选：洛谷 / 东方博宜</li>
+              <li>按<strong>难度</strong>浏览：入门、普及、提高等</li>
+              <li>按<strong>题单</strong>分类：入门系列、GESP考级、蓝桥杯等</li>
+              <li>按<strong>标签</strong>搜索：动态规划、DFS、贪心等算法标签</li>
+              <li><strong>暗色/亮色</strong>主题切换</li>
+              <li>代码<strong>语法高亮</strong> + 一键复制</li>
+              <li>文章<strong>目录导航</strong> + 阅读进度条</li>
+            </ul>
+          </div>
+
+          <div class="guide-section">
+            <h3>📌 注意事项</h3>
+            <ul>
+              <li>本站为教学用途，仅供学习参考</li>
+              <li>题目版权归原作者及OJ平台所有</li>
+              <li>题解中的代码均为 C++ 语言</li>
+              <li>如有问题或建议，请联系章老师</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+// ========== Events ==========
   function bindSearchEvents() {
     // Search input
     const searchInput = document.getElementById('searchInput');
@@ -1599,9 +1817,11 @@ int main() { ... }
         input.addEventListener('input', (e) => {
           clearTimeout(debounce);
           debounce = setTimeout(() => {
-            const list = input.closest('.page').querySelector('#problemList');
-            if (!list || !list.dataset.problems) return;
-            const allProblems = JSON.parse(list.dataset.problems);
+          const list = input.closest('.page').querySelector('#problemList');
+          if (!list) return;
+          const dataScript = list.querySelector('#problemsData');
+          if (!dataScript) return;
+          const allProblems = JSON.parse(dataScript.textContent);
             const q = e.target.value.trim().toLowerCase();
             const filtered = q ? allProblems.filter(p => {
               return (p.id || '').toLowerCase().includes(q) ||
@@ -1617,6 +1837,18 @@ int main() { ... }
         });
       });
     }
+
+    // Search clear buttons (all search bars)
+    document.querySelectorAll('.search-clear').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = btn.closest('.search-bar').querySelector('input');
+        if (!input) return;
+        input.value = '';
+        input.focus();
+        // 触发 input 事件以刷新列表
+        input.dispatchEvent(new Event('input'));
+      });
+    });
 
     // Filter tabs
     const tabs = document.getElementById('filterTabs');

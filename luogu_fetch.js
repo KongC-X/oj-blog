@@ -11,6 +11,7 @@
  */
 
 const https = require('https');
+const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
@@ -237,8 +238,14 @@ function resolveUrl(base, relative) {
 function extractC3VK(body) {
   const match = body.match(/C3VK=([^;"\s]+)/);
   if (match) {
-    sessionCookie += '; C3VK=' + match[1];
-    console.log('  🔑 提取反爬虫 Cookie: C3VK=' + match[1]);
+    const newC3VK = match[1];
+    // 替换已有的 C3VK，而不是追加（避免 cookie 里有多个 C3VK）
+    if (sessionCookie.includes('C3VK=')) {
+      sessionCookie = sessionCookie.replace(/C3VK=[^;]*/, 'C3VK=' + newC3VK);
+    } else {
+      sessionCookie += '; C3VK=' + newC3VK;
+    }
+    console.log('  🔑 提取反爬虫 Cookie: C3VK=' + newC3VK);
     return true;
   }
   return false;
@@ -261,7 +268,8 @@ function doFetch(url, extraHeaders, redirectCount = 0) {
     };
     if (extraHeaders) Object.assign(headers, extraHeaders);
 
-    const req = https.get(url, { headers }, (res) => {
+    const requestModule = url.startsWith('https') ? https : http;
+    const req = requestModule.get(url, { headers }, (res) => {
       updateCookies(res.headers['set-cookie'] || []);
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         const newUrl = resolveUrl(url, res.headers.location);
@@ -280,7 +288,11 @@ function doFetch(url, extraHeaders, redirectCount = 0) {
         resolve({ status: res.statusCode, body });
       });
     });
-    req.on('error', reject);
+    req.on('error', (err) => {
+      // 连接错误（如被服务器断开），resolve 而不是 reject，让调用方处理重试
+      console.log(`     ⚠️ 连接错误: ${err.message}`);
+      resolve({ status: 0, body: '', error: err.message });
+    });
   });
 }
 
@@ -300,11 +312,12 @@ function updateCookies(setCookies) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// Step 1: 获取所有 AC 提交记录（分页）
-async function fetchAllACRecords(firstPageBody) {
+// Step 1: 获取最近的 AC 提交记录（只翻前几页，避免被限速）
+// 洛谷会在约 6-7 页后断开连接，所以只取前 5 页（100 条记录）
+// 新 AC 的题一定在前几页
+async function fetchRecentACRecords(firstPageBody) {
   let allRecords = [];
-  let page = 1;
-  let hasMore = true;
+  const MAX_PAGES = 3; // 只翻 3 页（60 条记录），新 AC 的题一定在前几页
 
   // 如果已有第一页数据，直接解析
   if (firstPageBody) {
@@ -315,45 +328,48 @@ async function fetchAllACRecords(firstPageBody) {
         allRecords.push(...records);
         const count = data?.currentData?.records?.count || 0;
         console.log(`  📄 第 1 页...`);
-        console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length}/${count}`);
-        if (allRecords.length >= count) return allRecords;
-        page = 2;
+        console.log(`     本页 ${records.length} 条，总 AC 数: ${count}`);
       }
     } catch {
       // 忽略解析错误
     }
   }
 
-  while (hasMore) {
+  for (let page = 2; page <= MAX_PAGES; page++) {
     console.log(`  📄 第 ${page} 页...`);
-    await sleep(500); // 避免请求太快
-    const res = await doFetch(
-      `https://www.luogu.com.cn/record/list?user=${UID}&page=${page}&status=12&_contentOnly=1`
-    );
+    await sleep(1000 + Math.random() * 500);
 
-    console.log('     status=' + res.status + ', bodyLen=' + res.body.length);
-    if (res.status !== 200) {
-      console.error(`  ❌ HTTP ${res.status}`);
+    let res;
+    let retries = 0;
+    while (retries < 3) {
+      res = await doFetch(
+        `https://www.luogu.com.cn/record/list?user=${UID}&page=${page}&status=12&_contentOnly=1`
+      );
+      console.log('     status=' + res.status + ', bodyLen=' + res.body.length);
+
+      if (res.status === 200 && res.body.length > 100) break;
+      retries++;
+      if (retries < 3) {
+        const waitTime = 5000 * retries;
+        console.log(`     ⚠️ 请求失败，${(waitTime / 1000)}s 后重试 (${retries}/3)...`);
+        await sleep(waitTime);
+      }
+    }
+
+    if (res.status !== 200 || res.body.length < 100) {
+      console.log(`  ⚠️ 第 ${page} 页获取失败，停止翻页`);
       break;
     }
 
-    let data;
-    try { data = JSON.parse(res.body); } catch { break; }
-
-    const records = data?.currentData?.records?.result || [];
-    if (records.length === 0) {
-      hasMore = false;
+    try {
+      const data = JSON.parse(res.body);
+      const records = data?.currentData?.records?.result || [];
+      if (records.length === 0) break;
+      allRecords.push(...records);
+      console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length} 条`);
+    } catch {
       break;
     }
-
-    allRecords.push(...records);
-
-    const count = data?.currentData?.records?.count || 0;
-    console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length}/${count}`);
-
-    if (allRecords.length >= count) hasMore = false;
-    page++;
-    await sleep(500);
   }
 
   return allRecords;
@@ -371,32 +387,44 @@ function deduplicate(records) {
   return Array.from(map.values());
 }
 
-// Step 3: 获取每道题的 AC 代码
+// Step 3: 获取每道题的 AC 代码（带重试）
 async function fetchCode(recordId) {
-  try {
-    const res = await doFetch(
-      `https://www.luogu.com.cn/record/${recordId}?_contentOnly=1`
-    );
-    if (res.status !== 200) return null;
-    const data = JSON.parse(res.body);
-    return data?.currentData?.record?.sourceCode || null;
-  } catch {
-    return null;
+  for (let retry = 0; retry < 3; retry++) {
+    try {
+      const res = await doFetch(
+        `https://www.luogu.com.cn/record/${recordId}?_contentOnly=1`
+      );
+      if (res.status === 200 && res.body.length > 10) {
+        const data = JSON.parse(res.body);
+        const code = data?.currentData?.record?.sourceCode || null;
+        if (code) return code;
+      }
+    } catch {
+      // 忽略，继续重试
+    }
+    if (retry < 2) await sleep(3000 + retry * 3000);
   }
+  return null;
 }
 
-// Step 4: 获取题目详情（使用 lentille API，含标签和题目描述）
+// Step 4: 获取题目详情（使用 lentille API，含标签和题目描述，带重试）
 async function fetchProblemDetail(pid) {
-  try {
-    const res = await doFetch(`https://www.luogu.com.cn/problem/${pid}`, {
-      'x-lentille-request': 'content-only',
-    });
-    if (res.status !== 200 || !res.body.trim().startsWith('{')) return null;
-    const data = JSON.parse(res.body);
-    return data?.data?.problem || null;
-  } catch {
-    return null;
+  for (let retry = 0; retry < 3; retry++) {
+    try {
+      const res = await doFetch(`https://www.luogu.com.cn/problem/${pid}`, {
+        'x-lentille-request': 'content-only',
+      });
+      if (res.status === 200 && res.body.trim().startsWith('{') && res.body.length > 20) {
+        const data = JSON.parse(res.body);
+        const problem = data?.data?.problem || null;
+        if (problem) return problem;
+      }
+    } catch {
+      // 忽略，继续重试
+    }
+    if (retry < 2) await sleep(3000 + retry * 3000);
   }
+  return null;
 }
 
 // 简单清理洛谷的 Markdown 内容中的 LaTeX 公式（保持原样，让前端渲染）
@@ -530,54 +558,72 @@ async function main() {
   // Ensure output dir
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
-  // Fetch AC records（复用第一页数据）
-  console.log('\n📋 获取 AC 提交记录...');
-  const allRecords = await fetchAllACRecords(initRes.body);
+  // Fetch AC records（复用第一页数据，只取最近几页）
+  console.log('\n📋 获取最近 AC 提交记录...');
+  const allRecords = await fetchRecentACRecords(initRes.body);
   console.log(`\n✅ 共获取 ${allRecords.length} 条提交记录`);
 
   // Deduplicate
   const unique = deduplicate(allRecords);
   console.log(`📊 去重后 ${unique.length} 道不同的题目`);
 
-  // Fetch code + detail for each problem
+  // 筛选出本地不存在的新题（增量更新）
+  const newProblems = unique.filter(r => !fs.existsSync(path.join(OUTPUT_DIR, `${r.problem.pid}.md`)));
+  const existingCount = unique.length - newProblems.length;
+  console.log(`📁 已有 ${existingCount} 题，新题 ${newProblems.length} 题`);
+
+  if (newProblems.length === 0 && !FORCE) {
+    console.log('\n✅ 没有新题需要更新！');
+    console.log(`\n下一步: 运行 node build.js 重新构建索引`);
+    return;
+  }
+
+  if (FORCE) {
+    console.log(`📦 Force 模式：将更新全部 ${unique.length} 题`);
+  }
+
+  // Fetch code + detail for new problems only (unless --force)
+  const toProcess = FORCE ? unique : newProblems;
   console.log('\n💾 获取题目详情并生成 md 文件...\n');
-  let success = 0, failed = 0, skipped = 0;
+
+  // 翻页后洛谷可能会限速，等待一段时间让限制窗口过去
+  if (toProcess.length > 0) {
+    console.log('  ⏳ 重新获取反爬虫 Cookie...');
+    await sleep(2000);
+    const refreshRes = await doFetch('https://www.luogu.com.cn/', { Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' });
+    console.log('  ✅ Cookie 刷新:', refreshRes.status === 200 ? '成功' : '失败');
+    console.log('  ⏳ 等待 5 秒...');
+    await sleep(5000);
+  }
+  let success = 0, failed = 0;
   let tagFoundCount = 0;
 
-  for (let i = 0; i < unique.length; i++) {
-    const record = unique[i];
+  for (let i = 0; i < toProcess.length; i++) {
+    const record = toProcess[i];
     const pid = record.problem.pid;
     const title = record.problem.title || pid;
 
-    // Skip if file already exists (unless --force)
-    const filePath = path.join(OUTPUT_DIR, `${pid}.md`);
-    if (fs.existsSync(filePath) && !FORCE) {
-      skipped++;
-      if (i < 5 || i % 100 === 0) console.log(`  ⏭️  [${i + 1}/${unique.length}] ${pid} ${title} — 已存在，跳过`);
-      success++;
-      continue;
-    }
-
-    process.stdout.write(`  📥 [${i + 1}/${unique.length}] ${pid} ${title} ... `);
+    process.stdout.write(`  📥 [${i + 1}/${toProcess.length}] ${pid} ${title} ... `);
 
     try {
       // Fetch code
       const code = await fetchCode(record.id);
-      await sleep(300);
+      await sleep(2000 + Math.random() * 1000);
 
       // Fetch problem detail (tags + description)
       let detail = null;
       try {
         detail = await fetchProblemDetail(pid);
         if (detail && detail.tags && detail.tags.length > 0) tagFoundCount++;
-        await sleep(300);
+        await sleep(2000 + Math.random() * 1000);
       } catch (e) {
         // Problem detail fetch failed, continue without it
       }
 
       const md = generateMd(record, code, detail);
-      // 只有内容足够完整才写入（至少有标题行和部分内容）
-      const minLines = (detail && Object.keys(detail).length > 0) || code ? true : false;
+      // 只有内容足够完整才写入（至少有代码）
+      const minLines = code ? true : false;
+      const filePath = path.join(OUTPUT_DIR, `${pid}.md`);
       if (minLines) {
         fs.writeFileSync(filePath, md, 'utf-8');
         const tagInfo = detail?.tags ? `(${detail.tags.length}个标签)` : '(无标签)';
@@ -594,12 +640,12 @@ async function main() {
 
     // Rate limiting
     if ((i + 1) % 10 === 0) {
-      await sleep(1000);
+      await sleep(2000 + Math.random() * 1000);
     }
   }
 
   console.log(`\n${'='.repeat(50)}`);
-  console.log(`✅ 完成！成功 ${success} 个，失败 ${failed} 个，跳过 ${skipped} 个`);
+  console.log(`✅ 完成！新题 ${success} 个，失败 ${failed} 个，已有 ${existingCount} 个`);
   console.log(`🏷️  获取到标签的题目: ${tagFoundCount} 个`);
   console.log(`📁 文件保存在: ${OUTPUT_DIR}`);
   console.log(`\n下一步: 运行 node build.js 重新构建索引`);

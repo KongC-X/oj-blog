@@ -271,8 +271,9 @@ function decodeEntities(str) {
 function findLocalCode(problemId) {
   if (NO_CODES) return null;
   
-  // 在用户桌面课程文件夹中搜索包含该题号的 md 文件
-  const searchDir = '/Users/kongc/Desktop/课程体系/C++';
+  // 在课程文件夹中搜索包含该题号的 md 文件
+  // 支持通过环境变量自定义搜索路径
+  const searchDir = process.env.COURSE_DIR || '/Users/kongc/Desktop/课程体系/C++';
   if (!fs.existsSync(searchDir)) return null;
   
   try {

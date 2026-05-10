@@ -140,19 +140,27 @@ function getLoggedInUsername(html) {
 
 // ============================================================
 // 从题目页面提取【当前用户】最新C++ AC提交的source id
-// 关键修复：必须过滤用户名，只取自己的提交！
+// 关键修复：用逐行扫描，确保 source id 和 AC 状态在同一行
 // ============================================================
 function extractAllACSourceIds(html, myUsername) {
-  // 按 <tr> 切分，找到所有包含 通过(AC) + /solution/source 的行
-  const trBlocks = html.split(/<tr[^>]*>/);
+  // 用 <tr 作为行分隔符，但只取到下一个 <tr 之前的内容
+  // 这样每个块只包含一个 <tr> 的内容
+  const lines = html.split(/<tr[^>]*>/);
   let acIds = [];
 
-  for (const tr of trBlocks) {
-    const isAC = tr.includes('通过') && (tr.includes('text-success') || tr.includes('label-success'));
+  for (const line of lines) {
+    // 在截断后的块中，只检查"通过"状态
+    // 先截取到下一个 </tr> 或 <tr（防止跨行）
+    const trContent = line.split(/<\/tr>/)[0];
+    
+    const isAC = trContent.includes('通过') && (trContent.includes('text-success') || trContent.includes('label-success'));
     if (!isAC) continue;
-    const hasUserInRow = /user\/view\?id=\d+/.test(tr);
-    if (hasUserInRow && myUsername && !tr.includes(myUsername)) continue;
-    const srcMatch = tr.match(/\/solution\/source\?id=(\d+)/);
+    
+    // 用户名过滤（如果页面有用户名列）
+    const hasUserInRow = /user\/view\?id=\d+/.test(trContent);
+    if (hasUserInRow && myUsername && !trContent.includes(myUsername)) continue;
+    
+    const srcMatch = trContent.match(/\/solution\/source\?id=(\d+)/);
     if (srcMatch) acIds.push(srcMatch[1]);
   }
 
