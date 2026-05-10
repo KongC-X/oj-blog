@@ -34,6 +34,11 @@
 
       if (IS_CLOUDFLARE) {
         backendOk = true;
+
+        // 🔥 后台预热 Functions（无阻塞） — 避免登录时冷启动慢
+        fetch(API_BASE + '/api/me', {
+          headers: { 'Authorization': 'Bearer warmup' }
+        }).catch(() => {});
       } else {
         try {
           const ctrl = new AbortController();
