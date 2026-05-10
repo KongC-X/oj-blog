@@ -6,6 +6,7 @@
 
 // 允许的域名（生产环境可限制为具体域名）
 const ALLOWED_ORIGINS = [
+  'https://oj-blog.pages.dev',
   'https://zymojblog.top',
   'https://www.zymojblog.top',
   'http://localhost:8765',
