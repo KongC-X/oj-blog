@@ -240,40 +240,12 @@ function finishTask(task, status) {
   }
 }
 
-// ========== FTP 自动同步到龙虾云 ==========
+// ========== FTP 自动同步（已废弃，改由 Git + Cloudflare Pages 自动部署） ==========
 function triggerFtpSync(task) {
-  const syncScript = path.join(__dirname, 'ftp_sync.py');
-  if (!fs.existsSync(syncScript)) {
-    addLog(task, '☁️ ftp_sync.py 不存在，跳过云端同步');
-    finishTask(task, 'done');
-    return;
-  }
   addLog(task, '');
-  addLog(task, '☁️ 正在同步到龙虾云...');
-
-  const syncChild = spawn('python3', [syncScript], {
-    cwd: __dirname, env: process.env, stdio: ['ignore', 'pipe', 'pipe']
-  });
-  syncChild.stdout.on('data', (data) => {
-    const text = data.toString().trim();
-    if (text) addLog(task, text);
-  });
-  syncChild.stderr.on('data', (data) => {
-    const text = data.toString().trim();
-    if (text) addLog(task, '⚠️ ' + text);
-  });
-  syncChild.on('close', (code) => {
-    if (code === 0) {
-      addLog(task, '✅ 云端同步完成！');
-    } else {
-      addLog(task, '⚠️ 云端同步失败，请手动运行 python3 ftp_sync.py');
-    }
-    finishTask(task, 'done');
-  });
-  syncChild.on('error', (err) => {
-    addLog(task, '⚠️ 同步进程启动失败: ' + err.message);
-    finishTask(task, 'done');
-  });
+  addLog(task, '✅ 更新完成！请提交并推送代码到 GitHub 以触发部署:');
+  addLog(task, '   git add -A && git commit -m "更新题解" && git push');
+  finishTask(task, 'done');
 }
 
 // ========== SSE 实时日志（需要鉴权） ==========
