@@ -30,7 +30,22 @@
     initTheme();
 
     if (HAS_BACKEND) {
-      // 本地模式：先探测后端
+      // 本地模式：先检查是否有已保存的登录状态
+      const savedSession = getSession();
+      if (savedSession) {
+        userRole = savedSession.role;
+        renderHeader();
+        initBackToTop();
+        await loadIndex();
+        router();
+        window.addEventListener('hashchange', () => {
+          if (!INDEX) { router(); return; }
+          router();
+        });
+        return;
+      }
+
+      // 没有保存的 session，探测后端
       const backendOk = await probeBackend();
       if (backendOk) {
         // 后端在线，走登录流程
@@ -65,7 +80,7 @@
     try {
       const ctrl = new AbortController();
       const timer = setTimeout(() => ctrl.abort(), 1500);
-      const res = await fetch(API_BASE + '/api/me', {
+      const res = await fetch(API_BASE + '/api/auth/me', {
         signal: ctrl.signal,
         headers: { 'Authorization': 'Bearer probe' }
       });
@@ -84,7 +99,6 @@
         if (input) input.focus();
       }
     });
-  }
 
   // ========== Back to Top ==========
   function initBackToTop() {
@@ -105,22 +119,17 @@
   }
 
   // ========== Auth ==========
-  // ========== 预计算密码哈希（SHA-256，用于客户端秒级登录） ==========
-  const USER_PASSWORD_HASH = '2636a2b5647674ef0490d6e7b9ae84a2488806e1de0cab5637c4d0401c8080dd'; // oi2026
-  const ADMIN_PASSWORD_HASH = '12238c24b6f74e3faabcb4769d2a7a746de8424ef5a0212afdb413d39beb9198'; // zym2026
-  let adminPassword = ''; // 内存中的管理员密码（仅用于更新题解时传给服务器验证）
-
   function getSession() {
     const raw = localStorage.getItem('oj-session');
     if (!raw) return null;
     try {
-      const { role, timestamp } = JSON.parse(raw);
+      const { token, role, timestamp } = JSON.parse(raw);
       // 24小时过期
       if (Date.now() - timestamp > 24 * 60 * 60 * 1000) {
         localStorage.removeItem('oj-session');
         return null;
       }
-      return { role, timestamp };
+      return { token, role, timestamp };
     } catch { return null; }
   }
 
@@ -132,39 +141,39 @@
     return userRole === 'admin';
   }
 
-  function setSession(role) {
+  function setSession(token, role) {
     userRole = role;
-    localStorage.setItem('oj-session', JSON.stringify({ role, timestamp: Date.now() }));
+    localStorage.setItem('oj-session', JSON.stringify({ token, role, timestamp: Date.now() }));
   }
 
   function clearSession() {
     userRole = null;
-    adminPassword = '';
     localStorage.removeItem('oj-session');
   }
 
-  /** 客户端认证（零网络请求，秒级响应） */
+  // ========== SSE 事件源 ==========
+  let updateEventSource = null;
+
+  /** 服务器端认证（调用本地 server.js 的 /api/auth 接口） */
   async function authenticate(password) {
     try {
-      // SHA-256 哈希比对
-      const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
-      const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
-
-      if (hashHex === ADMIN_PASSWORD_HASH) {
-        adminPassword = password; // 保存密码，供更新题解时服务器验证
-        setSession('admin');
-        return { role: 'admin' };
+      const res = await fetch(API_BASE + '/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        return { role: null, error: data.error || '认证失败' };
       }
-
-      if (hashHex === USER_PASSWORD_HASH) {
-        setSession('user');
-        return { role: 'user' };
+      const data = await res.json();
+      if (data.token) {
+        setSession(data.token, data.role);
+        return { role: data.role };
       }
-
-      return { role: null, error: '密码错误' };
+      return { role: null, error: '认证失败' };
     } catch {
-      // 浏览器不支持 crypto.subtle
-      HAS_BACKEND = false;
+      // 后端不可用，降级为本地模式
       return { role: null, backendDown: true };
     }
   }
@@ -201,9 +210,10 @@
       btn.textContent = '验证中...';
       const result = await authenticate(pw);
       if (result.role) {
-        // 登录成功 → 秒进（先显示骨架屏，后台加载数据）
+        // 登录成功 → 秒进
         renderHeader();
-        document.getElementById('app').innerHTML = renderSkeleton();
+        document.getElementById('app').innerHTML = '<div style="text-align:center;padding:80px 20px;color:var(--text-secondary);">加载中...</div>';
+        router();
         loadIndex().then(() => router()).catch(() => router());
       } else if (result.backendDown) {
         btn.disabled = false;
@@ -830,32 +840,6 @@
   }
 
   // ========== 骨架屏（登录后立即显示，数据加载完成后替换） ==========
-  function renderSkeleton() {
-    const card = (i) => `
-      <div class="solution-card skeleton-card">
-        <div class="skeleton-line skeleton-title" style="width: ${60 + Math.random() * 30}%"></div>
-        <div class="skeleton-line" style="width: ${40 + Math.random() * 40}%;margin-top:8px"></div>
-        <div class="skeleton-line" style="width: ${30 + Math.random() * 30}%;margin-top:8px"></div>
-      </div>
-    `;
-    return `
-      <div class="page">
-        <div class="search-bar skeleton-search">
-          <div class="skeleton-line" style="width:100%;height:36px;border-radius:18px"></div>
-        </div>
-        <div class="stats-bar skeleton-stats">
-          ${[1,2,3,4].map(() => '<div class="skeleton-stat"><div class="skeleton-line" style="width:40px;height:16px;margin:0 auto"></div><div class="skeleton-line" style="width:60px;height:12px;margin:4px auto 0"></div></div>').join('')}
-        </div>
-        <div class="filter-tabs skeleton-tabs">
-          ${[1,2,3,4,5].map(() => '<div class="skeleton-line" style="width:60px;height:28px;border-radius:14px;display:inline-block;margin:0 4px"></div>').join('')}
-        </div>
-        <div class="solutions-grid">
-          ${[1,2,3,4,5,6].map(card).join('')}
-        </div>
-      </div>
-    `;
-  }
-
   // ========== Pages ==========
 
   function renderHome() {
@@ -1411,17 +1395,16 @@
   // ========== 更新题解页（Cloudflare + GitHub Actions 模式） ==========
 
   function renderUpdatePage() {
-    const isCf = HAS_BACKEND;
     return `
       <div class="page">
         <div class="update-container">
           <h2 class="update-title">
             <span class="update-title-icon">🔄</span> 更新题解
           </h2>
-          <p class="update-desc">通过 GitHub Actions 自动爬取最新的题解数据，完成后自动部署到网站。</p>
+          <p class="update-desc">自动爬取 OJ 平台的最新题解和 AC 代码，生成 md 文件并重建索引。</p>
 
           <div class="update-cards">
-            <!-- 洛谷卡片 -->
+            <!-- 洛谷 -->
             <div class="update-card" id="luoguCard">
               <div class="update-card-header">
                 <span class="update-card-dot luogu-dot"></span>
@@ -1438,13 +1421,19 @@
                   <span>强制重新生成所有文件（包括已存在的）</span>
                 </label>
                 <button class="update-btn" id="luoguBtn" data-source="luogu">
-                  触发更新洛谷
+                  更新洛谷题解
                 </button>
               </div>
-              <div class="update-result" id="luoguResult" style="display:none;"></div>
+              <div class="update-log-section" id="luoguLogSection" style="display:none;">
+                <div class="update-log-header">
+                  <span>运行日志</span>
+                  <span class="update-log-status" id="luoguLogStatus"></span>
+                </div>
+                <div class="update-log" id="luoguLog"></div>
+              </div>
             </div>
 
-            <!-- 东方博宜卡片 -->
+            <!-- 东方博宜（描述+代码串行） -->
             <div class="update-card" id="dfboyCard">
               <div class="update-card-header">
                 <span class="update-card-dot dfboy-dot"></span>
@@ -1465,40 +1454,37 @@
                   <span>强制重新生成所有文件（包括已存在的）</span>
                 </label>
                 <button class="update-btn" id="dfboyBtn" data-source="dfboy">
-                  触发更新东方博宜
+                  更新东方博宜题解
                 </button>
               </div>
-              <div class="update-result" id="dfboyResult" style="display:none;"></div>
+              <div class="update-log-section" id="dfboyLogSection" style="display:none;">
+                <div class="update-log-header">
+                  <span>运行日志</span>
+                  <span class="update-log-status" id="dfboyLogStatus"></span>
+                </div>
+                <div class="update-log" id="dfboyLog"></div>
+              </div>
             </div>
           </div>
 
-          <!-- 重建索引 + 全部更新 -->
-          <div class="update-cards-row">
-            <div class="update-card update-card-sm">
-              <div class="update-card-header">
-                <span class="update-title-icon" style="font-size:1.1rem;">🔨</span>
-                <h3>重建索引</h3>
-              </div>
-              <div class="update-card-body">
-                <p class="update-card-desc">仅重建搜索索引（本地修改 md 后使用）。</p>
-                <button class="update-btn update-btn-secondary" id="buildBtn">
-                  触发重建索引
-                </button>
-                <div class="update-result" id="buildResult" style="display:none;"></div>
-              </div>
+          <!-- 重建索引 -->
+          <div class="update-card update-card-sm">
+            <div class="update-card-header">
+              <span class="update-title-icon" style="font-size:1.1rem;">🔨</span>
+              <h3>重建索引</h3>
             </div>
-            <div class="update-card update-card-sm">
-              <div class="update-card-header">
-                <span class="update-title-icon" style="font-size:1.1rem;">📦</span>
-                <h3>全部更新</h3>
+            <div class="update-card-body">
+              <p class="update-card-desc">仅重建搜索索引（本地修改 md 后使用，不会重新爬取题目）。</p>
+              <button class="update-btn update-btn-secondary" id="buildBtn">
+                重建索引
+              </button>
+            </div>
+            <div class="update-log-section" id="buildLogSection" style="display:none;">
+              <div class="update-log-header">
+                <span>运行日志</span>
+                <span class="update-log-status" id="buildLogStatus"></span>
               </div>
-              <div class="update-card-body">
-                <p class="update-card-desc">同时更新洛谷和东方博宜（需填好上方 Cookie 和账号）。</p>
-                <button class="update-btn update-btn-primary" id="allBtn">
-                  触发全部更新
-                </button>
-                <div class="update-result" id="allResult" style="display:none;"></div>
-              </div>
+              <div class="update-log" id="buildLog"></div>
             </div>
           </div>
 
@@ -1506,21 +1492,13 @@
           <div class="update-tips">
             <h4>📌 使用提示</h4>
             <ul>
-              <li><strong>运行方式</strong>：点击按钮后，GitHub Actions 在云端后台运行爬虫，完成后自动部署</li>
-              <li><strong>查看进度</strong>：点击下方链接查看 GitHub Actions 实时日志</li>
+              <li><strong>运行方式</strong>：需要先在终端运行 <code>node server.js</code>，浏览器访问 8766 端口才能使用更新功能</li>
               <li><strong>洛谷 Cookie</strong>：需要包含登录凭证的完整 Cookie，不是只有一个 <code>_uid</code></li>
               <li><strong>东方博宜</strong>：输入你的 oj.czos.cn 账号密码，脚本会自动登录爬取</li>
+              <li><strong>反爬机制</strong>：脚本会自动处理洛谷的C3VK反爬和东方博宜的Session验证</li>
               <li><strong>预计耗时</strong>：洛谷 400+ 道约 5-10 分钟，东方博宜 1000+ 道约 8-15 分钟</li>
-              <li><strong>刷新页面</strong>：更新完成后刷新网站即可看到最新题解</li>
+              <li><strong>Cookie 安全</strong>：输入的 Cookie 仅在本地服务器内存中使用，不会上传到任何第三方</li>
             </ul>
-          </div>
-
-          <!-- GitHub Actions 快捷链接 -->
-          <div class="update-links">
-            <a href="https://github.com/KongC-X/oj-blog/actions" target="_blank" rel="noopener" class="update-gh-link">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-              在 GitHub 上查看运行进度
-            </a>
           </div>
         </div>
       </div>
@@ -1533,105 +1511,150 @@
       const cookie = document.getElementById('luoguCookie').value.trim();
       if (!cookie) { alert('请填写洛谷 Cookie'); return; }
       const force = document.getElementById('luoguForce').checked;
-      startUpdate('luogu', { source: 'luogu', luogu_cookie: cookie, force });
+      startUpdate('luogu', { cookie, force });
     });
 
-    // 东方博宜更新
+    // 东方博宜更新（描述+代码串行）
     document.getElementById('dfboyBtn')?.addEventListener('click', () => {
       const username = document.getElementById('dfboyUser').value.trim();
       const password = document.getElementById('dfboyPass').value;
       if (!username || !password) { alert('请填写东方博宜账号和密码'); return; }
       const force = document.getElementById('dfboyForce').checked;
-      startUpdate('dfboy', { source: 'dfboy', dfboy_user: username, dfboy_pass: password, force });
+      startUpdate('dfboy', { username, password, force });
     });
 
     // 重建索引
     document.getElementById('buildBtn')?.addEventListener('click', () => {
-      startUpdate('build', { source: 'rebuild' });
-    });
-
-    // 全部更新
-    document.getElementById('allBtn')?.addEventListener('click', () => {
-      const cookie = document.getElementById('luoguCookie').value.trim();
-      const username = document.getElementById('dfboyUser').value.trim();
-      const password = document.getElementById('dfboyPass').value;
-      if (!cookie) { alert('请填写洛谷 Cookie'); return; }
-      if (!username || !password) { alert('请填写东方博宜账号和密码'); return; }
-      const force = document.getElementById('luoguForce').checked;
-      startUpdate('all', { source: 'all', luogu_cookie: cookie, dfboy_user: username, dfboy_pass: password, force });
+      startUpdate('build', {});
     });
   }
 
   function getAuthToken() {
-    return adminPassword; // 返回内存中的管理员密码
+    const session = getSession();
+    return session ? session.token : null;
   }
 
   function startUpdate(source, params) {
-    const resultMap = {
-      'luogu': 'luoguResult',
-      'dfboy': 'dfboyResult',
-      'build': 'buildResult',
-      'all': 'allResult',
+    const logMap = {
+      'luogu': { section: 'luoguLogSection', log: 'luoguLog', status: 'luoguLogStatus', btn: 'luoguBtn' },
+      'dfboy': { section: 'dfboyLogSection', log: 'dfboyLog', status: 'dfboyLogStatus', btn: 'dfboyBtn' },
+      'build': { section: 'buildLogSection', log: 'buildLog', status: 'buildLogStatus', btn: 'buildBtn' },
     };
-    const btnMap = {
-      'luogu': 'luoguBtn',
-      'dfboy': 'dfboyBtn',
-      'build': 'buildBtn',
-      'all': 'allBtn',
-    };
+    const targets = logMap[source];
+    if (!targets) return;
 
-    const pw = getAuthToken();
-    if (!pw) { alert('登录已过期，请重新登录'); clearSession(); renderHeader(); renderAuth(); return; }
+    const token = getAuthToken();
+    if (!token) { alert('登录已过期，请重新登录'); clearSession(); renderHeader(); renderAuth(); return; }
 
-    const resultEl = document.getElementById(resultMap[source]);
-    const btn = document.getElementById(btnMap[source]);
-    if (!resultEl) return;
+    const section = document.getElementById(targets.section);
+    const logEl = document.getElementById(targets.log);
+    const statusEl = document.getElementById(targets.status);
+    const btn = document.getElementById(targets.btn);
 
-    resultEl.style.display = 'block';
-    resultEl.className = 'update-result loading';
-    resultEl.innerHTML = '<div class="update-loading">⏳ 正在触发 GitHub Actions...</div>';
+    section.style.display = 'block';
+    logEl.innerHTML = '';
+    statusEl.textContent = '⏳ 正在运行...';
+    statusEl.className = 'update-log-status running';
 
     if (btn) { btn.disabled = true; btn.classList.add('disabled'); }
 
-    fetch(API_BASE + '/api/trigger-update', {
+    if (updateEventSource) { updateEventSource.close(); updateEventSource = null; }
+
+    const apiUrls = {
+      'luogu': '/api/update/luogu',
+      'dfboy': '/api/update/dfboy',
+      'build': '/api/build',
+    };
+
+    fetch(API_BASE + apiUrls[source], {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.assign({}, params, { admin_password: pw })),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(params),
     })
     .then(async res => {
       const data = await res.json();
       if ((res.status === 401 || res.status === 403) && data.error) {
-        resultEl.className = 'update-result error';
-        resultEl.innerHTML = `<div class="update-result-msg error">❌ 权限不足：${escapeHtml(data.error)}</div>`;
+        logEl.innerHTML += `<div class="log-line log-error">❌ 权限不足：${escapeHtml(data.error)}</div>`;
         clearSession();
         renderHeader();
         renderAuth();
+        statusEl.textContent = '⚠ 已注销';
+        statusEl.className = 'update-log-status error';
         if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
         return;
       }
       if (data.error) {
-        resultEl.className = 'update-result error';
-        resultEl.innerHTML = `<div class="update-result-msg error">❌ ${escapeHtml(data.error)}</div>`;
+        logEl.innerHTML += `<div class="log-line log-error">❌ ${escapeHtml(data.error)}</div>`;
+        statusEl.textContent = '⚠ 错误';
+        statusEl.className = 'update-log-status error';
         if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
         return;
       }
-      if (data.ok) {
-        resultEl.className = 'update-result success';
-        resultEl.innerHTML = `
-          <div class="update-result-msg success">${escapeHtml(data.message)}</div>
-          <div class="update-result-hint">
-            ⏱ 预计 ${params.source === 'rebuild' ? '1-2' : '10-20'} 分钟后完成，
-            <a href="https://github.com/KongC-X/oj-blog/actions" target="_blank" rel="noopener">查看 GitHub Actions 进度 →</a>
-          </div>
-        `;
+      return data;
+    })
+    .then(data => {
+      if (!data) return;
+
+      updateEventSource = new EventSource(API_BASE + `/api/update/stream/${data.taskId}?token=${encodeURIComponent(token)}`);
+
+      updateEventSource.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          if (msg.type === 'log') {
+            appendLog(logEl, msg.text);
+            logEl.scrollTop = logEl.scrollHeight;
+          } else if (msg.type === 'end') {
+            updateEventSource.close();
+            updateEventSource = null;
+            if (msg.status === 'done') {
+              statusEl.textContent = `✅ 完成 (${msg.duration}s, ${msg.logCount}条日志)`;
+              statusEl.className = 'update-log-status done';
+            } else {
+              statusEl.textContent = `❌ 异常结束 (${msg.duration}s)`;
+              statusEl.className = 'update-log-status error';
+            }
+            if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
+          }
+        } catch (e) {}
+      };
+
+      updateEventSource.onerror = () => {
+        appendLog(logEl, '⚠️ 日志连接中断，更新可能仍在后台运行');
+        appendLog(logEl, '   提示: 在 blog 目录下运行 node server.js 查看');
+        if (updateEventSource) { updateEventSource.close(); updateEventSource = null; }
+        statusEl.textContent = '连接中断';
+        statusEl.className = 'update-log-status error';
         if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
-      }
+      };
     })
     .catch(err => {
-      resultEl.className = 'update-result error';
-      resultEl.innerHTML = `<div class="update-result-msg error">❌ 请求失败：${escapeHtml(err.message)}</div>`;
+      logEl.innerHTML += `<div class="log-line log-error">❌ 请求失败: ${escapeHtml(err.message)}</div>`;
+      logEl.innerHTML += `<div class="log-line log-error">   请确保本地服务器已启动: node server.js</div>`;
+      statusEl.textContent = '⚠ 请求失败';
+      statusEl.className = 'update-log-status error';
       if (btn) { btn.disabled = false; btn.classList.remove('disabled'); }
     });
+  }
+
+  function appendLog(container, text) {
+    const line = document.createElement('div');
+    line.className = 'log-line';
+
+    if (text.includes('✅') || text.includes('完成')) {
+      line.classList.add('log-success');
+    } else if (text.includes('❌') || text.includes('失败') || text.includes('错误')) {
+      line.classList.add('log-error');
+    } else if (text.includes('⚠') || text.includes('警告')) {
+      line.classList.add('log-warn');
+    } else if (text.includes('📋') || text.includes('🚀') || text.includes('🔨') || text.includes('📦')) {
+      line.classList.add('log-info');
+    }
+
+    line.textContent = text;
+    container.appendChild(line);
   }
 
   function renderGuide() {
