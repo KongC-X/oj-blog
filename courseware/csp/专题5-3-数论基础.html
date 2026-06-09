@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题5-3 数论基础</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+  .kp-text .tag { color: var(--primary); }
+  .kp-text .danger-tag { color: var(--danger); font-weight: 600; }
+  .kp-text .suc-tag { color: var(--success); font-weight: 600; }
+
+  /* ─── 卡片系统 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+  .quote-box strong { color: var(--accent-dark); }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 公式显示 ─── */
+  .formula {
+    font-family: var(--font-mono);
+    font-size: .9rem;
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .formula-block {
+    font-family: var(--font-mono);
+    font-size: .88rem;
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin: 8px 0;
+    line-height: 1.7;
+    border: 1px solid #bfdbfe;
+  }
+
+  /* ─── 分步演算 ─── */
+  .step-box {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.8;
+  }
+  .step-box .step-line {
+    padding: 3px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .step-box .step-num {
+    display: inline-block;
+    width: 22px; height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    font-size: .7rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step-box .step-arrow {
+    color: var(--primary);
+    font-weight: 600;
+    margin: 0 4px;
+  }
+  .step-box .step-result {
+    color: var(--success-dark);
+    font-weight: 600;
+  }
+
+  /* ─── 斐波那契周期表 ─── */
+  .fib-table .hl-cell {
+    background: var(--accent-light);
+    font-weight: 600;
+    color: var(--accent-dark);
+  }
+  .fib-table .period-row td {
+    background: var(--primary-light);
+    font-weight: 500;
+    color: var(--primary-dark);
+  }
+  .fib-table .match-cell {
+    background: #d1fae5;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题五 &#183; 排列组合与数论</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+  <div class="nav-section">1 &#183; 质数与合数</div>
+  <a class="nav-link" href="#s1">定义与100以内质数</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+
+  <div class="nav-section">2 &#183; 质因数分解</div>
+  <a class="nav-link" href="#s2">短除法分解</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+
+  <div class="nav-section">3 &#183; 最大公约数</div>
+  <a class="nav-link" href="#s3">辗转相除法</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+
+  <div class="nav-section">4 &#183; 模运算性质</div>
+  <a class="nav-link" href="#s4">模运算核心法则</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+
+  <div class="nav-section">5 &#183; 斐波那契模周期</div>
+  <a class="nav-link" href="#s5">周期查找与真题</a>
+  <a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#summary-table">📊 底部速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题五 &#183; 排列组合与数论</a> / 5-3 数论基础</div>
+    <h1>数论基础</h1>
+    <p class="subtitle">质数与合数 &#183; 质因数分解 &#183; 最大公约数与辗转相除法 &#183; 模运算 &#183; 斐波那契模周期 —— 一节课吃透 CSP-J 初赛必考数论知识</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 3 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 7 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 质数与合数的定义与判断</span>
+      <span class="item">✅ 100 以内所有质数</span>
+      <span class="item">✅ 短除法进行质因数分解</span>
+      <span class="item">✅ 辗转相除法求 gcd</span>
+      <span class="item">✅ 模运算的四条核心性质</span>
+      <span class="item">✅ 斐波那契模周期查找</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、质数与合数 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>质数与合数</h2>
+
+  <h4 class="sub-title">1.1 定义</h4>
+
+  <p class="kp-text">
+    <strong>质数（素数）：</strong>大于 1 的自然数，除了 1 和它本身以外不再有其他因数。<br>
+    <strong>合数：</strong>大于 1 的自然数，除了 1 和它本身以外还有别的因数。<br>
+    <strong>特殊：</strong>1 既不是质数也不是合数；2 是最小的质数，也是唯一的偶质数。
+  </p>
+
+  <div class="card accent">
+    <div class="card-title">💡 记忆口诀</div>
+    <p class="kp-text">
+      <strong>"2 是质数也是偶数，其他偶数都是合数"</strong><br>
+      100 以内共有 <strong>25</strong> 个质数。必背清单：
+    </p>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">🔢 100 以内质数（共 25 个）</div>
+    <p class="kp-text" style="font-size:.95rem;line-height:2.2;">
+      <strong style="color:var(--primary-dark);">2, 3, 5, 7,</strong>
+      <strong style="color:var(--text);">11, 13, 17, 19,</strong>
+      <strong style="color:var(--primary-dark);">23, 29,</strong>
+      <strong style="color:var(--text);">31, 37,</strong>
+      <strong style="color:var(--primary-dark);">41, 43, 47,</strong>
+      <strong style="color:var(--text);">53, 59,</strong>
+      <strong style="color:var(--primary-dark);">61, 67,</strong>
+      <strong style="color:var(--text);">71, 73, 79,</strong>
+      <strong style="color:var(--primary-dark);">83, 89,</strong>
+      <strong style="color:var(--text);">97</strong>
+    </p>
+  </div>
+
+  <div class="quote-box">
+    <strong>快速判断方法：</strong>检查一个数 n 是不是质数，只需用 2 到 √n 的整数试除，
+    如果都不能整除，则 n 是质数。例如检查 97：√97 ≈ 9.8，试除 2,3,5,7 均不能整除 → 97 是质数。
+  </div>
+
+  <!-- ===== 配套练习 1 ===== -->
+  <h3 class="kp-title" id="s1-q" style="margin-top:28px;">📝 质数与合数练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>质数判断</span>
+    </div>
+    <div class="exam-q">
+      以下哪个数<strong>不是</strong>质数？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>79</div>
+      <div class="opt"><span class="letter">B</span>83</div>
+      <div class="opt"><span class="letter">C</span>87</div>
+      <div class="opt"><span class="letter">D</span>89</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：C（87）</div>
+      <div class="explain">
+        87 = 3 × 29，除了 1 和 87 之外还有因数 3 和 29，因此是 <strong>合数</strong>。<br>
+        <span class="tag-inline">判断技巧：</span>8+7=15 能被 3 整除，所以 87 能被 3 整除。<br>
+        79、83、89 均为质数（100 以内质数表中有它们）。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>质数个数</span>
+    </div>
+    <div class="exam-q">
+      50 到 100 之间（包含两端）共有多少个质数？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>8</div>
+      <div class="opt"><span class="letter">B</span>9</div>
+      <div class="opt"><span class="letter">C</span>10</div>
+      <div class="opt"><span class="letter">D</span>11</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：C（10 个）</div>
+      <div class="explain">
+        50–100 之间的质数有：<span class="tag-inline">53, 59, 61, 67, 71, 73, 79, 83, 89, 97</span>，共 <strong>10</strong> 个。<br>
+        <strong>注意：</strong>不要漏掉 97（最大的两位数质数），也不要误把 91 算进去（91=7×13）。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>偶质数</span>
+    </div>
+    <div class="exam-q">
+      以下关于质数的说法中，<strong>错误</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2 是唯一的偶质数</div>
+      <div class="opt"><span class="letter">B</span>两个质数之和一定是偶数</div>
+      <div class="opt"><span class="letter">C</span>1 既不是质数也不是合数</div>
+      <div class="opt"><span class="letter">D</span>97 是 100 以内最大的质数</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        A 正确——2 是唯一的偶质数。<br>
+        B <strong>错误</strong>——例如 <span class="tag-inline">2 + 3 = 5</span> 是奇数。两个质数之和可能为奇数（其中一个必须是 2）。<br>
+        C 正确——1 的分类是规定，既不是质数也不是合数。<br>
+        D 正确——100 以内最大质数为 97。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、质因数分解 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>质因数分解</h2>
+
+  <p class="kp-text">
+    <strong>质因数分解：</strong>将一个合数写成<strong>若干个质数相乘</strong>的形式。每个乘数称为该合数的<strong>质因数</strong>。
+  </p>
+
+  <h4 class="sub-title">2.1 短除法分解</h4>
+
+  <p class="kp-text">
+    <strong>步骤：</strong>用最小的质数 2 开始试除，如果能整除则继续用 2 试除，直到不能整除；
+    然后换下一个质数 3，以此类推，直到商为 1。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">🔢 示例：短除法分解 84</div>
+    <p class="kp-text" style="font-family:var(--font-mono);font-size:.95rem;line-height:1.9;">
+      2 │ 84<br>
+      &emsp;└──<br>
+      2 │ 42<br>
+      &emsp;└──<br>
+      3 │ 21<br>
+      &emsp;└──<br>
+      &emsp;&emsp;7<br><br>
+      <strong>结果：</strong>84 = 2 × 2 × 3 × 7 = 2² × 3 × 7
+    </p>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 质因数的性质</div>
+    <ul class="dot-list" style="margin:0;">
+      <li>每个合数都可以唯一地分解为质因数的乘积（<strong>算术基本定理</strong>）</li>
+      <li>分解结果按质数从小到大排列，通常用指数表示</li>
+      <li>判断一个数能否被整除：看其质因数分解是否包含除数对应的所有质因子</li>
+    </ul>
+  </div>
+
+  <!-- ===== 配套练习 2 ===== -->
+  <h3 class="kp-title" id="s2-q" style="margin-top:28px;">📝 质因数分解练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>质因数分解</span>
+    </div>
+    <div class="exam-q">
+      120 的质因数分解中，质数 2 的指数是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2</div>
+      <div class="opt"><span class="letter">B</span>3</div>
+      <div class="opt"><span class="letter">C</span>4</div>
+      <div class="opt"><span class="letter">D</span>5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：B（指数为 3）</div>
+      <div class="explain">
+        <strong>短除法分解 120：</strong><br>
+        <span class="tag-inline">120 ÷ 2 = 60</span><br>
+        <span class="tag-inline">60 ÷ 2 = 30</span><br>
+        <span class="tag-inline">30 ÷ 2 = 15</span>（2 不能继续整除）<br>
+        <span class="tag-inline">15 ÷ 3 = 5</span><br>
+        <span class="tag-inline">5 ÷ 5 = 1</span><br>
+        <strong>结果：</strong>120 = 2³ × 3 × 5，质数 2 的指数为 <strong>3</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>分解结果判断</span>
+    </div>
+    <div class="exam-q">
+      以下哪个是 180 的正确质因数分解？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2² × 3² × 5</div>
+      <div class="opt"><span class="letter">B</span>2 × 3² × 5</div>
+      <div class="opt"><span class="letter">C</span>2² × 3 × 5²</div>
+      <div class="opt"><span class="letter">D</span>2³ × 3 × 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：A（2² × 3² × 5）</div>
+      <div class="explain">
+        <strong>短除法分解 180：</strong><br>
+        <span class="tag-inline">180 ÷ 2 = 90</span><br>
+        <span class="tag-inline">90 ÷ 2 = 45</span>（2 不能继续整除）<br>
+        <span class="tag-inline">45 ÷ 3 = 15</span><br>
+        <span class="tag-inline">15 ÷ 3 = 5</span><br>
+        <span class="tag-inline">5 ÷ 5 = 1</span><br>
+        <strong>结果：</strong>180 = 2² × 3² × 5。<br>
+        <strong>验算：</strong>2²×3²×5 = 4×9×5 = 180 ✅
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、最大公约数与辗转相除法 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>最大公约数与辗转相除法</h2>
+
+  <p class="kp-text">
+    <strong>最大公约数 gcd(a,b)：</strong>能同时整除 a 和 b 的最大正整数。
+  </p>
+
+  <h4 class="sub-title">3.1 辗转相除法（欧几里得算法）</h4>
+
+  <p class="kp-text">
+    <strong>原理：</strong>gcd(a,b) = gcd(b, a mod b)，即 <strong>两个数的最大公约数等于较小数和两数余数的最大公约数</strong>。
+    当余数为 0 时，当前除数即为最大公约数。
+  </p>
+
+  <div class="formula-block">
+    gcd(a, b) = gcd(b, a % b) &nbsp;&nbsp;(b ≠ 0)<br>
+    当 b = 0 时，gcd(a, 0) = a
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🔢 分步演算：gcd(36, 42)</div>
+    <p class="kp-text">（2025 阅读 1 原题）</p>
+    <div class="step-box">
+      <div class="step-line"><span class="step-num">1</span> <span class="step-arrow">gcd(</span>36, 42<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">2</span> 42 ÷ 36 = 1 … 余 <span class="step-result">6</span></div>
+      <div class="step-line"><span class="step-num">3</span> 转化为 <span class="step-arrow">gcd(</span>36, 6<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">4</span> 36 ÷ 6 = 6 … 余 <span class="step-result">0</span></div>
+      <div class="step-line"><span class="step-num">5</span> 余数为 0 → 当前除数 <span class="step-result">6</span> 即为 gcd</div>
+      <div class="step-line" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border-light);">
+        <strong>结果：</strong>gcd(36, 42) = <span class="step-result" style="font-size:1rem;">6</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">🔢 分步演算：gcd(126, 48)</div>
+    <div class="step-box">
+      <div class="step-line"><span class="step-num">1</span> <span class="step-arrow">gcd(</span>126, 48<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">2</span> 126 ÷ 48 = 2 … 余 <span class="step-result">30</span></div>
+      <div class="step-line"><span class="step-num">3</span> 转化为 <span class="step-arrow">gcd(</span>48, 30<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">4</span> 48 ÷ 30 = 1 … 余 <span class="step-result">18</span></div>
+      <div class="step-line"><span class="step-num">5</span> 转化为 <span class="step-arrow">gcd(</span>30, 18<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">6</span> 30 ÷ 18 = 1 … 余 <span class="step-result">12</span></div>
+      <div class="step-line"><span class="step-num">7</span> 转化为 <span class="step-arrow">gcd(</span>18, 12<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">8</span> 18 ÷ 12 = 1 … 余 <span class="step-result">6</span></div>
+      <div class="step-line"><span class="step-num">9</span> 转化为 <span class="step-arrow">gcd(</span>12, 6<span class="step-arrow">)</span></div>
+      <div class="step-line"><span class="step-num">10</span> 12 ÷ 6 = 2 … 余 <span class="step-result">0</span></div>
+      <div class="step-line"><span class="step-num">11</span> 余数为 0 → 当前除数 <span class="step-result">6</span> 即为 gcd</div>
+      <div class="step-line" style="margin-top:6px;padding-top:6px;border-top:1px solid var(--border-light);">
+        <strong>结果：</strong>gcd(126, 48) = <span class="step-result" style="font-size:1rem;">6</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <strong>⚠ 易错提醒（2025 阅读 1-19 原题）：</strong>如果将递归写法中的
+    <span class="tag-inline">gcd(a, b)</span> 改为 <span class="tag-inline">gcd(a, a%b)</span> 会导致<strong>死循环</strong>！
+    因为当 a &lt; b 时，a % b = a，递归参数变为 (a, a)，下一次仍为 (a, a)，永远不会收敛到 b=0。
+  </div>
+
+  <!-- ===== 配套练习 3 ===== -->
+  <h3 class="kp-title" id="s3-q" style="margin-top:28px;">📝 最大公约数练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读 1</span>
+      <span>gcd 计算</span>
+    </div>
+    <div class="exam-q">
+      执行 <span class="tag-inline">gcd(36, 42)</span> 的辗转相除法过程中，第一次除法得到的余数是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2</div>
+      <div class="opt"><span class="letter">B</span>4</div>
+      <div class="opt"><span class="letter">C</span>6</div>
+      <div class="opt"><span class="letter">D</span>8</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：C（6）</div>
+      <div class="explain">
+        <strong>分步计算：</strong><br>
+        · 第一次：<span class="tag-inline">42 ÷ 36 = 1</span>，余数 = <span class="tag-inline">42 − 1×36 = 6</span><br>
+        · 然后计算 <span class="tag-inline">gcd(36, 6)</span><br>
+        · <span class="tag-inline">36 ÷ 6 = 6</span>，余数为 0 → gcd = <strong>6</strong><br><br>
+        <strong>答案：</strong>第一次余数为 <strong>6</strong>，最终 gcd(36,42) = 6。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读 1-19</span>
+      <span>递归死循环分析</span>
+    </div>
+    <div class="exam-q">
+      原 gcd 函数为 <span class="tag-inline">gcd(a,b)</span>，若改写成 <span class="tag-inline">gcd(a, a%b)</span>，当输入 <span class="tag-inline">gcd(36,42)</span> 时会发生什么？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>正常返回 6</div>
+      <div class="opt"><span class="letter">B</span>返回 0</div>
+      <div class="opt"><span class="letter">C</span>进入死循环</div>
+      <div class="opt"><span class="letter">D</span>返回 42</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：C（进入死循环）</div>
+      <div class="explain">
+        <strong>分析：</strong><br>
+        · 调用 <span class="tag-inline">gcd(36, 42)</span>：a=36, b=42<br>
+        · <span class="tag-inline">a % b = 36 % 42 = 36</span><br>
+        · 递归调用 <span class="tag-inline">gcd(36, 36)</span>：a=36, b=36<br>
+        · <span class="tag-inline">a % b = 36 % 36 = 0</span><br>
+        · 递归调用 <span class="tag-inline">gcd(36, 0)</span>：a=36, b=0<br>
+        · <span class="tag-inline">a % b = 36 % 0</span> → <strong>除零错误</strong> 或进入死循环<br>
+        <strong>根本原因：</strong>正确写法是 <span class="tag-inline">gcd(b, a%b)</span>，将较小的数交换到第一个参数位置，
+        才能保证每次递归参数规模缩小。改为 <span class="tag-inline">gcd(a, a%b)</span> 导致参数顺序错误。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>gcd 递归次数</span>
+    </div>
+    <div class="exam-q">
+      用辗转相除法求 gcd(144, 60)，需要经过<strong>几次</strong>取余运算（包含最后一次余数为 0 的运算）？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2</div>
+      <div class="opt"><span class="letter">B</span>3</div>
+      <div class="opt"><span class="letter">C</span>4</div>
+      <div class="opt"><span class="letter">D</span>5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：B（3 次）</div>
+      <div class="explain">
+        <strong>分步演算：</strong><br>
+        <span class="tag-inline">gcd(144, 60)</span><br>
+        · ① <span class="tag-inline">144 ÷ 60 = 2</span> 余 <span class="tag-inline">24</span> → <span class="tag-inline">gcd(60, 24)</span><br>
+        · ② <span class="tag-inline">60 ÷ 24 = 2</span> 余 <span class="tag-inline">12</span> → <span class="tag-inline">gcd(24, 12)</span><br>
+        · ③ <span class="tag-inline">24 ÷ 12 = 2</span> 余 <span class="tag-inline">0</span> → gcd = <strong>12</strong><br><br>
+        共 <strong>3</strong> 次取余运算。<br>
+        <strong>结果：</strong>gcd(144, 60) = 12
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、模运算性质 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>模运算性质</h2>
+
+  <p class="kp-text">
+    <strong>模运算：</strong>a mod m 表示 a 除以 m 的余数。在程序设计竞赛中，模运算经常用于防止整数溢出、处理大数等问题。
+  </p>
+
+  <h4 class="sub-title">4.1 模运算的四大核心性质</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">性质</th>
+          <th style="width:48%;">公式</th>
+          <th style="width:30%;">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>加法</strong></td>
+          <td><span class="mono">(a + b) % m = ((a % m) + (b % m)) % m</span></td>
+          <td>和的模 = 模的和再取模</td>
+        </tr>
+        <tr>
+          <td><strong>减法</strong></td>
+          <td><span class="mono">(a − b) % m = ((a % m) − (b % m) + m) % m</span></td>
+          <td>避免负数，加 m 后再取模</td>
+        </tr>
+        <tr>
+          <td><strong>乘法</strong></td>
+          <td><span class="mono">(a × b) % m = ((a % m) × (b % m)) % m</span></td>
+          <td>积的模 = 模的积再取模</td>
+        </tr>
+        <tr>
+          <td><strong>幂运算</strong></td>
+          <td><span class="mono">a<sup>b</sup> % m = (a % m)<sup>b</sup> % m</span></td>
+          <td>幂的模 = 先取模再幂</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 应用场景</div>
+    <p class="kp-text">
+      · 防止大数溢出：<span class="tag-inline">(a × b) % m</span> 避免 a×b 超出整数范围<br>
+      · 大数幂取模：<span class="tag-inline">a<sup>b</sup> % m</span> 用快速幂 + 模运算<br>
+      · 模运算中的除法不能直接取模，需要用到<strong>逆元</strong>（CSP-J 不要求）
+    </p>
+  </div>
+
+  <!-- ===== 配套练习 4 ===== -->
+  <h3 class="kp-title" id="s4-q" style="margin-top:28px;">📝 模运算练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>模加法性质</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="tag-inline">(123456 + 789012) % 1000</span>，利用模运算性质计算的结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>468</div>
+      <div class="opt"><span class="letter">B</span>568</div>
+      <div class="opt"><span class="letter">C</span>668</div>
+      <div class="opt"><span class="letter">D</span>768</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：A（468）</div>
+      <div class="explain">
+        <strong>利用模加法性质：</strong><br>
+        · <span class="tag-inline">123456 % 1000 = 456</span><br>
+        · <span class="tag-inline">789012 % 1000 = 12</span><br>
+        · <span class="tag-inline">(456 + 12) % 1000 = 468</span><br><br>
+        <strong>直接验算：</strong>123456 + 789012 = 912468，912468 % 1000 = 468 ✅
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>模乘法性质</span>
+    </div>
+    <div class="exam-q">
+      <span class="tag-inline">(99 × 101) % 1000</span> 的计算结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>899</div>
+      <div class="opt"><span class="letter">B</span>909</div>
+      <div class="opt"><span class="letter">C</span>919</div>
+      <div class="opt"><span class="letter">D</span>999</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：D（999）</div>
+      <div class="explain">
+        <strong>直接计算：</strong>99 × 101 = 9999，9999 % 1000 = <strong>999</strong>。<br><br>
+        <strong>模性质验证：</strong><br>
+        · <span class="tag-inline">99 % 1000 = 99</span><br>
+        · <span class="tag-inline">101 % 1000 = 101</span><br>
+        · <span class="tag-inline">(99 × 101) % 1000 = (99 % 1000) × (101 % 1000) % 1000</span><br>
+        · <span class="tag-inline">= 99 × 101 % 1000 = 9999 % 1000 = 999</span><br><br>
+        也可以利用 <span class="tag-inline">(100−1) × (100+1) = 100² − 1 = 9999</span>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、斐波那契模周期 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>斐波那契模周期</h2>
+
+  <p class="kp-text">
+    <strong>斐波那契数列：</strong>F₁ = 1, F₂ = 1, Fₙ = Fₙ₋₁ + Fₙ₋₂ (n ≥ 3)<br>
+    斐波那契数列 <strong>模 m</strong> 后会呈现<strong>周期性</strong>。这个周期称为<strong>皮萨诺周期</strong>（Pisano period）。
+  </p>
+
+  <h4 class="sub-title">5.1 模 7 周期查找（2025 第8题）</h4>
+
+  <p class="kp-text">
+    <strong>核心结论（2025 原题）：</strong>斐波那契数列模 7 的周期为 <strong>16</strong>，
+    即 Fₙ₊₁₆ ≡ Fₙ (mod 7) 对所有 n 成立。
+  </p>
+
+  <div class="table-wrapper fib-table">
+    <table>
+      <thead>
+        <tr>
+          <th>n</th>
+          <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th>
+          <th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Fₙ</strong></td>
+          <td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>8</td><td>13</td><td>21</td>
+          <td class="hl-cell">34</td><td>55</td><td>89</td><td>144</td><td>233</td><td>377</td><td>610</td><td>987</td>
+        </tr>
+        <tr>
+          <td><strong>Fₙ mod 7</strong></td>
+          <td>1</td><td>1</td><td>2</td><td>3</td><td>5</td><td>1</td><td>6</td><td>0</td>
+          <td class="hl-cell">6</td><td>6</td><td>5</td><td>0</td><td>1</td><td>1</td><td>2</td><td>3</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">📌 周期验证</div>
+    <p class="kp-text">
+      <strong>第 17 ~ 32 项重复第 1 ~ 16 项的模 7 值：</strong><br>
+      F₁₇ mod 7 = F₁ mod 7 = <strong>1</strong>，F₁₈ mod 7 = F₂ mod 7 = <strong>1</strong> ...<br>
+      即每 <strong>16</strong> 项循环一次 → 周期 T = <strong>16</strong>。
+    </p>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">🔢 计算 F₂₀₂₅ mod 7</div>
+    <p class="kp-text">
+      <strong>步骤（2025 第8题原题）：</strong><br>
+      · 周期 T = 16<br>
+      · 2025 ÷ 16 = 126 … <strong>9</strong>（余 9）<br>
+      · F₂₀₂₅ mod 7 = F₉ mod 7<br>
+      · 查表知 F₉ = 34，34 mod 7 = <strong>6</strong><br><br>
+      <strong>答案：F₂₀₂₅ mod 7 = 6</strong>
+    </p>
+  </div>
+
+  <!-- ===== 配套练习 5 ===== -->
+  <h3 class="kp-title" id="s5-q" style="margin-top:28px;">📝 斐波那契模周期练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 8 题</span>
+      <span>斐波那契模周期</span>
+    </div>
+    <div class="exam-q">
+      已知斐波那契数列模 7 的周期为 16，且 F₉ = 34。则 F₂₀₂₅ mod 7 的值是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1</div>
+      <div class="opt"><span class="letter">B</span>3</div>
+      <div class="opt"><span class="letter">C</span>5</div>
+      <div class="opt"><span class="letter">D</span>6</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：D（6）</div>
+      <div class="explain">
+        <strong>解题步骤：</strong><br>
+        · 周期 T = 16<br>
+        · <span class="tag-inline">2025 ÷ 16 = 126</span> 余 <span class="tag-inline">9</span><br>
+        · <span class="tag-inline">F₂₀₂₅ ≡ F₉ (mod 7)</span><br>
+        · F₉ = 34，<span class="tag-inline">34 mod 7 = 6</span><br>
+        · 答案 = <strong>6</strong><br><br>
+        <strong>验证：</strong>查看上方周期表，第 9 行 "Fₙ mod 7" 对应值为 6 ✅
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>斐波那契周期应用</span>
+    </div>
+    <div class="exam-q">
+      已知斐波那契数列模 5 的周期为 20，且 F₇ = 13。则 F₂₀₂₇ mod 5 的值是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>2</div>
+      <div class="opt"><span class="letter">D</span>3</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：D（3）</div>
+      <div class="explain">
+        <strong>解题步骤：</strong><br>
+        · 周期 T = 20<br>
+        · <span class="tag-inline">2027 ÷ 20 = 101</span> 余 <span class="tag-inline">7</span><br>
+        · <span class="tag-inline">F₂₀₂₇ ≡ F₇ (mod 5)</span><br>
+        · F₇ = 13，<span class="tag-inline">13 mod 5 = 3</span><br>
+        · 答案 = <strong>3</strong><br><br>
+        <strong>核心方法：</strong>大下标对周期取余，映射到小下标的 F 值，再取模。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟 —— 数论综合检测</h2>
+
+  <p class="kp-text">
+    以下题目综合了数论多个知识点，检验综合运用能力。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>数论综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下说法中<strong>正确</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1 是最小的质数</div>
+      <div class="opt"><span class="letter">B</span>gcd(a,b) = gcd(b, a%b) 中，当 b=0 时结果为 a</div>
+      <div class="opt"><span class="letter">C</span>斐波那契数模 7 的周期为 10</div>
+      <div class="opt"><span class="letter">D</span>84 分解为 2² × 3 × 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        A <strong>错误</strong>——最小的质数是 2，1 既不是质数也不是合数。<br>
+        B <strong>正确</strong>——这是辗转相除法的终止条件，gcd(a, 0) = a。<br>
+        C <strong>错误</strong>——斐波那契数模 7 的周期为 16，不是 10。<br>
+        D <strong>错误</strong>——84 = 2² × 3 × 7，不是 ×5。<br>
+          <span class="tag-inline">2² × 3 × 5 = 60 ≠ 84</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>数论计算</span>
+    </div>
+    <div class="exam-q">
+      <span class="tag-inline">(200 + 3⁴ × 5) % 7</span> 的值是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>2</div>
+      <div class="opt"><span class="letter">D</span>3</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：C（2）</div>
+      <div class="explain">
+        <strong>利用模运算性质逐步化简：</strong><br>
+        · <span class="tag-inline">200 % 7 = 200 − 7×28 = 200 − 196 = 4</span><br>
+        · <span class="tag-inline">3 % 7 = 3</span><br>
+        · <span class="tag-inline">3² = 9, 9 % 7 = 2</span><br>
+        · <span class="tag-inline">3⁴ = (3²)² → 2² = 4, 4 % 7 = 4</span><br>
+        · <span class="tag-inline">3⁴ × 5 ≡ 4 × 5 % 7 = 20 % 7 = 6</span><br>
+        · <span class="tag-inline">(4 + 6) % 7 = 10 % 7 = 3</span><br><br>
+        等等，重新计算：<br>
+        · 3⁴ = 81，<span class="tag-inline">81 × 5 = 405</span><br>
+        · <span class="tag-inline">200 + 405 = 605</span><br>
+        · <span class="tag-inline">605 ÷ 7 = 86</span> 余 <span class="tag-inline">3</span> …<br>
+        答案是 <strong>3</strong>，对应选项 D。<br><br>
+        <strong>模性质验证：</strong><br>
+        · 200 % 7 = 4<br>
+        · 81 % 7 = 4（因为 7×11=77，81−77=4）<br>
+        · 5 % 7 = 5<br>
+        · (4 + 4×5) % 7 = (4 + 20) % 7 = 24 % 7 = <strong>3</strong> ✅<br>
+        <strong>正确答案：D（3）</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课知识速查</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你应该<strong>背下来</strong>的核心结论：
+    </div>
+
+    <div class="row">
+      <span class="pill">100以内共25个质数</span>
+      <span class="pill">2是唯一的偶质数</span>
+      <span class="pill">1既非质数也非合数</span>
+      <span class="pill">短除法分解质因数</span>
+    </div>
+    <div class="row">
+      <span class="pill green">gcd(a,b) = gcd(b, a%b)</span>
+      <span class="pill green">gcd(a,0) = a</span>
+      <span class="pill green">模加法：(a+b)%m</span>
+      <span class="pill green">模乘法：(a×b)%m</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">斐波那契模7周期=16</span>
+      <span class="pill amber">F₂₀₂₅ mod 7 = 6</span>
+      <span class="pill red">gcd(a, a%b)会导致死循环</span>
+      <span class="pill red">模运算不能直接做除法</span>
+    </div>
+  </div>
+
+  <!-- ===== 底部速查表 ===== -->
+  <div class="summary-box" id="summary-table">
+    <h3>📊 数论基础 · 底部速查表</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:22%;">知识点</th>
+            <th style="width:33%;">核心内容</th>
+            <th style="width:45%;">公式 / 方法</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>质数与合数</strong></td>
+            <td>100 以内 25 个质数</td>
+            <td>2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97</td>
+          </tr>
+          <tr>
+            <td><strong>质因数分解</strong></td>
+            <td>短除法分解合数</td>
+            <td>从 2 开始试除，直到商为 1；<span class="mono">84 = 2²×3×7</span></td>
+          </tr>
+          <tr>
+            <td><strong>辗转相除法</strong></td>
+            <td>gcd(a,b) = gcd(b, a%b)</td>
+            <td>当 b=0 时返回 a。<span class="mono">gcd(36,42)=6</span></td>
+          </tr>
+          <tr>
+            <td><strong>模加法</strong></td>
+            <td>和的模 = 模的和再取模</td>
+            <td><span class="mono">(a+b)%m = (a%m + b%m)%m</span></td>
+          </tr>
+          <tr>
+            <td><strong>模乘法</strong></td>
+            <td>积的模 = 模的积再取模</td>
+            <td><span class="mono">(a×b)%m = (a%m × b%m)%m</span></td>
+          </tr>
+          <tr>
+            <td><strong>模减法</strong></td>
+            <td>差为负时加 m</td>
+            <td><span class="mono">(a−b)%m = (a%m − b%m + m)%m</span></td>
+          </tr>
+          <tr>
+            <td><strong>斐波那契模周期</strong></td>
+            <td>模 7 周期 = 16</td>
+            <td><span class="mono">F₂₀₂₅ mod 7 = F₉ mod 7 = 6</span></td>
+          </tr>
+          <tr>
+            <td><strong>递归易错点</strong></td>
+            <td>gcd(a, a%b) 会死循环</td>
+            <td>正确写法：<span class="mono">return gcd(b, a%b)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:10px;font-size:.78rem;color:var(--text-ter);line-height:1.6;">
+      <strong>📌 特别提醒：</strong>25 年 CSP-J 初赛中，斐波那契模周期（第8题）、辗转相除法（阅读1）
+      均出现在试卷中。数论知识在初赛中占 3~5 分，属于<strong>性价比极高</strong>的复习板块。
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title, .objectives');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

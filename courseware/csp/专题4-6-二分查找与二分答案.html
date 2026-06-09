@@ -1,0 +1,903 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 4.6 二分查找与二分答案</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.bs-viz .lb{color:#2563eb;font-weight:600}
+.bs-viz .rb{color:#dc2626;font-weight:600}
+.bs-viz .mb{color:#8b5cf6;font-weight:600}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+.flow-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:14px 18px;margin:12px 0}
+.flow-box .flow-row{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:.82rem;color:var(--text-sec);flex-wrap:wrap}
+.flow-box .flow-row .arr{color:var(--text-ter);font-family:var(--font-mono)}
+.flow-box .flow-row .val{display:inline-block;padding:2px 10px;border-radius:4px;font-family:var(--font-mono);font-size:.78rem;background:var(--primary-light);color:var(--primary-dark);font-weight:500}
+.flow-box .flow-row .val.l{background:var(--accent-light);color:var(--accent-dark)}
+.flow-box .flow-row .val.r{background:var(--danger-light);color:#dc2626}
+.flow-box .flow-row .val.m{background:var(--purple-light);color:var(--purple)}
+.flow-box .flow-row .val.found{background:var(--success-light);color:var(--success-dark);font-weight:700}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔍</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题四 · 算法基础</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 标准二分查找</div>
+<a class="nav-link" href="#s1">二分查找基本原理</a>
+<a class="nav-link sub" href="#s1a">分步演算</a>
+
+<div class="nav-section">2 · 变体与真题</div>
+<a class="nav-link" href="#s2">缺失元素查找（2022/2023）</a>
+<a class="nav-link" href="#s3">完全平方数判断（2024）</a>
+
+<div class="nav-section">3 · 二分答案</div>
+<a class="nav-link" href="#s4">二分答案模板</a>
+
+<div class="nav-section">4 · 时间复杂度</div>
+<a class="nav-link" href="#s5">O(log n) 分析</a>
+
+<div class="nav-section">5 · 真题演练</div>
+<a class="nav-link" href="#s6">📝 7 道真题 + 模拟</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 小结速查</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题四 · 算法基础</a> / 4.6</div>
+    <h1>二分查找与二分答案</h1>
+    <p class="subtitle">Binary Search · O(log n) · 缺失元素 · 完全平方数 · 二分答案模板</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 3+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 4 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 标准二分查找：有序数组中快速定位目标值</span>
+      <span class="item">✅ 二分查找变体：缺失元素查找（2022/2023 完善程序原题）</span>
+      <span class="item">✅ 完全平方数判断：遍历到 sqrt 的二分优化（2024 完善 1）</span>
+      <span class="item">✅ 二分答案模板：最大值最小化 / 最小值最大化</span>
+      <span class="item">✅ 二分的时间复杂度 O(log n) 的推导与理解</span>
+      <span class="item">✅ 2022·2023·2024 真题精讲</span>
+      <span class="item">✅ 7 道真题 + 模拟实战训练</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、标准二分查找 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>标准二分查找基本原理</h2>
+
+  <p class="kp-text">
+    <strong class="hl">二分查找（Binary Search）</strong>是一种在<strong>有序数组</strong>中查找目标值的高效算法。
+    每次都取数组中间的元素与目标值比较，根据比较结果将搜索范围缩小一半，直到找到目标或范围为空。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">二分查找的核心思想</div>
+    <p class="kp-text">
+      <strong>前提条件：</strong>数组必须是<strong>有序的</strong>（通常为升序）。<br>
+      <strong>核心操作：</strong>每次取 <span class="c">mid = (left + right) / 2</span>，比较 <span class="c">arr[mid]</span> 与目标值 <span class="c">target</span>：<br>
+      &nbsp;&nbsp;• <span class="c">arr[mid] == target</span> → 找到，返回 <span class="c">mid</span><br>
+      &nbsp;&nbsp;• <span class="c">arr[mid] &lt; target</span> → 目标在右半部分，<span class="c">left = mid + 1</span><br>
+      &nbsp;&nbsp;• <span class="c">arr[mid] &gt; target</span> → 目标在左半部分，<span class="c">right = mid - 1</span><br>
+      <strong>终止条件：</strong><span class="c">left &gt; right</span> → 未找到，返回 <span class="c">-1</span>
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s1a">1.1 分步演算：在有序数组中查找 9</h3>
+  <p class="kp-text">
+    给定有序数组 <span class="c">arr = [1, 3, 5, 7, 9, 11, 13, 15]</span>，查找目标值 <strong class="hl">9</strong>。
+    数组长度为 8，索引范围为 <span class="c">[0, 7]</span>。
+  </p>
+
+  <!-- 第 1 步 -->
+  <div class="flow-box">
+    <div class="flow-row"><span class="val l">L=0</span> <span class="arr">→</span> 索引: 0 1 2 3 4 5 6 7 <span class="arr">←</span> <span class="val r">R=7</span></div>
+    <div><span class="bs-viz">数组: [<span class="lb">1</span>  3  5  7  <span class="mb">9</span>  11  13  <span class="rb">15</span>]</span></div>
+    <div class="flow-row"><span class="val m">mid = (0+7)/2 = 3</span> <span class="arr">→</span> arr[3] = <span class="val">7</span> <span class="arr">&lt;</span> 目标 9 <span class="arr">→</span> <span class="val l">left = mid + 1 = 4</span>（去右半边）</div>
+  </div>
+
+  <!-- 第 2 步 -->
+  <div class="flow-box">
+    <div class="flow-row"><span class="val l">L=4</span> <span class="arr">→</span> 索引: 4 5 6 7 <span class="arr">←</span> <span class="val r">R=7</span></div>
+    <div><span class="bs-viz">数组: [<span class="lb">9</span>  11  13  <span class="rb">15</span>]</span></div>
+    <div class="flow-row"><span class="val m">mid = (4+7)/2 = 5</span> <span class="arr">→</span> arr[5] = <span class="val">11</span> <span class="arr">&gt;</span> 目标 9 <span class="arr">→</span> <span class="val r">right = mid - 1 = 4</span>（去左半边）</div>
+  </div>
+
+  <!-- 第 3 步 -->
+  <div class="flow-box">
+    <div class="flow-row"><span class="val l">L=4</span> <span class="arr">→</span> 索引: 4 <span class="arr">←</span> <span class="val r">R=4</span></div>
+    <div><span class="bs-viz">数组: [<span class="lb">9</span>]</span></div>
+    <div class="flow-row"><span class="val m">mid = (4+4)/2 = 4</span> <span class="arr">→</span> arr[4] = <span class="val found">9</span> <span class="arr">==</span> 目标 9 <span class="arr">→</span> <span class="val found">✅ 找到！返回索引 4</span></div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">演算总结</div>
+    <p class="kp-text">
+      <strong>比较次数：</strong>仅 3 次比较（mid=3→7, mid=5→11, mid=4→9）就找到了目标。<br>
+      <strong>范围缩小过程：</strong>[0,7] → [4,7] → [4,4] → 找到。<br>
+      <strong>如果是线性查找：</strong>需要 5 次比较（1→3→5→7→9）。<br>
+      当数据量增大时，二分查找的优势更加明显。
+    </p>
+  </div>
+
+  <h3 class="kp-title">标准二分查找代码模板</h3>
+  <div class="code-block">
+<span class="kw">int</span> binarySearch(<span class="kw">int</span> arr[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> <span class="blue">left</span> = 0, <span class="blue">right</span> = n - 1;
+  <span class="kw">while</span> (<span class="blue">left</span> &lt;= <span class="blue">right</span>) {
+    <span class="kw">int</span> <span class="blue">mid</span> = (<span class="blue">left</span> + <span class="blue">right</span>) / 2;  <span class="cm">// 取中点</span>
+    <span class="kw">if</span> (arr[<span class="blue">mid</span>] == target) <span class="kw">return</span> <span class="blue">mid</span>;  <span class="cm">// 找到目标</span>
+    <span class="kw">if</span> (arr[<span class="blue">mid</span>] &lt; target) <span class="blue">left</span> = <span class="blue">mid</span> + 1;  <span class="cm">// 去右半边</span>
+    <span class="kw">else</span> <span class="blue">right</span> = <span class="blue">mid</span> - 1;  <span class="cm">// 去左半边</span>
+  }
+  <span class="kw">return</span> -1;  <span class="cm">// 未找到</span>
+}
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、二分查找变体——缺失元素查找 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>缺失元素查找（二分变体）</h2>
+
+  <p class="kp-text">
+    <strong>2022 和 2023 年 CSP-J 完善程序题</strong>均考查了同一种二分变体：
+    在一个原本完整的有序序列中<strong>移除一个元素</strong>，要求在 O(log n) 时间内找出被移除的元素。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">问题模型</div>
+    <p class="kp-text">
+      <strong>原始数组：</strong><span class="c">a[0..n-1]</span> 包含 1 到 n 的所有整数（顺序排列）。<br>
+      <strong>操作：</strong>从中移除一个元素，剩余 n-1 个元素存入 <span class="c">b[0..n-2]</span>。<br>
+      <strong>目标：</strong>找出被移除的那个元素。<br><br>
+      <strong>二分思路：</strong>比较 <span class="c">a[mid]</span> 与 <span class="c">b[mid]</span>。<br>
+      &nbsp;&nbsp;• 如果 <span class="c">a[mid] == b[mid]</span> → 移除的元素在 <strong>右侧</strong>（mid 之前没有缺失）<br>
+      &nbsp;&nbsp;• 如果 <span class="c">a[mid] != b[mid]</span> → 移除的元素在 <strong>左侧或就是 mid</strong>
+    </p>
+  </div>
+
+  <h3 class="kp-title">示例：从 [1,2,3,4,5,6,7] 中移除 4</h3>
+
+  <div class="flow-box">
+    <div class="flow-row">a = [1, 2, 3, 4, 5, 6, 7]  &nbsp;（完整，n=7）</div>
+    <div class="flow-row">b = [1, 2, 3, 5, 6, 7]  &nbsp;（移除了 4，n-1=6）</div>
+  </div>
+
+  <div class="flow-box">
+    <div class="flow-row"><span class="val">第 1 步</span> <span class="arr">→</span> mid = 3, a[3]=<span class="val">4</span>, b[3]=<span class="val">5</span> <span class="arr">→</span> a[3]≠b[3] <span class="arr">→</span> 缺失在左边或就是 a[3]</div>
+    <div class="flow-row"><span class="val">第 2 步</span> <span class="arr">→</span> mid = 1, a[1]=<span class="val">2</span>, b[1]=<span class="val">2</span> <span class="arr">→</span> a[1]==b[1] <span class="arr">→</span> 缺失在右侧</div>
+    <div class="flow-row"><span class="val">第 3 步</span> <span class="arr">→</span> mid = 2, a[2]=<span class="val">3</span>, b[2]=<span class="val">3</span> <span class="arr">→</span> a[2]==b[2] <span class="arr">→</span> 缺失在右侧</div>
+    <div class="flow-row"><span class="arr">→</span> 此时 left = 3, a[3] = <span class="val found">4</span> 即为被移除的元素 ✅</div>
+  </div>
+
+  <div class="code-block">
+<span class="cm">// 2022/2023 完善程序核心代码</span>
+<span class="kw">int</span> findMissing(<span class="kw">int</span> a[], <span class="kw">int</span> b[], <span class="kw">int</span> n) {
+  <span class="kw">int</span> <span class="blue">left</span> = 0, <span class="blue">right</span> = n - 1;
+  <span class="kw">while</span> (<span class="blue">left</span> &lt; <span class="blue">right</span>) {
+    <span class="kw">int</span> <span class="blue">mid</span> = (<span class="blue">left</span> + <span class="blue">right</span>) / 2;
+    <span class="kw">if</span> (a[<span class="blue">mid</span>] == b[<span class="blue">mid</span>])
+      <span class="blue">left</span> = <span class="blue">mid</span> + 1;  <span class="cm">// 缺失在右侧</span>
+    <span class="kw">else</span>
+      <span class="blue">right</span> = <span class="blue">mid</span>;  <span class="cm">// 缺失在左侧或就是 mid</span>
+  }
+  <span class="kw">return</span> a[<span class="blue">left</span>];  <span class="cm">// 被移除的元素</span>
+}
+  </div>
+
+  <div class="info-box">
+    <strong>📌 2022 完善 1 与 2023 完善 1：</strong>
+    两年考查的是<strong>同一个模型</strong>——在有序数组中找出被移除的元素。
+    二分的关键在于比较 <span class="c">a[mid]</span> 和 <span class="c">b[mid]</span> 是否相等。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、完全平方数判断 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>完全平方数判断（二分优化）</h2>
+
+  <p class="kp-text">
+    <strong>2024 年 CSP-J 完善程序第 1 题</strong>考查了如何高效判断一个正整数是否为完全平方数。
+    常规思路是从 1 遍历到 <span class="c">sqrt(n)</span>，但可以用<strong>二分查找</strong>将时间复杂度从 O(√n) 优化到 O(log n)。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">问题模型</div>
+    <p class="kp-text">
+      <strong>问题：</strong>给定正整数 <span class="c">n</span>，判断它是否是一个完全平方数。<br>
+      <strong>二分思路：</strong>在 <span class="c">[1, n]</span> 范围内二分查找一个数 <span class="c">x</span>，使得 <span class="c">x * x == n</span>。<br>
+      由于 <span class="c">x</span> 最大不会超过 <span class="c">sqrt(n)</span>，所以右边界可以直接设为 <span class="c">n</span>（或 <span class="c">sqrt(n)</span> 的整数部分）。<br><br>
+      <strong>与标准二分的区别：</strong>这里的"数组"是隐式的——<span class="c">[1, 2, 3, ..., n]</span> 每个数的平方值构成单调递增序列。
+    </p>
+  </div>
+
+  <h3 class="kp-title">示例：判断 16 是否为完全平方数</h3>
+
+  <div class="flow-box">
+    <div class="flow-row">在 [1, 16] 中二分查找 x，使得 x² = 16</div>
+    <div class="flow-row"><span class="val">第 1 步</span> <span class="arr">→</span> L=1, R=16, mid=8, 8²=64 &gt; 16 <span class="arr">→</span> R=7</div>
+    <div class="flow-row"><span class="val">第 2 步</span> <span class="arr">→</span> L=1, R=7, mid=4, 4²=16 == 16 <span class="arr">→</span> <span class="val found">✅ 是完全平方数！</span></div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">为什么不直接遍历？</div>
+    <p class="kp-text">
+      <strong>遍历到 sqrt(n)：</strong>时间复杂度 O(√n)。如果 n=10¹²，需要 10⁶ 次运算。<br>
+      <strong>二分查找：</strong>时间复杂度 O(log n)。如果 n=10¹²，只需约 40 次运算。<br>
+      这就是二分优化的威力！
+    </p>
+  </div>
+
+  <div class="code-block">
+<span class="cm">// 2024 完善 1：判断完全平方数（二分版本）</span>
+<span class="kw">bool</span> isPerfectSquare(<span class="kw">int</span> n) {
+  <span class="kw">int</span> <span class="blue">left</span> = 1, <span class="blue">right</span> = n;
+  <span class="kw">while</span> (<span class="blue">left</span> &lt;= <span class="blue">right</span>) {
+    <span class="kw">int</span> <span class="blue">mid</span> = (<span class="blue">left</span> + <span class="blue">right</span>) / 2;
+    <span class="kw">long</span> <span class="kw">long</span> <span class="blue">sq</span> = (<span class="kw">long</span> <span class="kw">long</span>)<span class="blue">mid</span> * <span class="blue">mid</span>;  <span class="cm">// 防溢出</span>
+    <span class="kw">if</span> (<span class="blue">sq</span> == n) <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">if</span> (<span class="blue">sq</span> &lt; n) <span class="blue">left</span> = <span class="blue">mid</span> + 1;
+    <span class="kw">else</span> <span class="blue">right</span> = <span class="blue">mid</span> - 1;
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}
+  </div>
+
+  <div class="info-box">
+    <strong>📌 2024 完善 1：</strong>题目中给出的二分搜索判断完全平方数的方法，
+    本质上是将"枚举可能的平方根"转化为"在有序范围内二分查找"。
+    这一思想可以推广到所有<strong>单调函数求值</strong>问题中。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、二分答案模板 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>二分答案模板</h2>
+
+  <p class="kp-text">
+    <strong class="hl">二分答案</strong>不是二分查找数组中某个值，而是<strong>二分可能的答案范围</strong>，
+    每次验证当前答案是否可行，从而逼近最优解。适用于"最大值最小化"和"最小值最大化"问题。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">二分答案 vs 二分查找</div>
+    <p class="kp-text">
+      <table style="width:100%;font-size:.82rem;border-collapse:collapse;margin:6px 0;">
+        <tr><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;"></td><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;">二分查找</td><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;">二分答案</td></tr>
+        <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">搜索对象</td><td style="padding:4px 8px;border:1px solid var(--border-light);">数组中的元素</td><td style="padding:4px 8px;border:1px solid var(--border-light);">可能的答案值</td></tr>
+        <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">判断方式</td><td style="padding:4px 8px;border:1px solid var(--border-light);">arr[mid] == target ?</td><td style="padding:4px 8px;border:1px solid var(--border-light);">check(mid) 是否可行 ?</td></tr>
+        <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">适用条件</td><td style="padding:4px 8px;border:1px solid var(--border-light);">数组有序</td><td style="padding:4px 8px;border:1px solid var(--border-light);">答案范围确定且单调（可行→不可行）</td></tr>
+      </table>
+    </p>
+  </div>
+
+  <h3 class="kp-title">4.1 最大值最小化（最小化最大值）</h3>
+  <p class="kp-text">
+    <strong>经典问题：</strong>将一个数组分成 k 段，使每段和的最大值尽可能小。<br>
+    <strong>二分策略：</strong>二分可能的"最大段和"，判断是否能分成 ≤k 段。
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 二分答案通用模板</span>
+<span class="kw">int</span> <span class="blue">left</span> = 最小可能值, <span class="blue">right</span> = 最大可能值;
+<span class="kw">while</span> (<span class="blue">left</span> &lt; <span class="blue">right</span>) {
+  <span class="kw">int</span> <span class="blue">mid</span> = (<span class="blue">left</span> + <span class="blue">right</span>) / 2;
+  <span class="kw">if</span> (check(<span class="blue">mid</span>))  <span class="cm">// mid 作为答案是否可行？</span>
+    <span class="blue">right</span> = <span class="blue">mid</span>;      <span class="cm">// 可行，尝试更小的值（最大值最小化）</span>
+  <span class="kw">else</span>
+    <span class="blue">left</span> = <span class="blue">mid</span> + 1;    <span class="cm">// 不可行，需要更大的值</span>
+}
+<span class="kw">return</span> <span class="blue">left</span>;  <span class="cm">// 最优解</span>
+  </div>
+
+  <h3 class="kp-title">4.2 最小值最大化（最大化最小值）</h3>
+  <p class="kp-text">
+    <strong>经典问题：</strong>在数轴上放置 k 头牛（或 k 个点），使它们之间的最小距离尽可能大。<br>
+    <strong>二分策略：</strong>二分可能的"最小距离"，判断是否能放下 k 头牛。
+  </p>
+
+  <div class="card accent">
+    <div class="card-title">🧠 记忆口诀</div>
+    <p class="kp-text">
+      <strong>"二分答案，验证为王"</strong> — 关键不在于怎么二分，而在于如何编写 <span class="c">check()</span> 函数。<br>
+      <strong>"最大最小化，可行就缩右"</strong> — 最大值最小化时，可行则 <span class="c">right = mid</span>。<br>
+      <strong>"最小最大化，可行就增左"</strong> — 最小值最大化时，可行则 <span class="c">left = mid</span>。
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 五、时间复杂度 O(log n) -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>二分的时间复杂度 O(log n)</h2>
+
+  <p class="kp-text">
+    <strong>2024 年 CSP-J 阅读程序第 1 题</strong>直接考查了二分查找的时间复杂度分析。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">O(log n) 的推导</div>
+    <p class="kp-text">
+      假设数组长度为 <span class="c">n</span>，每次比较后搜索范围减半：<br><br>
+      &nbsp;&nbsp;第 1 次比较后：范围变为 <span class="c">n/2</span><br>
+      &nbsp;&nbsp;第 2 次比较后：范围变为 <span class="c">n/4</span><br>
+      &nbsp;&nbsp;第 k 次比较后：范围变为 <span class="c">n / 2^k</span><br><br>
+      当范围缩小到 1 时停止：<span class="c">n / 2^k = 1</span><br>
+      解得：<span class="c">2^k = n</span>，即 <span class="c">k = log₂(n)</span><br><br>
+      所以二分查找的<strong>时间复杂度为 O(log n)</strong>。
+    </p>
+  </div>
+
+  <h3 class="kp-title">O(log n) 究竟有多快？</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>数据规模 n</th><th>O(log n) 比较次数</th><th>O(n) 比较次数</th><th>差距倍数</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">1,000</span></td><td>≈ 10 次</td><td>1000 次</td><td>100×</td></tr>
+        <tr><td><span class="mono">10,000</span></td><td>≈ 14 次</td><td>10000 次</td><td>~714×</td></tr>
+        <tr><td><span class="mono">100,000</span></td><td>≈ 17 次</td><td>100000 次</td><td>~5882×</td></tr>
+        <tr><td><span class="mono">1,000,000</span></td><td>≈ 20 次</td><td>1000000 次</td><td>50000×</td></tr>
+        <tr><td><span class="mono">1,000,000,000</span></td><td>≈ 30 次</td><td>10⁹ 次</td><td><strong>~3333 万倍</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 初赛常考：</strong>给定数据规模 n，问二分查找最多需要比较多少次。
+    答案就是 <span class="c">⌈log₂(n+1)⌉</span>（向上取整）。<br>
+    例如 n=1000，最多需要 <span class="c">⌈log₂(1001)⌉ = 10</span> 次比较。
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 六、真题与模拟综合练习（共 7 题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">📝</span>真题与模拟综合练习（共 7 题）</h2>
+
+  <p class="kp-text">
+    以下题目涵盖了 CSP-J 初赛中二分查找与二分答案的所有核心考点。每道题均包含<strong>详细解析</strong>，请务必先自己思考再点击查看答案。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：2024 阅读 1 · 时间复杂度 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 阅读 1</span>
+      <span>二分查找时间复杂度</span>
+    </div>
+    <div class="exam-q">
+      二分查找算法在一个长度为 <span class="c">n</span> 的有序数组中查找目标值，
+      其时间复杂度是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> O(1)</div>
+      <div class="opt"><span class="letter">B</span> O(log n)</div>
+      <div class="opt"><span class="letter">C</span> O(n)</div>
+      <div class="opt"><span class="letter">D</span> O(n²)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：B · O(log n)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        二分查找每次比较后搜索范围减半。设比较次数为 k，则有：<br>
+        <span class="c">n / 2^k = 1</span> → <span class="c">k = log₂(n)</span><br><br>
+        <strong>原因澄清：</strong><br>
+        A. O(1) ❌ — 数组为 1 时才是 O(1)，n 变化时比较次数会变。<br>
+        B. O(log n) ✅ — 每次范围减半，只需 log₂(n) 次比较。<br>
+        C. O(n) ❌ — 这是线性查找的时间复杂度，二分没这么慢。<br>
+        D. O(n²) ❌ — 这是冒泡排序之类算法的时间复杂度。<br><br>
+        <strong>结论：</strong>二分查找的时间复杂度是 <strong class="b">O(log n)</strong>。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：模拟 · 标准二分比较次数 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 标准二分查找</span>
+      <span>二分查找比较次数</span>
+    </div>
+    <div class="exam-q">
+      在有序数组 <span class="c">[2, 5, 8, 12, 16, 23, 38, 45, 56, 72]</span> 中
+      使用二分查找寻找目标值 <span class="c">23</span>，需要比较（  ）次可以找到？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2 次</div>
+      <div class="opt"><span class="letter">B</span> 3 次</div>
+      <div class="opt"><span class="letter">C</span> 4 次</div>
+      <div class="opt"><span class="letter">D</span> 5 次</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：B · 3 次</div>
+      <div class="explain">
+        <strong>分步演算：</strong><br><br>
+        数组长度 n=10，索引 [0, 9]，查找 target=23<br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">比较</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">L</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">R</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">mid</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">arr[mid]</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">比较结果</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">操作</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">9</td><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">16</td><td style="padding:3px 8px;border:1px solid var(--border-light);">16 &lt; 23</td><td style="padding:3px 8px;border:1px solid var(--border-light);">L=5</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">9</td><td style="padding:3px 8px;border:1px solid var(--border-light);">7</td><td style="padding:3px 8px;border:1px solid var(--border-light);">45</td><td style="padding:3px 8px;border:1px solid var(--border-light);">45 &gt; 23</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=6</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">23</td><td style="padding:3px 8px;border:1px solid var(--border-light);">23 == 23</td><td style="padding:3px 8px;border:1px solid var(--border-light);">✅ 找到！</td></tr>
+        </table>
+        <br>
+        <strong>可视化过程：</strong><br>
+        <div class="bs-viz">
+第1步: [<span class="lb">2</span>   5   8  12  <span class="mb">16</span>  23  38  45  56  <span class="rb">72</span>]  L=0 R=9 mid=4 arr[4]=16&lt;23 → L=5
+第2步: [<span class="dim">2   5   8  12  16</span>  <span class="lb">23</span>  38  <span class="mb">45</span>  56  <span class="rb">72</span>]  L=5 R=9 mid=7 arr[7]=45&gt;23 → R=6
+第3步: [<span class="dim">2   5   8  12  16</span>  <span class="lb found">23</span>  <span class="mb">38</span>  <span class="dim">45  56  72</span>]  L=5 R=6 mid=5 arr[5]=23==23 ✅
+        </div>
+        <br>
+        <strong>结论：需要 3 次比较找到 23。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：2022/2023 完善 · 缺失元素查找 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022/2023 · 完善程序</span>
+      <span>缺失元素查找（二分变体）</span>
+    </div>
+    <div class="exam-q">
+      已知数组 a 包含 1~n 的所有整数（顺序排列），数组 b 是 a 移除了一个元素后的结果。
+      以下二分算法用于找出被移除的元素，横线处应填（  ）。<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> findMissing(<span class="kw">int</span> a[], <span class="kw">int</span> b[], <span class="kw">int</span> n) {
+  <span class="kw">int</span> left = 0, right = n - 1;
+  <span class="kw">while</span> (left &lt; right) {
+    <span class="kw">int</span> mid = (left + right) / 2;
+    <span class="kw">if</span> (______)  <span class="cm">// 横线处</span>
+      left = mid + 1;
+    <span class="kw">else</span>
+      right = mid;
+  }
+  <span class="kw">return</span> a[left];
+}
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> a[mid] == b[mid]</div>
+      <div class="opt"><span class="letter">B</span> a[mid] &lt; b[mid]</div>
+      <div class="opt"><span class="letter">C</span> a[mid] &gt; b[mid]</div>
+      <div class="opt"><span class="letter">D</span> a[mid] != b[mid]</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：A · a[mid] == b[mid]</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>关键思路：</strong><br>
+        因为 a 包含 1~n 的完整序列，b 移除了一个元素。<br>
+        对于小于缺失元素的位置，a[mid] 和 b[mid] 指向相同的值（相等）。<br>
+        对于大于等于缺失元素的位置，b[mid] 比 a[mid] 大 1（因为 b 少了一个前面的数，整体偏移）。<br><br>
+        例如 n=7，a=[1,2,3,4,5,6,7]，移除 4 后 b=[1,2,3,5,6,7]：<br>
+        &nbsp;&nbsp;mid=0: a[0]=1, b[0]=1 → 相等，缺失在右侧 ✅<br>
+        &nbsp;&nbsp;mid=1: a[1]=2, b[1]=2 → 相等，缺失在右侧 ✅<br>
+        &nbsp;&nbsp;mid=2: a[2]=3, b[2]=3 → 相等，缺失在右侧 ✅<br>
+        &nbsp;&nbsp;mid=3: a[3]=4, b[3]=5 → 不相等，缺失在左侧或就是 a[3] ✅<br><br>
+        <strong>算法逻辑：</strong><br>
+        当 <span class="c">a[mid] == b[mid]</span> 时，说明在 mid 位置之前没有发生缺失，
+        缺失的元素在 mid 右侧 → <span class="c">left = mid + 1</span>。<br>
+        当 <span class="c">a[mid] != b[mid]</span> 时，缺失的元素在 mid 处或在 mid 左侧 → <span class="c">right = mid</span>。<br><br>
+        <strong>结论：横线处应填 <span class="b">a[mid] == b[mid]</span>，选 A。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：2024 完善 1 · 完全平方数判断 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 完善程序 1</span>
+      <span>判断完全平方数（二分优化）</span>
+    </div>
+    <div class="exam-q">
+      以下是用二分查找判断正整数 <span class="c">n</span> 是否为完全平方数的程序片段。
+      若 n=50，二分查找结束时 left 和 right 的值分别是（  ）。<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">bool</span> isPerfectSquare(<span class="kw">int</span> n) {
+  <span class="kw">int</span> left = 1, right = n;
+  <span class="kw">while</span> (left &lt;= right) {
+    <span class="kw">int</span> mid = (left + right) / 2;
+    <span class="kw">long</span> <span class="kw">long</span> sq = (<span class="kw">long</span> <span class="kw">long</span>)mid * mid;
+    <span class="kw">if</span> (sq == n) <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">if</span> (sq &lt; n) left = mid + 1;
+    <span class="kw">else</span> right = mid - 1;
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> left=7, right=7</div>
+      <div class="opt"><span class="letter">B</span> left=7, right=6</div>
+      <div class="opt"><span class="letter">C</span> left=8, right=7</div>
+      <div class="opt"><span class="letter">D</span> left=8, right=8</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：C · left=8, right=7</div>
+      <div class="explain">
+        <strong>分步演算：</strong><br><br>
+        n=50，目标：找到 x 使得 x²=50<br>
+        由于 7²=49 &lt; 50，8²=64 &gt; 50，所以 50 不是完全平方数。<br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">轮次</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">L</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">R</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">mid</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">mid²</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">比较</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">操作</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">25</td><td style="padding:3px 8px;border:1px solid var(--border-light);">625</td><td style="padding:3px 8px;border:1px solid var(--border-light);">625 &gt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=24</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">24</td><td style="padding:3px 8px;border:1px solid var(--border-light);">12</td><td style="padding:3px 8px;border:1px solid var(--border-light);">144</td><td style="padding:3px 8px;border:1px solid var(--border-light);">144 &gt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=11</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">11</td><td style="padding:3px 8px;border:1px solid var(--border-light);">6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">36</td><td style="padding:3px 8px;border:1px solid var(--border-light);">36 &lt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">L=7</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">7</td><td style="padding:3px 8px;border:1px solid var(--border-light);">11</td><td style="padding:3px 8px;border:1px solid var(--border-light);">9</td><td style="padding:3px 8px;border:1px solid var(--border-light);">81</td><td style="padding:3px 8px;border:1px solid var(--border-light);">81 &gt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=8</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">7</td><td style="padding:3px 8px;border:1px solid var(--border-light);">8</td><td style="padding:3px 8px;border:1px solid var(--border-light);">7</td><td style="padding:3px 8px;border:1px solid var(--border-light);">49</td><td style="padding:3px 8px;border:1px solid var(--border-light);">49 &lt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">L=8</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">8</td><td style="padding:3px 8px;border:1px solid var(--border-light);">8</td><td style="padding:3px 8px;border:1px solid var(--border-light);">8</td><td style="padding:3px 8px;border:1px solid var(--border-light);">64</td><td style="padding:3px 8px;border:1px solid var(--border-light);">64 &gt; 50</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=7</td></tr>
+        </table>
+        <br>
+        <strong>循环结束：</strong>L=8, R=7（L &gt; R，退出 while 循环），返回 false。<br>
+        <strong>结论：left=8, right=7，选 C。</strong><br><br>
+        <strong>注意：</strong>由于 50 不是完全平方数，程序返回 false，最终 L=8, R=7。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：模拟 · 二分答案（最小值最大化） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 二分答案</span>
+      <span>最小值最大化（牛棚问题）</span>
+    </div>
+    <div class="exam-q">
+      数轴上有 5 个牛棚位置 <span class="c">[1, 2, 8, 4, 9]</span>（排序后为 <span class="c">[1, 2, 4, 8, 9]</span>），
+      需要放入 3 头牛，要求每两头牛之间的<strong>最小距离尽可能大</strong>。用二分答案求解，
+      二分过程中 <span class="c">check(mid)</span> 判断是否能放下 3 头牛。当 mid=3 时，
+      以下说法正确的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 可以放下 3 头牛，check(3) 返回 true</div>
+      <div class="opt"><span class="letter">B</span> 只能放下 2 头牛，check(3) 返回 false</div>
+      <div class="opt"><span class="letter">C</span> 可以放下 4 头牛，check(3) 返回 true</div>
+      <div class="opt"><span class="letter">D</span> 只能放下 1 头牛，check(3) 返回 false</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：A · 可以放下 3 头牛，check(3) 返回 true</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>排序后的牛棚位置：</strong>[1, 2, 4, 8, 9]<br>
+        <strong>尝试最小距离=3，模拟放置过程：</strong><br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">步骤</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">操作</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">已放牛数</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">第一头牛放 1 号位置</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">下一个位置 2，距离=1 &lt; 3 → 跳过</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">位置 4，距离=4-1=3 ≥ 3 → <strong>放牛</strong></td><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">位置 8，距离=8-4=4 ≥ 3 → <strong>放牛</strong></td><td style="padding:3px 8px;border:1px solid var(--border-light);">3 ✓</td></tr>
+        </table>
+        <br>
+        <strong>验证成功：</strong>当最小距离设为 3 时，可以在位置 1, 4, 8 放下 3 头牛。<br>
+        所以 <span class="c">check(3) = true</span>。<br><br>
+        <strong>继续二分：</strong><br>
+        check(3)=true → 尝试更大的最小距离（去右半边）→ left=mid+1<br>
+        check(4)：放牛位置 1→4→8（距离 3 → 4），再试 9（距离 1 &lt; 4），只能放 2 头，check(4)=false<br>
+        <strong>最终最优解：</strong>最小距离最大为 <strong class="b">3</strong>。<br><br>
+        <strong>结论：选 A。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：模拟 · 二分查找变体（第一个出现位置） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 二分变体</span>
+      <span>查找第一个出现位置</span>
+    </div>
+    <div class="exam-q">
+      在有序数组 <span class="c">[1, 2, 2, 2, 3, 4, 5]</span> 中，
+      用二分查找找 <span class="c">2</span> 的<strong>第一个出现位置</strong>（最左边的索引）。
+      找到的结果是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> 2</div>
+      <div class="opt"><span class="letter">D</span> 3</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：B · 1</div>
+      <div class="explain">
+        <strong>分析（查找第一个 ≥ target 的位置）：</strong><br><br>
+        查找目标值 2 的第一个出现位置，即找"第一个 ≥ 2"的元素。<br>
+        数组: [1, 2, 2, 2, 3, 4, 5]，索引 0~6<br><br>
+        <strong>二分过程（变体：找到后不返回，继续向左缩小）：</strong><br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">轮次</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">L</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">R</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">mid</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">arr[mid]</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">操作</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">2（等于目标）</td><td style="padding:3px 8px;border:1px solid var(--border-light);">不返回！R=2（继续向左找）</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">2（等于目标）</td><td style="padding:3px 8px;border:1px solid var(--border-light);">R=0（继续向左找）</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1 &lt; 2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">L=1</td></tr>
+        </table>
+        <span style="font-size:.82rem;">L=1, R=0 → 循环结束（L &gt; R），返回 L=1</span><br><br>
+        <strong>关键区别：</strong>标准二分查找找到目标就直接返回，而查找<strong>第一个出现位置</strong>找到后不返回，
+        继续向左缩小范围（<span class="c">right = mid - 1</span>），直到范围为空，最终返回 <span class="c">left</span>。
+        同理，查找<strong>最后一个出现位置</strong>找到后继续向右（<span class="c">left = mid + 1</span>）。<br><br>
+        <strong>结论：2 的第一个出现位置是索引 1，选 B。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：综合 · 二分答案概念辨析 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟 · 概念辨析</span>
+      <span>二分查找与二分答案综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下关于二分查找与二分答案的描述，<strong>错误</strong>的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 二分查找要求数组必须是有序的</div>
+      <div class="opt"><span class="letter">B</span> 二分查找的时间复杂度是 O(log n)</div>
+      <div class="opt"><span class="letter">C</span> 二分答案可以解决所有"最大值最小化"问题</div>
+      <div class="opt"><span class="letter">D</span> 二分答案的核心在于 check() 函数的正确实现</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：C · 二分答案可以解决所有"最大值最小化"问题</div>
+      <div class="explain">
+        <strong>逐一分析：</strong><br><br>
+        <strong>A. 二分查找要求数组必须是有序的</strong><br>
+        ✅ <strong>正确。</strong>二分查找利用有序性来缩小搜索范围。
+        如果数组无序，二分查找无法保证正确性。这是二分查找的<strong>基本前提</strong>。<br><br>
+        <strong>B. 二分查找的时间复杂度是 O(log n)</strong><br>
+        ✅ <strong>正确。</strong>每次比较将搜索范围减半，因此需要 O(log n) 次比较。<br><br>
+        <strong>C. 二分答案可以解决所有"最大值最小化"问题</strong><br>
+        ❌ <strong>错误。</strong>二分答案适用需要满足<strong>单调性</strong>条件：
+        答案的可行性与答案值之间必须具有单调性（即如果 mid 可行，则所有大于/小于 mid 的值也具有某种规律）。
+        并非所有"最大值最小化"问题都天然满足单调性。<br><br>
+        <strong>D. 二分答案的核心在于 check() 函数的正确实现</strong><br>
+        ✅ <strong>正确。</strong>二分答案的框架是固定的，不同问题的区别在于
+        <span class="c">check(mid)</span> 函数的实现——它决定了如何验证一个候选答案是否可行。
+        如果能写出正确的 check 函数，二分答案就成功了一大半。<br><br>
+        <strong>结论：C 是错误描述。二分答案不能解决所有最优化问题，需要满足单调性条件。</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结速查 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 二分查找与二分答案 · 核心知识速查</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须<strong>熟练掌握</strong>的考点，考前反复看：
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:110px;">概念</th><th>要点</th><th style="width:80px;">关键</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>二分查找前提</td><td>数组必须是有序的（通常升序）</td><td>有序</td></tr>
+        <tr><td>核心操作</td><td>每次取 mid 比较，范围减半</td><td>arr[mid] vs target</td></tr>
+        <tr><td>时间复杂度</td><td>O(log n) — 每次减半，n/2^k=1 → k=log₂n</td><td>对数级</td></tr>
+        <tr><td>缺失元素查找</td><td>比较 a[mid] 与 b[mid]，相等→右，不等→左</td><td><strong class="b">2022/2023</strong></td></tr>
+        <tr><td>完全平方数判断</td><td>二分 [1, n] 找 x 使 x²=n</td><td><strong class="b">2024 完善 1</strong></td></tr>
+        <tr><td>二分答案模板</td><td>二分答案范围，check(mid) 验证可行性</td><td>单调性</td></tr>
+        <tr><td>最大值最小化</td><td>可行则 right = mid（尝试更小）</td><td>缩右</td></tr>
+        <tr><td>最小值最大化</td><td>可行则 left = mid（尝试更大）</td><td>增左</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+      <div class="row">
+        <span class="pill">二分前提 = 有序</span>
+        <span class="pill green">时间复杂度 O(log n)</span>
+        <span class="pill amber">每次范围减半</span>
+        <span class="pill red">无序不能用二分</span>
+      </div>
+      <div class="row">
+        <span class="pill purple">二分答案靠 check()</span>
+        <span class="pill green">缺失元素 = a[mid] vs b[mid]</span>
+        <span class="pill blue">2024 完善1: 判断完全平方</span>
+        <span class="pill amber">最大值最小化→缩右</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 二分查找专题</strong></td><td style="padding:4px 0;color:var(--text-sec);">标准二分 + 变体（first/last/缺失元素）</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 二分答案模板</strong></td><td style="padding:4px 0;color:var(--text-sec);">最大值最小化 / 最小值最大化通用框架</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 完全平方数判断</strong></td><td style="padding:4px 0;color:var(--text-sec);">2024 完善程序 1 详解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2022 · 完善 1</strong></td><td style="padding:4px 0;color:var(--text-sec);">缺失元素查找（二分变体）</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2023 · 完善 1</strong></td><td style="padding:4px 0;color:var(--text-sec);">同 2022 缺失元素查找</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2024 · 完善 1</strong></td><td style="padding:4px 0;color:var(--text-sec);">二分判断完全平方数</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2024 · 阅读 1</strong></td><td style="padding:4px 0;color:var(--text-sec);">二分查找时间复杂度 O(log n)</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 二分 10 题训练</strong></td><td style="padding:4px 0;color:var(--text-sec);">含标准二分、变体、二分答案综合练习</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

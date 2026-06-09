@@ -1,0 +1,1277 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 7.1 完善程序方法论</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.obj-warn{font-size:.78rem;color:#dc2626;background:#fef2f2;padding:4px 10px;border-radius:6px;margin-top:8px;display:inline-block}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.code-block .blank{display:inline-block;min-width:50px;border-bottom:2px solid #fbbf24;color:#fbbf24;text-align:center;font-weight:600}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.judge{background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.answer-box .explain .ok{display:inline-block;padding:0 6px;background:var(--success-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--success-dark);font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.step-box .step .sn.accent{background:var(--accent-dark)}.step-box .step .sn.green{background:var(--success-dark)}.step-box .step .sn.red{background:var(--danger)}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📖</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题七 · 程序完善真题解析</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 题型概述</div>
+<a class="nav-link" href="#s1">完善程序题型</a>
+
+<div class="nav-section">2 · 核心方法</div>
+<a class="nav-link" href="#s2">三遍法解题流程</a>
+<a class="nav-link sub" href="#s2a">三要素检查法</a>
+
+<div class="nav-section">3 · 规律精讲</div>
+<a class="nav-link" href="#s3">常见挖空位置</a>
+<a class="nav-link" href="#s4">代入验证法</a>
+<a class="nav-link" href="#s5">题型特征识别</a>
+
+<div class="nav-section">4 · 实战演练</div>
+<a class="nav-link" href="#s6">📝 10 道精选填空练习</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 完善程序速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题七 · 程序完善真题解析</a> / 7.1</div>
+    <h1>完善程序方法论</h1>
+    <p class="subtitle">三遍法 · 三要素检查 · 代入验证 · 题型特征识别 · 10 道精选填空练习</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 分值最高题型的核心方法</span>
+      <span class="meta-tag exam">📖 真题改编 5+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 5 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 完善程序题型结构：2 个程序 × 15 分 = 30 分，每题 5 空</span>
+      <span class="item">✅ 三遍法解题流程：理解算法 → 通读框架 → 逐空推敲</span>
+      <span class="item">✅ 三要素检查：初始值 · 循环体 · 返回值</span>
+      <span class="item">✅ 六类常见挖空位置及应对策略</span>
+      <span class="item">✅ 代入验证法：手算小数据验证每一空</span>
+      <span class="item">✅ 二分、DP、递归三类题型快速识别指南</span>
+      <span class="item">✅ 10 道精选填空实战（覆盖全部完善程序技能）</span>
+    </div>
+    <div class="obj-warn">⚠️ 本节是方法课 + 练习课，建议先掌握基本算法基础再学习本节</div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、完善程序题型概述 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>完善程序题型概述</h2>
+
+  <p class="kp-text">
+    <strong class="hl">完善程序</strong>是 CSP-J 初赛的<strong>第三大题</strong>，也是整张试卷中<strong>分值最高</strong>的题型。
+    试卷包含 <strong>2 个程序</strong>，每道题 15 分，合计 <strong>30 分</strong>，约占初赛总分的 40%。
+    每个程序挖 5 个空，每空 3 分。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">题型结构</div>
+    <p class="kp-text">
+      <strong>题号：</strong>试卷第三大题（第 37~46 题）<br>
+      <strong>题量：</strong>2 个完整程序，每程序 5 个填空<br>
+      <strong>分值：</strong>每空 3 分，共 30 分<br>
+      <strong>形式：</strong>给出一个带有空缺的完整程序（约 20~40 行），要求在 4 个选项中选出正确的代码填入空白<br>
+      <strong>难度分层：</strong>前 2~3 空较简单（如初始化、边界判断），后 2 空较难（如核心算法逻辑）
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 与"阅读程序"的本质区别：</strong><br>
+    阅读程序是"理解已有代码"，完善程序是<strong>"补全缺失代码"</strong>——你不仅要读懂代码的意图，
+    还要理解每个空在整体算法中的作用，选对正确的实现方式。<br><br>
+    <strong>难度定位：</strong>完善程序 &gt; 阅读程序 &gt; 选择题。<br>
+    完善程序要求<strong>既懂算法、又懂代码实现</strong>，是初赛区分度最高的题型。
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">完善程序常见失分原因</div>
+    <p class="kp-text">
+      <strong>原因 1：</strong>没看注释就做题——完善程序题通常有中文注释提示算法思路，忽略注释等于放弃重要线索<br>
+      <strong>原因 2：</strong>只盯一个空，不看整体——每个空都是算法的一部分，脱离整体理解很难选对<br>
+      <strong>原因 3：</strong>不代入数据验证——选完答案后直接用题目给出的输入数据模拟运行一遍<br>
+      <strong>原因 4：</strong>纠结于"这段代码还能写成别的形式"——CSP-J 只考标准写法，不要发挥
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、三遍法解题流程 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>三遍法解题流程</h2>
+
+  <p class="kp-text">
+    解决完善程序题，不要一上来就逐空分析。<strong>三遍法</strong>是经过大量真题验证的最高效策略：
+  </p>
+
+  <div class="step-box">
+    <div class="step"><span class="sn">1</span> <strong>第一遍 · 读题 + 理解算法</strong> — 读题面 + 注释 + main 函数，回答：这段程序在做什么？是求和？找极值？判断素数？还是某种经典算法？</div>
+    <div class="step"><span class="sn accent">2</span> <strong>第二遍 · 通读程序，找整体框架</strong> — 顺着程序整体读一次，重点关注：<br>
+      &nbsp;&nbsp;• <span class="c">初始化</span> — 变量和数组赋了什么初值？<br>
+      &nbsp;&nbsp;• <span class="c">循环结构</span> — 循环的起点、终点、步长是什么？<br>
+      &nbsp;&nbsp;• <span class="c">边界条件</span> — if 判断的边界是否与描述一致？<br>
+      &nbsp;&nbsp;• <span class="c">返回值 / 输出</span> — 最终输出了什么？</div>
+    <div class="step"><span class="sn green">3</span> <strong>第三遍 · 逐空推敲，代入验证</strong> — 针对每个空，用"三要素检查法"检验选项，然后用题目给出的样例输入代入运行，验证每个空的选择。</div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 三遍法的核心原则</div>
+    <p class="kp-text">
+      <strong>第一遍是"定方向"</strong>——知道程序在做什么，后面才能有针对性地分析。<br>
+      <strong>第二遍是"画地图"</strong>——知道整体代码结构后，每个空所处的"位置"就清晰了。<br>
+      <strong>第三遍是"做选择"</strong>——在充分理解的基础上，用方法论选出正确选项。<br><br>
+      <strong>警示：</strong>跳过第一、二遍直接去填第三遍的空，正确率往往不到 30%！
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s2a">2.1 三要素检查法</h3>
+
+  <p class="kp-text">
+    对 <strong>每一个空</strong>，检查以下三个要素的一致性：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">三要素检查法</div>
+    <p class="kp-text">
+      <strong>要素一：初始值</strong> — 变量/数组的初值是否正确？<br>
+      &nbsp;&nbsp;• 求最大值时，<span class="c">max</span> 初始化为 <span class="c">-INF</span> 还是 <span class="c">a[0]</span>？<br>
+      &nbsp;&nbsp;• 累加求和时，<span class="c">sum</span> 初始化为 <span class="c">0</span> 还是 <span class="c">1</span>？<br><br>
+      <strong>要素二：循环体</strong> — 循环中的操作是否符合算法逻辑？<br>
+      &nbsp;&nbsp;• 循环变量递增还是递减？<br>
+      &nbsp;&nbsp;• 循环条件是否包含等号？<span class="c">i &lt; n</span> vs <span class="c">i &lt;= n</span><br><br>
+      <strong>要素三：返回值 / 输出</strong> — 最终结果是否正确？<br>
+      &nbsp;&nbsp;• 函数返回的是累加和还是中间值？<br>
+      &nbsp;&nbsp;• 输出的是最终结果还是临时变量？
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 三要素检查口诀：</strong>"初值对不误，循环跑不跑偏，返回对不对，三关过就是全对。"
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、常见挖空位置 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>常见挖空位置及应对策略</h2>
+
+  <p class="kp-text">
+    经过对历年 CSP-J 真题的统计分析，完善程序的挖空位置集中在 6 个固定类型。
+    以下逐一分析每种位置的特征和应对策略：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th style="width:120px;">挖空位置</th><th>典型特征</th><th>真题举例</th><th style="width:180px;">应对策略</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>初始化条件</strong></td>
+          <td>变量/数组的初始赋值，通常在循环前</td>
+          <td><span class="mono">max = ___</span>、<span class="mono">f[0] = ___; f[1] = ___</span></td>
+          <td>根据算法语义确定初值</td>
+        </tr>
+        <tr>
+          <td><strong>循环结束条件</strong></td>
+          <td>for / while 的条件部分</td>
+          <td><span class="mono">i &lt; n</span> 还是 <span class="mono">i &lt;= n</span>，<span class="mono">l &lt; r</span> 还是 <span class="mono">l &lt;= r</span></td>
+          <td>带入最小/最大边界验证</td>
+        </tr>
+        <tr>
+          <td><strong>递归终止条件</strong></td>
+          <td>递归函数开头的 if 判断</td>
+          <td><span class="mono">if (n &lt;= 1) return ___</span></td>
+          <td>用 n=0/n=1 时的结果反推</td>
+        </tr>
+        <tr>
+          <td><strong>比较运算</strong></td>
+          <td>if 中的 &gt; / &lt; / &gt;= / &lt;=</td>
+          <td><span class="mono">if (a[i] ___ max)</span></td>
+          <td>检查大于还是大于等于</td>
+        </tr>
+        <tr>
+          <td><strong>更新操作</strong></td>
+          <td>循环体内的变量/数组赋值</td>
+          <td><span class="mono">f[i] = f[i-1] ___ f[i-2]</span></td>
+          <td>根据递推关系判断运算符</td>
+        </tr>
+        <tr>
+          <td><strong>下标 / 索引</strong></td>
+          <td>数组访问时的下标表达式</td>
+          <td><span class="mono">a[___]</span>、<span class="mono">s[i-1]</span> vs <span class="mono">s[i]</span></td>
+          <td>模拟前几轮循环，确定下标关系</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">挖空位置速查口诀</div>
+    <p class="kp-text">
+      "初始化、循环界、递归止、比较符、更新式、下标处，六个位置常挖空，三遍法来一一过。"
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、代入验证法 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>代入验证法</h2>
+
+  <p class="kp-text">
+    <strong>代入验证法</strong>是完善程序最有效的检查手段——用题目给出的样例输入，把每个空都填上你选的选项，然后<strong>手动模拟运行</strong>一遍。
+    如果输出与题目给出的输出一致，说明你的选择大概率是正确的。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">代入验证的四个步骤</div>
+    <p class="kp-text">
+      <strong>Step 1：准备数据</strong> — 取题目样例输入（一般很简单，如 n=3, a=[1,2,3]）<br>
+      <strong>Step 2：填写代码</strong> — 在脑海中（或在草稿纸上）把你选的选项填入空中<br>
+      <strong>Step 3：手动模拟</strong> — 逐行运行代码，记录变量变化，得到输出结果<br>
+      <strong>Step 4：对比验证</strong> — 对比模拟输出与题目给出的样例输出是否一致<br><br>
+      <strong>如果一致 → 你的选择很可能正确 ✅</strong><br>
+      <strong>如果不一致 → 重新检查该空（和之前受影响的空）</strong>
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 代入验证的注意事项</div>
+    <p class="kp-text">
+      <strong>① 用最小的数据验证：</strong>比如 n=1, n=2，不要用复杂的大数据<br>
+      <strong>② 验证所有空，不只看一个：</strong>有的空单独看没问题，但多个空格组合起来可能会出错<br>
+      <strong>③ 特别验证边界：</strong>n=0 时程序会不会崩溃？循环是否至少执行一次？<br>
+      <strong>④ 如果发现矛盾，从第一个空开始重新检查：</strong>有时排在前面的空错了，会影响后面所有的空
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、题型特征识别 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>题型特征快速识别</h2>
+
+  <p class="kp-text">
+    快速识别程序属于哪一类算法，能让你更快定位每个空填什么。以下是三类最常见的完善程序题型：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">类型 1：二分查找类</div>
+    <p class="kp-text">
+      <strong>识别特征：</strong><br>
+      &nbsp;&nbsp;• 变量名常用 <span class="c">l</span>（左）、<span class="c">r</span>（右）、<span class="c">mid</span>（中间）<br>
+      &nbsp;&nbsp;• 循环条件为 <span class="c">l &lt; r</span> 或 <span class="c">l &lt;= r</span><br>
+      &nbsp;&nbsp;• 有 <span class="c">mid = (l + r) / 2</span> 或类似计算<br><br>
+      <strong>常见挖空：</strong><br>
+      &nbsp;&nbsp;• 循环结束条件：<span class="c">l &lt; r</span> vs <span class="c">l &lt;= r</span><br>
+      &nbsp;&nbsp;• 边界更新：<span class="c">l = mid + 1</span> vs <span class="c">l = mid</span><br>
+      &nbsp;&nbsp;• 中点计算防溢出：<span class="c">mid = l + (r - l) / 2</span>
+    </p>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">类型 2：动态规划类</div>
+    <p class="kp-text">
+      <strong>识别特征：</strong><br>
+      &nbsp;&nbsp;• 数组名常用 <span class="c">f</span>、<span class="c">dp</span>（动态规划数组）<br>
+      &nbsp;&nbsp;• 有明确的初始条件 <span class="c">f[0]</span>、<span class="c">f[1]</span><br>
+      &nbsp;&nbsp;• 循环内有 <span class="c">f[i] = f[i-1] + f[i-2]</span> 或类似递推式<br><br>
+      <strong>常见挖空：</strong><br>
+      &nbsp;&nbsp;• 边界初值设置<br>
+      &nbsp;&nbsp;• 递推关系的运算符（+、max、min）<br>
+      &nbsp;&nbsp;• 循环范围（i 从几开始到几结束）
+    </p>
+  </div>
+
+  <div class="card purple">
+    <div class="card-title">类型 3：递归类</div>
+    <p class="kp-text">
+      <strong>识别特征：</strong><br>
+      &nbsp;&nbsp;• 函数体内调用自身<br>
+      &nbsp;&nbsp;• 开头的 if 为递归终止条件<br>
+      &nbsp;&nbsp;• 有参数变化：<span class="c">n-1</span>、<span class="c">n/2</span> 等<br><br>
+      <strong>常见挖空：</strong><br>
+      &nbsp;&nbsp;• 终止条件：<span class="c">n &lt;= 1</span> vs <span class="c">n == 0</span><br>
+      &nbsp;&nbsp;• 递归调用的参数：<span class="c">f(n-1)</span> vs <span class="c">f(n-2)</span><br>
+      &nbsp;&nbsp;• 返回值的组合方式：<span class="c">+</span>、<span class="c">*</span>、<span class="c">max</span>
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">识别口诀</div>
+    <p class="kp-text">
+      "l r mid 是二分，f dp 递推身，递归看终止与调用。<br>
+      不是这三种也别慌，模拟 + 模拟就是王道。"
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 六、精选填空练习（共 10 题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">📝</span>精选填空实战练习（共 10 题）</h2>
+
+  <p class="kp-text">
+    以下 10 道题以<strong>简短代码片段填空</strong>的形式呈现，每道题聚焦一个特定的完善程序技能。
+    填空处以 <span class="c" style="background:var(--accent-light);color:var(--accent-dark);font-weight:600;">____</span> 标记，请从选项中选择正确的一项填入。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：求和初始化 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 初始化</span>
+      <span>考：sum 的初始值 + 循环条件</span>
+    </div>
+    <div class="exam-q">
+      以下程序计算 1 到 n 的平方和。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n; cin &gt;&gt; n;
+<span class="kw">int</span> sum = <span class="blank">①</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; <span class="blank">②</span>; i++) {
+  sum += i * i;
+}
+cout &lt;&lt; sum;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> -1</div>
+      <div class="opt"><span class="letter">D</span> 不确定</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> i &lt;= n</div>
+      <div class="opt"><span class="letter">B</span> i &lt; n</div>
+      <div class="opt"><span class="letter">C</span> i &gt; n</div>
+      <div class="opt"><span class="letter">D</span> i &gt;= n</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：① A (0) · ② A (i &lt;= n)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：sum 的初始值</strong><br>
+        &nbsp;&nbsp;• 累加求和，初始化为 <span class="c">0</span>。<br>
+        &nbsp;&nbsp;• 如果初始化为 <span class="c">1</span>，结果就会多 1。<br>
+        &nbsp;&nbsp;• 求和初值永远是 <span class="c">0</span>，求积初值永远是 <span class="c">1</span>。<br><br>
+        <strong>空 ②：循环条件</strong><br>
+        &nbsp;&nbsp;• 要计算 1² + 2² + ... + n²，必须包含 n。<br>
+        &nbsp;&nbsp;• 所以用 <span class="c">i &lt;= n</span>（i 从 1 到 n，包含 n）。<br>
+        &nbsp;&nbsp;• 如果用 <span class="c">i &lt; n</span>，当 n=2 时只会计算 1²，漏掉 2²。<br><br>
+        <strong>验证（n=3）：</strong><br>
+        sum=0 → i=1: sum=0+1=1 → i=2: sum=1+4=5 → i=3: sum=5+9=14<br>
+        1²+2²+3²=14 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：求最大值 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 极值</span>
+      <span>考：max 初始化 + 比较符号</span>
+    </div>
+    <div class="exam-q">
+      以下程序求数组 a 中的最大值。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, a[<span class="num">100</span>]; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+<span class="kw">int</span> maxVal = <span class="blank">①</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+  <span class="kw">if</span> (a[i] <span class="blank">②</span> maxVal) maxVal = a[i];
+}
+cout &lt;&lt; maxVal;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> a[0]</div>
+      <div class="opt"><span class="letter">C</span> -1e9</div>
+      <div class="opt"><span class="letter">D</span> a[n-1]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：① B (a[0]) · ② A (&gt;)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：maxVal 的初始值</strong><br>
+        &nbsp;&nbsp;• 求最大值有两种常见初始化方式：<br>
+        &nbsp;&nbsp;• 方式一（推荐）：<span class="c">maxVal = a[0]</span>，然后从 i=1 开始循环<br>
+        &nbsp;&nbsp;• 方式二：<span class="c">maxVal = -INF</span>（很小的数），然后从 i=0 开始循环<br>
+        &nbsp;&nbsp;• 本题从 i=1 开始循环，说明 maxVal 已经初始化为 a[0]，选 B<br><br>
+        <strong>空 ②：比较符号</strong><br>
+        &nbsp;&nbsp;• 找最大值，当前元素 <span class="c">a[i]</span> 大于 <span class="c">maxVal</span> 时更新<br>
+        &nbsp;&nbsp;• 所以用 <span class="c">a[i] &gt; maxVal</span>，选 A<br>
+        &nbsp;&nbsp;• 用 <span class="c">&gt;=</span> 也可以（当最大值有多个时结果一样）<br><br>
+        <strong>验证（a=[3,7,2,9,5]）：</strong><br>
+        maxVal=a[0]=3 → i=1: 7&gt;3 → maxVal=7 → i=2: 2&gt;7 ✗ → i=3: 9&gt;7 → maxVal=9 → i=4: 5&gt;9 ✗ → 结果=9 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：斐波那契 DP -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · DP初始化</span>
+      <span>考：DP 边界值 + 递推关系</span>
+    </div>
+    <div class="exam-q">
+      以下程序计算斐波那契数列的第 n 项（f[0]=0, f[1]=1）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n; cin &gt;&gt; n;
+<span class="kw">int</span> f[<span class="num">100</span>];
+f[<span class="num">0</span>] = <span class="blank">①</span>;
+f[<span class="num">1</span>] = <span class="blank">②</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= n; i++) {
+  f[i] = f[i<span class="blank">③</span>] + f[i<span class="blank">④</span>];
+}
+cout &lt;&lt; f[n];
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> -1</div>
+      <div class="opt"><span class="letter">D</span> 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> 2</div>
+      <div class="opt"><span class="letter">D</span> -1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> +1</div>
+      <div class="opt"><span class="letter">C</span> -2</div>
+      <div class="opt"><span class="letter">D</span> +2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -2</div>
+      <div class="opt"><span class="letter">B</span> +2</div>
+      <div class="opt"><span class="letter">C</span> -1</div>
+      <div class="opt"><span class="letter">D</span> +1</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：① A (0) · ② B (1) · ③ A (-1) · ④ A (-2)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ① 和 ②：边界初值</strong><br>
+        &nbsp;&nbsp;• 斐波那契数列定义：f[0]=0, f[1]=1<br>
+        &nbsp;&nbsp;• 所以 <span class="c">f[0] = 0</span>（① 选 A），<span class="c">f[1] = 1</span>（② 选 B）<br><br>
+        <strong>空 ③ 和 ④：递推关系</strong><br>
+        &nbsp;&nbsp;• f[i] = f[i-1] + f[i-2]<br>
+        &nbsp;&nbsp;• 即 <span class="c">f[i-1]</span>（前一项）+ <span class="c">f[i-2]</span>（前两项）<br>
+        &nbsp;&nbsp;• 所以③选 <span class="c">-1</span>，④ 选 <span class="c">-2</span>（或③=-2, ④=-1，因加法交换律结果一样）<br><br>
+        <strong>验证（n=5）：</strong><br>
+        f[0]=0, f[1]=1 → f[2]=1+0=1 → f[3]=1+1=2 → f[4]=2+1=3 → f[5]=3+2=5 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：判断完全数（求和+条件） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 条件判断</span>
+      <span>考：比较运算 + 变量更新</span>
+    </div>
+    <div class="exam-q">
+      以下程序判断正整数 n 是否为"完全数"（所有真因子之和等于 n）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n; cin &gt;&gt; n;
+<span class="kw">int</span> sum = <span class="blank">①</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <span class="blank">②</span> n; i++) {
+  <span class="kw">if</span> (n <span class="blank">③</span> i == <span class="num">0</span>) sum += i;
+}
+<span class="kw">if</span> (sum <span class="blank">④</span> n) cout &lt;&lt; <span class="str">"YES"</span>;
+<span class="kw">else</span> cout &lt;&lt; <span class="str">"NO"</span>;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> 0</div>
+      <div class="opt"><span class="letter">C</span> 1</div>
+      <div class="opt"><span class="letter">D</span> n</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> /</div>
+      <div class="opt"><span class="letter">B</span> *</div>
+      <div class="opt"><span class="letter">C</span> %</div>
+      <div class="opt"><span class="letter">D</span> &amp;&amp;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ==</div>
+      <div class="opt"><span class="letter">B</span> =</div>
+      <div class="opt"><span class="letter">C</span> !=</div>
+      <div class="opt"><span class="letter">D</span> &gt;</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：① B (0) · ② A (&lt;) · ③ C (%) · ④ A (==)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：sum 初值</strong> — 累加求和，初始化为 0。<br><br>
+        <strong>空 ②：循环范围</strong><br>
+        &nbsp;&nbsp;• 真因子：能整除 n 且小于 n 的正整数。<br>
+        &nbsp;&nbsp;• 所以 i 从 1 到 <span class="c">n-1</span>，条件用 <span class="c">i &lt; n</span>（不包含 n）。<br>
+        &nbsp;&nbsp;• 如果用 <span class="c">i &lt;= n</span>，会把 n 本身也加进去。<br><br>
+        <strong>空 ③：整除判断</strong><br>
+        &nbsp;&nbsp;• <span class="c">n % i == 0</span> 表示 i 是 n 的因子。<br>
+        &nbsp;&nbsp;• 取模运算符是 <span class="c">%</span>。<br><br>
+        <strong>空 ④：最终判断</strong><br>
+        &nbsp;&nbsp;• 完全数：因子之和等于 n → <span class="c">sum == n</span>。<br>
+        &nbsp;&nbsp;• 注意：<span class="c">=</span> 是赋值，<span class="c">==</span> 才是等值比较。<br><br>
+        <strong>验证（n=6）：</strong><br>
+        因子：1+2+3=6 → sum=6 → sum==6 → YES ✅<br>
+        <strong>验证（n=8）：</strong><br>
+        因子：1+2+4=7 → sum=7 → sum!=8 → NO ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：二分查找 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · 二分</span>
+      <span>考：二分边界更新 + 循环条件</span>
+    </div>
+    <div class="exam-q">
+      以下程序在升序数组 a 中查找目标值 target，返回其下标（不存在返回 -1）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> l = <span class="num">0</span>, r = n<span class="blank">①</span>;
+<span class="kw">while</span> (l <span class="blank">②</span> r) {
+  <span class="kw">int</span> mid = l + (r - l) / <span class="num">2</span>;
+  <span class="kw">if</span> (a[mid] == target) <span class="kw">return</span> mid;
+  <span class="kw">else</span> <span class="kw">if</span> (a[mid] &lt; target) l = mid <span class="blank">③</span>;
+  <span class="kw">else</span> r = mid <span class="blank">④</span>;
+}
+<span class="kw">return</span> <span class="blank">⑤</span>;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> +0</div>
+      <div class="opt"><span class="letter">C</span> +1</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +0</div>
+      <div class="opt"><span class="letter">B</span> +1</div>
+      <div class="opt"><span class="letter">C</span> -1</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> l</div>
+      <div class="opt"><span class="letter">D</span> r</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：① A (-1) · ② B (&lt;=) · ③ B (+1) · ④ B (-1) · ⑤ B (-1)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：r 的初值</strong><br>
+        &nbsp;&nbsp;• 数组下标范围是 0 到 n-1。<br>
+        &nbsp;&nbsp;• <span class="c">l = 0</span>（第一个下标），<span class="c">r = n - 1</span>（最后一个下标）。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">-1</span>。<br><br>
+        <strong>空 ②：循环条件</strong><br>
+        &nbsp;&nbsp;• 当 l &lt;= r 时说明搜索区间非空。<br>
+        &nbsp;&nbsp;• 如果用 <span class="c">l &lt; r</span>，当区间缩到只剩一个元素时循环就退出了。<br>
+        &nbsp;&nbsp;• 所以用 <span class="c">l &lt;= r</span>。<br><br>
+        <strong>空 ③：左边界更新</strong><br>
+        &nbsp;&nbsp;• 当 a[mid] &lt; target 时，目标在右半部分。<br>
+        &nbsp;&nbsp;• mid 已经检查过了，所以新的左边界是 <span class="c">mid + 1</span>。<br><br>
+        <strong>空 ④：右边界更新</strong><br>
+        &nbsp;&nbsp;• 当 a[mid] &gt; target 时，目标在左半部分。<br>
+        &nbsp;&nbsp;• 新的右边界是 <span class="c">mid - 1</span>。<br><br>
+        <strong>空 ⑤：未找到时的返回值</strong><br>
+        &nbsp;&nbsp;• 题目要求：不存在返回 -1。<br><br>
+        <strong>验证（a=[1,3,5,7,9], target=5）：</strong><br>
+        l=0, r=4 → mid=2, a[2]=5==target → return 2 ✅<br>
+        <strong>验证（target=6）：</strong><br>
+        l=0, r=4 → mid=2, a[2]=5&lt;6 → l=3 → mid=3, a[3]=7&gt;6 → r=2 → l=3&gt;r=2 → 退出 → return -1 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：素数判断 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · 条件边界</span>
+      <span>考：循环边界 + 返回值类型</span>
+    </div>
+    <div class="exam-q">
+      以下程序判断正整数 n 是否为素数。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">bool</span> isPrime(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n &lt; <span class="num">2</span>) <span class="kw">return</span> <span class="blank">①</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i <span class="blank">②</span> n; i++) {
+    <span class="kw">if</span> (n <span class="blank">③</span> i == <span class="num">0</span>) <span class="kw">return</span> <span class="blank">④</span>;
+  }
+  <span class="kw">return</span> <span class="blank">⑤</span>;
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> true</div>
+      <div class="opt"><span class="letter">B</span> false</div>
+      <div class="opt"><span class="letter">C</span> 1</div>
+      <div class="opt"><span class="letter">D</span> 0</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> /</div>
+      <div class="opt"><span class="letter">B</span> %</div>
+      <div class="opt"><span class="letter">C</span> *</div>
+      <div class="opt"><span class="letter">D</span> &amp;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> true</div>
+      <div class="opt"><span class="letter">B</span> false</div>
+      <div class="opt"><span class="letter">C</span> 1</div>
+      <div class="opt"><span class="letter">D</span> 继续循环</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> true</div>
+      <div class="opt"><span class="letter">B</span> false</div>
+      <div class="opt"><span class="letter">C</span> 0</div>
+      <div class="opt"><span class="letter">D</span> -1</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：① B (false) · ② A (&lt;) · ③ B (%) · ④ B (false) · ⑤ A (true)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：n &lt; 2 时</strong><br>
+        &nbsp;&nbsp;• 素数定义：大于 1 的自然数，除了 1 和自身外没有其他因子。<br>
+        &nbsp;&nbsp;• 0 和 1 都不是素数 → 返回 <span class="c">false</span>。<br><br>
+        <strong>空 ②：循环边界</strong><br>
+        &nbsp;&nbsp;• 检查从 2 到 <span class="c">sqrt(n)</span> 即可，但这里用 <span class="c">i &lt; n</span>（检查到 n-1）。<br>
+        &nbsp;&nbsp;• 如果用 <span class="c">i &lt;= n</span>，i=n 时 n%n==0 会误判为不是素数。<br><br>
+        <strong>空 ③：整除判断</strong><br>
+        &nbsp;&nbsp;• <span class="c">n % i == 0</span> 表示 i 是 n 的因子。<br><br>
+        <strong>空 ④：找到因子时</strong><br>
+        &nbsp;&nbsp;• 如果能被某个 i 整除，说明 n 不是素数 → 返回 <span class="c">false</span>。<br><br>
+        <strong>空 ⑤：循环结束都没找到因子</strong><br>
+        &nbsp;&nbsp;• 说明没有因子 → 是素数 → 返回 <span class="c">true</span>。<br><br>
+        <strong>验证（n=7）：</strong><br>
+        7&gt;=2 → 循环i=2..6 → 7%2=1, 7%3=1, ..., 7%6=1 → 无因子 → true ✅<br>
+        <strong>验证（n=1）：</strong><br>
+        1&lt;2 → 直接返回 false ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：数组反转 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 双指针</span>
+      <span>考：循环条件 + 下标更新</span>
+    </div>
+    <div class="exam-q">
+      以下程序将数组 a 反转（首尾交换）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> a[<span class="num">100</span>], n; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+<span class="kw">int</span> l = <span class="num">0</span>, r = n <span class="blank">①</span>;
+<span class="kw">while</span> (l <span class="blank">②</span> r) {
+  <span class="kw">int</span> t = a[l];
+  a[l] = a[r];
+  a[r] = t;
+  l++;
+  r<span class="blank">③</span>;
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;=</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>++</div>
+      <div class="opt"><span class="letter">B</span>--</div>
+      <div class="opt"><span class="letter">C</span>+=2</div>
+      <div class="opt"><span class="letter">D</span>-=2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：① B (-1) · ② B (&lt;) · ③ B (--)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：r 初值</strong><br>
+        &nbsp;&nbsp;• 数组 a 的下标范围是 0 到 n-1。<br>
+        &nbsp;&nbsp;• l 指向第一个元素（下标 0），r 指向最后一个元素（下标 <span class="c">n-1</span>）。<br>
+        &nbsp;&nbsp;• 所以 r = n - 1，选择 <span class="c">-1</span>。<br><br>
+        <strong>空 ②：循环条件</strong><br>
+        &nbsp;&nbsp;• 双指针相向而行，当 l &lt; r 时说明两个指针还没相遇，需要交换。<br>
+        &nbsp;&nbsp;• 如果 l == r（奇数长度数组的中间元素），不需要交换。<br>
+        &nbsp;&nbsp;• 所以用 <span class="c">l &lt; r</span>。<br><br>
+        <strong>空 ③：r 的更新</strong><br>
+        &nbsp;&nbsp;• l 向右移动（l++），r 应该向左移动。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">r--</span>。<br><br>
+        <strong>验证（a=[1,2,3,4,5]）：</strong><br>
+        l=0, r=4 → 交换 a[0]↔a[4] → [5,2,3,4,1] → l=1, r=3<br>
+        → 交换 a[1]↔a[3] → [5,4,3,2,1] → l=2, r=2 → l&lt;r 不成立 → 退出 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 8：递归求阶乘 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · 递归</span>
+      <span>考：递归终止条件 + 递归调用</span>
+    </div>
+    <div class="exam-q">
+      以下程序用递归计算 n!（n 的阶乘）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> fact(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n <span class="blank">①</span>) <span class="kw">return</span> <span class="blank">②</span>;
+  <span class="kw">return</span> n <span class="blank">③</span> fact(n <span class="blank">④</span>);
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;= 1</div>
+      <div class="opt"><span class="letter">B</span> == 0</div>
+      <div class="opt"><span class="letter">C</span> &lt;= 0</div>
+      <div class="opt"><span class="letter">D</span> == 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> n</div>
+      <div class="opt"><span class="letter">D</span> -1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +</div>
+      <div class="opt"><span class="letter">B</span> -</div>
+      <div class="opt"><span class="letter">C</span> *</div>
+      <div class="opt"><span class="letter">D</span> /</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +2</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：① A (&lt;= 1) · ② B (1) · ③ C (*) · ④ B (-1)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：终止条件</strong><br>
+        &nbsp;&nbsp;• 0! = 1, 1! = 1。<br>
+        &nbsp;&nbsp;• 所以 n &lt;= 1 时应该终止递归。<br>
+        &nbsp;&nbsp;• 如果用 <span class="c">n == 0</span>，当 n=1 时不会终止（会调用 fact(0)）。<br><br>
+        <strong>空 ②：终止返回值</strong><br>
+        &nbsp;&nbsp;• 0! = 1, 1! = 1 → 返回 <span class="c">1</span>。<br><br>
+        <strong>空 ③：运算符号</strong><br>
+        &nbsp;&nbsp;• 阶乘定义：n! = n × (n-1)!<br>
+        &nbsp;&nbsp;• 所以是 <span class="c">n * fact(n-1)</span>，选乘法 <span class="c">*</span>。<br><br>
+        <strong>空 ④：参数变化</strong><br>
+        &nbsp;&nbsp;• 每次递归参数减 1：<span class="c">n-1</span>。<br><br>
+        <strong>验证（n=4）：</strong><br>
+        fact(4) = 4 * fact(3) = 4 * 3 * fact(2) = 4 * 3 * 2 * fact(1) = 4 * 3 * 2 * 1 = 24 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 9：冒泡排序内部交换条件 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · 排序</span>
+      <span>考：比较符号 + 交换条件 + 循环边界</span>
+    </div>
+    <div class="exam-q">
+      以下程序用冒泡排序将数组 a 按<strong>升序</strong>排列。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> a[<span class="num">100</span>], n; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n<span class="blank">①</span>; i++) {
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; n<span class="blank">②</span>; j++) {
+    <span class="kw">if</span> (a[j] <span class="blank">③</span> a[j<span class="blank">④</span>]) {
+      <span class="kw">int</span> t = a[j]; a[j] = a[j+<span class="num">1</span>]; a[j+<span class="num">1</span>] = t;
+    }
+  }
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> +1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> -2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -i-1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> -i</div>
+      <div class="opt"><span class="letter">D</span> +i</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;</div>
+      <div class="opt"><span class="letter">C</span> &lt;=</div>
+      <div class="opt"><span class="letter">D</span> ==</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> +i</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q9')">👁 显示答案</button>
+    <div class="answer-box" id="q9">
+      <div class="ans">✅ 正确答案：① A (-1) · ② A (-i-1) · ③ B (&gt;) · ④ A (+1)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：外层循环边界</strong><br>
+        &nbsp;&nbsp;• n 个元素，冒泡排序需要进行 n-1 轮。<br>
+        &nbsp;&nbsp;• i 从 0 到 n-2 → 条件 <span class="c">i &lt; n-1</span>。<br><br>
+        <strong>空 ②：内层循环边界</strong><br>
+        &nbsp;&nbsp;• 第 i 轮时，最后 i 个元素已经排好，只需比较前 n-i-1 个。<br>
+        &nbsp;&nbsp;• j 从 0 到 n-i-2 → 条件 <span class="c">j &lt; n-i-1</span>。<br><br>
+        <strong>空 ③：比较条件</strong><br>
+        &nbsp;&nbsp;• 升序排列：当前元素比后一个元素大时交换。<br>
+        &nbsp;&nbsp;• 即 <span class="c">a[j] &gt; a[j+1]</span> 时交换，让大的元素"冒泡"到后面。<br><br>
+        <strong>空 ④：相邻元素下标</strong><br>
+        &nbsp;&nbsp;• 比较 a[j] 和它后面的元素 <span class="c">a[j+1]</span>。<br><br>
+        <strong>验证（a=[5,3,4,1,2] 升序）：</strong><br>
+        第1轮：3,4,1,2,5 → 第2轮：3,1,2,4,5 → 第3轮：1,2,3,4,5 → 第4轮：1,2,3,4,5 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 10：综合 · 最大子段和 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合提升 · DP思想</span>
+      <span>考：max 函数应用 + 状态转移 + 初始化</span>
+    </div>
+    <div class="exam-q">
+      以下程序求数组 a 的<strong>最大子段和</strong>（连续子数组的最大和）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, a[<span class="num">100</span>]; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+<span class="kw">int</span> dp = a[<span class="num">0</span>];
+<span class="kw">int</span> ans = a[<span class="num">0</span>];
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+  dp = max(a[i], <span class="blank">①</span>);
+  ans = max(ans, <span class="blank">②</span>);
+}
+cout &lt;&lt; ans;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> dp + a[i]</div>
+      <div class="opt"><span class="letter">B</span> dp</div>
+      <div class="opt"><span class="letter">C</span> dp - a[i]</div>
+      <div class="opt"><span class="letter">D</span> a[i-1]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> dp</div>
+      <div class="opt"><span class="letter">B</span> a[i]</div>
+      <div class="opt"><span class="letter">C</span> ans + a[i]</div>
+      <div class="opt"><span class="letter">D</span> dp + ans</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q10')">👁 显示答案</button>
+    <div class="answer-box" id="q10">
+      <div class="ans">✅ 正确答案：① A (dp + a[i]) · ② A (dp)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        这是经典的 Kadane 算法（动态规划求最大子段和）。<br><br>
+        <strong>核心思想：</strong><br>
+        &nbsp;&nbsp;• <span class="c">dp</span> 表示"以当前元素结尾的最大子段和"。<br>
+        &nbsp;&nbsp;• 对于每个元素 a[i]，要么它自己开始一个新子段（a[i]），要么接在前一个子段后面（dp + a[i]）。<br>
+        &nbsp;&nbsp;• 取两者的较大值：<span class="c">dp = max(a[i], dp + a[i])</span>。<br><br>
+        <strong>空 ①：dp 的更新公式</strong><br>
+        &nbsp;&nbsp;• <span class="c">dp = max(a[i], dp + a[i])</span> — 看是接着加还是重新开始。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">dp + a[i]</span>。<br><br>
+        <strong>空 ②：ans 的更新（记录全局最大值）</strong><br>
+        &nbsp;&nbsp;• <span class="c">ans = max(ans, dp)</span> — 用当前结尾的最大值更新全局最大。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">dp</span>。<br><br>
+        <strong>验证（a=[-2,1,-3,4,-1,2,1,-5,4]）：</strong><br>
+        <table style="font-size:.78rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">i</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">a[i]</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">dp = max(a[i], dp+a[i])</td><td style="padding:3px 8px;border:1px solid var(--border-light);font-weight:600;">ans</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">0</td><td style="padding:3px 8px;border:1px solid var(--border-light);">-2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">dp=-2（初值）</td><td style="padding:3px 8px;border:1px solid var(--border-light);">-2</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(1, -2+1)=1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(-2,1)=1</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">-3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(-3, 1-3)=-2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(1,-2)=1</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(4, -2+4)=4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(1,4)=4</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">-1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(-1, 4-1)=3</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(4,3)=4</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">2</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(2, 3+2)=5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(4,5)=5</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(1, 5+1)=6</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(5,6)=6</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">7</td><td style="padding:3px 8px;border:1px solid var(--border-light);">-5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(-5, 6-5)=1</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(6,1)=6</td></tr>
+          <tr><td style="padding:3px 8px;border:1px solid var(--border-light);">8</td><td style="padding:3px 8px;border:1px solid var(--border-light);">4</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(4, 1+4)=5</td><td style="padding:3px 8px;border:1px solid var(--border-light);">max(6,5)=6</td></tr>
+        </table>
+        最大子段和为 6（子段 [4,-1,2,1] 或 [4,-1,2,1,-5,4]？[4,-1,2,1]=6 ✅）
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 完善程序速查表 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 完善程序"四步三关"速查表</h3>
+    <p class="kp-text" style="font-size:.82rem;">
+      以下总结了完善程序题的<strong>标准解题流程</strong>和<strong>检查要点</strong>，
+      每次做完善程序题时按此流程执行，可系统性地提高正确率。
+    </p>
+
+    <table>
+      <thead>
+        <tr><th style="width:50px;">步骤</th><th style="width:100px;">名称</th><th>操作内容</th><th>常见遗漏点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;"><span class="mono">1</span></td>
+          <td><strong>读题面</strong></td>
+          <td>读题目描述 + 注释 + main 函数，回答：这段程序在做什么算法？</td>
+          <td style="color:var(--danger);font-size:.76rem;">忽略注释中的算法提示</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">2</span></td>
+          <td><strong>通框架</strong></td>
+          <td>重点关注：初始化变量、循环结构、边界条件、返回/输出</td>
+          <td style="color:var(--danger);font-size:.76rem;">直接看单个空，不看整体</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">3</span></td>
+          <td><strong>逐空推</strong></td>
+          <td>用三要素检查法（初始值·循环体·返回值）逐一分析每个空</td>
+          <td style="color:var(--danger);font-size:.76rem;">选了选项后不代入验证</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">4</span></td>
+          <td><strong>代入验</strong></td>
+          <td>用样例输入手动模拟，验证所有空的组合是否正确</td>
+          <td style="color:var(--danger);font-size:.76rem;">只用脑想，不在纸上写变量变化</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row" style="margin-top:12px;">
+      <span class="pill">💡 三遍法：定方向 → 画地图 → 做选择</span>
+      <span class="pill green">✅ 三要素：初始值 · 循环体 · 返回值</span>
+      <span class="pill red">⚠️ 六挖空：初始化 / 循环界 / 递归止 / 比较 / 更新 / 下标</span>
+      <span class="pill amber">🔍 二分识别：l, r, mid</span>
+      <span class="pill purple">📊 DP识别：f, dp, 递推式</span>
+      <span class="pill blue">🔄 递归识别：自身调用 + 终止条件</span>
+    </div>
+
+    <div class="card success" style="margin:12px 0 0;">
+      <div class="card-title">📌 考场备忘</div>
+      <p class="kp-text" style="font-size:.82rem;">
+        <strong>做题顺序：</strong>完善程序放在试卷最后。建议先做选择题（15~20 分钟），
+        再做阅读程序（25~30 分钟），最后做完善程序（15~20 分钟）。<br>
+        <strong>时间分配：</strong>每题约 8~10 分钟。前 2~3 空通常比较简单（初始化、边界），
+        后 2 空（核心算法）需要更多时间。<br>
+        <strong>检查策略：</strong>所有空填完后，选一个最简单的输入数据（如 n=3），
+        从头到尾手动模拟运行一遍，看输出是否合理。<br>
+        <strong>不要空题：</strong>实在不会时，优先选择"看起来最自然"的选项
+        （如 <span class="c">sum=0</span>、<span class="c">i&lt;n</span>、<span class="c">a[0]</span> 等常见初值）。
+      </p>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

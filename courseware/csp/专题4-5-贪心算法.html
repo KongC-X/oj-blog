@@ -1,0 +1,830 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 4.5 贪心算法</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.graph-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.5;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto}
+.graph-viz .hl{color:var(--primary-dark);font-weight:600}
+.graph-viz .vis{color:#059669;font-weight:600}
+.graph-viz .cur{color:#dc2626;font-weight:600}
+.graph-viz .que{color:#8b5cf6;font-weight:600}
+.graph-viz .dim{color:var(--text-ter)}
+.graph-viz .red{color:#ef4444;font-weight:600}
+.huff-tree{font-family:var(--font-mono);font-size:.75rem;line-height:1.5;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto}
+.huff-tree .hl{color:var(--primary-dark);font-weight:600}
+.huff-tree .leaf{color:#059669;font-weight:600}
+.huff-tree .node{color:#8b5cf6;font-weight:600}
+.huff-tree .dim{color:var(--text-ter)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">⚖</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题四 · 算法基础</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 贪心策略</div>
+<a class="nav-link" href="#s1">贪心算法核心思想</a>
+<a class="nav-link sub" href="#s1a">哈夫曼编码与贪心</a>
+
+<div class="nav-section">2 · 区间问题</div>
+<a class="nav-link" href="#s2">区间选点</a>
+<a class="nav-link" href="#s3">区间覆盖</a>
+<a class="nav-link" href="#s4">区间调度（活动安排）</a>
+
+<div class="nav-section">3 · 辨析</div>
+<a class="nav-link" href="#s5">贪心 vs DP</a>
+
+<div class="nav-section">4 · 真题演练</div>
+<a class="nav-link" href="#s6">📝 8 道真题 + 模拟</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 小结速查</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题四 · 算法基础</a> / 4.5</div>
+    <h1>贪心算法</h1>
+    <p class="subtitle">Greedy · 每一步选当前最优 · 区间问题 · 哈夫曼编码 · 贪心 vs DP</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 2+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 6 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 贪心策略：每一步选当前最优，局部最优推全局最优</span>
+      <span class="item">✅ 哈夫曼编码是贪心策略（2021 第 11 题）</span>
+      <span class="item">✅ 区间选点、区间覆盖、区间调度三大模型</span>
+      <span class="item">✅ 活动安排问题的贪心选择策略</span>
+      <span class="item">✅ 贪心与动态规划（DP）的核心区别</span>
+      <span class="item">✅ 2021·2022 真题精讲</span>
+      <span class="item">✅ 8 道模拟 + 真题实战训练</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、贪心策略 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>贪心算法核心思想</h2>
+
+  <p class="kp-text">
+    <strong class="hl">贪心算法（Greedy Algorithm）</strong>是一种在每一步选择中都采取<strong>当前状态下最优</strong>
+    （即局部最优）的选择，从而希望<strong>导致全局最优</strong>的算法策略。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">贪心算法的基本特征</div>
+    <p class="kp-text">
+      <strong>核心思想：</strong>分阶段决策，每阶段选取当前"最好"的选项，不回头调整。<br>
+      <strong>适用条件：</strong>具有<strong class="hl">最优子结构</strong>和<strong class="hl">贪心选择性质</strong>。<br>
+      &nbsp;&nbsp;• 最优子结构：问题的最优解包含子问题的最优解<br>
+      &nbsp;&nbsp;• 贪心选择性质：通过局部最优选择能导出全局最优解<br>
+      <strong>不适用场景：</strong>部分问题局部最优 ≠ 全局最优（如背包问题、最短路径等需要 DP 的场景）
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 记忆口诀</div>
+    <p class="kp-text">
+      <strong>"鼠目寸光，步步为营"</strong> — 贪心只看眼前一步，不管未来如何。<br>
+      <strong>"局部最优 ≠ 全局最优"</strong> — 不是所有问题都能用贪心，需要证明贪心选择性质。
+    </p>
+  </div>
+
+  <h3 class="kp-title">贪心算法的解题框架</h3>
+  <div class="step-box">
+    <div class="step"><span class="sn">1</span> <strong>建立数学模型：</strong>将问题转化为"在一组候选解中选最优"的形式</div>
+    <div class="step"><span class="sn">2</span> <strong>确定贪心策略：</strong>定义"当前最优"的评价标准（如选最早结束、最小权值等）</div>
+    <div class="step"><span class="sn">3</span> <strong>模拟执行：</strong>按贪心策略逐一选择，得到一组解</div>
+    <div class="step"><span class="sn">4</span> <strong>验证正确性：</strong>判断该策略是否总能得到全局最优解</div>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 初赛考查形式：</strong>不要求写出完整贪心代码，而是<strong>理解贪心策略的适用场景</strong>、
+    判断某问题能否用贪心解决、模拟贪心过程得出结果。
+  </div>
+
+  <h3 class="kp-title" id="s1a">1.1 哈夫曼编码 — 一个经典的贪心策略</h3>
+
+  <p class="kp-text">
+    <strong class="hl">哈夫曼编码（Huffman Coding）</strong>是数据压缩中的经典算法，其本质就是一个<strong>贪心策略</strong>：
+    每次从频率集合中选出<strong>频率最小的两个节点</strong>合并，构造一棵带权路径长度最小的二叉树。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">为什么哈夫曼编码是贪心？</div>
+    <p class="kp-text">
+      <strong>贪心选择：</strong>每一步都合并当前频率最小的两个节点。<br>
+      <strong>局部最优：</strong>每次合并使当前的总代价增量最小。<br>
+      <strong>全局最优：</strong>通过这样的局部最优选择，最终得到的编码总长度（WPL）一定是最小的。<br><br>
+      2021 年第 11 题直接考查了这一知识点。
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 2021 第 11 题 · 原题结论：</strong>
+    哈夫曼编码的算法策略本质是<strong class="hl">贪心策略</strong>。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、区间选点 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>区间选点问题</h2>
+
+  <p class="kp-text">
+    <strong class="hl">问题描述：</strong>给定若干个区间，选择<strong>尽可能少的点</strong>，
+    使得每个区间内<strong>至少包含一个</strong>被选中的点。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">标准解法：贪心</div>
+    <p class="kp-text">
+      <strong>策略：</strong>将所有区间按<strong class="hl">右端点从小到大</strong>排序。<br>
+      依次处理每个区间：如果当前区间尚未被覆盖，则选其<strong>右端点</strong>作为一个新点。<br><br>
+      <strong>正确性：</strong>选右端点可以"一箭多雕"——该点最有可能覆盖后续更多的区间。
+    </p>
+  </div>
+
+  <h3 class="kp-title">示例演示</h3>
+
+  <div class="card accent">
+    <div class="card-title">区间集合：{[1,3], [2,5], [4,6], [3,7], [6,8]}</div>
+    <p class="kp-text">
+      <strong>按右端点排序后：</strong>[1,3]→[2,5]→[4,6]→[3,7]→[6,8]<br>
+      <strong>执行过程：</strong><br>
+      &nbsp;&nbsp;• 取区间 [1,3] 的右端点 <span class="c">3</span> → 覆盖了 [1,3] 和 [2,5]<br>
+      &nbsp;&nbsp;• 下一个未覆盖区间 [4,6]，取右端点 <span class="c">6</span> → 覆盖了 [4,6] 和 [3,7] 和 [6,8]<br>
+      &nbsp;&nbsp;• 所有区间都被覆盖<br>
+      <strong>最少点数：</strong><span class="c">2</span>（点 3 和点 6）
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、区间覆盖 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>区间覆盖问题</h2>
+
+  <p class="kp-text">
+    <strong class="hl">问题描述：</strong>给定一个目标区间 <span class="c">[S, T]</span> 和若干可用区间，
+    选择<strong>最少的区间</strong>来完全覆盖目标区间。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">标准解法：贪心</div>
+    <p class="kp-text">
+      <strong>策略：</strong>将所有区间按<strong class="hl">左端点从小到大</strong>排序。<br>
+      每次从<strong>能覆盖当前起点</strong>的区间中，选出<strong>右端点最大</strong>的那个，然后更新起点为该右端点。<br><br>
+      <strong>核心：</strong>选覆盖范围最大的区间，尽量减少需要的区间数量。
+    </p>
+  </div>
+
+  <h3 class="kp-title">示例演示</h3>
+
+  <div class="card accent">
+    <div class="card-title">目标区间 [1, 8]，可用区间：{[1,3], [2,5], [3,6], [4,7], [5,8], [6,9]}</div>
+    <p class="kp-text">
+      <strong>排序后（按左端点）：</strong>[1,3], [2,5], [3,6], [4,7], [5,8], [6,9]<br>
+      <strong>执行过程：</strong><br>
+      &nbsp;&nbsp;• 起点 = 1，能覆盖 1 的区间有 [1,3] 和 [2,5]，选右端点最大的 <span class="c">[2,5]</span>，更新起点 = 5<br>
+      &nbsp;&nbsp;• 起点 = 5，能覆盖 5 的区间有 [3,6], [4,7], [5,8], [6,9]，选右端点最大的 <span class="c">[6,9]</span>，更新起点 = 9<br>
+      &nbsp;&nbsp;• 起点 = 9 ≥ 终点 8 → 覆盖完成<br>
+      <strong>最少区间数：</strong><span class="c">2</span>（[2,5] 和 [6,9]）
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、区间调度（活动安排） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>区间调度（活动安排）问题</h2>
+
+  <p class="kp-text">
+    <strong class="hl">问题描述：</strong>有若干个活动，每个活动有开始时间和结束时间，
+    同一时间只能参加一个活动，问最多能参加<strong>多少个互不重叠</strong>的活动。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">标准解法：贪心</div>
+    <p class="kp-text">
+      <strong>策略：</strong>将所有活动按<strong class="hl">结束时间从小到大</strong>排序。<br>
+      依次选择：如果当前活动的开始时间 <strong>≥</strong> 上一个选中活动的结束时间，就选择它。<br><br>
+      <strong>为什么按结束时间？</strong>结束越早，留给后面的时间越多，能安排的活动也越多。
+    </p>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">三种区间问题策略对比</div>
+    <table style="width:100%;font-size:.82rem;border-collapse:collapse;margin:6px 0;">
+      <tr><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;">问题</td><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;">排序标准</td><td style="padding:4px 8px;border:1px solid var(--border-light);font-weight:600;">贪心策略</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">区间选点</td><td style="padding:4px 8px;border:1px solid var(--border-light);">按右端点升序</td><td style="padding:4px 8px;border:1px solid var(--border-light);">选未覆盖区间右端点</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">区间覆盖</td><td style="padding:4px 8px;border:1px solid var(--border-light);">按左端点升序</td><td style="padding:4px 8px;border:1px solid var(--border-light);">选能覆盖起点且右端最大的</td></tr>
+      <tr><td style="padding:4px 8px;border:1px solid var(--border-light);">区间调度</td><td style="padding:4px 8px;border:1px solid var(--border-light);">按结束时间升序</td><td style="padding:4px 8px;border:1px solid var(--border-light);">选结束最早且不与已选重叠的</td></tr>
+    </table>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 这三种区间问题是贪心算法的经典模型。</strong>初赛中常以概念辨析或模拟过程的形式考查——
+    给定几个区间，让你模拟贪心过程并说出结果。
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 五、贪心 vs DP -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>贪心 vs 动态规划（DP）</h2>
+
+  <p class="kp-text">
+    贪心和动态规划（DP）都利用<strong>最优子结构</strong>性质，但二者有本质区别。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th style="width:90px;">对比维度</th><th>贪心（Greedy）</th><th>动态规划（DP）</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">决策方式</span></td><td><strong class="b">单向</strong>：每步选当前最优，不回头</td><td><strong class="b">多向</strong>：考虑所有可能，对比选择</td></tr>
+        <tr><td><span class="mono">子问题依赖</span></td><td>只依赖当前状态，不考虑未来</td><td>依赖所有可能的子问题结果</td></tr>
+        <tr><td><span class="mono">是否回溯</span></td><td>❌ 不回溯，一步定局</td><td>✅ 通过状态转移比较不同路径</td></tr>
+        <tr><td><span class="mono">正确性保证</span></td><td>需要证明贪心选择性质</td><td>通过枚举所有可能保证最优</td></tr>
+        <tr><td><span class="mono">时间复杂度</span></td><td>通常 O(n) 或 O(n log n)</td><td>通常 O(n²) 或更高</td></tr>
+        <tr><td><span class="mono">典型问题</span></td><td>哈夫曼编码、活动安排、Dijkstra</td><td>背包问题、最长上升子序列、编辑距离</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 易混淆点</div>
+    <p class="kp-text">
+      <strong>贪心不是 DP 的简单版！</strong>贪心做了"不可撤销"的决定，而 DP 会考虑所有可能性。<br>
+      能用贪心解决的问题一定能用 DP 解决，但反之<strong>不一定</strong>。<br>
+      <strong>判据：</strong>如果一个问题可以通过"选一个最优选项后，剩下的问题还能独立地按同样策略求解"，<br>
+      则可能适合贪心；如果需要在多个选项中做<strong>对比取舍</strong>，则通常需要 DP。
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🎯 记忆要点</div>
+    <p class="kp-text">
+      <strong>贪心 = 一条路走到黑</strong> — 每一步选最好的，不后悔<br>
+      <strong>DP = 条条大路通罗马</strong> — 先试所有可能的路径，再选最好的<br>
+      <strong>关键区别：</strong>贪心不做决策比较，DP 显式比较所有子问题解
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 六、真题与模拟综合练习（共 8 题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">📝</span>真题与模拟综合练习（共 8 题）</h2>
+
+  <p class="kp-text">
+    以下题目涵盖了 CSP-J 初赛中贪心算法的所有考点。每道题均包含<strong>详细解析</strong>，请务必先自己思考再点击查看答案。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：2021 第 11 题 哈夫曼编码 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 11 题</span>
+      <span>哈夫曼编码与贪心策略</span>
+    </div>
+    <div class="exam-q">
+      以下关于哈夫曼编码的描述，正确的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 哈夫曼编码的算法本质是分治策略</div>
+      <div class="opt"><span class="letter">B</span> 哈夫曼编码的算法本质是贪心策略</div>
+      <div class="opt"><span class="letter">C</span> 哈夫曼编码的算法本质是动态规划</div>
+      <div class="opt"><span class="letter">D</span> 哈夫曼编码的算法本质是搜索策略</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：B · 贪心策略</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        哈夫曼编码的构造过程是：<strong>每次从集合中选出频率最小的两个节点合并</strong>，
+        这一操作就是典型的<strong>贪心选择</strong>——每一步都选当前最优（频率最小）。<br><br>
+        <strong>为什么 A（分治）不对？</strong>分治是把问题分解为独立的子问题再合并，
+        而哈夫曼编码并不"分解"问题，而是自底向上<strong>合并</strong>。<br><br>
+        <strong>为什么 C（DP）不对？</strong>DP 需要枚举多个子问题的解并比较，
+        哈夫曼的每一步选择是确定的（最小两个），不需要从多种方案中挑选最优。<br><br>
+        <strong>结论：</strong>哈夫曼编码的本质算法策略是 <strong class="b">贪心策略</strong>。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：2022 第 7 题 哈夫曼树 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 第 7 题</span>
+      <span>哈夫曼编码长度计算</span>
+    </div>
+    <div class="exam-q">
+      假设有 5 个字母 A、B、C、D、E，它们的出现频率分别为 2、3、5、7、8。
+      构造哈夫曼树，则字母 A 的编码长度（二进制位数）为（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2</div>
+      <div class="opt"><span class="letter">B</span> 3</div>
+      <div class="opt"><span class="letter">C</span> 4</div>
+      <div class="opt"><span class="letter">D</span> 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：B · 3</div>
+      <div class="explain">
+        <strong>构造哈夫曼树过程：</strong><br><br>
+        初始频率：<span class="c">A=2, B=3, C=5, D=7, E=8</span><br><br>
+        <strong>第 1 步：</strong>合并最小的 A(2) 和 B(3) → 新节点 N1=5（加入集合）<br>
+        集合：N1=5, C=5, D=7, E=8<br><br>
+        <strong>第 2 步：</strong>合并最小的 N1(5) 和 C(5) → 新节点 N2=10（加入集合）<br>
+        集合：D=7, E=8, N2=10<br><br>
+        <strong>第 3 步：</strong>合并最小的 D(7) 和 E(8) → 新节点 N3=15（加入集合）<br>
+        集合：N2=10, N3=15<br><br>
+        <strong>第 4 步：</strong>合并 N2(10) 和 N3(15) → 根节点 = 25<br><br>
+        <strong>树的形态（左0右1）：</strong>
+        <div class="huff-tree">
+                    根(25)<br>
+                   /      \<br>
+               N2(10)    N3(15)<br>
+              /     \    /     \<br>
+           N1(5)  C(5) D(7)  E(8)<br>
+           /   \<br>
+         A(2)  B(3)
+        </div><br>
+        <strong>A 的路径：</strong>根 → N2(0) → N1(0) → A(0) → 共 <strong class="b">3 位</strong><br>
+        路径：根→左(0) → N1左(0) → A(0)，编码为 <span class="c">000</span><br><br>
+        <strong>各字母编码长度：</strong><br>
+        A=3位, B=3位, C=2位, D=2位, E=2位<br><br>
+        <strong>结论：字母 A 的编码长度为 <span class="b">3</span>。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：模拟 · 区间选点 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 区间选点</span>
+      <span>最少的点覆盖所有区间</span>
+    </div>
+    <div class="exam-q">
+      现给定以下区间集合：<span class="c">[1,3], [2,5], [4,8], [6,7], [7,10]</span>。<br>
+      用贪心算法选最少的点，使得每个区间至少包含一个点，最少需要选（  ）个点？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1 个</div>
+      <div class="opt"><span class="letter">B</span> 2 个</div>
+      <div class="opt"><span class="letter">C</span> 3 个</div>
+      <div class="opt"><span class="letter">D</span> 4 个</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：B · 2 个</div>
+      <div class="explain">
+        <strong>贪心过程（按右端点排序）：</strong><br><br>
+        <strong>排序后的区间：</strong><br>
+        [1,3] 右=3 &nbsp;→&nbsp; [2,5] 右=5 &nbsp;→&nbsp; [6,7] 右=7 &nbsp;→&nbsp; [4,8] 右=8 &nbsp;→&nbsp; [7,10] 右=10<br><br>
+        <strong>具体步骤：</strong><br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">步骤</td><td style="padding:2px 8px;border:1px solid var(--border-light);">当前区间</td><td style="padding:2px 8px;border:1px solid var(--border-light);">是否已覆盖</td><td style="padding:2px 8px;border:1px solid var(--border-light);">操作</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[1,3]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">❌</td><td style="padding:2px 8px;border:1px solid var(--border-light);">选点 <strong>3</strong></td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[2,5]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅（含 3）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">跳过</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[6,7]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">❌</td><td style="padding:2px 8px;border:1px solid var(--border-light);">选点 <strong>7</strong></td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">4</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[4,8]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅（含 7）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">跳过</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[7,10]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅（含 7）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">跳过</td></tr>
+        </table>
+        <br>
+        <strong>选中的两个点：</strong><span class="c">3</span> 和 <span class="c">7</span><br>
+        点 3 覆盖了 [1,3]、[2,5]<br>
+        点 7 覆盖了 [6,7]、[4,8]、[7,10]<br><br>
+        <strong>结论：最少需要 2 个点。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：模拟 · 区间覆盖 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 区间覆盖</span>
+      <span>最少的区间覆盖目标区间</span>
+    </div>
+    <div class="exam-q">
+      目标区间为 <span class="c">[2, 10]</span>，现有以下可用区间：<br>
+      <span class="c">[1,4], [2,5], [3,7], [5,9], [6,8], [8,11]</span>。<br>
+      用贪心算法覆盖目标区间，最少需要（  ）个区间？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2 个</div>
+      <div class="opt"><span class="letter">B</span> 3 个</div>
+      <div class="opt"><span class="letter">C</span> 4 个</div>
+      <div class="opt"><span class="letter">D</span> 5 个</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：B · 3 个</div>
+      <div class="explain">
+        <strong>贪心过程（按左端点排序）：</strong><br><br>
+        <strong>排序后的区间：</strong><br>
+        [1,4], [2,5], [3,7], [5,9], [6,8], [8,11]<br><br>
+        <strong>目标覆盖范围：</strong>起点 S=2，终点 T=10<br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">轮次</td><td style="padding:2px 8px;border:1px solid var(--border-light);">当前起点</td><td style="padding:2px 8px;border:1px solid var(--border-light);">可覆盖起点的区间</td><td style="padding:2px 8px;border:1px solid var(--border-light);">选中区间</td><td style="padding:2px 8px;border:1px solid var(--border-light);">更新起点</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[1,4], [2,5] 中右端最大→[2,5]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[2,5] 右=5</td><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[3,7], [5,9] 中右端最大→[5,9]</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[5,9] 右=9</td><td style="padding:2px 8px;border:1px solid var(--border-light);">9</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td><td style="padding:2px 8px;border:1px solid var(--border-light);">9</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[6,8] ❌(右&lt;9), [8,11] 能覆盖</td><td style="padding:2px 8px;border:1px solid var(--border-light);">[8,11] 右=11</td><td style="padding:2px 8px;border:1px solid var(--border-light);">11 ≥ 10 ✅</td></tr>
+        </table>
+        <br>
+        <strong>选中的 3 个区间：</strong><br>
+        <span class="c">[2,5]</span> → <span class="c">[5,9]</span> → <span class="c">[8,11]</span><br><br>
+        <strong>结论：至少需要 3 个区间才能覆盖 [2,10]。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：模拟 · 活动安排 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 活动安排</span>
+      <span>贪心选择最多活动</span>
+    </div>
+    <div class="exam-q">
+      有 5 个活动，开始和结束时间如下（括号表示时间段）：<br>
+      A(0,4)、B(3,6)、C(5,8)、D(6,9)、E(8,10)<br>
+      用贪心算法（按结束时间最早）选择最多互不重叠的活动，最多可以选（  ）个？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2 个</div>
+      <div class="opt"><span class="letter">B</span> 3 个</div>
+      <div class="opt"><span class="letter">C</span> 4 个</div>
+      <div class="opt"><span class="letter">D</span> 5 个</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：B · 3 个</div>
+      <div class="explain">
+        <strong>贪心过程（按结束时间排序）：</strong><br><br>
+        <strong>按结束时间排序后的活动：</strong><br>
+        A(0,4) 结束=4 → B(3,6) 结束=6 → C(5,8) 结束=8 → D(6,9) 结束=9 → E(8,10) 结束=10<br><br>
+        <strong>具体步骤：</strong><br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">处理</td><td style="padding:2px 8px;border:1px solid var(--border-light);">活动</td><td style="padding:2px 8px;border:1px solid var(--border-light);">时间</td><td style="padding:2px 8px;border:1px solid var(--border-light);">开始≥上次结束？</td><td style="padding:2px 8px;border:1px solid var(--border-light);">选择</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td><td style="padding:2px 8px;border:1px solid var(--border-light);">A</td><td style="padding:2px 8px;border:1px solid var(--border-light);">(0,4)</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅（第一个活动）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅ 选，上次结束 = 4</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">B</td><td style="padding:2px 8px;border:1px solid var(--border-light);">(3,6)</td><td style="padding:2px 8px;border:1px solid var(--border-light);">❌ 3 &lt; 4</td><td style="padding:2px 8px;border:1px solid var(--border-light);">跳过</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td><td style="padding:2px 8px;border:1px solid var(--border-light);">C</td><td style="padding:2px 8px;border:1px solid var(--border-light);">(5,8)</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅ 5 ≥ 4</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅ 选，上次结束 = 8</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">4</td><td style="padding:2px 8px;border:1px solid var(--border-light);">D</td><td style="padding:2px 8px;border:1px solid var(--border-light);">(6,9)</td><td style="padding:2px 8px;border:1px solid var(--border-light);">❌ 6 &lt; 8</td><td style="padding:2px 8px;border:1px solid var(--border-light);">跳过</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td><td style="padding:2px 8px;border:1px solid var(--border-light);">E</td><td style="padding:2px 8px;border:1px solid var(--border-light);">(8,10)</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅ 8 ≥ 8</td><td style="padding:2px 8px;border:1px solid var(--border-light);">✅ 选，上次结束 = 10</td></tr>
+        </table>
+        <br>
+        <strong>选中的活动：</strong>A(0,4)、C(5,8)、E(8,10) → 共 <span class="b">3 个</span><br><br>
+        <strong>为什么选最早结束的？</strong>结束越早，留给后面的时间越多，
+        这样就能安排更多的活动。<br><br>
+        <strong>注意：</strong>如果按"开始最早"或"持续时间最短"贪心，都不能保证选到最多活动数。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：模拟 · 硬币找零 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 硬币找零</span>
+      <span>贪心找零策略</span>
+    </div>
+    <div class="exam-q">
+      某货币系统有面值 <span class="c">1、5、10、25</span> 四种硬币。用贪心算法找零 <span class="c">63</span> 元，
+      每次选不超过剩余金额的最大面值硬币，需要（  ）枚硬币？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 4 枚</div>
+      <div class="opt"><span class="letter">B</span> 5 枚</div>
+      <div class="opt"><span class="letter">C</span> 6 枚</div>
+      <div class="opt"><span class="letter">D</span> 7 枚</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：C · 6 枚</div>
+      <div class="explain">
+        <strong>贪心过程（每次选面值最大的硬币）：</strong><br><br>
+        <table style="font-size:.8rem;margin:6px 0;border-collapse:collapse;">
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">步骤</td><td style="padding:2px 8px;border:1px solid var(--border-light);">剩余金额</td><td style="padding:2px 8px;border:1px solid var(--border-light);">选最大面值≤剩余</td><td style="padding:2px 8px;border:1px solid var(--border-light);">硬币数</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td><td style="padding:2px 8px;border:1px solid var(--border-light);">63</td><td style="padding:2px 8px;border:1px solid var(--border-light);">25（剩余 38）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">38</td><td style="padding:2px 8px;border:1px solid var(--border-light);">25（剩余 13）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td><td style="padding:2px 8px;border:1px solid var(--border-light);">13</td><td style="padding:2px 8px;border:1px solid var(--border-light);">10（剩余 3）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">4</td><td style="padding:2px 8px;border:1px solid var(--border-light);">3</td><td style="padding:2px 8px;border:1px solid var(--border-light);">1（剩余 2）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">4</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td><td style="padding:2px 8px;border:1px solid var(--border-light);">2</td><td style="padding:2px 8px;border:1px solid var(--border-light);">1（剩余 1）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">5</td></tr>
+          <tr><td style="padding:2px 8px;border:1px solid var(--border-light);">6</td><td style="padding:2px 8px;border:1px solid var(--border-light);">1</td><td style="padding:2px 8px;border:1px solid var(--border-light);">1（剩余 0）</td><td style="padding:2px 8px;border:1px solid var(--border-light);">6</td></tr>
+        </table>
+        <br>
+        <strong>结果：</strong>25×2 + 10×1 + 1×3 = 63，共 <span class="b">6 枚</span>。<br><br>
+        <strong>注意：</strong>并不是所有货币系统都能用贪心找零得到最优解。例如面值 {1,3,4}，
+        找零 6 元时贪心会选 4+1+1=3枚（而最优是 3+3=2枚）。<br><br>
+        <strong>初赛考点：</strong>只有在<strong>规范货币系统</strong>（如人民币、美元标准面值）中，
+        贪心找零才保证最优。题目中 {1,5,10,25} 属于规范货币系统。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：模拟 · 贪心 vs DP -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 贪心 vs DP</span>
+      <span>判断哪个问题适合用贪心</span>
+    </div>
+    <div class="exam-q">
+      以下问题中，<strong>最适合</strong>用贪心算法求解的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0-1 背包问题（每个物品要么选要么不选）</div>
+      <div class="opt"><span class="letter">B</span> 活动安排问题（选最多互不重叠的活动）</div>
+      <div class="opt"><span class="letter">C</span> 最长公共子序列（LCS）</div>
+      <div class="opt"><span class="letter">D</span> 最短路径（Dijkstra 算法除外）</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：B · 活动安排问题</div>
+      <div class="explain">
+        <strong>逐一分析：</strong><br><br>
+        <strong>A. 0-1 背包问题</strong> ❌ 不能用贪心。<br>
+        0-1 背包不具备贪心选择性质。按"价值/重量比"选单位价值最高的物品，
+        未必能得到全局最优解。需要用 <strong class="b">动态规划</strong> 求解。<br><br>
+        <strong>B. 活动安排问题</strong> ✅ 最适合贪心。<br>
+        按"结束时间最早"贪心选择，可以证明能选出最多互不重叠的活动。
+        这是贪心算法的经典教材问题。<br><br>
+        <strong>C. 最长公共子序列（LCS）</strong> ❌ 需要用 DP。<br>
+        当前位置的最优解依赖于两个字符串前面所有位置的匹配情况，
+        每一步无法做出独立的最优决策。<br><br>
+        <strong>D. 最短路径（Dijkstra 除外）</strong> ❌ 一般用 DP 或 BFS。<br>
+        注意 Dijkstra 算法本身是一个<strong>贪心算法</strong>（每次选距离最小的未处理节点），
+        但题目说"除外"。其他最短路径算法（如 Bellman-Ford、Floyd）不是贪心。<br><br>
+        <strong>结论：</strong>活动安排问题是贪心算法的标准例题。<br><br>
+        <strong>区分标准：</strong>贪心适合"每步选一个最优，剩下的仍然是独立的子问题"。
+        如果需要在多步决策之间<strong>比较取舍</strong>，就需要 DP。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 8：综合概念辨析 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟 · 概念辨析</span>
+      <span>贪心算法综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下关于贪心算法的描述，<strong>错误</strong>的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 贪心算法每一步都选择当前状态下的最优解</div>
+      <div class="opt"><span class="letter">B</span> 贪心策略需要证明其具有贪心选择性质</div>
+      <div class="opt"><span class="letter">C</span> 所有问题都可以用贪心算法求解</div>
+      <div class="opt"><span class="letter">D</span> 哈夫曼编码是一种贪心算法</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：C · 所有问题都可以用贪心算法求解</div>
+      <div class="explain">
+        <strong>逐一分析：</strong><br><br>
+        <strong>A. 贪心算法每一步都选择当前状态下的最优解</strong><br>
+        ✅ <strong>正确。</strong>这正是贪心算法的核心定义——"局部最优"选择。<br><br>
+        <strong>B. 贪心策略需要证明其具有贪心选择性质</strong><br>
+        ✅ <strong>正确。</strong>贪心选择性质是指通过一系列局部最优选择可以得到全局最优解。
+        这是使用贪心算法的前提条件，<strong>必须证明</strong>才能保证正确性。<br><br>
+        <strong>C. 所有问题都可以用贪心算法求解</strong><br>
+        ❌ <strong>错误。</strong>很多问题不具备贪心选择性质。
+        例如 0-1 背包问题、最短路径（带负权）、旅行商问题等，
+        贪心算法无法得到最优解，需要用 DP 或其他算法。<br><br>
+        <strong>D. 哈夫曼编码是一种贪心算法</strong><br>
+        ✅ <strong>正确。</strong>每次合并频率最小的两个节点，是典型的贪心策略。<br><br>
+        <strong>结论：C 是错误描述。</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结速查 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 贪心算法 · 核心知识速查</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须<strong>熟练掌握</strong>的考点，考前反复看：
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:110px;">概念</th><th>要点</th><th style="width:90px;">关键</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>贪心核心</td><td>每一步选当前最优，局部最优 → 全局最优</td><td>不回头</td></tr>
+        <tr><td>贪心条件</td><td>最优子结构 + 贪心选择性质</td><td>需证明</td></tr>
+        <tr><td>哈夫曼编码</td><td>每次合并频率最小的两个节点</td><td><strong class="b">贪心策略</strong></td></tr>
+        <tr><td>区间选点</td><td>按<strong>右端点</strong>排序，选未覆盖区间右端点</td><td>最少点数</td></tr>
+        <tr><td>区间覆盖</td><td>按<strong>左端点</strong>排序，选能覆盖起点的最右区间</td><td>最少区间</td></tr>
+        <tr><td>区间调度</td><td>按<strong>结束时间</strong>排序，选最早结束的不重叠活动</td><td>最多活动</td></tr>
+        <tr><td>贪心 vs DP</td><td>贪心不做决策比较，DP 枚举所有子问题比较</td><td>不可逆</td></tr>
+        <tr><td>找零问题</td><td>规范货币系统下贪心找零最优</td><td>非规范不行</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+      <div class="row">
+        <span class="pill">贪心 = 局部最优 → 全局最优</span>
+        <span class="pill green">哈夫曼 = 贪心</span>
+        <span class="pill amber">区间选点按右端点</span>
+        <span class="pill red">并非所有问题都适合贪心</span>
+      </div>
+      <div class="row">
+        <span class="pill purple">贪心不回溯，DP 多路比较</span>
+        <span class="pill green">活动安排按结束时间最早</span>
+        <span class="pill blue">2021 Q11: 哈夫曼是贪心</span>
+        <span class="pill amber">2022 Q7: 构造哈夫曼树算长度</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 贪心算法专题</strong></td><td style="padding:4px 0;color:var(--text-sec);">贪心策略的数学证明与经典例题</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 区间问题三讲</strong></td><td style="padding:4px 0;color:var(--text-sec);">选点、覆盖、调度——贪心三大区间模型</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 哈夫曼编码详解</strong></td><td style="padding:4px 0;color:var(--text-sec);">从哈夫曼树到编码的完整推导</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2021 · 第11题</strong></td><td style="padding:4px 0;color:var(--text-sec);">哈夫曼编码 = 贪心策略</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2022 · 第7题</strong></td><td style="padding:4px 0;color:var(--text-sec);">哈夫曼树构造与编码长度计算</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 贪心 10 题训练</strong></td><td style="padding:4px 0;color:var(--text-sec);">含区间问题、找零、哈夫曼树等综合练习</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

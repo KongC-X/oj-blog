@@ -1,0 +1,663 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 5.1 排列组合基础</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.formula-box{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:16px 20px;margin:14px 0;text-align:center}
+.formula-box .f-main{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:4px}
+.formula-box .f-desc{font-size:.78rem;color:var(--text-ter)}
+.formula-box .f-step{font-size:.82rem;color:var(--text-sec);margin-top:6px;padding:8px 12px;background:var(--surface-alt);border-radius:6px;text-align:left;line-height:1.8}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.warn-box{background:var(--danger-light);border-left:3px solid var(--danger);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.derive{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔢</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题五 · 排列组合与数论</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 排列</div>
+<a class="nav-link" href="#s1">排列 P(n,m) 公式</a>
+<a class="nav-link sub" href="#s1-demo">计算步骤演示</a>
+
+<div class="nav-section">2 · 组合</div>
+<a class="nav-link" href="#s2">组合 C(n,m) 公式</a>
+<a class="nav-link sub" href="#s2-demo">计算步骤演示</a>
+
+<div class="nav-section">3 · 分组分配</div>
+<a class="nav-link" href="#s3">区分组 vs 不区分组</a>
+<a class="nav-link sub" href="#s3-q">真题·2021第10题</a>
+
+<div class="nav-section">4 · 容斥原理</div>
+<a class="nav-link" href="#s4">|A∪B| 公式</a>
+
+<div class="nav-section">5 · 重复元素</div>
+<a class="nav-link" href="#s5">重复元素排列</a>
+<a class="nav-link sub" href="#s5-q">真题·2021第12题</a>
+
+<div class="nav-section">6 · 真题练习</div>
+<a class="nav-link" href="#q1">Q1·2025第6题</a>
+<a class="nav-link" href="#q2">Q2·排列计算</a>
+<a class="nav-link" href="#q3">Q3·组合计算</a>
+<a class="nav-link" href="#q4">Q4·分组分配</a>
+<a class="nav-link" href="#q5">Q5·2021第10题</a>
+<a class="nav-link" href="#q6">Q6·2021第12题</a>
+<a class="nav-link" href="#q7">Q7·容斥原理</a>
+<a class="nav-link" href="#q8">Q8·重复元素</a>
+<a class="nav-link" href="#q9">Q9·有条件选人</a>
+<a class="nav-link" href="#q10">Q10·综合提高</a>
+
+<div class="nav-section">📋 速查表</div>
+<a class="nav-link" href="#ref">公式速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<div class="main-content">
+<div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb">CSP-J 初赛集训 / 专题五 · 排列组合与数论</div>
+<h1>排列组合基础</h1>
+<div class="subtitle">系统掌握排列、组合、分组分配、容斥原理与重复元素排列的公式推导与解题技巧</div>
+<div class="meta-bar">
+<span class="meta-tag exam">高频考点</span>
+<span class="meta-tag hot">必考8-10分</span>
+<span class="meta-tag">10道真题+模拟</span>
+</div>
+</div>
+
+<div class="objectives" id="obj">
+<h3>📌 学习目标</h3>
+<div class="grid">
+<div class="item">掌握排列 P(n,m) 公式及计算</div>
+<div class="item">掌握组合 C(n,m) 公式及计算</div>
+<div class="item">区分"组有编号"与"组无编号"</div>
+<div class="item">运用容斥原理解决重叠计数</div>
+<div class="item">处理重复元素的排列计数</div>
+<div class="item">灵活运用排除法（补集思想）</div>
+</div>
+</div>
+
+<!-- ============ 1. 排列 ============ -->
+<h2 class="section-title" id="s1"><span class="num">1</span>排列 P(n,m)</h2>
+
+<div class="formula-box">
+<div class="f-main">P(n,m) = n! / (n−m)! &nbsp;&nbsp;（n ≥ m）</div>
+<div class="f-desc">从 n 个不同元素中取出 m 个排成一列，<strong>顺序有关</strong></div>
+</div>
+
+<p class="kp-text"><strong>关键理解</strong>：排列强调<strong class="hl">顺序</strong>。同样3个人，站成"甲-乙-丙"和"丙-乙-甲"是两种不同的排列。</p>
+<p class="kp-text"><strong>常用写法</strong>：P(n,m) 有时也写作 A(n,m) 或 P<sub>n</sub><sup>m</sup>，公式相同。</p>
+
+<div class="info-box">💡 <strong>口诀</strong>：排列 = "选人" + "排队"——不仅要选谁，还要排顺序。</div>
+
+<h3 class="kp-title" id="s1-demo">计算演示：P(8,3) = ?</h3>
+<div class="step-box">
+<div class="step"><span class="sn">1</span> 代入公式 P(8,3) = <span class="c">8! / (8−3)!</span> = <span class="c">8! / 5!</span></div>
+<div class="step"><span class="sn">2</span> 展开 8! = 8×7×6×5!，分子分母消去 5!</div>
+<div class="step"><span class="sn">3</span> P(8,3) = 8×7×6 = <strong class="hl">336</strong></div>
+</div>
+
+<h3 class="kp-title">计算演示：P(5,2) = ?</h3>
+<div class="step-box">
+<div class="step"><span class="sn">1</span> P(5,2) = <span class="c">5! / (5−2)!</span> = <span class="c">5! / 3!</span></div>
+<div class="step"><span class="sn">2</span> 展开：5! = 5×4×3!，消去 3!</div>
+<div class="step"><span class="sn">3</span> P(5,2) = 5×4 = <strong class="hl">20</strong></div>
+</div>
+
+<!-- ============ 2. 组合 ============ -->
+<h2 class="section-title" id="s2"><span class="num">2</span>组合 C(n,m)</h2>
+
+<div class="formula-box">
+<div class="f-main">C(n,m) = n! / [ m! · (n−m)! ] &nbsp;&nbsp;（n ≥ m）</div>
+<div class="f-desc">从 n 个不同元素中取出 m 个，<strong>顺序无关</strong></div>
+</div>
+
+<p class="kp-text"><strong>关键理解</strong>：组合不强调顺序。选3个人去搬砖，谁先谁后无所谓。</p>
+<p class="kp-text"><strong>重要关系</strong>：C(n,m) = C(n, n−m)（对称性）；C(n,m) = P(n,m) / m!</p>
+
+<div class="info-box">💡 <strong>口诀</strong>：组合 = "选人"——选出来就行，不用排顺序。组合数比分母 m! 就是排列数。</div>
+
+<h3 class="kp-title" id="s2-demo">计算演示：C(10,3) = ?</h3>
+<div class="step-box">
+<div class="step"><span class="sn">1</span> C(10,3) = <span class="c">10! / [3! × (10−3)!]</span> = <span class="c">10! / (3! × 7!)</span></div>
+<div class="step"><span class="sn">2</span> 展开 10! = 10×9×8×7!，消去 7! → <span class="c">(10×9×8) / 3!</span></div>
+<div class="step"><span class="sn">3</span> 3! = 3×2×1 = 6 → <span class="c">(10×9×8) / 6</span></div>
+<div class="step"><span class="sn">4</span> 10/6×9×8 → 先算 10/2=5 → 5×9×8/3 → 5×3×8 = <strong class="hl">120</strong></div>
+</div>
+
+<div class="card primary"><div class="card-title">✏️ 快速计算技巧</div>
+<p>用 <span class="c">C(10,3) = (10×9×8)/(3×2×1)</span> 的分子分母约分形式最快！</p>
+<p>分子：从 n 往下乘 m 个数；分母：m!。即 <span class="c">C(n,m) = [n×(n−1)×...×(n−m+1)] / m!</span></p>
+</div>
+
+<h3 class="kp-title">常用组合数（建议熟记）</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>公式</th><th>值</th><th>公式</th><th>值</th></tr></thead>
+<tbody>
+<tr><td>C(n,0)</td><td>1</td><td>C(n,1)</td><td>n</td></tr>
+<tr><td>C(n,2)</td><td>n(n−1)/2</td><td>C(n,n−1)</td><td>n</td></tr>
+<tr><td>C(4,2)</td><td>6</td><td>C(5,2)</td><td>10</td></tr>
+<tr><td>C(5,3)</td><td>10</td><td>C(6,2)</td><td>15</td></tr>
+<tr><td>C(6,3)</td><td>20</td><td>C(7,2)</td><td>21</td></tr>
+<tr><td>C(7,3)</td><td>35</td><td>C(8,3)</td><td>56</td></tr>
+<tr><td>C(9,2)</td><td>36</td><td>C(9,3)</td><td>84</td></tr>
+<tr><td>C(10,2)</td><td>45</td><td>C(10,3)</td><td>120</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ============ 3. 分组分配 ============ -->
+<h2 class="section-title" id="s3"><span class="num">3</span>分组分配问题</h2>
+
+<p class="kp-text">分组分配是 CSP-J 最高频的排列组合题型，<strong class="hl">核心在区分"组是否有编号（区分）"</strong>。</p>
+
+<div class="card danger"><div class="card-title">⚠️ 核心区别——记住这个分水岭</div>
+<p><strong>区分组（有编号）</strong>：组有区别（如分到不同的班级/位置），直接相乘即可。</p>
+<p><strong>不区分组（无编号）</strong>：组没有区别（如分成同样的几堆），需要 <strong class="hl">除以组数的阶乘</strong> 来消除顺序。</p>
+</div>
+
+<h3 class="kp-title">举例：6人分成3组</h3>
+<div class="step-box">
+<div class="step"><span class="sn">A</span> <strong>区分编号</strong>（如分成"红队""蓝队""绿队"）：C(6,2)×C(4,2)×C(2,2) = 15×6×1 = <strong class="hl">90</strong></div>
+<div class="step"><span class="sn">B</span> <strong>不区分编号</strong>（只是分成3堆）：90 ÷ 3! = 90 ÷ 6 = <strong class="hl">15</strong></div>
+</div>
+
+<div class="warn-box">❗ 只要题目说"分成3队（不区分编号）"或"分成3组"，就是<strong>不区分组</strong>的情况，必须除以组数的阶乘！</div>
+
+<h3 class="kp-title" id="s3-q">📌 CSP-J 2021 第10题（真题引用）</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">真题 2021</span><span>第 10 题</span></div>
+<div class="exam-q">6个人分成3组，每组2人，则不同的分组方式共有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>15</div>
+<div class="opt"><span class="letter">B</span>30</div>
+<div class="opt"><span class="letter">C</span>45</div>
+<div class="opt"><span class="letter">D</span>60</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2021q10')">点击显示答案</button>
+<div class="answer-box" id="a2021q10">
+<div class="ans">答案：A — 15 种</div>
+<div class="explain">
+<strong>解析</strong>：这是典型的不区分组的分组问题。<br>
+先按区分组计算：C(6,2) × C(4,2) × C(2,2) = 15 × 6 × 1 = <span class="c">90</span><br>
+再除以 3!（消除3组的排列顺序）：90 ÷ 6 = <strong>15</strong><br>
+公式即 <span class="c">C(6,2)×C(4,2)×C(2,2) / 3! = 15</span>
+</div>
+</div>
+</div>
+
+<!-- ============ 4. 容斥原理 ============ -->
+<h2 class="section-title" id="s4"><span class="num">4</span>容斥原理</h2>
+
+<div class="formula-box">
+<div class="f-main">|A ∪ B| = |A| + |B| − |A ∩ B|</div>
+<div class="f-desc">两个集合的并集大小 = 各自大小之和 − 重叠部分大小</div>
+</div>
+
+<p class="kp-text"><strong>关键理解</strong>：计数时，被重复计算的元素要扣除一次。对于三个集合：<span class="c">|A∪B∪C| = |A|+|B|+|C| − |A∩B|−|A∩C|−|B∩C| + |A∩B∩C|</span></p>
+
+<div class="info-box">💡 <strong>应用场景</strong>：求"至少满足一个条件"的数量，或求"不满足任何条件"的数量（补集）。</div>
+
+<h3 class="kp-title">应用技巧：补集思想（排除法）</h3>
+<p class="kp-text">很多"至少……"的问题，可以用 <strong class="hl">总数 − 不满足条件的情况</strong> 来快速求解。这也是容斥原理的常见变体。</p>
+
+<div class="card success"><div class="card-title">✅ 经典应用套路</div>
+<p>"至少选1男1女" = 总数 − 全是男 − 全是女</p>
+</div>
+
+<!-- ============ 5. 重复元素排列 ============ -->
+<h2 class="section-title" id="s5"><span class="num">5</span>重复元素排列</h2>
+
+<div class="formula-box">
+<div class="f-main">n! / (k₁! × k₂! × ... × k<sub>t</sub>!)</div>
+<div class="f-desc">n 个元素中有重复元素，各出现 k₁, k₂, ..., k<sub>t</sub> 次</div>
+</div>
+
+<p class="kp-text"><strong>关键理解</strong>：当元素有重复时，全排列中相同元素互换会得到相同排列，所以要除以每种重复元素排列数的阶乘。</p>
+
+<div class="info-box">💡 <strong>口诀</strong>：有重复，先全排，再除重复的阶乘。</div>
+
+<h3 class="kp-title">计算演示："MISSISSIPPI" 有多少种排列？</h3>
+<div class="step-box">
+<div class="step"><span class="sn">1</span> 总字符数 n = 11</div>
+<div class="step"><span class="sn">2</span> 各字母出现次数：M=1, I=4, S=4, P=2</div>
+<div class="step"><span class="sn">3</span> 排列数 = <span class="c">11! / (1! × 4! × 4! × 2!)</span> = <strong class="hl">34,650</strong></div>
+</div>
+
+<h3 class="kp-title" id="s5-q">📌 CSP-J 2021 第12题（真题引用）</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">真题 2021</span><span>第 12 题</span></div>
+<div class="exam-q">使用 1, 1, 2, 2, 3 这五个数字组成不同的三位数（每个数字使用次数不超过其在集合中出现的次数），则不同的三位数共有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>12</div>
+<div class="opt"><span class="letter">B</span>15</div>
+<div class="opt"><span class="letter">C</span>18</div>
+<div class="opt"><span class="letter">D</span>21</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2021q12')">点击显示答案</button>
+<div class="answer-box" id="a2021q12">
+<div class="ans">答案：C — 18 种</div>
+<div class="explain">
+<strong>解析</strong>：按重复情况分类讨论。<br>
+<strong>情况1：三个数字各不相同</strong> — 从{1,2,3}中选3个 → <span class="c">P(3,3) = 3! = 6</span><br>
+<strong>情况2：两个相同、一个不同</strong><br>
+&nbsp;&nbsp;· 相同的可以是1或2（有重复的才可能两个相同）→ 2种选择重复数字<br>
+&nbsp;&nbsp;· 剩下1个从剩余数字中选（3个数字删掉已选的还有2个可用）→ 2种选择<br>
+&nbsp;&nbsp;· 排列数 = 相同数字选位置 = C(3,2) 选哪两位放相同数，剩1位放不同数 → C(3,2) = 3<br>
+&nbsp;&nbsp;· 小计：2 × 2 × 3 = <span class="c">12</span><br>
+总计：6 + 12 = <strong>18</strong>
+</div>
+</div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- ============ 真题练习区 ============ -->
+<h2 class="section-title" style="margin-top:24px"><span class="num">✦</span>真题练习（10题）</h2>
+
+<!-- Q1: 2025 第6题 -->
+<div class="exam-block" id="q1">
+<div class="exam-header"><span class="exam-badge real">真题 2025</span><span>第 6 题</span></div>
+<div class="exam-q">从5名男生和4名女生中选出4人参加比赛，要求至少包含1名男生和1名女生，则不同的选法有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>100</div>
+<div class="opt"><span class="letter">B</span>110</div>
+<div class="opt"><span class="letter">C</span>120</div>
+<div class="opt"><span class="letter">D</span>130</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a25q6')">点击显示答案</button>
+<div class="answer-box" id="a25q6">
+<div class="ans">答案：C — 120 种</div>
+<div class="explain">
+<strong>解析</strong>（补集思想 / 排除法）：<br>
+<strong>方法一（排除法）</strong>：<br>
+总数（无限制）：C(9,4) = <span class="c">126</span><br>
+减去"全男"：C(5,4) = <span class="c">5</span><br>
+减去"全女"：C(4,4) = <span class="c">1</span><br>
+结果：126 − 5 − 1 = <strong>120</strong><br>
+<br>
+<strong>方法二（分类讨论）</strong>：<br>
+1男3女：C(5,1)×C(4,3) = 5×4 = <span class="c">20</span><br>
+2男2女：C(5,2)×C(4,2) = 10×6 = <span class="c">60</span><br>
+3男1女：C(5,3)×C(4,1) = 10×4 = <span class="c">40</span><br>
+合计：20 + 60 + 40 = <strong>120</strong>
+</div>
+</div>
+</div>
+
+<!-- Q2: 排列基础 -->
+<div class="exam-block" id="q2">
+<div class="exam-header"><span class="exam-badge derive">模拟</span><span>排列基础计算</span></div>
+<div class="exam-q">从 7 本不同的书中选出 3 本，按从左到右的顺序放在书架上，共有多少种摆放方式？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>35</div>
+<div class="opt"><span class="letter">B</span>210</div>
+<div class="opt"><span class="letter">C</span>343</div>
+<div class="opt"><span class="letter">D</span>840</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">点击显示答案</button>
+<div class="answer-box" id="a2">
+<div class="ans">答案：B — 210 种</div>
+<div class="explain">
+<strong>解析</strong>：这是排列问题（顺序有关）。<br>
+P(7,3) = <span class="c">7! / (7−3)!</span> = <span class="c">7! / 4!</span><br>
+展开：7×6×5×4! / 4! = 7×6×5 = <strong>210</strong><br>
+或直接理解：第一格7种、第二格6种、第三格5种 → 7×6×5 = 210
+</div>
+</div>
+</div>
+
+<!-- Q3: 组合基础 -->
+<div class="exam-block" id="q3">
+<div class="exam-header"><span class="exam-badge derive">模拟</span><span>组合基础计算</span></div>
+<div class="exam-q">从 8 名候选人中选出 3 人组成委员会，不考虑顺序，共有多少种选法？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>56</div>
+<div class="opt"><span class="letter">B</span>84</div>
+<div class="opt"><span class="letter">C</span>112</div>
+<div class="opt"><span class="letter">D</span>336</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">点击显示答案</button>
+<div class="answer-box" id="a3">
+<div class="ans">答案：A — 56 种</div>
+<div class="explain">
+<strong>解析</strong>：这是组合问题（顺序无关）。<br>
+C(8,3) = <span class="c">8! / [3! × (8−3)!]</span> = <span class="c">8! / (3! × 5!)</span><br>
+展开消去：8×7×6×5! / (6 × 5!)<br>
+= <span class="c">(8×7×6) / 6</span> = 8×7 = <strong>56</strong><br>
+<br>
+快速计算：<span class="c">C(8,3) = (8×7×6)/(3×2×1) = 336/6 = 56</span>
+</div>
+</div>
+</div>
+
+<!-- Q4: 分组分配变式 -->
+<div class="exam-block" id="q4">
+<div class="exam-header"><span class="exam-badge mock">模拟</span><span>分组分配</span></div>
+<div class="exam-q">将 4 名同学分到甲、乙、丙三个不同的班级，每个班至少 1 人，则不同的分配方案有多少种？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>24</div>
+<div class="opt"><span class="letter">B</span>36</div>
+<div class="opt"><span class="letter">C</span>48</div>
+<div class="opt"><span class="letter">D</span>72</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">点击显示答案</button>
+<div class="answer-box" id="a4">
+<div class="ans">答案：B — 36 种</div>
+<div class="explain">
+<strong>解析</strong>：班级不同（区分组），但人数分布为 2,1,1。<br>
+<strong>第一步</strong>：选那个有 2 人的班级 → <span class="c">C(3,1) = 3</span> 种选法<br>
+<strong>第二步</strong>：从 4 人中选 2 人去该班 → <span class="c">C(4,2) = 6</span><br>
+<strong>第三步</strong>：剩下 2 人到剩余 2 个班各 1 人 → <span class="c">P(2,2) = 2!</span> = <span class="c">2</span><br>
+合计：3 × 6 × 2 = <strong>36</strong>
+</div>
+</div>
+</div>
+
+<!-- Q5: 2021 第10题（已在上方，但练习区再放一次方便集中训练） -->
+<div class="exam-block" id="q5">
+<div class="exam-header"><span class="exam-badge real">真题 2021</span><span>第 10 题（再练）</span></div>
+<div class="exam-q">6个人分成3组，每组2人，则不同的分组方式共有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>15</div>
+<div class="opt"><span class="letter">B</span>30</div>
+<div class="opt"><span class="letter">C</span>45</div>
+<div class="opt"><span class="letter">D</span>60</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">点击显示答案</button>
+<div class="answer-box" id="a5">
+<div class="ans">答案：A — 15</div>
+<div class="explain">
+<strong>解析</strong>：不区分组的分组问题。<br>
+先按区分组算：C(6,2) × C(4,2) × C(2,2) = 15 × 6 × 1 = <span class="c">90</span><br>
+消去组间顺序：90 ÷ 3! = 90 ÷ 6 = <strong>15</strong><br>
+<br>
+<strong>完整公式</strong>：<span class="c">C(6,2) × C(4,2) × C(2,2) / 3! = 15</span>
+</div>
+</div>
+</div>
+
+<!-- Q6: 2021 第12题（再练） -->
+<div class="exam-block" id="q6">
+<div class="exam-header"><span class="exam-badge real">真题 2021</span><span>第 12 题（再练）</span></div>
+<div class="exam-q">给定数字 1, 1, 2, 2, 3，用它们组成不同的三位数（每个数字使用次数不超过出现次数），共（ ）个。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>12</div>
+<div class="opt"><span class="letter">B</span>15</div>
+<div class="opt"><span class="letter">C</span>18</div>
+<div class="opt"><span class="letter">D</span>21</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">点击显示答案</button>
+<div class="answer-box" id="a6">
+<div class="ans">答案：C — 18</div>
+<div class="explain">
+<strong>解析</strong>：按三位数字是否重复分类。<br>
+<strong>情况1：三位各不相同</strong> → 从{1,2,3}中全排列 = <span class="c">3! = 6</span><br>
+<strong>情况2：两位相同、一位不同</strong><br>
+&nbsp;&nbsp;重复的数字可以是 1 或 2 → 2 种<br>
+&nbsp;&nbsp;不同的数字从剩余2个中选 → 2 种<br>
+&nbsp;&nbsp;相同数字选位置 C(3,2)=3 → 2×2×3 = <span class="c">12</span><br>
+合计：6 + 12 = <strong>18</strong>
+</div>
+</div>
+</div>
+
+<!-- Q7: 容斥原理 -->
+<div class="exam-block" id="q7">
+<div class="exam-header"><span class="exam-badge mock">模拟</span><span>容斥原理</span></div>
+<div class="exam-q">某班有 30 人，其中 20 人喜欢数学，18 人喜欢语文，12 人两科都喜欢。那么这个班级中至少喜欢一科的有多少人？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>20</div>
+<div class="opt"><span class="letter">B</span>24</div>
+<div class="opt"><span class="letter">C</span>26</div>
+<div class="opt"><span class="letter">D</span>30</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">点击显示答案</button>
+<div class="answer-box" id="a7">
+<div class="ans">答案：C — 26 人</div>
+<div class="explain">
+<strong>解析</strong>（容斥原理公式）：<br>
+|数学 ∪ 语文| = |数学| + |语文| − |数学 ∩ 语文|<br>
+= 20 + 18 − 12 = <strong>26</strong><br>
+<br>
+<strong>验证</strong>：不喜欢数学的有 30−20=10人，不喜欢语文的有 30−18=12人，两科都不喜欢的 = 30−26 = 4 人。<br>
+4 = 30 − 20 − 18 + 12 ✓
+</div>
+</div>
+</div>
+
+<!-- Q8: 重复元素排列 -->
+<div class="exam-block" id="q8">
+<div class="exam-header"><span class="exam-badge mock">模拟</span><span>重复元素排列</span></div>
+<div class="exam-q">用字母 A, A, B, B, C 排成一排，有多少种不同的排列方式？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>20</div>
+<div class="opt"><span class="letter">B</span>30</div>
+<div class="opt"><span class="letter">C</span>40</div>
+<div class="opt"><span class="letter">D</span>60</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">点击显示答案</button>
+<div class="answer-box" id="a8">
+<div class="ans">答案：B — 30 种</div>
+<div class="explain">
+<strong>解析</strong>：5 个字符，重复分布：A=2, B=2, C=1。<br>
+排列数 = <span class="c">5! / (2! × 2! × 1!)</span><br>
+= <span class="c">120 / (2 × 2 × 1)</span><br>
+= 120 / 4 = <strong>30</strong><br>
+<br>
+<strong>验证</strong>：也可以枚举验证——总排列 5!=120，其中 A 重复（A1=A2）去重除2，B重复除2，120/4=30。
+</div>
+</div>
+</div>
+
+<!-- Q9: 有条件选人 -->
+<div class="exam-block" id="q9">
+<div class="exam-header"><span class="exam-badge mock">模拟</span><span>有条件组合</span></div>
+<div class="exam-q">从 6 本科技书和 4 本文学书中选出 5 本，要求至少包含 2 本科技书和 1 本文学书，共有多少种选法？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>186</div>
+<div class="opt"><span class="letter">B</span>246</div>
+<div class="opt"><span class="letter">C</span>336</div>
+<div class="opt"><span class="letter">D</span>420</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">点击显示答案</button>
+<div class="answer-box" id="a9">
+<div class="ans">答案：B — 246 种</div>
+<div class="explain">
+<strong>解析</strong>：5本书中科技+文学=5，科技≥2且文学≥1，分类讨论科技的数量：<br>
+<strong>科技2本、文学3本</strong>：C(6,2)×C(4,3) = 15×4 = <span class="c">60</span><br>
+<strong>科技3本、文学2本</strong>：C(6,3)×C(4,2) = 20×6 = <span class="c">120</span><br>
+<strong>科技4本、文学1本</strong>：C(6,4)×C(4,1) = 15×4 = <span class="c">60</span><br>
+<strong>科技5本、文学0本</strong>：❌ 不满足"至少1本文学"<br>
+<strong>科技1本、文学4本</strong>：❌ 不满足"至少2本科技"<br>
+合计：60 + 120 + 60 = <strong>246</strong>
+</div>
+</div>
+</div>
+
+<!-- Q10: 综合提高 -->
+<div class="exam-block" id="q10">
+<div class="exam-header"><span class="exam-badge mock">模拟</span><span>综合提高</span></div>
+<div class="exam-q">从 0、1、2、3、4、5 这六个数字中，选出 3 个组成无重复数字的三位数，且这个三位数是偶数，共有多少个？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>40</div>
+<div class="opt"><span class="letter">B</span>48</div>
+<div class="opt"><span class="letter">C</span>52</div>
+<div class="opt"><span class="letter">D</span>60</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">点击显示答案</button>
+<div class="answer-box" id="a10">
+<div class="ans">答案：C — 52 个</div>
+<div class="explain">
+<strong>解析</strong>：三位偶数要求个位是 0、2、4，且百位不能为 0。<br>
+<strong>情况1：个位为 0</strong><br>
+&nbsp;&nbsp;百位从剩余5个中任选1 → 5种<br>
+&nbsp;&nbsp;十位从剩余4个中任选1 → 4种<br>
+&nbsp;&nbsp;小计：5×4 = <span class="c">20</span><br>
+<strong>情况2：个位为 2 或 4</strong>（2种选择）<br>
+&nbsp;&nbsp;百位不能为 0 且不能与个位重复 → 从剩余4个非0数字中选 → 4种<br>
+&nbsp;&nbsp;十位从剩余4个（含0）中任选1 → 4种<br>
+&nbsp;&nbsp;小计：2 × 4 × 4 = <span class="c">32</span><br>
+合计：20 + 32 = <strong>52</strong><br>
+<br>
+<strong>易错</strong>：不要忘了百位不能是 0，这是最常见的丢分点！
+</div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ============ 公式速查表 ============ -->
+<div class="summary-box" id="ref">
+<h3>📖 排列组合公式速查表</h3>
+<table>
+<thead><tr><th>场景</th><th>公式</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>排列 P(n,m)</td><td>n! / (n−m)!</td><td>从 n 个中取 m 个排顺序</td></tr>
+<tr><td>组合 C(n,m)</td><td>n! / [m! (n−m)!]</td><td>从 n 个中取 m 个（顺序无关）</td></tr>
+<tr><td>快速组合</td><td>[n×(n−1)×...×(n−m+1)] / m!</td><td>分子 m 个数相乘，分母 m!</td></tr>
+<tr><td>组合对称性</td><td>C(n,m) = C(n, n−m)</td><td>选 m 个等价于留 n−m 个</td></tr>
+<tr><td>分组（区分组）</td><td>C(n,a)×C(n−a,b)×...</td><td>直接相乘</td></tr>
+<tr><td>分组（不区分组）</td><td>乘积 ÷ k!</td><td>k 为组数，消除组间顺序</td></tr>
+<tr><td>容斥（两集合）</td><td>|A|+|B|−|A∩B|</td><td>并集大小</td></tr>
+<tr><td>容斥（三集合）</td><td>Σ|Aᵢ| − Σ|Aᵢ∩Aⱼ| + |A∩B∩C|</td><td>奇加偶减</td></tr>
+<tr><td>重复元素全排列</td><td>n! / ∏(kᵢ!)</td><td>kᵢ 为第 i 种重复元素的个数</td></tr>
+<tr><td>补集思想</td><td>满足条件 = 总数 − 不满足</td><td>"至少"问题的常用方法</td></tr>
+</tbody>
+</table>
+
+<div class="row" style="margin-top:12px">
+<span class="pill">排列 = 先选再排</span>
+<span class="pill green">组合 = 只选不排</span>
+<span class="pill amber">不区分组 ÷ k!</span>
+<span class="pill red">容斥 奇加偶减</span>
+<span class="pill purple">重复 ÷ 各阶乘</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id){
+ var box=document.getElementById(id);
+ if(box.classList.contains('show')){
+   box.classList.remove('show');
+ }else{
+   box.classList.add('show');
+ }
+}
+function toggleSidebar(){
+ document.getElementById('sidebar').classList.toggle('open');
+ document.getElementById('overlay').classList.toggle('show');
+}
+window.addEventListener('scroll',function(){
+ var bt=document.getElementById('backTop');
+ if(window.scrollY>400){bt.classList.add('visible')}else{bt.classList.remove('visible')}
+});
+// 点击侧边栏链接后自动关闭（移动端）
+document.querySelectorAll('.nav-link').forEach(function(el){
+ el.addEventListener('click',function(){
+   document.getElementById('sidebar').classList.remove('open');
+   document.getElementById('overlay').classList.remove('show');
+ });
+});
+</script>
+
+</body></html>

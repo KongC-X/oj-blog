@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GESP六级培训 · 格雷编码</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}h1 .sub{display:block;font-size:1rem;font-weight:400;color:var(--text-secondary);margin-top:6px}
+.subtitle-main{color:var(--text-tertiary);font-size:15px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);padding-left:16px;border-left:4px solid var(--primary);border-bottom:none;padding-bottom:0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;background:linear-gradient(135deg,var(--primary-light),#fff);font-size:14.5px}.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.highlight-box p:last-child{margin-bottom:0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.think-box p:last-child{margin-bottom:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}.warning-box p:last-child{margin-bottom:0}.warning-box .code-block{margin:10px 0}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}.tip-box p:last-child{margin-bottom:0}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}.card p:last-child{margin-bottom:0}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.table-wrapper{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.inline-code{font-family:var(--font-mono);background:var(--surface-alt);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);border:1px solid var(--border-light)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}hr.divider.dashed{border-top-style:dashed}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.back-to-top.visible{display:flex}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}.goal-box ul{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}.tag-green{background:var(--success-light);color:var(--success)}.tag-red{background:var(--danger-light);color:var(--danger)}.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:600px;opacity:1}.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+.vis{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.vis svg{max-width:100%;height:auto}.vis-caption{font-size:13px;color:var(--text-tertiary);margin-top:8px}
+@media(max-width:900px){
+nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}
+.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+nav.sidebar::-webkit-scrollbar{width:4px}nav.sidebar::-webkit-scrollbar-track{background:transparent}nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head><body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><span class="icon">🔢</span> GESP 六级 · 格雷编码</div>
+<div class="nav-section"><div class="nav-section-title">教学流程</div>
+<a class="nav-link active" href="#step1">第一步：生活引入</a>
+<a class="nav-link" href="#step2">第二步：核心概念</a>
+<a class="nav-link" href="#step3">第三步：算法/代码讲解</a>
+<a class="nav-link" href="#step4">第四步：手工模拟</a>
+<a class="nav-link" href="#step5">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">🔢 GESP C++ 六级 · 格雷编码</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">反射二进制码 — 相邻仅一位不同、递归构造</p>
+</div>
+
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 一、生活引入：电梯按钮的秘密</h2>
+
+<p>你有没有注意过电梯里的按钮？每个楼层的数字旁边通常有一个小圆点或指示灯。但有一种特殊的<strong>格雷码电梯</strong>，它的设计思路很巧妙：</p>
+<blockquote>
+<p>相邻楼层的编码之间，<strong>只有一位数字发生变化</strong>。</p>
+</blockquote>
+<p>假设一个电梯只有 3 个按钮，用普通二进制编码：
+1 楼 → 001，
+2 楼 → 010（变化了两位！），
+3 楼 → 011</p>
+<p>当 1 楼到 2 楼时，按钮上的两个灯同时变化——如果其中一个灯接触不良，可能读成 000 或 011，乘客就被送到错误楼层。</p>
+<p>但用格雷码：
+1 楼 → 001，
+2 楼 → 011（只变了一位），
+3 楼 → 010</p>
+<p>即使某个灯读错了，<strong>最多只差一个楼层</strong>。这就是格雷码的核心思想：<strong>每次只改变一位</strong>，降低出错代价。</p>
+<hr />
+
+</section>
+
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 二、核心概念</h2>
+
+<h3>什么是格雷码？</h3>
+<p><strong>格雷码（Gray Code）</strong>，也叫<strong>反射二进制码</strong>，是一种二进制编码方式，具有以下特点：</p>
+<blockquote>
+<p><strong>定义</strong>：在一组数的编码中，任意两个相邻的编码之间<strong>只有一位二进制位不同</strong>。</p>
+</blockquote>
+<h3>基本性质</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>性质</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>相邻唯一不同</strong></td>
+<td>相邻两个编码只有 1 位不同</td>
+</tr>
+<tr>
+<td><strong>数量</strong></td>
+<td>n 位格雷码共包含 <code class="inline-code">2^n</code> 个编码</td>
+</tr>
+<tr>
+<td><strong>循环性</strong></td>
+<td>最后一个编码与第一个编码也只有 1 位不同（循环码）</td>
+</tr>
+<tr>
+<td><strong>唯一性</strong></td>
+<td>每个编码在序列中恰好出现一次</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+</section>
+
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 三、构造方法：递归构造法（反射法）</h2>
+
+<p>格雷码最常见的构造方法是<strong>递归构造</strong>，也称<strong>反射法</strong>。</p>
+<h3>构造思路</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">1位格雷码：  0   1
+            ↓   ↓
+2位格雷码： 00  01  11  10
+            ↑        ↑
+         前半部分   后半部分 = 前半部分镜像（反射）+ 前缀改为1</code></pre></div>
+
+<h3>递归公式</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">G(1) = {"0", "1"}
+
+G(n) = 前半部分："0" + G(n-1) 中的每个编码
+       后半部分："1" + reverse(G(n-1)) 中的每个编码</code></pre></div>
+
+<h3>图解过程</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">G(1)               G(2)               G(3)
+     ─────              ─────              ─────
+      0                  00                 000
+      1                  01                 001
+                         11                 011
+                         10                 010
+                                           110
+                                           111
+                                           101
+                                           100</code></pre></div>
+
+<hr />
+
+</section>
+
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 四、手工模拟：从 1 位到 3 位的完整生成</h2>
+
+<h3>1 位格雷码</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>序号</th>
+<th>格雷码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3>2 位格雷码</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>序号</th>
+<th>格雷码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>00</td>
+</tr>
+<tr>
+<td>1</td>
+<td>01</td>
+</tr>
+<tr>
+<td>2</td>
+<td>11</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>验证相邻关系：
+- 00 ↔ 01：只有最后 1 位不同 ✓
+- 01 ↔ 11：只有中间 1 位不同 ✓
+- 11 ↔ 10：只有最后 1 位不同 ✓
+- 10 ↔ 00（循环）：只有中间 1 位不同 ✓</p>
+<h3>3 位格雷码</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>序号</th>
+<th>格雷码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>000</td>
+</tr>
+<tr>
+<td>1</td>
+<td>001</td>
+</tr>
+<tr>
+<td>2</td>
+<td>011</td>
+</tr>
+<tr>
+<td>3</td>
+<td>010</td>
+</tr>
+<tr>
+<td>4</td>
+<td>110</td>
+</tr>
+<tr>
+<td>5</td>
+<td>111</td>
+</tr>
+<tr>
+<td>6</td>
+<td>101</td>
+</tr>
+<tr>
+<td>7</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>验证相邻关系（选几组）：
+- 000 ↔ 001：第 3 位不同 ✓
+- 001 ↔ 011：第 2 位不同 ✓
+- 011 ↔ 010：第 3 位不同 ✓
+- 010 ↔ 110：第 1 位不同 ✓
+- 100 ↔ 000（循环）：第 1 位不同 ✓</p>
+<hr />
+
+</section>
+
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 五、常见陷阱与避坑指南</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：混淆普通二进制码和格雷码</div>
+<p><span class="key-point danger">错误</span>：以为二进制码 <code class="inline-code">000 → 001 → 010 → 011 → …</code> 就是格雷码</p>
+<p>普通二进制相邻之间可能有多位发生变化（如 <code class="inline-code">011 → 100</code> 变了 3 位），而格雷码<strong>保证只变 1 位</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：以为任意相邻两位编码"最多"一位不同</div>
+<p><span class="key-point danger">错误</span>：认为"相邻可以有多位不同，只要不超过 1 位也行"</p>
+<p>格雷码的定义是<strong>严格只有 1 位不同</strong>，不是"最多 1 位"，也不是"至少 1 位"。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：以为对二进制取反就是格雷码</div>
+<p><span class="key-point danger">错误</span>：以为 <code class="inline-code">001</code> 取反得到 <code class="inline-code">110</code>，然后把它们放一起就是格雷码</p>
+<p>格雷码是通过<strong>递归反射</strong>构造的，不是简单取反。取反得到的两个编码之间可能有多位不同。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：忘记格雷码是循环码</div>
+<p><span class="key-point danger">错误</span>：只检查相邻之间，忘了检查首尾</p>
+<p>n 位格雷码是一个循环序列，<strong>第一个和最后一个编码之间也只有 1 位不同</strong>。</p>
+</div>
+<hr />
+
+</section>
+
+
+</section>
+
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>5 道选择题</strong> + <strong>2 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📌 知识点一：格雷编码</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第6题）</div>
+<p>3 位格雷编码的正确顺序是什么？</p>
+
+<p>A. 000, 001, 010, 011, 100, 101, 110, 111</p>
+<p>B. 000, 001, 011, 010, 110, 111, 101, 100</p>
+<p>C. 000, 010, 001, 011, 100, 110, 101, 111</p>
+<p>D. 000, 010, 110, 100, 111, 101, 011, 001</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2025年6月第10题）</div>
+<p>3位格雷编码中，编码 101 之后的下一个编码不可能是哪一项？</p>
+
+<p>A. 100</p>
+<p>B. 111</p>
+<p>C. 110</p>
+<p>D. 001</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：格雷编码相邻只能有 1 位不同。101 → 110 有 2 位不同，所以 110 不可能是下一个。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025年3月第12题）</div>
+<p>以下代码用于生成 n 位格雷编码，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;string&gt; generateGrayCode(int n) {
+    if (n == 0) return {"0"};
+    if (n == 1) return {"0", "1"};
+    vector&lt;string&gt; prev = generateGrayCode(n - 1);
+    vector&lt;string&gt; result;
+    for (string s : prev) result.push_back("0" + s);
+    for (int i = prev.size() - 1; i &gt;= 0; i--) {
+        ____________________ // 在此处填入代码
+    }
+    return result;
+}</code></pre></div>
+<p>A. result.push_back("1" + prev[i]);</p>
+<p>B. result.push_back("0" + prev[i]);</p>
+<p>C. result.push_back(prev[i] + "1");</p>
+<p>D. result.push_back(prev[i] + "0");</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025年9月第10题）</div>
+<p>下面代码生成格雷编码，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;string&gt; grayCode(int n) {
+    if (n == 0) return {"0"};
+    if (n == 1) return {"0", "1"};
+    vector&lt;string&gt; prev = grayCode(n-1);
+    vector&lt;string&gt; result;
+    for (string s : prev) { result.push_back("0" + s); }
+    for (_______________) { result.push_back("1" + prev[i]); }
+    return result;
+}</code></pre></div>
+<p>A. int i = 0; i &lt; prev.size(); i++</p>
+<p>B. int i = prev.size()-1; i &gt;= 0; i--</p>
+<p>C. auto s : prev</p>
+<p>D. int i = prev.size()/2; i &lt; prev.size(); i++</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：后半部分要**逆序**加前缀 "1"，所以循环必须从大往小遍历。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2026年3月第11题）</div>
+<p>关于格雷编码，下列说法正确的是哪一项？</p>
+
+<p>A. 编码位数越多，相邻编码之间变化的位数也越多</p>
+<p>B. 相邻两个编码的二进制位恰好有一位不同</p>
+<p>C. 格雷编码就是把普通二进制编码按位取反后得到的结果</p>
+<p>D. 格雷编码不能用于数字电路和状态转换的设计中</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年6月第5题）</div>
+<p>000, 001, 011, 010, 110, 111, 101, 100 是一组格雷码。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年3月第2题）</div>
+<p>格雷编码的相邻两个编码之间必须有多位不同，以避免数据传输错误。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：相邻编码之间**恰好只有一位不同**，不是"多位"。</div></div>
+</div>
+
+</section>
+
+
+<section id="cheatsheet"><hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="table-wrapper"><table>
+<thead><tr><th>知识点</th><th>一句话总结</th><th>常考形式</th></tr></thead>
+<tbody>
+<tr><td>格雷码定义</td><td>相邻编码之间只有 1 位不同</td><td>选择/判断</td></tr>
+<tr><td>n 位格雷码数量</td><td>2<sup>n</sup> 个编码</td><td>选择</td></tr>
+<tr><td>递归构造</td><td>正序加0 + 逆序加1</td><td>代码填空</td></tr>
+<tr><td>位运算转换</td><td>gray = bin ^ (bin &gt;&gt; 1)</td><td>代码填空</td></tr>
+<tr><td>循环性</td><td>首尾也只差 1 位</td><td>判断</td></tr>
+<tr><td>验证方法</td><td>相邻异或结果为 2 的幂</td><td>选择</td></tr>
+</tbody></table></div>
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">下一讲预告：动态规划基础</p>
+</section>
+</div></main>
+<button class="back-to-top" id="backToTop">↑</button>
+<script>
+const navLinks=document.querySelectorAll('.nav-link');const secs=[];
+navLinks.forEach(l=>{const h=l.getAttribute('href');if(h&&h.startsWith('#')){const e=document.getElementById(h.slice(1));if(e)secs.push({el:e,link:l})}});
+function updateActive(){const sy=window.scrollY+80;let cur=secs[0];for(const s of secs){if(s.el.offsetTop<=sy)cur=s}for(const s of secs)s.link.classList.remove('active');if(cur)cur.link.classList.add('active')}
+window.addEventListener('scroll',updateActive);window.addEventListener('load',updateActive);
+const b=document.getElementById('backToTop');window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>500));b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const mt=document.getElementById('menuToggle'),sb=document.getElementById('sidebar');mt.addEventListener('click',()=>{sb.classList.toggle('open');mt.textContent=sb.classList.contains('open')?'✕':'☰'});navLinks.forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900){sb.classList.remove('open');mt.textContent='☰'}})});
+function toggleAnswer(b){const c=b.nextElementSibling;const o=c.classList.contains('open');if(o){c.classList.remove('open');b.classList.remove('open');b.innerHTML='<span class=\"arrow\">▶</span> 显示答案'}else{c.classList.add('open');b.classList.add('open');b.innerHTML='<span class=\"arrow\">▶</span> 隐藏答案'}}
+
+// Card Color Cycling
+document.addEventListener('DOMContentLoaded',function(){const colors=['purple','pink','teal','indigo','orange'];const cards=document.querySelectorAll('#step6>.card.success');cards.forEach((card,i)=>{card.classList.remove('success');card.classList.add(colors[i%colors.length])})});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</body></html>

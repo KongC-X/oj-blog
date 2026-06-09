@@ -1,0 +1,1121 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 4.3 递归分析</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.recursion-tree{font-family:var(--font-mono);font-size:.78rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre}
+.recursion-tree .t{color:var(--primary-dark);font-weight:600}
+.recursion-tree .r{color:#dc2626;font-weight:600}
+.recursion-tree .g{color:#059669;font-weight:600}
+.recursion-tree .dim{color:var(--text-ter)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+.stack-viz{font-family:var(--font-mono);font-size:.72rem;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto;line-height:1.5}
+.stack-viz .frame{color:var(--primary-dark);font-weight:600}
+.stack-viz .ret{color:#059669;font-weight:600}
+.stack-viz .sep{color:var(--text-ter)}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">♻</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题四 · 算法基础</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 递归三要素</div>
+<a class="nav-link" href="#s1">终止条件 · 递归调用 · 返回值</a>
+
+<div class="nav-section">2 · 手动模拟递归</div>
+<a class="nav-link" href="#s2">调用栈跟踪技术</a>
+<a class="nav-link sub" href="#s2-demo">演示：fact(4)</a>
+
+<div class="nav-section">3 · 经典递归模式</div>
+<a class="nav-link" href="#s3">阶乘 · 斐波那契 · 汉诺塔</a>
+
+<div class="nav-section">4 · 复杂度分析</div>
+<a class="nav-link" href="#s4">时间复杂度与空间复杂度</a>
+
+<div class="nav-section">5 · 递归 vs 迭代</div>
+<a class="nav-link" href="#s5">对比与选择</a>
+
+<div class="nav-section">6 · 递归深度</div>
+<a class="nav-link" href="#s6">栈溢出与优化策略</a>
+
+<div class="nav-section">7 · 真题演练</div>
+<a class="nav-link" href="#s7">📝 10 道真题 + 模拟</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 小结速查</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题四 · 算法基础</a> / 4.3</div>
+    <h1>递归分析</h1>
+    <p class="subtitle">从三要素到调用栈模拟 · 从经典模式到真题实战 · 彻底掌握 CSP-J 递归全部考点</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 4+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 6 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 递归三要素：终止条件、递归调用、返回值</span>
+      <span class="item">✅ 手动模拟递归——调用栈跟踪技术</span>
+      <span class="item">✅ 阶乘、斐波那契、汉诺塔三种经典递归</span>
+      <span class="item">✅ 递归的时间复杂度与空间复杂度分析</span>
+      <span class="item">✅ 递归与迭代的对比与转换</span>
+      <span class="item">✅ 递归深度与栈溢出风险</span>
+      <span class="item">✅ 2021·2024·2025 真题精讲</span>
+      <span class="item">✅ 10 道真题 + 模拟题实战训练</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、递归三要素 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>递归三要素</h2>
+
+  <p class="kp-text">
+    递归是函数<strong class="hl">直接或间接调用自身</strong>的编程技术。
+    任何一个正确的递归函数都必须满足以下<strong>三个要素</strong>：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th style="width:80px;">要素</th><th>说明</th><th>类比（俄罗斯套娃）</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">① 终止条件</span></td><td>递归必须在某个条件成立时停止，不再调用自身</td><td>最小的娃娃——不能再拆了</td></tr>
+        <tr><td><span class="mono">② 递归调用</span></td><td>函数在自身内部调用自身，且参数向终止条件逼近</td><td>打开外层娃娃，里面藏着一个更小的</td></tr>
+        <tr><td><span class="mono">③ 返回值</span></td><td>每层递归将结果返回给上一层，最终得到答案</td><td>从最小的娃娃开始，一层层拼回去</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">💡 三要素检查清单（写递归时逐条检查）</div>
+    <p class="kp-text">
+      1️⃣ <strong>有没有终止条件？</strong> 如果没有，会无限递归 → 栈溢出。<br>
+      2️⃣ <strong>递归调用是否向终止条件逼近？</strong> 参数是否在变小/变简单？<br>
+      3️⃣ <strong>返回值是否正确组合？</strong> 每层的结果要能够拼出最终答案。
+    </p>
+  </div>
+
+  <h3 class="kp-title">标准模板</h3>
+  <div class="code-block">
+    <span class="cm">// 递归函数通用模板</span>
+    <span class="kw">返回值类型</span> func(<span class="kw">参数</span>) {
+    &nbsp;&nbsp;<span class="cm">// ① 终止条件</span>
+    &nbsp;&nbsp;<span class="kw">if</span> (满足终止条件) <span class="kw">return</span> 直接结果;
+    &nbsp;&nbsp;
+    &nbsp;&nbsp;<span class="cm">// ② 递归调用（参数向终止条件逼近）</span>
+    &nbsp;&nbsp;<span class="kw">return</span> 对 func(缩小后的参数) 进行组合;
+    }
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、手动模拟递归——调用栈跟踪 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>手动模拟递归 · 调用栈跟踪</h2>
+
+  <p class="kp-text">
+    手动模拟递归是 <strong class="hl">CSP-J 初赛核心技能</strong>。阅读程序题中，递归函数常以选择题形式出现，
+    要求你<strong>不运行代码</strong>就推导出结果。核心方法是跟踪<strong>调用栈</strong>的变化。
+  </p>
+
+  <h3 class="kp-title">调用栈（Call Stack）原理</h3>
+  <ul class="dot-list">
+    <li>每次调用函数，系统将<strong>当前函数的参数、局部变量、返回地址</strong>压入栈。</li>
+    <li>遇到递归调用 → 先压栈，执行被调函数。</li>
+    <li>被调函数返回 → 弹出栈帧，继续执行原来的函数。</li>
+    <li><strong>「先调用的后返回」</strong> — 栈的 LIFO（后进先出）特性。</li>
+  </ul>
+
+  <h3 class="kp-title" id="s2-demo">演示：模拟 fact(4) 的调用栈</h3>
+
+  <div class="code-block">
+    <span class="kw">int</span> fact(<span class="kw">int</span> n) {
+    &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>; &nbsp;&nbsp;<span class="cm">// 终止条件</span>
+    &nbsp;&nbsp;<span class="kw">return</span> n * fact(n - <span class="num">1</span>); &nbsp;&nbsp;<span class="cm">// 递归调用</span>
+    }
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">📌 调用栈跟踪（从 fact(4) 开始）</div>
+    <div class="stack-viz">
+<span class="frame">调用 fact(4)：n=4，未到达终止条件</span>
+  → 调用 <span class="frame">fact(3)：n=3，未到达终止条件</span>
+    → 调用 <span class="frame">fact(2)：n=2，未到达终止条件</span>
+      → 调用 <span class="frame">fact(1)：n=1，到达终止条件</span>
+      <span class="ret">← fact(1) 返回 1</span>
+    <span class="ret">← fact(2) = 2 × 1 = 2</span>
+  <span class="ret">← fact(3) = 3 × 2 = 6</span>
+<span class="ret">← fact(4) = 4 × 6 = 24</span>
+<span class="sep">最终结果：fact(4) = 24</span>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 手动模拟口诀：</strong>"先递后归，压栈前进，到终点就回溯"——从顶层开始不断压栈调用，
+    到底层触发终止条件后，逐层返回结果。
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 初赛常见错误</div>
+    <p class="kp-text">
+      ❌ 把递归调用和乘法顺序搞反——<span class="c">n * fact(n-1)</span> 是先递归再乘法，不是先乘再递归。<br>
+      ❌ 忘记终止条件或条件判断错误。<br>
+      ❌ 混淆不同递归分支的返回值。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、经典递归模式 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>经典递归模式</h2>
+
+  <h3 class="kp-title">3.1 阶乘（Factorial）</h3>
+  <div class="code-block">
+    <span class="kw">int</span> fact(<span class="kw">int</span> n) {
+    &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+    &nbsp;&nbsp;<span class="kw">return</span> n * fact(n - <span class="num">1</span>);
+    }
+  </div>
+  <p class="kp-text">
+    <strong>规律：</strong>fact(n) = n × (n-1) × (n-2) × ... × 1<br>
+    <strong>时间复杂度：</strong>O(n) — 递归调用 n 次<br>
+    <strong>空间复杂度：</strong>O(n) — 调用栈深度 n
+  </p>
+
+  <h3 class="kp-title">3.2 斐波那契数列（Fibonacci）</h3>
+  <div class="code-block">
+    <span class="kw">int</span> fib(<span class="kw">int</span> n) {
+    &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> n; &nbsp;&nbsp;<span class="cm">// fib(0)=0, fib(1)=1</span>
+    &nbsp;&nbsp;<span class="kw">return</span> fib(n - <span class="num">1</span>) + fib(n - <span class="num">2</span>); &nbsp;&nbsp;<span class="cm">// 两个分支递归</span>
+    }
+  </div>
+  <p class="kp-text">
+    <strong>递归树：</strong>fib(5) 的计算过程如下：
+  </p>
+  <div class="recursion-tree">
+                    <span class="t">fib(5)</span>
+            ┌──────────┴──────────┐
+          <span class="t">fib(4)</span>                <span class="t">fib(3)</span>
+      ┌─────┴─────┐          ┌─────┴─────┐
+    <span class="t">fib(3)</span>      <span class="t">fib(2)</span>    <span class="t">fib(2)</span>      <span class="t">fib(1)</span>
+   ┌───┴───┐   ┌───┴───┐  ┌───┴───┐
+ <span class="t">fib(2)</span>  <span class="t">fib(1)</span> <span class="t">fib(1)</span> <span class="t">fib(0)</span> <span class="t">fib(1)</span> <span class="t">fib(0)</span>
+ ┌───┴───┐
+<span class="t">fib(1)</span> <span class="t">fib(0)</span>
+  </div>
+  <p class="kp-text">
+    <strong>时间复杂度：</strong>O(2<sup>n</sup>) — 每一层调用数翻倍，大量重复计算。<br>
+    <strong>空间复杂度：</strong>O(n) — 最大递归深度为 n。<br>
+    <strong>考点：</strong>初赛常考 fib(n) 的调用次数，如 fib(5) 需要多少步。
+  </p>
+
+  <h3 class="kp-title">3.3 汉诺塔（Tower of Hanoi）</h3>
+  <div class="code-block">
+    <span class="kw">void</span> hanoi(<span class="kw">int</span> n, <span class="kw">char</span> a, <span class="kw">char</span> b, <span class="kw">char</span> c) {
+    &nbsp;&nbsp;<span class="kw">if</span> (n == <span class="num">1</span>) {
+    &nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt; a &lt;&lt; <span class="str">"->"</span> &lt;&lt; c &lt;&lt; endl; <span class="cm">// 直接移动</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span>;
+    &nbsp;&nbsp;}
+    &nbsp;&nbsp;hanoi(n - <span class="num">1</span>, a, c, b); &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// ① n-1 个从 A 经 C 移到 B</span>
+    &nbsp;&nbsp;cout &lt;&lt; a &lt;&lt; <span class="str">"->"</span> &lt;&lt; c &lt;&lt; endl; <span class="cm">// ② 最大盘从 A 移到 C</span>
+    &nbsp;&nbsp;hanoi(n - <span class="num">1</span>, b, a, c); &nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// ③ n-1 个从 B 经 A 移到 C</span>
+    }
+  </div>
+  <p class="kp-text">
+    <strong>思路：</strong>要把 n 个盘子从 A 移到 C，先把 n-1 个移到 B，移最大的，再移 n-1 个到 C。<br>
+    <strong>步数：</strong>2<sup>n</sup> - 1（考试必记！）<br>
+    <strong>时间复杂度：</strong>O(2<sup>n</sup>)<br>
+    <strong>考点：</strong>2024完善程序第2题就考察了汉诺塔递归的实现。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">🎯 汉诺塔三步口诀</div>
+    <p class="kp-text">
+      <strong>"A→B（借助C），A→C，B→C（借助A）"</strong><br>
+      记法：先把上面的一坨挪到辅助柱，再把最大的挪到目标柱，最后把辅助柱上的挪回目标柱。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、递归复杂度分析入门 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>递归复杂度分析入门</h2>
+
+  <h3 class="kp-title">4.1 时间复杂度分析方法</h3>
+  <p class="kp-text">
+    对于递归函数，<strong>时间复杂度 = 递归调用次数 × 每次调用的工作量</strong>。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>递归模式</th><th>递推关系</th><th>时间复杂度</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">线性递归</span></td><td>T(n) = T(n-1) + O(1)</td><td>O(n)</td><td>fact(n)</td></tr>
+        <tr><td><span class="mono">双分支递归</span></td><td>T(n) = T(n-1) + T(n-2) + O(1)</td><td>O(2<sup>n</sup>)</td><td>fib(n)</td></tr>
+        <tr><td><span class="mono">分治递归</span></td><td>T(n) = 2T(n/2) + O(1)</td><td>O(n)</td><td>汉诺塔</td></tr>
+        <tr><td><span class="mono">二分递归</span></td><td>T(n) = T(n/2) + O(1)</td><td>O(log n)</td><td>二分查找</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 典型复杂度记忆技巧</div>
+    <p class="kp-text">
+      <strong>线性递归</strong>：一层一层往下走 = O(n) — 像排队<br>
+      <strong>斐波那契</strong>：每次分裂成两个 = O(2<sup>n</sup>) — 像细胞分裂<br>
+      <strong>汉诺塔</strong>：T(n) = 2T(n-1) + 1 → T(n) = 2<sup>n</sup> - 1<br>
+      <strong>二分递归</strong>：每次规模减半 = O(log n) — 像翻字典
+    </p>
+  </div>
+
+  <h3 class="kp-title">4.2 空间复杂度分析方法</h3>
+  <p class="kp-text">
+    递归的<strong>空间复杂度 = 最大递归深度 × 每帧空间</strong>。<br>
+    递归深度就是调用栈最多同时存在的栈帧数量。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>递归函数</th><th>最大深度</th><th>空间复杂度</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">fact(n)</span></td><td>n</td><td>O(n)</td></tr>
+        <tr><td><span class="mono">fib(n)</span></td><td>n</td><td>O(n)</td></tr>
+        <tr><td><span class="mono">hanoi(n)</span></td><td>n</td><td>O(n)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>💡 注意：</strong>fib(n) 虽然时间复杂度是 O(2<sup>n</sup>)，但空间复杂度只有 O(n)，
+    因为同一时刻栈中只有一条路径的栈帧（深度最多 n）。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、递归 vs 迭代 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>递归 vs 迭代</h2>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th style="width:90px;">对比维度</th><th>递归</th><th>迭代（循环）</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">代码简洁性</span></td><td>逻辑清晰，尤其适合树、分治等问题</td><td>通常代码较长，但逻辑直接</td></tr>
+        <tr><td><span class="mono">性能</span></td><td>函数调用有额外开销（压栈、弹栈）</td><td>无函数调用开销，效率高</td></tr>
+        <tr><td><span class="mono">内存</span></td><td>需要 O(深度) 的栈空间</td><td>通常只需要 O(1) 额外空间</td></tr>
+        <tr><td><span class="mono">适用场景</span></td><td>树遍历、分治、回溯、DFS</td><td>线性遍历、累加、简单循环</td></tr>
+        <tr><td><span class="mono">栈溢出风险</span></td><td>深度过大时会发生栈溢出</td><td>无此风险</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="kp-title">互相转换示例：阶乘</h3>
+  <div class="card primary">
+    <div class="card-title">递归版 vs 迭代版</div>
+    <p class="kp-text">
+      <strong>递归版：</strong>fact(n) = n ≤ 1 ? 1 : n * fact(n-1)<br>
+      <strong>迭代版：</strong>
+    </p>
+    <div class="code-block">
+      <span class="kw">int</span> fact_iter(<span class="kw">int</span> n) {
+      &nbsp;&nbsp;<span class="kw">int</span> res = <span class="num">1</span>;
+      &nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= n; i++) res *= i;
+      &nbsp;&nbsp;<span class="kw">return</span> res;
+      }
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 考试建议：</strong>读程序题遇到递归，就在草稿纸上<strong>画出调用栈或递归树</strong>。
+    千万不要试图在脑海里想象所有步骤——写出来！
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 六、递归深度与栈溢出 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">6</span>递归深度与栈溢出</h2>
+
+  <p class="kp-text">
+    <strong class="hl">递归深度</strong>：一次递归调用中，调用栈的最大层数。<br>
+    <strong class="hl">栈溢出（Stack Overflow）</strong>：递归深度超过系统栈空间大小时发生，程序崩溃。
+  </p>
+
+  <h3 class="kp-title">系统栈大小</h3>
+  <ul class="dot-list">
+    <li>C++ 默认栈空间约 <strong>1MB ~ 8MB</strong>（不同环境不同）。</li>
+    <li>每帧约 <strong>几十字节</strong>，因此递归深度一般限制在 <strong>几万到十几万</strong>。</li>
+    <li>在 CSP-J 中，数据规模通常较小（n ≤ 1000），但由于<strong>初赛是理论推导</strong>，重点考察递归的<strong>逻辑正确性</strong>而非栈溢出检测。</li>
+  </ul>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 死循环递归的危险</div>
+    <p class="kp-text">
+      如果递归函数<strong>没有终止条件</strong>或<strong>调用方向不是朝向终止条件</strong>，
+      会无限递归下去，最终导致<strong>栈溢出</strong>（程序崩溃）。
+    </p>
+  </div>
+
+  <h3 class="kp-title">优化策略</h3>
+  <ul class="dot-list">
+    <li><strong>尾递归优化：</strong>如果递归调用是函数中<strong>最后一条语句</strong>且返回值直接返回，
+      部分编译器可以优化为迭代（CSP-J 不强制要求掌握，但了解可加深理解）。</li>
+    <li><strong>改迭代：</strong>把递归改写为循环（如用栈模拟）。</li>
+    <li><strong>记忆化：</strong>把已经算过的结果存下来，避免重复计算（如 fib 用数组存结果）。</li>
+  </ul>
+
+  <div class="card success">
+    <div class="card-title">🎯 记忆化优化斐波那契</div>
+    <div class="code-block">
+      <span class="kw">int</span> memo[<span class="num">100</span>]; &nbsp;<span class="cm">// 全局数组，初始化为 -1</span>
+      <span class="kw">int</span> fib_memo(<span class="kw">int</span> n) {
+      &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> n;
+      &nbsp;&nbsp;<span class="kw">if</span> (memo[n] != -<span class="num">1</span>) <span class="kw">return</span> memo[n]; &nbsp;<span class="cm">// 已经算过</span>
+      &nbsp;&nbsp;<span class="kw">return</span> memo[n] = fib_memo(n-<span class="num">1</span>) + fib_memo(n-<span class="num">2</span>);
+      }
+    </div>
+    <p class="kp-text">
+      <strong>效果：</strong>时间复杂度从 O(2<sup>n</sup>) <strong>降为 O(n)</strong>！<br>
+      每个 n 只计算一次，之后直接从数组读取。
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 七、真题与模拟综合练习（共10题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s7"><span class="num">📝</span>真题与模拟综合练习（共10题）</h2>
+
+  <p class="kp-text">
+    以下题目涵盖了 CSP-J 初赛中所有递归考点。每道题都包含<strong>手动模拟的分步演算过程</strong>，
+    请务必自己先推导再点击查看答案。
+  </p>
+
+  <!-- ========== 题1：2021第13题-奇数阶乘类 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 13 题</span>
+      <span>奇数阶乘递归模拟</span>
+    </div>
+    <div class="exam-q">
+      以下函数 <span class="c">solve(7)</span> 的返回值是多少？
+      <div class="code-block">
+        <span class="kw">int</span> solve(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;<span class="kw">if</span> (n == <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+        &nbsp;&nbsp;<span class="kw">return</span> n * solve(n - <span class="num">2</span>);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 5040</div>
+      <div class="opt"><span class="letter">B</span> 105</div>
+      <div class="opt"><span class="letter">C</span> 35</div>
+      <div class="opt"><span class="letter">D</span> 7</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：B · 105</div>
+      <div class="explain">
+        <strong>调用栈逐步演算：</strong><br><br>
+        <span class="c">solve(7)</span> → n=7，7≠1，进入递归：<span class="c">7 * solve(5)</span><br>
+        &nbsp;&nbsp;<span class="c">solve(5)</span> → n=5，5≠1，进入递归：<span class="c">5 * solve(3)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">solve(3)</span> → n=3，3≠1，进入递归：<span class="c">3 * solve(1)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">solve(1)</span> → n=1，✅ 触发终止条件，返回 <strong class="b">1</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;← <span class="c">solve(3) = 3 × 1 = 3</span><br>
+        &nbsp;&nbsp;← <span class="c">solve(5) = 5 × 3 = 15</span><br>
+        ← <span class="c">solve(7) = 7 × 15 = <strong>105</strong></span><br><br>
+        <strong>另一种方法直接算：</strong>solve(7) = 7 × 5 × 3 × 1 = 105<br><br>
+        <strong>考点总结：</strong>
+        <ul class="dot-list" style="margin:4px 0 0 0;">
+          <li>终止条件：n == 1</li>
+          <li>递归步进：n → n-2（每次减2，从奇数到下一个奇数）</li>
+          <li>结果：奇数阶乘（只乘奇数）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题2：2025第3题 calc函数 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 3 题</span>
+      <span>calc 双分支递归模拟</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="c">calc(1) = 1</span>，<span class="c">calc(2) = 2</span>，<br>
+      以下 <span class="c">calc(5)</span> 的返回值是多少？
+      <div class="code-block">
+        <span class="kw">int</span> calc(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;<span class="kw">if</span> (n == <span class="num">1</span> || n == <span class="num">2</span>) <span class="kw">return</span> n;
+        &nbsp;&nbsp;<span class="kw">return</span> calc(n - <span class="num">1</span>) + calc(n - <span class="num">2</span>);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 8</div>
+      <div class="opt"><span class="letter">B</span> 7</div>
+      <div class="opt"><span class="letter">C</span> 6</div>
+      <div class="opt"><span class="letter">D</span> 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：C · 6</div>
+      <div class="explain">
+        <strong>逐层模拟递归调用：</strong><br><br>
+        <span class="c">calc(5) = calc(4) + calc(3)</span><br><br>
+        <strong>先计算 calc(4) = calc(3) + calc(2)：</strong><br>
+        &nbsp;&nbsp;<span class="c">calc(3) = calc(2) + calc(1) = 2 + 1 = 3</span><br>
+        &nbsp;&nbsp;<span class="c">calc(2) = 2</span>（终止条件）<br>
+        &nbsp;&nbsp;→ <span class="c">calc(4) = 3 + 2 = 5</span><br><br>
+        <strong>再计算 calc(3) = calc(2) + calc(1)：</strong><br>
+        &nbsp;&nbsp;<span class="c">calc(2) = 2</span>，<span class="c">calc(1) = 1</span><br>
+        &nbsp;&nbsp;→ <span class="c">calc(3) = 2 + 1 = 3</span><br><br>
+        <strong>最后：</strong><span class="c">calc(5) = calc(4) + calc(3) = 5 + 3 = <strong class="b">6</strong></span><br><br>
+        <div class="recursion-tree">
+<span class="t">calc(5)</span>
+├── <span class="t">calc(4)</span>
+│   ├── <span class="t">calc(3)</span>
+│   │   ├── <span class="g">calc(2)=2</span>
+│   │   └── <span class="g">calc(1)=1</span>
+│   └── <span class="g">calc(2)=2</span>
+└── <span class="t">calc(3)</span>
+    ├── <span class="g">calc(2)=2</span>
+    └── <span class="g">calc(1)=1</span>
+        </div>
+        <strong>注意：</strong>calc(5) = calc(4) + calc(3) = 5 + 3 = 6，答案选 C。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题3：2024阅读3 customFunction ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 阅读第 3 题</span>
+      <span>customFunction 参数变化跟踪</span>
+    </div>
+    <div class="exam-q">
+      以下程序输入 <span class="c">5 4</span>，输出是什么？
+      <div class="code-block">
+        <span class="kw">int</span> customFunction(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+        &nbsp;&nbsp;<span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> a;
+        &nbsp;&nbsp;<span class="kw">return</span> customFunction(a, b - <span class="num">1</span>) + a;
+        }
+        <span class="kw">int</span> main() {
+        &nbsp;&nbsp;<span class="kw">int</span> a, b; cin &gt;&gt; a &gt;&gt; b;
+        &nbsp;&nbsp;cout &lt;&lt; customFunction(a, b);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 20</div>
+      <div class="opt"><span class="letter">B</span> 25</div>
+      <div class="opt"><span class="letter">C</span> 24</div>
+      <div class="opt"><span class="letter">D</span> 30</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：B · 25</div>
+      <div class="explain">
+        <strong>调用栈逐步演算（输入 a=5, b=4）：</strong><br><br>
+        customFunction 的语义：当 b 递减到 0 时返回 a，否则 <span class="c">customFunction(a, b-1) + a</span>。<br>
+        这实际上是<strong>递归实现乘法</strong>：a × b。<br><br>
+        <strong>customFunction(5, 4)：</strong> b≠0 → 调用 <span class="c">customFunction(5, 3) + 5</span><br>
+        &nbsp;&nbsp;<strong>customFunction(5, 3)：</strong> b≠0 → 调用 <span class="c">customFunction(5, 2) + 5</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<strong>customFunction(5, 2)：</strong> b≠0 → 调用 <span class="c">customFunction(5, 1) + 5</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>customFunction(5, 1)：</strong> b≠0 → 调用 <span class="c">customFunction(5, 0) + 5</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>customFunction(5, 0)：</strong> ✅ b=0，触发终止条件 → 返回 <strong class="b">5</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← <span class="c">customFunction(5, 1) = 5 + 5 = 10</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;← <span class="c">customFunction(5, 2) = 10 + 5 = 15</span><br>
+        &nbsp;&nbsp;← <span class="c">customFunction(5, 3) = 15 + 5 = 20</span><br>
+        ← <span class="c">customFunction(5, 4) = 20 + 5 = <strong>25</strong></span><br><br>
+        <strong>验证：</strong>5 × 4 = 5 + 5 + 5 + 5 = <strong class="b">25</strong> ✅<br><br>
+        <strong>考点：</strong>这是一个用递归实现 <span class="c">a × b</span> 的经典模式——<br>
+        每次 b 减 1，累加一个 a，直到 b=0 时返回 a（即 a×1 的结果）。<br>
+        注意每层调用的 a 值不变，变化的是 b。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题4：汉诺塔步数 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 完善第 2 题（改编）</span>
+      <span>汉诺塔递归实现</span>
+    </div>
+    <div class="exam-q">
+      汉诺塔问题中，将 4 个盘子从 A 柱移到 C 柱，最少需要移动多少次？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 7</div>
+      <div class="opt"><span class="letter">B</span> 8</div>
+      <div class="opt"><span class="letter">C</span> 15</div>
+      <div class="opt"><span class="letter">D</span> 16</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：C · 15</div>
+      <div class="explain">
+        <strong>汉诺塔递归分析：</strong><br><br>
+        设移动 n 个盘子需要 <span class="c">H(n)</span> 步。<br><br>
+        递推关系：<span class="c">H(n) = 2 × H(n-1) + 1</span><br>
+        <strong>解释：</strong>先把 n-1 个移到辅助柱，再移最大的，最后把 n-1 个移到目标柱。<br><br>
+        <strong>逐层计算 H(4)：</strong><br>
+        H(1) = 1（直接移动）<br>
+        H(2) = 2 × 1 + 1 = 3<br>
+        H(3) = 2 × 3 + 1 = 7<br>
+        H(4) = 2 × 7 + 1 = <strong class="b">15</strong><br><br>
+        <strong>公式：</strong>H(n) = 2<sup>n</sup> - 1<br>
+        H(4) = 2<sup>4</sup> - 1 = 16 - 1 = <strong>15</strong><br><br>
+        <strong>记忆口诀：</strong>"2 的 n 次方减 1"——CSP-J 常考！
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题5：fact 阶乘模拟 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 调用栈跟踪</span>
+      <span>阶乘递归手动模拟</span>
+    </div>
+    <div class="exam-q">
+      <span class="c">fact(5)</span> 的返回值是多少？<br>
+      请写出逐步演算过程再选择。
+      <div class="code-block">
+        <span class="kw">int</span> fact(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+        &nbsp;&nbsp;<span class="kw">return</span> n * fact(n - <span class="num">1</span>);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 120</div>
+      <div class="opt"><span class="letter">B</span> 60</div>
+      <div class="opt"><span class="letter">C</span> 24</div>
+      <div class="opt"><span class="letter">D</span> 720</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：A · 120</div>
+      <div class="explain">
+        <strong>完整调用栈模拟：</strong><br><br>
+        <span class="c">fact(5)</span> → 5 ≤ 1? No → <span class="c">5 * fact(4)</span><br>
+        &nbsp;&nbsp;<span class="c">fact(4)</span> → 4 ≤ 1? No → <span class="c">4 * fact(3)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">fact(3)</span> → 3 ≤ 1? No → <span class="c">3 * fact(2)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">fact(2)</span> → 2 ≤ 1? No → <span class="c">2 * fact(1)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">fact(1)</span> → 1 ≤ 1? ✅ Yes → 返回 <strong class="b">1</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← fact(2) = 2 × 1 = <strong>2</strong><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;← fact(3) = 3 × 2 = <strong>6</strong><br>
+        &nbsp;&nbsp;← fact(4) = 4 × 6 = <strong>24</strong><br>
+        ← fact(5) = 5 × 24 = <strong class="b">120</strong><br><br>
+        <strong>调用栈深度变化：</strong><br>
+        <div class="stack-viz">
+第1步：压栈 fact(5)  &nbsp;栈：[fact(5)]
+第2步：压栈 fact(4)  &nbsp;栈：[fact(5), fact(4)]
+第3步：压栈 fact(3)  &nbsp;栈：[fact(5), fact(4), fact(3)]
+第4步：压栈 fact(2)  &nbsp;栈：[fact(5), fact(4), fact(3), fact(2)]
+第5步：压栈 fact(1)  &nbsp;栈：[fact(5), fact(4), fact(3), fact(2), fact(1)]
+第6步：fact(1)=1，弹栈 &nbsp;栈：[fact(5), fact(4), fact(3), fact(2)]
+第7步：fact(2)=2，弹栈 &nbsp;栈：[fact(5), fact(4), fact(3)]
+第8步：fact(3)=6，弹栈 &nbsp;栈：[fact(5), fact(4)]
+第9步：fact(4)=24，弹栈 栈：[fact(5)]
+第10步：fact(5)=120，弹栈 栈：[]
+        </div>
+        <strong>验证：</strong>5! = 5×4×3×2×1 = 120 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题6：斐波那契调用次数 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 递归树</span>
+      <span>斐波那契调用次数统计</span>
+    </div>
+    <div class="exam-q">
+      以下递归函数 <span class="c">fib(5)</span> 的<strong>递归调用</strong>总次数是多少？
+      <div class="code-block">
+        <span class="kw">int</span> fib(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> n;
+        &nbsp;&nbsp;<span class="kw">return</span> fib(n - <span class="num">1</span>) + fib(n - <span class="num">2</span>);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 8 次</div>
+      <div class="opt"><span class="letter">B</span> 15 次</div>
+      <div class="opt"><span class="letter">C</span> 9 次</div>
+      <div class="opt"><span class="letter">D</span> 10 次</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：B · 15 次</div>
+      <div class="explain">
+        <strong>注意：</strong>题目问的是"递归调用总次数"（包括初始调用 fib(5) 本身）。<br><br>
+        <strong>递归树展开（每个节点代表一次函数调用）：</strong><br>
+        <div class="recursion-tree">
+  ① fib(5)
+  ├── ② fib(4)
+  │   ├── ③ fib(3)
+  │   │   ├── ④ fib(2)
+  │   │   │   ├── ⑤ fib(1) → 终止
+  │   │   │   └── ⑥ fib(0) → 终止
+  │   │   └── ⑦ fib(1) → 终止
+  │   └── ⑧ fib(2)
+  │       ├── ⑨ fib(1) → 终止
+  │       └── ⑩ fib(0) → 终止
+  └── ⑪ fib(3)
+      ├── ⑫ fib(2)
+      │   ├── ⑬ fib(1) → 终止
+      │   └── ⑭ fib(0) → 终止
+      └── ⑮ fib(1) → 终止
+        </div>
+        <strong>总计：15 次递归调用。</strong><br><br>
+        <strong>记忆公式：</strong>fib(n) 的总调用次数 = fib(n+1) × 2 - 1 的近似值，或直接记忆：<br>
+        fib(5) = 15 次，fib(4) = 9 次，fib(3) = 5 次 <br><br>
+        <strong>规律：</strong>调用次数遵循 <span class="c">2×fib(n+1) - 1</span>。<br>
+        fib(6) = 8 → 调用次数 = 2×8 - 1 = 15 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题7：多出口递归 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 多出口条件</span>
+      <span>多终止条件递归</span>
+    </div>
+    <div class="exam-q">
+      以下 <span class="c">f(10)</span> 的输出是什么？
+      <div class="code-block">
+        <span class="kw">void</span> f(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;cout &lt;&lt; n &lt;&lt; <span class="str">" "</span>;
+        &nbsp;&nbsp;<span class="kw">if</span> (n % <span class="num">2</span> == <span class="num">0</span>) f(n / <span class="num">2</span>);
+        &nbsp;&nbsp;<span class="kw">else if</span> (n &gt; <span class="num">1</span>) f(<span class="num">3</span> * n + <span class="num">1</span>);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 10 5 16 8 4 2 1</div>
+      <div class="opt"><span class="letter">B</span> 10 5 16 8 4 2</div>
+      <div class="opt"><span class="letter">C</span> 10 5 16 8 4 2 1 ...（无限循环）</div>
+      <div class="opt"><span class="letter">D</span> 10 5 16 8 4</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：A · 10 5 16 8 4 2 1</div>
+      <div class="explain">
+        <strong>逐步模拟：</strong><br><br>
+        <strong>f(10)：</strong>输出 10，10 是偶数 → 调用 <span class="c">f(5)</span><br>
+        &nbsp;&nbsp;<strong>f(5)：</strong>输出 5，5 不是偶数，但 5 > 1 → 调用 <span class="c">f(16)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<strong>f(16)：</strong>输出 16，16 是偶数 → 调用 <span class="c">f(8)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>f(8)：</strong>输出 8，8 是偶数 → 调用 <span class="c">f(4)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>f(4)：</strong>输出 4，4 是偶数 → 调用 <span class="c">f(2)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>f(2)：</strong>输出 2，2 是偶数 → 调用 <span class="c">f(1)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>f(1)：</strong>输出 1，1 不是偶数且 1 ≤ 1 → <strong>终止</strong><br><br>
+        <strong>输出序列：</strong>10 5 16 8 4 2 1<br><br>
+        <strong>考点分析：</strong>这是著名的 Collatz 猜想（3n+1 问题）。注意：
+        <ul class="dot-list" style="margin:4px 0 0 0;">
+          <li>每次进入函数<strong>先输出再判断</strong>——所以输出包括 1</li>
+          <li>两个分支：偶数除2，奇数乘3加1</li>
+          <li>只有当 n 变成 1 且既不是偶数也不满足 n>1 时，递归终止</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题8：递归深度与栈溢出 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 深度分析</span>
+      <span>递归深度计算与栈溢出判断</span>
+    </div>
+    <div class="exam-q">
+      假设系统栈空间为 1MB，每个栈帧占用 64 字节，<br>
+      以下哪个递归调用最可能发生栈溢出？
+      <div class="code-block">
+        <span class="cm">// 函数A：线性递归</span>
+        <span class="kw">void</span> A(<span class="kw">int</span> n) { <span class="kw">if</span> (n&gt;<span class="num">0</span>) A(n-<span class="num">1</span>); }
+        <span class="cm">// 函数B：双分支（n=40）</span>
+        <span class="kw">int</span> B(<span class="kw">int</span> n) { <span class="kw">if</span> (n&lt;=<span class="num">1</span>) <span class="kw">return</span> n; <span class="kw">return</span> B(n-<span class="num">1</span>)+B(n-<span class="num">2</span>); }
+        <span class="cm">// 函数C：n=30000</span>
+        <span class="kw">void</span> C(<span class="kw">int</span> n) { <span class="kw">if</span> (n&gt;<span class="num">0</span>) C(n-<span class="num">1</span>); }
+        <span class="cm">// 函数D：n=5000</span>
+        <span class="kw">int</span> D(<span class="kw">int</span> n) { <span class="kw">if</span> (n==<span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>; <span class="kw">return</span> n+D(n-<span class="num">1</span>); }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 函数A（n=10000）</div>
+      <div class="opt"><span class="letter">B</span> 函数B（n=40）</div>
+      <div class="opt"><span class="letter">C</span> 函数C（n=30000）</div>
+      <div class="opt"><span class="letter">D</span> 函数D（n=5000）</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：C · 函数C（n=30000）</div>
+      <div class="explain">
+        <strong>逐一分析最大递归深度与栈空间需求：</strong><br><br>
+        <strong>函数A（n=10000）：</strong><br>
+        线性递归，深度 = 10000<br>
+        所需空间 = 10000 × 64 = 640,000 字节 ≈ <strong class="g">625KB</strong> ← 在 1MB 内 ✅<br><br>
+        <strong>函数B（n=40）：</strong><br>
+        虽然是双分支（O(2<sup>n</sup>) 次调用），但<strong>最大深度 = 40</strong><br>
+        所需空间 = 40 × 64 = <strong class="g">2,560 字节</strong> ← 远小于 1MB ✅<br><br>
+        <strong>函数C（n=30000）：</strong><br>
+        线性递归，深度 = 30000<br>
+        所需空间 = 30000 × 64 = 1,920,000 字节 ≈ <strong class="b">1.83MB</strong> ← <strong>超过 1MB ❌</strong><br><br>
+        <strong>函数D（n=5000）：</strong><br>
+        线性递归，深度 = 5000<br>
+        所需空间 = 5000 × 64 = <strong class="g">320KB</strong> ← 在 1MB 内 ✅<br><br>
+        <strong>结论：</strong>函数C 的 n=30000，需要约 1.83MB 栈空间，超过系统限制，最可能栈溢出。<br><br>
+        <strong>考点总结：</strong>
+        <ul class="dot-list" style="margin:4px 0 0 0;">
+          <li>栈溢出取决于<strong>最大递归深度</strong>，不是总调用次数</li>
+          <li>fib(n) 调用次数多但深度浅（只有 n）</li>
+          <li>线性递归当 n 很大时（> 15000~20000）可能栈溢出</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题9：斐波那契计算结果 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 斐波那契变体</span>
+      <span>变体斐波那契递推</span>
+    </div>
+    <div class="exam-q">
+      以下 <span class="c">f(7)</span> 的返回值是多少？
+      <div class="code-block">
+        <span class="kw">int</span> f(<span class="kw">int</span> n) {
+        &nbsp;&nbsp;<span class="kw">if</span> (n &lt;= <span class="num">2</span>) <span class="kw">return</span> n;
+        &nbsp;&nbsp;<span class="kw">return</span> f(n - <span class="num">1</span>) + f(n - <span class="num">3</span>); &nbsp;<span class="cm">// 注意：跳过了 f(n-2)</span>
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 8</div>
+      <div class="opt"><span class="letter">B</span> 9</div>
+      <div class="opt"><span class="letter">C</span> 10</div>
+      <div class="opt"><span class="letter">D</span> 11</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q9')">👁 显示答案</button>
+    <div class="answer-box" id="q9">
+      <div class="ans">✅ 正确答案：C · 10</div>
+      <div class="explain">
+        <strong>先计算基础值：</strong><br>
+        f(0) = 0, f(1) = 1, f(2) = 2（终止条件：n ≤ 2 时返回 n）<br><br>
+        <strong>从底向上递推计算：</strong><br>
+        f(3) = f(2) + f(0) = 2 + 0 = <strong>2</strong><br>
+        f(4) = f(3) + f(1) = 2 + 1 = <strong>3</strong><br>
+        f(5) = f(4) + f(2) = 3 + 2 = <strong>5</strong><br>
+        f(6) = f(5) + f(3) = 5 + 2 = <strong>7</strong><br>
+        f(7) = f(6) + f(4) = 7 + 3 = <strong class="b">10</strong><br><br>
+        <strong>递归树展开（部分）：</strong><br>
+        <div class="recursion-tree">
+<span class="t">f(7)</span>
+├── <span class="t">f(6)</span>
+│   ├── <span class="t">f(5)</span>
+│   │   ├── <span class="t">f(4)</span>
+│   │   │   ├── <span class="g">f(3)=2</span>
+│   │   │   └── <span class="g">f(1)=1</span>
+│   │   └── <span class="g">f(2)=2</span>
+│   └── <span class="t">f(3)</span>
+│       ├── <span class="g">f(2)=2</span>
+│       └── <span class="g">f(0)=0</span>
+└── <span class="t">f(4)</span>
+    ├── <span class="t">f(3)</span>
+    │   ├── <span class="g">f(2)=2</span>
+    │   └── <span class="g">f(0)=0</span>
+    └── <span class="g">f(1)=1</span>
+        </div>
+        f(7) = f(6) + f(4) = 7 + 3 = <strong>10</strong><br><br>
+        <strong>规律：</strong>这个递推 <span class="c">f(n) = f(n-1) + f(n-3)</span> 不同于标准斐波那契。<br>
+        它跳过了 f(n-2)，导致增长更慢。<br>
+        <strong>序列：</strong>0, 1, 2, 2, 3, 5, 7, 10, 13, 18...
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题10：综合阅读程序 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟 · 阅读程序</span>
+      <span>综合递归阅读程序</span>
+    </div>
+    <div class="exam-q">
+      输入 <span class="c">3 4</span>，以下程序的输出是什么？
+      <div class="code-block">
+        <span class="kw">int</span> gcd(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+        &nbsp;&nbsp;<span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> a;
+        &nbsp;&nbsp;<span class="kw">return</span> gcd(b, a % b);
+        }
+        <span class="kw">int</span> foo(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+        &nbsp;&nbsp;<span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+        &nbsp;&nbsp;<span class="kw">return</span> foo(a, b - <span class="num">1</span>) + a;
+        }
+        <span class="kw">int</span> main() {
+        &nbsp;&nbsp;<span class="kw">int</span> a, b; cin &gt;&gt; a &gt;&gt; b;
+        &nbsp;&nbsp;cout &lt;&lt; foo(a, b) &lt;&lt; <span class="str">" "</span> &lt;&lt; gcd(a, b);
+        }
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 12 1</div>
+      <div class="opt"><span class="letter">B</span> 7 1</div>
+      <div class="opt"><span class="letter">C</span> 12 3</div>
+      <div class="opt"><span class="letter">D</span> 10 1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q10')">👁 显示答案</button>
+    <div class="answer-box" id="q10">
+      <div class="ans">✅ 正确答案：A · 12 1</div>
+      <div class="explain">
+        <strong>分两部分计算：</strong><br><br>
+        <strong>第一部分：foo(3, 4) — 递归实现乘法</strong><br>
+        foo(3,4) = 3 + 3 + 3 + 3 = 12（a 累加 b 次）<br><br>
+        <strong>调用栈：</strong><br>
+        foo(3,4) = foo(3,3) + 3<br>
+        &nbsp;foo(3,3) = foo(3,2) + 3<br>
+        &nbsp;&nbsp;foo(3,2) = foo(3,1) + 3<br>
+        &nbsp;&nbsp;&nbsp;foo(3,1) = foo(3,0) + 3<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;foo(3,0) = 0（终止条件）<br>
+        &nbsp;&nbsp;&nbsp;→ foo(3,1) = 0 + 3 = 3<br>
+        &nbsp;&nbsp;→ foo(3,2) = 3 + 3 = 6<br>
+        &nbsp;→ foo(3,3) = 6 + 3 = 9<br>
+        → foo(3,4) = 9 + 3 = <strong class="b">12</strong><br><br>
+        <strong>第二部分：gcd(3, 4) — 欧几里得算法</strong><br>
+        gcd(3,4)：b=4≠0 → gcd(4, 3%4=3)<br>
+        &nbsp;gcd(4,3)：b=3≠0 → gcd(3, 4%3=1)<br>
+        &nbsp;&nbsp;gcd(3,1)：b=1≠0 → gcd(1, 3%1=0)<br>
+        &nbsp;&nbsp;&nbsp;gcd(1,0)：b=0 ✅ → 返回 <strong class="b">1</strong><br><br>
+        <strong>输出：</strong>12 1<br><br>
+        <strong>考点总结：</strong>
+        <ul class="dot-list" style="margin:4px 0 0 0;">
+          <li>foo(a,b) 是用递归实现乘法（a × b）</li>
+          <li>gcd(a,b) 是欧几里得算法（辗转相除法）求最大公约数</li>
+          <li>两个函数展示了不同的递归终止条件设计</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结速查 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 递归分析 · 核心知识速查</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须<strong>熟练掌握</strong>的考点，考前反复看：
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:90px;">概念</th><th>要点</th><th style="width:80px;">复杂度/值</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>递归三要素</td><td>终止条件 + 递归调用 + 返回值</td><td>缺一不可</td></tr>
+        <tr><td>调用栈跟踪</td><td>"先递后归，压栈前进，到底回溯"</td><td>初赛核心</td></tr>
+        <tr><td>fact(n) 阶乘</td><td>n × fact(n-1)，终止 n≤1</td><td>O(n) / O(n)</td></tr>
+        <tr><td>fib(n) 斐波那契</td><td>fib(n-1)+fib(n-2)，终止 n≤1</td><td>O(2<sup>n</sup>) / O(n)</td></tr>
+        <tr><td>汉诺塔</td><td>2 × hanoi(n-1) + 1</td><td>步数 2<sup>n</sup>-1</td></tr>
+        <tr><td>递归深度</td><td>线性递归深度 = n，双分支深度 = n</td><td>影响空间</td></tr>
+        <tr><td>栈溢出</td><td>深度过大（通常 > 15000）导致</td><td>程序崩溃</td></tr>
+        <tr><td>递归→迭代</td><td>循环或栈可替代递归</td><td>更高效</td></tr>
+        <tr><td>记忆化优化</td><td>存中间结果，避免重复计算</td><td>fib O(n) 代替 O(2<sup>n</sup>)</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+      <div class="row">
+        <span class="pill">三要素：终止 + 递进 + 返回</span>
+        <span class="pill green">调用栈深度 = 最大递归深度</span>
+        <span class="pill amber">汉诺塔步数 = 2<sup>n</sup> - 1</span>
+        <span class="pill red">无限递归 → 栈溢出</span>
+      </div>
+      <div class="row">
+        <span class="pill purple">fib(n) 调用次数 ≈ 2×fib(n+1)-1</span>
+        <span class="pill green">记忆化：O(2<sup>n</sup>) → O(n)</span>
+        <span class="pill">递推 ← → 递归可互转</span>
+        <span class="pill amber">先手动模拟，再对答案</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源索引 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-14 递归基础</strong></td><td style="padding:4px 0;color:var(--text-sec);">递归三要素与经典递归模式详解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-15 递归进阶</strong></td><td style="padding:4px 0;color:var(--text-sec);">回溯、分治、记忆化搜索</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2021 · 第13题</strong></td><td style="padding:4px 0;color:var(--text-sec);">solve(7) = 7×5×3×1 = 105</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2025 · 第3题</strong></td><td style="padding:4px 0;color:var(--text-sec);">calc(5) = calc(4)+calc(3)=6</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2024 · 阅读第3题</strong></td><td style="padding:4px 0;color:var(--text-sec);">customFunction(a,b) 参数变化跟踪</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2024 · 完善第2题</strong></td><td style="padding:4px 0;color:var(--text-sec);">汉诺塔递归实现</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 递归 30 题训练</strong></td><td style="padding:4px 0;color:var(--text-sec);">含调用栈模拟、递归树分析等</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

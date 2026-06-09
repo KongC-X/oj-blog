@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题8-1 2021真题全解析</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: .72rem;
+    color: var(--text-ter);
+    text-align: center;
+  }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+
+  /* ─── 卡片 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* ─── 代码块 ─── */
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    line-height: 1.7;
+    padding: 14px 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+    tab-size: 4;
+  }
+  .code-block .kw { color: #c792ea; }
+  .code-block .fn { color: #82aaff; }
+  .code-block .num { color: #f78c6c; }
+  .code-block .cm { color: #546e7a; font-style: italic; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .op { color: #89ddff; }
+  .code-block .type { color: #ffcb6b; }
+  .code-block .blk {
+    display: inline-block;
+    background: rgba(255,200,0,.2);
+    color: #ffd54f;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-weight: 600;
+    border-bottom: 2px solid #ffd54f;
+  }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+  .exam-badge.read {
+    background: #eef2ff;
+    border: 1px solid #bfdbfe;
+    color: #4f6ef7;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 判断题样式 ─── */
+  .judge-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: .84rem;
+    color: var(--text-sec);
+    flex-wrap: wrap;
+  }
+  .judge-row .j-label {
+    font-weight: 600;
+    color: var(--text);
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题八 · 真题实战与综合模拟</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+  <a class="nav-link" href="#overview">📊 试卷总览</a>
+
+  <div class="nav-section">一 · 单选题</div>
+  <a class="nav-link" href="#sec-single">共 15 题 · 每题 2 分</a>
+  <a class="nav-link sub" href="#q1">第 1 题 · 编程语言</a>
+  <a class="nav-link sub" href="#q2">第 2 题 · 奖项常识</a>
+  <a class="nav-link sub" href="#q3">第 3 题 · 数据存储</a>
+  <a class="nav-link sub" href="#q4">第 4 题 · 找最大数</a>
+  <a class="nav-link sub" href="#q5">第 5 题 · 栈</a>
+  <a class="nav-link sub" href="#q6">第 6 题 · 图论</a>
+  <a class="nav-link sub" href="#q7">第 7 题 · 进制转换</a>
+  <a class="nav-link sub" href="#q8">第 8 题 · 二叉树</a>
+  <a class="nav-link sub" href="#q9">第 9 题 · 表达式</a>
+  <a class="nav-link sub" href="#q10">第 10 题 · 组合数学</a>
+  <a class="nav-link sub" href="#q11">第 11 题 · 算法策略</a>
+  <a class="nav-link sub" href="#q12">第 12 题 · 计数</a>
+  <a class="nav-link sub" href="#q13">第 13 题 · 递归</a>
+  <a class="nav-link sub" href="#q14">第 14 题 · DFS</a>
+  <a class="nav-link sub" href="#q15">第 15 题 · 二叉树</a>
+
+  <div class="nav-section">二 · 阅读程序</div>
+  <a class="nav-link sub" href="#read1">阅读 1 · 位运算</a>
+  <a class="nav-link sub" href="#read2">阅读 2 · Base64 解码</a>
+  <a class="nav-link sub" href="#read3">阅读 3 · 线性筛</a>
+  <a class="nav-link sub" href="#read4">阅读 4 · 二叉树遍历</a>
+
+  <div class="nav-section">三 · 完善程序</div>
+  <a class="nav-link sub" href="#complete1">完善 1 · 二叉树平衡</a>
+  <a class="nav-link sub" href="#complete2">完善 2 · 编码解码</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#summary">📌 全卷小结</a>
+
+  <div class="sidebar-footer">专题八 · 真题实战与综合模拟</div>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题八 · 真题实战与综合模拟</a> / 8.1</div>
+    <h1>2021 年 CSP-J 初赛真题全解析</h1>
+    <p class="subtitle">逐题精讲 · 考点归类 · 易错警示 · 一篇文章吃透 2021 年真题</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 3 课时</span>
+      <span class="meta-tag hot">🔥 真题全卷</span>
+      <span class="meta-tag exam">📖 15 单选 + 4 阅读 + 2 完善</span>
+      <span class="meta-tag practice">✏️ 总分 100 分</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 通过本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 2021 全卷各题考点定位与解题思路</span>
+      <span class="item">✅ 位运算（popcount / lowbit）的代码阅读</span>
+      <span class="item">✅ Base64 编码解码原理与程序实现</span>
+      <span class="item">✅ 线性筛求因数个数与因数和</span>
+      <span class="item">✅ 二叉树前中序遍历还原 + 平衡判断</span>
+      <span class="item">✅ 完善程序的空白推断技巧</span>
+      <span class="item">✅ 易错题与高频失分点汇总</span>
+    </div>
+  </div>
+
+  <!-- ===== 试卷总览 ===== -->
+  <div class="card primary" id="overview">
+    <div class="card-title">📊 2021 年 CSP-J 初试试卷结构</div>
+    <div class="table-wrapper" style="margin:8px 0 0;">
+      <table>
+        <thead>
+          <tr><th>题型</th><th>题号</th><th>题量</th><th>分值</th><th>建议用时</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>单选题</td><td>1~15</td><td>15 题</td><td>30 分</td><td>25 分钟</td></tr>
+          <tr><td>阅读程序</td><td>16~30</td><td>4 大题</td><td>40 分</td><td>40 分钟</td></tr>
+          <tr><td>完善程序</td><td>31~40</td><td>2 大题</td><td>30 分</td><td>25 分钟</td></tr>
+          <tr><td><strong>合计</strong></td><td></td><td></td><td><strong>100 分</strong></td><td><strong>90 分钟</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、单选题 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="sec-single"><span class="num">一</span>单选题（15 题，每题 2 分，共 30 分）</h2>
+
+  <p class="kp-text">
+    单选题考查范围广泛，覆盖计算机基础、数据结构、算法、数学等。
+    本卷单选题整体难度适中，但第 5、8、10、12 题需要仔细分析。
+  </p>
+
+  <!-- === 第 1 题 === -->
+  <div class="exam-block" id="q1">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 1 题</span>
+      <span>计算机基础 · 编程语言分类</span>
+    </div>
+    <div class="exam-q">
+      以下不属于面向对象程序设计语言的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C++</div>
+      <div class="opt"><span class="letter">B</span>Python</div>
+      <div class="opt"><span class="letter">C</span>Java</div>
+      <div class="opt"><span class="letter">D</span>C</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：D（C 语言）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · <span class="tag-inline">C 语言</span>是<strong>面向过程（Procedure-Oriented）</strong>的编程语言，不是面向对象。<br>
+        · <span class="tag-inline">C++</span> 是 C 的超集，同时支持面向过程和面向对象编程（多范式）。<br>
+        · <span class="tag-inline">Python</span> 和 <span class="tag-inline">Java</span> 都是面向对象语言。<br><br>
+        <strong>易混淆：</strong>C++ 虽然名字带"++"表示是 C 的增强版，但它已经引入了类、继承、多态等面向对象特性。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 2 题 === -->
+  <div class="exam-block" id="q2">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 2 题</span>
+      <span>计算机基础 · 奖项常识</span>
+    </div>
+    <div class="exam-q">
+      以下奖项与计算机领域最相关的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>奥斯卡奖</div>
+      <div class="opt"><span class="letter">B</span>图灵奖</div>
+      <div class="opt"><span class="letter">C</span>诺贝尔奖</div>
+      <div class="opt"><span class="letter">D</span>普利策奖</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：B（图灵奖）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · <strong>图灵奖</strong>（Turing Award）由<strong>ACM</strong>（美国计算机协会）于 1966 年设立，是计算机领域的最高荣誉，被誉为"计算机界的诺贝尔奖"。<br>
+        · 奥斯卡奖 → 电影艺术领域<br>
+        · 诺贝尔奖 → 物理、化学、生理学或医学、文学、和平、经济学<br>
+        · 普利策奖 → 新闻、文学、音乐<br><br>
+        <strong>知识点：</strong>图灵奖以艾伦·图灵的名字命名。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 3 题 === -->
+  <div class="exam-block" id="q3">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 3 题</span>
+      <span>计算机基础 · 数据表示</span>
+    </div>
+    <div class="exam-q">
+      目前主流的计算机储存数据最终都是转换成什么形式的数据储存？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>二进制</div>
+      <div class="opt"><span class="letter">B</span>十进制</div>
+      <div class="opt"><span class="letter">C</span>八进制</div>
+      <div class="opt"><span class="letter">D</span>十六进制</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：A（二进制）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        计算机内部所有数据——数字、文字、图片、声音、视频——最终都以<strong>二进制（0 和 1）</strong>形式存储和处理。<br>
+        原因：电子元件天然具有两种稳定状态（高电平/低电平、通/断），对应 1 和 0，物理实现最简单可靠。<br>
+        十进制、八进制、十六进制只是二进制的<strong>人为表示形式</strong>，方便人类阅读。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 4 题 === -->
+  <div class="exam-block" id="q4">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 4 题</span>
+      <span>算法基础 · 比较次数</span>
+    </div>
+    <div class="exam-q">
+      N 个数中找最大数，最坏情况下最少比较次数是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>N</div>
+      <div class="opt"><span class="letter">B</span>N + 1</div>
+      <div class="opt"><span class="letter">C</span>N - 1</div>
+      <div class="opt"><span class="letter">D</span>logN</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：C（N - 1）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        找最大数的标准算法：先取第一个数为最大值，然后与剩余 N-1 个数逐个比较，每比较一次淘汰一个候选，总共比较 <strong>N-1 次</strong>。<br>
+        这种策略在"最坏情况"下（即最大值在
+        最后一个位置）仍然只需比较 N-1 次。<br><br>
+        <strong>推广：</strong>找最大值和最小值需要 <strong>⌈3N/2⌉ - 2</strong> 次比较（分治策略）。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 5 题 === -->
+  <div class="exam-block" id="q5">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 5 题</span>
+      <span>数据结构 · 栈</span>
+    </div>
+    <div class="exam-q">
+      入栈顺序为 a, b, c, d, e，以下哪个<strong>不是</strong>合法的出栈序列？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>a, b, c, d, e</div>
+      <div class="opt"><span class="letter">B</span>e, d, c, b, a</div>
+      <div class="opt"><span class="letter">C</span>b, c, d, e, a</div>
+      <div class="opt"><span class="letter">D</span>c, d, a, e, b</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：D（c, d, a, e, b）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        用栈模拟验证 D 选项 c, d, a, e, b：<br>
+        · push a, push b, push c → pop c ✓<br>
+        · push d → pop d ✓（此时栈中从底到顶为 a, b）<br>
+        · 要 pop a 时，a 上面还有 b，所以 <strong>a 不能先于 b 出栈</strong> ✗<br><br>
+        <strong>核心规律：</strong>在栈中，后入栈的元素必须先出栈（LIFO）。
+        如果某个元素 x 出栈时，栈内还有比 x 后入栈但在 x 上方的元素，
+        则这个顺序是<strong>非法</strong>的。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 6 题 === -->
+  <div class="exam-block" id="q6">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 6 题</span>
+      <span>图论 · 树与连通</span>
+    </div>
+    <div class="exam-q">
+      无向连通图有 n 个顶点 m 条边，删掉多少条边后可以变成一棵树？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>n</div>
+      <div class="opt"><span class="letter">B</span>m</div>
+      <div class="opt"><span class="letter">C</span>m - n</div>
+      <div class="opt"><span class="letter">D</span>m - n + 1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：D（m - n + 1）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 一棵 <strong>树</strong> 有 n 个顶点，恰好有 <strong>n - 1 条边</strong>。<br>
+        · 当前图有 m 条边，要变成树需要删掉 <strong>m - (n - 1) = m - n + 1</strong> 条边。<br>
+        · 删除后必须保持<strong>连通性</strong>，所以只能删掉构成环路的边（即多余边）。<br><br>
+        <strong>快速记忆：</strong>树边数 = 顶点数 - 1，删边数 = 当前边数 - 树边数 = m - (n-1) = m-n+1。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 7 题 === -->
+  <div class="exam-block" id="q7">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 7 题</span>
+      <span>进制转换 · 二进制到十进制</span>
+    </div>
+    <div class="exam-q">
+      二进制数 101.11 对应的十进制数是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>6.5</div>
+      <div class="opt"><span class="letter">B</span>5.5</div>
+      <div class="opt"><span class="letter">C</span>5.75</div>
+      <div class="opt"><span class="letter">D</span>5.25</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：C（5.75）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        101.11<sub>2</sub> = 1×2² + 0×2¹ + 1×2⁰ + 1×2⁻¹ + 1×2⁻²<br>
+        = 4 + 0 + 1 + 0.5 + 0.25<br>
+        = <strong>5.75</strong><br><br>
+        <strong>注意：</strong>二进制小数部分，小数点后第 1 位是 2⁻¹ = 0.5，第 2 位是 2⁻² = 0.25。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 8 题 === -->
+  <div class="exam-block" id="q8">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 8 题</span>
+      <span>数据结构 · 完全二叉树</span>
+    </div>
+    <div class="exam-q">
+      高度为 5 的完全二叉树有多少种不同形态？（根固定，每层可缺最后一层右边的部分）
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>16</div>
+      <div class="opt"><span class="letter">B</span>15</div>
+      <div class="opt"><span class="letter">C</span>4</div>
+      <div class="opt"><span class="letter">D</span>8</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：A（16）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 高度为 5 的完全二叉树，前 4 层是<strong>满的</strong>（共 1+2+4+8 = 15 个节点）。<br>
+        · 第 5 层最多可以有 16 个节点。<br>
+        · 完全二叉树的特点：第 5 层的节点必须<strong>从左向右连续排列</strong>，
+        不能中间空缺。所以第 5 层可以有 0, 1, 2, ..., 16 个节点，共 <strong>17 种</strong>情况。<br>
+        · 但题目说"高度为 5"意味着高度就是 5（根深度为 1），所以第 5 层<strong>至少要有 1 个节点</strong>，
+        否则高度就是 4 了。<br>
+        · 因此可能的节点数为 1 ~ 16，共 <strong>16 种</strong>不同形态。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 9 题 === -->
+  <div class="exam-block" id="q9">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 9 题</span>
+      <span>数据结构 · 表达式求值</span>
+    </div>
+    <div class="exam-q">
+      表达式 a * (b + c) * d 的后缀表达式是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>a b c d + *</div>
+      <div class="opt"><span class="letter">B</span>a b c + * d *</div>
+      <div class="opt"><span class="letter">C</span>a b c * + d</div>
+      <div class="opt"><span class="letter">D</span>a + b c d + *</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：B（a b c + * d *）</div>
+      <div class="explain">
+        <strong>解析（中缀转后缀 — 运算符优先级法）：</strong><br>
+        · 原式：a * (b + c) * d<br>
+        · 先算括号内的 b + c → 后缀为 <span class="tag-inline">b c +</span><br>
+        · 然后 a 乘上 (b+c) → <span class="tag-inline">a b c + *</span><br>
+        · 再乘 d → <span class="tag-inline">a b c + * d *</span><br><br>
+        <strong>后缀表达式求值规则：</strong>遇到数字入栈，遇到运算符弹出两个数字计算结果后入栈。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 10 题 === -->
+  <div class="exam-block" id="q10">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 10 题</span>
+      <span>组合数学 · 分组计数</span>
+    </div>
+    <div class="exam-q">
+      6 人两人一队共分成三队（不区分编号），有多少种分法？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>15</div>
+      <div class="opt"><span class="letter">B</span>30</div>
+      <div class="opt"><span class="letter">C</span>45</div>
+      <div class="opt"><span class="letter">D</span>60</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：A（15）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 先选第 1 队：C(6,2) = 15 种<br>
+        · 再从剩余 4 人选第 2 队：C(4,2) = 6 种<br>
+        · 最后 2 人自动成第 3 队：C(2,2) = 1 种<br>
+        · 因为<strong>三队不区分编号</strong>，需要除以 3! = 6（去掉队伍顺序）<br>
+        · 总方案数 = 15 × 6 × 1 ÷ 6 = <strong>15</strong><br><br>
+        <strong>公式：</strong>将 n 个元素分成 k 组每组 m 个（不区分组标号），
+        方案数为 <span class="tag-inline">C(n,m) × C(n-m,m) × ... ÷ k!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 11 题 === -->
+  <div class="exam-block" id="q11">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 11 题</span>
+      <span>算法策略 · 哈夫曼编码</span>
+    </div>
+    <div class="exam-q">
+      哈夫曼编码本质上是一种什么策略？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>枚举</div>
+      <div class="opt"><span class="letter">B</span>贪心</div>
+      <div class="opt"><span class="letter">C</span>递归</div>
+      <div class="opt"><span class="letter">D</span>动态规划</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：B（贪心）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        哈夫曼编码的构建过程：<strong>每次合并权值最小的两个结点</strong>，
+        构建一棵哈夫曼树。<br>
+        · 这种"每一步都选择当前最优"（局部最优）的策略，期望达到全局最优（带权路径长度 WPL 最小），是典型的<strong>贪心算法</strong>。<br>
+        · 枚举 → 暴力搜索所有可能方案<br>
+        · 递归 → 函数调用自身的编程技巧<br>
+        · 动态规划 → 子问题重叠 + 最优子结构<br><br>
+        <strong>证明：</strong>哈夫曼编码的贪心策略是最优的（通过交换论证法证明）。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 12 题 === -->
+  <div class="exam-block" id="q12">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 12 题</span>
+      <span>组合数学 · 数字排列</span>
+    </div>
+    <div class="exam-q">
+      用数字 1, 1, 2, 2, 3 可以组成多少个不同的三位数？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>18</div>
+      <div class="opt"><span class="letter">B</span>15</div>
+      <div class="opt"><span class="letter">C</span>12</div>
+      <div class="opt"><span class="letter">D</span>9</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：A（18）</div>
+      <div class="explain">
+        <strong>解析（分类讨论法）：</strong><br><br>
+        <strong>情况 1：三个数字各不相同——用 1,2,3</strong><br>
+        · 排列数 = 3! = 6 种<br><br>
+        <strong>情况 2：两个 1 + 一个其他数字——用 1,1,2 或 1,1,3</strong><br>
+        · 对 (1,1,2)：3 个位置放 2 → C(3,1) = 3 种<br>
+        · 对 (1,1,3)：3 个位置放 3 → C(3,1) = 3 种<br>
+        · 小计：3 + 3 = 6 种<br><br>
+        <strong>情况 3：两个 2 + 一个其他数字——用 2,2,1 或 2,2,3</strong><br>
+        · 对 (2,2,1)：C(3,1) = 3 种<br>
+        · 对 (2,2,3)：C(3,1) = 3 种<br>
+        · 小计：3 + 3 = 6 种<br><br>
+        <strong>总计：</strong>6 + 6 + 6 = <strong>18 种</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 13 题 === -->
+  <div class="exam-block" id="q13">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 13 题</span>
+      <span>算法基础 · 递归函数</span>
+    </div>
+    <div class="exam-q">
+      已知递归函数 solve(n) 定义如下：
+      <pre style="background:var(--surface-alt);padding:8px 12px;border-radius:4px;font-size:.8rem;margin:4px 0;overflow-x:auto;white-space:pre;">
+int solve(int n) {
+    if (n <= 1) return 1;
+    if (n % 2 == 1) return n * solve(n - 2);
+    return solve(n - 1);
+}</pre>
+      则 solve(7) 的返回值是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>105</div>
+      <div class="opt"><span class="letter">B</span>7</div>
+      <div class="opt"><span class="letter">C</span>21</div>
+      <div class="opt"><span class="letter">D</span>1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：A（105）</div>
+      <div class="explain">
+        <strong>解析（手动展开递归）：</strong><br>
+        solve(7) = 7 × solve(5) （7 是奇数）<br>
+        &emsp;&emsp;&emsp;&emsp;= 7 × 5 × solve(3)<br>
+        &emsp;&emsp;&emsp;&emsp;= 7 × 5 × 3 × solve(1)<br>
+        &emsp;&emsp;&emsp;&emsp;= 7 × 5 × 3 × 1<br>
+        &emsp;&emsp;&emsp;&emsp;= <strong>105</strong><br><br>
+        <strong>注意：</strong>当 n 是偶数时（如 solve(4)），函数会调用 solve(3)，
+        即偶数直接减 1 变成奇数后继续递归。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 14 题 === -->
+  <div class="exam-block" id="q14">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 14 题</span>
+      <span>图论 · DFS 遍历</span>
+    </div>
+    <div class="exam-q">
+      给定如下图（无向图，顶点 A~D），从不同起点开始 DFS 遍历，
+      最后一个遍历到的顶点有几种可能？
+      <pre style="background:var(--surface-alt);padding:8px 12px;border-radius:4px;font-size:.8rem;margin:4px 0;overflow-x:auto;white-space:pre;">
+    A --- B
+    |     |
+    |     |
+    C --- D</pre>
+      （图：4 个顶点组成一个环，A-B-D-C-A 各有一条边，即一个 4 元环）
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1</div>
+      <div class="opt"><span class="letter">B</span>2</div>
+      <div class="opt"><span class="letter">C</span>3</div>
+      <div class="opt"><span class="letter">D</span>4</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：B（2 种）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        4 个顶点的环图，考虑 DFS 遍历（按照邻接点顺序访问）：<br><br>
+        · 从 A 出发：可能的遍历顺序之一是 A → B → D → C，最后一个点是 C。<br>
+        · 从 A 出发的另一方向：A → C → D → B，最后一个点是 B。<br>
+        · 从 B 出发：B → A → C → D，最后一个点是 D。<br>
+        · 从 D 出发：D → C → A → B，最后一个点是 B。<br><br>
+        综合考虑所有起点和遍历顺序，最后一个被遍历到的点<strong>可能是两个不同的顶点</strong>。
+        具体是哪两个取决于图的对称性和邻接顺序。<br><br>
+        在本图中，事实上可能的"最后一个点"只有 <strong>2 种</strong>情况。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 15 题 === -->
+  <div class="exam-block" id="q15">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 15 题</span>
+      <span>数据结构 · 二叉树存储</span>
+    </div>
+    <div class="exam-q">
+      一个包含 n 个结点的二叉树采用二叉链表存储（每个结点包含左孩子指针 left 和右孩子指针 right），
+      则其中空指针的数目为？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>n</div>
+      <div class="opt"><span class="letter">B</span>n + 1</div>
+      <div class="opt"><span class="letter">C</span>2n</div>
+      <div class="opt"><span class="letter">D</span>n - 1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a15')">👁 显示答案</button>
+    <div class="answer-box" id="a15">
+      <div class="ans">✅ 正确答案：B（n + 1）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · n 个结点的二叉树，每个结点有 2 个指针域，一共 <strong>2n</strong> 个指针。<br>
+        · 一棵二叉树有 n 个结点，则有 <strong>n - 1 条边</strong>（即 n-1 个非空指针，每个非空指针就是一条边）。<br>
+        · 空指针数 = 总指针数 - 非空指针数 = 2n - (n - 1) = <strong>n + 1</strong><br><br>
+        <strong>快速记忆：</strong>二叉链表存储中，空指针 = 结点数 + 1。<br>
+        特例验证：一个根结点 n=1，左空右空，空指针 = 2 = 1+1 ✅
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 二、阅读程序 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="read1"><span class="num">二</span>阅读程序（4 大题，共 40 分）</h2>
+
+  <p class="kp-text">
+    阅读程序题要求理解代码功能、分析执行结果。
+    以下按 2021 年 CSP-J 真题的 4 道阅读程序逐一解析。
+  </p>
+
+  <!-- ===== 阅读程序 1 ===== -->
+  <h3 class="kp-title">阅读程序 1（10 分）—— 位运算</h3>
+
+  <p class="kp-text">
+    知识点：位运算（popcount / lowbit）、<span class="tag-inline">x & (x-1)</span> 技巧
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">int</span> f1(<span class="kw">int</span> x) {
+    <span class="kw">int</span> cnt = <span class="num">0</span>;
+    <span class="kw">while</span> (x) {
+        cnt++;
+        x = x &amp; (x - <span class="num">1</span>);
+    }
+    <span class="kw">return</span> cnt;
+}
+
+<span class="kw">int</span> f2(<span class="kw">int</span> x) {
+    <span class="kw">return</span> x &amp; -x;
+}
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; f1(n) &lt;&lt; <span class="str">" "</span> &lt;&lt; f2(n) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">📌 函数功能速览</div>
+    <p class="kp-text">
+      · <span class="tag-inline">f1(x)</span>：统计 x 的二进制表示中 <strong>1 的个数</strong>（每次用 x &amp; (x-1) 去掉最低位的 1）。<br>
+      · <span class="tag-inline">f2(x)</span>：取 x 的二进制中 <strong>最低位的 1 所对应的值</strong>（如 x=12=1100₂，f2(12)=4）。<br>
+      · 注意：x &amp; -x 利用了补码的性质，-x = ~x + 1。
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (1)</span>
+      <span>判断题 · f1(7)</span>
+    </div>
+    <div class="exam-q">
+      输入 n = 7，f1(n) 返回 7。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b1')">👁 显示答案</button>
+    <div class="answer-box" id="b1">
+      <div class="ans">✅ 正确答案：B（错误）</div>
+      <div class="explain">
+        7 的二进制是 <span class="tag-inline">111</span>（3 个 1），所以 f1(7) 返回 <strong>3</strong>，不是 7。<br>
+        每次循环 x &amp; (x-1) 去掉一个 1：111 &amp; 110 = 110 → 110 &amp; 101 = 100 → 100 &amp; 011 = 000。循环 3 次。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (2)</span>
+      <span>判断题 · f2(7)</span>
+    </div>
+    <div class="exam-q">
+      输入 n = 7，f2(n) 返回 1。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b2')">👁 显示答案</button>
+    <div class="answer-box" id="b2">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        7 的二进制是 <span class="tag-inline">111</span>，最低位的 1 对应 2⁰ = <strong>1</strong>。<br>
+        <span class="tag-inline">f2(7) = 7 &amp; -7</span>，-7 的补码为 ...111001，与 000111 按位与得 000001 = 1。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (3)</span>
+      <span>选择题 · f1(8) 和 f2(8)</span>
+    </div>
+    <div class="exam-q">
+      f1(8) 和 f2(8) 的值分别是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1 和 8</div>
+      <div class="opt"><span class="letter">B</span>8 和 1</div>
+      <div class="opt"><span class="letter">C</span>1 和 1</div>
+      <div class="opt"><span class="letter">D</span>8 和 8</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b3')">👁 显示答案</button>
+    <div class="answer-box" id="b3">
+      <div class="ans">✅ 正确答案：A（1 和 8）</div>
+      <div class="explain">
+        8 的二进制是 <span class="tag-inline">1000</span>，只有 1 个 1，所以 f1(8)=1。<br>
+        最低位的 1 就是 8 本身（2³=8），所以 f2(8)=8。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (4)</span>
+      <span>判断题 · 代码等价性</span>
+    </div>
+    <div class="exam-q">
+      若将 f1 中的 <span class="tag-inline">x = x &amp; (x - 1)</span> 改为 <span class="tag-inline">x = x - (x &amp; -x)</span>，
+      程序功能不变。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b4')">👁 显示答案</button>
+    <div class="answer-box" id="b4">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        <span class="tag-inline">x &amp; (x-1)</span> 的作用是<strong>去掉最低位的 1</strong>。<br>
+        <span class="tag-inline">x - (x &amp; -x)</span>：<span class="tag-inline">x &amp; -x</span> 取出最低位的 1，
+        然后用 x 减去它，也是<strong>去掉最低位的 1</strong>。<br>
+        两种写法功能完全相同，都用于统计二进制中 1 的个数。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 阅读程序 2 ===== -->
+  <h3 class="kp-title" id="read2">阅读程序 2（10 分）—— Base64 解码</h3>
+
+  <p class="kp-text">
+    知识点：Base64 编码原理、字符映射、位运算
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">const</span> string table =
+    <span class="str">"ABCDEFGHIJKLMNOPQRSTUVWXYZ"</span>
+    <span class="str">"abcdefghijklmnopqrstuvwxyz"</span>
+    <span class="str">"0123456789+/"</span>;
+
+<span class="kw">int</span> idx(<span class="kw">char</span> c) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">64</span>; i++)
+        <span class="kw">if</span> (table[i] == c) <span class="kw">return</span> i;
+    <span class="kw">return</span> <span class="num">0</span>;
+}
+
+string decode(string s) {
+    string res;
+    <span class="kw">int</span> n = s.length();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i += <span class="num">4</span>) {
+        <span class="kw">int</span> a = idx(s[i]);
+        <span class="kw">int</span> b = idx(s[i+<span class="num">1</span>]);
+        <span class="kw">int</span> c = idx(s[i+<span class="num">2</span>]);
+        <span class="kw">int</span> d = idx(s[i+<span class="num">3</span>]);
+        <span class="kw">int</span> x = (a &lt;&lt; <span class="num">18</span>) | (b &lt;&lt; <span class="num">12</span>) | (c &lt;&lt; <span class="num">6</span>) | d;
+        res += <span class="kw">char</span>((x &gt;&gt; <span class="num">16</span>) &amp; <span class="num">0xFF</span>);
+        res += <span class="kw">char</span>((x &gt;&gt; <span class="num">8</span>) &amp; <span class="num">0xFF</span>);
+        res += <span class="kw">char</span>(x &amp; <span class="num">0xFF</span>);
+    }
+    <span class="kw">return</span> res;
+}
+
+<span class="kw">int</span> main() {
+    string s;
+    cin &gt;&gt; s;
+    cout &lt;&lt; decode(s) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card accent">
+    <div class="card-title">💡 Base64 解码原理</div>
+    <p class="kp-text">
+      Base64 将每 3 个字节（24 位）编码为 4 个字符（每字符 6 位）。<br>
+      · 编码表共 64 个字符：A-Z (0-25), a-z (26-51), 0-9 (52-61), +(62), /(63)<br>
+      · 解码是编码的逆过程：4 个字符 → 24 位 → 3 个字节<br>
+      · <span class="tag-inline">idx(c)</span>：查找字符 c 在编码表中的位置（0~63）<br>
+      · 每 4 个字符解码为 3 个字节：用位运算将 4 个 6 位值拼接成 24 位，再拆成 3 个 8 位值
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (1)</span>
+      <span>功能理解 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      上述程序的主要功能是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>将字符串编码为 Base64</div>
+      <div class="opt"><span class="letter">B</span>将 Base64 字符串解码为原文</div>
+      <div class="opt"><span class="letter">C</span>对字符串进行压缩</div>
+      <div class="opt"><span class="letter">D</span>对字符串进行加密</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b5')">👁 显示答案</button>
+    <div class="answer-box" id="b5">
+      <div class="ans">✅ 正确答案：B（Base64 解码）</div>
+      <div class="explain">
+        程序中的 <span class="tag-inline">decode</span> 函数将 Base64 编码的字符串还原为原始数据。
+        每 4 个字符通过查表得到 4 个 6 位值，拼接为 24 位后拆成 3 个字节。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (2)</span>
+      <span>运行结果 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      输入 "QQ=="（假设 `=` 不调用 idx，而是特殊处理），输出的第一个字符是什么？
+      （已知 'Q' 在编码表中的索引为 16）
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>'A'</div>
+      <div class="opt"><span class="letter">B</span>'Q'</div>
+      <div class="opt"><span class="letter">C</span>空格</div>
+      <div class="opt"><span class="letter">D</span>无法确定</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b6')">👁 显示答案</button>
+    <div class="answer-box" id="b6">
+      <div class="ans">✅ 正确答案：A（'A'）</div>
+      <div class="explain">
+        'Q' 的索引为 16 = 010000₂。<br>
+        a=16, b=16，拼接：x = (16&lt;&lt;18)|(16&lt;&lt;12) = 010000|010000|000000|000000<br>
+        第一个字节 = (x &gt;&gt; 16) &amp; 0xFF = 01000001 = 65 = <strong>'A'</strong>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 阅读程序 3 ===== -->
+  <h3 class="kp-title" id="read3">阅读程序 3（10 分）—— 线性筛 / 欧拉筛</h3>
+
+  <p class="kp-text">
+    知识点：线性筛法、因数个数函数 d(n)、因数和函数 σ(n)
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">const</span> <span class="kw">int</span> MAXN = <span class="num">1000005</span>;
+<span class="kw">int</span> prime[MAXN], d[MAXN], s[MAXN], cnt[MAXN];
+<span class="kw">bool</span> vis[MAXN];
+<span class="kw">int</span> tot;
+
+<span class="kw">int</span> main() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    d[<span class="num">1</span>] = <span class="num">1</span>;
+    s[<span class="num">1</span>] = <span class="num">1</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= n; i++) {
+        <span class="kw">if</span> (!vis[i]) {
+            prime[tot++] = i;
+            d[i] = <span class="num">2</span>;
+            cnt[i] = <span class="num">1</span>;
+            s[i] = i + <span class="num">1</span>;
+        }
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; tot &amp;&amp; i * prime[j] &lt;= n; j++) {
+            vis[i * prime[j]] = <span class="kw">true</span>;
+            <span class="kw">if</span> (i % prime[j] == <span class="num">0</span>) {
+                cnt[i * prime[j]] = cnt[i] + <span class="num">1</span>;
+                d[i * prime[j]] = d[i] / (cnt[i] + <span class="num">1</span>) * (cnt[i] + <span class="num">2</span>);
+                s[i * prime[j]] = s[i] * prime[j] + s[i / prime[j]];
+                <span class="kw">break</span>;
+            } <span class="kw">else</span> {
+                cnt[i * prime[j]] = <span class="num">1</span>;
+                d[i * prime[j]] = d[i] * <span class="num">2</span>;
+                s[i * prime[j]] = s[i] * (prime[j] + <span class="num">1</span>);
+            }
+        }
+    }
+    <span class="kw">int</span> sum_d = <span class="num">0</span>, sum_s = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        sum_d += d[i];
+        sum_s += s[i];
+    }
+    cout &lt;&lt; sum_d &lt;&lt; <span class="str">" "</span> &lt;&lt; sum_s &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">📌 数组含义</div>
+    <p class="kp-text">
+      · <span class="tag-inline">d[i]</span>：i 的因数个数<br>
+      · <span class="tag-inline">s[i]</span>：i 的所有因数之和<br>
+      · <span class="tag-inline">cnt[i]</span>：i 的最小质因子的幂次（用于递推）<br>
+      · <span class="tag-inline">prime[]</span>：存储筛出的所有质数<br>
+      · 最后输出 [1, n] 范围内所有数的因数个数之和、因数之和
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (1)</span>
+      <span>功能判断 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      该程序的时间复杂度是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>O(n)</div>
+      <div class="opt"><span class="letter">B</span>O(n log n)</div>
+      <div class="opt"><span class="letter">C</span>O(n log log n)</div>
+      <div class="opt"><span class="letter">D</span>O(n²)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b7')">👁 显示答案</button>
+    <div class="answer-box" id="b7">
+      <div class="ans">✅ 正确答案：A（O(n)）</div>
+      <div class="explain">
+        这是<strong>欧拉筛（线性筛）</strong>的模板。每个合数只被其最小质因子筛掉一次，<br>
+        因此每个数最多进入内层循环一次，总复杂度为 <strong>Θ(n)</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (2)</span>
+      <span>结果计算 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      输入 n = 6 时，sum_d 的值为？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>6</div>
+      <div class="opt"><span class="letter">B</span>10</div>
+      <div class="opt"><span class="letter">C</span>14</div>
+      <div class="opt"><span class="letter">D</span>18</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b8')">👁 显示答案</button>
+    <div class="answer-box" id="b8">
+      <div class="ans">✅ 正确答案：C（14）</div>
+      <div class="explain">
+        手动计算 d[1]~d[6]：<br>
+        d[1]=1, d[2]=2, d[3]=2, d[4]=3, d[5]=2, d[6]=4<br>
+        总和 = 1+2+2+3+2+4 = <strong>14</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 阅读程序 4 ===== -->
+  <h3 class="kp-title" id="read4">阅读程序 4（10 分）—— 二叉树遍历 + 平衡判断</h3>
+
+  <p class="kp-text">
+    知识点：二叉树前序/中序遍历、二叉树的还原、平衡二叉树判断
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;string&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;algorithm&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">const</span> <span class="kw">int</span> INF = <span class="num">1000000000</span>;
+string pre, ino;
+
+<span class="kw">struct</span> Node {
+    <span class="kw">char</span> val;
+    Node *left, *right;
+    Node(<span class="kw">char</span> v) : val(v), left(<span class="kw">nullptr</span>), right(<span class="kw">nullptr</span>) {}
+};
+
+Node* build(<span class="kw">int</span> pl, <span class="kw">int</span> pr, <span class="kw">int</span> il, <span class="kw">int</span> ir) {
+    <span class="kw">if</span> (pl &gt; pr) <span class="kw">return</span> <span class="kw">nullptr</span>;
+    <span class="kw">char</span> rootVal = pre[pl];
+    <span class="kw">int</span> pos = ino.find(rootVal);
+    <span class="kw">int</span> leftSize = pos - il;
+    Node* root = new Node(rootVal);
+    root-&gt;left = build(pl+<span class="num">1</span>, pl+leftSize, il, pos-<span class="num">1</span>);
+    root-&gt;right = build(pl+leftSize+<span class="num">1</span>, pr, pos+<span class="num">1</span>, ir);
+    <span class="kw">return</span> root;
+}
+
+<span class="kw">int</span> dfs(Node* root, <span class="kw">bool</span>&amp; ok) {
+    <span class="kw">if</span> (!root) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">int</span> lh = dfs(root-&gt;left, ok);
+    <span class="kw">int</span> rh = dfs(root-&gt;right, ok);
+    <span class="kw">if</span> (abs(lh - rh) &gt; <span class="num">1</span>) ok = <span class="kw">false</span>;
+    <span class="kw">return</span> max(lh, rh) + <span class="num">1</span>;
+}
+
+<span class="kw">bool</span> isBalanced(Node* root) {
+    <span class="kw">bool</span> ok = <span class="kw">true</span>;
+    dfs(root, ok);
+    <span class="kw">return</span> ok;
+}
+
+<span class="kw">int</span> main() {
+    cin &gt;&gt; pre &gt;&gt; ino;
+    Node* root = build(<span class="num">0</span>, pre.length()-<span class="num">1</span>, <span class="num">0</span>, ino.length()-<span class="num">1</span>);
+    cout &lt;&lt; (isBalanced(root) ? <span class="str">"YES"</span> : <span class="str">"NO"</span>) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (1)</span>
+      <span>功能理解 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      若输入 pre = "ABDEC", ino = "DBEAC"，则 build 函数建立的二叉树根结点是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>A</div>
+      <div class="opt"><span class="letter">B</span>B</div>
+      <div class="opt"><span class="letter">C</span>C</div>
+      <div class="opt"><span class="letter">D</span>D</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b9')">👁 显示答案</button>
+    <div class="answer-box" id="b9">
+      <div class="ans">✅ 正确答案：A（A）</div>
+      <div class="explain">
+        前序遍历的第一个字符就是<strong>根结点</strong>。<br>
+        pre = "ABDEC"，第一个字符为 <strong>A</strong>，所以根结点是 A。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 阅读题 (2)</span>
+      <span>条件判断 · 选择题</span>
+    </div>
+    <div class="exam-q">
+      以下哪组输入能使得 isBalanced 返回 true？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>pre="ABC", ino="CBA"</div>
+      <div class="opt"><span class="letter">B</span>pre="ABC", ino="ABC"</div>
+      <div class="opt"><span class="letter">C</span>pre="ABC", ino="ACB"</div>
+      <div class="opt"><span class="letter">D</span>均不可能</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b10')">👁 显示答案</button>
+    <div class="answer-box" id="b10">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        pre="ABC", ino="ABC" 构建的树：<br>
+        A 为根，左子树为空（因为 ino 中 A 在位置 0），右子树为 B→C：<br>
+        <pre style="background:var(--surface-alt);padding:4px 8px;border-radius:4px;font-size:.78rem;margin:4px 0;white-space:pre;">
+    A
+     \
+      B
+       \
+        C</pre>
+        这棵树每个结点都有右孩子，高度为 3，左右子树高度差不超过 1，是平衡的。<br>
+        <strong>但注意：</strong>这个解释适用于另一种形态。更准确地说，B 选项构建的树若
+        左右子树高度差 ≤ 1 则返回 true。实际上 ino="ABC" 表示中序遍历顺序就是 A B C，
+        对应一棵完全右斜树，每个结点左右子树高度差为 1，也是平衡的。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 三、完善程序 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="complete1"><span class="num">三</span>完善程序（2 大题，共 30 分）</h2>
+
+  <p class="kp-text">
+    完善程序题给出带有空白的程序代码，要求根据上下文填入正确的表达式或语句。
+    2021 年两道完型分别考查二叉树应用和字符串处理。
+  </p>
+
+  <!-- ===== 完善程序 1 ===== -->
+  <h3 class="kp-title">完善程序 1（15 分）—— 二叉树的还原与平衡判断</h3>
+
+  <p class="kp-text">
+    知识点：二叉树遍历还原、递归建树、平衡判断、高度计算
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;string&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;algorithm&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+string pre, ino;
+
+<span class="kw">struct</span> Node {
+    <span class="kw">char</span> val;
+    Node *left, *right;
+};
+
+Node* build(<span class="kw">int</span> pl, <span class="kw">int</span> pr, <span class="kw">int</span> il, <span class="kw">int</span> ir) {
+    <span class="kw">if</span> (pl &gt; pr) <span class="kw">return</span> <span <span class="kw">class</span>=<span class="str">"blk"</span>>①</span>;
+    <span class="kw">char</span> rootVal = pre[pl];
+    <span class="kw">int</span> pos = ino.<span <span class="kw">class</span>=<span class="str">"blk"</span>>②</span>;
+    <span class="kw">int</span> leftSize = pos - il;
+    Node* root = new Node;
+    root-&gt;val = rootVal;
+    root-&gt;left = build(pl+<span class="num">1</span>, <span <span class="kw">class</span>=<span class="str">"blk"</span>>③</span>, il, pos-<span class="num">1</span>);
+    root-&gt;right = build(pl+leftSize+<span class="num">1</span>, pr, pos+<span class="num">1</span>, ir);
+    <span class="kw">return</span> root;
+}
+
+<span class="kw">int</span> getHeight(Node* root) {
+    <span class="kw">if</span> (root == <span class="kw">nullptr</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">return</span> <span <span class="kw">class</span>=<span class="str">"blk"</span>>④</span> + <span class="num">1</span>;
+}
+
+<span class="kw">bool</span> isBalanced(Node* root) {
+    <span class="kw">if</span> (root == <span class="kw">nullptr</span>) <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">int</span> lh = getHeight(root-&gt;left);
+    <span class="kw">int</span> rh = getHeight(root-&gt;right);
+    <span class="kw">if</span> (abs(lh - rh) &gt; <span class="num">1</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">return</span> <span <span class="kw">class</span>=<span class="str">"blk"</span>>⑤</span>;
+}
+
+<span class="kw">int</span> main() {
+    cin &gt;&gt; pre &gt;&gt; ino;
+    Node* root = build(<span class="num">0</span>, pre.length()-<span class="num">1</span>, <span class="num">0</span>, ino.length()-<span class="num">1</span>);
+    cout &lt;&lt; (isBalanced(root) ? <span class="str">"YES"</span> : <span class="str">"NO"</span>) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ① 空</span>
+      <span>递归边界条件</span>
+    </div>
+    <div class="exam-q">
+      ① 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>nullptr</div>
+      <div class="opt"><span class="letter">B</span>new Node</div>
+      <div class="opt"><span class="letter">C</span>root</div>
+      <div class="opt"><span class="letter">D</span>0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c1')">👁 显示答案</button>
+    <div class="answer-box" id="c1">
+      <div class="ans">✅ 正确答案：A（nullptr）</div>
+      <div class="explain">
+        当区间为空时（pl &gt; pr），表示没有结点需要构建，返回<strong>空指针</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ② 空</span>
+      <span>在中序序列中定位根结点</span>
+    </div>
+    <div class="exam-q">
+      ② 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>find(rootVal)</div>
+      <div class="opt"><span class="letter">B</span>find(pre[pl])</div>
+      <div class="opt"><span class="letter">C</span>find(rootVal)</div>
+      <div class="opt"><span class="letter">D</span>find('A')</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c2')">👁 显示答案</button>
+    <div class="answer-box" id="c2">
+      <div class="ans">✅ 正确答案：find(rootVal) 或 find(pre[pl])</div>
+      <div class="explain">
+        前序序列的第一个元素 pre[pl] 是当前子树的根，需要在中序序列中找到它的位置，
+        从而划分左右子树。应填入 <span class="tag-inline">find(rootVal)</span> 或 <span class="tag-inline">find(pre[pl])</span>。<br>
+        这里 <span class="tag-inline">rootVal = pre[pl]</span>，所以两者等价。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ③ 空</span>
+      <span>构建左子树的前序右边界</span>
+    </div>
+    <div class="exam-q">
+      ③ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>pl + leftSize</div>
+      <div class="opt"><span class="letter">B</span>pl + leftSize - 1</div>
+      <div class="opt"><span class="letter">C</span>pl + leftSize</div>
+      <div class="opt"><span class="letter">D</span>pl + leftSize</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c3')">👁 显示答案</button>
+    <div class="answer-box" id="c3">
+      <div class="ans">✅ 正确答案：pl + leftSize</div>
+      <div class="explain">
+        左子树的前序区间为 [pl+1, pl+leftSize]：<br>
+        · pl+1 是前序中左子树的起始位置（跳过根）<br>
+        · leftSize = pos - il 是中序中左子树的结点个数<br>
+        · 所以左子树前序区间的右边界为 pl + leftSize<br>
+        填入 <span class="tag-inline">pl + leftSize</span>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ④ 空</span>
+      <span>计算树的高度</span>
+    </div>
+    <div class="exam-q">
+      ④ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>max(getHeight(root-&gt;left), getHeight(root-&gt;right))</div>
+      <div class="opt"><span class="letter">B</span>getHeight(root-&gt;left) + getHeight(root-&gt;right)</div>
+      <div class="opt"><span class="letter">C</span>abs(getHeight(root-&gt;left) - getHeight(root-&gt;right))</div>
+      <div class="opt"><span class="letter">D</span>min(getHeight(root-&gt;left), getHeight(root-&gt;right))</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c4')">👁 显示答案</button>
+    <div class="answer-box" id="c4">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        树的高度定义为：<strong>max(左子树高度, 右子树高度) + 1</strong>。<br>
+        因此填入 <span class="tag-inline">max(getHeight(root-&gt;left), getHeight(root-&gt;right))</span>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ⑤ 空</span>
+      <span>平衡判断的递归条件</span>
+    </div>
+    <div class="exam-q">
+      ⑤ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>true</div>
+      <div class="opt"><span class="letter">B</span>false</div>
+      <div class="opt"><span class="letter">C</span>isBalanced(root-&gt;left) &amp;&amp; isBalanced(root-&gt;right)</div>
+      <div class="opt"><span class="letter">D</span>isBalanced(root-&gt;left) || isBalanced(root-&gt;right)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c5')">👁 显示答案</button>
+    <div class="answer-box" id="c5">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        判断平衡二叉树不仅要检查当前结点左右子树高度差 ≤ 1，还要<strong>递归地检查左右子树是否也是平衡的</strong>。<br>
+        因此填写 <span class="tag-inline">isBalanced(root-&gt;left) &amp;&amp; isBalanced(root-&gt;right)</span>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 完善程序 2 ===== -->
+  <h3 class="kp-title" id="complete2">完善程序 2（15 分）—— 编码解码 / 字符串处理</h3>
+
+  <p class="kp-text">
+    知识点：字符串处理、编码表映射、位运算
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;string&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+string encode(string s) {
+    string res;
+    <span class="kw">int</span> n = s.length();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i += <span class="num">3</span>) {
+        <span class="kw">int</span> a = s[i], b = (i+<span class="num">1</span> &lt; n) ? s[i+<span class="num">1</span>] : <span class="num">0</span>;
+        <span class="kw">int</span> c = (i+<span class="num">2</span> &lt; n) ? s[i+<span class="num">2</span>] : <span class="num">0</span>;
+        <span class="kw">int</span> x = (a &lt;&lt; <span class="num">16</span>) | (b &lt;&lt; <span class="num">8</span>) | c;
+
+        <span class="kw">int</span> d1 = (x &gt;&gt; <span class="num">18</span>) &amp; <span class="num">0x3F</span>;
+        <span class="kw">int</span> d2 = (x &gt;&gt; <span class="num">12</span>) &amp; <span class="num">0x3F</span>;
+        <span class="kw">int</span> d3 = (x &gt;&gt; <span class="num">6</span>) &amp; <span class="num">0x3F</span>;
+        <span class="kw">int</span> d4 = x &amp; <span class="num">0x3F</span>;
+
+        res += table[d1];
+        res += table[d2];
+        res += (i+<span class="num">1</span> &lt; n) ? table[d3] : '=';
+        res += (i+<span class="num">2</span> &lt; n) ? table[d4] : '=';
+    }
+    <span class="kw">return</span> res;
+}
+
+string <span <span class="kw">class</span>=<span class="str">"blk"</span>>①</span>(string s) {
+    string res;
+    <span class="kw">int</span> n = s.length();
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i += <span class="num">4</span>) {
+        <span class="kw">int</span> a = idx(s[i]);
+        <span class="kw">int</span> b = idx(s[i+<span class="num">1</span>]);
+        <span class="kw">int</span> c = (s[i+<span class="num">2</span>] != '=') ? <span <span class="kw">class</span>=<span class="str">"blk"</span>>②</span> : <span class="num">0</span>;
+        <span class="kw">int</span> d = (s[i+<span class="num">3</span>] != '=') ? idx(s[i+<span class="num">3</span>]) : <span class="num">0</span>;
+        <span class="kw">int</span> x = (a &lt;&lt; <span class="num">18</span>) | (b &lt;&lt; <span class="num">12</span>) | (c &lt;&lt; <span class="num">6</span>) | d;
+        res += <span class="kw">char</span>((x &gt;&gt; <span class="num">16</span>) &amp; <span class="num">0xFF</span>);
+        <span class="kw">if</span> (s[i+<span class="num">2</span>] != '=') res += <span class="kw">char</span>(<span <span class="kw">class</span>=<span class="str">"blk"</span>>③</span>);
+        <span class="kw">if</span> (s[i+<span class="num">3</span>] != '=') res += <span class="kw">char</span>(<span <span class="kw">class</span>=<span class="str">"blk"</span>>④</span>);
+    }
+    <span class="kw">return</span> <span <span class="kw">class</span>=<span class="str">"blk"</span>>⑤</span>;
+}
+
+<span class="kw">int</span> main() {
+    string s;
+    cin &gt;&gt; s;
+    cout &lt;&lt; encode(s) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ① 空</span>
+      <span>函数名定义</span>
+    </div>
+    <div class="exam-q">
+      ① 处应填入什么函数名？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>decode</div>
+      <div class="opt"><span class="letter">B</span>encode</div>
+      <div class="opt"><span class="letter">C</span>convert</div>
+      <div class="opt"><span class="letter">D</span>transform</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c6')">👁 显示答案</button>
+    <div class="answer-box" id="c6">
+      <div class="ans">✅ 正确答案：A（decode）</div>
+      <div class="explain">
+        从代码逻辑看，这个函数将 Base64 编码的 4 个字符解码为 3 个字节，
+        与 encode 对应，函数名应为 <span class="tag-inline">decode</span>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ② 空</span>
+      <span>解码表索引</span>
+    </div>
+    <div class="exam-q">
+      ② 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>idx(s[i+2])</div>
+      <div class="opt"><span class="letter">B</span>table[s[i+2]]</div>
+      <div class="opt"><span class="letter">C</span>s[i+2]</div>
+      <div class="opt"><span class="letter">D</span>0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c7')">👁 显示答案</button>
+    <div class="answer-box" id="c7">
+      <div class="ans">✅ 正确答案：A（idx(s[i+2])）</div>
+      <div class="explain">
+        当 s[i+2] 不是 '=' 时，需要将其转换为编码表中的索引值。<br>
+        使用 <span class="tag-inline">idx(s[i+2])</span> 获得该字符在 Base64 编码表中的位置（0~63）。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ③ 空</span>
+      <span>解码第二个字节</span>
+    </div>
+    <div class="exam-q">
+      ③ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>(x &gt;&gt; 8) &amp; 0xFF</div>
+      <div class="opt"><span class="letter">B</span>(x &gt;&gt; 16) &amp; 0xFF</div>
+      <div class="opt"><span class="letter">C</span>x &amp; 0xFF</div>
+      <div class="opt"><span class="letter">D</span>(x &gt;&gt; 6) &amp; 0xFF</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c8')">👁 显示答案</button>
+    <div class="answer-box" id="c8">
+      <div class="ans">✅ 正确答案：A（(x &gt;&gt; 8) &amp; 0xFF）</div>
+      <div class="explain">
+        24 位数据 x 中，第 2 个字节对应位 [15:8]：<br>
+        · 第 1 个字节（高位）：(x &gt;&gt; 16) &amp; 0xFF（已填）<br>
+        · 第 2 个字节（中间）：<strong>(x &gt;&gt; 8) &amp; 0xFF</strong><br>
+        · 第 3 个字节（低位）：x &amp; 0xFF（在④空）
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ④ 空</span>
+      <span>解码第三个字节</span>
+    </div>
+    <div class="exam-q">
+      ④ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>x &amp; 0xFF</div>
+      <div class="opt"><span class="letter">B</span>(x &gt;&gt; 8) &amp; 0xFF</div>
+      <div class="opt"><span class="letter">C</span>(x &gt;&gt; 16) &amp; 0xFF</div>
+      <div class="opt"><span class="letter">D</span>(x &gt;&gt; 24) &amp; 0xFF</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c9')">👁 显示答案</button>
+    <div class="answer-box" id="c9">
+      <div class="ans">✅ 正确答案：A（x &amp; 0xFF）</div>
+      <div class="explain">
+        24 位数据 x 中，第 3 个字节（最低 8 位）对应位 [7:0]：<br>
+        取 <span class="tag-inline">x &amp; 0xFF</span> 得到最低字节。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ⑤ 空</span>
+      <span>函数返回值</span>
+    </div>
+    <div class="exam-q">
+      ⑤ 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>res</div>
+      <div class="opt"><span class="letter">B</span>s</div>
+      <div class="opt"><span class="letter">C</span>""</div>
+      <div class="opt"><span class="letter">D</span>return</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c10')">👁 显示答案</button>
+    <div class="answer-box" id="c10">
+      <div class="ans">✅ 正确答案：A（res）</div>
+      <div class="explain">
+        函数返回解码后得到的原始字符串，即变量 <span class="tag-inline">res</span>。<br>
+        注意这里不需要 return 关键字（已写在前面），只需要填返回值表达式。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 2021 年真题核心知识点总复习</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须掌握的考点，考前反复看：
+    </div>
+
+    <div class="row">
+      <span class="pill">C 不是面向对象语言</span>
+      <span class="pill">图灵奖 = ACM 设立</span>
+      <span class="pill">二进制存储数据</span>
+      <span class="pill">N 个数找最大 = N-1 次</span>
+      <span class="pill">栈的 LIFO 特性</span>
+      <span class="pill">树边数 = 顶点数 - 1</span>
+    </div>
+    <div class="row">
+      <span class="pill green">二进制转十进制逐位乘 2 的幂</span>
+      <span class="pill green">完全二叉树前 4 层满</span>
+      <span class="pill green">后缀表达式 = 中缀去括号移运算符</span>
+      <span class="pill green">无标号分组除以 k!</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">哈夫曼 = 贪心策略</span>
+      <span class="pill amber">x &amp; (x-1) 消最低位 1</span>
+      <span class="pill amber">x &amp; -x 取最低位 1</span>
+      <span class="pill amber">二叉链表空指针 = n+1</span>
+      <span class="pill red">DFS 最后一个点取决于起点和邻接顺序</span>
+    </div>
+    <div class="row">
+      <span class="pill">线性筛 = O(n) 每个合数只筛一次</span>
+      <span class="pill">Base64: 4 字符 → 3 字节</span>
+      <span class="pill">前序第一个 = 根</span>
+      <span class="pill">平衡二叉树左右高度差 ≤ 1</span>
+      <span class="pill">完善程序先读懂功能再填空</span>
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">📈 得分策略</div>
+    <p class="kp-text">
+      · <strong>单选题（30 分）：</strong>计算机基础题（1-4）务必全对，数据结构和算法题结合平时训练。<br>
+      · <strong>阅读程序（40 分）：</strong>先看 main 函数了解输入输出，再分析函数功能。关注核心技巧（如位运算、递推）。<br>
+      · <strong>完善程序（30 分）：</strong>理解整体算法框架，利用上下文和变量名推断每空的功能。<br>
+      · <strong>目标分数：</strong>阅读 + 完善共 70 分是得分大头，目标是拿 50+ 分；单选保底 24 分。
+    </p>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title, .objectives, .exam-block');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      if (id) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => { if (t.getAttribute('id')) observer.observe(t); });
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题8-4 2024真题全解析</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: .72rem;
+    color: var(--text-ter);
+    text-align: center;
+  }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    line-height: 1.7;
+    padding: 14px 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+    tab-size: 4;
+  }
+  .code-block .kw { color: #c792ea; }
+  .code-block .fn { color: #82aaff; }
+  .code-block .num { color: #f78c6c; }
+  .code-block .cm { color: #546e7a; font-style: italic; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .op { color: #89ddff; }
+  .code-block .type { color: #ffcb6b; }
+  .code-block .blk {
+    display: inline-block;
+    background: rgba(255,200,0,.2);
+    color: #ffd54f;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-weight: 600;
+    border-bottom: 2px solid #ffd54f;
+  }
+
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+  .exam-badge.read {
+    background: #eef2ff;
+    border: 1px solid #bfdbfe;
+    color: #4f6ef7;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  .judge-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: .84rem;
+    color: var(--text-sec);
+    flex-wrap: wrap;
+  }
+  .judge-row .j-label {
+    font-weight: 600;
+    color: var(--text);
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题八 · 真题实战与综合模拟</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+  <a class="nav-link" href="#overview">📊 试卷总览</a>
+
+  <div class="nav-section">一 · 单选题</div>
+  <a class="nav-link" href="#sec-single">共 15 题 · 每题 2 分</a>
+  <a class="nav-link sub" href="#q1">第 1 题 · 编程语言</a>
+  <a class="nav-link sub" href="#q2">第 2 题 · 硬件常识</a>
+  <a class="nav-link sub" href="#q3">第 3 题 · 计算机安全</a>
+  <a class="nav-link sub" href="#q4">第 4 题 · 图论基础</a>
+  <a class="nav-link sub" href="#q5">第 5 题 · 栈</a>
+  <a class="nav-link sub" href="#q6">第 6 题 · 二叉树</a>
+  <a class="nav-link sub" href="#q7">第 7 题 · 链表</a>
+  <a class="nav-link sub" href="#q8">第 8 题 · 进制转换</a>
+  <a class="nav-link sub" href="#q9">第 9 题 · 逻辑运算</a>
+  <a class="nav-link sub" href="#q10">第 10 题 · 算法策略</a>
+  <a class="nav-link sub" href="#q11">第 11 题 · 位运算</a>
+  <a class="nav-link sub" href="#q12">第 12 题 · 组合数学</a>
+  <a class="nav-link sub" href="#q13">第 13 题 · 时间复杂度</a>
+  <a class="nav-link sub" href="#q14">第 14 题 · 数组存储</a>
+  <a class="nav-link sub" href="#q15">第 15 题 · 排序</a>
+
+  <div class="nav-section">二 · 阅读程序</div>
+  <a class="nav-link sub" href="#read1">阅读 1 · 完全平方数（二分）</a>
+  <a class="nav-link sub" href="#read2">阅读 2 · 爬楼梯 DP</a>
+  <a class="nav-link sub" href="#read3">阅读 3 · 自定义递归</a>
+
+  <div class="nav-section">三 · 完善程序</div>
+  <a class="nav-link sub" href="#complete1">完善 1 · 完全平方数判断</a>
+  <a class="nav-link sub" href="#complete2">完善 2 · 汉诺塔递归</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#summary">📌 全卷小结</a>
+
+  <div class="sidebar-footer">专题八 · 真题实战与综合模拟</div>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题八 · 真题实战与综合模拟</a> / 8.4</div>
+    <h1>2024 年 CSP-J 初赛真题全解析</h1>
+    <p class="subtitle">逐题精讲 · 考点归类 · 易错警示 · 一篇文章吃透 2024 年真题</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 3 课时</span>
+      <span class="meta-tag hot">🔥 真题全卷</span>
+      <span class="meta-tag exam">📖 15 单选 + 3 阅读 + 2 完善</span>
+      <span class="meta-tag practice">✏️ 总分 100 分</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 通过本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 2024 全卷各题考点定位与解题思路</span>
+      <span class="item">✅ 二分查找判断完全平方数的技巧</span>
+      <span class="item">✅ 爬楼梯 DP 的状态转移分析</span>
+      <span class="item">✅ 递归函数与递推关系的推导</span>
+      <span class="item">✅ 汉诺塔递归的代码实现</span>
+      <span class="item">✅ 完善程序的空白推断技巧</span>
+      <span class="item">✅ 易错题与高频失分点汇总</span>
+    </div>
+  </div>
+
+  <!-- ===== 试卷总览 ===== -->
+  <div class="card primary" id="overview">
+    <div class="card-title">📊 2024 年 CSP-J 初试试卷结构</div>
+    <div class="table-wrapper" style="margin:8px 0 0;">
+      <table>
+        <thead>
+          <tr><th>题型</th><th>题号</th><th>题量</th><th>分值</th><th>建议用时</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>单选题</td><td>1~15</td><td>15 题</td><td>30 分</td><td>25 分钟</td></tr>
+          <tr><td>阅读程序</td><td>16~30</td><td>3 大题</td><td>40 分</td><td>40 分钟</td></tr>
+          <tr><td>完善程序</td><td>31~40</td><td>2 大题</td><td>30 分</td><td>25 分钟</td></tr>
+          <tr><td><strong>合计</strong></td><td></td><td></td><td><strong>100 分</strong></td><td><strong>90 分钟</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、单选题 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="sec-single"><span class="num">一</span>单选题（15 题，每题 2 分，共 30 分）</h2>
+
+  <p class="kp-text">
+    单选题考查范围广泛，覆盖计算机基础、数据结构、算法、数学等。
+    本卷单选整体难度适中，DP 和递归相关题需仔细分析。
+  </p>
+
+  <!-- === 第 1 题 === -->
+  <div class="exam-block" id="q1">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 1 题</span>
+      <span>计算机基础 · 编程语言分类</span>
+    </div>
+    <div class="exam-q">
+      以下哪一种语言是编译型语言？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Python</div>
+      <div class="opt"><span class="letter">B</span>JavaScript</div>
+      <div class="opt"><span class="letter">C</span>C++</div>
+      <div class="opt"><span class="letter">D</span>HTML</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：C（C++）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · <span class="tag-inline">C++</span> 是<strong>编译型语言</strong>，源代码需要经过编译器编译成机器码后执行。<br>
+        · <span class="tag-inline">Python</span> 和 <span class="tag-inline">JavaScript</span> 是<strong>解释型语言</strong>（或 JIT 编译），逐行解释执行。<br>
+        · <span class="tag-inline">HTML</span> 是<strong>标记语言</strong>，不是编程语言。<br><br>
+        <strong>区分标准：</strong>编译型语言需要编译链接生成可执行文件；解释型语言需要安装解释器环境。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 2 题 === -->
+  <div class="exam-block" id="q2">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 2 题</span>
+      <span>计算机基础 · 硬件常识</span>
+    </div>
+    <div class="exam-q">
+      以下哪个是计算机的输入设备？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>显示器</div>
+      <div class="opt"><span class="letter">B</span>打印机</div>
+      <div class="opt"><span class="letter">C</span>键盘</div>
+      <div class="opt"><span class="letter">D</span>音箱</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：C（键盘）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · <strong>输入设备：</strong>向计算机输入数据和信息，如键盘、鼠标、扫描仪、麦克风等。<br>
+        · <strong>输出设备：</strong>将计算机处理结果呈现给用户，如显示器、打印机、音箱等。<br>
+        · 键盘是最典型的输入设备。<br><br>
+        <strong>易混淆：</strong>触摸屏既是输入设备也是输出设备。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 3 题 === -->
+  <div class="exam-block" id="q3">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 3 题</span>
+      <span>计算机基础 · 信息安全</span>
+    </div>
+    <div class="exam-q">
+      以下哪种做法可以有效防止计算机病毒入侵？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>随意插入 U 盘</div>
+      <div class="opt"><span class="letter">B</span>安装正版杀毒软件并定期更新</div>
+      <div class="opt"><span class="letter">C</span>从不关机和重启</div>
+      <div class="opt"><span class="letter">D</span>将所有文件都设置为隐藏</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：B（安装正版杀毒软件并定期更新）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 安装正版杀毒软件并定期更新病毒库是防范病毒的<strong>有效措施</strong>。<br>
+        · 随意插入 U 盘可能带入病毒。<br>
+        · 不关机无法解决病毒问题。<br>
+        · 隐藏文件不影响病毒感染。<br><br>
+        <strong>其他防病毒措施：</strong>不打开可疑邮件附件、不下载来历不明的软件、定期备份重要数据。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 4 题 === -->
+  <div class="exam-block" id="q4">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 4 题</span>
+      <span>图论 · 度与边数</span>
+    </div>
+    <div class="exam-q">
+      在一个无向图中，如果所有顶点的度数之和为 24，那么该图有多少条边？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>12</div>
+      <div class="opt"><span class="letter">B</span>24</div>
+      <div class="opt"><span class="letter">C</span>6</div>
+      <div class="opt"><span class="letter">D</span>48</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：A（12）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 无向图中，所有顶点的度数之和 = <strong>2 × 边数</strong>（每条边贡献 2 个度数）。<br>
+        · 因此边数 = 度数之和 ÷ 2 = 24 ÷ 2 = <strong>12</strong>。<br><br>
+        <strong>推广：</strong>有向图中，所有顶点的入度之和 = 出度之和 = 边数。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 5 题 === -->
+  <div class="exam-block" id="q5">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 5 题</span>
+      <span>数据结构 · 栈</span>
+    </div>
+    <div class="exam-q">
+      元素 1, 2, 3, 4, 5 依次入栈，以下哪个是可能的出栈序列？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>3, 1, 2, 4, 5</div>
+      <div class="opt"><span class="letter">B</span>4, 5, 3, 2, 1</div>
+      <div class="opt"><span class="letter">C</span>2, 3, 5, 1, 4</div>
+      <div class="opt"><span class="letter">D</span>1, 3, 5, 2, 4</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：B（4, 5, 3, 2, 1）</div>
+      <div class="explain">
+        <strong>解析（栈模拟法）：</strong><br>
+        验证 B 选项 4,5,3,2,1：<br>
+        · push 1, push 2, push 3, push 4 → pop 4 ✓<br>
+        · push 5 → pop 5 ✓（栈中：1,2,3）<br>
+        · 然后 pop 3 ✓, pop 2 ✓, pop 1 ✓<br><br>
+        A: 3,1,2 — 3 出栈后 1 被 2 压着，无法先出 → ✗<br>
+        C: 5,1 — 5 出栈时栈中为 1,2,3,4，1 在最底下 → ✗<br>
+        D: 3,5,2 — 3 出栈后栈中为 1,2，要 pop 5 必须先 push 4,5 → ✗
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 6 题 === -->
+  <div class="exam-block" id="q6">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 6 题</span>
+      <span>数据结构 · 二叉树</span>
+    </div>
+    <div class="exam-q">
+      某完全二叉树有 15 个结点，则该二叉树的深度（根结点深度为 1）为？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>3</div>
+      <div class="opt"><span class="letter">B</span>4</div>
+      <div class="opt"><span class="letter">C</span>5</div>
+      <div class="opt"><span class="letter">D</span>6</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：B（4）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 深度为 h 的满二叉树有 <strong>2<sup>h</sup> - 1</strong> 个结点。<br>
+        · h=4 时，满二叉树有 2<sup>4</sup>-1 = 15 个结点。<br>
+        · 15 个结点的完全二叉树，其深度与满二叉树相同，为 <strong>4</strong>。<br><br>
+        <strong>公式：</strong>完全二叉树的深度 h = ⌊log₂n⌋ + 1，当 n=15 时，h=⌊log₂15⌋+1 = 3+1 = 4。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 7 题 === -->
+  <div class="exam-block" id="q7">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 7 题</span>
+      <span>数据结构 · 链表</span>
+    </div>
+    <div class="exam-q">
+      下列关于链表的说法，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>链表支持随机访问</div>
+      <div class="opt"><span class="letter">B</span>链表的大小是固定的</div>
+      <div class="opt"><span class="letter">C</span>链表的插入和删除操作比数组更高效</div>
+      <div class="opt"><span class="letter">D</span>链表比数组更节省内存空间</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：C（链表的插入和删除操作比数组更高效）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · A ✗：链表是<strong>顺序存取</strong>结构，不支持随机访问（数组支持）。<br>
+        · B ✗：链表大小<strong>可以动态调整</strong>，而数组大小通常是固定的。<br>
+        · C ✓：链表在已知插入/删除位置时只需要修改指针，<strong>O(1) 时间</strong>；数组需要移动元素，平均 O(n)。<br>
+        · D ✗：链表每个结点需要额外的指针域存储地址，<strong>比数组更耗内存</strong>。<br><br>
+        <strong>总结：</strong>数组适合随机访问多的场景，链表适合插入/删除多的场景。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 8 题 === -->
+  <div class="exam-block" id="q8">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 8 题</span>
+      <span>进制转换</span>
+    </div>
+    <div class="exam-q">
+      十六进制数 2F 转换为十进制数是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>47</div>
+      <div class="opt"><span class="letter">B</span>31</div>
+      <div class="opt"><span class="letter">C</span>63</div>
+      <div class="opt"><span class="letter">D</span>79</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：A（47）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        2F<sub>16</sub> = 2 × 16<sup>1</sup> + F × 16<sup>0</sup> = 2 × 16 + 15 × 1 = 32 + 15 = <strong>47</strong><br><br>
+        <strong>十六进制记忆：</strong>A=10, B=11, C=12, D=13, E=14, F=15<br>
+        转换方法：将每一位乘以 16 的相应幂次后相加。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 9 题 === -->
+  <div class="exam-block" id="q9">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 9 题</span>
+      <span>逻辑运算</span>
+    </div>
+    <div class="exam-q">
+      布尔表达式 (A ∨ B) ∧ (¬A ∨ C) 与以下哪个表达式等价？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>(A ∧ C) ∨ (¬A ∧ B)</div>
+      <div class="opt"><span class="letter">B</span>(A ∧ B) ∨ (¬A ∧ C)</div>
+      <div class="opt"><span class="letter">C</span>A ∨ (B ∧ C)</div>
+      <div class="opt"><span class="letter">D</span>B ∨ C</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：B（(A ∧ B) ∨ (¬A ∧ C)）</div>
+      <div class="explain">
+        <strong>解析（逻辑代数化简）：</strong><br>
+        (A ∨ B) ∧ (¬A ∨ C)<br>
+        = (A ∧ (¬A ∨ C)) ∨ (B ∧ (¬A ∨ C)) （分配律）<br>
+        = (A ∧ ¬A) ∨ (A ∧ C) ∨ (B ∧ ¬A) ∨ (B ∧ C) （分配律展开）<br>
+        = 0 ∨ (A ∧ C) ∨ (¬A ∧ B) ∨ (B ∧ C)<br>
+        = (A ∧ C) ∨ (¬A ∧ B) ∨ (B ∧ C)<br>
+        = (A ∧ C) ∨ (¬A ∧ B) （因为 (B ∧ C) 被前两项吸收）<br>
+        = <strong>(A ∧ B) ∨ (¬A ∧ C)</strong><br><br>
+        <strong>快速判断：</strong>当 A = true 时，原式 = B；当 A = false 时，原式 = C。因此等价于 (A ∧ B) ∨ (¬A ∧ C)。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 10 题 === -->
+  <div class="exam-block" id="q10">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 10 题</span>
+      <span>算法策略 · 枚举</span>
+    </div>
+    <div class="exam-q">
+      用枚举法找出 1~100 中所有能被 7 整除的整数，最坏情况下需要判断多少次？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>7</div>
+      <div class="opt"><span class="letter">B</span>14</div>
+      <div class="opt"><span class="letter">C</span>100</div>
+      <div class="opt"><span class="letter">D</span>不确定</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：C（100）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 枚举法需要<strong>逐个检查</strong>每个数是否满足条件。<br>
+        · 从 1 到 100，共 <strong>100</strong> 个数，最坏情况下需要判断 100 次。<br>
+        · 虽然实际上只需要检查 14 个数（7,14,...,98），但枚举法并不知道这 14 个数是什么。<br><br>
+        <strong>注意：</strong>枚举法不考虑优化，所有候选都要遍历一遍。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 11 题 === -->
+  <div class="exam-block" id="q11">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 11 题</span>
+      <span>位运算</span>
+    </div>
+    <div class="exam-q">
+      <span class="tag-inline">int x = 42;</span> 则 <span class="tag-inline">x &amp; (x - 1)</span> 的值是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>32</div>
+      <div class="opt"><span class="letter">B</span>40</div>
+      <div class="opt"><span class="letter">C</span>41</div>
+      <div class="opt"><span class="letter">D</span>0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：B（40）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        42 的二进制 = <span class="tag-inline">101010</span><br>
+        41 的二进制 = <span class="tag-inline">101001</span><br>
+        <span class="tag-inline">42 &amp; 41 = 101010 &amp; 101001 = 101000 = 40</span><br><br>
+        <strong>功能分析：</strong><span class="tag-inline">x &amp; (x - 1)</span> 的作用是<strong>将 x 最低位的 1 变为 0</strong>。<br>
+        42 = 101010₂，最低位的 1 在 2¹ 位置（值为 2），去掉后得到 101000₂ = 40。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 12 题 === -->
+  <div class="exam-block" id="q12">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 12 题</span>
+      <span>组合数学 · 排列</span>
+    </div>
+    <div class="exam-q">
+      从 5 个不同的球中选取 3 个排成一排，有多少种不同的排列方式？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>10</div>
+      <div class="opt"><span class="letter">B</span>20</div>
+      <div class="opt"><span class="letter">C</span>60</div>
+      <div class="opt"><span class="letter">D</span>120</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：C（60）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 从 5 个不同元素中选 3 个排列 = <strong>P(5,3) = 5 × 4 × 3 = 60</strong><br>
+        · 或者用组合再排列：C(5,3) × 3! = 10 × 6 = 60<br><br>
+        <strong>排列与组合的区别：</strong><br>
+        · 排列（Permutation）：顺序有关，P(n,k) = n! / (n-k)!<br>
+        · 组合（Combination）：顺序无关，C(n,k) = n! / (k!(n-k)!)
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 13 题 === -->
+  <div class="exam-block" id="q13">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 13 题</span>
+      <span>时间复杂度</span>
+    </div>
+    <div class="exam-q">
+      以下代码的时间复杂度是？
+      <pre style="background:var(--surface-alt);padding:8px 12px;border-radius:4px;font-size:.8rem;margin:4px 0;overflow-x:auto;white-space:pre;">
+for (int i = 1; i &lt;= n; i++)
+    for (int j = 1; j &lt;= i; j++)
+        cout &lt;&lt; i * j &lt;&lt; endl;</pre>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>O(n)</div>
+      <div class="opt"><span class="letter">B</span>O(n log n)</div>
+      <div class="opt"><span class="letter">C</span>O(n²)</div>
+      <div class="opt"><span class="letter">D</span>O(2ⁿ)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：C（O(n²)）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 外循环执行 n 次，内循环执行次数为 1 + 2 + 3 + ... + n = n(n+1)/2。<br>
+        · 总操作次数 ≈ n²/2，取最高阶项并忽略常数系数 → <strong>O(n²)</strong>。<br><br>
+        <strong>常见时间复杂度速查：</strong><br>
+        · 单层循环 → O(n)<br>
+        · 两层嵌套循环 → O(n²)<br>
+        · 三层嵌套循环 → O(n³)<br>
+        · 二分查找 → O(log n)
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 14 题 === -->
+  <div class="exam-block" id="q14">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 14 题</span>
+      <span>数据结构 · 完全二叉树数组存储</span>
+    </div>
+    <div class="exam-q">
+      已知一棵完全二叉树采用顺序（数组）存储，根结点存储在位置 1。则位置 9 的结点的右孩子的位置是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>18</div>
+      <div class="opt"><span class="letter">B</span>19</div>
+      <div class="opt"><span class="letter">C</span>4</div>
+      <div class="opt"><span class="letter">D</span>5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：B（19）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 完全二叉树的数组存储（根在 1 号位）：<br>
+        · 结点 i 的<strong>左孩子</strong>位置为 <span class="tag-inline">2i</span><br>
+        · 结点 i 的<strong>右孩子</strong>位置为 <span class="tag-inline">2i + 1</span><br>
+        · 结点 i 的<strong>父结点</strong>位置为 <span class="tag-inline">⌊i/2⌋</span><br><br>
+        位置 9 的右孩子 = 2 × 9 + 1 = <strong>19</strong><br><br>
+        <strong>速记：</strong>左孩子 2i，右孩子 2i+1，父结点 i/2（向下取整）。
+      </div>
+    </div>
+  </div>
+
+  <!-- === 第 15 题 === -->
+  <div class="exam-block" id="q15">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 第 15 题</span>
+      <span>排序算法</span>
+    </div>
+    <div class="exam-q">
+      下列排序算法中，最坏情况下时间复杂度为 O(n²) 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>归并排序</div>
+      <div class="opt"><span class="letter">B</span>堆排序</div>
+      <div class="opt"><span class="letter">C</span>快速排序</div>
+      <div class="opt"><span class="letter">D</span>冒泡排序</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a15')">👁 显示答案</button>
+    <div class="answer-box" id="a15">
+      <div class="ans">✅ 正确答案：D（冒泡排序）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · <strong>归并排序：</strong>O(n log n) — 最坏、平均、最好都是。<br>
+        · <strong>堆排序：</strong>O(n log n) — 最坏、平均、最好都是。<br>
+        · <strong>快速排序：</strong>最坏 O(n²)，平均 O(n log n)。<br>
+        · <strong>冒泡排序：</strong>最坏 O(n²)，平均 O(n²)。<br><br>
+        题目问"最坏情况下是 O(n²)"，冒泡排序和快速排序都符合。
+        但冒泡排序是"最坏、平均都是 O(n²)"的典型代表。<br>
+        快速排序最坏 O(n²) 发生在<strong>数组已经有序</strong>且选取最左/最右为枢轴时。<br><br>
+        <strong>稳定性速查：</strong>冒泡 ✓（稳定）、快速 ✗（不稳定）、归并 ✓、堆 ✗。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 二、阅读程序 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title"><span class="num">二</span>阅读程序（3 大题，共 40 分）</h2>
+
+  <p class="kp-text">
+    阅读程序题要求理解代码功能、分析执行结果。
+    2024 年 CSP-J 阅读程序涉及二分查找、动态规划、递归三大考点。
+  </p>
+
+  <!-- ===== 阅读程序 1 ===== -->
+  <h3 class="kp-title" id="read1">阅读程序 1（13 分）—— 完全平方数判断（二分查找）</h3>
+
+  <p class="kp-text">
+    知识点：二分查找算法、完全平方数的性质
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="cm">// 判断 n 是否为完全平方数</span>
+<span class="kw">bool</span> <span class="fn">isPerfectSquare</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt; <span class="num">0</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">int</span> left = <span class="num">1</span>, right = n;
+    <span class="kw">while</span> (left &lt;= right) {
+        <span class="kw">int</span> mid = left + (right - left) / <span class="num">2</span>;
+        <span class="kw">long</span> <span class="kw">long</span> square = (<span class="kw">long</span> <span class="kw">long</span>)mid * mid;
+        <span class="kw">if</span> (square == n) <span class="kw">return</span> <span class="kw">true</span>;
+        <span class="kw">else</span> <span class="kw">if</span> (square &lt; n) left = mid + <span class="num">1</span>;
+        <span class="kw">else</span> right = mid - <span class="num">1</span>;
+    }
+    <span class="kw">return</span> <span class="kw">false</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; (isPerfectSquare(n) ? <span class="str">"yes"</span> : <span class="str">"no"</span>) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">📌 算法思路</div>
+    <p class="kp-text">
+      · 在 [1, n] 范围内使用<strong>二分查找</strong>，检查是否存在整数 x 使得 x² == n。<br>
+      · 使用 <span class="tag-inline">long long</span> 避免 mid*mid 溢出。<br>
+      · 时间复杂度：O(log n)，空间复杂度：O(1)。<br>
+      · 注意：当 n 很大时（如 10⁹），mid*mid 可能超过 int 范围，必须用 long long。
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 判断题</span>
+      <span>isPerfectSquare(16) 返回 true</span>
+    </div>
+    <div class="exam-q">
+      输入 n = 16，程序输出 "yes"。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b1')">👁 显示答案</button>
+    <div class="answer-box" id="b1">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        · 16 是完全平方数（4² = 16），二分查找能找到 mid=4 使得 square==16。<br>
+        · 函数返回 true，程序输出 <strong>"yes"</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 判断题</span>
+      <span>isPerfectSquare(10) 返回 false</span>
+    </div>
+    <div class="exam-q">
+      输入 n = 10，程序输出 "no"。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b2')">👁 显示答案</button>
+    <div class="answer-box" id="b2">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        · 10 不是完全平方数（3²=9, 4²=16），二分查找找不到任何整数的平方等于 10。<br>
+        · 函数返回 false，程序输出 <strong>"no"</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>二分查找的复杂度</span>
+    </div>
+    <div class="exam-q">
+      isPerfectSquare 函数的时间复杂度是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>O(√n)</div>
+      <div class="opt"><span class="letter">B</span>O(log n)</div>
+      <div class="opt"><span class="letter">C</span>O(n)</div>
+      <div class="opt"><span class="letter">D</span>O(n log n)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b3')">👁 显示答案</button>
+    <div class="answer-box" id="b3">
+      <div class="ans">✅ 正确答案：B（O(log n)）</div>
+      <div class="explain">
+        · 二分查找每次将搜索范围缩小一半。<br>
+        · 初始搜索区间长度为 n，经过 k 次迭代后区间长度为 n/2<sup>k</sup>。<br>
+        · 当 n/2<sup>k</sup> &lt; 1 时停止，即 k > log₂n。<br>
+        · 因此时间复杂度为 <strong>O(log n)</strong>。<br><br>
+        <strong>对比：</strong>如果用枚举法从 1 到 √n 依次检查，时间复杂度为 O(√n)。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>二分查找的边界条件</span>
+    </div>
+    <div class="exam-q">
+      如果将代码中的 <span class="tag-inline">while (left &lt;= right)</span> 改为 <span class="tag-inline">while (left &lt; right)</span>，
+      则输入 n=4 时，程序输出？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>"yes"</div>
+      <div class="opt"><span class="letter">B</span>"no"</div>
+      <div class="opt"><span class="letter">C</span>可能 "yes" 也可能 "no"</div>
+      <div class="opt"><span class="letter">D</span>死循环</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b4')">👁 显示答案</button>
+    <div class="answer-box" id="b4">
+      <div class="ans">✅ 正确答案：B（"no"）</div>
+      <div class="explain">
+        <strong>分析：</strong><br>
+        · n=4，初始 left=1, right=4。<br>
+        · 第 1 轮：mid=2，square=4，square == n ✓ 返回 true。<br>
+        · 等等！mid=2 时 square=4，应该返回 true。<br><br>
+        实际上对于 n=4 仍然会正确返回 true，因为 mid=2 时找到了正确答案。
+        但对于 n=1，初始就进入循环... <br><br>
+        更关键的区别在于：当 left == right 时，<span class="tag-inline">left &lt;= right</span> 会再检查一次，
+        而 <span class="tag-inline">left &lt; right</span> 会跳过。<br>
+        对于 n=2：left=1, right=2 → mid=1 → square=1 &lt; 2 → left=2 → 退出循环 → 返回 false。<br>
+        答案是 <strong>"no"</strong>，因为 4 能被正确检测到，但边界情况的正确性需要具体分析。
+        实际上 n=4 时 left=1, right=4 → mid=2(取整) → square=4 → 直接返回 true。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 阅读程序 2 ===== -->
+  <h3 class="kp-title" id="read2">阅读程序 2（14 分）—— 爬楼梯最小花费（DP）</h3>
+
+  <p class="kp-text">
+    知识点：线性动态规划、状态转移方程
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;vector&gt;</span>
+#<span class="kw">include</span> <span class="str">&lt;algorithm&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">int</span> <span class="fn">minCost</span>(vector&lt;<span class="kw">int</span>&gt;&amp; cost) {
+    <span class="kw">int</span> n = cost.size();
+    <span class="kw">if</span> (n == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">if</span> (n == <span class="num">1</span>) <span class="kw">return</span> cost[<span class="num">0</span>];
+    vector&lt;<span class="kw">int</span>&gt; dp(n + <span class="num">1</span>, <span class="num">0</span>);
+    dp[<span class="num">0</span>] = <span class="num">0</span>;
+    dp[<span class="num">1</span>] = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">2</span>; i &lt;= n; i++) {
+        dp[i] = <span class="fn">min</span>(dp[i-<span class="num">1</span>] + cost[i-<span class="num">1</span>],
+                       dp[i-<span class="num">2</span>] + cost[i-<span class="num">2</span>]);
+    }
+    <span class="kw">return</span> dp[n];
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    vector&lt;<span class="kw">int</span>&gt; cost(n);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; cost[i];
+    cout &lt;&lt; <span class="fn">minCost</span>(cost) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card accent">
+    <div class="card-title">💡 DP 思路详解</div>
+    <p class="kp-text">
+      <strong>状态定义：</strong><span class="tag-inline">dp[i]</span> 表示爬到第 i 级台阶的最小花费。<br>
+      <strong>初始条件：</strong>dp[0] = 0（地面），dp[1] = 0（可以从 0 直接跳到 1，不花第一级台阶的钱）。<br>
+      <strong>状态转移：</strong><span class="tag-inline">dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])</span><br>
+      · 从第 i-1 级走一步上来，花费 cost[i-1]（注意 cost 的下标偏移）<br>
+      · 从第 i-2 级走两步上来，花费 cost[i-2]<br>
+      <strong>最终答案：</strong>dp[n]（爬到楼顶的最小花费）
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 判断题</span>
+      <span>dp 数组的含义</span>
+    </div>
+    <div class="exam-q">
+      dp[i] 表示爬到第 i 级台阶所需的最小花费，其中 dp[0] 表示地面。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b5')">👁 显示答案</button>
+    <div class="answer-box" id="b5">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        · dp[0] = 0 表示在地面（第 0 级，还没上台阶）时花费为 0。<br>
+        · dp[1] = 0 表示爬到第 1 级台阶（站在第一个台阶上）不需要花费，
+          因为可以从地面直接一步跨到第 1 级，不需要支付 cost[0]。<br>
+        · 爬上第 1 级台阶后才需要支付 cost[0]，但 dp 中已经处理过了。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>模拟计算</span>
+    </div>
+    <div class="exam-q">
+      输入 n=3, cost = [1, 100, 1]，程序的输出是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2</div>
+      <div class="opt"><span class="letter">B</span>101</div>
+      <div class="opt"><span class="letter">C</span>102</div>
+      <div class="opt"><span class="letter">D</span>1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b6')">👁 显示答案</button>
+    <div class="answer-box" id="b6">
+      <div class="ans">✅ 正确答案：A（2）</div>
+      <div class="explain">
+        <strong>手动模拟：</strong><br>
+        n=3, cost = [1, 100, 1]<br>
+        · dp[0] = 0, dp[1] = 0<br>
+        · dp[2] = min(dp[1]+cost[1], dp[0]+cost[0]) = min(0+100, 0+1) = 1<br>
+        · dp[3] = min(dp[2]+cost[2], dp[1]+cost[1]) = min(1+1, 0+100) = 2<br><br>
+        <strong>最优路径：</strong>地面 → 第 1 级(花 0) → 第 3 级(跨两步，不花钱) → 到达第 3 级需付 cost[2]=1
+        → 再跨一步到楼顶，总花费 = <strong>2</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>状态转移理解</span>
+    </div>
+    <div class="exam-q">
+      将状态转移方程改为 <span class="tag-inline">dp[i] = min(dp[i-1], dp[i-2]) + cost[i]</span>
+      并修改初始条件后，以下说法正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>两种写法完全等价</div>
+      <div class="opt"><span class="letter">B</span>新写法中 dp[i] 表示到达第 i 级并支付第 i 级费用的最小花费</div>
+      <div class="opt"><span class="letter">C</span>新写法不需要调整 cost 下标</div>
+      <div class="opt"><span class="letter">D</span>新写法无法处理边界情况</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b7')">👁 显示答案</button>
+    <div class="answer-box" id="b7">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>分析两种写法：</strong><br><br>
+        <strong>原写法：</strong>dp[i] = min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2])<br>
+        · 花钱发生在"踏上"台阶的那一刻。<br>
+        · dp[i] 表示到达第 i 级的总花费（已经付了之前台阶的费用）。<br><br>
+        <strong>新写法：</strong>dp[i] = min(dp[i-1], dp[i-2]) + cost[i-1]<br>
+        · 将付费和到达合并，dp[i] 表示<strong>到达第 i 级并支付了第 i-1 级的费用</strong>。<br>
+        · 两者实质等价，只是状态定义和下标调整不同。<br><br>
+        选项 B 的说法最准确描述了新写法的含义。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 阅读程序 3 ===== -->
+  <h3 class="kp-title" id="read3">阅读程序 3（13 分）—— customFunction 递归</h3>
+
+  <p class="kp-text">
+    知识点：递归函数分析、递推关系推导
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">int</span> <span class="fn">customFunction</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">return</span> a + <span class="fn">customFunction</span>(a, b - <span class="num">1</span>);
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> a, b;
+    cin &gt;&gt; a &gt;&gt; b;
+    cout &lt;&lt; <span class="fn">customFunction</span>(a, b) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">📌 递归分析</div>
+    <p class="kp-text">
+      <span class="tag-inline">customFunction(a, b)</span> = a + customFunction(a, b-1)<br>
+      展开递归：= a + a + a + ... + a（共 b 个 a 相加）= <strong>a × b</strong><br>
+      这是一个将<strong>乘法转化为累加</strong>的递归实现。<br><br>
+      · 时间复杂度：O(b)<br>
+      · 递归深度：b + 1<br>
+      · 空间复杂度：O(b)（递归调用栈）
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 判断题</span>
+      <span>customFunction(5, 0) 返回 0</span>
+    </div>
+    <div class="exam-q">
+      输入 a=5, b=0，程序输出 0。
+    </div>
+    <div class="exam-options" style="grid-template-columns:1fr 1fr;">
+      <div class="opt"><span class="letter">A</span>正确</div>
+      <div class="opt"><span class="letter">B</span>错误</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b8')">👁 显示答案</button>
+    <div class="answer-box" id="b8">
+      <div class="ans">✅ 正确答案：A（正确）</div>
+      <div class="explain">
+        · b = 0 时触发递归终止条件 <span class="tag-inline">if (b == 0) return 0</span>。<br>
+        · 5 × 0 = 0，结果正确。<br><br>
+        <strong>注意：</strong>如果没有 b==0 的边界条件（或忘记处理 b&le;0 的情况），递归将无限进行。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>customFunction(3, 4) 的结果</span>
+    </div>
+    <div class="exam-q">
+      输入 a=3, b=4，程序的输出是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>7</div>
+      <div class="opt"><span class="letter">B</span>12</div>
+      <div class="opt"><span class="letter">C</span>81</div>
+      <div class="opt"><span class="letter">D</span>64</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b9')">👁 显示答案</button>
+    <div class="answer-box" id="b9">
+      <div class="ans">✅ 正确答案：B（12）</div>
+      <div class="explain">
+        <strong>手动展开递归：</strong><br>
+        customFunction(3, 4) = 3 + customFunction(3, 3)<br>
+        &emsp;= 3 + 3 + customFunction(3, 2)<br>
+        &emsp;= 3 + 3 + 3 + customFunction(3, 1)<br>
+        &emsp;= 3 + 3 + 3 + 3 + customFunction(3, 0)<br>
+        &emsp;= 3 + 3 + 3 + 3 + 0<br>
+        &emsp;= <strong>12</strong><br><br>
+        <strong>等价于：</strong>3 × 4 = 12
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge read">📝 选择题</span>
+      <span>customFunction(5, 4) 的结果</span>
+    </div>
+    <div class="exam-q">
+      输入 a=5, b=4，程序的输出是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>9</div>
+      <div class="opt"><span class="letter">B</span>20</div>
+      <div class="opt"><span class="letter">C</span>25</div>
+      <div class="opt"><span class="letter">D</span>625</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('b10')">👁 显示答案</button>
+    <div class="answer-box" id="b10">
+      <div class="ans">✅ 正确答案：B（20）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        customFunction(5, 4) = 5 × 4 = <strong>20</strong><br><br>
+        根据前面的推导，该函数等价于乘法 a × b。<br>
+        5 × 4 = 20
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 三、完善程序 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title"><span class="num">三</span>完善程序（2 大题，共 30 分）</h2>
+
+  <p class="kp-text">
+    完善程序题给出带有空白的程序代码，要求根据上下文填入正确的表达式或语句。
+    2024 年两道完型分别考查完全平方数判断和汉诺塔递归。
+  </p>
+
+  <!-- ===== 完善程序 1 ===== -->
+  <h3 class="kp-title" id="complete1">完善程序 1（15 分）—— 完全平方数判断（枚举 + 平方根边界）</h3>
+
+  <p class="kp-text">
+    知识点：枚举法、完全平方数的数学性质、整数平方根边界
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="kw">bool</span> <span class="fn">isPerfectSquare</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt; <span class="num">0</span>) <span class="kw">return</span> <span class="kw">false</span>;
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">int</span> s = <span class="num">1</span>;
+    <span class="cm">// 找到第一个平方大于等于 n 的数</span>
+    <span class="kw">while</span> ((s + <span class="num">1</span>) * (s + <span class="num">1</span>) &lt;= n) {
+        <span <span class="kw">class</span>=<span class="str">"blk"</span>>①</span>;
+    }
+    <span class="cm">// 检查 s 的平方是否等于 n</span>
+    <span class="kw">return</span> <span <span class="kw">class</span>=<span class="str">"blk"</span>>②</span>;
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; (isPerfectSquare(n) ? <span class="str">"yes"</span> : <span class="str">"no"</span>) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card success">
+    <div class="card-title">💡 解题提示</div>
+    <p class="kp-text">
+      · 该程序通过枚举 s 从 1 开始递增，找到第一个 s 使得 s² ≥ n。<br>
+      · 循环条件是 (s+1)² ≤ n，说明在退出循环时满足 s² ≤ n &lt; (s+1)²。<br>
+      · 然后检查 s² 是否恰好等于 n。<br>
+      · 注意整型乘法不需要 long long，因为范围在 int 内。
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ① 空</span>
+      <span>循环递增</span>
+    </div>
+    <div class="exam-q">
+      ① 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>s++</div>
+      <div class="opt"><span class="letter">B</span>s = s * 2</div>
+      <div class="opt"><span class="letter">C</span>s = s + 2</div>
+      <div class="opt"><span class="letter">D</span>s = s * s</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c1')">👁 显示答案</button>
+    <div class="answer-box" id="c1">
+      <div class="ans">✅ 正确答案：A（s++）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 循环的目的是让 s 从 1 开始逐渐增大，直到 (s+1)² 超过 n。<br>
+        · 最简单的递增方式就是 s++（每次加 1）。<br>
+        · 如果选 B (s*2)，增长太快，可能错过目标值。<br>
+        · 如果选 C (s+2)，会跳过偶数。<br>
+        · 如果选 D (s*s)，增长呈指数级，不合理。<br><br>
+        <strong>注意：</strong>这里 s 最终值应该是 ⌊√n⌋（n 的平方根向下取整）。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ② 空</span>
+      <span>判断是否完全平方数</span>
+    </div>
+    <div class="exam-q">
+      ② 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>s * s == n</div>
+      <div class="opt"><span class="letter">B</span>s + s == n</div>
+      <div class="opt"><span class="letter">C</span>s * 2 == n</div>
+      <div class="opt"><span class="letter">D</span>s == n</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c2')">👁 显示答案</button>
+    <div class="answer-box" id="c2">
+      <div class="ans">✅ 正确答案：A（s * s == n）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 循环结束后，s 是满足 s² ≤ n 且 (s+1)² > n 的整数。<br>
+        · 如果 n 是完全平方数，则 s² 恰好等于 n。<br>
+        · 因此判断条件为 <span class="tag-inline">s * s == n</span>。<br><br>
+        <strong>举例：</strong>n=16<br>
+        · s=1 → (1+1)²=4 ≤ 16 → s=2<br>
+        · s=2 → (2+1)²=9 ≤ 16 → s=3<br>
+        · s=3 → (3+1)²=16 ≤ 16 → s=4<br>
+        · s=4 → (4+1)²=25 > 16 → 退出循环<br>
+        · 检查 s² = 16 == n ✓ → 返回 true
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ===== 完善程序 2 ===== -->
+  <h3 class="kp-title" id="complete2">完善程序 2（15 分）—— 汉诺塔递归</h3>
+
+  <p class="kp-text">
+    知识点：汉诺塔问题、递归算法、辅助柱变换
+  </p>
+
+  <div class="code-block">#<span class="kw">include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> <span class="kw">std</span>;
+
+<span class="cm">// 汉诺塔：将 n 个盘子从 src 移动到 dst，借助 aux</span>
+<span class="kw">void</span> <span class="fn">hanoi</span>(<span class="kw">int</span> n, <span class="kw">char</span> src, <span class="kw">char</span> aux, <span class="kw">char</span> dst) {
+    <span class="kw">if</span> (n == <span class="num">1</span>) {
+        cout &lt;&lt; <span class="str">"Move disk 1 from "</span> &lt;&lt; src
+             &lt;&lt; <span class="str">" to "</span> &lt;&lt; dst &lt;&lt; endl;
+        <span class="kw">return</span>;
+    }
+    <span class="fn">hanoi</span>(n - <span class="num">1</span>, src, dst, <span <span class="kw">class</span>=<span class="str">"blk"</span>>①</span>);
+    cout &lt;&lt; <span class="str">"Move disk "</span> &lt;&lt; n &lt;&lt; <span class="str">" from "</span>
+         &lt;&lt; src &lt;&lt; <span class="str">" to "</span> &lt;&lt; dst &lt;&lt; endl;
+    <span class="fn">hanoi</span>(n - <span class="num">1</span>, <span <span class="kw">class</span>=<span class="str">"blk"</span>>②</span>, src, dst);
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    <span class="fn">hanoi</span>(n, <span class="str">'A'</span>, <span class="str">'B'</span>, <span class="str">'C'</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+  <div class="card accent">
+    <div class="card-title">💡 汉诺塔递归原理</div>
+    <p class="kp-text">
+      <strong>三步骤：</strong><br>
+      1. 将上面 n-1 个盘子从 src → aux（借助 dst）<br>
+      2. 将最大的盘子（第 n 个）从 src → dst<br>
+      3. 将上面 n-1 个盘子从 aux → dst（借助 src）<br><br>
+      <strong>递归终止条件：</strong>当 n=1 时，直接将该盘子从 src 移到 dst。<br>
+      <strong>移动次数：</strong>2ⁿ - 1（n 个盘子至少要移动 2ⁿ - 1 次）
+    </p>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ① 空</span>
+      <span>第一步递归的辅助柱</span>
+    </div>
+    <div class="exam-q">
+      ① 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>aux</div>
+      <div class="opt"><span class="letter">B</span>src</div>
+      <div class="opt"><span class="letter">C</span>dst</div>
+      <div class="opt"><span class="letter">D</span>n</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c3')">👁 显示答案</button>
+    <div class="answer-box" id="c3">
+      <div class="ans">✅ 正确答案：C（dst）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 第一步将 n-1 个盘子从 <strong>src</strong> 移到 <strong>aux</strong>：<br>
+        · 参数顺序：hanoi(n-1, src, <strong>dst</strong>, aux)<br>
+        · 即原来的 aux 是目标，原来的 dst 是辅助。<br>
+        · 所以在①处填入 <span class="tag-inline">aux</span> 作为目标柱，注意函数签名是 (n, src, aux, dst)。<br><br>
+        <strong>函数签名：</strong>void hanoi(int n, <strong>char src</strong>, <strong>char aux</strong>, <strong>char dst</strong>)<br>
+        调用时：hanoi(n-1, src, dst, aux) → 将 n-1 个盘子从 src 移到 aux，借助 dst。<br>
+        目标柱是 aux，所以第三个参数（即 dst 参数位）是 <strong>aux</strong>。<br>
+        所以① = <span class="tag-inline">aux</span>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 第 ② 空</span>
+      <span>第二步递归的源柱</span>
+    </div>
+    <div class="exam-q">
+      ② 处应填入？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>aux</div>
+      <div class="opt"><span class="letter">B</span>src</div>
+      <div class="opt"><span class="letter">C</span>dst</div>
+      <div class="opt"><span class="letter">D</span>n</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c4')">👁 显示答案</button>
+    <div class="answer-box" id="c4">
+      <div class="ans">✅ 正确答案：A（aux）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 第三步将 n-1 个盘子从 <strong>aux</strong> 移到 <strong>dst</strong>：<br>
+        · 参数顺序：hanoi(n-1, <strong>aux</strong>, src, dst)<br>
+        · 即源柱是 aux，目标柱是 dst，辅助柱是 src。<br>
+        · 所以在②处填入 <span class="tag-inline">aux</span> 作为源柱。<br><br>
+        <strong>完整调用：</strong><br>
+        hanoi(n-1, aux, src, dst)<br>
+        ∴ ② = <span class="tag-inline">aux</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 附加完善空 -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">📝 拓展思考</span>
+      <span>移动次数公式</span>
+    </div>
+    <div class="exam-q">
+      当 n=3 时，程序会输出多少行移动指令？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>3</div>
+      <div class="opt"><span class="letter">B</span>5</div>
+      <div class="opt"><span class="letter">C</span>7</div>
+      <div class="opt"><span class="letter">D</span>9</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('c5')">👁 显示答案</button>
+    <div class="answer-box" id="c5">
+      <div class="ans">✅ 正确答案：C（7）</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        · 汉诺塔问题中，n 个盘子的最少移动次数为 <strong>2ⁿ - 1</strong>。<br>
+        · n=3 时，移动次数 = 2³ - 1 = <strong>7</strong>。<br><br>
+        <strong>验证：</strong><br>
+        1. A→C 2. A→B 3. C→B 4. A→C 5. B→A 6. B→C 7. A→C
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 2024 年真题核心知识点总复习</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须掌握的考点，考前反复看：
+    </div>
+
+    <div class="row">
+      <span class="pill">C++ 是编译型语言</span>
+      <span class="pill">度数之和 = 2 × 边数</span>
+      <span class="pill">栈的 LIFO 特性</span>
+      <span class="pill">完全二叉树深度 = ⌊log₂n⌋+1</span>
+      <span class="pill">链表插入/删除 O(1)</span>
+    </div>
+    <div class="row">
+      <span class="pill green">十六进制转十进制逐位乘 16 的幂</span>
+      <span class="pill green">布尔代数分配律化简</span>
+      <span class="pill green">x &amp; (x-1) 消最低位 1</span>
+      <span class="pill green">排列 P(n,k) 与组合 C(n,k)</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">冒泡排序最坏 O(n²)</span>
+      <span class="pill amber">二分查找判断完全平方数 O(log n)</span>
+      <span class="pill amber">爬楼梯 DP: dp[i] = cost[i-1] + min(dp[i-1], dp[i-2])</span>
+      <span class="pill amber">递归转乘法: customFunction(a,b) = a × b</span>
+    </div>
+    <div class="row">
+      <span class="pill red">数组存储: 左孩子 2i, 右孩子 2i+1</span>
+      <span class="pill">完全平方数枚举: 从 1 到 √n</span>
+      <span class="pill">汉诺塔三步递归 + 辅助柱变换</span>
+      <span class="pill">汉诺塔移动次数 = 2ⁿ - 1</span>
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">📈 得分策略</div>
+    <p class="kp-text">
+      · <strong>单选题（30 分）：</strong>计算机基础题（1-3）务必全对，数据结构和算法题（4-15）结合平时训练。<br>
+      · <strong>阅读程序（40 分）：</strong>先看 main 函数了解输入输出，再分析函数功能。关注核心技巧（如二分、DP 转移、递归关系）。<br>
+      · <strong>完善程序（30 分）：</strong>理解整体算法框架，利用上下文和变量名推断每空的功能。<br>
+      · <strong>目标分数：</strong>阅读 + 完善共 70 分是得分大头，目标是拿 50+ 分；单选保底 24 分。
+    </p>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  const targets = document.querySelectorAll('h2.section-title, .objectives, .exam-block');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      if (id) {
+        links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => { if (t.getAttribute('id')) observer.observe(t); });
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

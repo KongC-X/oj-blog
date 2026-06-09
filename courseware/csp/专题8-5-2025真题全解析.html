@@ -1,0 +1,1896 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题8-5 2025真题全解析</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    font-size: .72rem;
+    color: var(--text-ter);
+    text-align: center;
+  }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+  .meta-tag.new { border-color: #fde68a; color: #b45309; background: #fffbeb; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+
+  /* ─── 卡片 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '\2022';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* ─── 代码块 ─── */
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    line-height: 1.7;
+    padding: 14px 18px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+    tab-size: 4;
+  }
+  .code-block .kw { color: #c792ea; }
+  .code-block .fn { color: #82aaff; }
+  .code-block .num { color: #f78c6c; }
+  .code-block .cm { color: #546e7a; font-style: italic; }
+  .code-block .str { color: #c3e88d; }
+  .code-block .op { color: #89ddff; }
+  .code-block .type { color: #ffcb6b; }
+  .code-block .blk {
+    display: inline-block;
+    background: rgba(255,200,0,.2);
+    color: #ffd54f;
+    padding: 0 4px;
+    border-radius: 3px;
+    font-weight: 600;
+    border-bottom: 2px solid #ffd54f;
+  }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.read {
+    background: #eef2ff;
+    border: 1px solid #bfdbfe;
+    color: #4f6ef7;
+  }
+  .exam-badge.complete {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+  .exam-badge.math {
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    color: #7c3aed;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 判断题样式 ─── */
+  .judge-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: .84rem;
+    color: var(--text-sec);
+    flex-wrap: wrap;
+  }
+  .judge-row .j-label {
+    font-weight: 600;
+    color: var(--text);
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+  .judge-row .j-answer {
+    min-width: 40px;
+    flex-shrink: 0;
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+</style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">C</div>
+    <div>
+      <div class="title">CSP-J 初赛</div>
+      <div class="sub">真题全解析</div>
+    </div>
+  </div>
+  <div class="nav-section">导航</div>
+  <a class="nav-link active" href="#top">专题概览</a>
+  <a class="nav-link" href="#single">一、单项选择题</a>
+  <a class="nav-link sub" href="#q1">Q1 〜 Q5</a>
+  <a class="nav-link sub" href="#q6">Q6 〜 Q10</a>
+  <a class="nav-link sub" href="#q11">Q11 〜 Q15</a>
+  <a class="nav-link" href="#read1">二、阅读程序</a>
+  <a class="nav-link sub" href="#read1">程序1: gcd互质</a>
+  <a class="nav-link sub" href="#read2">程序2: 排序去重</a>
+  <a class="nav-link sub" href="#read3">程序3: LCS</a>
+  <a class="nav-link" href="#complete1">三、完善程序</a>
+  <a class="nav-link sub" href="#complete1">完善1: RLE解码</a>
+  <a class="nav-link sub" href="#complete2">完善2: 多数派投票</a>
+  <a class="nav-link" href="#summary">总结</a>
+  <div class="sidebar-footer">CSP-J 2025 真题全解析</div>
+</div>
+
+<div class="main-content">
+<div class="content-wrapper">
+
+<div class="page-header" id="top">
+  <div class="breadcrumb">CSP-J 初赛 / 真题全解析 / 2025</div>
+  <h1>2025 年 CSP-J 初赛真题全解析</h1>
+  <div class="subtitle">CCF 非专业级软件能力认证 · 第一轮 C++ 语言试题 · 完整 42 题精讲</div>
+  <div class="meta-bar">
+    <span class="meta-tag hot">2025 最新</span>
+    <span class="meta-tag exam">真题精讲</span>
+    <span class="meta-tag new">15 单选 + 3 阅读 + 2 完善</span>
+    <span class="meta-tag practice">42 题全解析</span>
+  </div>
+</div>
+
+<div class="objectives">
+  <h3>学习目标</h3>
+  <div class="grid">
+    <div class="item">掌握 2025 年最新考点分布</div>
+    <div class="item">理解递归、gcd、位运算核心技巧</div>
+    <div class="item">掌握 LCS / LIS 动态规划模型</div>
+    <div class="item">熟悉 RLE 行程编码与多数派算法</div>
+    <div class="item">查漏补缺，针对性复习薄弱点</div>
+  </div>
+</div>
+
+<div class="card accent" style="margin-bottom:20px;">
+  <div class="card-title">2025 年试卷概况</div>
+  <p>今年试卷整体难度较 2024 年有所上升，数学类题目（布尔代数、数论模周期、斐波那契）权重显著增加。阅读程序长度增加，完善程序首次出现"多数派算法"（Boyer-Moore 投票算法）。<br>
+  <strong>新增考点</strong>：布尔代数等价性（第7题）、冒泡排序交换次数计算（第12题）、完全二叉树叶子结点公式（第14题）、RLE 多位数解析（完善1）、多数派算法（完善2）。</p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 一、单项选择题 -->
+<!-- ============================================================ -->
+<h2 class="section-title" id="single"><span class="num">1</span> 单项选择题（共15题，每题2分，共30分）</h2>
+
+<div class="info-box">单项选择题覆盖计算机基础、数据结构、算法、数学（组合数学/图论/数论）及 C++ 语言特性。2025 年侧重数学推理与编程基础。</div>
+
+<!-- Q1 ~ Q5 -->
+<h3 class="kp-title" id="q1">第 1 题 〜 第 5 题</h3>
+
+<!-- Q1 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">数制</span>
+    <span>第 1 题</span>
+  </div>
+  <div class="exam-q">一个32位无符号整数可以表示的最大值，最接近下列哪个选项？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 4 × 10⁹</div>
+    <div class="opt"><span class="letter">B</span> 3 × 10¹⁰</div>
+    <div class="opt"><span class="letter">C</span> 2 × 10⁹</div>
+    <div class="opt"><span class="letter">D</span> 2 × 10¹⁰</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">32位无符号整数的最大值是 2³² − 1 = 4294967295，约等于 4.29×10⁹，最接近 4×10⁹。<br>
+    <strong>知识点</strong>：数据表示，无符号整数范围。</div>
+  </div>
+</div>
+
+<!-- Q2 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">位运算</span>
+    <span>第 2 题</span>
+  </div>
+  <div class="exam-q">在C++中，执行 <span class="mono">int x = 255; cout &lt;&lt; (x &amp; (x - 1));</span> 后，输出的结果是？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 255</div>
+    <div class="opt"><span class="letter">B</span> 254</div>
+    <div class="opt"><span class="letter">C</span> 128</div>
+    <div class="opt"><span class="letter">D</span> 0</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain"><span class="tag-inline">x &amp; (x - 1)</span> 的作用是将最低位的1置0。255的二进制是 <span class="tag-inline">11111111</span>，减去1后为 <span class="tag-inline">11111110</span>，按位与后得到 <span class="tag-inline">11111110</span>，即254。<br>
+    <strong>知识点</strong>：位运算，x &amp; (x-1) 清除最低位1。</div>
+  </div>
+</div>
+
+<!-- Q3 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">递归</span>
+    <span>第 3 题</span>
+  </div>
+  <div class="exam-q">函数calc(n)的定义如下，则calc(5)的返回值是多少？（ ）</div>
+  <div class="code-block"><span class="kw">int</span> <span class="fn">calc</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">1</span>) <span class="kw">return</span> <span class="num">1</span>;
+    <span class="kw">if</span> (n % <span class="num">2</span> == <span class="num">0</span>) <span class="kw">return</span> <span class="fn">calc</span>(n / <span class="num">2</span>) + <span class="num">1</span>;
+    <span class="kw">else</span> <span class="kw">return</span> <span class="fn">calc</span>(n - <span class="num">1</span>) + <span class="fn">calc</span>(n - <span class="num">2</span>);
+}</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 5</div>
+    <div class="opt"><span class="letter">B</span> 6</div>
+    <div class="opt"><span class="letter">C</span> 7</div>
+    <div class="opt"><span class="letter">D</span> 8</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">
+      calc(1) = 1<br>
+      calc(2) = calc(1) + 1 = 2<br>
+      calc(3) = calc(2) + calc(1) = 2 + 1 = 3<br>
+      calc(4) = calc(2) + 1 = 2 + 1 = 3<br>
+      calc(5) = calc(4) + calc(3) = 3 + 3 = 6<br>
+    <strong>知识点</strong>：递归函数调用栈分析。</div>
+  </div>
+</div>
+
+<!-- Q4 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">树</span>
+    <span>第 4 题</span>
+  </div>
+  <div class="exam-q">用5个权值10,12,15,20,25构造哈夫曼树，该树的带权路径长度是多少？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 176</div>
+    <div class="opt"><span class="letter">B</span> 186</div>
+    <div class="opt"><span class="letter">C</span> 196</div>
+    <div class="opt"><span class="letter">D</span> 206</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">
+      哈夫曼树构造过程：<br>
+      - 合并10和12（22），序列变为 15,20,22,25<br>
+      - 合并15和20（35），序列变为 22,25,35<br>
+      - 合并22和25（47），序列变为 35,47<br>
+      - 合并35和47（82）<br>
+      WPL = (10+12)×3 + (15+20)×2 + 25×2 = 66 + 70 + 50 = <strong>186</strong><br>
+    <strong>知识点</strong>：哈夫曼树，带权路径长度计算。</div>
+  </div>
+</div>
+
+<!-- Q5 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">图论</span>
+    <span>第 5 题</span>
+  </div>
+  <div class="exam-q">在一个有向图中，所有顶点的入度之和等于所有顶点的出度之和，这个总和等于？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 顶点数</div>
+    <div class="opt"><span class="letter">B</span> 边数</div>
+    <div class="opt"><span class="letter">C</span> 顶点数 + 边数</div>
+    <div class="opt"><span class="letter">D</span> 顶点数 × 2</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">每条有向边贡献一个出度和一个入度，因此入度之和 = 出度之和 = 边数。<br>
+    <strong>知识点</strong>：有向图的度与边的关系（握手定理）。</div>
+  </div>
+</div>
+
+<!-- Q6 ~ Q10 -->
+<h3 class="kp-title" id="q6">第 6 题 〜 第 10 题</h3>
+
+<!-- Q6 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">组合</span>
+    <span>第 6 题</span>
+  </div>
+  <div class="exam-q">从5位男生和4位女生中选出4人组成一个学习小组，要求学习小组中男生和女生都有。有多少种不同的选择方法？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 126</div>
+    <div class="opt"><span class="letter">B</span> 121</div>
+    <div class="opt"><span class="letter">C</span> 120</div>
+    <div class="opt"><span class="letter">D</span> 100</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">总选法数为 C₉⁴ = 126，减去全男生 C₅⁴ = 5 和全女生 C₄⁴ = 1，得 126 − 5 − 1 = <strong>120</strong>。<br>
+    <strong>知识点</strong>：组合数学，容斥原理。</div>
+  </div>
+</div>
+
+<!-- Q7 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">布尔</span>
+    <span>第 7 题</span>
+  </div>
+  <div class="exam-q">假设a,b,c都是布尔变量，逻辑表达式 <span class="mono">(a &amp;&amp; b) || (!c &amp;&amp; a)</span> 的值与下列哪个表达式不始终相等？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> a &amp;&amp; (b || !c)</div>
+    <div class="opt"><span class="letter">B</span> (a || !c) &amp;&amp; (b || !c) &amp;&amp; (a || a)</div>
+    <div class="opt"><span class="letter">C</span> a &amp;&amp; (!b || c)</div>
+    <div class="opt"><span class="letter">D</span> !(!a || !b) || (a &amp;&amp; !c)</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">通过真值表验证，选项C（a &amp;&amp; (!b || c)）与其他选项不等价。原式 = a &amp;&amp; (b || !c)，而C是 a &amp;&amp; (!b || c)，在 a=1,b=1,c=0 时原式为1，C为0。<br>
+    <strong>知识点</strong>：布尔代数，逻辑表达式等价性。</div>
+  </div>
+</div>
+
+<!-- Q8 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">数论</span>
+    <span>第 8 题</span>
+  </div>
+  <div class="exam-q">已知 f[0]=1, f[1]=1，且对 n≥2 有 f[n]=(f[n-1]+f[n-2])%7。那么 f[2025] 的值是多少？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 2</div>
+    <div class="opt"><span class="letter">B</span> 4</div>
+    <div class="opt"><span class="letter">C</span> 5</div>
+    <div class="opt"><span class="letter">D</span> 6</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：D</div>
+    <div class="explain">斐波那契数列模7的周期为16。2025 mod 16 = 9，f[9] = <strong>6</strong>。<br>
+    <strong>知识点</strong>：模运算，数列周期查找。</div>
+  </div>
+</div>
+
+<!-- Q9 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge">C++语法</span>
+    <span>第 9 题</span>
+  </div>
+  <div class="exam-q">下列关于C++ string类的说法，正确的是？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> string对象的长度在创建后不能改变。</div>
+    <div class="opt"><span class="letter">B</span> 可以使用+运算符直接连接一个string对象和一个char类型的字符。</div>
+    <div class="opt"><span class="letter">C</span> string的length()和size()方法返回的值可能不同。</div>
+    <div class="opt"><span class="letter">D</span> string对象必须以'\0'结尾，且这个结尾符计入length()。</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">string类重载了+运算符，可以连接string和char。length()与size()等价。string的末尾'\0'不计入length()。<br>
+    <strong>知识点</strong>：C++ string类的特性。</div>
+  </div>
+</div>
+
+<!-- Q10 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge">传参</span>
+    <span>第 10 题</span>
+  </div>
+  <div class="exam-q">考虑以下C++函数：</div>
+  <div class="code-block"><span class="kw">void</span> <span class="fn">solve</span>(<span class="kw">int</span> &amp;a, <span class="kw">int</span> b) {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+}
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> x = <span class="num">5</span>, y = <span class="num">10</span>;
+    <span class="fn">solve</span>(x, y);
+}</div>
+  <div class="exam-q">在main函数调用solve后，x和y的值分别是？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 5, 10</div>
+    <div class="opt"><span class="letter">B</span> 10, 5</div>
+    <div class="opt"><span class="letter">C</span> 10, 10</div>
+    <div class="opt"><span class="letter">D</span> 5, 5</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">参数b是传值，修改不影响实参y。a是传引用，交换操作后a变为10（x变成10），b变为5（但不影响y）。最终 x=10, y=10。<br>
+    <strong>知识点</strong>：函数参数传递，传值与传引用的区别。</div>
+  </div>
+</div>
+
+<!-- Q11 ~ Q15 -->
+<h3 class="kp-title" id="q11">第 11 题 〜 第 15 题</h3>
+
+<!-- Q11 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">组合</span>
+    <span>第 11 题</span>
+  </div>
+  <div class="exam-q">一个8×8的棋盘，左上角坐标为(1,1)，右下角为(8,8)。一个机器人从(1,1)出发，每次只能向右或向下走一格。要到达(4,5)，有多少种不同的路径？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 20</div>
+    <div class="opt"><span class="letter">B</span> 35</div>
+    <div class="opt"><span class="letter">C</span> 56</div>
+    <div class="opt"><span class="letter">D</span> 70</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">从(1,1)到(4,5)需要向右走3步，向下走4步，共7步中选3步向右：C₇³ = <strong>35</strong>。<br>
+    <strong>知识点</strong>：组合数学，网格路径问题。</div>
+  </div>
+</div>
+
+<!-- Q12 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">排序</span>
+    <span>第 12 题</span>
+  </div>
+  <div class="exam-q">某同学用冒泡排序对数组 {6,1,5,2,4} 进行升序排序，请问需要进行多少次元素交换？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 5</div>
+    <div class="opt"><span class="letter">B</span> 6</div>
+    <div class="opt"><span class="letter">C</span> 7</div>
+    <div class="opt"><span class="letter">D</span> 8</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">
+      冒泡排序过程：<br>
+      初始：6,1,5,2,4<br>
+      第1轮：1,5,2,4,6（交换4次）<br>
+      第2轮：1,2,4,5,6（交换2次）<br>
+      第3轮：无交换（0次）<br>
+      总计 <strong>6</strong> 次交换。<br>
+    <strong>知识点</strong>：冒泡排序，交换次数模拟。</div>
+  </div>
+</div>
+
+<!-- Q13 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">进制</span>
+    <span>第 13 题</span>
+  </div>
+  <div class="exam-q">十进制数 720₁₀ 和八进制数 270₈ 的和用十六进制表示是多少？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 388₁₆</div>
+    <div class="opt"><span class="letter">B</span> 3DE₁₆</div>
+    <div class="opt"><span class="letter">C</span> 288₁₆</div>
+    <div class="opt"><span class="letter">D</span> 990₁₆</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">270₈ = 2×64 + 7×8 + 0 = 128 + 56 = 184。720 + 184 = 904。904的十六进制是 0x<strong>388</strong>。<br>
+    <strong>知识点</strong>：进制转换（八/十/十六进制）。</div>
+  </div>
+</div>
+
+<!-- Q14 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge math">树</span>
+    <span>第 14 题</span>
+  </div>
+  <div class="exam-q">一根包含1000个结点的完全二叉树，其叶子结点的数量是多少？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 499</div>
+    <div class="opt"><span class="letter">B</span> 512</div>
+    <div class="opt"><span class="letter">C</span> 500</div>
+    <div class="opt"><span class="letter">D</span> 501</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">完全二叉树叶子结点数 = n − ⌊n/2⌋ = 1000 − 500 = <strong>500</strong>。<br>
+    <strong>知识点</strong>：完全二叉树的性质。</div>
+  </div>
+</div>
+
+<!-- Q15 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge real">真题</span>
+    <span class="exam-badge">栈队列</span>
+    <span>第 15 题</span>
+  </div>
+  <div class="exam-q">给定一个初始为空的整数栈S和一个空的队列P。处理输入队列A: 7,5,8,3,1,4,2。规则：如果是奇数则压入栈S；如果是偶数且栈非空则弹出栈顶元素加入队列P；如果是偶数且栈为空则不操作。处理完毕后，队列P的内容是什么？（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 5,1,3</div>
+    <div class="opt"><span class="letter">B</span> 7,5,3</div>
+    <div class="opt"><span class="letter">C</span> 3,1,5</div>
+    <div class="opt"><span class="letter">D</span> 5,1,3,7</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">
+      模拟过程：<br>
+      - 7(奇) 压栈 [7]<br>
+      - 5(奇) 压栈 [7,5]<br>
+      - 8(偶) 弹出5加入P，栈 [7]，P=[5]<br>
+      - 3(奇) 压栈 [7,3]<br>
+      - 1(奇) 压栈 [7,3,1]<br>
+      - 4(偶) 弹出1加入P，栈 [7,3]，P=[5,1]<br>
+      - 2(偶) 弹出3加入P，栈 [7]，P=[5,1,3]<br>
+      P的内容为 <strong>5,1,3</strong>。<br>
+    <strong>知识点</strong>：栈和队列的基本操作。</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!-- 二、阅读程序题 -->
+<!-- ============================================================ -->
+<h2 class="section-title" id="read1"><span class="num">2</span> 阅读程序题</h2>
+
+<div class="info-box">阅读程序题包含3个程序，每个程序含判断题（每题1.5分）和单选题（每题3分），共40分。需仔细模拟执行过程，注意边界条件和特殊输入。</div>
+
+<!-- 程序1：gcd互质三元组 -->
+<h3 class="kp-title">程序1：求互质三元组个数（gcd + 三重循环）</h3>
+
+<div class="card primary" style="margin-bottom:10px;">
+  <div class="card-title">程序说明</div>
+  <p>本程序使用辗转相除法（递归 gcd）统计 1~n 中两两互质的三元组 (i,j,k) 个数，要求 i&lt;j&lt;k。考察递归 gcd 实现、边界条件分析、循环执行逻辑。</p>
+</div>
+
+<div class="code-block"><span class="cm">// gcd递归函数</span>
+<span class="kw">inline int</span> <span class="fn">gcd</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> a;
+    <span class="kw">return</span> <span class="fn">gcd</span>(b, a % b);
+}
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    <span class="kw">int</span> n;
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+    <span class="kw">int</span> ans = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; ++i)
+        <span class="kw">for</span> (<span class="kw">int</span> j = i + <span class="num">1</span>; j &lt;= n; ++j)
+            <span class="kw">for</span> (<span class="kw">int</span> k = j + <span class="num">1</span>; k &lt;= n; ++k)
+                <span class="kw">if</span> (<span class="fn">gcd</span>(i, j) == <span class="num">1</span> &amp;&amp;
+                    <span class="fn">gcd</span>(j, k) == <span class="num">1</span> &amp;&amp;
+                    <span class="fn">gcd</span>(i, k) == <span class="num">1</span>)
+                    ++ans;
+    <span class="fn">printf</span>(<span class="str">"%d\n"</span>, ans);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+<!-- Q16 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 16 题</span>
+  </div>
+  <div class="exam-q">当输入为2时，程序并不会执行第16行的判断语句。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">当n=2时，最内层循环k从j+1开始。即使j=2时，k从3开始，但n=2，所以k&gt;n，循环不会执行。确实不会执行到第16行的if判断。<br>
+    <strong>知识点</strong>：循环边界条件分析。</div>
+  </div>
+</div>
+
+<!-- Q17 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 17 题</span>
+  </div>
+  <div class="exam-q">将第16行中的 "&amp;&amp; gcd(i,k)=1" 删去不会影响程序运行结果。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：×（错误）</div>
+    <div class="explain">删去后程序只检查两两互质中的两对（(i,j)和(j,k)），而不是三元组全部互质，结果会不同（会多统计不互质的三元组）。<br>
+    <strong>知识点</strong>：互质概念，条件判断的完整性。</div>
+  </div>
+</div>
+
+<!-- Q18 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 18 题</span>
+  </div>
+  <div class="exam-q">当输入的n≥3时，程序总是输出一个正整数。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">当n≥3时，至少存在一组互质三元组(1,2,3)，输出一定为正整数。<br>
+    <strong>知识点</strong>：互质判断，最小情况存在性。</div>
+  </div>
+</div>
+
+<!-- Q19 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 19 题</span>
+  </div>
+  <div class="exam-q">将第7行的 "gcd(b, a%b)" 改为 "gcd(a, a%b)" 后，程序可能出现的问题是（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 输出的答案大于原答案</div>
+    <div class="opt"><span class="letter">B</span> 输出的答案小于原答案</div>
+    <div class="opt"><span class="letter">C</span> 程序有可能陷入死循环</div>
+    <div class="opt"><span class="letter">D</span> 可能发生整型溢出问题</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">修改后当b≠0时，递归调用gcd(a, a%b)。由于gcd的第一个参数始终为a不变，而a%b可能永远不为0（例如a=6, b=4时，a%b=2，然后gcd(6,2)再算a%b=0才结束），更严重的是当a与b不满足特定关系时可能导致无限递归。<br>
+    <strong>知识点</strong>：递归函数设计，gcd的递归终止条件。</div>
+  </div>
+</div>
+
+<!-- Q20 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 20 题</span>
+  </div>
+  <div class="exam-q">当输入为8时，输出为（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 37</div>
+    <div class="opt"><span class="letter">B</span> 42</div>
+    <div class="opt"><span class="letter">C</span> 35</div>
+    <div class="opt"><span class="letter">D</span> 25</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：D</div>
+    <div class="explain">n=8时，通过计算可得互质三元组个数为25。对于较小的n，可以枚举i,j,k的全部分组进行验证。<br>
+    <strong>知识点</strong>：三重循环模拟，互质判断。</div>
+  </div>
+</div>
+
+<!-- Q21 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 21 题</span>
+  </div>
+  <div class="exam-q">调用 gcd(36,42) 会返回（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 6</div>
+    <div class="opt"><span class="letter">B</span> 252</div>
+    <div class="opt"><span class="letter">C</span> 3</div>
+    <div class="opt"><span class="letter">D</span> 2</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">gcd(36,42) = gcd(42,36) = gcd(36,6) = gcd(6,0) = <strong>6</strong>。36和42的最大公约数是6。<br>
+    <strong>知识点</strong>：辗转相除法求最大公约数。</div>
+  </div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- 程序2：排序去重+双指针DP -->
+<h3 class="kp-title" id="read2">程序2：数组处理（排序去重 + 双指针DP）</h3>
+
+<div class="card primary" style="margin-bottom:10px;">
+  <div class="card-title">程序说明</div>
+  <p>本程序先将数组排序去重，再用双指针DP求满足相邻元素差值 ≤ k 的最少分段数。<span class="mono">ans[i] = ans[j] + 1</span> 是关键转移方程，j是满足 a[i]−a[j+1]≤k 的最大位置。</p>
+</div>
+
+<div class="code-block"><span class="kw">int</span> n, k;
+<span class="kw">int</span> a[<span class="num">200007</span>];
+<span class="kw">int</span> ans[<span class="num">200007</span>];
+
+<span class="fn">scanf</span>(<span class="str">"%d%d"</span>, &amp;n, &amp;k);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; ++i)
+    <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;a[i]);
+
+std::<span class="fn">sort</span>(a + <span class="num">1</span>, a + n + <span class="num">1</span>);
+n = std::<span class="fn">unique</span>(a + <span class="num">1</span>, a + n + <span class="num">1</span>) - a - <span class="num">1</span>;
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>, j = <span class="num">0</span>; i &lt;= n; ++i) {
+    <span class="kw">for</span> (; j &lt; i &amp;&amp; a[i] - a[j + <span class="num">1</span>] &gt; k; ++j);
+    ans[i] = ans[j] + <span class="num">1</span>;
+}
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, ans[n]);</div>
+
+<!-- Q22 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 22 题</span>
+  </div>
+  <div class="exam-q">当输入为 "3 1 3 2 1" 时，输出结果为2。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">输入 n=3,k=1,a=[3,2,1]。排序去重后数组为[1,2,3]，k=1时三段分别为[1],[2],[3]？实际上 a[i]−a[j+1]≤1 的约束：ans[1]=1, ans[2]=ans[1]+1=2, 最终ans[3]=2。输出2。验证：{1,2}差≤1, {3}单独一段，共2段。<br>
+    <strong>知识点</strong>：排序去重 + 双指针DP模拟。</div>
+  </div>
+</div>
+
+<!-- Q23 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 23 题</span>
+  </div>
+  <div class="exam-q">假设输入的n为正整数，输出的答案一定小于等于n，大于等于1。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">ans数组记录的是分段数。最少1段（所有元素在一段内），最多n段（每个元素单独一段，即去重后每个元素一段）。输出ans[n]满足 1 ≤ ans[n] ≤ n。<br>
+    <strong>知识点</strong>：DP结果的范围分析。</div>
+  </div>
+</div>
+
+<!-- Q24 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 24 题</span>
+  </div>
+  <div class="exam-q">将第14行的 "n=std::unique(a+1,a+n+1)-a-1;" 删去后，有可能出现与原本代码不同的输出结果。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：×（错误）<br>（删除去重行后输出结果不变）</div>
+    <div class="explain">由于j不会回头，走过的将不会重复计算。sort之后重复元素在一起，不会被多次计算。因此去重操作在此算法中不影响结果。<br>
+    <strong>知识点</strong>：unique去重的作用域与双指针算法的关系。</div>
+  </div>
+</div>
+
+<!-- Q25 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 25 题</span>
+  </div>
+  <div class="exam-q">执行第18行代码 <span class="mono">ans[i] = ans[j] + 1</span> 时，一定满足的条件不包括（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> j ≤ i</div>
+    <div class="opt"><span class="letter">B</span> a[i] − a[j] &gt; k</div>
+    <div class="opt"><span class="letter">C</span> j ≤ n</div>
+    <div class="opt"><span class="letter">D</span> a[j] &lt; a[i]</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">内层while循环确保 a[i]−a[j+1]≤k，但j指向的是满足该条件的最后一个位置的后一个，因此 a[i]−a[j] 可能≤k也可能&gt;k，不一定满足 a[i]−a[j]&gt;k。<br>
+    <strong>知识点</strong>：双指针算法的循环不变量。</div>
+  </div>
+</div>
+
+<!-- Q26 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 26 题</span>
+  </div>
+  <div class="exam-q">当输入的 n=100、k=2、a={1,2,...,100} 时，输出为（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 34</div>
+    <div class="opt"><span class="letter">B</span> 100</div>
+    <div class="opt"><span class="letter">C</span> 50</div>
+    <div class="opt"><span class="letter">D</span> 33</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">每段最大最小值差不超过2，即每段最多包含3个数（如{1,2,3}、{4,5,6}等）。100÷3向上取整 = <strong>34</strong>段。<br>
+    <strong>知识点</strong>：DP分段问题的实际应用。</div>
+  </div>
+</div>
+
+<!-- Q27 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 27 题</span>
+  </div>
+  <div class="exam-q">误删去第13行的 "std::sort(a+1, a+n+1);" 程序有可能出现的问题有（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 输出的答案比原本答案更大</div>
+    <div class="opt"><span class="letter">B</span> 输出的答案比原本答案更小</div>
+    <div class="opt"><span class="letter">C</span> 出现死循环行为</div>
+    <div class="opt"><span class="letter">D</span> 以上均可能发生</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：D</div>
+    <div class="explain">未排序数组会导致双指针算法完全失效。因为算法依赖数组的有序性来保证 a[i]≥a[j]。无序时结果不可预测——可能更大、更小、甚至死循环（j指针可能错误移动）。<br>
+    <strong>知识点</strong>：排序对双指针算法的必要性。</div>
+  </div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- 程序3：LCS -->
+<h3 class="kp-title" id="read3">程序3：动态规划求最长公共子序列（LCS）</h3>
+
+<div class="card primary" style="margin-bottom:10px;">
+  <div class="card-title">程序说明</div>
+  <p>本程序使用经典二维DP求两个序列a和b的最长公共子序列长度。特别地，当a是严格递增序列（如1,2,...,n）时，LCS问题转化为求b的LIS（最长上升子序列）。</p>
+</div>
+
+<div class="code-block"><span class="kw">int</span> f[<span class="num">5007</span>][<span class="num">5007</span>];
+<span class="kw">int</span> a[<span class="num">5007</span>], b[<span class="num">5007</span>];
+<span class="kw">int</span> n;
+
+<span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;n);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; ++i) <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;a[i]);
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; ++i) <span class="fn">scanf</span>(<span class="str">"%d"</span>, &amp;b[i]);
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; ++i) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= n; ++j) {
+        f[i][j] = std::<span class="fn">max</span>(f[i][j],
+                  std::<span class="fn">max</span>(f[i<span class="num">-1</span>][j], f[i][j<span class="num">-1</span>]));
+        <span class="kw">if</span> (a[i] == b[j])
+            f[i][j] = std::<span class="fn">max</span>(f[i][j],
+                      f[i<span class="num">-1</span>][j<span class="num">-1</span>] + <span class="num">1</span>);
+    }
+}
+<span class="fn">printf</span>(<span class="str">"%d\n"</span>, f[n][n]);</div>
+
+<!-- Q28 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 28 题</span>
+  </div>
+  <div class="exam-q">输入 "4 1 2 3 4 1 3 2 2" 时输出为2。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">a=[1,2,3,4]，b=[1,3,2,2]。最长公共子序列为{1,2}或{1,3}，长度为2。<br>
+    <strong>知识点</strong>：LCS的模拟计算。</div>
+  </div>
+</div>
+
+<!-- Q29 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 29 题</span>
+  </div>
+  <div class="exam-q">对于所有 1≤i,j≤n，都有 f[i][j] ≤ f[n][n]。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：√（正确）</div>
+    <div class="explain">f[n][n] 是全局最优解，而所有子问题的解 f[i][j] 都是在更短的序列上求得的，不可能超过完整序列的最优解。<br>
+    <strong>知识点</strong>：DP最优子结构性质。</div>
+  </div>
+</div>
+
+<!-- Q30 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">判断</span>
+    <span>第 30 题</span>
+  </div>
+  <div class="exam-q">删去第18行不影响程序运行结果。（ ）</div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：×（错误）</div>
+    <div class="explain">第18行是状态转移的核心 <span class="tag-inline">f[i][j] = max(f[i][j], f[i-1][j-1]+1)</span>，负责匹配相等字符时的递推。删去后无法正确计算最长公共子序列。<br>
+    <strong>知识点</strong>：LCS状态转移方程。</div>
+  </div>
+</div>
+
+<!-- Q31 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 31 题</span>
+  </div>
+  <div class="exam-q">输出的答案满足的性质有（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 小于等于 n</div>
+    <div class="opt"><span class="letter">B</span> 大于等于 0</div>
+    <div class="opt"><span class="letter">C</span> 不一定大于等于1</div>
+    <div class="opt"><span class="letter">D</span> 以上均是</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：D</div>
+    <div class="explain">最长公共子序列长度在[0, n]范围内。可能为0（两个序列没有公共元素），也可能≤n。A、B、C都正确。<br>
+    <strong>知识点</strong>：LCS长度的取值范围。</div>
+  </div>
+</div>
+
+<!-- Q32 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 32 题</span>
+  </div>
+  <div class="exam-q">如果在循环前加上 <span class="mono">std::sort(a+1, a+n+1); std::sort(b+1, b+n+1)</span>，则答案会（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 变大或不变</div>
+    <div class="opt"><span class="letter">B</span> 变小或不变</div>
+    <div class="opt"><span class="letter">C</span> 一定变大</div>
+    <div class="opt"><span class="letter">D</span> 不变</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">排序后可能增加公共元素的数量（原本不匹配的位置因排序变得匹配），因此答案可能变大，但不会变小（排序不会减少公共元素）。<br>
+    <strong>知识点</strong>：排序对LCS结果的影响。</div>
+  </div>
+</div>
+
+<!-- Q32 continued: LCS→LIS转化 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge read">阅读</span>
+    <span class="exam-badge">选择</span>
+    <span>第 33 题</span>
+  </div>
+  <div class="exam-q">如果输入的 a={1,2,...,n}，而且b数组中数字均为1~n中的正整数，则上述代码等价于（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 求b数组去重后的长度</div>
+    <div class="opt"><span class="letter">B</span> 求b数组的最长上升子序列(LIS)</div>
+    <div class="opt"><span class="letter">C</span> 求b数组的长度</div>
+    <div class="opt"><span class="letter">D</span> 求b数组的最大值</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">当a是严格递增序列时，LCS问题可以转化为对b求最长上升子序列（LIS）。因为公共子序列在a中对应的下标必须递增，所以b中元素按在a中出现的顺序（即其值本身）必须上升。<br>
+    <strong>知识点</strong>：LCS → LIS 的转化技巧。<br>
+    <span style="color:var(--accent-dark);font-weight:600;">高考高频考点！</span></div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!-- 三、完善程序题 -->
+<!-- ============================================================ -->
+<h2 class="section-title" id="complete1"><span class="num">3</span> 完善程序题</h2>
+
+<div class="info-box">完善程序题共2个程序，每空3分，共30分。需要理解算法整体逻辑后填入正确的代码片段。2025年考察了RLE行程编码解码和Boyer-Moore多数派投票算法。</div>
+
+<!-- 完善1：RLE行程编码 -->
+<h3 class="kp-title">完善1：字符串解码（行程长度编码 RLE）</h3>
+
+<div class="card primary" style="margin-bottom:10px;">
+  <div class="card-title">题目描述</div>
+  <p>"行程长度编码"（Run-Length Encoding）是一种无损压缩算法。压缩规则：如果字符连续出现N次（N≥2），编码为"字符+数字N"；如果只出现1次，编码为字符本身。<br>
+  例如：编码 "a3b2c" 解码后为 "aaabbc"（3个a，2个b，1个c）。</p>
+</div>
+
+<div class="code-block"><span class="cm">// RLE 解码程序</span>
+string z;
+cin &gt;&gt; z;
+string s = <span class="str">""</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; z.<span class="fn">length</span>(); ) {
+    <span class="kw">char</span> ch = z[i];
+    <span class="kw">if</span> (<span class="blk">①</span> &amp;&amp; <span class="fn">isdigit</span>(z[i + <span class="num">1</span>])) {
+        i++;
+        <span class="kw">int</span> count = <span class="num">0</span>;
+        <span class="kw">while</span> (i &lt; z.<span class="fn">length</span>() &amp;&amp; <span class="fn">isdigit</span>(z[i])) {
+            count = <span class="blk">②</span>;
+            i++;
+        }
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; <span class="blk">③</span>; ++j)
+            s += ch;
+    } <span class="kw">else</span> {
+        s += <span class="blk">④</span>;
+        <span class="blk">⑤</span>;
+    }
+}</div>
+
+<!-- Q34 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 33 题（①处）</span>
+  </div>
+  <div class="exam-q">①处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> i &lt; z.length()</div>
+    <div class="opt"><span class="letter">B</span> i - 1 &gt;= 0</div>
+    <div class="opt"><span class="letter">C</span> i + 1 &lt; z.length()</div>
+    <div class="opt"><span class="letter">D</span> isdigit(z[i])</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">需要检查下一个字符 z[i+1] 是否为数字（表示当前字符是重复的）。在访问 z[i+1] 之前必须确保 i+1 不越界，即 i+1 &lt; z.length()。<br>
+    <strong>知识点</strong>：字符串边界检查。</div>
+  </div>
+</div>
+
+<!-- Q35 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 34 题（②处）</span>
+  </div>
+  <div class="exam-q">②处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> count + (z[i] - '0')</div>
+    <div class="opt"><span class="letter">B</span> count * 10 + (z[i] - '0')</div>
+    <div class="opt"><span class="letter">C</span> z[i] - '0'</div>
+    <div class="opt"><span class="letter">D</span> count + 1</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">将连续的数字字符转换为整数，需要处理多位数。每读取一个新数字字符，就将当前count乘以10（左移一位），再加上当前数字字符对应的整数值。这是典型的"秦九韶算法"。<br>
+    <strong>知识点</strong>：多位数解析，字符转整数。</div>
+  </div>
+</div>
+
+<!-- Q36 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 35 题（③处）</span>
+  </div>
+  <div class="exam-q">③处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> count - 1</div>
+    <div class="opt"><span class="letter">B</span> count</div>
+    <div class="opt"><span class="letter">C</span> 10</div>
+    <div class="opt"><span class="letter">D</span> z[i] - '0'</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">循环输出 count 次字符 ch。j从0开始，小于count正好输出count次。<br>
+    <strong>知识点</strong>：循环控制与边界。</div>
+  </div>
+</div>
+
+<!-- Q37 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 36 题（④处）</span>
+  </div>
+  <div class="exam-q">④处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> z[i+1]</div>
+    <div class="opt"><span class="letter">B</span> ch</div>
+    <div class="opt"><span class="letter">C</span> z.back()</div>
+    <div class="opt"><span class="letter">D</span> (char)z[i] + 1</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">else分支处理字符只出现一次的情况（下一位不是数字）。直接将当前字符ch追加到结果字符串s中。<br>
+    <strong>知识点</strong>：字符串拼接操作。</div>
+  </div>
+</div>
+
+<!-- Q38 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 37 题（⑤处）</span>
+  </div>
+  <div class="exam-q">⑤处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> i--</div>
+    <div class="opt"><span class="letter">B</span> i = i + 2</div>
+    <div class="opt"><span class="letter">C</span> i++</div>
+    <div class="opt"><span class="letter">D</span> // 不执行任何操作</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">for循环的括号中没有写i++语句，需要在循环体内手动移动索引。在else分支处理完单字符后，将i增加1，移动到下一个待处理的字符位置。<br>
+    <strong>知识点</strong>：循环索引控制。</div>
+  </div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- 完善2：Boyer-Moore多数派投票 -->
+<h3 class="kp-title" id="complete2">完善2：精明与糊涂（Boyer-Moore 多数派投票）</h3>
+
+<div class="card primary" style="margin-bottom:10px;">
+  <div class="card-title">题目描述</div>
+  <p>有N个人，分为两类：精明人（永远正确判断他人）和糊涂人（判断不可靠）。精明人严格占多数（k &gt; N/2）。<br>
+  通过函数 <span class="mono">query(i,j)</span> 让第i个人判断第j个人——返回true表示"精明人"，false表示"糊涂人"。<br>
+  目标：利用"精明人占多数"的优势，通过"候选者消除法"找出一个肯定的精明人。</p>
+</div>
+
+<div class="code-block"><span class="cm">// Boyer-Moore 多数派投票算法</span>
+<span class="kw">int</span> N;
+<span class="kw">bool</span> <span class="fn">query</span>(<span class="kw">int</span> i, <span class="kw">int</span> j);
+
+<span class="kw">int</span> <span class="fn">main</span>() {
+    cin &gt;&gt; N;
+    <span class="kw">int</span> candidate = <span class="num">0</span>;
+    <span class="kw">int</span> count = <span class="blk">①</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; N; ++i) {
+        <span class="kw">if</span> (<span class="blk">②</span>) {
+            candidate = i;
+            count = <span class="num">1</span>;
+        } <span class="kw">else</span> {
+            <span class="kw">if</span> (<span class="blk">③</span>) {
+                <span class="blk">④</span>;
+            } <span class="kw">else</span> {
+                count++;
+            }
+        }
+    }
+    cout &lt;&lt; <span class="blk">⑤</span> &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+<!-- Q39 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 38 题（①处）</span>
+  </div>
+  <div class="exam-q">①处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> 0</div>
+    <div class="opt"><span class="letter">B</span> 1</div>
+    <div class="opt"><span class="letter">C</span> N</div>
+    <div class="opt"><span class="letter">D</span> -1</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：B</div>
+    <div class="explain">初始化count为1，表示将第0个人作为初始候选人（candidate=0），并假设他是精明人，初始"支持计数"为1。<br>
+    <strong>知识点</strong>：Boyer-Moore投票算法初始化。</div>
+  </div>
+</div>
+
+<!-- Q40 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 39 题（②处）</span>
+  </div>
+  <div class="exam-q">②处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> count &lt; 0</div>
+    <div class="opt"><span class="letter">B</span> count == 1</div>
+    <div class="opt"><span class="letter">C</span> count == 0</div>
+    <div class="opt"><span class="letter">D</span> query(candidate, i) == false</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">当 count 变为0时，当前候选人被完全"抵消"，需要将当前这个人i设为新的候选人，并将计数重置为1。这是Boyer-Moore算法的核心：count=0时更换候选人。<br>
+    <strong>知识点</strong>：多数派算法中的候选人更换条件。</div>
+  </div>
+</div>
+
+<!-- Q41 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 40 题（③处）</span>
+  </div>
+  <div class="exam-q">③处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> query(candidate, i) == false</div>
+    <div class="opt"><span class="letter">B</span> query(i, candidate) == true</div>
+    <div class="opt"><span class="letter">C</span> query(candidate, i) == false &amp;&amp; query(i, candidate) == false</div>
+    <div class="opt"><span class="letter">D</span> query(candidate, i) == false || query(i, candidate) == false</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">当候选人candidate判断当前人i是"糊涂人"（query返回false）时，意味着这两个人中至少有一个是糊涂人，因此可以安全地将这对人"抵消"——减少候选人的支持计数。<br>
+    <strong>知识点</strong>：多数派算法的抵消条件。</div>
+  </div>
+</div>
+
+<!-- Q42 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 41 题（④处）</span>
+  </div>
+  <div class="exam-q">④处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> count--</div>
+    <div class="opt"><span class="letter">B</span> break</div>
+    <div class="opt"><span class="letter">C</span> count++</div>
+    <div class="opt"><span class="letter">D</span> candidate = i</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：A</div>
+    <div class="explain">当候选人判断当前人是糊涂人时，两者抵消，减少候选人的支持计数count。<br>
+    <strong>知识点</strong>：多数派算法的抵消操作。</div>
+  </div>
+</div>
+
+<!-- Q43 -> actually Q42 -->
+<div class="exam-block">
+  <div class="exam-header">
+    <span class="exam-badge complete">完善</span>
+    <span>第 42 题（⑤处）</span>
+  </div>
+  <div class="exam-q">⑤处应填（ ）</div>
+  <div class="exam-options">
+    <div class="opt"><span class="letter">A</span> N - 1</div>
+    <div class="opt"><span class="letter">B</span> count</div>
+    <div class="opt"><span class="letter">C</span> candidate</div>
+    <div class="opt"><span class="letter">D</span> 0</div>
+  </div>
+  <div class="show-answer-btn" onclick="toggleAnswer(this)">查看解析</div>
+  <div class="answer-box">
+    <div class="ans">答案：C</div>
+    <div class="explain">输出最终找到的候选者。经过多轮抵消后，最终留下的候选人candidate必定属于占多数的精明人。<br>
+    <strong>知识点</strong>：Boyer-Moore多数派算法的正确性——消除阶段后留下的候选者必定是多数派。</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ============================================================ -->
+<!-- 总结 -->
+<!-- ============================================================ -->
+<h2 class="section-title" id="summary"><span class="num">4</span> 2025 年真题总结</h2>
+
+<div class="summary-box">
+  <h3>一、试卷特点</h3>
+  <div class="kp-text">2025年CSP-J初试试卷整体难度较2024年有所上升，<strong>数学类题目权重显著增加</strong>（布尔代数、数论模周期、斐波那契数列），同时阅读程序代码长度增加，对代码跟踪能力要求更高。</div>
+  <div class="row">
+    <span class="pill">递归分析</span>
+    <span class="pill green">位运算</span>
+    <span class="pill">哈夫曼树</span>
+    <span class="pill green">组合数学</span>
+    <span class="pill amber">图论</span>
+    <span class="pill">DP动态规划</span>
+    <span class="pill green">RLE编码</span>
+    <span class="pill red">多数派算法</span>
+  </div>
+</div>
+
+<div class="summary-box">
+  <h3>二、高频考点速览</h3>
+  <table>
+    <thead>
+      <tr><th>考点</th><th>题号</th><th>难度</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>数据表示 / 无符号整数范围</td><td>Q1</td><td>★☆☆</td></tr>
+      <tr><td>位运算 x &amp; (x-1)</td><td>Q2</td><td>★★☆</td></tr>
+      <tr><td>递归函数分析</td><td>Q3</td><td>★★☆</td></tr>
+      <tr><td>哈夫曼树 WPL</td><td>Q4</td><td>★★☆</td></tr>
+      <tr><td>图论 / 有向图度与边</td><td>Q5</td><td>★☆☆</td></tr>
+      <tr><td>组合数学 / 容斥原理</td><td>Q6</td><td>★★☆</td></tr>
+      <tr><td>布尔代数等价性</td><td>Q7</td><td>★★★</td></tr>
+      <tr><td>斐波那契模周期</td><td>Q8</td><td>★★★</td></tr>
+      <tr><td>C++ string 类操作</td><td>Q9</td><td>★☆☆</td></tr>
+      <tr><td>传值 vs 传引用</td><td>Q10</td><td>★★☆</td></tr>
+      <tr><td>组合 / 网格路径</td><td>Q11</td><td>★★☆</td></tr>
+      <tr><td>冒泡排序交换次数</td><td>Q12</td><td>★★☆</td></tr>
+      <tr><td>进制转换</td><td>Q13</td><td>★★☆</td></tr>
+      <tr><td>完全二叉树叶子数</td><td>Q14</td><td>★★☆</td></tr>
+      <tr><td>栈 / 队列模拟</td><td>Q15</td><td>★★☆</td></tr>
+      <tr><td>gcd 递归 / 互质</td><td>阅读1</td><td>★★☆</td></tr>
+      <tr><td>排序去重 + 双指针DP</td><td>阅读2</td><td>★★★</td></tr>
+      <tr><td>LCS / LIS 转化</td><td>阅读3</td><td>★★★</td></tr>
+      <tr><td>RLE 行程编码解码</td><td>完善1</td><td>★★☆</td></tr>
+      <tr><td>Boyer-Moore 多数派投票</td><td>完善2</td><td>★★★</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="summary-box">
+  <h3>三、2025 新增考点</h3>
+  <div class="row">
+    <span class="pill amber">布尔代数等价性</span>
+    <span class="pill amber">模运算周期</span>
+    <span class="pill amber">冒泡排序交换次数</span>
+    <span class="pill amber">完全二叉树叶子公式</span>
+    <span class="pill amber">多位数数字解析</span>
+    <span class="pill red">多数派算法</span>
+  </div>
+  <div class="kp-text" style="margin-top:10px;">特别注意：2025年新增了<strong>布尔代数</strong>和<strong>数论（模周期）</strong>两个方向，这是前几年较少涉及的考点，预示未来初赛可能进一步加强数学类题目的比重。</div>
+</div>
+
+<div class="summary-box">
+  <h3>四、备考建议</h3>
+  <ul class="dot-list">
+    <li><strong>必拿分</strong>：进制转换、栈队列模拟、图论性质、C++语法——每年必考，容易拿分。</li>
+    <li><strong>中等难度</strong>：位运算技巧（x&amp;(x-1)）、组合数学（容斥/路径）、哈夫曼WPL、递归分析——需要练习。</li>
+    <li><strong>高难度</strong>：DP模型（LCS/LIS/编辑距离）、二分查找变体、贪心算法——阅读与完善程序高频考点。</li>
+    <li><strong>2026趋势</strong>：数学类题目权重可能继续上升，建议加强布尔代数、数论、模运算的训练。</li>
+    <li><strong>模拟训练</strong>：多动手模拟代码执行过程，注重边界条件（n=0,1,2等特殊情况）。</li>
+  </ul>
+</div>
+
+<div class="card accent" style="margin-top:20px;">
+  <div class="card-title">特别提醒：2025 年题目信号</div>
+  <p>2025年首次出现<strong>布尔代数等价性判断</strong>和<strong>多数派算法</strong>，这两个新方向值得重点复习。同时，LCS→LIS转化技巧在阅读程序中考察，说明DP模型的灵活变通越来越重要。熟练掌握经典算法的变体应用是冲击高分的关键。</p>
+</div>
+
+<hr class="divider">
+
+<div class="objectives" style="margin-top:10px;">
+  <h3>继续学习</h3>
+  <div class="grid">
+    <div class="item">&#8592; 专题8-4：2024真题全解析</div>
+    <div class="item">专题8-6：冲刺终极手册 &#8594;</div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleAnswer(btn) {
+  var box = btn.nextElementSibling;
+  if (box.classList.contains('show')) {
+    box.classList.remove('show');
+    btn.textContent = '查看解析';
+  } else {
+    box.classList.add('show');
+    btn.textContent = '收起解析';
+  }
+}
+
+// 侧边栏导航高亮
+document.querySelectorAll('.nav-link').forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav-link').forEach(function(l) { l.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

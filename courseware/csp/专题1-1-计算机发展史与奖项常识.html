@@ -1,0 +1,1943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 1.1 计算机发展史与奖项常识</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+  .kp-text .tag { color: var(--primary); }
+  .kp-text .danger-tag { color: var(--danger); font-weight: 600; }
+  .kp-text .suc-tag { color: var(--success); font-weight: 600; }
+
+  /* ─── 卡片系统 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+  .quote-box strong { color: var(--accent-dark); }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* 对比双栏 */
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  .compare-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .compare-box h5 {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .compare-box p {
+    font-size: .8rem;
+    color: var(--text-sec);
+    line-height: 1.6;
+  }
+  .compare-box.dim1 h5 { color: var(--primary-dark); }
+  .compare-box.dim2 h5 { color: var(--accent-dark); }
+
+  @media (max-width: 640px) {
+    .compare-row { grid-template-columns: 1fr; }
+  }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box table {
+    font-size: .82rem;
+    margin: 10px 0;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题一 · 计算机基础知识</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+  <div class="nav-section">1 · 计算机发展史</div>
+  <a class="nav-link" href="#s1">知识纵览</a>
+  <a class="nav-link sub" href="#s1-1">1.1 第四代计算机</a>
+  <a class="nav-link sub" href="#s1-2">1.2 ENIAC 与第一台计算机</a>
+  <a class="nav-link sub" href="#s1-3">1.3 各代特征对比</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+
+  <div class="nav-section">2 · 冯·诺依曼结构</div>
+  <a class="nav-link" href="#s2">存储程序与五部件</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+
+  <div class="nav-section">3 · 重要人物</div>
+  <a class="nav-link" href="#s3">人物谱系全览</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+
+  <div class="nav-section">4 · 图灵奖</div>
+  <a class="nav-link" href="#s4">计算机界最高荣誉</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+
+  <div class="nav-section">5 · 编程语言分类</div>
+  <a class="nav-link" href="#s5">面向对象 vs 面向过程</a>
+  <a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+
+  <div class="nav-section">6 · 二进制与数据存储</div>
+  <a class="nav-link" href="#s6">为什么用二进制</a>
+  <a class="nav-link sub" href="#s6-q">📝 配套练习</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题一 · 计算机基础知识</a> / 1.1</div>
+    <h1>计算机发展史 &amp; 奖项常识</h1>
+    <p class="subtitle">从 ENIAC 到人工智能 · 从图灵到图灵奖 · 一节课拿下计算机文化常识全部得分点</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 8 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 8 道</span>
+      <span class="meta-tag" style="border-color:#ddd6fe;color:#7c3aed;background:#f5f3ff;">📘 C779-20·21</span>
+      <span class="meta-tag" style="border-color:#fde68a;color:#b45309;background:#fffbeb;">📝 模块-4·5·7</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 四代计算机的逻辑元件与年代</span>
+      <span class="item">✅ ENIAC 的关键事实（1946）</span>
+      <span class="item">✅ 冯·诺依曼结构与五部件</span>
+      <span class="item">✅ 冯·诺依曼 vs 图灵 vs 巴贝奇的区分</span>
+      <span class="item">✅ 图灵奖（ACM 设立）</span>
+      <span class="item">✅ 面向对象/面向过程语言分类</span>
+      <span class="item">✅ 计算机为什么用二进制</span>
+      <span class="item">✅ 常见计算机奖项与人物</span>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源指引 ===== -->
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px;">
+    <span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">C779-20·计算机诞生和发展</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">C779-21·计算机语言</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">模块-4·计算机的历史</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">模块-7·程序设计语言</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">模块-5·NOI历史</span>
+    <span style="font-size:.7rem;padding:1px 10px;border-radius:6px;background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;">考点汇总·考点1/17/18</span>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、计算机发展史 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>计算机发展史</h2>
+
+  <p class="kp-text">
+    计算机从 1946 年诞生至今，经历了<strong>四代</strong>技术革命。
+    每一代最核心的区分标志是<strong class="hl">逻辑元件</strong>的不同。
+    理解了这个规律，有关发展史的题目就不会丢分。
+  </p>
+
+  <!-- ===== 1.1 四代计算机各论 ===== -->
+  <h3 class="kp-title" id="s1-1">1.1 第四代计算机详解</h3>
+
+  <h4 class="sub-title">🔹 第一代：电子管计算机（1946—1957）</h4>
+  <p class="kp-text">
+    <strong>代表机型：</strong>ENIAC（1946）、EDVAC（1952，首次采用存储程序）、UNIVAC I（1951，第一台商用计算机）。<br>
+    这一代计算机以<strong class="hl">电子管</strong>为核心元件，体积庞大、耗电惊人、发热严重。
+    ENIAC 用了约 <strong>18000 个电子管</strong>，占地 170 平方米，重 30 吨，每小时耗电 150 千瓦。
+    编程只能用<strong>机器语言</strong>（二进制代码），没有操作系统。
+  </p>
+  <p class="kp-text">
+    <strong>EDVAC</strong> 是第一台采用了<strong>存储程序</strong>概念的计算机；
+    <strong>UNIVAC I</strong> 是第一台商用计算机，用于人口普查。
+  </p>
+
+  <h4 class="sub-title">🔹 第二代：晶体管计算机（1958—1964）</h4>
+  <p class="kp-text">
+    晶体管替代电子管，体积缩小到原来的几十分之一，功耗大幅降低，可靠性显著提高。
+    代表机型为 <strong>IBM 7090</strong>、<strong>IBM 1401</strong>。
+    这一时期的重大突破是出现了<strong class="hl">高级程序设计语言</strong>：
+    <strong>FORTRAN</strong>（1957，科学计算）和 <strong>COBOL</strong>（1959，商业数据处理），
+    编程不再需要直接写二进制。同时出现了<strong>操作系统</strong>的雏形（如 IBM 的 I/O 监控程序）。
+  </p>
+
+  <h4 class="sub-title">🔹 第三代：集成电路计算机（1965—1970）</h4>
+  <p class="kp-text">
+    将多个晶体管和电子元件集成到一块小小的<strong class="hl">硅片</strong>上（中小规模集成电路，SSI/MSI），
+    计算机体积进一步缩小，性能和可靠性进一步提高。
+    代表机型 <strong>IBM System/360</strong> —— 这是计算机史上第一个<strong>兼容系列</strong>，
+    同一系列的不同型号可以运行相同软件。操作系统成熟（如 OS/360），
+    多道程序技术（同时运行多道程序）和<strong>分时系统</strong>出现，小型机（如 DEC PDP-8）走入实验室和中小企业。
+  </p>
+
+  <h4 class="sub-title">🔹 第四代：大规模集成电路计算机（1971—至今）</h4>
+  <p class="kp-text">
+    大规模（LSI）和超大规模（VLSI）集成电路技术使得一块芯片上可以集成数十万甚至上亿个晶体管。
+    <strong>1971 年 Intel 4004 微处理器</strong>的诞生标志着一个新时代的来临——<strong class="hl">微型计算机</strong>时代。
+    个人电脑（PC）的普及（Apple II、IBM PC）、互联网的爆发、移动互联网、人工智能…
+    这一代一直延续到今天。
+  </p>
+
+  <!-- 对比表格 -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>代次</th><th>时间段</th><th>逻辑元件</th><th>代表机型</th><th>关键技术突破</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="mono">第一代</span></td>
+          <td>1946~1957</td>
+          <td>电子管</td>
+          <td>ENIAC、EDVAC、UNIVAC I</td>
+          <td>电子数字计算、存储程序（EDVAC）</td>
+        </tr>
+        <tr>
+          <td><span class="mono">第二代</span></td>
+          <td>1958~1964</td>
+          <td>晶体管</td>
+          <td>IBM 7090、IBM 1401</td>
+          <td>高级语言（FORTRAN/COBOL）、操作系统雏形</td>
+        </tr>
+        <tr>
+          <td><span class="mono">第三代</span></td>
+          <td>1965~1970</td>
+          <td>中小规模集成电路</td>
+          <td>IBM System/360、DEC PDP-8</td>
+          <td>兼容系列、多道程序、分时系统</td>
+        </tr>
+        <tr>
+          <td><span class="mono">第四代</span></td>
+          <td>1971~至今</td>
+          <td>大规模/超大规模集成电路</td>
+          <td>PC、智能手机、服务器</td>
+          <td>微处理器（Intel 4004）、PC、互联网、AI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 速记口诀</div>
+    <p class="kp-text">
+      <strong>"管 → 晶 → 集 → 大"</strong> —— 记住<strong> 4 个字</strong>，搞定所有元件类题：
+      <span class="hl">电子管</span> → <span class="hl">晶体管</span> → <span class="hl">集成电路</span> → <span class="hl">大规模集成电路</span>。<br>
+      扩展记忆：<strong>"管晶极大"</strong> —— 集成度越来越大，元件越来越小。
+    </p>
+  </div>
+
+  <!-- ===== 1.2 ENIAC ===== -->
+  <h3 class="kp-title" id="s1-2">1.2 ENIAC——世界上第一台通用电子数字计算机</h3>
+
+  <p class="kp-text">
+    <strong>ENIAC</strong>（Electronic Numerical Integrator And Computer，电子数字积分计算机）
+    于 <strong>1946 年</strong>由美国宾夕法尼亚大学研制成功，是世界上第一台<strong>通用电子数字计算机</strong>。
+    它主要用于弹道计算，每秒可执行约 <strong>5000 次加法</strong>。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 ENIAC 考试要点速记</div>
+    <p class="kp-text">
+      · 诞生年份：<strong>1946 年</strong>（这个数字必须背下来）<br>
+      · 研制单位：美国宾夕法尼亚大学<br>
+      · 逻辑元件：<strong>电子管</strong>（第一代）<br>
+      · 特点：<span class="danger-tag">没有存储程序功能</span>（程序通过插拔线缆实现，非常麻烦）<br>
+      · 重量：30 吨；面积：170 平方米<br>
+      · 用途：弹道计算<br>
+      · 存储程序功能由后续的 <strong>EDVAC</strong> 首次实现（冯·诺依曼参与设计）
+    </p>
+  </div>
+
+  <div class="quote-box">
+    💡 常见混淆：题干出现"第一台电子计算机"，就是 <strong>ENIAC</strong>。<br>
+    但注意 ENIAC 采用了<strong>十进制</strong>而非二进制运算，这是它与现代计算机的一个显著区别。
+  </div>
+
+  <!-- ===== 1.3 各代对比 ===== -->
+  <h3 class="kp-title" id="s1-3">1.3 各代特征对比速查</h3>
+
+  <p class="kp-text">
+    以下从多个维度对比四代计算机，方便一通百通：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>维度</th><th>第一代</th><th>第二代</th><th>第三代</th><th>第四代</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>核心元件</strong></td>
+          <td>电子管</td><td>晶体管</td><td>集成电路</td><td>大规模集成电路</td>
+        </tr>
+        <tr>
+          <td><strong>内存</strong></td>
+          <td>磁鼓、延迟线</td><td>磁芯存储器</td><td>半导体存储器</td><td>大规模集成内存</td>
+        </tr>
+        <tr>
+          <td><strong>软件</strong></td>
+          <td>机器语言</td><td>高级语言（FORTRAN等）</td><td>操作系统、多道程序</td><td>各种系统/应用软件</td>
+        </tr>
+        <tr>
+          <td><strong>处理方式</strong></td>
+          <td>机器码编程</td><td>批处理</td><td>分时处理、实时处理</td><td>网络化、并行处理</td>
+        </tr>
+        <tr>
+          <td><strong>应用领域</strong></td>
+          <td>科学计算</td><td>科学计算、数据处理</td><td>各行业普及</td><td>全面渗透社会生活</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 配套练习 1 ===== -->
+  <h3 class="kp-title" id="s1-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022</span>
+      <span>计算机发展史——核心元件</span>
+    </div>
+    <div class="exam-q">
+      以下关于计算机发展史的叙述中，<strong>错误</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>第一代计算机采用电子管作为逻辑元件</div>
+      <div class="opt"><span class="letter">B</span>第二代计算机出现了高级程序设计语言</div>
+      <div class="opt"><span class="letter">C</span>第三代计算机的主要元件是晶体管</div>
+      <div class="opt"><span class="letter">D</span>第四代计算机采用大规模集成电路</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        C 错在——第三代计算机的元件是<strong>中小规模集成电路</strong>，不是晶体管。<br>
+        晶体管是<strong>第二代</strong>的元件，这是一个经典易混淆点。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2023</span>
+      <span>ENIAC 诞生的年份</span>
+    </div>
+    <div class="exam-q">
+      世界上第一台通用电子数字计算机 ENIAC 诞生于哪一年？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1945 年</div>
+      <div class="opt"><span class="letter">B</span>1946 年</div>
+      <div class="opt"><span class="letter">C</span>1947 年</div>
+      <div class="opt"><span class="letter">D</span>1951 年</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>1946 年</strong>。这个年份必须记牢。1945 年是二战结束 / 第一颗原子弹爆炸，不要混淆。
+        1951 年是 UNIVAC I（第一台商用计算机）的诞生年份。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>ENIAC 不具备的功能</span>
+    </div>
+    <div class="exam-q">
+      以下关于 ENIAC 的描述，<strong>错误</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>ENIAC 使用了约 18000 个电子管</div>
+      <div class="opt"><span class="letter">B</span>ENIAC 是世界上第一台通用电子数字计算机</div>
+      <div class="opt"><span class="letter">C</span>ENIAC 采用了存储程序的设计思想</div>
+      <div class="opt"><span class="letter">D</span>ENIAC 每秒可进行约 5000 次加法运算</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        ENIAC <strong>没有</strong>存储程序功能！它的程序通过<strong>插拔线缆</strong>和设置开关来实现，
+        修改一次程序需要花费数天时间。<br>
+        真正实现存储程序概念的是 <strong>EDVAC</strong>（冯·诺依曼参与设计的后继机型）。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>第四代计算机的标志性事件</span>
+    </div>
+    <div class="exam-q">
+      第四代计算机的标志性技术突破是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>晶体管的发明</div>
+      <div class="opt"><span class="letter">B</span>电子管的发明</div>
+      <div class="opt"><span class="letter">C</span>微处理器的诞生</div>
+      <div class="opt"><span class="letter">D</span>高级语言的普及</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>1971 年 Intel 4004 微处理器</strong>的诞生标志着第四代计算机的开端。
+        微处理器将整个 CPU 集成到一块芯片上，使得<strong>微型计算机</strong>成为可能。<br>
+        A（晶体管）属于第二代；B（电子管）属于第一代；D（高级语言）属于第二代。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>代际——关键词匹配</span>
+    </div>
+    <div class="exam-q">
+      以下计算机特征与代次的对应关系中，<strong>不正确</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>第一代——机器语言编程</div>
+      <div class="opt"><span class="letter">B</span>第二代——FORTRAN 语言出现</div>
+      <div class="opt"><span class="letter">C</span>第三代——个人计算机普及</div>
+      <div class="opt"><span class="letter">D</span>第四代——超大规模集成电路</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        个人计算机（PC）的普及属于<strong>第四代</strong>，不是第三代。<br>
+        第三代（1965-1970）是集成电路时代，小型机出现但未普及到个人；
+        直到 1971 年微处理器诞生后，才有 Apple II、IBM PC 等个人计算机。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、冯·诺依曼结构 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>冯·诺依曼结构与存储程序</h2>
+
+  <h4 class="sub-title">2.1 核心思想：存储程序</h4>
+
+  <p class="kp-text">
+    冯·诺依曼提出的<strong class="hl">"存储程序"</strong>（Stored-Program）概念，是计算机史上最伟大的思想之一。
+    含义是：将<strong>程序指令</strong>和<strong>数据</strong>一起存放在计算机的存储器中，
+    计算机自动从存储器中依次取出指令并执行，无需人工干预。
+  </p>
+
+  <div class="info-box">
+    <strong>一句话总结：</strong>程序和数据都放在内存里，计算机自己去取 → 译码 → 执行 → 再取下一条。
+    这就是现代计算机<strong>自动工作</strong>的根本原因。
+  </div>
+
+  <h4 class="sub-title">2.2 冯·诺依曼结构五大部件</h4>
+
+  <p class="kp-text">
+    冯·诺依曼结构的计算机由<strong>五大部件</strong>组成。每个部件各司其职，缺一不可。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>部件名称</th><th>英文</th><th>功能</th><th>常见设备/例子</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>① 运算器</strong></td>
+          <td>ALU</td>
+          <td>算术运算（加减乘除）和逻辑运算（与或非比较）</td>
+          <td>CPU 内部</td>
+        </tr>
+        <tr>
+          <td><strong>② 控制器</strong></td>
+          <td>CU</td>
+          <td>取指令、译码、控制各部件协调工作</td>
+          <td>CPU 内部</td>
+        </tr>
+        <tr>
+          <td><strong>③ 存储器</strong></td>
+          <td>Memory</td>
+          <td>存放程序和数据（内存 + 外存，但通常指内存）</td>
+          <td>RAM、ROM、硬盘、U 盘</td>
+        </tr>
+        <tr>
+          <td><strong>④ 输入设备</strong></td>
+          <td>Input</td>
+          <td>将外部数据输入计算机</td>
+          <td>键盘、鼠标、扫描仪、麦克风</td>
+        </tr>
+        <tr>
+          <td><strong>⑤ 输出设备</strong></td>
+          <td>Output</td>
+          <td>将计算结果输出给人或其他设备</td>
+          <td>显示器、打印机、扬声器</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🎯 考点提示</div>
+    <p class="kp-text">
+      · <strong>CPU = 运算器 + 控制器</strong>（这两者合称中央处理器）<br>
+      · <strong>运算器和控制器</strong>在考试中不可混淆：运算器负责"算"，控制器负责"指挥"<br>
+      · 存储器包括<strong>内存</strong>和<strong>外存</strong>，但五大部件中的"存储器"主要指<strong>内存</strong><br>
+      · <strong>输入/输出设备</strong>是泛称，不是特指某个具体设备
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 高频判断题</div>
+    <p class="kp-text">
+      "冯·诺依曼计算机的基本特征是<strong>存储程序</strong>和<strong>采用二进制</strong>。"<br>
+      这句话在判断题中是 <span class="suc-tag">✅ 正确</span> 的，一定记牢。
+    </p>
+  </div>
+
+  <!-- 配套练习 2 -->
+  <h3 class="kp-title" id="s2-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 改编</span>
+      <span>冯·诺依曼结构特征</span>
+    </div>
+    <div class="exam-q">
+      以下关于冯·诺依曼计算机的描述，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>冯·诺依曼计算机的核心部件是运算器和存储器</div>
+      <div class="opt"><span class="letter">B</span>冯·诺依曼结构包括运算器、控制器、存储器、键盘和显示器五大部件</div>
+      <div class="opt"><span class="letter">C</span>冯·诺依曼计算机采用"存储程序"和"二进制"两大基本原理</div>
+      <div class="opt"><span class="letter">D</span>冯·诺依曼计算机不能运行使用高级语言编写的程序</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        A 错——核心部件是<strong>运算器和控制器</strong>（合称 CPU），不是运算器和存储器。<br>
+        B 错——五大部件中的输入输出设备是泛称，不是特指"键盘和显示器"。<br>
+        D 错——高级语言编写的程序经过编译/解释后可以在冯·诺依曼计算机上运行。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>存储程序概念</span>
+    </div>
+    <div class="exam-q">
+      冯·诺依曼"存储程序"思想的核心含义是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>程序运行时必须全部装入内存才能执行</div>
+      <div class="opt"><span class="letter">B</span>程序和数据一起存放在存储器中，计算机自动执行指令序列</div>
+      <div class="opt"><span class="letter">C</span>程序运行过程中的所有数据都必须永久保存</div>
+      <div class="opt"><span class="letter">D</span>程序只能使用机器语言编写，不允许使用符号地址</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        "存储程序"的核心是把<strong>程序指令和数据一起存放在存储器</strong>中，
+        计算机按顺序<strong>自动取指令并执行</strong>，无需人工操作。<br>
+        A 是现代计算机的实际实现方式（虚拟内存可部分不在内存），不是"存储程序"的定义；
+        C 和 D 也都是错误理解。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>五大部件——设备归类</span>
+    </div>
+    <div class="exam-q">
+      以下设备中，<strong>不属于</strong>冯·诺依曼结构中"输入设备"的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>键盘</div>
+      <div class="opt"><span class="letter">B</span>鼠标</div>
+      <div class="opt"><span class="letter">C</span>显示器</div>
+      <div class="opt"><span class="letter">D</span>扫描仪</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>显示器</strong>是<strong>输出设备</strong>，不是输入设备。<br>
+        键盘、鼠标、扫描仪都是典型的输入设备。<br>
+        注意区分：输入设备"把数据<strong>送进去</strong>"，输出设备"把结果<strong>显示出来</strong>"。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、重要人物 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>计算机领域重要人物谱系</h2>
+
+  <p class="kp-text">
+    初赛经常考察对计算机科学做出重大贡献的人物及其对应成就。以下按时间线和影响分类梳理。
+  </p>
+
+  <h4 class="sub-title">3.1 冯·诺依曼（John von Neumann，1903-1957）</h4>
+  <p class="kp-text">
+    匈牙利裔美国数学家、物理学家。他是<strong class="hl">"现代计算机之父"</strong>。
+    除了提出"存储程序"概念和冯·诺依曼结构外，他在<strong>博弈论</strong>（创始人之 一）、
+    <strong>量子力学</strong>、<strong>原子弹</strong>（曼哈顿计划）等领域也有突出贡献，是 20 世纪最杰出的全才之一。
+  </p>
+
+  <h4 class="sub-title">3.2 艾伦·图灵（Alan Turing，1912-1954）</h4>
+  <p class="kp-text">
+    英国数学家、逻辑学家、密码学家。他是<strong class="hl">"计算机科学之父"</strong>和<strong class="hl">"人工智能之父"</strong>。
+    <strong>1936 年</strong>发表的论文提出了<strong>图灵机</strong>（Turing Machine）模型——一个简单的抽象计算设备，
+    却定义了"什么可以被计算"的边界。他还提出了<strong>图灵测试</strong>（Turing Test），
+    用来判断机器是否具有智能。二战期间，他领导破译了德军的 <strong>Enigma 密码</strong>，
+    对盟军胜利做出了重大贡献。
+  </p>
+
+  <h4 class="sub-title">3.3 查尔斯·巴贝奇（Charles Babbage，1791-1871）</h4>
+  <p class="kp-text">
+    英国数学家、工程师，被称为<strong class="hl">"计算机之父"</strong>。
+    他设计了<strong>差分机</strong>（Difference Engine）和<strong>分析机</strong>（Analytical Engine），
+    分析机已经具备了现代计算机的雏形：存储、运算、控制、输入输出。
+    但由于当时机械工艺的限制，分析机未能实际建造完成。
+  </p>
+
+  <h4 class="sub-title">3.4 阿达·洛芙莱斯（Ada Lovelace，1815-1852）</h4>
+  <p class="kp-text">
+    英国数学家，被称为<strong class="hl">"世界上第一位程序员"</strong>。
+    她为巴贝奇的分析机编写了第一个算法（计算伯努利数），
+    并预见了计算机不仅可以做数值计算，还可以处理符号和音乐。
+    编程语言 <strong>Ada</strong> 就是以她的名字命名的。
+  </p>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 人物头衔辨析（必考！）</div>
+    <p class="kp-text">
+      · <span class="tag">冯·诺依曼</span> → <strong>"现代计算机之父"</strong>（存储程序）<br>
+      · <span class="tag">图灵</span> → <strong>"计算机科学之父"</strong>和<strong>"人工智能之父"</strong>（图灵机、图灵测试）<br>
+      · <span class="tag">巴贝奇</span> → <strong>"计算机之父"</strong>（分析机，19世纪）<br>
+      · <span class="tag">阿达·洛芙莱斯</span> → <strong>"第一位程序员"</strong><br>
+      <br>
+      考试中出现题干"被称为现代计算机之父的是？"——选<strong>冯·诺依曼</strong>。<br>
+      出现"被称为计算机科学之父的是？"——选<strong>图灵</strong>。
+    </p>
+  </div>
+
+  <!-- 配套练习 3 -->
+  <h3 class="kp-title" id="s3-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 改编</span>
+      <span>人物——贡献匹配</span>
+    </div>
+    <div class="exam-q">
+      被称为"现代计算机之父"的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>艾伦·图灵</div>
+      <div class="opt"><span class="letter">B</span>冯·诺依曼</div>
+      <div class="opt"><span class="letter">C</span>查尔斯·巴贝奇</div>
+      <div class="opt"><span class="letter">D</span>阿达·洛芙莱斯</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>冯·诺依曼</strong>提出"存储程序"概念，奠定现代计算机体系结构，被称为"现代计算机之父"。<br>
+        图灵是"计算机科学之父"，巴贝奇是19世纪的"计算机之父"，阿达是"第一位程序员"。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>图灵的主要贡献</span>
+    </div>
+    <div class="exam-q">
+      以下哪项<strong>不是</strong>艾伦·图灵的贡献？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>提出图灵机模型</div>
+      <div class="opt"><span class="letter">B</span>提出图灵测试</div>
+      <div class="opt"><span class="letter">C</span>提出存储程序概念</div>
+      <div class="opt"><span class="letter">D</span>参与破解 Enigma 密码</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>存储程序概念</strong>是<strong>冯·诺依曼</strong>提出的，不是图灵。<br>
+        图灵的主要贡献：图灵机（1936）、图灵测试（1950）、二战破译 Enigma 密码。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>第一位程序员</span>
+    </div>
+    <div class="exam-q">
+      被称为世界上第一位程序员的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>冯·诺依曼</div>
+      <div class="opt"><span class="letter">B</span>图灵</div>
+      <div class="opt"><span class="letter">C</span>巴贝奇</div>
+      <div class="opt"><span class="letter">D</span>阿达·洛芙莱斯</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>阿达·洛芙莱斯</strong>为巴贝奇的分析机编写了第一个算法（计算伯努利数），
+        因此被称为世界<strong>第一位程序员</strong>。<br>
+        编程语言 <strong>Ada</strong> 就是以她的名字命名的。C 选项巴贝奇是"计算机之父"，
+        不是程序员。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、图灵奖 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>图灵奖——计算机界的最高荣誉</h2>
+
+  <p class="kp-text">
+    <strong>图灵奖</strong>（Turing Award）是计算机领域的<strong class="hl">最高奖项</strong>，
+    由 <strong>ACM</strong>（Association for Computing Machinery，美国计算机协会）
+    于 <strong>1966 年</strong>设立，以艾伦·图灵的名字命名。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>奖项名称</th><th>所属领域</th><th>设立机构</th><th>奖项地位</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="mono">图灵奖</span></td><td>计算机科学</td><td>ACM（美国计算机协会）</td><td>计算机界最高奖（"计算机界的诺贝尔奖"）</td></tr>
+        <tr><td><span class="mono">诺贝尔奖</span></td><td>物理/化学/生理学或医学等</td><td>诺贝尔基金会</td><td>自然科学界最高奖</td></tr>
+        <tr><td><span class="mono">奥斯卡金像奖</span></td><td>电影艺术</td><td>美国电影艺术与科学学院</td><td>电影界最高奖</td></tr>
+        <tr><td><span class="mono">普利策奖</span></td><td>新闻、文学、音乐</td><td>哥伦比亚大学（按普利策遗愿）</td><td>新闻界最高奖</td></tr>
+        <tr><td><span class="mono">菲尔兹奖</span></td><td>数学</td><td>国际数学联盟</td><td>数学界最高奖之一</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 考试必记三点</div>
+    <p class="kp-text">
+      ① 图灵奖是 <strong>计算机</strong> 领域的最高奖项（不是数学，不是工程）<br>
+      ② 设立机构是 <strong>ACM</strong>（美国计算机协会）<br>
+      ③ 以 <strong>艾伦·图灵</strong> 命名
+    </p>
+  </div>
+
+  <!-- 配套练习 4 -->
+  <h3 class="kp-title" id="s4-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 2 题</span>
+      <span>图灵奖——最相关的领域</span>
+    </div>
+    <div class="exam-q">
+      以下奖项与计算机领域最相关的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>奥斯卡奖</div>
+      <div class="opt"><span class="letter">B</span>图灵奖</div>
+      <div class="opt"><span class="letter">C</span>诺贝尔奖</div>
+      <div class="opt"><span class="letter">D</span>普利策奖</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        图灵奖是 <strong>计算机领域</strong> 的最高奖项。<br>
+        其他奖项：A 电影、C 自然科学、D 新闻/文学，与计算机都不直接相关。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2023 · 改编</span>
+      <span>图灵奖——设立机构</span>
+    </div>
+    <div class="exam-q">
+      图灵奖是由以下哪个机构设立的？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>IEEE</div>
+      <div class="opt"><span class="letter">B</span>ACM</div>
+      <div class="opt"><span class="letter">C</span>CCF</div>
+      <div class="opt"><span class="letter">D</span>ISO</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>ACM</strong>（Association for Computing Machinery，美国计算机协会）
+        于 1966 年设立图灵奖。<br>
+        · <span class="tag-inline">IEEE</span>：电气电子工程师学会<br>
+        · <span class="tag-inline">CCF</span>：中国计算机学会<br>
+        · <span class="tag-inline">ISO</span>：国际标准化组织
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>图灵奖——常见说法判断</span>
+    </div>
+    <div class="exam-q">
+      关于图灵奖的描述中正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>图灵奖由 IEEE 设立，以表彰在计算机科学领域的突出贡献</div>
+      <div class="opt"><span class="letter">B</span>图灵奖设立于 1956 年，与图灵发表的论文同一年</div>
+      <div class="opt"><span class="letter">C</span>图灵奖被誉为"计算机界的诺贝尔奖"</div>
+      <div class="opt"><span class="letter">D</span>图灵奖以冯·诺依曼的名字命名</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        A 错——设立机构是 ACM，不是 IEEE。<br>
+        B 错——图灵奖设立于 <strong>1966 年</strong>，不是 1956 年。<br>
+        D 错——以<strong>艾伦·图灵</strong>的名字命名，不是冯·诺依曼。<br>
+        C 正确，图灵奖因其在计算机界的至高地位，常被称作"计算机界的诺贝尔奖"。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、编程语言分类 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>编程语言分类</h2>
+
+  <h4 class="sub-title">5.1 按级别分类</h4>
+
+  <ul class="dot-list">
+    <li><strong>机器语言</strong>：二进制代码（0 和 1），计算机直接执行，无需翻译</li>
+    <li><strong>汇编语言</strong>：用助记符（如 <span class="tag-inline">MOV</span>、<span class="tag-inline">ADD</span>）代替二进制，需要<strong>汇编器</strong>转换</li>
+    <li><strong>高级语言</strong>：接近人类自然语言，需要<strong>编译</strong>或<strong>解释</strong>后才能执行</li>
+  </ul>
+
+  <h4 class="sub-title">5.2 按编程范式分类（重要！）</h4>
+
+  <div class="compare-row">
+    <div class="compare-box dim1">
+      <h5>📌 面向过程</h5>
+      <p>以函数/过程为中心，程序是一系列步骤的集合。<br>
+      代表语言：<strong>C</strong>、Pascal、Fortran、COBOL</p>
+    </div>
+    <div class="compare-box dim2">
+      <h5>📌 面向对象</h5>
+      <p>以对象/类为中心，支持封装、继承、多态。<br>
+      代表语言：<strong>C++</strong>、Java、Python、C#、Ruby、JavaScript、Swift</p>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 判断技巧</div>
+    <p class="kp-text">
+      · <strong>C 语言</strong> → 面向过程（考试中经常作为"非面向对象"的选项出现）<br>
+      · <strong>C++</strong> → 面向对象（但不是纯面向对象，它兼容 C 的过程式写法，是多范式语言）<br>
+      · <strong>Python</strong> → 面向对象（同时也支持过程式编程，但考试归类为面向对象）<br>
+      · <strong>Java</strong> → 纯面向对象（所有代码都必须写在类中）<br>
+      • <strong>Fortran、Pascal</strong> → 面向过程
+    </p>
+  </div>
+
+  <h4 class="sub-title">5.3 C++ 的面向对象特性</h4>
+
+  <p class="kp-text">
+    初赛也会直接考察 C++ 的面向对象特性具体指什么。C++ 支持 <strong>类（class）</strong>、
+    <strong>继承（inheritance）</strong>、<strong>多态（polymorphism）</strong>、
+    <strong>封装（encapsulation）</strong>。而 C 语言遗留下来的函数（如 <span class="tag-inline">printf</span>）不属于面向对象特性。
+  </p>
+
+  <!-- 配套练习 5 -->
+  <h3 class="kp-title" id="s5-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 1 题</span>
+      <span>面向对象语言判断</span>
+    </div>
+    <div class="exam-q">
+      以下不属于面向对象程序设计语言的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C++</div>
+      <div class="opt"><span class="letter">B</span>Python</div>
+      <div class="opt"><span class="letter">C</span>Java</div>
+      <div class="opt"><span class="letter">D</span>C</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a15')">👁 显示答案</button>
+    <div class="answer-box" id="a15">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>C 语言</strong>是面向过程的编程语言，不是面向对象。<br>
+        C++、Python、Java 都是面向对象语言（或支持面向对象编程）。<br>
+        这是 2021 年 CSP-J 的第 1 题，难度较低，属于必得分。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 第 1 题</span>
+      <span>C++ 面向对象特性</span>
+    </div>
+    <div class="exam-q">
+      以下哪种功能没有涉及 C++ 语言的面向对象特性支持？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>调用 printf 函数</div>
+      <div class="opt"><span class="letter">B</span>使用 class 定义类</div>
+      <div class="opt"><span class="letter">C</span>使用继承机制派生新类</div>
+      <div class="opt"><span class="letter">D</span>使用虚函数实现多态</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a16')">👁 显示答案</button>
+    <div class="answer-box" id="a16">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        调用 <span class="tag-inline">printf</span> 是 C 语言遗留的标准库函数调用，属于<strong>面向过程</strong>的写法，
+        不涉及面向对象特性。<br>
+        B（类定义）、C（继承）、D（虚函数/多态）都是 C++ 面向对象的核心特性。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>语言分类——判断对错</span>
+    </div>
+    <div class="exam-q">
+      以下关于编程语言的说法中，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Java 是一种面向过程的编程语言</div>
+      <div class="opt"><span class="letter">B</span>C++ 既支持面向过程编程，也支持面向对象编程</div>
+      <div class="opt"><span class="letter">C</span>Python 不能用于面向对象编程</div>
+      <div class="opt"><span class="letter">D</span>汇编语言属于高级程序设计语言</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a17')">👁 显示答案</button>
+    <div class="answer-box" id="a17">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        A 错——<strong>Java</strong> 是面向对象语言。<br>
+        B 对——<strong>C++</strong> 是<strong>多范式</strong>语言，兼容 C 的过程式写法，同时支持面向对象。<br>
+        C 错——<strong>Python</strong> 完全支持面向对象编程。<br>
+        D 错——汇编语言是<strong>低级语言</strong>，不是高级语言。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 六、二进制与数据存储 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">6</span>数据存储与二进制</h2>
+
+  <h4 class="sub-title">6.1 为什么计算机使用二进制？</h4>
+
+  <p class="kp-text">
+    计算机内部所有数据——数字、文字、图片、声音、视频——最终都以<strong class="hl">二进制</strong>（0 和 1）形式存储和处理。
+    这是由电子元件的物理特性决定的：
+  </p>
+
+  <ul class="dot-list">
+    <li><strong>物理上容易实现：</strong>电子元件天然具有两种稳定状态（通/断、高电平/低电平、有磁/无磁），
+    分别对应 1 和 0，设计简单可靠</li>
+    <li><strong>运算规则简单：</strong>二进制算术运算和逻辑运算的规则比十进制简单得多，
+    电路实现成本低、速度快</li>
+    <li><strong>抗干扰能力强：</strong>只有 0 和 1 两种状态，不易受噪声干扰，数据可靠性高</li>
+    <li><strong>逻辑代数基础：</strong>布尔代数的真/假恰好对应二进制的 1/0，便于实现逻辑运算</li>
+  </ul>
+
+  <h4 class="sub-title">6.2 存储单位</h4>
+
+  <ul class="dot-list" style="margin-bottom:12px;">
+    <li><strong>位（bit）</strong>：最小的数据单位，一个 0 或 1</li>
+    <li><strong>字节（Byte）</strong>：1 B = 8 bit，是计算机最基本的存储单位</li>
+    <li><strong>数据量换算</strong>：1 KB = 1024 B，1 MB = 1024 KB，1 GB = 1024 MB，1 TB = 1024 GB</li>
+  </ul>
+
+  <div class="card success">
+    <div class="card-title">🔢 常考换算</div>
+    <p class="kp-text">
+      · 1 Byte = <strong>8 bit</strong><br>
+      · 1 KB = <strong>2<sup>10</sup></strong> = 1024 Byte<br>
+      · 1 MB = <strong>2<sup>20</sup></strong> = 1,048,576 Byte<br>
+      · 1 GB = <strong>2<sup>30</sup></strong> ≈ 10.7 亿 Byte<br>
+      注意是 1024 的倍数，不是 1000 的倍数（硬盘厂商例外，用 1000 进制）。
+    </p>
+  </div>
+
+  <!-- 配套练习 6 -->
+  <h3 class="kp-title" id="s6-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 3 题</span>
+      <span>计算机存储数据的形式</span>
+    </div>
+    <div class="exam-q">
+      目前主流的计算机储存数据最终都是转换成什么形式的数据储存？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>二进制</div>
+      <div class="opt"><span class="letter">B</span>十进制</div>
+      <div class="opt"><span class="letter">C</span>八进制</div>
+      <div class="opt"><span class="letter">D</span>十六进制</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a18')">👁 显示答案</button>
+    <div class="answer-box" id="a18">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        计算机内部所有数据最终都以 <strong>二进制（0 和 1）</strong> 形式存储。
+        其他进制（十进制、八进制、十六进制）只是二进制的人为表示形式。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>存储单位换算</span>
+    </div>
+    <div class="exam-q">
+      一个 1 MB 的文件，理论上最多可以存储多少个字节？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1000 × 1000</div>
+      <div class="opt"><span class="letter">B</span>1024 × 1024</div>
+      <div class="opt"><span class="letter">C</span>1000 × 1024</div>
+      <div class="opt"><span class="letter">D</span>1024 × 1000</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a19')">👁 显示答案</button>
+    <div class="answer-box" id="a19">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        计算机科学中，1 MB = <strong>1024 KB</strong> = <strong>1024 × 1024 字节</strong> = 1,048,576 字节。<br>
+        注意与硬盘厂商的 1000 进制区分。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>二进制——物理原因</span>
+    </div>
+    <div class="exam-q">
+      以下哪项<strong>不是</strong>计算机采用二进制的主要原因？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>电子元件具有两种稳定状态，容易表示 0 和 1</div>
+      <div class="opt"><span class="letter">B</span>二进制运算规则简单，电路实现方便</div>
+      <div class="opt"><span class="letter">C</span>二进制是人类最熟悉的计数方式</div>
+      <div class="opt"><span class="letter">D</span>二进制抗干扰能力强，数据可靠性高</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a20')">👁 显示答案</button>
+    <div class="answer-box" id="a20">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>人类最熟悉的是十进制</strong>，二进制对人的可读性很差（比如 255 的二进制是 11111111，很难一眼看出大小）。
+        计算机采用二进制不是因为它对人类友好，而是因为<strong>电子元件的物理特性</strong>和<strong>电路实现的便利性</strong>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟 —— 跨知识点检测</h2>
+
+  <p class="kp-text">
+    以下题目综合了本节课多个知识点，检验能否灵活运用。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>计算机基础综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下关于计算机基础知识的说法中，<strong>不正确</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>ENIAC 是世界上第一台通用电子数字计算机</div>
+      <div class="opt"><span class="letter">B</span>冯·诺依曼结构包括运算器、控制器、存储器、输入设备和输出设备</div>
+      <div class="opt"><span class="letter">C</span>C 语言是一种面向对象的程序设计语言</div>
+      <div class="opt"><span class="letter">D</span>二进制是计算机内部存储和处理数据的基本形式</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a21')">👁 显示答案</button>
+    <div class="answer-box" id="a21">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        C 错——<strong>C 语言</strong>是<strong>面向过程</strong>的语言，不是面向对象。<br>
+        A、B、D 都是正确的说法。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>人物·奖项·语言综合</span>
+    </div>
+    <div class="exam-q">
+      关于计算机领域的下列说法，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>图灵提出了存储程序的概念，被誉为"计算机科学之父"</div>
+      <div class="opt"><span class="letter">B</span>图灵奖由 IEEE 设立，是计算机领域的最高奖项</div>
+      <div class="opt"><span class="letter">C</span>冯·诺依曼结构的计算机采用"存储程序"和"二进制"两大原理</div>
+      <div class="opt"><span class="letter">D</span>C++ 是一种纯面向对象的程序设计语言，所有代码都必须在类中编写</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a22')">👁 显示答案</button>
+    <div class="answer-box" id="a22">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        A 错——存储程序是<strong>冯·诺依曼</strong>提出的，不是图灵。<br>
+        B 错——图灵奖由 <strong>ACM</strong> 设立，不是 IEEE。<br>
+        D 错——C++ 是<strong>多范式</strong>语言，可以写全局函数（如 <span class="tag-inline">main</span> 不在类中），不是"纯"面向对象。<br>
+        C 正确，这是教材中的标准表述。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>计算机发展史综合</span>
+    </div>
+    <div class="exam-q">
+      将以下事件按时间先后顺序排列，正确的是？<br>
+      ① FORTRAN 语言诞生 &emsp; ② ENIAC 诞生<br>
+      ③ IBM System/360 发布 &emsp; ④ Intel 4004 微处理器诞生
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>② → ① → ③ → ④</div>
+      <div class="opt"><span class="letter">B</span>① → ② → ③ → ④</div>
+      <div class="opt"><span class="letter">C</span>② → ③ → ① → ④</div>
+      <div class="opt"><span class="letter">D</span>① → ③ → ② → ④</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a23')">👁 显示答案</button>
+    <div class="answer-box" id="a23">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        正确顺序（按照四代计算机的时间线）：<br>
+        ② <strong>ENIAC 诞生</strong>（1946 年，第一代）→<br>
+        ① <strong>FORTRAN 语言诞生</strong>（1957 年，第二代）→<br>
+        ③ <strong>IBM System/360 发布</strong>（1964 年，第三代）→<br>
+        ④ <strong>Intel 4004 微处理器诞生</strong>（1971 年，第四代）<br>
+        这道题考的是能不能把重要事件放到对应的年代中。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 2025 新增真题 ===== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 9 题</span>
+      <span>string 类特性</span>
+    </div>
+    <div class="exam-q">
+      下列关于 C++ string 类的说法，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>string 对象的长度在创建后不能改变</div>
+      <div class="opt"><span class="letter">B</span>可以使用 + 运算符直接连接一个 string 对象和一个 char 类型的字符</div>
+      <div class="opt"><span class="letter">C</span>string 的 length() 和 size() 方法返回的值可能不同</div>
+      <div class="opt"><span class="letter">D</span>string 对象必须以 '\0' 结尾，且这个结尾符计入 length()</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a25')">👁 显示答案</button>
+    <div class="answer-box" id="a25">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>string 类重载了 <span class="tag-inline">+</span> 运算符，可以连接 string 和 char。<br>
+        A 错——string 长度可以动态变化；C 错——length() 和 size() 同义；
+        D 错——string 不一定以 '\0' 结尾（由实现决定），且结尾符不计入 length()。<br>
+        <strong>知识点：</strong>C++ string 类操作，对应专题 2·语法基础。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 10 题</span>
+      <span>传引用 vs 传值</span>
+    </div>
+    <div class="exam-q">
+      考虑以下 C++ 函数：
+      <pre style="background:var(--surface-alt);padding:8px 12px;border-radius:4px;font-size:.8rem;margin:4px 0;overflow-x:auto;">
+void solve(int &amp;a, int b) {
+    a = a + b;
+    b = a - b;
+    a = a - b;
+}
+int main() {
+    int x = 5, y = 10;
+    solve(x, y);
+}</pre>
+      在 main 函数调用 solve 后，x 和 y 的值分别是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>5, 10</div>
+      <div class="opt"><span class="letter">B</span>10, 5</div>
+      <div class="opt"><span class="letter">C</span>10, 10</div>
+      <div class="opt"><span class="letter">D</span>5, 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a26')">👁 显示答案</button>
+    <div class="answer-box" id="a26">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>解析：</strong>参数 <span class="tag-inline">a</span> 是传引用，修改影响实参 x；<span class="tag-inline">b</span> 是传值，修改不影响实参 y。<br>
+        函数内执行后 a=10, b=5，但 b 的修改不影响 y，所以 x=10, y=10。<br>
+        <strong>知识点：</strong>函数参数传递——传引用修改实参，传值不影响实参。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课知识速查</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你应该<strong>背下来</strong>的核心考点，考前反复看：
+    </div>
+
+    <div class="row">
+      <span class="pill">1946 年 ENIAC 诞生</span>
+      <span class="pill">四代元件：管→晶→集→大</span>
+      <span class="pill">第一代没有存储程序</span>
+      <span class="pill">冯·诺依曼 = 现代计算机之父</span>
+      <span class="pill">存储程序 + 二进制</span>
+      <span class="pill">五部件：运控存输入出</span>
+    </div>
+    <div class="row">
+      <span class="pill green">图灵 = 计算机科学之父</span>
+      <span class="pill green">图灵奖 = ACM 设立</span>
+      <span class="pill green">巴贝奇 = 计算机之父（19世纪）</span>
+      <span class="pill green">阿达 = 第一位程序员</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">面向对象：C++ Java Python</span>
+      <span class="pill amber">面向过程：C Pascal Fortran</span>
+      <span class="pill amber">二进制 = 电信号的两态性</span>
+      <span class="pill amber">1 Byte = 8 bit</span>
+      <span class="pill red">C 语言不是面向对象</span>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源索引 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-20 计算机诞生和发展</strong></td><td style="padding:4px 0;color:var(--text-sec);">专题讲义，含四代计算机详细讲解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-21 计算机语言</strong></td><td style="padding:4px 0;color:var(--text-sec);">编程语言分类详解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-4 计算机的历史</strong></td><td style="padding:4px 0;color:var(--text-sec);">历年真题专项练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-5 NOI相关历史</strong></td><td style="padding:4px 0;color:var(--text-sec);">NOI/CSP 历史与常识题</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-7 程序设计语言</strong></td><td style="padding:4px 0;color:var(--text-sec);">编程语言分类专项练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 CSP-J初赛考点汇总.md</strong></td><td style="padding:4px 0;color:var(--text-sec);">考点1（计算机基础）、考点17（操作系统）、考点18（NOI历史）</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 模拟卷18套</strong></td><td style="padding:4px 0;color:var(--text-sec);">每套第1~3题均为计算机基础类单选</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title, .objectives');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

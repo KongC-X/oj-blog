@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题七 · 递归与其他算法完善</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+
+  /* ─── 卡片 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 代码块 ─── */
+  pre.code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 12px 0;
+    white-space: pre;
+  }
+  .code-block .hl { color: #fbbf24; }
+  .code-block .cm { color: #94a3b8; }
+  .code-block .fn { color: #60a5fa; }
+  .code-block .str { color: #34d399; }
+  .code-block .num { color: #f472b6; }
+  .code-block .blk {
+    display: inline-block;
+    background: #334155;
+    color: #fbbf24;
+    padding: 0 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    border-bottom: 2px solid #fbbf24;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-q strong { color: var(--primary-dark); }
+
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box table {
+    font-size: .82rem;
+    margin: 10px 0;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题七 · 程序完善真题解析</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+  <div class="nav-section">知识点导航</div>
+  <a class="nav-link" href="#s1">递归基础概念</a>
+  <a class="nav-link" href="#s2">汉诺塔递归（2024）</a>
+  <a class="nav-link" href="#s3">Boyer-Moore（2025）</a>
+  <a class="nav-link" href="#s4">RLE 行程编码</a>
+  <a class="nav-link" href="#s5">二分查找递归</a>
+  <a class="nav-link" href="#s6">快速排序递归</a>
+  <a class="nav-link" href="#s7">归并排序递归</a>
+  <a class="nav-link" href="#s8">复杂度分析</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#summary">📌 速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题七 · 程序完善真题解析</a> / 7.4</div>
+    <h1>递归与其他算法完善</h1>
+    <p class="subtitle">递归终止条件 · 递归调用 · BM投票 · RLE编码 · 经典排序递归实现</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 3 道</span>
+      <span class="meta-tag practice">✏️ 模拟 9 道</span>
+      <span class="meta-tag" style="border-color:#ddd6fe;color:#7c3aed;background:#f5f3ff;">📘 完善程序专项</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 递归三要素：终止条件 + 递归调用 + 返回值</span>
+      <span class="item">✅ 汉诺塔三步递归模型（2024 完善2 原题）</span>
+      <span class="item">✅ Boyer-Moore 候选人消除法（2025 完善2 原题）</span>
+      <span class="item">✅ RLE 行程编码解码过程</span>
+      <span class="item">✅ 二分查找、快排、归并的递归填空</span>
+      <span class="item">✅ 常见递归算法的时间复杂度</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、递归基础概念 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>递归基础概念</h2>
+
+  <p class="kp-text">
+    递归完善程序是 CSP-J 初赛的高频考点。递归函数的<strong>三大核心要素</strong>是：
+    <strong class="hl">终止条件（基线条件）</strong>、<strong class="hl">递归调用</strong>、<strong class="hl">返回值</strong>。
+    解题时先定位终止条件，再分析参数如何向终止条件推进。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 递归完善解题三步法</div>
+    <p class="kp-text">
+      <strong>第一步：</strong>找到终止条件——递归在什么情况下不再调用自身？<br>
+      <strong>第二步：</strong>分析参数变化——每次递归调用参数如何缩小？<br>
+      <strong>第三步：</strong>确认返回值/操作——每次递归返回什么结果或执行什么输出？
+    </p>
+  </div>
+
+  <!-- ▸ 题1：递归函数三要素（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>递归函数三要素</span>
+    </div>
+    <div class="exam-q">
+      关于递归函数的说法，以下选项中 <strong>正确</strong> 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>递归函数必须包含循环结构才能正常工作</div>
+      <div class="opt"><span class="letter">B</span>递归函数必须有终止条件，否则会无限递归导致栈溢出</div>
+      <div class="opt"><span class="letter">C</span>递归函数的执行效率总是高于等价的循环实现</div>
+      <div class="opt"><span class="letter">D</span>递归函数中不能包含 return 语句</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        递归函数的三个核心要素：① 终止条件（基线条件）——防止无限递归；
+        ② 递归调用——向终止条件推进；
+        ③ 返回值（或输出）——传递计算结果。<br>
+        A 错误：递归通过自身调用来实现重复，不一定需要循环；C 错误：递归通常比循环效率低（函数调用开销）；
+        D 错误：递归函数可以有返回值。
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ 题2：递归执行追踪（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>递归执行追踪</span>
+    </div>
+    <div class="exam-q">
+      有如下递归函数：
+    </div>
+    <pre class="code-block"><span class="hl">int</span> f(<span class="hl">int</span> n) {
+    <span class="hl">if</span> (n &lt;= 1) <span class="hl">return</span> 1;
+    <span class="hl">return</span> f(n - 1) + f(n - 2);
+}</pre>
+    <div class="exam-q">
+      执行 <code>f(4)</code> 的返回值是多少？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>3</div>
+      <div class="opt"><span class="letter">B</span>5</div>
+      <div class="opt"><span class="letter">C</span>8</div>
+      <div class="opt"><span class="letter">D</span>1</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        追踪递归调用：f(1)=1, f(2)=f(1)+f(0)... 实际上 f(0) 也满足 &lt;=1 故 f(0)=1,
+        f(2)=2, f(3)=f(2)+f(1)=2+1=3, f(4)=f(3)+f(2)=3+2=<strong>5</strong>。<br>
+        这实际上是斐波那契数列的递归实现（f(1)=1, f(2)=2, f(3)=3, f(4)=5）。
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ 题3：阶乘递归填空（每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>递归填空题——阶乘</span>
+    </div>
+    <div class="exam-q">
+      以下递归函数计算 n 的阶乘 n!，补全空缺处的代码：
+    </div>
+    <pre class="code-block"><span class="hl">int</span> <span class="fn">fact</span>(<span class="hl">int</span> n) {
+    <span class="hl">if</span> (n &lt;= 1) <span class="hl">return</span> <span class="blk">①</span>;
+    <span class="hl">return</span> n * <span class="blk">②</span>;
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 终止条件返回值 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>n</div>
+      <div class="opt"><span class="letter">D</span>-1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 递归调用式 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>fact(n)</div>
+      <div class="opt"><span class="letter">B</span>fact(n-1)</div>
+      <div class="opt"><span class="letter">C</span>fact(n-2)</div>
+      <div class="opt"><span class="letter">D</span>n</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：① B（1）&emsp;② B（fact(n-1)）</div>
+      <div class="explain">
+        ① <strong>1</strong>：0! = 1! = 1，终止条件返回 1。<br>
+        ② <strong>fact(n-1)</strong>：n! = n × (n-1)!，递归调用自身参数减小。<br>
+        例如 fact(3) = 3 × fact(2) = 3 × 2 × fact(1) = 3 × 2 × 1 = 6。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、汉诺塔递归（2024 完善2 原题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>汉诺塔递归（2024 完善2 原题）</h2>
+
+  <p class="kp-text">
+    汉诺塔（Tower of Hanoi）是递归的经典入门问题。将 n 个盘子从 A 柱移动到 C 柱，
+    每次只能移动一个盘子，且大盘不能压在小盘上。递归解决思路为<strong class="hl">三步模型</strong>。
+  </p>
+
+  <div class="card accent">
+    <div class="card-title">💡 汉诺塔三步模型</div>
+    <p class="kp-text">
+      <strong>步骤 1：</strong>将上面 n-1 个盘子从 A → B（借助 C）<br>
+      <strong>步骤 2：</strong>将最底下的大盘从 A → C（直接移动）<br>
+      <strong>步骤 3：</strong>将 B 上的 n-1 个盘子从 B → C（借助 A）<br>
+      <br>
+      总移动次数：<strong>2<sup>n</sup> - 1</strong>
+    </p>
+  </div>
+
+  <!-- ▸ 题4：2024 完善2 汉诺塔（5空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 完善2</span>
+      <span>汉诺塔递归填空</span>
+    </div>
+    <div class="exam-q">
+      <strong>题目背景：</strong>汉诺塔问题要求将 n 个盘子从 A 柱移动到 C 柱，
+      每次移动一个盘子。以下程序用递归实现并统计移动步数。补全 ①~⑤ 处的空缺。
+    </div>
+    <pre class="code-block"><span class="hl">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="hl">using namespace</span> std;
+<span class="hl">int</span> step = 0;
+
+<span class="hl">void</span> <span class="fn">hanoi</span>(<span class="hl">int</span> n, <span class="hl">char</span> A, <span class="hl">char</span> B, <span class="hl">char</span> C) {
+    <span class="hl">if</span> (<span class="blk">①</span>) {
+        cout &lt;&lt; A &lt;&lt; <span class="str">"-&gt;"</span> &lt;&lt; C &lt;&lt; endl;
+        <span class="blk">②</span>;
+    } <span class="hl">else</span> {
+        <span class="fn">hanoi</span>(n - 1, A, C, B);
+        cout &lt;&lt; A &lt;&lt; <span class="str">"-&gt;"</span> &lt;&lt; C &lt;&lt; endl;
+        <span class="blk">③</span>;
+        <span class="blk">④</span>;
+    }
+}
+
+<span class="hl">int</span> <span class="fn">main</span>() {
+    <span class="hl">int</span> n;
+    cin &gt;&gt; n;
+    <span class="blk">⑤</span>;
+    cout &lt;&lt; step &lt;&lt; endl;
+    <span class="hl">return</span> 0;
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 递归终止条件 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>n == 0</div>
+      <div class="opt"><span class="letter">B</span>n == 1</div>
+      <div class="opt"><span class="letter">C</span>n &lt; 0</div>
+      <div class="opt"><span class="letter">D</span>true</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 基线的步数统计 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>step++</div>
+      <div class="opt"><span class="letter">B</span>step--</div>
+      <div class="opt"><span class="letter">C</span>step += 1</div>
+      <div class="opt"><span class="letter">D</span>step = 1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ 递归中的步数递增 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>step++</div>
+      <div class="opt"><span class="letter">B</span>step--</div>
+      <div class="opt"><span class="letter">C</span>step += 1</div>
+      <div class="opt"><span class="letter">D</span>step = 1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ 递归第三步 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>hanoi(n-1, B, A, C)</div>
+      <div class="opt"><span class="letter">B</span>hanoi(n-1, A, B, C)</div>
+      <div class="opt"><span class="letter">C</span>hanoi(n-1, C, B, A)</div>
+      <div class="opt"><span class="letter">D</span>hanoi(n, A, B, C)</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ 主函数调用 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>hanoi(n, 'A', 'B', 'C')</div>
+      <div class="opt"><span class="letter">B</span>hanoi(n, 'B', 'C', 'A')</div>
+      <div class="opt"><span class="letter">C</span>hanoi(1, 'A', 'B', 'C')</div>
+      <div class="opt"><span class="letter">D</span>hanoi(n-1, 'A', 'B', 'C')</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：① B &emsp; ② A &emsp; ③ A &emsp; ④ A &emsp; ⑤ A</div>
+      <div class="explain">
+        汉诺塔递归的核心三步模型（以 n 个盘子从 A→C）：<br>
+        <strong>步骤 1：</strong><span class="tag-inline">hanoi(n-1, A, C, B)</span> — 将上面 n-1 个盘子从 A 移到 B（借助 C）<br>
+        <strong>步骤 2：</strong><span class="tag-inline">cout &lt;&lt; A &lt;&lt; "-&gt;" &lt;&lt; C</span> — 将最底下的大盘直接从 A 移到 C<br>
+        <strong>步骤 3：</strong><span class="tag-inline">hanoi(n-1, B, A, C)</span> — 将 B 上的 n-1 个盘子移到 C（借助 A）<br>
+        <br>
+        ① <strong>B（n == 1）</strong>：基线条件——只剩一个盘子时直接移动。<br>
+        ② <strong>A（step++）</strong>：基线中移动后步数加 1。<br>
+        ③ <strong>A（step++）</strong>：递归中每次移动后步数加 1。<br>
+        ④ <strong>A（hanoi(n-1, B, A, C)）</strong>：将 B 上的 n-1 个盘子从 B → C（借助 A）。<br>
+        ⑤ <strong>A（hanoi(n, 'A', 'B', 'C')）</strong>：主函数调用，从 A 移到 C，B 做辅助。<br>
+        <br>
+        <strong>注意：</strong>② 和 ③ 虽然都是 step++，但分别出现在基线和递归两个分支。step+=1 虽语义相同，但 CSP-J 习惯用 step++。
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ 题5：汉诺塔调用顺序（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>汉诺塔递归调用顺序</span>
+    </div>
+    <div class="exam-q">
+      在汉诺塔的递归实现中，要将 n 个盘子从 A 柱移到 C 柱（B 柱辅助）。
+      以下选项中，<strong>正确</strong>的递归调用顺序是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>hanoi(n-1, A, B, C) → 移动 → hanoi(n-1, C, B, A)</div>
+      <div class="opt"><span class="letter">B</span>hanoi(n-1, A, C, B) → 移动 → hanoi(n-1, B, A, C)</div>
+      <div class="opt"><span class="letter">C</span>hanoi(n-1, B, A, C) → 移动 → hanoi(n-1, A, C, B)</div>
+      <div class="opt"><span class="letter">D</span>hanoi(n-1, A, C, B) → 移动 → hanoi(n-1, A, B, C)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        目标是把 n 个盘子从 A→C，B 辅助。<br>
+        <strong>第一步：</strong>将上面 n-1 个从 <strong>A→B</strong>（借助 C）→ <span class="tag-inline">hanoi(n-1, A, C, B)</span><br>
+        <strong>第二步：</strong>将最大的盘子从 A→C（直接移动）<br>
+        <strong>第三步：</strong>将 B 上的 n-1 个从 <strong>B→C</strong>（借助 A）→ <span class="tag-inline">hanoi(n-1, B, A, C)</span><br>
+        注意函数参数含义：<span class="tag-inline">hanoi(n, 源, 辅助, 目标)</span>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、Boyer-Moore 多数派投票（2025 完善2 原题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>Boyer-Moore 多数派投票（2025 完善2 原题）</h2>
+
+  <p class="kp-text">
+    Boyer-Moore 多数派投票算法用于在一组数据中找出出现次数超过一半的"多数元素"（如果存在）。
+    核心思想是<strong class="hl">候选人消除法</strong>：两个不同元素互相抵消，剩下的候选者再验证。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">📌 BM 算法两阶段</div>
+    <p class="kp-text">
+      <strong>阶段一（筛选）：</strong>遍历数据，维护 candidate 和 count。count 为 0 时换候选人；
+      意见一致（投票支持）则 count++，不一致则 count--。<br>
+      <strong>阶段二（验证）：</strong>再次遍历，确认 candidate 的出现次数是否超过一半。
+    </p>
+  </div>
+
+  <!-- ▸ 题6：2025 完善2 BM（5空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 完善2</span>
+      <span>Boyer-Moore 多数派投票</span>
+    </div>
+    <div class="exam-q">
+      <strong>题目背景：</strong>在一群人中判断是否存在"精明人"（被超过一半的人认为是精明人）。
+      函数 <code>query(i, j)</code> 返回 true 表示第 i 个人认为第 j 个人是精明人。
+      使用 Boyer-Moore 候选人消除法完成以下程序。补全 ①~⑤ 处的空缺。
+    </div>
+    <pre class="code-block"><span class="hl">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="hl">using namespace</span> std;
+
+<span class="hl">bool</span> <span class="fn">query</span>(<span class="hl">int</span> a, <span class="hl">int</span> b) {
+    <span class="cm">// 返回 a 是否认为 b 是精明人（具体实现略）</span>
+}
+
+<span class="hl">int</span> <span class="fn">main</span>() {
+    <span class="hl">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hl">int</span> count = <span class="blk">①</span>;
+    <span class="hl">int</span> candidate = 1;
+    <span class="hl">for</span> (<span class="hl">int</span> i = 2; i &lt;= n; i++) {
+        <span class="hl">if</span> (<span class="blk">②</span>) {
+            candidate = i;
+            count = 1;
+        } <span class="hl">else</span> {
+            <span class="hl">if</span> (<span class="blk">③</span>) {
+                <span class="blk">④</span>;
+            } <span class="hl">else</span> {
+                count++;
+            }
+        }
+    }
+    <span class="hl">int</span> total = 0;
+    <span class="hl">for</span> (<span class="hl">int</span> i = 1; i &lt;= n; i++) {
+        <span class="hl">if</span> (<span class="fn">query</span>(candidate, i)) total++;
+    }
+    <span class="hl">if</span> (total &gt; n / 2) <span class="blk">⑤</span>;
+    <span class="hl">else</span> cout &lt;&lt; -1 &lt;&lt; endl;
+    <span class="hl">return</span> 0;
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① count 的初值 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>N</div>
+      <div class="opt"><span class="letter">D</span>-1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 判断 count 为 0 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>count &lt; 0</div>
+      <div class="opt"><span class="letter">B</span>count == 1</div>
+      <div class="opt"><span class="letter">C</span>count == 0</div>
+      <div class="opt"><span class="letter">D</span>query(candidate, i) == false</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ candidate 不支持 i 的条件 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>query(candidate, i) == false</div>
+      <div class="opt"><span class="letter">B</span>query(i, candidate) == true</div>
+      <div class="opt"><span class="letter">C</span>query(candidate, i) == false &amp;&amp; query(i, candidate) == false</div>
+      <div class="opt"><span class="letter">D</span>query(candidate, i) == false || query(i, candidate) == false</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ 计数减少操作 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>count--</div>
+      <div class="opt"><span class="letter">B</span>break</div>
+      <div class="opt"><span class="letter">C</span>count++</div>
+      <div class="opt"><span class="letter">D</span>candidate = i</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ 输出结果 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>cout &lt;&lt; N - 1</div>
+      <div class="opt"><span class="letter">B</span>cout &lt;&lt; count</div>
+      <div class="opt"><span class="letter">C</span>cout &lt;&lt; candidate</div>
+      <div class="opt"><span class="letter">D</span>cout &lt;&lt; 0</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：① B &emsp; ② C &emsp; ③ A &emsp; ④ A &emsp; ⑤ C</div>
+      <div class="explain">
+        <strong>解析：</strong>Boyer-Moore 多数派投票算法的核心思想是"候选人消除"：<br>
+        <br>
+        ① <strong>B（1）</strong>：先将第一个人设为候选人，计数器初始化为 1。<br>
+        ② <strong>C（count == 0）</strong>：当计数器归零时，说明当前候选人被"抵消"了，
+        将当前遍历到的人设为新候选人。<br>
+        ③ <strong>A（query(candidate, i) == false）</strong>：如果候选人不认为 i 是精明人，
+        说明两人意见不一致，互相抵消。<br>
+        ④ <strong>A（count--）</strong>：抵消时计数器减 1。<br>
+        ⑤ <strong>C（cout &lt;&lt; candidate）</strong>：验证阶段后若票数过半则输出候选人。<br>
+        <br>
+        <strong>核心逻辑：</strong>count=0 → 换候选人；query=true → count++（意见一致）；
+        query=false → count--（意见不一致）。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、RLE 行程编码（2025 阅读4 改编） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>RLE 行程编码（2025 阅读4 改编）</h2>
+
+  <p class="kp-text">
+    RLE（Run-Length Encoding，行程编码）是一种简单的数据压缩方法，
+    将连续相同字符用<strong class="hl">"字符 + 重复次数"</strong>表示。
+    例如 <code>"a3b2c"</code> 解码后为 <code>"aaabbc"</code>（c 后无数字，表示出现 1 次）。
+  </p>
+
+  <div class="info-box">
+    <strong>RLE 解码流程：</strong>读字符 → 解析后续数字（可能多位）→ 循环追加 count 次字符 →
+    读完整个字符串。
+  </div>
+
+  <!-- ▸ 题7：2025 阅读4 改编 RLE（5空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读4 改编</span>
+      <span>RLE 行程编码解码</span>
+    </div>
+    <div class="exam-q">
+      以下函数实现 RLE 解码，将 <code>"a3b2c"</code> 这类编码字符串还原为原始字符串。
+      补全 ①~⑤ 处的空缺。
+    </div>
+    <pre class="code-block">string <span class="fn">decode</span>(string z) {
+    string result = <span class="str">""</span>;
+    <span class="hl">int</span> i = 0;
+    <span class="hl">while</span> (i &lt; z.<span class="fn">length</span>()) {
+        <span class="hl">char</span> ch = z[i];
+        i++;
+        <span class="hl">int</span> count = 0;
+        <span class="hl">while</span> (<span class="blk">①</span>) {
+            count = count * 10 + (<span class="blk">②</span>);
+            i++;
+        }
+        <span class="hl">if</span> (count == 0) count = 1;
+        <span class="hl">for</span> (<span class="hl">int</span> j = 0; j &lt; <span class="blk">③</span>; j++) {
+            result += <span class="blk">④</span>;
+        }
+        <span class="blk">⑤</span>;
+    }
+    <span class="hl">return</span> result;
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 检查下一个字符是否数字 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>i+1 &lt; z.length() &amp;&amp; isdigit(z[i+1])</div>
+      <div class="opt"><span class="letter">B</span>isdigit(z[i])</div>
+      <div class="opt"><span class="letter">C</span>i &lt; z.length() &amp;&amp; isdigit(z[i+1])</div>
+      <div class="opt"><span class="letter">D</span>i+1 &lt; z.length()</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 数字解析 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>count = count * 10 + (z[i] - '0')</div>
+      <div class="opt"><span class="letter">B</span>count = z[i] - '0'</div>
+      <div class="opt"><span class="letter">C</span>count = count + 1</div>
+      <div class="opt"><span class="letter">D</span>count = count + (z[i] - '0')</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ 循环添加 count 次 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>count</div>
+      <div class="opt"><span class="letter">B</span>count - 1</div>
+      <div class="opt"><span class="letter">C</span>10</div>
+      <div class="opt"><span class="letter">D</span>z[i] - '0'</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ 添加当前字符 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>ch</div>
+      <div class="opt"><span class="letter">B</span>z[i+1]</div>
+      <div class="opt"><span class="letter">C</span>z.back()</div>
+      <div class="opt"><span class="letter">D</span>(char)z[i] + 1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ 外层循环索引自增 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>i++</div>
+      <div class="opt"><span class="letter">B</span>i--</div>
+      <div class="opt"><span class="letter">C</span>i = i + 2</div>
+      <div class="opt"><span class="letter">D</span>不执行（i 已在正确位置）</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：① B &emsp; ② A（count = count * 10 + (z[i] - '0')）&emsp; ③ A &emsp; ④ A &emsp; ⑤ D</div>
+      <div class="explain">
+        <strong>解析：</strong>RLE 解码的流程是"读字符 → 读次数 → 循环追加"。<br>
+        <br>
+        ① <strong>B（isdigit(z[i])）</strong>：i 在 ch=z[i] 后已自增，指向下一个位置（即数字部分起点），
+        所以只需判断当前 z[i] 是否为数字。由于 C++ 中 z[length()] = '\0'，isdigit('\0') 返回 false，安全。<br>
+        ② <strong>A</strong>：多位数字的累加构建，例如 "12" → 先读 '1' 得 1，再读 '2' 得 1×10+2=12。<br>
+        ③ <strong>A（count）</strong>：循环 count 次，将字符重复添加。<br>
+        ④ <strong>A（ch）</strong>：每次追加之前读到的基准字符。<br>
+        ⑤ <strong>D（不执行）</strong>：内层 while 循环已使 i 指向下一个字符的起始位置，无需额外自增。<br>
+        <br>
+        以 <code>"a3b2c"</code> 为例：读 'a' → 解析数字 3 → 追加 "aaa"；
+        读 'b' → 解析数字 2 → 追加 "bb"；读 'c' → 无数字 count=0 → count 置 1 → 追加 "c"。结果为 "aaabbc"。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、二分查找递归 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>二分查找递归实现</h2>
+
+  <p class="kp-text">
+    二分查找（Binary Search）在有序数组中查找目标值，每次将搜索范围缩小一半。
+    递归实现时，终止条件为<strong class="hl">找到目标</strong>或<strong class="hl">区间为空</strong>。
+  </p>
+
+  <!-- ▸ 题8：二分查找递归填空（3空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>二分查找递归填空</span>
+    </div>
+    <div class="exam-q">
+      以下为二分查找的递归实现，在有序数组 <code>arr[l..r]</code> 中查找元素 x，
+      返回下标（未找到返回 -1）。补全 ①~③ 处的空缺。
+    </div>
+    <pre class="code-block"><span class="hl">int</span> <span class="fn">binarySearch</span>(<span class="hl">int</span> arr[], <span class="hl">int</span> l, <span class="hl">int</span> r, <span class="hl">int</span> x) {
+    <span class="hl">if</span> (r &gt;= l) {
+        <span class="hl">int</span> mid = l + (r - l) / 2;
+        <span class="hl">if</span> (arr[mid] == x) <span class="hl">return</span> mid;
+        <span class="hl">if</span> (arr[mid] &gt; x)
+            <span class="hl">return</span> <span class="fn">binarySearch</span>(arr, l, <span class="blk">①</span>, x);
+        <span class="hl">return</span> <span class="fn">binarySearch</span>(arr, <span class="blk">②</span>, r, x);
+    }
+    <span class="hl">return</span> <span class="blk">③</span>;
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 左半区间的右边界 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>r</div>
+      <div class="opt"><span class="letter">B</span>mid</div>
+      <div class="opt"><span class="letter">C</span>mid - 1</div>
+      <div class="opt"><span class="letter">D</span>l</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 右半区间的左边界 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>mid - 1</div>
+      <div class="opt"><span class="letter">B</span>mid</div>
+      <div class="opt"><span class="letter">C</span>l</div>
+      <div class="opt"><span class="letter">D</span>mid + 1</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ 未找到时的返回值 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>-1</div>
+      <div class="opt"><span class="letter">C</span>x</div>
+      <div class="opt"><span class="letter">D</span>l</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：① C &emsp; ② D &emsp; ③ B</div>
+      <div class="explain">
+        <strong>解析：</strong>递归版二分查找的终止条件与缩小区间策略：<br>
+        <br>
+        ① <strong>C（mid - 1）</strong>：当中间值 > x 时，x 在左半区间 [l, mid-1]。<br>
+        ② <strong>D（mid + 1）</strong>：否则 x 在右半区间 [mid+1, r]。<br>
+        ③ <strong>B（-1）</strong>：当 l > r 时区间为空，返回 -1 表示未找到。<br>
+        <br>
+        递归终止条件有两个：<strong>找到 x（返回下标）</strong>或 <strong>区间为空（返回 -1）</strong>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 六、快速排序递归 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">6</span>快速排序递归实现</h2>
+
+  <p class="kp-text">
+    快速排序（Quick Sort）采用"分治"策略：通过 partition 将数组分为左右两部分，
+    再递归排序左右部分。partition 返回基准元素的<strong class="hl">最终位置 pi</strong>。
+  </p>
+
+  <!-- ▸ 题9：快速排序递归填空（2空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>快速排序递归填空</span>
+    </div>
+    <div class="exam-q">
+      <code>partition(arr, low, high)</code> 函数将数组划分为左右两部分，
+      返回基准元素的最终位置 pi，使得左半元素 ≤ 基准 ≤ 右半元素。
+      补全以下快速排序递归代码中的 ①~② 处。
+    </div>
+    <pre class="code-block"><span class="hl">void</span> <span class="fn">quickSort</span>(<span class="hl">int</span> arr[], <span class="hl">int</span> low, <span class="hl">int</span> high) {
+    <span class="hl">if</span> (low &lt; high) {
+        <span class="hl">int</span> pi = <span class="fn">partition</span>(arr, low, high);
+        <span class="fn">quickSort</span>(arr, low, <span class="blk">①</span>);
+        <span class="fn">quickSort</span>(arr, <span class="blk">②</span>, high);
+    }
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 左半区间递归 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>pi</div>
+      <div class="opt"><span class="letter">B</span>pi - 1</div>
+      <div class="opt"><span class="letter">C</span>pi + 1</div>
+      <div class="opt"><span class="letter">D</span>high</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② 右半区间递归 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>pi</div>
+      <div class="opt"><span class="letter">B</span>pi - 1</div>
+      <div class="opt"><span class="letter">C</span>pi + 1</div>
+      <div class="opt"><span class="letter">D</span>low</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：① B &emsp; ② C</div>
+      <div class="explain">
+        <strong>解析：</strong>快速排序的递归结构：<strong>划分 → 递归左半 → 递归右半</strong>。<br>
+        <br>
+        partition 返回的 pi 是基准元素的最终位置：<br>
+        ① <strong>B（pi - 1）</strong>：左半区间为 [low, pi-1]，元素都 ≤ 基准。<br>
+        ② <strong>C（pi + 1）</strong>：右半区间为 [pi+1, high]，元素都 ≥ 基准。<br>
+        <br>
+        注意基准元素 pi 本身已经排好，不需要参与后续递归。递归终止条件是 low >= high。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 七、归并排序递归 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s7"><span class="num">7</span>归并排序递归实现</h2>
+
+  <p class="kp-text">
+    归并排序（Merge Sort）也采用"分治"策略：先将数组递归地分成两半，
+    再将两个有序子数组<strong class="hl">合并</strong>成一个有序数组。
+  </p>
+
+  <!-- ▸ 题10：归并排序递归填空（2空，每空独立选项） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>归并排序递归填空</span>
+    </div>
+    <div class="exam-q">
+      <code>merge(arr, l, m, r)</code> 函数将两个有序子数组 <code>arr[l..m]</code>
+      和 <code>arr[m+1..r]</code> 合并为整体有序。补全以下递归代码中的 ①~② 处。
+    </div>
+    <pre class="code-block"><span class="hl">void</span> <span class="fn">mergeSort</span>(<span class="hl">int</span> arr[], <span class="hl">int</span> l, <span class="hl">int</span> r) {
+    <span class="hl">if</span> (l &lt; r) {
+        <span class="hl">int</span> m = l + (r - l) / 2;
+        <span class="fn">mergeSort</span>(arr, l, m);
+        <span class="fn">mergeSort</span>(arr, <span class="blk">①</span>, r);
+        <span class="fn">merge</span>(arr, l, m, <span class="blk">②</span>);
+    }
+}</pre>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① 右半区间的起点 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>m</div>
+      <div class="opt"><span class="letter">B</span>m + 1</div>
+      <div class="opt"><span class="letter">C</span>l</div>
+      <div class="opt"><span class="letter">D</span>r</div>
+    </div>
+
+    <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② merge 的右边界 ——</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>m</div>
+      <div class="opt"><span class="letter">B</span>m + 1</div>
+      <div class="opt"><span class="letter">C</span>l</div>
+      <div class="opt"><span class="letter">D</span>r</div>
+    </div>
+
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：① B &emsp; ② D</div>
+      <div class="explain">
+        <strong>解析：</strong>归并排序的递归结构：<strong>递归左半 → 递归右半 → 合并</strong>。<br>
+        <br>
+        ① <strong>B（m + 1）</strong>：右半区间为 [m+1, r]（m 是中间分界点）。<br>
+        ② <strong>D（r）</strong>：merge(arr, l, m, r) 将左半 [l, m] 和右半 [m+1, r] 合并。<br>
+        <br>
+        与快排不同，归并排序的"分"在递归中完成，"治"在合并中完成。
+        递归终止条件是 l >= r（区间内最多一个元素，视为有序）。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 八、复杂度分析 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s8"><span class="num">8</span>递归时间复杂度分析</h2>
+
+  <p class="kp-text">
+    递归算法的时间复杂度通常通过<strong class="hl">递推关系</strong>（Master Theorem 或递推展开）来分析。
+    以下是常见递归算法的时间复杂度速记。
+  </p>
+
+  <!-- ▸ 题11：时间复杂度（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>递归算法时间复杂度</span>
+    </div>
+    <div class="exam-q">
+      关于以下递归算法的时间复杂度，说法 <strong>正确</strong> 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>汉诺塔递归的时间复杂度为 O(n)</div>
+      <div class="opt"><span class="letter">B</span>归并排序递归的时间复杂度为 O(n log n)</div>
+      <div class="opt"><span class="letter">C</span>二分查找递归的时间复杂度为 O(n)</div>
+      <div class="opt"><span class="letter">D</span>快速排序递归在最好情况下的时间复杂度为 O(n)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>常见递归算法的时间复杂度：<br>
+        <br>
+        <strong>A 错误：</strong>汉诺塔 T(n)=2T(n-1)+O(1) → <strong>O(2<sup>n</sup>)</strong><br>
+        <strong>B 正确：</strong>归并排序 T(n)=2T(n/2)+O(n) → <strong>O(n log n)</strong><br>
+        <strong>C 错误：</strong>二分查找 T(n)=T(n/2)+O(1) → <strong>O(log n)</strong><br>
+        <strong>D 错误：</strong>快速排序最好情况 T(n)=2T(n/2)+O(n) → <strong>O(n log n)</strong><br>
+        <br>
+        <strong>记忆方法：</strong><br>
+        • 每次减半且 O(1) 合并 → O(log n)（二分查找）<br>
+        • 每次减半且 O(n) 合并 → O(n log n)（归并、快排平均）<br>
+        • 每次减 1 且 O(1) 合并 → O(n)（线性递归）<br>
+        • 每次分裂成两个子问题 → O(2<sup>n</sup>)（汉诺塔、斐波那契朴素递归）
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ 题12：综合模拟（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>递归与完善题综合理解</span>
+    </div>
+    <div class="exam-q">
+      关于程序完善题中的递归和 BM 算法，以下说法 <strong>错误</strong> 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>汉诺塔递归中，hanoi(n-1, A, C, B) 将 n-1 个盘子从 A 移到 B</div>
+      <div class="opt"><span class="letter">B</span>Boyer-Moore 算法中，count 减到 0 时需更换候选人</div>
+      <div class="opt"><span class="letter">C</span>RLE 解码遇到数字字符时，应直接跳过不做处理</div>
+      <div class="opt"><span class="letter">D</span>归并排序的 merge 操作将两个有序子数组合并为一个</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        C 错误——RLE 解码遇到数字字符时，需要<strong>解析数字</strong>确定重复次数，不是跳过。<br>
+        A 正确：hanoi(n-1, A, C, B) 借助 C 将 n-1 个盘子从 A 移到 B。<br>
+        B 正确：count == 0 时更换候选人，这是 BM 算法的核心。<br>
+        D 正确：归并排序的 merge 函数将两个有序子数组合并。
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ 题13：RLE 编码方向理解（选择题） -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>RLE 编码与解码方向</span>
+    </div>
+    <div class="exam-q">
+      关于 RLE 行程编码，以下说法 <strong>正确</strong> 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>RLE 编码一定比原始数据更短</div>
+      <div class="opt"><span class="letter">B</span>RLE 解码时遇到字符后没有数字，表示该字符出现 1 次</div>
+      <div class="opt"><span class="letter">C</span>RLE 只能压缩英文字母，不能压缩数字</div>
+      <div class="opt"><span class="letter">D</span>RLE 编码在解压时不需要知道原始数据长度</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        A 错误：如果每个字符都不重复（如 "abcde"），RLE 编码反而更长（"a1b1c1d1e1"）。<br>
+        <strong>B 正确：</strong>RLE 解码约定无数字时 count 视为 1，即字符出现 1 次。<br>
+        C 错误：RLE 可以压缩任意字符，包括数字（但数字作为重复次数需与字符区分）。<br>
+        D 错误：解码时需要知道编码字符串的长度来控制循环结束。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 全章小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 递归与程序完善速查表</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你应该<strong>背下来</strong>的核心考点，考前反复看：
+    </div>
+
+    <div class="row">
+      <span class="pill">递归三要素：终止 + 调用 + 返回</span>
+      <span class="pill">汉诺塔：A→C 三步走</span>
+      <span class="pill">BM：count=0 换候选人</span>
+      <span class="pill">RLE：读字符 → 解析数字 → 循环追加</span>
+    </div>
+    <div class="row">
+      <span class="pill green">二分查找：mid-1 / mid+1 / -1</span>
+      <span class="pill green">快排：pi-1 / pi+1</span>
+      <span class="pill green">归并：m+1 / r</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">汉诺塔复杂度：O(2<sup>n</sup>)</span>
+      <span class="pill amber">归并/快排：O(n log n)</span>
+      <span class="pill amber">二分查找：O(log n)</span>
+      <span class="pill amber">BM / RLE：O(n)</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>算法</th>
+          <th>递归结构</th>
+          <th>终止条件</th>
+          <th>常见填空点</th>
+          <th>时间复杂度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>汉诺塔</strong></td>
+          <td>hanoi(n-1,A,C,B) → move → hanoi(n-1,B,A,C)</td>
+          <td>n == 1</td>
+          <td>三步递归调用 + 步数统计</td>
+          <td>O(2<sup>n</sup>)</td>
+        </tr>
+        <tr>
+          <td><strong>Boyer-Moore</strong></td>
+          <td>count==0 换候选人；query=true→count++；false→count--</td>
+          <td>遍历完所有人</td>
+          <td>count初值、换候选人条件、query判断</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td><strong>RLE 解码</strong></td>
+          <td>读ch → 解析数字 → 循环添加count次ch</td>
+          <td>字符串遍历完毕</td>
+          <td>读字符、数字判断、字符转数字、循环次数</td>
+          <td>O(n)</td>
+        </tr>
+        <tr>
+          <td><strong>二分查找</strong></td>
+          <td>binarySearch(l,mid-1) 或 binarySearch(mid+1,r)</td>
+          <td>l &gt; r 或 arr[mid]==x</td>
+          <td>mid-1、mid+1、-1</td>
+          <td>O(log n)</td>
+        </tr>
+        <tr>
+          <td><strong>快速排序</strong></td>
+          <td>partition → quickSort(l,pi-1) → quickSort(pi+1,r)</td>
+          <td>low &gt;= high</td>
+          <td>pi-1、pi+1</td>
+          <td>O(n log n) 平均</td>
+        </tr>
+        <tr>
+          <td><strong>归并排序</strong></td>
+          <td>mergeSort(l,m) → mergeSort(m+1,r) → merge(l,m,r)</td>
+          <td>l &gt;= r</td>
+          <td>m+1、r</td>
+          <td>O(n log n)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:12px;padding:10px 14px;background:var(--accent-light);border-radius:6px;font-size:.82rem;color:var(--text-sec);border:1px solid #fde68a;">
+      <strong>💡 解题口诀：</strong>
+      递归先找终止线，参数变化看三遍；汉诺三步要记牢，BM计数别混淆；
+      RLE先读再解析，二分区间缩到底；快排查找分两边，归并递归再合并。
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title, .objectives');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

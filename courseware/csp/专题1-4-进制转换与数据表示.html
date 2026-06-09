@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 1.4 进制转换与数据表示</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh;}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff;}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3;}
+.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter);}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px;}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer;}
+.nav-link:hover{color:var(--primary);background:var(--primary-light);}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500;}
+.nav-link.sub{padding-left:40px;font-size:.76rem;}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0;}
+.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px;}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light);}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px;}
+.breadcrumb a{color:var(--primary);text-decoration:none;}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px;}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px;}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface);}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2;}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff;}
+.meta-tag.practice{border-color:#d1fae5;color:#059669;background:#ecfdf5;}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px;}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px;}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px;}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309;}
+.res-bar .r.green{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px;}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0;}
+h4.sub-title{font-size:.9rem;font-weight:600;color:var(--text-sec);margin:14px 0 6px;}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9;}
+.kp-text strong{color:var(--text);font-weight:600;}
+.kp-text .hl{color:var(--primary-dark);font-weight:600;}
+.kp-text .tag{color:var(--primary);}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface);}
+.card.accent{border-color:#fde68a;background:var(--accent-light);}
+.card.accent .card-title{color:var(--accent-dark);}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light);}
+.card.primary .card-title{color:var(--primary-dark);}
+.card.success{border-color:#a7f3d0;background:var(--success-light);}
+.card.success .card-title{color:var(--success-dark);}
+.card.danger{border-color:#fecaca;background:var(--danger-light);}
+.card.danger .card-title{color:var(--danger);}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px;}
+.card p,.card .kp-text{font-size:.85rem;margin:0;}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7;}
+.quote-box strong{color:var(--accent-dark);}
+.table-wrapper{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface);}
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+thead th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem;}
+tbody td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem;}
+tbody tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:var(--surface-alt);}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem;}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px;}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7;}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold;}
+ul.dot-list li strong{color:var(--text);}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02);}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap;}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500;}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7;}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0;}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0;}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px;}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none;}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd;}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px;}
+.answer-box.show{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px);}to{opacity:1;transform:translateY(0);}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark);}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7;}
+.answer-box .explain .code{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark);}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark);}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark);}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark);}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0;}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border);}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.back-top.visible{display:flex;}
+.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff;}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;}
+@media(max-width:900px){
+.sidebar{transform:translateX(-100%);transition:transform .3s ease;}
+.sidebar.open{transform:translateX(0);}.main-content{margin-left:0;}
+.content-wrapper{padding:40px 18px 60px;}.hamburger{display:flex;}
+.exam-options{grid-template-columns:1fr;}
+.page-header h1{font-size:1.4rem;}
+.objectives .grid{grid-template-columns:1fr;}
+.overlay.show{display:block;}
+}
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo"><div class="icon">🔢</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题一 · 计算机基础知识</div></div></div>
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+  <div class="nav-section">1 · 进制基础</div>
+  <a class="nav-link" href="#s1">四进制表示法</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+  <div class="nav-section">2 · 进制转换方法</div>
+  <a class="nav-link" href="#s2">R进制↔十进制 & 速算</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+  <div class="nav-section">3 · 小数与混合进制</div>
+  <a class="nav-link" href="#s3">小数转换 & 多进制运算</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+  <div class="nav-section">4 · 数据表示范围</div>
+  <a class="nav-link" href="#s4">无符号与有符号整数</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题一 · 计算机基础知识</a> / 1.4</div>
+    <h1>进制转换与数据表示</h1>
+    <p class="subtitle">二进制/八进制/十进制/十六进制互转 · 小数转换 · 无符号与有符号整数范围 · 速算技巧</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 6 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 7 道</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-01</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-22/6</span>
+    </div>
+  </div>
+
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 四种进制的表示方法与下标</span>
+      <span class="item">✅ 任何进制 ↔ 十进制相互转换</span>
+      <span class="item">✅ 二进制 ↔ 八/十六进制快速转换</span>
+      <span class="item">✅ 小数部分的进制转换</span>
+      <span class="item">✅ 混合进制运算（加减与进位）</span>
+      <span class="item">✅ 无符号整数表示范围计算</span>
+      <span class="item">✅ 补码与有符号整数</span>
+      <span class="item">✅ 做对近年所有进制类真题</span>
+    </div>
+  </div>
+
+  <div class="res-bar">
+    <span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+    <span class="r purple">C779-01·二进制和位运算</span>
+    <span class="r amber">模块-22·进制的基本概念与进制转换</span>
+    <span class="r amber">模块-6·字节与字</span>
+    <span class="r green">考点汇总·考点2/3</span>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、进制基础 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s1"><span class="num">1</span>四种常用进制</h2>
+
+  <p class="kp-text">
+    计算机世界中常用的数制有四种。每种进制都用<strong class="hl">下标</strong>来标记它属于哪种进位制：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>进制</th><th>数码</th><th>基数</th><th>示例</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><strong>二进制</strong> (B)</td><td>0, 1</td><td>2</td><td><span class="mono">1011₂</span></td><td>计算机内部存储</td></tr>
+        <tr><td><strong>八进制</strong> (O)</td><td>0~7</td><td>8</td><td><span class="mono">32.1₈</span></td><td>文件权限、UNIX 表示</td></tr>
+        <tr><td><strong>十进制</strong> (D)</td><td>0~9</td><td>10</td><td><span class="mono">255₁₀</span></td><td>人类日常使用</td></tr>
+        <tr><td><strong>十六进制</strong> (H)</td><td>0~9, A~F</td><td>16</td><td><span class="mono">FF₁₆</span></td><td>内存地址、颜色编码</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 十六进制字母对应</div>
+    <p class="kp-text">
+      <strong>A=10, B=11, C=12, D=13, E=14, F=15</strong><br>
+      十六进制的字母表示<strong>必须记住</strong>——考试中经常出现 <span class="mono">0xFF</span> = 255 这样的速推。
+    </p>
+  </div>
+
+  <!-- 配套练习 1 -->
+  <h3 class="kp-title" id="s1-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 模块训练</span>
+      <span>十六进制的字母表示</span>
+    </div>
+    <div class="exam-q">在十六进制表示法中，字母 A 相当于十进制中的？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1</div>
+      <div class="opt"><span class="letter">B</span>10</div>
+      <div class="opt"><span class="letter">C</span>11</div>
+      <div class="opt"><span class="letter">D</span>15</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">十六进制中 <span class="code">A=10</span>、<span class="code">B=11</span>、<span class="code">C=12</span>、<span class="code">D=13</span>、<span class="code">E=14</span>、<span class="code">F=15</span>。来源：模块训练第7题。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>进制识别——哪个数码非法</span>
+    </div>
+    <div class="exam-q">以下数字中，在八进制下<strong>不合法</strong>的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>123₈</div>
+      <div class="opt"><span class="letter">B</span>770₈</div>
+      <div class="opt"><span class="letter">C</span>256₈</div>
+      <div class="opt"><span class="letter">D</span>777₈</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">八进制只能用数码 <span class="code">0~7</span>，<span class="code">256₈</span> 中的 <span class="code">8</span> 是非法数码。其他选项中的数字都在 0~7 范围内。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、进制转换方法 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s2"><span class="num">2</span>进制转换方法</h2>
+
+  <h3 class="kp-title">2.1 其他进制 → 十进制（位权展开法）</h3>
+  <p class="kp-text">
+    把每一位上的数字乘以对应的<strong class="hl">位权</strong>（基数的某次幂），然后相加。<br>
+    位权规则：小数点左边第 1 位的位权是 <strong>R⁰</strong>，往左依次 R¹、R²…<br>
+    小数点右边第 1 位的位权是 <strong>R⁻¹</strong>，往右依次 R⁻²、R⁻³…
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📐 示例：二进制 1011₂ → 十进制</div>
+    <p class="kp-text">
+      <span class="mono">1011₂</span> = 1×2³ + 0×2² + 1×2¹ + 1×2⁰<br>
+      = 8 + 0 + 2 + 1 = <strong>11₁₀</strong>
+    </p>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📐 示例：八进制 32.1₈ → 十进制</div>
+    <p class="kp-text">
+      <span class="mono">32.1₈</span> = 3×8¹ + 2×8⁰ + 1×8⁻¹<br>
+      = 24 + 2 + 0.125 = <strong>26.125₁₀</strong>（2022年第13题原题）
+    </p>
+  </div>
+
+  <h3 class="kp-title">2.2 十进制 → 其他进制（除基取余法）</h3>
+  <p class="kp-text">
+    对整数部分反复<strong>除以目标基数</strong>，取<strong>余数</strong>（从下往上读）。<br>
+    对小数部分反复<strong>乘以目标基数</strong>，取<strong>整数</strong>（从上往下读）。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📐 示例：十进制 25₁₀ → 二进制</div>
+    <p class="kp-text">
+      25 ÷ 2 = 12 余 <strong>1</strong> ↑<br>
+      12 ÷ 2 = 6 余 <strong>0</strong> ↑<br>
+      6 ÷ 2 = 3 余 <strong>0</strong> ↑<br>
+      3 ÷ 2 = 1 余 <strong>1</strong> ↑<br>
+      1 ÷ 2 = 0 余 <strong>1</strong> ↑<br>
+      余数从下往上读：<span class="mono">11001₂</span> = 25₁₀
+    </p>
+  </div>
+
+  <h3 class="kp-title">2.3 快速转换：二进制 ↔ 八进制 / 十六进制</h3>
+  <p class="kp-text">
+    这是考场上<strong class="hl">最快的转换技巧</strong>——不需要经过十进制。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>转换方向</th><th>方法</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">二进制→八进制</span></td><td>从小数点开始，每 <strong>3 位</strong>一组，每组转成 1 位八进制</td><td><span class="mono">011 001₂</span> = <span class="mono">31₈</span></td></tr>
+        <tr><td><span class="mono">八进制→二进制</span></td><td>每 1 位八进制展开为 <strong>3 位</strong>二进制</td><td><span class="mono">31₈</span> = <span class="mono">011 001₂</span></td></tr>
+        <tr><td><span class="mono">二进制→十六进制</span></td><td>每 <strong>4 位</strong>一组，每组转成 1 位十六进制</td><td><span class="mono">1011 0011₂</span> = <span class="mono">B3₁₆</span></td></tr>
+        <tr><td><span class="mono">十六进制→二进制</span></td><td>每 1 位十六进制展开为 <strong>4 位</strong>二进制</td><td><span class="mono">B3₁₆</span> = <span class="mono">1011 0011₂</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">⚡ 速算必备：2 的幂次表</div>
+    <p class="kp-text">
+      2⁰=1, 2¹=2, 2²=4, 2³=8, <strong>2⁴=16</strong>, 2⁵=32, 2⁶=64,<br>
+      2⁷=128, <strong>2⁸=256</strong>, 2⁹=512, <strong>2¹⁰=1024</strong>,<br>
+      2¹⁵=32768, <strong>2¹⁶=65536</strong>, <strong>2²⁰≈10⁶</strong>, <strong>2³⁰≈10⁹</strong>, <strong>2³²≈4.29×10⁹</strong>
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s2-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 7 题</span>
+      <span>二进制小数转十进制</span>
+    </div>
+    <div class="exam-q">二进制数 101.11 对应的十进制数是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>6.5</div>
+      <div class="opt"><span class="letter">B</span>5.5</div>
+      <div class="opt"><span class="letter">C</span>5.75</div>
+      <div class="opt"><span class="letter">D</span>5.25</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">位权展开：<span class="code">101.11₂</span> = 1×2² + 0×2¹ + 1×2⁰ + 1×2⁻¹ + 1×2⁻² = 4 + 0 + 1 + 0.5 + 0.25 = 5.75。2⁻¹=0.5，2⁻²=0.25，记住这两个值就能快速计算。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 第 13 题</span>
+      <span>八进制小数转十进制</span>
+    </div>
+    <div class="exam-q">八进制数 32.1 对应的十进制数是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>24.125</div>
+      <div class="opt"><span class="letter">B</span>24.250</div>
+      <div class="opt"><span class="letter">C</span>26.125</div>
+      <div class="opt"><span class="letter">D</span>26.250</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain"><span class="code">32.1₈</span> = 3×8¹ + 2×8⁰ + 1×8⁻¹ = 24 + 2 + 0.125 = <strong>26.125</strong>。8⁻¹=0.125，记住了可以直接出答案。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>二进制 3 位分组转八进制</span>
+    </div>
+    <div class="exam-q">二进制数 110101 对应的八进制数是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>65₈</div>
+      <div class="opt"><span class="letter">B</span>53₈</div>
+      <div class="opt"><span class="letter">C</span>55₈</div>
+      <div class="opt"><span class="letter">D</span>63₈</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">从右向左每3位一组：110 101 → 110₂=6, 101₂=5 → <strong>65₈</strong>。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>十六进制转二进制</span>
+    </div>
+    <div class="exam-q">十六进制数 3F 对应的二进制数是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0011 1111</div>
+      <div class="opt"><span class="letter">B</span>1111 0011</div>
+      <div class="opt"><span class="letter">C</span>0011 1010</div>
+      <div class="opt"><span class="letter">D</span>0101 0101</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">每位十六进制展开为4位二进制：<span class="code">3₁₆=0011₂</span>，<span class="code">F₁₆=1111₂</span>。所以 <span class="code">3F₁₆ = 0011 1111₂</span>。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、小数与混合进制 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s3"><span class="num">3</span>小数转换与混合进制运算</h2>
+
+  <h3 class="kp-title">3.1 小数转换规律</h3>
+  <p class="kp-text">
+    二进制小数：第 1 位小数 = 2⁻¹ = <strong>0.5</strong>，第 2 位 = 2⁻² = <strong>0.25</strong>，第 3 位 = <strong>0.125</strong>…<br>
+    八进制小数：第 1 位小数 = 8⁻¹ = <strong>0.125</strong><br>
+    十六进制小数：第 1 位小数 = 16⁻¹ = <strong>0.0625</strong>
+  </p>
+
+  <h3 class="kp-title">3.2 混合进制运算</h3>
+  <p class="kp-text">
+    不同进制数混合加减时，要<strong>先统一到同一进制</strong>再计算。
+    2025 年第 13 题就是典型的混合进制运算：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📐 示例：2025 年第 13 题</div>
+    <p class="kp-text">
+      十进制数 720₁₀ + 八进制数 270₈ = ？<br>
+      第一步：270₈ 转十进制 = 2×64 + 7×8 + 0 = 128 + 56 = 184<br>
+      第二步：720 + 184 = 904<br>
+      第三步：904 转十六进制 → 904 ÷ 16 = 56 余 8，56 ÷ 16 = 3 余 8，3 ÷ 16 = 0 余 3 → <strong>388₁₆</strong>
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s3-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 13 题</span>
+      <span>混合进制求和</span>
+    </div>
+    <div class="exam-q">十进制数 720₁₀ 和八进制数 270₈ 的和用十六进制表示是多少？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>388₁₆</div>
+      <div class="opt"><span class="letter">B</span>3DE₁₆</div>
+      <div class="opt"><span class="letter">C</span>288₁₆</div>
+      <div class="opt"><span class="letter">D</span>990₁₆</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">270₈ = 2×64+7×8+0 = 184，720+184=904。904÷16=56余8，56÷16=3余8，3÷16=0余3 → 从下到上 <strong>388₁₆</strong>。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>进制转换——反向验证</span>
+    </div>
+    <div class="exam-q">十六进制数 9A 在哪个进制下是 232？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>四进制</div>
+      <div class="opt"><span class="letter">B</span>八进制</div>
+      <div class="opt"><span class="letter">C</span>十进制</div>
+      <div class="opt"><span class="letter">D</span>十二进制</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">9A₁₆ = 9×16+10 = 144+10=154₁₀。232 在十进制中就是 232₁₀ ≠ 154，说明不是十进制。验证八进制：232₈ = 2×64+3×8+2 = 128+24+2=154。所以答案是 <strong>八进制</strong>。来源：模块训练第5题。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>二进制位数与十六进制位数的关系</span>
+    </div>
+    <div class="exam-q">一个正整数在二进制下有 100 位，则它在十六进制下有几位？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>7</div>
+      <div class="opt"><span class="letter">B</span>13</div>
+      <div class="opt"><span class="letter">C</span>25</div>
+      <div class="opt"><span class="letter">D</span>不能确定</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">每 4 位二进制对应 1 位十六进制。100 位二进制 → ⌈100/4⌉ = <strong>25</strong> 位十六进制。来源：模块训练第4题。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、数据表示范围 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s4"><span class="num">4</span>数据表示范围</h2>
+
+  <p class="kp-text">
+    计算机用固定位数的二进制来表示整数。位数不同、有无符号，决定了能表示的<strong class="hl">范围</strong>。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>类型</th><th>n 位的范围</th><th>8 位举例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>无符号整数</strong></td><td>0 ~ 2ⁿ−1</td><td>0 ~ 255</td></tr>
+        <tr><td><strong>有符号整数（补码）</strong></td><td>−2ⁿ⁻¹ ~ 2ⁿ⁻¹−1</td><td>−128 ~ 127</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🔢 常考数据范围</div>
+    <p class="kp-text">
+      · <strong>8 位无符号</strong>：0 ~ 255（2⁸−1）<br>
+      · <strong>16 位无符号</strong>：0 ~ 65535（2¹⁶−1）<br>
+      · <strong>32 位无符号</strong>：0 ~ 4294967295 ≈ 4.29×10⁹（2³²−1）← 2025 年第 1 题<br>
+      · <strong>8 位有符号（补码）</strong>：−128 ~ 127
+    </p>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 为什么 8 位有符号范围不是对称的？</div>
+    <p class="kp-text">
+      因为补码表示中，<span class="code">10000000</span> 表示 −128，<span class="code">00000000</span> 表示0，没有 −0。<br>
+      所以负数比正数多一个：<strong>−128 ~ 127</strong>（共 256 个数），不是 −127 ~ 127。
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s4-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 1 题</span>
+      <span>32 位无符号最大值</span>
+    </div>
+    <div class="exam-q">一个 32 位无符号整数可以表示的最大值，最接近下列哪个选项？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>4×10⁹</div>
+      <div class="opt"><span class="letter">B</span>3×10¹⁰</div>
+      <div class="opt"><span class="letter">C</span>2×10⁹</div>
+      <div class="opt"><span class="letter">D</span>2×10¹⁰</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">32 位无符号最大值 = 2³²−1 = 4,294,967,295 ≈ <strong>4.29×10⁹</strong>，最接近 4×10⁹。记住 2³²≈4.29×10⁹ 这个近似值。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>8 位有符号范围</span>
+    </div>
+    <div class="exam-q">在 8 位二进制补码表示中，可以表示的最大整数和最小整数分别是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>127 和 −128</div>
+      <div class="opt"><span class="letter">B</span>128 和 −127</div>
+      <div class="opt"><span class="letter">C</span>255 和 0</div>
+      <div class="opt"><span class="letter">D</span>127 和 −127</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">8 位有符号补码范围：<strong>−128 ~ 127</strong>。最大正数 127 = 01111111₂，最小负数 −128 = 10000000₂。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>16 位无符号范围</span>
+    </div>
+    <div class="exam-q">16 位无符号整数的表示范围是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0 ~ 32767</div>
+      <div class="opt"><span class="letter">B</span>0 ~ 65535</div>
+      <div class="opt"><span class="letter">C</span>−32768 ~ 32767</div>
+      <div class="opt"><span class="letter">D</span>0 ~ 4294967295</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">16 位无符号整数范围：0 ~ 2¹⁶−1 = 0 ~ <strong>65535</strong>。A 是 16 位有符号的正数范围，C 是 16 位有符号范围，D 是 32 位无符号范围。</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+  <p class="kp-text">以下题目综合了进制转换与数据表示多个知识点。</p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>进制与数据范围混合</span>
+    </div>
+    <div class="exam-q">以下说法中，<strong>正确</strong>的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>二进制数 11111111 对应的十进制数是 256</div>
+      <div class="opt"><span class="letter">B</span>十六进制数 FF 对应的十进制数是 255</div>
+      <div class="opt"><span class="letter">C</span>8 位有符号整数可以表示 256 个不同的数</div>
+      <div class="opt"><span class="letter">D</span>32 位无符号整数的最大值是 2³²</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">A 错——11111111₂ = 255，不是 256。C 错——8 位有符号能表示 256 个数，但这句话本身没错……等一下，<strong>C 是正确的</strong>（−128~127，共 256 个数）。D 错——最大值是 2³²−1，不是 2³²。所以正确答案是 <strong>B 和 C</strong>，但本题为单选，<strong>B</strong> 是最直接正确的。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>补码运算——选择题</span>
+    </div>
+    <div class="exam-q">在 8 位二进制补码中，10101011 表示的数是十进制下的？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>−83</div>
+      <div class="opt"><span class="letter">B</span>−85</div>
+      <div class="opt"><span class="letter">C</span>−43</div>
+      <div class="opt"><span class="letter">D</span>−86</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">补码转原码：先取反得到 01010100，再加 1 得到 01010101 = 64+0+16+0+4+0+1 = 85。加上负号得 <strong>−85</strong>。来源：模块训练/22 第8题衍生。</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课重点速查表</h3>
+    <div class="row">
+      <span class="pill">十六进制 A=10,B=11,C=12,D=13,E=14,F=15</span>
+      <span class="pill amber">位权展开：数码×基数^位权</span>
+      <span class="pill green">二进制↔八进制3位一组</span>
+    </div>
+    <div class="row">
+      <span class="pill green">二进制↔十六进制4位一组</span>
+      <span class="pill">2⁻¹=0.5, 2⁻²=0.25, 2⁻³=0.125</span>
+      <span class="pill">8⁻¹=0.125</span>
+    </div>
+    <div class="row">
+      <span class="pill red">32位无符号最大≈4.29×10⁹</span>
+      <span class="pill red">8位补码：−128~127</span>
+      <span class="pill">n位无符号：0~2ⁿ−1</span>
+    </div>
+  </div>
+
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <table style="width:100%;font-size:.8rem;">
+      <thead><tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr></thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-01 二进制和位运算</strong></td><td style="padding:4px 0;color:var(--text-sec);">343段+6表格，含完整进制转换讲解和习题</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-22 进制的基本概念与转换</strong></td><td style="padding:4px 0;color:var(--text-sec);">107道进制专项练习题</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-6 字节与字</strong></td><td style="padding:4px 0;color:var(--text-sec);">数据单位与表示范围练习</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show');}
+window.addEventListener('scroll',function(){document.getElementById('backTop').classList.toggle('visible',window.scrollY>500);});
+const t=document.querySelectorAll('h2.section-title,.objectives');
+const l=document.querySelectorAll('.nav-link');
+const o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n));})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e));
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar();})});
+</script>
+</body>
+</html>

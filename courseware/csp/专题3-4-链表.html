@@ -1,0 +1,515 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 3.4 链表</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.table-wrapper{overflow-x:auto;margin:12px 0}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.82rem}
+.table-wrapper th,.table-wrapper td{padding:8px 12px;text-align:left;border:1px solid var(--border)}
+.table-wrapper th{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+.table-wrapper td{color:var(--text-sec)}
+.table-wrapper tr:nth-child(even){background:var(--surface-alt)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔗</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题三 · 数据结构</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 单链表</div>
+<a class="nav-link" href="#s1">结点·头指针·遍历</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · 双向链表</div>
+<a class="nav-link" href="#s2">llink/rlink · 前驱后继</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 循环链表</div>
+<a class="nav-link" href="#s3">单向循环·双向循环</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 插入与删除操作</div>
+<a class="nav-link" href="#s4">操作顺序重点</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">5 · 数组 vs 链表</div>
+<a class="nav-link" href="#s5">优缺点对比</a><a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+<div class="nav-section">6 · 链式栈/链式队列</div>
+<a class="nav-link" href="#s6">链式结构概念</a><a class="nav-link sub" href="#s6-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题三 · 数据结构</a> / 3.4</div>
+<h1>链表</h1>
+<p class="subtitle">单链表 · 双向链表 · 循环链表 · 插入/删除操作顺序 · 数组 vs 链表 · 链式栈/队列</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 2 课时</span><span class="meta-tag hot">🔥 高频考点</span>
+<span class="meta-tag exam">📖 真题 2 道</span><span class="meta-tag practice">✏️ 模拟题 6 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-07·链表</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-13·线性表</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 理解单链表结点结构、头指针的作用</span>
+<span class="item">✅ 掌握双向链表 llink/rlink 与前驱后继关系</span>
+<span class="item">✅ 区分单向循环链表与双向循环链表</span>
+<span class="item">✅ 掌握插入/删除结点时指针操作的正确顺序</span>
+<span class="item">✅ 对比数组与链表的优劣</span>
+<span class="item">✅ 理解链式栈与链式队列的基本概念</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">C779-07·链表（78段，含链式结构）</span>
+<span class="r amber">2022 真题第 4/11 题</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>单链表</h2>
+
+<h3 class="kp-title">1.1 结点结构</h3>
+<p class="kp-text"><strong class="hl">单链表</strong>（Singly Linked List）由一系列<strong>结点</strong>（Node）组成，每个结点包含两个部分：<strong>数据域</strong>（data）存储数据，<strong>指针域</strong>（next）指向<strong>下一个结点</strong>。最后一个结点的 next 指向 <strong>NULL</strong>（空），表示链表结束。</p>
+
+<div class="card primary"><div class="card-title">📌 单链表结点定义（C++）</div>
+<div class="code-block"><span class="kw">struct</span> Node {
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">int</span> data;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 数据域</span>
+&nbsp;&nbsp;&nbsp;&nbsp;Node* next;&nbsp;&nbsp;<span class="cm">// 指针域，指向下一个结点</span>
+};</div></div>
+
+<h3 class="kp-title">1.2 头指针</h3>
+<p class="kp-text"><strong class="hl">头指针</strong>（head）是指向<strong>链表第一个结点</strong>的指针。如果链表为空，头指针为 <span class="c">NULL</span>。通过头指针可以访问整个链表，因此<strong>头指针是链表的入口标识</strong>。有些实现还会使用<strong>头结点</strong>（dummy node / header node）— 一个不存储实际数据的额外结点，用于简化插入和删除操作。</p>
+
+<div class="card success"><div class="card-title">📌 头指针 vs 头结点</div>
+<p class="kp-text">
+· <strong>头指针</strong>：指向链表第一个<strong>有效结点</strong>的指针，<strong>必不可少</strong><br>
+· <strong>头结点</strong>：链表第一个结点之前的一个<strong>辅助结点</strong>，数据域通常空闲，<strong>可选</strong><br>
+· 带头结点的链表更便于统一处理<strong>空表</strong>和<strong>首结点插入/删除</strong>操作</p></div>
+
+<h3 class="kp-title">1.3 遍历</h3>
+<p class="kp-text">遍历单链表时，从头指针出发，不断通过 <span class="c">p = p->next</span> 移动到下一结点，直到 <span class="c">p == NULL</span>。遍历的时间复杂度为 <strong class="hl">O(n)</strong>，其中 n 是结点数。</p>
+
+<div class="card primary"><div class="card-title">🎯 单链表遍历代码</div>
+<div class="code-block"><span class="kw">void</span> traverse(Node* head) {
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> (Node* p = head; p != <span class="kw">nullptr</span>; p = p->next) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 访问 p->data</span>
+&nbsp;&nbsp;&nbsp;&nbsp;}
+}</div></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>单链表头指针</span></div>
+<div class="exam-q">已知单链表的头指针为 head，当链表为空时，head 的值为？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>0（整数 0）</div>
+<div class="opt"><span class="letter">B</span>NULL（或 nullptr）</div>
+<div class="opt"><span class="letter">C</span>指向头结点</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：B</div>
+<div class="explain">空链表没有有效结点，头指针 head 应被设置为 <span class="c">NULL</span>（C/C++ 中为 <span class="c">nullptr</span>），表示链表不包含任何结点。注意区分头指针与头结点——如果使用了头结点，即使链表为空，头指针也指向头结点（非 NULL），但题目未特殊说明时默认不带头结点。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>单链表遍历终止</span></div>
+<div class="exam-q">遍历单链表时，终止循环的条件通常是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>p->next == NULL</div>
+<div class="opt"><span class="letter">B</span>p == NULL</div>
+<div class="opt"><span class="letter">C</span>head == NULL</div>
+<div class="opt"><span class="letter">D</span>p->data == 0</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：B</div>
+<div class="explain">遍历时使用指针 p 从 head 开始移动，当 <span class="c">p == NULL</span> 时表示已经<strong>越过了最后一个结点</strong>，应终止。若使用 <span class="c">p->next == NULL</span> 作为终止条件，则会<strong>漏掉最后一个结点</strong>的数据访问。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>双向链表</h2>
+
+<h3 class="kp-title">2.1 结点结构</h3>
+<p class="kp-text"><strong class="hl">双向链表</strong>（Doubly Linked List）的每个结点包含<strong>三个域</strong>：数据域（data）、左指针（<strong class="hl">llink</strong>）指向前驱结点、右指针（<strong class="hl">rlink</strong>）指向后继结点。双向链表可以<strong>双向遍历</strong>，更灵活但占用更多空间。</p>
+
+<div class="card primary"><div class="card-title">📌 双向链表结点定义（C++）</div>
+<div class="code-block"><span class="kw">struct</span> DNode {
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">int</span> data;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 数据域</span>
+&nbsp;&nbsp;&nbsp;&nbsp;DNode* llink;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 左指针，指向前驱</span>
+&nbsp;&nbsp;&nbsp;&nbsp;DNode* rlink;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 右指针，指向后继</span>
+};</div></div>
+
+<h3 class="kp-title">2.2 前驱与后继</h3>
+<div class="card success"><div class="card-title">📌 前驱后继关系</div>
+<p class="kp-text">
+· 对于非空双向链表中的结点 p：<span class="c">p->llink</span> 指向其<strong>前驱结点</strong>，<span class="c">p->rlink</span> 指向其<strong>后继结点</strong><br>
+· <span class="c">p->llink->rlink == p</span>（前驱结点的右指针也指向 p）<br>
+· <span class="c">p->rlink->llink == p</span>（后继结点的左指针也指向 p）<br>
+· 这两条关系构成双向链表的<strong>对称性约束</strong>，在插入/删除时必须同时维护</p></div>
+
+<div class="card accent"><div class="card-title">⚠️ 重点记忆</div>
+<p class="kp-text"><strong class="hl">llink 意为 left link（左链接）</strong>，指向前驱；<strong class="hl">rlink 意为 right link（右链接）</strong>，指向后继。考试中可能出现不同命名如 <span class="c">prev/next</span>、<span class="c">prior/next</span>，但含义相同。</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>双向链表前驱后继</span></div>
+<div class="exam-q">在双向链表中，若结点 p 的后继为 q（q ≠ NULL），则下列哪个关系一定成立？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>p->rlink == q 且 q->llink == p</div>
+<div class="opt"><span class="letter">B</span>p->rlink == q 且 q->rlink == p</div>
+<div class="opt"><span class="letter">C</span>p->llink == q 且 q->rlink == p</div>
+<div class="opt"><span class="letter">D</span>p->llink == q 且 q->llink == p</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：A</div>
+<div class="explain">若 q 是 p 的后继，则 p 的右指针指向 q（<span class="c">p->rlink == q</span>），同时 q 的左指针指向 p（<span class="c">q->llink == p</span>），两者互为前驱后继关系。这是双向链表的<strong>对称性约束</strong>。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>循环链表</h2>
+
+<h3 class="kp-title">3.1 单向循环链表</h3>
+<p class="kp-text"><strong class="hl">单向循环链表</strong>（Circular Singly Linked List）是在单链表的基础上，将<strong>最后一个结点的 next 指针指向头结点</strong>（或第一个结点），形成一个<strong>环</strong>。这样可以从任意结点出发遍历整个链表。</p>
+
+<div class="card primary"><div class="card-title">📌 单向循环链表的关键点</div>
+<p class="kp-text">
+· 最后一个结点的 <span class="c">next</span> 指向<strong>头结点</strong>而非 NULL<br>
+· 遍历终止条件变为：<span class="c">p->next == head</span>（或 <span class="c">p == head</span>，取决于遍历策略）<br>
+· 从任何结点出发都能<strong>遍历全部结点</strong><br>
+· 插入和删除操作与单链表类似，但需<strong>维护环的闭合性</strong></p></div>
+
+<h3 class="kp-title">3.2 双向循环链表</h3>
+<p class="kp-text"><strong class="hl">双向循环链表</strong>（Circular Doubly Linked List）是双向链表 + 循环链表的结合：头结点的 llink 指向<strong>最后一个结点</strong>，最后一个结点的 rlink 指向<strong>头结点</strong>。这是<strong>最灵活</strong>的链表结构，也是<strong>考试高频</strong>考点。</p>
+
+<div class="card success"><div class="card-title">📌 双向循环链表的边界条件</div>
+<p class="kp-text">
+· <strong>头结点</strong> head：<span class="c">head->llink</span> 指向<strong>尾结点</strong>，<span class="c">head->rlink</span> 指向<strong>第一个有效结点</strong><br>
+· <strong>尾结点</strong> tail：<span class="c">tail->rlink == head</span>，<span class="c">head->llink == tail</span><br>
+· 当链表<strong>为空</strong>（只有头结点）时：<span class="c">head->llink == head</span> 且 <span class="c">head->rlink == head</span></p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>循环链表遍历终止</span></div>
+<div class="exam-q">带头结点的单向循环链表，从头结点 head 之后开始遍历所有有效结点，遍历终止的条件是（p 初始指向 head->next）？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>p == NULL</div>
+<div class="opt"><span class="letter">B</span>p == head</div>
+<div class="opt"><span class="letter">C</span>p->next == NULL</div>
+<div class="opt"><span class="letter">D</span>p->next == head</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：B</div>
+<div class="explain">单向循环链表的尾结点指向头结点，当 p 从 <span class="c">head->next</span> 开始移动，最终会回到 head。当 <span class="c">p == head</span> 时说明已经<strong>完整遍历了一圈</strong>，应终止。另需注意：若先让 p = head->next，则执行 <span class="c">while (p != head) { ...; p = p->next; }</span> 即可遍历所有有效结点。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>插入与删除操作顺序 <span style="font-size:.7rem;color:#dc2626;background:#fef2f2;padding:1px 8px;border-radius:4px;border:1px solid #fecaca;">⭐ 重中之重·2022真题</span></h2>
+
+<p class="kp-text">链表插入/删除操作的<strong class="hl">指针修改顺序</strong>是初赛必考的高频陷阱题。关键在于：<strong>不要让有用信息提前丢失</strong>。下面是单链表和双向链表中插入/删除的标准操作顺序。</p>
+
+<h3 class="kp-title">4.1 单链表插入（在 p 之后插入 s）</h3>
+<div class="card success"><div class="card-title">📐 正确顺序</div>
+<div class="step-box">
+<div class="step"><span class="sn">1</span><span class="c">s->next = p->next;</span> &emsp; // 先把 s 的 next 指向 p 的后继</div>
+<div class="step"><span class="sn">2</span><span class="c">p->next = s;</span> &emsp;&emsp;&emsp;&emsp; // 再将 p 的 next 指向 s</div>
+</div></div>
+
+<div class="card danger"><div class="card-title">⚠️ 常见错误</div>
+<p class="kp-text">若先写 <span class="c">p->next = s</span>，则 p 原来的后继<strong>丢失了地址</strong>，第2步 <span class="c">s->next = p->next</span> 实际变成了 <span class="c">s->next = s</span>，链表断裂！口诀：<strong class="hl">"先右后左"</strong>——先让新结点指向旧后继，再让前驱指向新结点。</p></div>
+
+<h3 class="kp-title">4.2 单链表删除（删除 p 的后继 q）</h3>
+<div class="card success"><div class="card-title">📐 正确顺序</div>
+<div class="step-box">
+<div class="step"><span class="sn">1</span><span class="c">p->next = q->next;</span> &emsp; // 让 p 跨越 q 指向 q 的后继</div>
+<div class="step"><span class="sn">2</span><span class="c">delete q; (或 free(q))</span> &emsp; // 释放 q 的内存</div>
+</div></div>
+
+<h3 class="kp-title">4.3 双向链表插入（在 p 之后插入 s）</h3>
+<div class="card primary"><div class="card-title">📐 正确顺序（4步，顺序可微调但必须①先接右链）</div>
+<div class="step-box">
+<div class="step"><span class="sn">1</span><span class="c">s->rlink = p->rlink;</span> &emsp;&emsp; // s 的右指针指向 p 的后继</div>
+<div class="step"><span class="sn">2</span><span class="c">s->llink = p;</span> &emsp;&emsp;&emsp;&emsp;&emsp; // s 的左指针指向 p</div>
+<div class="step"><span class="sn">3</span><span class="c">p->rlink->llink = s;</span> &emsp;&emsp; // p 的后继的左指针指向 s</div>
+<div class="step"><span class="sn">4</span><span class="c">p->rlink = s;</span> &emsp;&emsp;&emsp;&emsp;&emsp; // p 的右指针指向 s</div>
+</div></div>
+
+<div class="card accent"><div class="card-title">💡 记忆口诀</div>
+<p class="kp-text"><strong class="hl">"先接后断"</strong>——先建立新结点的两个链接（1和2），再修改原链路的两个链接（3和4）。在完成第1步后，即使其他步骤出错，至少能通过 <span class="c">p->rlink</span> 找到原后继。如果先修改 <span class="c">p->rlink</span>（第4步），则原后继地址丢失！</p></div>
+
+<h3 class="kp-title">4.4 双向链表删除（删除 p 的后继 q）</h3>
+<div class="card success"><div class="card-title">📐 正确顺序</div>
+<div class="step-box">
+<div class="step"><span class="sn">1</span><span class="c">p->rlink = q->rlink;</span> &emsp;&emsp;&emsp; // p 跨越 q 指向 q 的后继</div>
+<div class="step"><span class="sn">2</span><span class="c">q->rlink->llink = p;</span> &emsp;&emsp;&emsp; // q 的后继的左指针指向 p</div>
+<div class="step"><span class="sn">3</span><span class="c">delete q; (或 free(q))</span></div>
+</div></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 年第 11 题</span><span>双向循环链表插入顺序</span></div>
+<div class="exam-q">在带有头结点的双向循环链表中，在指针 p 所指结点之后插入指针 s 所指的新结点，以下 4 条语句的执行顺序是？<br>
+① <span class="c">p->rlink = s;</span><br>
+② <span class="c">s->llink = p;</span><br>
+③ <span class="c">s->rlink = p->rlink;</span><br>
+④ <span class="c">p->rlink->llink = s;</span></div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>③ ② ④ ①</div>
+<div class="opt"><span class="letter">B</span>② ① ④ ③</div>
+<div class="opt"><span class="letter">C</span>① ② ③ ④</div>
+<div class="opt"><span class="letter">D</span>③ ① ② ④</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：A</div>
+<div class="explain">关键在于：<strong>必须先读取 <span class="c">p->rlink</span> 的原始值</strong>，再对 <span class="c">p->rlink</span> 进行赋值。<br>
+<strong>③ 先做</strong>：<span class="c">s->rlink = p->rlink;</span> — 保存 p 的原始后继地址给 s<br>
+<strong>② 再做</strong>：<span class="c">s->llink = p;</span> — 建立 s 到 p 的左链<br>
+<strong>④ 再三</strong>：<span class="c">p->rlink->llink = s;</span> — 此时 <span class="c">p->rlink</span> 还是原始后继，将其 llink 改为 s<br>
+<strong>① 最后</strong>：<span class="c">p->rlink = s;</span> — 最后才能修改 p 的右指针<br>
+<strong>若①先于③</strong>，则 <span class="c">p->rlink</span> 已被改为 s，③中 <span class="c">p->rlink</span> 取值变成 s 自身，链表断裂。<br>
+因此正确顺序为 <strong>③ ② ④ ①</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>单链表删除操作</span></div>
+<div class="exam-q">在单链表中，已知 p 指向某结点，要删除 p 的后继结点 q（q ≠ NULL），正确的操作是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>p->next = q; delete q;</div>
+<div class="opt"><span class="letter">B</span>p->next = q->next; delete q;</div>
+<div class="opt"><span class="letter">C</span>delete q; p->next = q->next;</div>
+<div class="opt"><span class="letter">D</span>q->next = p->next; delete q;</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：B</div>
+<div class="explain">删除 <strong>p 的后继</strong> q 时，应先将 p 的 next 指针<strong>跨越 q</strong> 指向 q 的后继（<span class="c">p->next = q->next</span>），然后释放 q 的内存。注意 <span class="c">q->next</span> 必须在 <span class="c">delete q</span><strong>之前</strong>读取，否则就变成了<strong>野指针</strong>访问。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s5"><span class="num">5</span>数组 vs 链表优缺点对比</h2>
+
+<p class="kp-text">数组和链表是<strong class="hl">两种最基本的线性存储结构</strong>，初赛常考它们的区别。理解各自优缺点有助于在不同场景下选择合适的结构。</p>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>对比维度</th><th>数组</th><th>链表</th></tr></thead>
+<tbody>
+<tr><td><strong>存储方式</strong></td><td>连续内存空间</td><td>离散内存空间（结点通过指针链接）</td></tr>
+<tr><td><strong>随机访问</strong></td><td><span class="c">O(1)</span> — 通过下标直接访问 <strong>✅ 优势</strong></td><td><span class="c">O(n)</span> — 必须从头遍历</td></tr>
+<tr><td><strong>插入/删除</strong></td><td><span class="c">O(n)</span> — 需移动大量元素</td><td><span class="c">O(1)</span> — 仅修改指针 <strong>✅ 优势</strong></td></tr>
+<tr><td><strong>空间分配</strong></td><td>静态分配（大小固定），可能浪费或溢出</td><td>动态分配，按需取用</td></tr>
+<tr><td><strong>缓存局部性</strong></td><td><strong>好</strong>（连续内存，CPU 缓存友好）</td><td>差（离散存储，缓存命中率低）</td></tr>
+<tr><td><strong>额外空间</strong></td><td>无</td><td>每个结点需额外存储指针（空间开销）</td></tr>
+</tbody></table></div>
+
+<div class="card success"><div class="card-title">📌 什么情况选数组？什么情况选链表？</div>
+<p class="kp-text">
+· <strong>频繁随机访问</strong>（如 arr[i]）→ <strong>数组</strong><br>
+· <strong>频繁插入/删除</strong>，尤其在中间位置 → <strong>链表</strong><br>
+· 数据量<strong>动态变化</strong>，难以预估上限 → <strong>链表</strong>（动态扩容）<br>
+· 对<strong>空间和性能要求极致</strong>且大小已知 → <strong>数组</strong>（无额外指针开销）</p></div>
+
+<h3 class="kp-title" id="s5-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 年第 4 题</span><span>数组和链表的区别</span></div>
+<div class="exam-q">下列叙述中，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>链表不能动态改变大小</div>
+<div class="opt"><span class="letter">B</span>数组支持随机访问，链表不支持</div>
+<div class="opt"><span class="letter">C</span>链表在内存中连续存储</div>
+<div class="opt"><span class="letter">D</span>数组的插入和删除速度比链表快</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：B</div>
+<div class="explain"><strong>逐个分析：</strong><br>
+A ❌ 链表通过 <span class="c">new</span>/<span class="c">delete</span> 动态分配和释放结点，<strong>可以动态改变大小</strong>；数组大小通常固定。<br>
+B ✅ 数组可通过下标 <span class="c">O(1)</span> 随机访问；链表必须从<strong>头指针</strong>开始遍历，<span class="c">O(n)</span>。<br>
+C ❌ 链表结点在内存中是<strong>离散</strong>存储的，通过指针链接，并非连续。<br>
+D ❌ 数组插入/删除需<strong>移动大量元素</strong>（<span class="c">O(n)</span>），链表仅修改指针（<span class="c">O(1)</span> 已知位置）。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s6"><span class="num">6</span>链式栈与链式队列</h2>
+
+<h3 class="kp-title">6.1 链式栈</h3>
+<p class="kp-text"><strong class="hl">链式栈</strong>（Linked Stack）是用<strong>链表</strong>作为底层实现的栈。栈顶对应链表的<strong>头结点</strong>（或第一个有效结点），入栈（push）相当于在<strong>头部插入</strong>，出栈（pop）相当于<strong>删除头结点</strong>。链式栈的<strong>优点</strong>是：无需预先分配栈的大小，<strong>不会溢出</strong>（理论上限为内存大小）。</p>
+
+<div class="card primary"><div class="card-title">📌 链式栈操作对应</div>
+<p class="kp-text">
+· <span class="c">push(x)</span> → 在<strong>链表头部</strong>插入新结点（<span class="c">O(1)</span>）<br>
+· <span class="c">pop()</span> → 删除<strong>链表头部</strong>结点（<span class="c">O(1)</span>）<br>
+· <span class="c">top()</span> → 返回<strong>链表头部</strong>结点的数据（<span class="c">O(1)</span>）</p></div>
+
+<h3 class="kp-title">6.2 链式队列</h3>
+<p class="kp-text"><strong class="hl">链式队列</strong>（Linked Queue）是用<strong>链表</strong>作为底层实现的队列。通常需要维护两个指针：<strong>队头指针</strong>（front）指向头结点，<strong>队尾指针</strong>（rear）指向尾结点。入队（enqueue）在<strong>尾部</strong>插入，出队（dequeue）在<strong>头部</strong>删除。</p>
+
+<div class="card success"><div class="card-title">📌 链式队列操作对应</div>
+<p class="kp-text">
+· <span class="c">enqueue(x)</span> → 在<strong>链表尾部</strong>插入新结点（<span class="c">O(1)</span>，通过 rear 指针）<br>
+· <span class="c">dequeue()</span> → 删除<strong>链表头部</strong>结点（<span class="c">O(1)</span>，通过 front 指针）<br>
+· <span class="c">front()</span> → 返回<strong>链表头部</strong>结点数据</p></div>
+
+<div class="card accent"><div class="card-title">💡 链式结构 vs 顺序结构</div>
+<p class="kp-text">"链式"指<strong>用链表实现</strong>，"顺序"指<strong>用数组实现</strong>。链式栈/队列解决了顺序栈/队列<strong>假溢出</strong>（数组未满但无法继续入队）和<strong>固定大小</strong>的问题。链式栈/队列的<strong>所有基本操作均为 <span class="c">O(1)</span></strong>。</p></div>
+
+<h3 class="kp-title" id="s6-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>链式栈操作</span></div>
+<div class="exam-q">关于链式栈，下列叙述错误的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>链式栈的栈顶在链表头部</div>
+<div class="opt"><span class="letter">B</span>链式栈不会因栈满而溢出（不考虑内存耗尽）</div>
+<div class="opt"><span class="letter">C</span>链式栈的 push 操作在链表尾部进行</div>
+<div class="opt"><span class="letter">D</span>链式栈的 pop 操作时间复杂度为 O(1)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：C</div>
+<div class="explain">链式栈的 <span class="c">push</span> 操作在<strong>链表头部</strong>进行（因为栈顶在头部），这样才能保证 <span class="c">O(1)</span> 的入栈时间。若在尾部入栈，需要遍历到尾部才找到插入位置，时间复杂度为 <span class="c">O(n)</span>。C 选项说"在链表尾部进行"是错误的。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>链式队列</span></div>
+<div class="exam-q">一个链式队列需要维持 front 和 rear 两个指针，入队操作在 rear 端进行。下列叙述正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>出队操作在 rear 端进行</div>
+<div class="opt"><span class="letter">B</span>链式队列解决了顺序队列的假溢出问题</div>
+<div class="opt"><span class="letter">C</span>链式队列的入队操作需要遍历整个链表</div>
+<div class="opt"><span class="letter">D</span>链式队列中 front 和 rear 始终指向同一个结点</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：B</div>
+<div class="explain"><strong>分析：</strong><br>
+A ❌ 出队在<strong>队头</strong>（front）端进行，即链表头部删除；入队在队尾（rear）端进行。<br>
+B ✅ 顺序队列存在"假溢出"（数组前端有空位但无法使用），链式队列<strong>动态分配结点</strong>，不会出现此问题。<br>
+C ❌ 入队通过 rear 指针直接找到尾部，时间复杂度 <span class="c">O(1)</span>，无需遍历。<br>
+D ❌ 队列非空时 front 指向头结点、rear 指向尾结点，两者不同。只有<strong>空队列</strong>时两者才相等（均指向头结点）。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>链表综合判断</span></div>
+<div class="exam-q">下列关于链表的说法，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>单链表的每个结点都有一个指向前驱的指针</div>
+<div class="opt"><span class="letter">B</span>双向循环链表中，头结点的 llink 指向 NULL</div>
+<div class="opt"><span class="letter">C</span>链表比数组更适合需要频繁随机访问的场景</div>
+<div class="opt"><span class="letter">D</span>带头结点的单链表在插入和删除首结点时无需特殊处理</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：D</div>
+<div class="explain"><strong>逐个分析：</strong><br>
+A ❌ 单链表每个结点只有 <span class="c">next</span> 指针指向后继，没有指向前驱的指针；<strong>双向链表</strong>才有。<br>
+B ❌ 双向<strong>循环</strong>链表中，头结点的 <span class="c">llink</span> 指向<strong>尾结点</strong>，而非 NULL。<br>
+C ❌ 数组支持 <span class="c">O(1)</span> 的随机访问（下标），链表需要 <span class="c">O(n)</span> 遍历，因此<strong>数组更适合随机访问</strong>。<br>
+D ✅ 带头结点时，首有效结点是 <span class="c">head->next</span>，插入和删除操作<strong>统一处理</strong>，无需对头指针进行特殊调整。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 链表重点速查表</h3>
+<div class="row">
+<span class="pill green">单链表：data + next → 单向遍历</span>
+<span class="pill amber">双向链表：llink + data + rlink → 双向遍历</span>
+<span class="pill red">循环链表：尾结点指向头结点</span>
+</div>
+<div class="row">
+<span class="pill green">插入口诀：先接后断（先建新链，再改旧链）</span>
+<span class="pill red">删除关键：先跨越，再释放</span>
+<span class="pill">头指针 = 链表入口（必需）</span>
+</div>
+<div class="row">
+<span class="pill amber">数组：随机访问 O(1)，插入/删除 O(n)</span>
+<span class="pill green">链表：随机访问 O(n)，插入/删除 O(1)</span>
+<span class="pill red">链式栈/队列：链表实现，所有操作 O(1)</span>
+</div>
+<div class="row">
+<span class="pill">双向循环链表插入：③→②→④→①</span>
+<span class="pill green">头结点作用：统一空表/首结点处理</span>
+<span class="pill amber">链式结构解决：假溢出·固定大小</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

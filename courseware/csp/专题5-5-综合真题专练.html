@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题5-5 综合真题专练</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f7fa;
+  --surface:#fff;
+  --surface-alt:#f0f2f5;
+  --surface-card:#f8f9fb;
+  --text:#1a1d28;
+  --text-sec:#4a5070;
+  --text-ter:#8b8fa3;
+  --border:#e4e7ed;
+  --border-light:#eef0f4;
+  --primary:#4f6ef7;
+  --primary-light:#eef2ff;
+  --primary-dark:#3b54d4;
+  --accent:#f59e0b;
+  --accent-light:#fffbeb;
+  --accent-dark:#d97706;
+  --success:#10b981;
+  --success-light:#ecfdf5;
+  --success-dark:#059669;
+  --danger:#ef4444;
+  --danger-light:#fef2f2;
+  --purple:#8b5cf6;
+  --purple-light:#f5f3ff;
+  --orange:#f97316;
+  --orange-light:#fff7ed;
+  --teal:#14b8a6;
+  --teal-light:#f0fdfa;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+  --font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+  --sidebar-w:240px
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}
+.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h2.section-title .tag{font-size:.65rem;font-weight:500;padding:2px 10px;border-radius:10px;background:var(--primary-light);color:var(--primary-dark);border:1px solid #bfdbfe;margin-left:auto}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}
+.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}
+.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}
+.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}
+.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}
+.card p,.card .kp-text{font-size:.85rem;margin:0}
+.formula-box{background:var(--surface);border:1px solid var(--border-light);border-radius:10px;padding:16px 20px;margin:14px 0;text-align:center}
+.formula-box .f-main{font-size:1.2rem;font-weight:700;color:var(--primary-dark);margin-bottom:4px}
+.formula-box .f-desc{font-size:.78rem;color:var(--text-ter)}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.warn-box{background:var(--danger-light);border-left:3px solid var(--danger);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}
+.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.derive{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.exam-badge.read{background:var(--orange-light);border:1px solid #fdba74;color:var(--orange)}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.orange{background:var(--orange-light);border-color:#fdba74;color:var(--orange)}
+.summary-box .pill.teal{background:var(--teal-light);border-color:#99f6e4;color:var(--teal)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}
+.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+.tag-label{display:inline-block;font-size:.68rem;font-weight:500;padding:1px 10px;border-radius:10px;margin-right:4px}
+.tag-label.comb{background:#eef2ff;color:#4f6ef7;border:1px solid #bfdbfe}
+.tag-label.count{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}
+.tag-label.num{background:#fffbeb;color:#d97706;border:1px solid #fde68a}
+.tag-label.boole{background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe}
+.tag-label.gcd{background:#fff7ed;color:#ea580c;border:1px solid #fdba74}
+@media(max-width:900px){
+.sidebar{transform:translateX(-100%);transition:transform .3s ease}
+.sidebar.open{transform:translateX(0)}
+.main-content{margin-left:0}
+.content-wrapper{padding:40px 18px 60px}
+.hamburger{display:flex}
+.exam-options{grid-template-columns:1fr}
+.page-header h1{font-size:1.4rem}
+.objectives .grid{grid-template-columns:1fr}
+.overlay.show{display:block}
+}
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📘</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题五 &#183; 排列组合与数论</div></div></div>
+
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 &#183; 排列组合</div>
+<a class="nav-link" href="#s1">Q1 &#183; 2021第6题 &#183; 手套配对</a>
+<a class="nav-link" href="#q2">Q2 &#183; 排列基础计算</a>
+<a class="nav-link" href="#q3">Q3 &#183; 2021第10题 &#183; 分组</a>
+<a class="nav-link" href="#q4">Q4 &#183; 2021第12题 &#183; 重复数字</a>
+<a class="nav-link" href="#q5">Q5 &#183; 分组分配综合</a>
+
+<div class="nav-section">2 &#183; 计数模型</div>
+<a class="nav-link" href="#q6">Q6 &#183; 2022第14题 &#183; 子串计数</a>
+<a class="nav-link" href="#q7">Q7 &#183; 2025第6题 &#183; 至少问题</a>
+<a class="nav-link" href="#q8">Q8 &#183; 2025第11题 &#183; 分步计数</a>
+
+<div class="nav-section">3 &#183; 数论</div>
+<a class="nav-link" href="#q9">Q9 &#183; 2025阅读1 &#183; gcd</a>
+<a class="nav-link" href="#q10">Q10 &#183; 2025第8题 &#183; 质数</a>
+<a class="nav-link" href="#q11">Q11 &#183; 质因数分解</a>
+<a class="nav-link" href="#q12">Q12 &#183; 模运算</a>
+
+<div class="nav-section">4 &#183; 布尔代数</div>
+<a class="nav-link" href="#q13">Q13 &#183; 2025第7题 &#183; 等价性</a>
+<a class="nav-link" href="#q14">Q14 &#183; 真值表计算</a>
+<a class="nav-link" href="#q15">Q15 &#183; 吸收律判断</a>
+
+<div class="nav-section">📋 速查表</div>
+<a class="nav-link" href="#ref">核心考点速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<div class="main-content">
+<div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb">CSP-J 初赛集训 / 专题五 &#183; 排列组合与数论</div>
+<h1>综合真题专练</h1>
+<div class="subtitle">覆盖排列组合、计数模型、数论、布尔代数四大模块，精选近年真题 + 自创模拟，点击即看解析</div>
+<div class="meta-bar">
+<span class="meta-tag">15道精选题</span>
+<span class="meta-tag hot">🔥高频综合</span>
+<span class="meta-tag exam">📖 9道真题</span>
+</div>
+</div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学习目标</h3>
+<div class="grid">
+<span class="item">✅ 排列组合：灵活运用排列/组合/分组/重复元素公式</span>
+<span class="item">✅ 计数模型：掌握子串计数、分步计数、排除法</span>
+<span class="item">✅ 数论：掌握gcd、质因数分解、模运算</span>
+<span class="item">✅ 布尔代数：逻辑表达式化简、真值表判断等价性</span>
+<span class="item">✅ 综合能力：各知识模块交叉训练，定位薄弱环节</span>
+</div>
+</div>
+
+<!-- ================================================================== -->
+<!-- 第一部分 · 排列组合类（5题） -->
+<!-- ================================================================== -->
+
+<h2 class="section-title" id="s1"><span class="num">1</span>排列组合类<span class="tag">5道 · 含真题3道</span></h2>
+
+<!-- Q1: 2021第6题 -->
+<div class="exam-block" id="q1">
+<div class="exam-header">
+<span class="exam-badge real">真题 2021</span><span>第 6 题</span>
+<span class="tag-label comb">排列组合</span>
+</div>
+<div class="exam-q">从 5 双不同颜色（共 10 只）的手套中任意取出 6 只，恰好有 2 双配对的取法共有多少种？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>80</div>
+<div class="opt"><span class="letter">B</span>120</div>
+<div class="opt"><span class="letter">C</span>140</div>
+<div class="opt"><span class="letter">D</span>160</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">点击显示答案</button>
+<div class="answer-box" id="a1">
+<div class="ans">答案：B — 120 种</div>
+<div class="explain">
+<strong>解析</strong>（分步计数）：<br>
+<strong>步骤1</strong>：从 5 种颜色中选出 2 种颜色，每种各取 2 只（凑成完整配对）<br>
+&nbsp;&nbsp;C(5,2) = <span class="c">10</span> 种选法<br>
+<strong>步骤2</strong>：还差 6−4=2 只，从剩下 3 种颜色中选 2 种，每种取 1 只（不能成对）<br>
+&nbsp;&nbsp;C(3,2) 选哪两种颜色 × 每色 2 选 1 × 2 = <span class="c">3 × 2 × 2 = 12</span><br>
+<strong>总计</strong>：10 × 12 = <strong>120</strong><br>
+<strong>易错提醒</strong>：容易忘了第二步不能成对的限制，如果直接 C(6,2) 从剩余 6 只中取，会包含配对的错误情况。
+</div>
+</div>
+</div>
+
+<!-- Q2: 排列基础 -->
+<div class="exam-block" id="q2">
+<div class="exam-header">
+<span class="exam-badge derive">模拟</span><span>排列基础计算</span>
+<span class="tag-label comb">排列组合</span>
+</div>
+<div class="exam-q">从 7 本不同的书中选出 3 本，按从左到右的顺序摆放在书架上，共有多少种不同的摆放方式？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>35</div>
+<div class="opt"><span class="letter">B</span>210</div>
+<div class="opt"><span class="letter">C</span>343</div>
+<div class="opt"><span class="letter">D</span>5040</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">点击显示答案</button>
+<div class="answer-box" id="a2">
+<div class="ans">答案：B — 210 种</div>
+<div class="explain">
+<strong>解析</strong>：这是排列问题（顺序有关）。<br>
+<strong>方法一（公式法）</strong>：P(7,3) = <span class="c">7! / (7−3)!</span> = <span class="c">7! / 4!</span> = 7×6×5 = <strong>210</strong><br>
+<strong>方法二（分步法）</strong>：第1格7种、第2格6种、第3格5种 → 7×6×5 = <strong>210</strong><br>
+<strong>对比</strong>：如果只选不排（组合），C(7,3)=35，刚好是排列数的 1/3!。
+</div>
+</div>
+</div>
+
+<!-- Q3: 2021第10题 -->
+<div class="exam-block" id="q3">
+<div class="exam-header">
+<span class="exam-badge real">真题 2021</span><span>第 10 题</span>
+<span class="tag-label comb">排列组合｜分组</span>
+</div>
+<div class="exam-q">6 个人分成 3 组，每组 2 人，则不同的分组方式共有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>15</div>
+<div class="opt"><span class="letter">B</span>30</div>
+<div class="opt"><span class="letter">C</span>45</div>
+<div class="opt"><span class="letter">D</span>60</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">点击显示答案</button>
+<div class="answer-box" id="a3">
+<div class="ans">答案：A — 15 种</div>
+<div class="explain">
+<strong>解析</strong>（不区分组的分组问题）：<br>
+<strong>先按区分组算</strong>：C(6,2) × C(4,2) × C(2,2) = 15 × 6 × 1 = <span class="c">90</span><br>
+<strong>再消除组间顺序</strong>：3 组无编号，除以 3! = 6<br>
+90 ÷ 6 = <strong>15</strong><br>
+<strong>核心考点</strong>：分组时如果组没有区别（如"分成3组"），必须在乘积后 <span class="c">÷ k!</span>，其中 k 为组数。
+</div>
+</div>
+</div>
+
+<!-- Q4: 2021第12题 -->
+<div class="exam-block" id="q4">
+<div class="exam-header">
+<span class="exam-badge real">真题 2021</span><span>第 12 题</span>
+<span class="tag-label comb">排列组合｜重复元素</span>
+</div>
+<div class="exam-q">使用 1, 1, 2, 2, 3 这五个数字组成不同的三位数（每个数字使用次数不超过其在集合中出现的次数），则不同的三位数共有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>12</div>
+<div class="opt"><span class="letter">B</span>15</div>
+<div class="opt"><span class="letter">C</span>18</div>
+<div class="opt"><span class="letter">D</span>21</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">点击显示答案</button>
+<div class="answer-box" id="a4">
+<div class="ans">答案：C — 18 种</div>
+<div class="explain">
+<strong>解析</strong>（含重复数字，分类讨论）：<br>
+<strong>情况1：三位数各不相同</strong><br>
+&nbsp;&nbsp;从 {1, 2, 3} 中选 3 个不同数字全排列 → <span class="c">P(3,3) = 3! = 6</span><br>
+<strong>情况2：两个相同、一个不同</strong><br>
+&nbsp;&nbsp;重复的数字只能是 1 或 2（因为只有 1、2 有重复副本）→ 2 种<br>
+&nbsp;&nbsp;不同的数字从剩下 2 个中选 → 2 种<br>
+&nbsp;&nbsp;排列方式：C(3,2) 选哪两位放相同数，剩 1 位放不同数 → <span class="c">3</span><br>
+&nbsp;&nbsp;小计：2 × 2 × 3 = <span class="c">12</span><br>
+<strong>总计</strong>：6 + 12 = <strong>18</strong>
+</div>
+</div>
+</div>
+
+<!-- Q5: 分组分配综合 -->
+<div class="exam-block" id="q5">
+<div class="exam-header">
+<span class="exam-badge mock">模拟</span><span>分组分配综合</span>
+<span class="tag-label comb">排列组合｜分组分配</span>
+</div>
+<div class="exam-q">将 6 名志愿者分配到 3 个不同的社区服务，要求每个社区至少 1 人，则不同的分配方案共有多少种？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>90</div>
+<div class="opt"><span class="letter">B</span>360</div>
+<div class="opt"><span class="letter">C</span>540</div>
+<div class="opt"><span class="letter">D</span>720</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">点击显示答案</button>
+<div class="answer-box" id="a5">
+<div class="ans">答案：C — 540 种</div>
+<div class="explain">
+<strong>解析</strong>（先分组再分配，按人数分布分类）：<br>
+<strong>情况1：2+2+2</strong><br>
+&nbsp;&nbsp;不区分组的分组：C(6,2)×C(4,2)×C(2,2)/3! = 15×6×1/6 = <span class="c">15</span><br>
+&nbsp;&nbsp;分配到 3 个社区（区分组）：15 × 3! = <strong>90</strong><br>
+<strong>情况2：3+2+1</strong><br>
+&nbsp;&nbsp;直接分组（人数不同，组自然区分）：C(6,3)×C(3,2)×C(1,1) = 20×3×1 = <span class="c">60</span><br>
+&nbsp;&nbsp;分配到社区：60 × 3! = <strong>360</strong><br>
+<strong>情况3：4+1+1</strong><br>
+&nbsp;&nbsp;不区分组的分组：C(6,4)×C(2,1)×C(1,1)/2! = 15×2×1/2 = <span class="c">15</span><br>
+&nbsp;&nbsp;分配到社区：15 × 3! = <strong>90</strong><br>
+<strong>总计</strong>：90 + 360 + 90 = <strong>540</strong><br>
+<strong>关键</strong>：人数分布不同的组自然区分，不需要除阶乘；人数分布相同的组要除阶乘消除组间顺序。
+</div>
+</div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- ================================================================== -->
+<!-- 第二部分 · 计数模型类（3题） -->
+<!-- ================================================================== -->
+
+<h2 class="section-title" id="s2"><span class="num">2</span>计数模型类<span class="tag">3道 · 含真题3道</span></h2>
+
+<!-- Q6: 2022第14题 -->
+<div class="exam-block" id="q6">
+<div class="exam-header">
+<span class="exam-badge real">真题 2022</span><span>第 14 题</span>
+<span class="tag-label count">计数模型｜子串</span>
+</div>
+<div class="exam-q">字符串 "hello" 的不同非空子串个数为（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>12</div>
+<div class="opt"><span class="letter">B</span>13</div>
+<div class="opt"><span class="letter">C</span>14</div>
+<div class="opt"><span class="letter">D</span>15</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">点击显示答案</button>
+<div class="answer-box" id="a6">
+<div class="ans">答案：C — 14 个</div>
+<div class="explain">
+<strong>解析</strong>：所有子串为所有连续子序列，逐个列出：<br>
+<strong>以 h 开头</strong>：h, he, hel, hell, hello — <span class="c">5 个</span><br>
+<strong>以 e 开头</strong>：e, el, ell, ello — <span class="c">4 个</span><br>
+<strong>以第一个 l 开头</strong>：l, ll, llo — <span class="c">3 个</span>（注意第二个 l 开头时 l 重复）<br>
+<strong>以第二个 l 开头</strong>：l（已重复）, lo — <span class="c">1 个新增</span>（lo 不重复）<br>
+<strong>以 o 开头</strong>：o — <span class="c">1 个</span><br>
+<strong>总计</strong>：5 + 4 + 3 + 1 + 1 = <strong>14</strong><br>
+<strong>对比</strong>：若字符全部不同（如"abcde"），子串数 = 5×6/2 = 15。<br>
+因为 l 重复，"l"只计一次，所以 15−1=14。
+</div>
+</div>
+</div>
+
+<!-- Q7: 2025第6题 -->
+<div class="exam-block" id="q7">
+<div class="exam-header">
+<span class="exam-badge real">真题 2025</span><span>第 6 题</span>
+<span class="tag-label count">计数模型｜至少问题</span>
+</div>
+<div class="exam-q">从 5 名男生和 4 名女生中选出 4 人参加比赛，要求至少包含 1 名男生和 1 名女生，则不同的选法有（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>100</div>
+<div class="opt"><span class="letter">B</span>110</div>
+<div class="opt"><span class="letter">C</span>120</div>
+<div class="opt"><span class="letter">D</span>130</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">点击显示答案</button>
+<div class="answer-box" id="a7">
+<div class="ans">答案：C — 120 种</div>
+<div class="explain">
+<strong>解析</strong>（补集思想 / 排除法为最优解）：<br>
+<strong>方法一（排除法）</strong>：<br>
+&nbsp;&nbsp;总数（无限制）：C(9,4) = <span class="c">126</span><br>
+&nbsp;&nbsp;减去"全男"：C(5,4) = <span class="c">5</span><br>
+&nbsp;&nbsp;减去"全女"：C(4,4) = <span class="c">1</span><br>
+&nbsp;&nbsp;结果：126 − 5 − 1 = <strong>120</strong><br>
+<strong>方法二（分类讨论）</strong>：<br>
+&nbsp;&nbsp;1男3女：C(5,1)×C(4,3) = 5×4 = <span class="c">20</span><br>
+&nbsp;&nbsp;2男2女：C(5,2)×C(4,2) = 10×6 = <span class="c">60</span><br>
+&nbsp;&nbsp;3男1女：C(5,3)×C(4,1) = 10×4 = <span class="c">40</span><br>
+&nbsp;&nbsp;合计：20 + 60 + 40 = <strong>120</strong><br>
+<strong>建议</strong>：补集法更简洁，考试时优先使用！
+</div>
+</div>
+</div>
+
+<!-- Q8: 2025第11题 -->
+<div class="exam-block" id="q8">
+<div class="exam-header">
+<span class="exam-badge real">真题 2025</span><span>第 11 题</span>
+<span class="tag-label count">计数模型｜分步计数</span>
+</div>
+<div class="exam-q">从 A 城市到 B 城市有 3 条不同的路线，从 B 城市到 C 城市有 4 条不同的路线。某人要从 A 经 B 到 C，再原路返回 A（来回路线不允许重复使用同一条路段），则不同的往返路线共有（ ）条。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>72</div>
+<div class="opt"><span class="letter">B</span>96</div>
+<div class="opt"><span class="letter">C</span>120</div>
+<div class="opt"><span class="letter">D</span>144</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">点击显示答案</button>
+<div class="answer-box" id="a8">
+<div class="ans">答案：A — 72 条</div>
+<div class="explain">
+<strong>解析</strong>（分步计数原理）：<br>
+<strong>去程</strong>：A→B 有 3 条可选，B→C 有 4 条可选 → 3×4 = <span class="c">12 种</span><br>
+<strong>返程</strong>（不能重复已走路段）：<br>
+&nbsp;&nbsp;C→B 不能走来时的路段，剩余 3 条可选；<br>
+&nbsp;&nbsp;B→A 不能走来时的路段，剩余 2 条可选；<br>
+&nbsp;&nbsp;返程：3×2 = <span class="c">6 种</span><br>
+<strong>总计</strong>：12 × 6 = <strong>72</strong><br>
+<strong>进阶思考</strong>：如果只要求"不去程和返程完全相同"，答案会不一样。本题要求"路段不重复"，更加严格。
+</div>
+</div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- ================================================================== -->
+<!-- 第三部分 · 数论类（4题） -->
+<!-- ================================================================== -->
+
+<h2 class="section-title" id="s3"><span class="num">3</span>数论类<span class="tag">4道 · 含真题2道</span></h2>
+
+<!-- Q9: 2025阅读1 - gcd -->
+<div class="exam-block" id="q9">
+<div class="exam-header">
+<span class="exam-badge read">真题 2025 阅读1</span><span>gcd 算法分析</span>
+<span class="tag-label gcd">数论｜gcd</span>
+</div>
+<div class="exam-q">以下程序实现的是辗转相除法（欧几里得算法）：</div>
+<div class="formula-box" style="text-align:left;font-family:var(--font-mono);font-size:.82rem;color:var(--text-sec);background:var(--surface-alt);padding:12px 16px">
+int gcd(int a, int b) {<br>
+&nbsp;&nbsp;while (b != 0) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int t = b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;b = a % b;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a = t;<br>
+&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;return a;<br>
+}
+</div>
+<div class="exam-q">以下说法正确的是（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>若 a < b，程序会出错</div>
+<div class="opt"><span class="letter">B</span>gcd(12, 8) 的返回值为 6</div>
+<div class="opt"><span class="letter">C</span>gcd(17, 5) 的返回值为 1</div>
+<div class="opt"><span class="letter">D</span>该算法无法计算 gcd(0, 5)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">点击显示答案</button>
+<div class="answer-box" id="a9">
+<div class="ans">答案：C — gcd(17, 5) = 1</div>
+<div class="explain">
+<strong>解析</strong>：<br>
+A ❌：a < b 时，第一次循环 a % b = a，交换后自动解决，不会出错。<br>
+B ❌：gcd(12, 8) → 12%8=4 → 8%4=0 → 返回 4，不是 6。<br>
+C ✅：gcd(17, 5) → 17%5=2 → 5%2=1 → 2%1=0 → 返回 1。17与5互质，正确。<br>
+D ❌：gcd(0, 5) → 5≠0 → 5%0 ❌ 不对，第一次 b=5≠0，但先执行 t=5, b=0%5=0, a=5，第二次 b=0 退出，返回 a=5。所以可以计算，返回 5。<br>
+<strong>核心结论</strong>：辗转相除法可以正确计算任意两个非负整数的最大公约数，时间复杂度 O(log min(a,b))。
+</div>
+</div>
+</div>
+
+<!-- Q10: 2025第8题 -->
+<div class="exam-block" id="q10">
+<div class="exam-header">
+<span class="exam-badge real">真题 2025</span><span>第 8 题</span>
+<span class="tag-label num">数论｜质数</span>
+</div>
+<div class="exam-q">以下关于质数（素数）的说法，正确的是（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>任何大于 1 的整数都可以唯一地分解为质数的乘积（不计顺序）</div>
+<div class="opt"><span class="letter">B</span>所有的质数都是奇数</div>
+<div class="opt"><span class="letter">C</span>任意两个不同的质数之和一定是合数</div>
+<div class="opt"><span class="letter">D</span>最小的质数是 1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">点击显示答案</button>
+<div class="answer-box" id="a10">
+<div class="ans">答案：A — 算术基本定理</div>
+<div class="explain">
+<strong>解析</strong>：<br>
+A ✅：这是<strong>算术基本定理</strong>，又称质因数分解唯一定理，是数论的基石。<br>
+B ❌：质数 2 是偶数，不是奇数。其余质数都是奇数。<br>
+C ❌：反例 2+3=5，5 是质数，不是合数。<br>
+D ❌：最小的质数是 2，不是 1。1 既不是质数也不是合数。<br>
+<strong>易错</strong>：注意不要忘了质数 2（唯一的偶质数），它是 CSP-J 常考点！
+</div>
+</div>
+</div>
+
+<!-- Q11: 质因数分解 -->
+<div class="exam-block" id="q11">
+<div class="exam-header">
+<span class="exam-badge mock">模拟</span><span>质因数分解</span>
+<span class="tag-label num">数论｜质因数</span>
+</div>
+<div class="exam-q">将正整数 360 分解质因数，其所有不同质因数的和为（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>10</div>
+<div class="opt"><span class="letter">B</span>12</div>
+<div class="opt"><span class="letter">C</span>14</div>
+<div class="opt"><span class="letter">D</span>16</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">点击显示答案</button>
+<div class="answer-box" id="a11">
+<div class="ans">答案：A — 10</div>
+<div class="explain">
+<strong>解析</strong>：<br>
+<strong>分解 360</strong>：<br>
+&nbsp;&nbsp;360 = 36 × 10 = (6²) × (2×5)<br>
+&nbsp;&nbsp;= (2×3)² × 2 × 5<br>
+&nbsp;&nbsp;= 2² × 3² × 2 × 5<br>
+&nbsp;&nbsp;= <span class="c">2³ × 3² × 5</span><br>
+<strong>不同质因数</strong>：2、3、5<br>
+<strong>和</strong>：2 + 3 + 5 = <strong>10</strong><br>
+<strong>验算</strong>：2³ × 3² × 5 = 8 × 9 × 5 = 360 ✓<br>
+<strong>技巧</strong>：从最小的质数 2 开始不断试除，逐步缩小。
+</div>
+</div>
+</div>
+
+<!-- Q12: 模运算 -->
+<div class="exam-block" id="q12">
+<div class="exam-header">
+<span class="exam-badge mock">模拟</span><span>模运算基础</span>
+<span class="tag-label num">数论｜模运算</span>
+</div>
+<div class="exam-q">已知 a ≡ 3 (mod 7)，b ≡ 5 (mod 7)，则 (a × b) mod 7 等于（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>2</div>
+<div class="opt"><span class="letter">C</span>8</div>
+<div class="opt"><span class="letter">D</span>15</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a12')">点击显示答案</button>
+<div class="answer-box" id="a12">
+<div class="ans">答案：A — 1</div>
+<div class="explain">
+<strong>解析</strong>（模运算分配律）：<br>
+<strong>模乘性质</strong>：(a × b) mod m = [(a mod m) × (b mod m)] mod m<br>
+a × b ≡ 3 × 5 ≡ 15 ≡ <span class="c">15 mod 7</span> = <strong>1</strong> (mod 7)<br>
+<strong>验证</strong>：取 a=10（10≡3 mod 7），b=12（12≡5 mod 7）<br>
+&nbsp;&nbsp;a×b = 10×12 = 120，120 ÷ 7 = 17 余 <strong>1</strong> ✓<br>
+<strong>注意</strong>：模运算的加法、乘法都可以先取模再计算，非常方便。<br>
+<strong>扩展</strong>：(a + b) mod 7 = (3 + 5) mod 7 = 8 mod 7 = 1
+</div>
+</div>
+</div>
+
+<hr class="divider dashed">
+
+<!-- ================================================================== -->
+<!-- 第四部分 · 布尔代数类（3题） -->
+<!-- ================================================================== -->
+
+<h2 class="section-title" id="s4"><span class="num">4</span>布尔代数类<span class="tag">3道 · 含真题1道</span></h2>
+
+<!-- Q13: 2025第7题 -->
+<div class="exam-block" id="q13">
+<div class="exam-header">
+<span class="exam-badge real">真题 2025</span><span>第 7 题</span>
+<span class="tag-label boole">布尔代数｜等价性</span>
+</div>
+<div class="exam-q">已知布尔变量 A、B、C，以下哪个表达式与 A · (B + C) 等价？（· 表示逻辑 AND，+ 表示逻辑 OR）</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>A · B + A · C</div>
+<div class="opt"><span class="letter">B</span>A · B · C</div>
+<div class="opt"><span class="letter">C</span>A + B · C</div>
+<div class="opt"><span class="letter">D</span>(A + B) · (A + C)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a13')">点击显示答案</button>
+<div class="answer-box" id="a13">
+<div class="ans">答案：A — A · B + A · C</div>
+<div class="explain">
+<strong>解析</strong>（分配律应用）：<br>
+<strong>分配律</strong>：A · (B + C) = A · B + A · C，与代数乘法分配律形式相同。<br>
+<strong>验证选项</strong>：<br>
+A ✅：A · (B+C) = A·B + A·C，由分配律直接得到。<br>
+B ❌：A·B·C 比原式多限制了一个 C 条件。<br>
+C ❌：A + B·C 与原式不同，可用真值表验证（当 A=0, B=1, C=1 时原式=0，C式=1）。<br>
+D ❌：(A+B)·(A+C) = A + B·C，这是吸收律的另一种形式，不等于原式。<br>
+<strong>验证</strong>：当 A=1, B=0, C=1 时，原式=1×(0+1)=1，D式=(1+0)×(1+1)=1×1=1，相等；<br>
+&nbsp;&nbsp;但当 A=0, B=1, C=1 时，原式=0×(1+1)=0，D式=(0+1)×(0+1)=1×1=1，不相等。
+</div>
+</div>
+</div>
+
+<!-- Q14: 真值表计算 -->
+<div class="exam-block" id="q14">
+<div class="exam-header">
+<span class="exam-badge derive">模拟</span><span>真值表计算</span>
+<span class="tag-label boole">布尔代数｜真值表</span>
+</div>
+<div class="exam-q">布尔表达式 F = A · B + A · C + B · C（· 表示 AND，+ 表示 OR）。当 A=1, B=1, C=0 时，F 的值为（ ）。</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>0</div>
+<div class="opt"><span class="letter">B</span>1</div>
+<div class="opt"><span class="letter">C</span>2</div>
+<div class="opt"><span class="letter">D</span>3</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a14')">点击显示答案</button>
+<div class="answer-box" id="a14">
+<div class="ans">答案：B — 1</div>
+<div class="explain">
+<strong>解析</strong>（逐项计算）：<br>
+<strong>代入计算</strong>：<br>
+&nbsp;&nbsp;A·B = 1 · 1 = <span class="c">1</span><br>
+&nbsp;&nbsp;A·C = 1 · 0 = <span class="c">0</span><br>
+&nbsp;&nbsp;B·C = 1 · 0 = <span class="c">0</span><br>
+&nbsp;&nbsp;F = 1 + 0 + 0 = <strong>1</strong><br>
+<strong>完整真值表（8行）：</strong><br>
+<table style="width:100%;font-size:.75rem;margin-top:6px;border-collapse:collapse">
+<tr><th>A</th><th>B</th><th>C</th><th>A·B</th><th>A·C</th><th>B·C</th><th style="font-weight:700;color:var(--success-dark)">F</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td><strong style="color:var(--success-dark)">1</strong></td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</table>
+<strong>观察</strong>：F 的值为 1 当且仅当 A、B、C 中至少有 2 个为 1，这就是"多数表决器"逻辑。
+</div>
+</div>
+</div>
+
+<!-- Q15: 吸收律判断 -->
+<div class="exam-block" id="q15">
+<div class="exam-header">
+<span class="exam-badge derive">模拟</span><span>逻辑等价性判断</span>
+<span class="tag-label boole">布尔代数｜化简</span>
+</div>
+<div class="exam-q">以下哪个布尔表达式与 A + B · C 等价？（· 表示 AND，+ 表示 OR）</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>(A + B) · (A + C)</div>
+<div class="opt"><span class="letter">B</span>A · B + C</div>
+<div class="opt"><span class="letter">C</span>(A + B) · C</div>
+<div class="opt"><span class="letter">D</span>A · B + A · C</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a15')">点击显示答案</button>
+<div class="answer-box" id="a15">
+<div class="ans">答案：A — (A + B) · (A + C)</div>
+<div class="explain">
+<strong>解析</strong>（布尔代数化简）：<br>
+<strong>展开选项 A</strong>：<br>
+(A + B) · (A + C) = A·A + A·C + B·A + B·C<br>
+= <span class="c">A + A·C + A·B + B·C</span>&nbsp;&nbsp;（因为 A·A = A）<br>
+= <span class="c">A·(1 + C + B) + B·C</span>&nbsp;&nbsp;（提取公因子 A）<br>
+= <span class="c">A + B·C</span>&nbsp;&nbsp;（因为 1+X=1）<br>
+A 与 A + B·C <strong>等价</strong> ✅<br>
+<strong>验证其他选项</strong>：<br>
+B ❌：A·B + C 当 A=0, B=0, C=1 时值为 1，但原式 = 0+0=0，不等价。<br>
+C ❌：(A+B)·C = A·C + B·C，不等价。<br>
+D ❌：A·B + A·C = A·(B+C)，这是分配律结果，不等价于 A+B·C。<br>
+<strong>记忆</strong>：<span class="c">A + B·C = (A+B)·(A+C)</span>，这是布尔代数中 OR 对 AND 的分配律！
+</div>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- ================================================================== -->
+<!-- 底部速查表 · 专题五核心考点 -->
+<!-- ================================================================== -->
+
+<div class="summary-box" id="ref">
+<h3>📖 专题五 · 核心考点速查表</h3>
+<table>
+<thead><tr><th style="width:18%">模块</th><th style="width:28%">核心考点</th><th style="width:28%">公式 / 方法</th><th style="width:26%">注意事项</th></tr></thead>
+<tbody>
+<tr><td rowspan="3">排列组合</td><td>排列 P(n,m)</td><td>n! / (n−m)!</td><td>顺序有关，选人+排队</td></tr>
+<tr><td>组合 C(n,m)</td><td>n! / [m!·(n−m)!]</td><td>顺序无关，对称性 C(n,m)=C(n,n−m)</td></tr>
+<tr><td>分组分配</td><td>区分组：直接乘；不区分组：÷ k!</td><td>关键看"组是否有编号"</td></tr>
+<tr><td rowspan="3">计数模型</td><td>子串计数</td><td>有重复字符时去重</td><td>连续子序列，注意重复情况</td></tr>
+<tr><td>分步计数原理</td><td>各步方法数相乘</td><td>注意"不重复"等附加条件</td></tr>
+<tr><td>补集思想（排除法）</td><td>满足 = 总数 − 不满足</td><td>解决"至少/至多"问题首选</td></tr>
+<tr><td rowspan="3">数论</td><td>辗转相除法 (gcd)</td><td>gcd(a,b) = gcd(b, a%b)</td><td>O(log n)，正确性由欧几里得保证</td></tr>
+<tr><td>质因数分解</td><td>从最小质数不断试除</td><td>算术基本定理：分解唯一</td></tr>
+<tr><td>模运算</td><td>(a×b) mod m = [(a mod m)×(b mod m)] mod m</td><td>先取模再运算，避免溢出</td></tr>
+<tr><td rowspan="3">布尔代数</td><td>基本运算</td><td>AND(·), OR(+), NOT(¬), XOR(⊕)</td><td>真值表共 2<sup>n</sup> 行</td></tr>
+<tr><td>分配律</td><td>A·(B+C)=A·B+A·C<br>A+B·C=(A+B)·(A+C)</td><td>与代数分配律相似但注意区别</td></tr>
+<tr><td>德摩根律</td><td>¬(A·B) = ¬A + ¬B<br>¬(A+B) = ¬A · ¬B</td><td>"与变或，非号分拆"</td></tr>
+</tbody>
+</table>
+
+<div class="row" style="margin-top:12px">
+<span class="pill">排列选人+排队</span>
+<span class="pill green">组合只选不排</span>
+<span class="pill amber">不区分组 ÷ k!</span>
+<span class="pill red">补集 = 总数−排除</span>
+<span class="pill purple">重复数字分类讨论</span>
+<span class="pill orange">gcd 辗转相除</span>
+<span class="pill teal">真值表 2<sup>n</sup> 行</span>
+</div>
+</div>
+
+</div>
+</div>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id){
+  var box=document.getElementById(id);
+  if(box.classList.contains('show')){
+    box.classList.remove('show');
+  }else{
+    box.classList.add('show');
+  }
+}
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+window.addEventListener('scroll',function(){
+  var bt=document.getElementById('backTop');
+  if(window.scrollY>400){bt.classList.add('visible')}else{bt.classList.remove('visible')}
+});
+document.querySelectorAll('.nav-link').forEach(function(el){
+  el.addEventListener('click',function(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  });
+});
+</script>
+
+</body>
+</html>

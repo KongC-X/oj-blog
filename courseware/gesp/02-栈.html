@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP六级培训 · 栈（Stack）</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h1 .sub{display:block;font-size:1rem;font-weight:400;color:var(--text-secondary);margin-top:6px}
+.subtitle-main{color:var(--text-tertiary);font-size:15px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);padding-left:16px;border-left:4px solid var(--primary);border-bottom:none;padding-bottom:0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}
+.card p:last-child{margin-bottom:0}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.quote-box .icon{font-size:18px;margin-right:8px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;background:linear-gradient(135deg,var(--primary-light),#fff);font-size:14.5px}.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.highlight-box p:last-child{margin-bottom:0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.think-box p:last-child{margin-bottom:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}.warning-box p:last-child{margin-bottom:0}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}.tip-box p:last-child{margin-bottom:0}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+table.compact td,table.compact th{padding:7px 10px;font-size:13px}table.striped tbody tr:nth-child(even){background:var(--gray-50)}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.inline-code{font-family:var(--font-mono);background:var(--surface-alt);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);border:1px solid var(--border-light)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+hr.divider.dashed{border-top-style:dashed}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.goal-box ul{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}
+.tag-green{background:var(--success-light);color:var(--success)}
+.tag-red{background:var(--danger-light);color:var(--danger)}
+.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:600px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+.vis{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.vis svg{max-width:100%;height:auto}
+.vis-caption{font-size:13px;color:var(--text-tertiary);margin-top:8px}
+@media(max-width:900px){
+nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+nav.sidebar.open{transform:translateX(0)}
+.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+main.main-content{margin-left:0;padding-top:10px}
+.content-wrapper{padding:24px 20px 60px}
+h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><span class="icon">📚</span> GESP 六级 · 栈</div>
+<div class="nav-section">
+<div class="nav-section-title">教学流程</div>
+<a class="nav-link active" href="#step1">第一步：生活引入</a>
+<a class="nav-link" href="#step2">第二步：核心概念</a>
+<a class="nav-link" href="#step3">第三步：算法/代码讲解</a>
+<a class="nav-link" href="#step4">第四步：手工模拟</a>
+<a class="nav-link" href="#step5">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">📚 GESP C++ 六级 · 栈（Stack）</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">后进先出（LIFO）— 括号匹配、表达式求值、进制转换</p>
+</div>
+
+<hr />
+
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 一、生活引入：弹夹的启发</h2>
+
+<p>想象一个手枪弹夹——子弹一颗一颗从顶部压入，但射击时，最先打出去的是<strong>最后一颗</strong>压入的子弹。先压进去的子弹反而在底部，要等上面的子弹全部射出后才能取出。</p>
+<p>这就是 <strong>后进先出（Last In, First Out，LIFO）</strong> 的典型模型。</p>
+<table class="styled-table">
+<thead>
+<tr>
+<th>生活类比</th>
+<th>栈中的对应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>压入子弹</td>
+<td>push（入栈）</td>
+</tr>
+<tr>
+<td>射出子弹</td>
+<td>pop（出栈）</td>
+</tr>
+<tr>
+<td>弹夹顶部</td>
+<td>top（栈顶）</td>
+</tr>
+<tr>
+<td>弹夹底部</td>
+<td>栈底</td>
+</tr>
+</tbody>
+</table>
+<p>其他生活中的栈：
+- <strong>浏览器的后退</strong>：你依次访问 A → B → C，点"后退"先回到 C 的上一个页面 B，再回到 A
+- <strong>撤销操作（Ctrl+Z）</strong>：最后做的操作最先被撤销
+- <strong>函数调用</strong>：函数 A 调用 B，B 调用 C，C 返回后回到 B，B 返回后回到 A</p>
+<hr />
+
+</section>
+
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 二、核心概念</h2>
+
+<h3>2.1 什么是栈</h3>
+<p><strong>栈（Stack）</strong> 是一种线性数据结构，只允许在<strong>同一端</strong>（栈顶）进行插入和删除操作。</p>
+<h3>2.2 基本原则</h3>
+<blockquote>
+<p><strong>LIFO（Last In, First Out）</strong>—— 后进先出</p>
+</blockquote>
+<p>最后进入栈的元素，最先被取出；最先进入的元素，最后被取出。</p>
+<h3>2.3 基本操作</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>操作</th>
+<th>含义</th>
+<th>时间复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="inline-code">push(x)</code></td>
+<td>将元素 x 压入栈顶</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code class="inline-code">pop()</code></td>
+<td>移除栈顶元素</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code class="inline-code">top()</code> / <code class="inline-code">peek()</code></td>
+<td>返回栈顶元素（不移除）</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code class="inline-code">empty()</code></td>
+<td>判断栈是否为空</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td><code class="inline-code">size()</code></td>
+<td>返回栈中元素个数</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h3>2.4 栈的应用场景</h3>
+<ul>
+<li>括号匹配（编译器语法检查）</li>
+<li>表达式求值（中缀转后缀）</li>
+<li>函数调用栈（递归底层实现）</li>
+<li>深度优先搜索（DFS）</li>
+<li>撤销/恢复操作</li>
+<li>十进制转二进制（除2取余倒排）</li>
+</ul>
+
+<div class="card flat">
+<div class="card-title">📋 栈操作对比总结</div>
+<table class="compact striped">
+<thead><tr><th>操作</th><th>语法</th><th>作用</th><th>时间复杂度</th></tr></thead>
+<tbody>
+<tr><td>入栈</td><td><code class="inline-code">st.push(x)</code></td><td>将 x 压入栈顶</td><td>O(1)</td></tr>
+<tr><td>出栈</td><td><code class="inline-code">st.pop()</code></td><td>移除栈顶元素（不返回值）</td><td>O(1)</td></tr>
+<tr><td>取栈顶</td><td><code class="inline-code">st.top()</code></td><td>返回栈顶元素（不移除）</td><td>O(1)</td></tr>
+<tr><td>判空</td><td><code class="inline-code">st.empty()</code></td><td>栈为空返回 true</td><td>O(1)</td></tr>
+<tr><td>大小</td><td><code class="inline-code">st.size()</code></td><td>返回元素个数</td><td>O(1)</td></tr>
+</tbody>
+</table>
+<p style="font-size:13px;color:var(--text-tertiary);margin:8px 0 0">⚠️ 注意：pop() 不返回值，必须先 top() 再 pop()。</p>
+</div>
+
+<hr />
+
+</section>
+
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 三、代码实现</h2>
+
+<h3>3.1 C++ STL stack 基本使用</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;stack&gt;
+using namespace std;
+
+int main() {
+    stack&lt;int&gt; st;
+
+    // 入栈
+    st.push(10);
+    st.push(20);
+    st.push(30);
+
+    cout &lt;&lt; "栈顶元素: " &lt;&lt; st.top() &lt;&lt; endl;  // 30
+    cout &lt;&lt; "栈的大小: " &lt;&lt; st.size() &lt;&lt; endl;  // 3
+
+    // 出栈
+    st.pop();
+    cout &lt;&lt; "出栈后栈顶: " &lt;&lt; st.top() &lt;&lt; endl;  // 20
+
+    // 遍历（依次弹出）
+    while (!st.empty()) {
+        cout &lt;&lt; st.top() &lt;&lt; " ";
+        st.pop();
+    }
+    // 输出: 20 10
+    return 0;
+}</code></pre></div>
+
+<div class="card flat" style="text-align:center">
+<div class="card-title">🎨 栈操作可视化</div>
+<svg viewBox="0 0 680 200" style="max-width:100%;height:auto;margin:10px 0">
+  <defs>
+    <linearGradient id="sg1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#4f6ef7;stop-opacity:1"/><stop offset="100%" style="stop-color:#6366f1;stop-opacity:1"/></linearGradient>
+    <linearGradient id="sg2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#10b981;stop-opacity:1"/><stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1"/></linearGradient>
+  </defs>
+  <!-- 初始栈 -->
+  <rect x="30" y="10" width="120" height="180" rx="6" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="90" y="200" text-anchor="middle" font-size="12" fill="#64748b">初始：空栈</text>
+  <!-- push(10) -->
+  <rect x="30" y="130" width="120" height="36" rx="4" fill="url(#sg1)" opacity=".85"/>
+  <text x="90" y="153" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">10</text>
+  <text x="250" y="155" text-anchor="middle" font-size="13" fill="#475569">push(10) → 10 入栈</text>
+  <path d="M160,148 Q220,148 240,148" fill="none" stroke="#4f6ef7" stroke-width="1.5" marker-end="url(#arrow1)"/>
+  <!-- push(20) -->
+  <rect x="200" y="130" width="120" height="36" rx="4" fill="url(#sg1)" opacity=".85"/>
+  <text x="260" y="153" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">20</text>
+  <rect x="200" y="90" width="120" height="36" rx="4" fill="url(#sg2)" opacity=".85"/>
+  <text x="260" y="113" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">10</text>
+  <text x="420" y="115" text-anchor="middle" font-size="13" fill="#475569">push(20) → 20 压栈顶</text>
+  <path d="M330,108 Q400,108 410,108" fill="none" stroke="#4f6ef7" stroke-width="1.5"/>
+  <!-- push(30) + pop示意 -->
+  <rect x="370" y="130" width="120" height="36" rx="4" fill="url(#sg1)" opacity=".85"/>
+  <text x="430" y="153" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">30</text>
+  <rect x="370" y="90" width="120" height="36" rx="4" fill="url(#sg2)" opacity=".85"/>
+  <text x="430" y="113" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">20</text>
+  <rect x="370" y="50" width="120" height="36" rx="4" fill="url(#sg2)" opacity=".85"/>
+  <text x="430" y="73" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">10</text>
+  <text x="570" y="73" text-anchor="middle" font-size="13" fill="#475569">栈顶→30</text>
+  <!-- pop箭头 -->
+  <path d="M500,148 Q530,148 540,148" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow2)"/>
+  <text x="560" y="153" text-anchor="middle" font-size="12" fill="#dc2626">pop()</text>
+  <text x="560" y="170" text-anchor="middle" font-size="11" fill="#64748b">移除栈顶 30</text>
+  <defs>
+    <marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4f6ef7"/></marker>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#ef4444"/></marker>
+  </defs>
+</svg>
+</div>
+
+<h3>3.2 括号匹配（完整代码）</h3>
+<p>括号匹配是栈最经典的应用。核心思想：遇到左括号入栈，遇到右括号检查栈顶是否匹配。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+using namespace std;
+
+bool isValid(string s) {
+    stack&lt;char&gt; st;
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') {
+            st.push(c);
+        } else {
+            if (st.empty()) return false;  // 右括号多余
+            char top = st.top();
+            st.pop();
+            // 检查是否匹配
+            if (c == ')' &amp;&amp; top != '(') return false;
+            if (c == ']' &amp;&amp; top != '[') return false;
+            if (c == '}' &amp;&amp; top != '{') return false;
+        }
+    }
+    return st.empty();  // 左括号多余则 false
+}
+
+int main() {
+    string s1 = "()[]{}";
+    string s2 = "([)]";
+    string s3 = "((()))";
+
+    cout &lt;&lt; s1 &lt;&lt; " -&gt; " &lt;&lt; (isValid(s1) ? "合法" : "非法") &lt;&lt; endl;
+    cout &lt;&lt; s2 &lt;&lt; " -&gt; " &lt;&lt; (isValid(s2) ? "合法" : "非法") &lt;&lt; endl;
+    cout &lt;&lt; s3 &lt;&lt; " -&gt; " &lt;&lt; (isValid(s3) ? "合法" : "非法") &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+
+<h3>3.3 十进制转二进制</h3>
+<p>原理：不断除以2取余数，最后将余数倒序输出。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;stack&gt;
+using namespace std;
+
+void decimalToBinary(int n) {
+    if (n == 0) {
+        cout &lt;&lt; 0;
+        return;
+    }
+
+    stack&lt;int&gt; st;
+    while (n &gt; 0) {
+        st.push(n % 2);  // 余数入栈
+        n /= 2;
+    }
+
+    while (!st.empty()) {
+        cout &lt;&lt; st.top();
+        st.pop();
+    }
+}
+
+int main() {
+    int n;
+    cout &lt;&lt; "请输入十进制数: ";
+    cin &gt;&gt; n;
+    cout &lt;&lt; "二进制: ";
+    decimalToBinary(n);
+    cout &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+
+<hr />
+
+</section>
+
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 四、手工模拟：push/pop 序列推演</h2>
+
+<h3>示例：依次执行以下操作</h3>
+<blockquote>
+<p>push(1) → push(2) → push(3) → pop() → push(4) → pop() → pop() → push(5)</p>
+</blockquote>
+<table class="styled-table">
+<thead>
+<tr>
+<th>步骤</th>
+<th>操作</th>
+<th>栈内容（栈顶在右）</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>push(1)</td>
+<td>[1]</td>
+<td>栈空，1入栈</td>
+</tr>
+<tr>
+<td>2</td>
+<td>push(2)</td>
+<td>[1, 2]</td>
+<td>2压入栈顶</td>
+</tr>
+<tr>
+<td>3</td>
+<td>push(3)</td>
+<td>[1, 2, 3]</td>
+<td>3压入栈顶</td>
+</tr>
+<tr>
+<td>4</td>
+<td>pop()</td>
+<td>[1, 2]</td>
+<td>弹出3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>push(4)</td>
+<td>[1, 2, 4]</td>
+<td>4压入栈顶</td>
+</tr>
+<tr>
+<td>6</td>
+<td>pop()</td>
+<td>[1, 2]</td>
+<td>弹出4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>pop()</td>
+<td>[1]</td>
+<td>弹出2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>push(5)</td>
+<td>[1, 5]</td>
+<td>5压入栈顶</td>
+</tr>
+</tbody>
+</table>
+<p><strong>最终栈内元素</strong>：<code class="inline-code">[1, 5]</code>（自底向上），栈顶为 5</p>
+<h3>判断出栈序列是否合法</h3>
+<p><strong>问题</strong>：入栈序列为 1, 2, 3, 4, 5，以下哪个出栈序列是合法的？</p>
+<table class="styled-table">
+<thead>
+<tr>
+<th>出栈序列</th>
+<th>是否合法</th>
+<th>推理</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3, 2, 1, 4, 5</td>
+<td>✅</td>
+<td>push1,push2,push3 → pop3 → pop2 → pop1 → push4 → pop4 → push5 → pop5</td>
+</tr>
+<tr>
+<td>4, 3, 5, 2, 1</td>
+<td>✅</td>
+<td>push1,push2,push3,push4 → pop4 → pop3 → push5 → pop5 → pop2 → pop1</td>
+</tr>
+<tr>
+<td>4, 2, 3, 1, 5</td>
+<td>❌</td>
+<td>4出栈时栈中为[1,2,3]→pop4后栈为[1,2,3]→下一个出2不可能，因为3在栈顶挡住了2</td>
+</tr>
+<tr>
+<td>3, 5, 1, 2, 4</td>
+<td>❌</td>
+<td>3出栈后栈为[1,2]→要出5须push4,push5→栈[1,2,4,5]→pop5→pop4→栈[1,2]→要出1不可能，1被2挡住</td>
+</tr>
+</tbody>
+</table>
+<hr />
+
+</section>
+
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 五、常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：pop 后立刻 top（空栈访问）</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">stack&lt;int&gt; st;
+st.push(1);
+st.pop();
+int x = st.top();  // ❌ 错误！栈已为空，top() 行为未定义</code></pre></div>
+<p><span class="key-point success">正确做法</span>：在访问 <code class="inline-code">top()</code> 前务必检查 <code class="inline-code">empty()</code>。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">if (!st.empty()) {
+    int x = st.top();
+}</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：pop 不返回值</div>
+<p>很多初学者认为 <code class="inline-code">pop()</code> 会返回被删除的元素，但实际上 C++ 的 <code class="inline-code">pop()</code> <strong>只删除、不返回</strong>。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">stack&lt;int&gt; st;
+st.push(42);
+// 错误写法：
+int val = st.pop();  // ❌ 编译错误，pop() 返回 void
+
+// 正确写法：
+int val = st.top();  // 先取栈顶
+st.pop();            // 再弹出</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：混淆栈和队列</div>
+<table class="compact striped" style="font-size:13px">
+<thead>
+<tr><th>特性</th><th>栈（Stack）</th><th>队列（Queue）</th></tr>
+</thead>
+<tbody>
+<tr><td>原则</td><td>LIFO（后进先出）</td><td>FIFO（先进先出）</td></tr>
+<tr><td>插入</td><td>push 到栈顶</td><td>push 到队尾</td></tr>
+<tr><td>删除</td><td>pop 从栈顶</td><td>pop 从队首</td></tr>
+<tr><td>访问</td><td>top() 返回栈顶</td><td>front() 返回队首</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 记忆口诀</div>
+<p>栈像弹夹（后进先出），队列像排队（先进先出）。</p>
+</div>
+
+</section>
+
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>9 道选择题</strong> + <strong>3 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📌 知识点一：栈的基本概念与操作</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第9题）</div>
+<p>给定一个空栈，执行以下操作序列： 操作：push(1), push(2), push(3), pop(), pop(), push(4), push(5), pop() 最终栈中的元素是什么？</p>
+
+<p>A. 1, 2</p>
+<p>B. 1, 4, 5</p>
+<p>C. 1, 2, 5</p>
+<p>D. 1, 4</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：
+1. push(1) → [1]
+2. push(2) → [1, 2]
+3. push(3) → [1, 2, 3]
+4. pop() → [1, 2]（弹出3）
+5. pop() → [1]（弹出2）
+6. push(4) → [1, 4]
+7. push(5) → [1, 4, 5]
+8. pop() → [1, 4]（弹出5）</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年6月第4题）</div>
+<p>向一个栈顶为 hs 的链式栈中插入一个指针为 s 的结点时，应执行什么操作？</p>
+
+<p>A. hs-&gt;next = s;</p>
+<p>B. s-&gt;next = hs; hs = s;</p>
+<p>C. s-&gt;next = hs-&gt;next; hs-&gt;next = s;</p>
+<p>D. s-&gt;next = hs; hs = hs-&gt;next;</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：链式栈的插入（入栈）使用头插法，新节点 s 的 next 指向当前栈顶 hs，然后更新栈顶指针为 s。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年6月第5题）</div>
+<p>在栈数据结构中，元素的添加和删除是按照什么原则进行的？</p>
+
+<p>A. 先进先出</p>
+<p>B. 先进后出</p>
+<p>C. 最小值先出</p>
+<p>D. 随机顺序</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024年9月第3题）</div>
+<p>有6个元素，按照 6,5,4,3,2,1 的顺序进入栈S，下列哪一项的出栈序列是不能出现的？</p>
+
+<p>A. 5,4,3,6,1,2</p>
+<p>B. 4,5,3,1,2,6</p>
+<p>C. 3,4,6,5,2,1</p>
+<p>D. 2,3,4,1,5,6</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：栈的入栈顺序为 6→5→4→3→2→1。C 选项 3,4,6,5,2,1 中，要弹出 6 时，6 在栈底（此时栈中从底到顶为 6,5,4），不可能在 5 之前出栈。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024年9月第4题）</div>
+<p>采用如下代码实现检查输入的字符串括号是否匹配，横线上应填入的代码是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">bool is_valid(string s) {
+    stack&lt;char&gt; st;
+    char top;
+    for (char&amp; ch : s) {
+        if (ch == '(' || ch == '{' || ch == '[') {
+            st.push(ch);
+        } else {
+            if (st.empty()) return false;
+            _____________________ // 在此处填入代码
+            if ((ch == ')' &amp;&amp; top != '(') ||
+                (ch == '}' &amp;&amp; top != '{') ||
+                (ch == ']' &amp;&amp; top != '[')) {
+                return false;
+            }
+        }
+    }
+    return st.empty();
+}</code></pre></div>
+<p>A. top = st.top(); st.pop();</p>
+<p>B. st.pop(); top = st.top();</p>
+<p>C. st.pop(); top = st.front();</p>
+<p>D. top = st.front(); st.pop();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：遇到右括号时，需先获取栈顶元素（top），再弹出（pop），然后判断是否匹配。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024年12月第4题）</div>
+<p>阅读以下代码，下面哪一项是正确的？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void processData() {
+    stack&lt;int&gt; s;
+    queue&lt;int&gt; q;
+    for (int i = 1; i &lt;= 5; ++i) { s.push(i); q.push(i); }
+    while (!s.empty()) { cout &lt;&lt; "Stack pop: " &lt;&lt; s.top() &lt;&lt; endl; s.pop(); }
+    while (!q.empty()) { cout &lt;&lt; "Queue pop: " &lt;&lt; q.front() &lt;&lt; endl; q.pop(); }
+}</code></pre></div>
+<p>A. 栈s 的输出顺序是 1 2 3 4 5，队列q 的输出顺序是 5 4 3 2 1</p>
+<p>B. 栈s 的输出顺序是 5 4 3 2 1，队列q 的输出顺序是 1 2 3 4 5</p>
+<p>C. 栈s 的输出顺序是 1 2 3 4 5，队列q 的输出顺序是 1 2 3 4 5</p>
+<p>D. 栈s 的输出顺序是 1 2 3 4 5，队列q 的输出顺序是 1 2 3 4 5，程序不会正常执行</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：栈是后进先出，所以输出 5→4→3→2→1；队列是先进先出，所以输出 1→2→3→4→5。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2025年3月第14题）</div>
+<p>以下代码用于检查字符串中的括号是否匹配，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">bool isBalanced(string s) {
+    stack&lt;char&gt; st;
+    for (char c : s) {
+        if (c == '(' || c == '[' || c == '{') {
+            st.push(c);
+        } else {
+            if (st.empty()) return false;
+            char top = st.top(); st.pop();
+            if ((c == ')' &amp;&amp; top != '(') || ...) return false;
+        }
+    }
+    return ________________; // 在此处填入代码
+}</code></pre></div>
+<p>A. true</p>
+<p>B. false</p>
+<p>C. st.empty()</p>
+<p>D. !st.empty()</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：遍历结束后，如果栈为空说明所有括号都匹配成功，返回 true；否则返回 false。因此应返回 `st.empty()`。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025年12月第4题）</div>
+<p>某文本编辑器把用户输入的字符依次压入栈 S。用户依次输入 A, B, C, D 后，用户按了两次撤销。此时栈从栈底到栈顶的内容是：</p>
+
+<p>A. A B</p>
+<p>B. A B C</p>
+<p>C. A B D</p>
+<p>D. B C</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：依次入栈 A,B,C,D；第一次撤销弹出 D，栈为 [A,B,C]；第二次撤销弹出 C，栈为 [A,B]。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年3月第9题）</div>
+<p>栈的基本操作包括入栈（push）和出栈（pop）。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年12月第3题）</div>
+<p>栈中元素的插入和删除操作都在栈的顶端进行，所以方便用单向链表实现。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年9月第4题）</div>
+<p>在 C++ STL 中，栈（std::stack）的 pop 操作返回栈顶元素并移除它。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：C++ 中 stack::pop() 只移除元素，不返回元素。要获取栈顶元素需使用 top()。</div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--accent);background:linear-gradient(135deg,var(--accent-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--accent-dark)">🔢 知识点二：栈的应用 — 十进制转二进制</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年6月第6题）</div>
+<p>要实现将一个输入的十进制正整数转化为二进制表示，下面横线上应填入的代码是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">stack&lt;int&gt; ten2bin(int n) {
+    stack&lt;int&gt; st;
+    int r, m;
+    r = n % 2; m = n / 2; st.push(r);
+    while (m != 1) {
+        r = m % 2; st.push(r); m = m / 2;
+    }
+    st.push(m);
+    return st;
+}
+int main() {
+    int n; cin &gt;&gt; n;
+    stack&lt;int&gt; bin; bin = ten2bin(n);
+    while (!bin.empty()) {
+        _____________________ // 在此处填入代码
+    }
+    return 0;
+}</code></pre></div>
+<p>A. cout &lt;&lt; bin.top(); bin.pop();</p>
+<p>B. bin.pop(); cout &lt;&lt; bin.top();</p>
+<p>C. cout &lt;&lt; bin.back(); bin.pop();</p>
+<p>D. cout &lt;&lt; bin.front(); bin.pop();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：栈的输出顺序要求先取栈顶（top）再弹出（pop），这样才能得到正确的二进制表示。</div></div>
+</div>
+
+</section>
+
+
+<section id="cheatsheet">
+<hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 本讲知识速查卡</h2>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>一句话总结</th><th>常考形式</th></tr></thead>
+<tbody>
+<tr><td>栈的原则</td><td>LIFO（后进先出）</td><td>概念选择</td></tr>
+<tr><td>push / pop</td><td>push 入栈，pop 出栈（不返回值）</td><td>代码填空</td></tr>
+<tr><td>top</td><td>获取栈顶元素（不弹出）</td><td>代码填空</td></tr>
+<tr><td>括号匹配</td><td>左括号入栈，右括号匹配后弹出</td><td>代码填空/完整代码</td></tr>
+<tr><td>十进制转二进制</td><td>除2取余，余数入栈，倒序输出</td><td>代码填空</td></tr>
+<tr><td>空栈检查</td><td>pop/top 前必须判空</td><td>判断</td></tr>
+</tbody>
+</table>
+</div>
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">下一讲预告：队列（Queue）——先进先出，循环队列判空判满</p>
+</section>
+</div>
+</main>
+<button class="back-to-top" id="backToTop">↑</button>
+<script>
+const navLinks=document.querySelectorAll('.nav-link');
+const secs=[];
+navLinks.forEach(l=>{const h=l.getAttribute('href');if(h&&h.startsWith('#')){const e=document.getElementById(h.slice(1));if(e)secs.push({el:e,link:l})}});
+function updateActive(){const sy=window.scrollY+80;let cur=secs[0];for(const s of secs){if(s.el.offsetTop<=sy)cur=s}for(const s of secs)s.link.classList.remove('active');if(cur)cur.link.classList.add('active')}
+window.addEventListener('scroll',updateActive);window.addEventListener('load',updateActive);
+const b=document.getElementById('backToTop');
+window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>500));
+b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const mt=document.getElementById('menuToggle'),sb=document.getElementById('sidebar');
+mt.addEventListener('click',()=>{sb.classList.toggle('open');mt.textContent=sb.classList.contains('open')?'✕':'☰'});
+navLinks.forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900){sb.classList.remove('open');mt.textContent='☰'}})});
+function toggleAnswer(b){const c=b.nextElementSibling;const o=c.classList.contains('open');if(o){c.classList.remove('open');b.classList.remove('open');b.innerHTML='<span class=\"arrow\">▶</span> 显示答案'}else{c.classList.add('open');b.classList.add('open');b.innerHTML='<span class=\"arrow\">▶</span> 隐藏答案'}}
+
+// Card Color Cycling
+document.addEventListener('DOMContentLoaded',function(){const colors=['purple','pink','teal','indigo','orange'];const cards=document.querySelectorAll('#step6>.card.success');cards.forEach((card,i)=>{card.classList.remove('success');card.classList.add(colors[i%colors.length])})});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</div></main>
+</body>
+</html>

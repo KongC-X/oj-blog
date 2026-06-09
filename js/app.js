@@ -25,6 +25,14 @@
   let searchQuery = '';
   let userRole = null;
 
+  // ========== 私有内容密码门 ==========
+  // 课件和模版库的密码（SHA-256 哈希），默认为 oi2024pro
+  // 如需修改：echo -n "你的密码" | shasum -a 256 获得哈希值
+  const PRIVATE_PASSWORD_HASH = '15a8003ca47b27ce24f97e6fee6cfb855c1df58b9280c3f6ca1889af4d325510'; // SHA-256 of oi2024pro
+  let privateUnlocked = false; // 私有区解锁状态
+  let coursewareData = null;   // 课件索引缓存
+  let templateData = null;     // 模版索引缓存
+
   // ========== Init ==========
   async function init() {
     initTheme();
@@ -292,6 +300,8 @@
           <a class="nav-link" href="#/tags" data-nav>标签分类</a>
           ${admin ? `<a class="nav-link" href="#/guide" data-nav>使用指南</a>
           <a class="nav-link nav-link-update" href="#/update" data-nav>更新题解</a>` : ''}
+          <a class="nav-link nav-link-locked" href="#/courseware" data-nav title="需要密码">🔒 课件</a>
+          <a class="nav-link nav-link-locked" href="#/templates" data-nav title="需要密码">🔒 模版</a>
           <a class="nav-link" href="#/about" data-nav>关于网站</a>
         </nav>
         <div class="nav-actions" id="navActions">
@@ -440,6 +450,14 @@
       bindUpdateEvents();
     } else if (hash === '#/about') {
       app.innerHTML = renderAbout();
+    } else if (hash === '#/courseware') {
+      app.innerHTML = renderCoursewarePage();
+    } else if (hash === '#/templates') {
+      app.innerHTML = renderTemplatesPage();
+    } else if (hash.startsWith('#/template/')) {
+      if (!privateUnlocked) { app.innerHTML = renderAuthGate(hash); setTimeout(() => bindAuthGateEvents(hash), 0); return; }
+      const tname = decodeURIComponent(hash.replace('#/template/', ''));
+      app.innerHTML = renderTemplateDetail(tname);
     } else {
       app.innerHTML = render404();
     }
@@ -839,7 +857,199 @@
     update();
   }
 
-  // ========== 骨架屏（登录后立即显示，数据加载完成后替换） ==========
+  // ========== 私有内容密码门 ==========
+  function renderAuthGate(returnHash) {
+    return `
+      <div class="page">
+        <div class="auth-screen">
+          <div class="auth-card">
+            <div class="auth-icon" style="font-size:2rem;margin-bottom:0.5rem;">🔐</div>
+            <h2 class="auth-title">私有内容</h2>
+            <p class="auth-subtitle">课件与代码模版需要密码才能访问</p>
+            <input type="password" class="auth-input" id="privatePassword"
+                   placeholder="请输入密码" autocomplete="off">
+            <button class="auth-btn" id="privateUnlockBtn">解锁</button>
+            <div class="auth-error" id="privateError"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function bindAuthGateEvents(returnHash) {
+    const input = document.getElementById('privatePassword');
+    const btn = document.getElementById('privateUnlockBtn');
+    const error = document.getElementById('privateError');
+    if (!input || !btn) return;
+
+    async function tryUnlock() {
+      const pw = input.value;
+      if (!pw) { error.textContent = '请输入密码'; return; }
+      const hashBuf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+      const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+      if (hashHex === PRIVATE_PASSWORD_HASH) {
+        privateUnlocked = true;
+        location.hash = returnHash;
+      } else {
+        error.textContent = '密码错误';
+        input.classList.add('shake');
+        setTimeout(() => input.classList.remove('shake'), 400);
+      }
+    }
+
+    btn.addEventListener('click', tryUnlock);
+    input.addEventListener('keydown', (e) => {
+      error.textContent = '';
+      if (e.key === 'Enter') tryUnlock();
+    });
+    input.focus();
+  }
+
+  // ========== 课件页面 ==========
+  async function loadCoursewareData() {
+    if (coursewareData) return coursewareData;
+    try {
+      const res = await fetch(API_BASE + '/data/courseware.json');
+      coursewareData = await res.json();
+      return coursewareData;
+    } catch { return null; }
+  }
+
+  function renderCoursewarePage() {
+    if (!privateUnlocked) {
+      setTimeout(() => bindAuthGateEvents('#/courseware'), 0);
+      return renderAuthGate('#/courseware');
+    }
+
+    if (!coursewareData) {
+      loadCoursewareData().then(() => {
+        document.getElementById('app').innerHTML = renderCoursewarePage();
+      });
+      return '<div style="text-align:center;padding:80px;color:var(--text-secondary);">加载课件列表...</div>';
+    }
+
+    function renderSection(data, title) {
+      if (!data || !data.topic) return '';
+      const items = data.items || [];
+      return `
+        <div class="cw-section">
+          <h3 class="cw-section-title">${title}</h3>
+          <div class="cw-grid">
+            ${items.map(item => `
+              <a class="cw-card" href="courseware/${item.category === 'GESP六级' ? 'gesp' : 'csp'}/${item.file}" target="_blank">
+                <div class="cw-card-num">${item.topicNum}</div>
+                <div class="cw-card-title">${item.title}</div>
+              </a>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // CSP 按专题分组，GESP 直接显示
+    const cspSections = (coursewareData.csp || []).map(group => 
+      renderSection(group, `${group.topic} (${group.items.length}讲)`)
+    ).join('');
+
+    const gespSection = coursewareData.gesp && coursewareData.gesp.items ? 
+      renderSection(coursewareData.gesp, `GESP C++六级 (${coursewareData.gesp.items.length}讲)`) : '';
+
+    return `
+      <div class="page">
+        <div class="cw-container">
+          <h2 class="cw-page-title">📚 课件</h2>
+          <p class="cw-page-desc">CSP / GESP 教案课件，点击即可打开（新标签页）</p>
+          ${cspSections}
+          ${gespSection}
+        </div>
+      </div>
+    `;
+  }
+
+  // ========== 模版库页面 ==========
+  async function loadTemplateData() {
+    if (templateData) return templateData;
+    try {
+      const res = await fetch(API_BASE + '/data/templates.json');
+      templateData = await res.json();
+      return templateData;
+    } catch { return []; }
+  }
+
+  function renderTemplatesPage() {
+    if (!privateUnlocked) {
+      setTimeout(() => bindAuthGateEvents('#/templates'), 0);
+      return renderAuthGate('#/templates');
+    }
+
+    if (!templateData) {
+      loadTemplateData().then(() => {
+        document.getElementById('app').innerHTML = renderTemplatesPage();
+      });
+      return '<div style="text-align:center;padding:80px;color:var(--text-secondary);">加载模版列表...</div>';
+    }
+
+    // 按分类分组
+    const categories = {};
+    templateData.forEach(t => {
+      const cat = t.category || '其他';
+      if (!categories[cat]) categories[cat] = [];
+      categories[cat].push(t);
+    });
+
+    return `
+      <div class="page">
+        <div class="tmpl-container">
+          <h2 class="tmpl-page-title">📝 代码模版库</h2>
+          <p class="tmpl-page-desc">常用算法与数据结构的代码模版，点击查看详情</p>
+          ${Object.entries(categories).map(([cat, items]) => `
+            <div class="tmpl-section">
+              <h3 class="tmpl-section-title">${cat}</h3>
+              <div class="tmpl-grid">
+                ${items.map(t => `
+                  <a class="tmpl-card" href="#/template/${encodeURIComponent(t.name)}" data-nav>
+                    <div class="tmpl-card-name">${t.name}</div>
+                    <div class="tmpl-card-tags">${(t.tags || []).map(tag => `<span class="tmpl-tag">${tag}</span>`).join('')}</div>
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ========== 模版详情页 ==========
+  async function renderTemplateDetail(name) {
+    try {
+      const res = await fetch(API_BASE + '/templates/' + encodeURIComponent(name) + '.md');
+      if (!res.ok) return '<div class="page" style="text-align:center;padding:80px;color:var(--text-secondary);">模版未找到</div>';
+      const md = await res.text();
+      // 简单渲染：去掉 front matter，Markdown 转 HTML
+      let content = md.replace(/^---[\s\S]*?---\n/, '');
+      // 转代码块
+      content = content.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => 
+        '<pre><code class="language-' + (lang || 'cpp') + '">' + escapeHtml(code.trim()) + '</code></pre>');
+      // 转标题
+      content = content.replace(/^# (.+)$/gm, '<h2 class="tmpl-detail-title">$1</h2>');
+      content = content.replace(/^## (.+)$/gm, '<h3 class="tmpl-detail-subtitle">$1</h3>');
+      // 转普通文字
+      content = content.replace(/\n\n/g, '</p><p>');
+      content = '<p>' + content + '</p>';
+      return `
+        <div class="page">
+          <div class="tmpl-detail-container">
+            <a class="tmpl-back" href="#/templates">← 返回模版库</a>
+            ${content}
+          </div>
+        </div>
+      `;
+    } catch {
+      return '<div class="page" style="text-align:center;padding:80px;color:var(--text-secondary);">加载失败</div>';
+    }
+  }
+
   // ========== Pages ==========
 
   function renderHome() {

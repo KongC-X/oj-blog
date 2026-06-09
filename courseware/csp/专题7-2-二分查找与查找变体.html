@@ -1,0 +1,1802 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 7.2 二分查找与查找变体</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.obj-warn{font-size:.78rem;color:#dc2626;background:#fef2f2;padding:4px 10px;border-radius:6px;margin-top:8px;display:inline-block}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.code-block .blank{display:inline-block;min-width:50px;border-bottom:2px solid #fbbf24;color:#fbbf24;text-align:center;font-weight:600}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.judge{background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.answer-box .explain .ok{display:inline-block;padding:0 6px;background:var(--success-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--success-dark);font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.step-box .step .sn.accent{background:var(--accent-dark)}.step-box .step .sn.green{background:var(--success-dark)}.step-box .step .sn.red{background:var(--danger)}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📖</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题七 · 程序完善真题解析</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 知识精讲</div>
+<a class="nav-link" href="#s1">标准二分查找模板</a>
+<a class="nav-link" href="#s2">缺失元素查找</a>
+<a class="nav-link" href="#s3">完全平方数判断</a>
+<a class="nav-link" href="#s4">二分答案模板</a>
+
+<div class="nav-section">2 · 真题精讲</div>
+<a class="nav-link" href="#s5">2022 完善 1：缺失元素</a>
+<a class="nav-link" href="#s6">2023 完善 1：缺失元素变体</a>
+<a class="nav-link" href="#s7">2024 完善 1：完全平方数</a>
+
+<div class="nav-section">3 · 实战演练</div>
+<a class="nav-link" href="#s8">📝 10 道精选填空练习</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 二分查找速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题七 · 程序完善真题解析</a> / 7.2</div>
+    <h1>二分查找与查找变体</h1>
+    <p class="subtitle">标准二分模板 · 缺失元素查找 · 完全平方数判断 · 二分答案 · 8~10 道精选填空练习</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2.5 课时</span>
+      <span class="meta-tag hot">🔥 二分查找类：近 3 年必考题型</span>
+      <span class="meta-tag exam">📖 2022/2023/2024 真题精讲</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 7 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 标准二分查找模板：左闭右闭区间，<span class="c">l=0, r=n-1, while(l&lt;=r)</span></span>
+      <span class="item">✅ 缺失元素查找（2022/2023 完善 1）：<span class="c">while(l&lt;r), mid=(l+r)/2</span></span>
+      <span class="item">✅ 完全平方数判断（2024 完善 1）：二分查找平方根</span>
+      <span class="item">✅ 二分答案模板：最大值最小化、最小值最大化</span>
+      <span class="item">✅ 边界条件辨析：<span class="c">l&lt;r</span> vs <span class="c">l&lt;=r</span> 的适用场景</span>
+      <span class="item">✅ 中点计算防溢出：<span class="c">mid = l + (r-l)/2</span></span>
+      <span class="item">✅ 10 道精选填空实战（3 道真题 + 7 道模拟题）</span>
+    </div>
+    <div class="obj-warn">⚠️ 建议先掌握基础算法（数组、循环）再学习本节</div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、标准二分查找模板 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>标准二分查找模板</h2>
+
+  <p class="kp-text">
+    <strong class="hl">二分查找</strong>（Binary Search）是在<strong>有序数组</strong>中查找目标值的高效算法，
+    时间复杂度 <span class="c">O(log n)</span>，是 CSP-J 完善程序题<strong>最高频</strong>的算法考点之一。
+  </p>
+
+  <h3 class="kp-title">1.1 左闭右闭区间模板（<span class="c">[l, r]</span>）</h3>
+
+  <p class="kp-text">
+    这是最标准、最常用的二分查找写法。搜索区间包含左右两个端点，循环条件为 <span class="c">l &lt;= r</span>。
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 标准二分查找模板：在升序数组 a 中查找 target</span>
+<span class="cm">// 返回下标（存在）或 -1（不存在）</span>
+<span class="kw">int</span> binarySearch(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n - <span class="num">1</span>;         <span class="cm">// 闭区间 [l, r]</span>
+  <span class="kw">while</span> (l &lt;= r) {                <span class="cm">// 区间非空</span>
+    <span class="kw">int</span> mid = l + (r - l) / <span class="num">2</span>;  <span class="cm">// 防溢出中点</span>
+    <span class="kw">if</span> (a[mid] == target)
+      <span class="kw">return</span> mid;               <span class="cm">// 找到目标</span>
+    <span class="kw">else</span> <span class="kw">if</span> (a[mid] &lt; target)
+      l = mid + <span class="num">1</span>;               <span class="cm">// 目标在右半部分</span>
+    <span class="kw">else</span>
+      r = mid - <span class="num">1</span>;               <span class="cm">// 目标在左半部分</span>
+  }
+  <span class="kw">return</span> -<span class="num">1</span>;                     <span class="cm">// 未找到</span>
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">关键要点</div>
+    <p class="kp-text">
+      <strong>① 区间表示：</strong><span class="c">l = 0, r = n-1</span>，数组下标范围 <span class="c">[0, n-1]</span>。<br>
+      <strong>② 循环条件：</strong><span class="c">l &lt;= r</span>——当 <span class="c">l &gt; r</span> 时区间为空，说明未找到。<br>
+      <strong>③ 中点计算：</strong><span class="c">mid = l + (r - l) / 2</span>——防止 <span class="c">(l+r)/2</span> 整数溢出（CSP-J 不常考溢出，但这是规范写法）。<br>
+      <strong>④ 边界更新：</strong>每次排除 <span class="c">mid</span>，新区间不含 <span class="c">mid</span>：<span class="c">l = mid+1</span> 或 <span class="c">r = mid-1</span>。
+    </p>
+  </div>
+
+  <h3 class="kp-title">1.2 左闭右开区间模板（<span class="c">[l, r)</span>）</h3>
+
+  <p class="kp-text">
+    另一种常见写法，搜索区间左闭右开，循环条件为 <span class="c">l &lt; r</span>，常用于 STL 的 <span class="c">lower_bound</span> 实现。
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 左闭右开写法：lower_bound 风格</span>
+<span class="cm">// 返回第一个 >= target 的元素下标</span>
+<span class="kw">int</span> lowerBound(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n;                <span class="cm">// 区间 [l, r)</span>
+  <span class="kw">while</span> (l &lt; r) {
+    <span class="kw">int</span> mid = l + (r - l) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] &lt; target)
+      l = mid + <span class="num">1</span>;               <span class="cm">// mid 在左边</span>
+    <span class="kw">else</span>
+      r = mid;                     <span class="cm">// mid 可能是答案，保留</span>
+  }
+  <span class="kw">return</span> l;                       <span class="cm">// l == r，即答案位置</span>
+}</div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 两种模板的区别</div>
+    <p class="kp-text">
+      <strong><span class="c">l &lt;= r</span>（左闭右闭）：</strong><br>
+      &nbsp;&nbsp;• r 初值为 <span class="c">n-1</span>，更新时 <span class="c">r = mid-1</span><br>
+      &nbsp;&nbsp;• 循环结束后 <span class="c">l &gt; r</span>，<span class="c">l</span> 是第一个大于 target 的位置<br><br>
+      <strong><span class="c">l &lt; r</span>（左闭右开）：</strong><br>
+      &nbsp;&nbsp;• r 初值为 <span class="c">n</span>，更新时 <span class="c">r = mid</span><br>
+      &nbsp;&nbsp;• 循环结束后 <span class="c">l == r</span>，就是答案位置<br><br>
+      <strong>易错点：</strong>模板混用是二分查找最常见的错误！<span class="c">l&lt;=r</span> 时用 <span class="c">r=mid</span> 会死循环，
+      <span class="c">l&lt;r</span> 时用 <span class="c">r=mid-1</span> 可能漏掉答案。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、缺失元素查找（二分变体） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>缺失元素查找（二分变体）</h2>
+
+  <p class="kp-text">
+    <strong class="hl">缺失元素查找</strong>是 2022 年和 2023 年 CSP-J 完善程序第一题的共同考点。
+    它利用二分查找的思想，在"有序数组中寻找<strong>第一个异常位置</strong>"。
+  </p>
+
+  <h3 class="kp-title">2.1 问题模型</h3>
+
+  <p class="kp-text">
+    给定一个长度为 <span class="c">n</span> 的有序数组 <span class="c">a</span>，正常情况下数组应该是
+    <span class="c">0, 1, 2, ..., n-1</span>（或从 1 开始），但其中<strong>缺失了一个元素</strong>，
+    后续元素依次前移（或有一个元素被替换）。我们要找的就是这个缺失的元素。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">核心规律</div>
+    <p class="kp-text">
+      对于索引 <span class="c">i</span>：<br>
+      &nbsp;&nbsp;• 如果 <span class="c">a[i] == i</span>（或 <span class="c">a[i] == i+1</span>），说明 <span class="c">i</span> 之前没有缺失元素。<br>
+      &nbsp;&nbsp;• 如果 <span class="c">a[i] &gt; i</span>（偏差），说明缺失元素在 <span class="c">i</span> 的左边。<br><br>
+      利用这个<strong>偏差性质</strong>，可以用二分查找在 <span class="c">O(log n)</span> 时间内找到缺失位置。
+    </p>
+  </div>
+
+  <h3 class="kp-title">2.2 标准缺失元素查找代码</h3>
+
+  <div class="code-block">
+<span class="cm">// 在长度为 n 的升序数组 a 中寻找缺失的元素</span>
+<span class="cm">// 正常情况 a[i] 应等于 i + start，其中 start 是起始值</span>
+<span class="cm">// 返回缺失的那个元素值</span>
+<span class="kw">int</span> findMissing(<span class="kw">int</span> a[], <span class="kw">int</span> n) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n;
+  <span class="kw">while</span> (l &lt; r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] == mid)      <span class="cm">// 左侧完整，缺失在右边</span>
+      l = mid + <span class="num">1</span>;
+    <span class="kw">else</span>                      <span class="cm">// a[mid] > mid，缺失在左边</span>
+      r = mid;
+  }
+  <span class="kw">return</span> l;                    <span class="cm">// 缺失的元素值</span>
+}</div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 与标准二分查找的区别</div>
+    <p class="kp-text">
+      <strong>区别 1：循环条件</strong>——缺失元素查找通常用 <span class="c">l &lt; r</span>，而不是 <span class="c">l &lt;= r</span>。<br>
+      <strong>区别 2：相等时的处理</strong>——<span class="c">a[mid] == value</span> 时说明左侧全部正确，缺失在右侧 → <span class="c">l = mid + 1</span>。<br>
+      <strong>区别 3：不相等时的处理</strong>——<span class="c">a[mid] != value</span> 时说明这里已有偏差，缺失可能在左侧或就在 mid → <span class="c">r = mid</span>。<br>
+      <strong>区别 4：返回结果</strong>——循环结束时 <span class="c">l == r</span>，这个位置就是缺失元素的值。
+    </p>
+  </div>
+
+  <div class="quote-box">
+    <strong>📌 记忆口诀：</strong>"相等右移，不等左靠，循环一出，答案就到。"
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、完全平方数判断 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>完全平方数判断（二分查找平方根）</h2>
+
+  <p class="kp-text">
+    <strong class="hl">完全平方数判断</strong>是 2024 年 CSP-J 完善程序第一题的考点。
+    核心思路：在 <span class="c">[1, n]</span> 范围内二分查找 <span class="c">sqrt(n)</span>，
+    判断是否存在整数 <span class="c">m</span> 使得 <span class="c">m * m == n</span>。
+  </p>
+
+  <h3 class="kp-title">3.1 算法思路</h3>
+
+  <p class="kp-text">
+    对于一个正整数 <span class="c">n</span>，如果它是完全平方数，则存在整数 <span class="c">m</span> 满足
+    <span class="c">m * m == n</span>。由于 <span class="c">m</span> 一定在 <span class="c">[1, n]</span> 范围内，
+    我们可以在这个区间上使用二分查找：
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 判断正整数 n 是否为完全平方数</span>
+<span class="kw">bool</span> isPerfectSquare(<span class="kw">int</span> n) {
+  <span class="kw">if</span> (n &lt; <span class="num">1</span>) <span class="kw">return</span> <span class="kw">false</span>;
+  <span class="kw">int</span> l = <span class="num">1</span>, r = n;
+  <span class="kw">while</span> (l &lt;= r) {
+    <span class="kw">int</span> mid = l + (r - l) / <span class="num">2</span>;
+    <span class="kw">if</span> (mid == n / mid &amp;&amp; n % mid == <span class="num">0</span>)  <span class="cm">// mid * mid == n</span>
+      <span class="kw">return</span> <span class="kw">true</span>;
+    <span class="kw">else</span> <span class="kw">if</span> (mid &lt; n / mid)              <span class="cm">// mid * mid &lt; n</span>
+      l = mid + <span class="num">1</span>;
+    <span class="kw">else</span>
+      r = mid - <span class="num">1</span>;
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}</div>
+
+  <div class="card primary">
+    <div class="card-title">边界判断条件辨析</div>
+    <p class="kp-text">
+      本题的关键在于<strong>边界判断条件</strong>。以下是三种常见的判断方式：<br><br>
+      <strong>方式一（推荐）：</strong><span class="c">if (mid * mid == n)</span>——最直观，但 <span class="c">mid * mid</span> 可能溢出 int 范围。<br>
+      <strong>方式二（安全）：</strong><span class="c">if (mid == n / mid &amp;&amp; n % mid == 0)</span>——避免溢出，CSP-J 常用此写法。<br>
+      <strong>方式三（变体）：</strong><span class="c">if (mid * mid &lt;= n) l = mid + 1; else r = mid - 1;</span>——最终判断 <span class="c">l-1</span> 的平方是否为 n。<br><br>
+      <strong>CSP-J 易考形式：</strong>用 <span class="c">mid * mid &lt;= n</span> 作为左移条件，
+      循环结束后检查 <span class="c">l-1</span> 或 <span class="c">r</span> 的平方是否等于 n。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、二分答案模板 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>二分答案模板</h2>
+
+  <p class="kp-text">
+    <strong class="hl">二分答案</strong>（Binary Search on Answer）不是直接在数组上查找元素，
+    而是在<strong>答案的可能范围</strong>内进行二分，每次用 <span class="c">check(mid)</span> 函数判断
+    当前答案是否可行，然后调整上下界。
+  </p>
+
+  <h3 class="kp-title">4.1 最大值最小化模板</h3>
+
+  <p class="kp-text">
+    典型问题：将数组分成 k 段，使得各段和的最大值最小。
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 二分答案：最大值最小化模板</span>
+<span class="kw">int</span> l = <span class="num">0</span>, r = sum;              <span class="cm">// 答案在 [0, sum] 之间</span>
+<span class="kw">while</span> (l &lt; r) {
+  <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+  <span class="kw">if</span> (check(mid))              <span class="cm">// mid 作为最大值是可行的</span>
+    r = mid;                     <span class="cm">// 尝试更小的值</span>
+  <span class="kw">else</span>
+    l = mid + <span class="num">1</span>;                 <span class="cm">// mid 不可行，需要更大的值</span>
+}
+cout &lt;&lt; l;                       <span class="cm">// 最小的可行值</span></div>
+
+  <h3 class="kp-title">4.2 最小值最大化模板</h3>
+
+  <p class="kp-text">
+    典型问题：在直线上放置 k 个点，使相邻点之间最小距离最大。
+  </p>
+
+  <div class="code-block">
+<span class="cm">// 二分答案：最小值最大化模板</span>
+<span class="kw">int</span> l = <span class="num">1</span>, r = maxDist;
+<span class="kw">while</span> (l &lt; r) {
+  <span class="kw">int</span> mid = (l + r + <span class="num">1</span>) / <span class="num">2</span>;  <span class="cm">// 向上取整，避免死循环</span>
+  <span class="kw">if</span> (check(mid))              <span class="cm">// mid 作为最小值是可行的</span>
+    l = mid;                     <span class="cm">// 尝试更大的值</span>
+  <span class="kw">else</span>
+    r = mid - <span class="num">1</span>;                 <span class="cm">// mid 不可行，需要更小的值</span>
+}
+cout &lt;&lt; l;                       <span class="cm">// 最大的可行值</span></div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 二分答案死循环陷阱</div>
+    <p class="kp-text">
+      <strong>最小值最大化</strong>中，<span class="c">mid = (l + r + 1) / 2</span> 必须<strong>向上取整</strong>，
+      否则当 <span class="c">l + 1 == r</span> 且 <span class="c">check(l) == true</span> 时，
+      <span class="c">mid</span> 会等于 <span class="c">l</span>，导致 <span class="c">l = mid = l</span>，陷入<strong>死循环</strong>。<br><br>
+      <strong>记忆技巧：</strong><br>
+      &nbsp;&nbsp;• 最大值最小化（求最小可行值）：<span class="c">mid = (l+r)/2</span>，<span class="c">if(ok) r=mid else l=mid+1</span><br>
+      &nbsp;&nbsp;• 最小值最大化（求最大可行值）：<span class="c">mid = (l+r+1)/2</span>，<span class="c">if(ok) l=mid else r=mid-1</span>
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 五、2022 完善 1：缺失元素查找（真题精讲） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">📝</span>2022 完善 1：缺失元素查找（真题）</h2>
+
+  <p class="kp-text">
+    以下程序改编自 2022 年 CSP-J 初赛完善程序第一题。数组 <span class="c">a</span>
+    包含从 <span class="c">0</span> 开始的 <span class="c">n</span> 个<strong>互不相同</strong>且<strong>升序排列</strong>的整数，
+    但其中有<strong>一个缺失</strong>。例如 <span class="c">a = [0, 1, 3, 4]</span>，缺失的元素是 <span class="c">2</span>。
+    请补充代码，用二分查找找出缺失的元素。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 2022 CSP-J 真题 · 完善 1</span>
+      <span>考：while(l &lt; r) 缺失元素二分查找</span>
+    </div>
+    <div class="exam-q">
+      <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// 2022 CSP-J 完善程序 (1) — 缺失元素查找</span>
+<span class="cm">// 数组 a[0..n-1] 包含 n 个互不相同的升序整数，</span>
+<span class="cm">// 其中缺失了一个元素，用二分查找找出缺失的元素</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> std;
+<span class="kw">int</span> main() {
+  <span class="kw">int</span> n;
+  cin &gt;&gt; n;
+  <span class="kw">int</span> a[n];
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+  <span class="kw">int</span> l = <span class="num">0</span>, r = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> mid)
+      l = mid <span class="blank">④</span>;
+    <span class="kw">else</span>
+      r = <span class="blank">⑤</span>;
+  }
+  cout &lt;&lt; l;
+  <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n - 1</div>
+      <div class="opt"><span class="letter">B</span> n</div>
+      <div class="opt"><span class="letter">C</span> n + 1</div>
+      <div class="opt"><span class="letter">D</span> n - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ==</div>
+      <div class="opt"><span class="letter">B</span> !=</div>
+      <div class="opt"><span class="letter">C</span> &lt;</div>
+      <div class="opt"><span class="letter">D</span> &gt;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid - 1</div>
+      <div class="opt"><span class="letter">B</span> mid + 1</div>
+      <div class="opt"><span class="letter">C</span> mid</div>
+      <div class="opt"><span class="letter">D</span> l + 1</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2022')">👁 显示答案</button>
+    <div class="answer-box" id="q2022">
+      <div class="ans">✅ 正确答案：① A (n-1) · ② A (&lt;) · ③ A (==) · ④ B (+1) · ⑤ C (mid)</div>
+      <div class="explain">
+        <strong>逐空解析：</strong><br><br>
+        <strong>空 ①：r 的初值</strong><br>
+        &nbsp;&nbsp;• 本题使用 <span class="c">while(l &lt; r)</span>（左闭右开风格）还是 <span class="c">while(l &lt;= r)</span>（左闭右闭风格）？<br>
+        &nbsp;&nbsp;• 看空 ④ 和 ⑤：<span class="c">l = mid + 1</span> 和 <span class="c">r = mid</span>（保留 mid）。<br>
+        &nbsp;&nbsp;• 由于 <span class="c">r = mid</span> 保留了 mid，说明是<strong>左闭右开</strong>写法，r 初始化为 <span class="c">n-1</span>。<br>
+        &nbsp;&nbsp;• 注意：左闭右开通常 <span class="c">r = n</span>，但因为本题特殊边界设置，<span class="c">r = n-1</span> 也是可行的。<br>
+        &nbsp;&nbsp;• 选 A（<span class="c">n - 1</span>）。<br><br>
+        <strong>空 ②：循环条件</strong><br>
+        &nbsp;&nbsp;• 左闭右开写法 → <span class="c">l &lt; r</span>。<br>
+        &nbsp;&nbsp;• 选 A。<br><br>
+        <strong>空 ③：判断条件</strong><br>
+        &nbsp;&nbsp;• 如果 <span class="c">a[mid] == mid</span>，说明从 0 到 mid 都没有缺失，缺失在右侧。<br>
+        &nbsp;&nbsp;• 选 A（<span class="c">==</span>）。<br><br>
+        <strong>空 ④：左边界更新</strong><br>
+        &nbsp;&nbsp;• 当 <span class="c">a[mid] == mid</span> 时，缺失在右侧 → <span class="c">l = mid + 1</span>。<br>
+        &nbsp;&nbsp;• 选 B（<span class="c">+ 1</span>）。<br><br>
+        <strong>空 ⑤：右边界更新</strong><br>
+        &nbsp;&nbsp;• 当 <span class="c">a[mid] != mid</span>（即 a[mid] &gt; mid）时，缺失在左侧或当前位置。<br>
+        &nbsp;&nbsp;• 保留 mid：<span class="c">r = mid</span>。<br>
+        &nbsp;&nbsp;• 选 C（<span class="c">mid</span>）。<br><br>
+        <strong>模拟验证（a=[0,1,3,4], n=4）：</strong><br>
+        &nbsp;&nbsp;初始：l=0, r=3<br>
+        &nbsp;&nbsp;第1轮：mid=1, a[1]=1==1 → l=2<br>
+        &nbsp;&nbsp;第2轮：mid=(2+3)/2=2, a[2]=3!=3 → r=2<br>
+        &nbsp;&nbsp;l=2, r=2 → 退出 → 输出 2 ✅（缺失的元素就是 2）
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 六、2023 完善 1：缺失元素查找变体 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">📝</span>2023 完善 1：缺失元素查找变体（真题）</h2>
+
+  <p class="kp-text">
+    以下程序改编自 2023 年 CSP-J 初赛完善程序第一题。与 2022 年类似但做了变形：
+    数组 <span class="c">a</span> 包含从 <span class="c">1</span> 到 <span class="c">n</span> 的整数，
+    但缺失了一个且剩下的数仍按<strong>升序排列</strong>。
+    例如 <span class="c">a = [1, 2, 4, 5]</span>，缺失的元素是 <span class="c">3</span>。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 2023 CSP-J 真题 · 完善 1</span>
+      <span>考：a[mid] 与 mid+1 比较的缺失查找</span>
+    </div>
+    <div class="exam-q">
+      <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// 2023 CSP-J 完善程序 (1) — 缺失元素查找变体</span>
+<span class="cm">// 数组 a[0..n-1] 包含从 1 到 n 的互不相同的升序整数，</span>
+<span class="cm">// 但缺失了一个。用二分查找找出缺失的元素。</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> std;
+<span class="kw">int</span> main() {
+  <span class="kw">int</span> n;
+  cin &gt;&gt; n;
+  <span class="kw">int</span> a[n];
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+  <span class="kw">int</span> l = <span class="num">0</span>, r = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> mid + <span class="num">1</span>)
+      <span class="blank">④</span>;
+    <span class="kw">else</span>
+      <span class="blank">⑤</span>;
+  }
+  cout &lt;&lt; l + <span class="num">1</span>;
+  <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n - 1</div>
+      <div class="opt"><span class="letter">B</span> n</div>
+      <div class="opt"><span class="letter">C</span> n + 1</div>
+      <div class="opt"><span class="letter">D</span> n - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ==</div>
+      <div class="opt"><span class="letter">B</span> !=</div>
+      <div class="opt"><span class="letter">C</span> &lt;</div>
+      <div class="opt"><span class="letter">D</span> &gt;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> l = mid + 1</div>
+      <div class="opt"><span class="letter">B</span> l = mid</div>
+      <div class="opt"><span class="letter">C</span> r = mid - 1</div>
+      <div class="opt"><span class="letter">D</span> r = mid</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> l = mid + 1</div>
+      <div class="opt"><span class="letter">B</span> l = mid</div>
+      <div class="opt"><span class="letter">C</span> r = mid - 1</div>
+      <div class="opt"><span class="letter">D</span> r = mid</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2023')">👁 显示答案</button>
+    <div class="answer-box" id="q2023">
+      <div class="ans">✅ 正确答案：① A (n-1) · ② A (&lt;) · ③ A (==) · ④ A (l = mid + 1) · ⑤ D (r = mid)</div>
+      <div class="explain">
+        <strong>逐空解析：</strong><br><br>
+        <strong>空 ①：r 的初值</strong><br>
+        &nbsp;&nbsp;• 与 2022 年类似，左闭右开风格，<span class="c">r = n - 1</span>。<br>
+        &nbsp;&nbsp;• 选 A。<br><br>
+        <strong>空 ②：循环条件</strong><br>
+        &nbsp;&nbsp;• <span class="c">l &lt; r</span>。<br>
+        &nbsp;&nbsp;• 选 A。<br><br>
+        <strong>空 ③：判断条件</strong><br>
+        &nbsp;&nbsp;• 数组从 1 开始，所以正常情况 <span class="c">a[mid] == mid + 1</span>。<br>
+        &nbsp;&nbsp;• 如果 <span class="c">a[mid] == mid + 1</span>，说明左侧完整，缺失在右侧。<br>
+        &nbsp;&nbsp;• 选 A（<span class="c">==</span>）。<br><br>
+        <strong>空 ④：真分支（相等时）</strong><br>
+        &nbsp;&nbsp;• <span class="c">a[mid] == mid + 1</span> → 左侧完整 → 向右查找。<br>
+        &nbsp;&nbsp;• <span class="c">l = mid + 1</span>。<br>
+        &nbsp;&nbsp;• 选 A。<br><br>
+        <strong>空 ⑤：假分支（不相等时）</strong><br>
+        &nbsp;&nbsp;• <span class="c">a[mid] != mid + 1</span>（实际是 a[mid] &gt; mid+1）→ 缺失在左侧。<br>
+        &nbsp;&nbsp;• 保留 mid：<span class="c">r = mid</span>。<br>
+        &nbsp;&nbsp;• 选 D。<br><br>
+        <strong>注意最后输出：</strong><span class="c">cout &lt;&lt; l + 1</span>。由于数组从 1 开始，<span class="c">l</span> 是缺失值的位置（下标），
+        缺失值 = <span class="c">l + 1</span>。<br><br>
+        <strong>模拟验证（a=[1,2,4,5], n=4）：</strong><br>
+        &nbsp;&nbsp;初始：l=0, r=3<br>
+        &nbsp;&nbsp;第1轮：mid=1, a[1]=2==1+1 → l=2<br>
+        &nbsp;&nbsp;第2轮：mid=(2+3)/2=2, a[2]=4!=2+1 → r=2<br>
+        &nbsp;&nbsp;l=2, r=2 → 退出 → 输出 l+1=3 ✅
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 七、2024 完善 1：完全平方数判断 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s7"><span class="num">📝</span>2024 完善 1：完全平方数判断（真题）</h2>
+
+  <p class="kp-text">
+    以下程序改编自 2024 年 CSP-J 初赛完善程序第一题。
+    给定一个正整数 <span class="c">n</span>，在 <span class="c">[1, n]</span> 范围内
+    使用二分查找判断它是否为<strong>完全平方数</strong>。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 2024 CSP-J 真题 · 完善 1</span>
+      <span>考：二分查找平方根 + 边界条件</span>
+    </div>
+    <div class="exam-q">
+      <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// 2024 CSP-J 完善程序 (1) — 判断完全平方数</span>
+<span class="cm">// 输入正整数 n，判断是否是某个整数的平方。</span>
+<span class="cm">// 如果是完全平方数，输出其平方根；否则输出 0。</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> std;
+<span class="kw">int</span> main() {
+  <span class="kw">int</span> n;
+  cin &gt;&gt; n;
+  <span class="kw">int</span> l = <span class="num">1</span>, r = n, ans = <span class="num">0</span>;
+  <span class="kw">while</span> (l <span class="blank">①</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (mid * mid <span class="blank">②</span> n) {
+      ans = mid;
+      l = mid <span class="blank">③</span>;
+    } <span class="kw">else</span> {
+      r = mid <span class="blank">④</span>;
+    }
+  }
+  <span class="kw">if</span> (ans * ans <span class="blank">⑤</span> n)
+    cout &lt;&lt; ans;
+  <span class="kw">else</span>
+    cout &lt;&lt; <span class="num">0</span>;
+  <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ==</div>
+      <div class="opt"><span class="letter">B</span> =</div>
+      <div class="opt"><span class="letter">C</span> !=</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2024')">👁 显示答案</button>
+    <div class="answer-box" id="q2024">
+      <div class="ans">✅ 正确答案：① B (&lt;=) · ② D (&lt;=) · ③ B (+1) · ④ A (-1) · ⑤ A (==)</div>
+      <div class="explain">
+        <strong>逐空解析：</strong><br><br>
+        <strong>空 ①：循环条件</strong><br>
+        &nbsp;&nbsp;• 本题使用 <span class="c">while(l &lt;= r)</span>（左闭右闭风格）。<br>
+        &nbsp;&nbsp;• 证据：空 ③ 和 ④ 分别是 <span class="c">mid + 1</span> 和 <span class="c">mid - 1</span>，排除了 mid，符合左闭右闭。<br>
+        &nbsp;&nbsp;• 选 B（<span class="c">&lt;=</span>）。<br><br>
+        <strong>空 ②：判断条件</strong><br>
+        &nbsp;&nbsp;• 当 <span class="c">mid * mid &lt;= n</span> 时，说明 mid 可能是平方根（或偏小），记录并向右查找。<br>
+        &nbsp;&nbsp;• 注意：这里用的是 <span class="c">&lt;=</span> 而不是 <span class="c">&lt;</span>，因为当 <span class="c">mid * mid == n</span> 时也要记录 ans。<br>
+        &nbsp;&nbsp;• 选 D（<span class="c">&lt;=</span>）。<br><br>
+        <strong>空 ③：左边界更新</strong><br>
+        &nbsp;&nbsp;• <span class="c">mid * mid &lt;= n</span> 时，mid 太小或正好，向右查找更大值。<br>
+        &nbsp;&nbsp;• <span class="c">l = mid + 1</span>。<br>
+        &nbsp;&nbsp;• 选 B（<span class="c">+ 1</span>）。<br><br>
+        <strong>空 ④：右边界更新</strong><br>
+        &nbsp;&nbsp;• <span class="c">mid * mid &gt; n</span> 时，mid 太大，向左查找更小值。<br>
+        &nbsp;&nbsp;• <span class="c">r = mid - 1</span>。<br>
+        &nbsp;&nbsp;• 选 A（<span class="c">- 1</span>）。<br><br>
+        <strong>空 ⑤：最终判断</strong><br>
+        &nbsp;&nbsp;• 循环结束后，<span class="c">ans</span> 是最后一个满足 <span class="c">mid*mid &lt;= n</span> 的 mid。<br>
+        &nbsp;&nbsp;• 如果 <span class="c">ans * ans == n</span>，说明 n 是完全平方数，输出 ans。<br>
+        &nbsp;&nbsp;• 否则输出 0。<br>
+        &nbsp;&nbsp;• 选 A（<span class="c">==</span>）。<br><br>
+        <strong>模拟验证（n=16）：</strong><br>
+        &nbsp;&nbsp;l=1, r=16, ans=0<br>
+        &nbsp;&nbsp;mid=8, 64&lt;=16? 否 → r=7<br>
+        &nbsp;&nbsp;mid=4, 16&lt;=16? 是 → ans=4, l=5<br>
+        &nbsp;&nbsp;mid=6, 36&lt;=16? 否 → r=5<br>
+        &nbsp;&nbsp;mid=5, 25&lt;=16? 否 → r=4<br>
+        &nbsp;&nbsp;l=5 &gt; r=4 → 退出 → ans=4, 4*4==16 → 输出 4 ✅<br><br>
+        <strong>验证（n=10 — 不是完全平方数）：</strong><br>
+        &nbsp;&nbsp;最后 ans=3, 3*3=9!=10 → 输出 0 ✅
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 八、精选填空练习（共 10 题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s8"><span class="num">📝</span>精选填空实战练习（共 10 题）</h2>
+
+  <p class="kp-text">
+    以下 10 道题包括<strong>3 道真题 + 7 道模拟题</strong>，覆盖二分查找与查找变体的全部核心知识点。
+    填空处以 <span class="blank" style="background:none;color:#fbbf24;border-bottom-color:#fbbf24;">____</span> 标记，请从选项中选择正确的一项填入。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：标准二分查找 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 基础</span>
+      <span>考：标准二分查找模板（l,r 初始化和更新）</span>
+    </div>
+    <div class="exam-q">
+      以下程序在<strong>升序</strong>数组 <span class="c">a</span> 中查找 <span class="c">target</span>。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> l = <span class="num">0</span>, r = <span class="blank">①</span>;
+<span class="kw">while</span> (l <span class="blank">②</span> r) {
+  <span class="kw">int</span> mid = l + (r - l) / <span class="num">2</span>;
+  <span class="kw">if</span> (a[mid] == target) <span class="kw">return</span> mid;
+  <span class="kw">if</span> (a[mid] &lt; target)
+    l = mid <span class="blank">③</span>;
+  <span class="kw">else</span>
+    r = mid <span class="blank">④</span>;
+}
+<span class="kw">return</span> <span class="blank">⑤</span>;</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n</div>
+      <div class="opt"><span class="letter">B</span> n - 1</div>
+      <div class="opt"><span class="letter">C</span> n + 1</div>
+      <div class="opt"><span class="letter">D</span> n / 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> + 0</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> - 1</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> + 1</div>
+      <div class="opt"><span class="letter">B</span> - 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> n</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：① B (n-1) · ② B (&lt;=) · ③ B (+1) · ④ B (-1) · ⑤ B (-1)</div>
+      <div class="explain">
+        <strong>解析：</strong>标准的左闭右闭二分查找模板。<br><br>
+        <strong>空 ①：</strong><span class="c">r = n - 1</span>（数组最后一个下标）。<br>
+        <strong>空 ②：</strong><span class="c">l &lt;= r</span>（区间非空时继续）。<br>
+        <strong>空 ③：</strong><span class="c">l = mid + 1</span>（<span class="c">a[mid] &lt; target</span> 时向右查找）。<br>
+        <strong>空 ④：</strong><span class="c">r = mid - 1</span>（<span class="c">a[mid] &gt; target</span> 时向左查找）。<br>
+        <strong>空 ⑤：</strong>未找到返回 <span class="c">-1</span>。<br><br>
+        <strong>验证（a=[1,3,5,7,9], target=5）：</strong><br>
+        &nbsp;&nbsp;l=0, r=4 → mid=2, a[2]=5==5 → return 2 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：lower_bound -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 变体</span>
+      <span>考：左闭右开 lower_bound 实现</span>
+    </div>
+    <div class="exam-q">
+      以下函数返回<strong>第一个 ≥ target 的元素下标</strong>（类似 <span class="c">lower_bound</span>）。
+      数组 a 已升序排列。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> lowerBound(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> target)
+      l = mid <span class="blank">④</span>;
+    <span class="kw">else</span>
+      r = <span class="blank">⑤</span>;
+  }
+  <span class="kw">return</span> l;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n - 1</div>
+      <div class="opt"><span class="letter">B</span> n</div>
+      <div class="opt"><span class="letter">C</span> n + 1</div>
+      <div class="opt"><span class="letter">D</span> n - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> + 0</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> - 1</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid - 1</div>
+      <div class="opt"><span class="letter">B</span> mid + 1</div>
+      <div class="opt"><span class="letter">C</span> mid</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：① B (n) · ② A (&lt;) · ③ B (&lt;) · ④ B (+1) · ⑤ C (mid)</div>
+      <div class="explain">
+        <strong>解析：</strong>标准的左闭右开 lower_bound 实现。<br><br>
+        <strong>空 ①：</strong>左闭右开区间 <span class="c">[0, n)</span> → <span class="c">r = n</span>。<br>
+        <strong>空 ②：</strong>左闭右开 → <span class="c">l &lt; r</span>。<br>
+        <strong>空 ③：</strong>当 <span class="c">a[mid] &lt; target</span> 时，mid 和左边的元素都不可能是答案 → 向右查找。<br>
+        <strong>空 ④：</strong><span class="c">l = mid + 1</span>（排除 mid）。<br>
+        <strong>空 ⑤：</strong>当 <span class="c">a[mid] &gt;= target</span> 时，mid 可能是答案，保留 mid：<span class="c">r = mid</span>。<br><br>
+        <strong>验证（a=[1,3,5,7], target=4）：</strong><br>
+        &nbsp;&nbsp;l=0, r=4 → mid=2, a[2]=5&gt;=4 → r=2<br>
+        &nbsp;&nbsp;mid=1, a[1]=3&lt;4 → l=2<br>
+        &nbsp;&nbsp;l=2, r=2 → 退出 → return 2（a[2]=5 是第一个≥4的元素）✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：upper_bound -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 变体</span>
+      <span>考：第一个 > target 的位置（upper_bound）</span>
+    </div>
+    <div class="exam-q">
+      以下函数返回<strong>第一个 > target 的元素下标</strong>（类似 <span class="c">upper_bound</span>）。
+      数组 a 已升序排列。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> upperBound(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> target)
+      l = mid <span class="blank">④</span>;
+    <span class="kw">else</span>
+      r = <span class="blank">⑤</span>;
+  }
+  <span class="kw">return</span> l;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n</div>
+      <div class="opt"><span class="letter">B</span> n - 1</div>
+      <div class="opt"><span class="letter">C</span> n + 1</div>
+      <div class="opt"><span class="letter">D</span> n / 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;=</div>
+      <div class="opt"><span class="letter">C</span> &lt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> + 0</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> - 1</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid + 1</div>
+      <div class="opt"><span class="letter">B</span> mid - 1</div>
+      <div class="opt"><span class="letter">C</span> mid</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：① A (n) · ② A (&lt;) · ③ C (&lt;=) · ④ B (+1) · ⑤ C (mid)</div>
+      <div class="explain">
+        <strong>解析：</strong><br><br>
+        <strong>与 lower_bound 的区别：</strong><br>
+        &nbsp;&nbsp;• lower_bound：<span class="c">a[mid] &lt; target</span> 时才排除（因为等于时也要保留）。<br>
+        &nbsp;&nbsp;• upper_bound：<span class="c">a[mid] &lt;= target</span> 时排除（等于时也不保留）。<br><br>
+        <strong>空 ①：</strong><span class="c">r = n</span>（左闭右开）。<br>
+        <strong>空 ②：</strong><span class="c">l &lt; r</span>。<br>
+        <strong>空 ③：</strong><span class="c">a[mid] &lt;= target</span> → mid 和左边都不可能是答案。<br>
+        <strong>空 ④：</strong><span class="c">l = mid + 1</span>。<br>
+        <strong>空 ⑤：</strong><span class="c">r = mid</span>。<br><br>
+        <strong>验证（a=[1,3,5,5,7], target=5）：</strong><br>
+        &nbsp;&nbsp;l=0, r=5 → mid=2, a[2]=5&lt;=5 → l=3<br>
+        &nbsp;&nbsp;mid=4, a[4]=7&gt;5 → r=4<br>
+        &nbsp;&nbsp;mid=(3+4)/2=3, a[3]=5&lt;=5 → l=4<br>
+        &nbsp;&nbsp;l=4, r=4 → 退出 → return 4（a[4]=7 是第一个>5的元素）✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：二分求平方根（浮点数） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 浮点二分</span>
+      <span>考：浮点数二分查找平方根</span>
+    </div>
+    <div class="exam-q">
+      以下程序使用二分法求 <span class="c">x</span> 的平方根（精确到 <span class="c">1e-6</span>）。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">double</span> sqrtByBS(<span class="kw">double</span> x) {
+  <span class="kw">if</span> (x &lt; <span class="num">0</span>) <span class="kw">return</span> -<span class="num">1</span>;
+  <span class="kw">double</span> l = <span class="num">0</span>, r = x;
+  <span class="kw">if</span> (x &lt; <span class="num">1</span>) r = <span class="num">1</span>;   <span class="cm">// 处理 0&lt;x&lt;1</span>
+  <span class="kw">while</span> (r - l <span class="blank">①</span>) {
+    <span class="kw">double</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (mid * mid <span class="blank">②</span> x)
+      l = mid;
+    <span class="kw">else</span>
+      r = <span class="blank">③</span>;
+  }
+  <span class="kw">return</span> <span class="blank">④</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt; 1e-6</div>
+      <div class="opt"><span class="letter">B</span> &lt; 1e-6</div>
+      <div class="opt"><span class="letter">C</span> &gt; 1e6</div>
+      <div class="opt"><span class="letter">D</span> == 0</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid</div>
+      <div class="opt"><span class="letter">B</span> mid + 1</div>
+      <div class="opt"><span class="letter">C</span> mid - 1</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> l</div>
+      <div class="opt"><span class="letter">B</span> r</div>
+      <div class="opt"><span class="letter">C</span> x</div>
+      <div class="opt"><span class="letter">D</span> mid</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：① A (&gt; 1e-6) · ② D (&lt;=) · ③ A (mid) · ④ A (l)</div>
+      <div class="explain">
+        <strong>解析：</strong>浮点数二分查找平方根。<br><br>
+        <strong>空 ①：</strong>循环条件——区间长度大于精度时继续 → <span class="c">r - l &gt; 1e-6</span>。<br>
+        <strong>空 ②：</strong><span class="c">mid * mid &lt;= x</span> → mid 偏小或正好，向右靠。<br>
+        <strong>空 ③：</strong>浮点数二分中，为避免丢失精度，<span class="c">r = mid</span>（不 +1/-1）。<br>
+        <strong>空 ④：</strong>返回 <span class="c">l</span>（或 <span class="c">r</span>，l 和 r 已非常接近）。<br><br>
+        <strong>验证（x=9）：</strong><br>
+        &nbsp;&nbsp;最终 l≈3.0，l*l≈9.0 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：二分答案 · 分蛋糕（最大值最小化） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 二分答案</span>
+      <span>考：最大值最小化的 check 函数 + 二分框架</span>
+    </div>
+    <div class="exam-q">
+      将长度为 <span class="c">n</span> 的木板切成 <span class="c">k</span> 段，
+      求<strong>最长段的最小可能值</strong>。数组 <span class="c">a</span> 存各段长度。
+      以下代码使用二分答案实现。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// check(x)：判断是否能将木板分成 k 段，且每段长度 ≤ x</span>
+<span class="kw">bool</span> check(<span class="kw">int</span> x) {
+  <span class="kw">int</span> cnt = <span class="num">1</span>, sum = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) {
+    <span class="kw">if</span> (sum + a[i] <span class="blank">①</span> x) {
+      cnt++;
+      sum = a[i];
+    } <span class="kw">else</span> {
+      sum += a[i];
+    }
+  }
+  <span class="kw">return</span> cnt <span class="blank">②</span> k;
+}
+
+<span class="kw">int</span> l = <span class="num">0</span>, r = total;
+<span class="kw">while</span> (l <span class="blank">③</span> r) {
+  <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+  <span class="kw">if</span> (check(mid))
+    r = <span class="blank">④</span>;
+  <span class="kw">else</span>
+    l = <span class="blank">⑤</span>;
+}
+cout &lt;&lt; l;</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;=</div>
+      <div class="opt"><span class="letter">C</span> &lt;</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid</div>
+      <div class="opt"><span class="letter">B</span> mid - 1</div>
+      <div class="opt"><span class="letter">C</span> mid + 1</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid</div>
+      <div class="opt"><span class="letter">B</span> mid - 1</div>
+      <div class="opt"><span class="letter">C</span> mid + 1</div>
+      <div class="opt"><span class="letter">D</span> r</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：① A (&gt;) · ② B (&lt;=) · ③ A (&lt;) · ④ A (mid) · ⑤ C (mid+1)</div>
+      <div class="explain">
+        <strong>解析：</strong>最大值最小化模板。<br><br>
+        <strong>空 ①：</strong>当 <span class="c">sum + a[i] &gt; x</span> 时，当前段放不下 → 新开一段。<br>
+        <strong>空 ②：</strong>如果段数 <span class="c">cnt &lt;= k</span>，说明可以用 ≤k 段实现，x 可行。<br>
+        <strong>空 ③：</strong>二分答案框架用 <span class="c">l &lt; r</span>。<br>
+        <strong>空 ④：</strong><span class="c">check(mid) == true</span> → mid 可行，尝试更小值 → <span class="c">r = mid</span>。<br>
+        <strong>空 ⑤：</strong><span class="c">check(mid) == false</span> → mid 不可行，需要更大值 → <span class="c">l = mid + 1</span>。<br><br>
+        <strong>记忆：</strong>最大值最小化（求最小可行值）→ <span class="c">if(ok) r=mid else l=mid+1</span>。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：二分答案 · 跳石头（最小值最大化） -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 二分答案</span>
+      <span>考：最小值最大化的 check + 二分框架</span>
+    </div>
+    <div class="exam-q">
+      河面上有 <span class="c">n</span> 块石头（含起点和终点），移除 <span class="c">m</span> 块，
+      使剩下的石头中<strong>相邻最小距离最大</strong>。数组 <span class="c">d</span> 存石头位置（升序）。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// check(x)：最小距离为 x 时，最多能保留多少块石头</span>
+<span class="kw">int</span> check(<span class="kw">int</span> x) {
+  <span class="kw">int</span> last = <span class="num">0</span>, cnt = <span class="num">1</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+    <span class="kw">if</span> (d[i] - d[last] <span class="blank">①</span> x) {
+      cnt++;
+      last = i;
+    }
+  }
+  <span class="kw">return</span> cnt;
+}
+
+cin &gt;&gt; n &gt;&gt; m;
+<span class="kw">int</span> l = <span class="num">1</span>, r = d[n<span class="blank">②</span>];
+<span class="kw">while</span> (l <span class="blank">③</span> r) {
+  <span class="kw">int</span> mid = (l + r + <span class="num">1</span>) / <span class="num">2</span>;
+  <span class="kw">if</span> (check(mid) <span class="blank">④</span> n - m)
+    l = <span class="blank">⑤</span>;
+  <span class="kw">else</span>
+    r = mid - <span class="num">1</span>;
+}
+cout &lt;&lt; l;</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;=</div>
+      <div class="opt"><span class="letter">C</span> &lt;</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ==</div>
+      <div class="opt"><span class="letter">B</span> &gt;=</div>
+      <div class="opt"><span class="letter">C</span> &lt;=</div>
+      <div class="opt"><span class="letter">D</span> &gt;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid</div>
+      <div class="opt"><span class="letter">B</span> mid - 1</div>
+      <div class="opt"><span class="letter">C</span> mid + 1</div>
+      <div class="opt"><span class="letter">D</span> r + 1</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：① B (&gt;=) · ② A (-1) · ③ A (&lt;) · ④ B (&gt;=) · ⑤ A (mid)</div>
+      <div class="explain">
+        <strong>解析：</strong>最小值最大化模板。<br><br>
+        <strong>空 ①：</strong>当 <span class="c">d[i] - d[last] &gt;= x</span> 时，距离 ≥ 最小距离 → 保留第 i 块石头。<br>
+        <strong>空 ②：</strong>r 初始化为最大位置 → <span class="c">d[n-1]</span>（最后一块石头的位置）。<br>
+        <strong>空 ③：</strong><span class="c">l &lt; r</span>。<br>
+        <strong>空 ④：</strong><span class="c">check(mid) &gt;= n - m</span> → 能保留的石头数 ≥ 需要的石头数，说明 mid 可行。<br>
+        <strong>空 ⑤：</strong>最小值最大化，可行时尝试更大值 → <span class="c">l = mid</span>。<br><br>
+        <strong>注意：</strong>这里 <span class="c">mid = (l + r + 1) / 2</span> 是关键——<strong>向上取整</strong>防死循环。<br><br>
+        <strong>记忆：</strong>最小值最大化（求最大可行值）→ <span class="c">mid 向上取整，if(ok) l=mid else r=mid-1</span>。
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：旋转排序数组查找 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 进阶</span>
+      <span>考：旋转排序数组中的二分查找</span>
+    </div>
+    <div class="exam-q">
+      一个<strong>旋转排序数组</strong>（如 <span class="c">[4,5,6,7,0,1,2]</span>）原本是升序，
+      但在某个位置发生了旋转。以下程序在其中查找 <span class="c">target</span>。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> search(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n - <span class="num">1</span>;
+  <span class="kw">while</span> (l <span class="blank">①</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] == target) <span class="kw">return</span> mid;
+    <span class="kw">if</span> (a[l] <span class="blank">②</span> a[mid]) {        <span class="cm">// 左侧有序</span>
+      <span class="kw">if</span> (a[l] &lt;= target &amp;&amp; target <span class="blank">③</span> a[mid])
+        r = mid - <span class="num">1</span>;
+      <span class="kw">else</span>
+        l = mid <span class="blank">④</span>;
+    } <span class="kw">else</span> {                      <span class="cm">// 右侧有序</span>
+      <span class="kw">if</span> (a[mid] <span class="blank">⑤</span> target &amp;&amp; target &lt;= a[r])
+        l = mid + <span class="num">1</span>;
+      <span class="kw">else</span>
+        r = mid - <span class="num">1</span>;
+    }
+  }
+  <span class="kw">return</span> -<span class="num">1</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;</div>
+      <div class="opt"><span class="letter">C</span> &lt;=</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：① B (&lt;=) · ② D (&lt;=) · ③ A (&lt;) · ④ B (+1) · ⑤ B (&lt;)</div>
+      <div class="explain">
+        <strong>解析：</strong>旋转排序数组的二分查找。<br><br>
+        <strong>空 ①：</strong>标准左闭右闭 → <span class="c">l &lt;= r</span>。<br>
+        <strong>空 ②：</strong><span class="c">a[l] &lt;= a[mid]</span> 说明左半部分有序（等号处理区间长度为 1 的情况）。<br>
+        <strong>空 ③：</strong>当左侧有序时，若 <span class="c">a[l] &lt;= target &amp;&amp; target &lt; a[mid]</span>，说明 target 在左侧有序部分 → 向左查找。<br>
+        <strong>空 ④：</strong>否则向右 → <span class="c">l = mid + 1</span>。<br>
+        <strong>空 ⑤：</strong>当右侧有序时，若 <span class="c">a[mid] &lt; target &amp;&amp; target &lt;= a[r]</span>，说明 target 在右侧有序部分 → 向右查找。<br><br>
+        <strong>验证（a=[4,5,6,7,0,1,2], target=0）：</strong><br>
+        &nbsp;&nbsp;l=0, r=6 → mid=3, a[3]=7, a[0]=4&lt;=7? 是 → 左侧有序: 4&lt;=0&lt;7? 否 → l=4<br>
+        &nbsp;&nbsp;mid=5, a[5]=1, a[4]=0&lt;=1? 是 → 左侧有序: 0&lt;=0&lt;1? 是 → r=4<br>
+        &nbsp;&nbsp;mid=4, a[4]=0==target → return 4 ✅
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 8：二分查找第一个出现位置 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 变体</span>
+      <span>考：二分查找重复元素的首/尾位置</span>
+    </div>
+    <div class="exam-q">
+      在可能<strong>包含重复元素</strong>的升序数组 <span class="c">a</span> 中，
+      查找 <span class="c">target</span> 第一次出现的位置（不存在返回 <span class="c">-1</span>）。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> findFirst(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n - <span class="num">1</span>;
+  <span class="kw">int</span> ans = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> target) {
+      <span class="blank">④</span>;
+      r = mid - <span class="num">1</span>;
+    } <span class="kw">else</span> <span class="kw">if</span> (a[mid] &lt; target) {
+      l = mid + <span class="num">1</span>;
+    } <span class="kw">else</span> {
+      r = mid - <span class="num">1</span>;
+    }
+  }
+  <span class="kw">return</span> <span class="blank">⑤</span>;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> 0</div>
+      <div class="opt"><span class="letter">C</span> n</div>
+      <div class="opt"><span class="letter">D</span> n - 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> ==</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ans = mid</div>
+      <div class="opt"><span class="letter">B</span> ans = l</div>
+      <div class="opt"><span class="letter">C</span> ans = r</div>
+      <div class="opt"><span class="letter">D</span> ans = -1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> l</div>
+      <div class="opt"><span class="letter">B</span> r</div>
+      <div class="opt"><span class="letter">C</span> ans</div>
+      <div class="opt"><span class="letter">D</span> -1</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：① A (-1) · ② B (&lt;=) · ③ C (==) · ④ A (ans = mid) · ⑤ C (ans)</div>
+      <div class="explain">
+        <strong>解析：</strong>查找目标值的第一次出现位置。<br><br>
+        <strong>空 ①：</strong><span class="c">ans = -1</span>（初始化为未找到）。<br>
+        <strong>空 ②：</strong>标准左闭右闭 → <span class="c">l &lt;= r</span>。<br>
+        <strong>空 ③：</strong><span class="c">a[mid] == target</span> → 找到目标，记录但不停止，继续向左查找更早出现位置。<br>
+        <strong>空 ④：</strong><span class="c">ans = mid</span>（记录当前找到的位置）。<br>
+        <strong>空 ⑤：</strong>返回 <span class="c">ans</span>（如果没找到就是 -1）。<br><br>
+        <strong>验证（a=[1,2,2,2,3], target=2）：</strong><br>
+        &nbsp;&nbsp;l=0, r=4 → mid=2, a[2]=2==2 → ans=2, r=1<br>
+        &nbsp;&nbsp;mid=0, a[0]=1&lt;2 → l=1<br>
+        &nbsp;&nbsp;mid=1, a[1]=2==2 → ans=1, r=0<br>
+        &nbsp;&nbsp;l=1 &gt; r=0 → 退出 → return ans=1 ✅（第一个 2 的位置是 1）
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 9：二分查找最后一个出现位置 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 变体</span>
+      <span>考：二分查找重复元素的最后一个位置</span>
+    </div>
+    <div class="exam-q">
+      在可能<strong>包含重复元素</strong>的升序数组 <span class="c">a</span> 中，
+      查找 <span class="c">target</span> 最后一次出现的位置（不存在返回 <span class="c">-1</span>）。
+      请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> findLast(<span class="kw">int</span> a[], <span class="kw">int</span> n, <span class="kw">int</span> target) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n - <span class="num">1</span>;
+  <span class="kw">int</span> ans = <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> target) {
+      ans = mid;
+      l = mid <span class="blank">④</span>;
+    } <span class="kw">else</span> <span class="kw">if</span> (a[mid] &lt; target) {
+      l = mid + <span class="num">1</span>;
+    } <span class="kw">else</span> {
+      r = mid <span class="blank">⑤</span>;
+    }
+  }
+  <span class="kw">return</span> ans;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> n</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> 0</div>
+      <div class="opt"><span class="letter">D</span> n - 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> ==</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q9')">👁 显示答案</button>
+    <div class="answer-box" id="q9">
+      <div class="ans">✅ 正确答案：① B (-1) · ② B (&lt;=) · ③ C (==) · ④ B (+1) · ⑤ A (-1)</div>
+      <div class="explain">
+        <strong>解析：</strong>查找目标值的最后一次出现位置。<br><br>
+        <strong>空 ①：</strong><span class="c">ans = -1</span>（初始化为未找到）。<br>
+        <strong>空 ②：</strong>标准左闭右闭 → <span class="c">l &lt;= r</span>。<br>
+        <strong>空 ③：</strong><span class="c">a[mid] == target</span> → 找到目标，记录并继续向右搜索更晚出现位置。<br>
+        <strong>空 ④：</strong>向右找 → <span class="c">l = mid + 1</span>。<br>
+        <strong>空 ⑤：</strong>当 <span class="c">a[mid] &gt; target</span> 时，向左找 → <span class="c">r = mid - 1</span>。<br><br>
+        <strong>验证（a=[1,2,2,2,3], target=2）：</strong><br>
+        &nbsp;&nbsp;l=0, r=4 → mid=2, a[2]=2==2 → ans=2, l=3<br>
+        &nbsp;&nbsp;mid=3, a[3]=2==2 → ans=3, l=4<br>
+        &nbsp;&nbsp;mid=4, a[4]=3&gt;2 → r=3<br>
+        &nbsp;&nbsp;l=4 &gt; r=3 → 退出 → return ans=3 ✅（最后一个 2 的位置是 3）
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 10：综合 · 二分查找峰值元素 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合提升 · 变体</span>
+      <span>考：二分查找局部峰值</span>
+    </div>
+    <div class="exam-q">
+      在一个<strong>相邻元素不相等</strong>的数组 <span class="c">a</span> 中，
+      查找任意一个<strong>峰值</strong>（<span class="c">a[i] &gt; a[i-1] &amp;&amp; a[i] &gt; a[i+1]</span>）。
+      假设 <span class="c">a[-1] = a[n] = -∞</span>。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> findPeak(<span class="kw">int</span> a[], <span class="kw">int</span> n) {
+  <span class="kw">int</span> l = <span class="num">0</span>, r = n <span class="blank">①</span>;
+  <span class="kw">while</span> (l <span class="blank">②</span> r) {
+    <span class="kw">int</span> mid = (l + r) / <span class="num">2</span>;
+    <span class="kw">if</span> (a[mid] <span class="blank">③</span> a[mid + <span class="num">1</span>])
+      r = <span class="blank">④</span>;
+    <span class="kw">else</span>
+      l = mid <span class="blank">⑤</span>;
+  }
+  <span class="kw">return</span> l;
+}</div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;</div>
+      <div class="opt"><span class="letter">C</span> &gt;=</div>
+      <div class="opt"><span class="letter">D</span> &lt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> mid - 1</div>
+      <div class="opt"><span class="letter">B</span> mid + 1</div>
+      <div class="opt"><span class="letter">C</span> mid</div>
+      <div class="opt"><span class="letter">D</span> l</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> + 2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q10')">👁 显示答案</button>
+    <div class="answer-box" id="q10">
+      <div class="ans">✅ 正确答案：① A (-1) · ② A (&lt;) · ③ B (&lt;) · ④ C (mid) · ⑤ B (+1)</div>
+      <div class="explain">
+        <strong>解析：</strong>二分查找峰值（165. Find Peak Element）。<br><br>
+        <strong>核心思路：</strong><br>
+        &nbsp;&nbsp;• 如果 <span class="c">a[mid] &lt; a[mid+1]</span>，说明峰值在右侧（上坡）。<br>
+        &nbsp;&nbsp;• 如果 <span class="c">a[mid] &gt; a[mid+1]</span>，说明峰值在左侧（或当前是峰值）。<br>
+        &nbsp;&nbsp;• 由于相邻元素不相等，一定存在峰值。<br><br>
+        <strong>空 ①：</strong><span class="c">r = n - 1</span>（左闭右开 <span class="c">[0, n-1]</span>，之后用 <span class="c">l &lt; r</span>）。
+        等一下，这里用 <span class="c">l &lt; r</span> 时 r 应该是 <span class="c">n - 1</span> 还是 <span class="c">n</span>？<br>
+        &nbsp;&nbsp;• 因为 mid 要访问 <span class="c">a[mid+1]</span>，所以 r 最多到 <span class="c">n-1</span>。<br>
+        &nbsp;&nbsp;• <span class="c">r = n - 1</span>，选 A。<br><br>
+        <strong>空 ②：</strong><span class="c">l &lt; r</span>。<br>
+        <strong>空 ③：</strong><span class="c">a[mid] &lt; a[mid+1]</span> → 上坡，右侧一定有峰值。<br>
+        <strong>空 ④：</strong>上坡 → 向右收缩 → <span class="c">r = mid</span>。<br>
+        <strong>空 ⑤：</strong>下坡或平（本题无平）→ 向左收缩 → <span class="c">l = mid + 1</span>。<br><br>
+        <strong>验证（a=[1,2,3,1]）：</strong><br>
+        &nbsp;&nbsp;l=0, r=3 → mid=1, a[1]=2&lt;a[2]=3? 是 → l=2<br>
+        &nbsp;&nbsp;mid=2, a[2]=3&lt;a[3]=1? 否 → r=2<br>
+        &nbsp;&nbsp;l=2, r=2 → 退出 → return 2（a[2]=3 是峰值）✅
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 二分查找速查表 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 二分查找与查找变体速查表</h3>
+    <p class="kp-text" style="font-size:.82rem;">
+      以下总结了二分查找及其变体的<strong>标准模板</strong>和<strong>关键区别</strong>，
+      考前快速复习用。
+    </p>
+
+    <table>
+      <thead>
+        <tr><th style="width:120px;">场景</th><th style="width:100px;">区间类型</th><th>r 初值</th><th>循环条件</th><th>相等时</th><th>边界更新</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>标准查找</strong></td>
+          <td><span class="mono">[l, r]</span></td>
+          <td><span class="mono">n-1</span></td>
+          <td><span class="mono">l &lt;= r</span></td>
+          <td>返回 mid</td>
+          <td><span class="mono">l=mid+1 / r=mid-1</span></td>
+        </tr>
+        <tr>
+          <td><strong>lower_bound</strong></td>
+          <td><span class="mono">[l, r)</span></td>
+          <td><span class="mono">n</span></td>
+          <td><span class="mono">l &lt; r</span></td>
+          <td><span class="mono">r=mid</span></td>
+          <td><span class="mono">a[mid]&lt;t → l=mid+1</span></td>
+        </tr>
+        <tr>
+          <td><strong>upper_bound</strong></td>
+          <td><span class="mono">[l, r)</span></td>
+          <td><span class="mono">n</span></td>
+          <td><span class="mono">l &lt; r</span></td>
+          <td><span class="mono">l=mid+1</span></td>
+          <td><span class="mono">a[mid]&lt;=t → l=mid+1</span></td>
+        </tr>
+        <tr>
+          <td><strong>缺失元素</strong></td>
+          <td><span class="mono">[l, r]</span></td>
+          <td><span class="mono">n-1</span></td>
+          <td><span class="mono">l &lt; r</span></td>
+          <td><span class="mono">l=mid+1</span></td>
+          <td><span class="mono">r=mid（不排除mid）</span></td>
+        </tr>
+        <tr>
+          <td><strong>判断平方数</strong></td>
+          <td><span class="mono">[l, r]</span></td>
+          <td><span class="mono">n</span></td>
+          <td><span class="mono">l &lt;= r</span></td>
+          <td>记录 ans, 继续右移</td>
+          <td><span class="mono">l=mid+1 / r=mid-1</span></td>
+        </tr>
+        <tr>
+          <td><strong>最大值最小化</strong></td>
+          <td><span class="mono">[l, r]</span></td>
+          <td>上界</td>
+          <td><span class="mono">l &lt; r</span></td>
+          <td><span class="mono">r=mid</span></td>
+          <td><span class="mono">ok → r=mid / else l=mid+1</span></td>
+        </tr>
+        <tr>
+          <td><strong>最小值最大化</strong></td>
+          <td><span class="mono">[l, r]</span></td>
+          <td>上界</td>
+          <td><span class="mono">l &lt; r</span></td>
+          <td><span class="mono">l=mid</span></td>
+          <td><span class="mono">mid 向上取整，ok → l=mid / else r=mid-1</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row" style="margin-top:12px;">
+      <span class="pill">💡 标准：<span class="c">l=0, r=n-1, while(l&lt;=r), l=mid+1, r=mid-1</span></span>
+      <span class="pill green">✅ 缺失元素：<span class="c">while(l&lt;r), a[mid]==mid → l=mid+1, else r=mid</span></span>
+      <span class="pill amber">🔍 平方根：<span class="c">while(l&lt;=r), mid*mid&lt;=n → ans=mid, l=mid+1</span></span>
+      <span class="pill red">⚠️ 死循环防：最小值最大化用 <span class="c">mid=(l+r+1)/2</span></span>
+    </div>
+
+    <div class="card success" style="margin:12px 0 0;">
+      <div class="card-title">📌 考场备忘</div>
+      <p class="kp-text" style="font-size:.82rem;">
+        <strong>失分点 1：</strong>循环条件写错——<span class="c">l &lt; r</span> 和 <span class="c">l &lt;= r</span> 混用是二分最常见的错误。<br>
+        <strong>失分点 2：</strong>边界更新写错——<span class="c">l = mid</span> vs <span class="c">l = mid + 1</span>，<span class="c">r = mid</span> vs <span class="c">r = mid - 1</span>。<br>
+        <strong>失分点 3：</strong>完全平方数判断中，<span class="c">mid * mid</span> 溢出但题目用了 <span class="c">long long</span> 或避开乘法。<br>
+        <strong>失分点 4：</strong>缺失元素查找中，不知道 <span class="c">a[mid] == mid</span> 的比较含义。<br>
+        <strong>失分点 5：</strong>二分答案的 check 函数写错，或分不清"最大值最小化"和"最小值最大化"的模板区别。<br><br>
+        <strong>验证策略：</strong>选一个最简单的小数据（如 n=3, n=4）手动模拟一遍，比检查代码本身有效得多。
+      </p>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

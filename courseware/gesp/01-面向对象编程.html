@@ -1,0 +1,2378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP六级培训 · 面向对象编程（OOP）</title>
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    /* 扩展色系 */
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+    font-family:var(--font-sans);
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.7;
+    display:flex;
+    flex-direction:row;
+    min-height:100vh;
+}
+
+/* ===== Sidebar ===== */
+nav.sidebar{
+    position:fixed;
+    top:0;left:0;
+    width:236px;
+    height:100vh;
+    overflow-y:auto;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    padding:20px 0;
+    z-index:100;
+    flex-shrink:0;
+}
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 20px 16px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:12px;
+    font-weight:700;
+    font-size:15px;
+    color:var(--primary);
+}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{
+    padding:6px 20px;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--text-tertiary);
+    font-weight:600;
+}
+.nav-link{
+    display:block;
+    padding:7px 20px 7px 24px;
+    font-size:13.5px;
+    color:var(--text-secondary);
+    text-decoration:none;
+    border-left:3px solid transparent;
+    transition:all .15s;
+    cursor:pointer;
+}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{
+    color:var(--primary);
+    border-left-color:var(--primary);
+    background:var(--primary-light);
+    font-weight:600;
+}
+
+/* ===== Main Content ===== */
+main.main-content{
+    margin-left:236px;
+    flex:1;
+    min-width:0;
+}
+.content-wrapper{
+    max-width:880px;
+    margin:0 auto;
+    padding:40px 48px 80px;
+}
+
+/* ===== Typography ===== */
+h1{
+    font-size:2.2rem;
+    font-weight:800;
+    line-height:1.3;
+    margin-bottom:4px;
+    color:var(--text);
+}
+h1 .sub{
+    display:block;
+    font-size:1rem;
+    font-weight:400;
+    color:var(--text-secondary);
+    margin-top:6px;
+}
+.subtitle-main{
+    color:var(--text-tertiary);
+    font-size:15px;
+    margin-bottom:32px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--border);
+}
+h2.section-num{
+    font-size:1.35rem;
+    font-weight:700;
+    margin:44px 0 16px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--primary-light);
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+h2 .num-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;height:32px;
+    border-radius:8px;
+    background:var(--primary);
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+    flex-shrink:0;
+}
+h3{
+    font-size:1.1rem;
+    font-weight:600;
+    margin:28px 0 10px;
+    color:var(--text);
+}
+h4{
+    font-size:1rem;
+    font-weight:600;
+    margin:20px 0 8px;
+    color:var(--text-secondary);
+}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+/* ===== Card System ===== */
+.card{
+    border-radius:12px;
+    padding:18px 22px;
+    margin:20px 0;
+    border:1.5px solid;
+}
+.card.accent{
+    background:var(--accent-light);
+    border-color:var(--accent);
+}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{
+    background:var(--primary-light);
+    border-color:var(--primary);
+}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{
+    background:var(--success-light);
+    border-color:var(--success);
+}
+.card.success .card-title{color:#047857}
+.card.danger{
+    background:var(--danger-light);
+    border-color:var(--danger);
+}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{
+    background:var(--purple-light);
+    border-color:var(--purple);
+}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{
+    background:var(--pink-light);
+    border-color:var(--pink);
+}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{
+    background:var(--teal-light);
+    border-color:var(--teal);
+}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{
+    background:var(--indigo-light);
+    border-color:var(--indigo);
+}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{
+    background:var(--orange-light);
+    border-color:var(--orange);
+}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{
+    background:var(--surface);
+    border-color:var(--border);
+    box-shadow:var(--shadow-sm);
+}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:8px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+}
+.card p:last-child{margin-bottom:0}
+
+/* ===== Quote Box ===== */
+.quote-box{
+    background:var(--accent-light);
+    border-left:4px solid var(--accent);
+    padding:14px 18px;
+    margin:18px 0;
+    border-radius:0 8px 8px 0;
+    font-size:14.5px;
+    color:var(--text-secondary);
+}
+.quote-box .icon{font-size:18px;margin-right:8px}
+
+/* ===== Highlight & Info Boxes ===== */
+.highlight-box{
+    border-radius:10px;
+    padding:16px 20px;
+    margin:18px 0;
+    border-left:4px solid;
+    font-size:14.5px;
+}
+.highlight-box.blue{
+    background:linear-gradient(135deg,var(--primary-light),#fff);
+    border-color:var(--primary);
+}
+.highlight-box.green{
+    background:linear-gradient(135deg,var(--success-light),#fff);
+    border-color:var(--success);
+}
+.highlight-box.yellow{
+    background:linear-gradient(135deg,var(--accent-light),#fff);
+    border-color:var(--accent);
+}
+.highlight-box.purple{
+    background:linear-gradient(135deg,var(--purple-light),#fff);
+    border-color:var(--purple);
+}
+.highlight-box.red{
+    background:linear-gradient(135deg,var(--danger-light),#fff);
+    border-color:var(--danger);
+}
+.highlight-box .hb-title{
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{
+    background:linear-gradient(135deg,#f0f4ff,#fff);
+    border:1.5px dashed var(--indigo);
+    border-radius:12px;
+    padding:16px 20px;
+    margin:18px 0;
+}
+.think-box .tb-title{
+    font-weight:700;
+    color:var(--indigo-dark);
+    font-size:14px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+.think-box p:last-child{margin-bottom:0}
+
+.warning-box{
+    background:var(--danger-light);
+    border:1.5px solid var(--danger);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:18px 0;
+    font-size:14px;
+    color:#991b1b;
+}
+.warning-box .wb-title{
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:4px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#b91c1c;
+}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{
+    background:linear-gradient(135deg,var(--accent-light),#fff);
+    border:1.5px solid var(--accent);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:18px 0;
+    font-size:14px;
+}
+.tip-box .tip-title{
+    font-weight:700;
+    font-size:14px;
+    margin-bottom:4px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--accent-dark);
+}
+.tip-box p:last-child{margin-bottom:0}
+
+/* ===== Inline Key Point ===== */
+.key-point{
+    display:inline-block;
+    background:linear-gradient(135deg,var(--primary-light),#e0e7ff);
+    color:var(--primary-dark);
+    font-weight:600;
+    padding:1px 10px;
+    border-radius:4px;
+    font-size:inherit;
+}
+.key-point.success{
+    background:linear-gradient(135deg,var(--success-light),#d1fae5);
+    color:#047857;
+}
+.key-point.warn{
+    background:linear-gradient(135deg,var(--accent-light),#fef3c7);
+    color:var(--accent-dark);
+}
+.key-point.danger{
+    background:linear-gradient(135deg,var(--danger-light),#fee2e2);
+    color:#b91c1c;
+}
+
+/* ===== Section Header Enhancement ===== */
+h2.section-num{
+    position:relative;
+    background:linear-gradient(to right,var(--primary-light),transparent);
+    padding-left:16px;
+    border-left:4px solid var(--primary);
+    border-bottom:none;
+}
+h2.section-num.accent-head{
+    background:linear-gradient(to right,var(--accent-light),transparent);
+    border-left-color:var(--accent);
+}
+
+/* ===== Code Block Enhancement ===== */
+.code-block .code-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:#1a2634;
+    padding:8px 16px;
+    border-bottom:1px solid #2d3a4a;
+}
+.code-block .code-header .ch-title{
+    color:#94a3b8;
+    font-size:12px;
+    font-family:var(--font-mono);
+}
+.code-block .code-header .ch-icon{
+    color:#64748b;
+    font-size:11px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+.code-block .code-header .ch-icon .dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    display:inline-block;
+}
+.code-block .code-header .ch-icon .dot.r{background:#ef4444}
+.code-block .code-header .ch-icon .dot.y{background:#f59e0b}
+.code-block .code-header .ch-icon .dot.g{background:#10b981}
+
+/* ===== Formula / Code Quote ===== */
+.formula-box{
+    background:var(--gray-800);
+    color:#e2e8f0;
+    border-radius:8px;
+    padding:14px 18px;
+    margin:14px 0;
+    font-family:var(--font-mono);
+    font-size:14px;
+    text-align:center;
+    letter-spacing:0.5px;
+}
+
+/* ===== Comparison Table ===== */
+table.compact td, table.compact th{padding:7px 10px;font-size:13px}
+table.striped tbody tr:nth-child(even){background:var(--gray-50)}
+
+/* ===== Tables ===== */
+.table-wrapper{
+    overflow-x:auto;
+    margin:16px 0;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+thead th{
+    background:var(--surface-alt);
+    color:var(--text-secondary);
+    font-weight:600;
+    padding:10px 14px;
+    text-align:left;
+    border-bottom:2px solid var(--border);
+    font-size:13px;
+}
+tbody td{
+    padding:10px 14px;
+    border-bottom:1px solid var(--border-light);
+    color:var(--text-secondary);
+}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{
+    font-family:var(--font-mono);
+    color:var(--primary);
+    font-size:13px;
+}
+
+/* ===== Code Blocks ===== */
+.code-block{
+    background:#1e293b;
+    border-radius:10px;
+    margin:16px 0;
+    overflow:hidden;
+    position:relative;
+}
+.code-block .lang-tag{
+    position:absolute;
+    top:8px;right:10px;
+    font-size:11px;
+    color:#94a3b8;
+    background:#334155;
+    padding:2px 8px;
+    border-radius:4px;
+    font-family:var(--font-mono);
+}
+.code-block pre{
+    padding:18px 20px;
+    overflow-x:auto;
+    font-family:var(--font-mono);
+    font-size:13.5px;
+    line-height:1.6;
+    color:#e2e8f0;
+    margin:0;
+}
+
+.inline-code{
+    font-family:var(--font-mono);
+    background:var(--surface-alt);
+    padding:2px 6px;
+    border-radius:4px;
+    font-size:13px;
+    color:var(--primary);
+    border:1px solid var(--border-light);
+}
+
+/* ===== Dividers ===== */
+hr.divider{
+    border:none;
+    border-top:1px solid var(--border);
+    margin:32px 0;
+}
+hr.divider.dashed{border-top-style:dashed}
+
+/* ===== Back to Top ===== */
+.back-to-top{
+    position:fixed;
+    bottom:28px;right:28px;
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1px solid var(--border);
+    color:var(--text-secondary);
+    font-size:20px;
+    cursor:pointer;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    z-index:200;
+    transition:all .2s;
+}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+/* ===== Goal Box ===== */
+.goal-box{
+    background:linear-gradient(135deg,var(--primary-light),#fff);
+    border:1.5px solid var(--primary);
+    border-radius:12px;
+    padding:18px 22px;
+    margin:20 0;
+}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.goal-box ul{margin-bottom:0}
+
+/* ===== Answer Toggle ===== */
+.answer-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:12px;
+    padding:7px 16px;
+    border:1.5px solid var(--primary);
+    border-radius:6px;
+    background:var(--primary-light);
+    color:var(--primary);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .2s;
+    font-family:var(--font-sans);
+}
+.answer-toggle:hover{
+    background:var(--primary);
+    color:#fff;
+}
+.answer-toggle .arrow{
+    display:inline-block;
+    transition:transform .25s;
+    font-size:12px;
+}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease-out,opacity .25s;
+    opacity:0;
+}
+.answer-content.open{
+    max-height:600px;
+    opacity:1;
+}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+/* ===== Tag ===== */
+.tag{
+    display:inline-block;
+    font-size:11px;
+    padding:2px 8px;
+    border-radius:4px;
+    font-weight:600;
+    margin-right:4px;
+}
+.tag-blue{background:var(--primary-light);color:var(--primary)}
+.tag-green{background:var(--success-light);color:var(--success)}
+.tag-red{background:var(--danger-light);color:var(--danger)}
+.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+
+/* ===== Responsive ===== */
+@media(max-width:900px){
+    nav.sidebar{
+        transform:translateX(-100%);
+        transition:transform .3s;
+    }
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{
+        display:flex!important;
+        position:fixed;
+        top:14px;left:14px;
+        z-index:300;
+        width:40px;height:40px;
+        border-radius:8px;
+        background:var(--surface);
+        border:1px solid var(--border);
+        align-items:center;
+        justify-content:center;
+        font-size:20px;
+        cursor:pointer;
+        box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){
+    .menu-toggle{display:none}
+}
+
+/* ===== Scrollbar ===== */
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ===== Animation ===== */
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(12px)}
+    to{opacity:1;transform:translateY(0)}
+}
+.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle" id="menuToggle" aria-label="打开菜单">☰</button>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <span class="icon">💎</span>
+        GESP 六级 · OOP
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学流程</div>
+<a class="nav-link active" href="#step1">第一步：生活引入</a>
+<a class="nav-link" href="#step2">第二步：核心概念</a>
+<a class="nav-link" href="#step3">第三步：算法/代码讲解</a>
+<a class="nav-link" href="#step4">第四步：手工模拟</a>
+<a class="nav-link" href="#step5">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">💎 GESP C++ 六级 · 面向对象编程</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">Object-Oriented Programming（OOP）— 封装、继承、多态</p>
+</div>
+
+<hr />
+
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 第一步：生活引入 &mdash; 用汽车设计理解 OOP</h2>
+
+<div class="card accent">
+<div class="card-title">🚗 从一个问题开始</div>
+<p>想象你要设计一辆汽车。没有面向对象，几千行代码散落各处——改一个刹车灯可能要翻遍整个项目。就像把发动机、轮胎、方向盘全堆在一个仓库，谁都能碰，谁都能弄坏。</p>
+<p>面向对象编程（OOP）给了我们一套<strong>组织代码的思维方式</strong>：把"汽车"抽象成<strong>类</strong>，把具体的一辆车叫做<strong>对象</strong>。</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr>
+<th>OOP 概念</th><th>汽车类比</th><th>说明</th>
+</tr></thead>
+<tbody>
+<tr><td><strong>类（class）</strong></td><td>汽车设计蓝图</td><td>定义汽车有什么属性（颜色、排量）和方法（启动、刹车）</td></tr>
+<tr><td><strong>对象（object）</strong></td><td>生产出来的实车</td><td>同一张蓝图可以造出无数辆不同的车</td></tr>
+<tr><td><strong>封装（encapsulation）</strong></td><td>驾驶舱封闭，只暴露方向盘和踏板</td><td>发动机复杂逻辑被隐藏，你只需踩油门</td></tr>
+<tr><td><strong>继承（inheritance）</strong></td><td>SUV 继承汽车，再加越野功能</td><td>子类拥有父类所有能力，还可扩展</td></tr>
+<tr><td><strong>多态（polymorphism）</strong></td><td>踩刹车，不同车反应不同（油刹 vs 电刹）</td><td>同一接口，不同实现</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="quote-box">
+💡 <strong>一句话记住 OOP：</strong>类是模板，对象是实例；封装保安全，继承省重复，多态灵活用。
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📖 OOP 的发展背景</div>
+<p>面向对象编程起源于 1960 年代的 Simula 语言，真正流行是在 1990 年代随着 C++ 和 Java 的普及。它的诞生是为了解决面向过程编程在大型项目中的痛点：</p>
+<ul>
+<li><strong>耦合度高</strong>：数据和操作分离，函数间互相依赖，改一个地方可能引发连锁错误</li>
+<li><strong>代码复用困难</strong>：不同项目间很难直接复用代码，每次都要重写</li>
+<li><strong>维护成本高</strong>：需求变化时需要修改大量已有代码，容易引入新 bug</li>
+</ul>
+<p>OOP 通过<strong>类+对象</strong>的组织方式，把数据和操作封装在一起，让代码更加模块化、可维护、可复用。</p>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">🎯 为什么 GESP 六级考 OOP？</div>
+<p>GESP 六级大纲明确要求掌握<strong>类与对象、封装、继承、多态、静态成员、虚函数</strong>等概念。这些是理解 C++ 高级特性的基础，也是从"写代码"到"设计代码"的关键跨越。在实际竞赛和工程中，OOP 思想能帮助你写出结构清晰、易于扩展的程序。</p>
+</div>
+</section>
+
+
+
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 2. 核心概念详解</h2>
+
+<h3>2.1 类与对象</h3>
+<h4>定义格式</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class 类名 {
+private:
+    // 私有成员（仅类内部可访问）
+    数据类型 成员变量;
+    返回值类型 成员函数(参数列表);
+
+protected:
+    // 保护成员（类内部和子类可访问）
+
+public:
+    // 公有成员（任何地方都可访问）
+    类名();          // 构造函数
+    ~类名();         // 析构函数
+    返回值类型 成员函数(参数列表);
+};</code></pre></div>
+
+<h4>创建对象</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 直接在栈上创建
+Student stu;
+stu.showInfo();
+
+// 在堆上创建（需要手动 delete）
+Student *p = new Student("张三", 18);
+p-&gt;showInfo();
+delete p;</code></pre></div>
+
+<h4>访问权限对照</h4>
+<table class="styled-table">
+<thead>
+<tr>
+<th>访问权限</th>
+<th style="text-align: center;">类内部</th>
+<th style="text-align: center;">子类内部</th>
+<th style="text-align: center;">类外部（通过对象）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="inline-code">private</code></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><code class="inline-code">protected</code></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">❌</td>
+</tr>
+<tr>
+<td><code class="inline-code">public</code></td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+</tbody>
+</table>
+<h4>代码示例</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Student {
+private:
+    string name;    // 私有：外部不能直接修改
+    int age;
+    int score;
+
+public:
+    // 构造函数：对象创建时自动调用
+    Student(string n, int a, int s) {
+        name = n;
+        age = a;
+        score = s;
+        cout &lt;&lt; "构造函数被调用：" &lt;&lt; name &lt;&lt; endl;
+    }
+
+    // 析构函数：对象销毁时自动调用
+    ~Student() {
+        cout &lt;&lt; "析构函数被调用：" &lt;&lt; name &lt;&lt; endl;
+    }
+
+    // 公有接口：通过函数访问私有数据
+    void showInfo() {
+        cout &lt;&lt; name &lt;&lt; "，" &lt;&lt; age &lt;&lt; "岁，成绩：" &lt;&lt; score &lt;&lt; endl;
+    }
+
+    void setScore(int s) {
+        if (s &gt;= 0 &amp;&amp; s &lt;= 100) score = s;
+    }
+
+    int getScore() { return score; }
+};
+
+int main() {
+    Student s1("小明", 16, 90);
+    s1.showInfo();
+    // s1.name = "小红"; // 错误！private 成员不可直接访问
+    s1.setScore(95);
+    cout &lt;&lt; "修改后成绩：" &lt;&lt; s1.getScore() &lt;&lt; endl;
+    return 0;
+}
+// 执行顺序：构造 → 使用 → 析构（main 结束时）</code></pre></div>
+
+<div class="highlight-box purple">
+<div class="hb-title">🔍 this 指针</div>
+<p><strong>this</strong> 是一个隐含的指针，指向<strong>当前调用成员函数的对象本身</strong>。每个非静态成员函数内部都可以使用 this。</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">class Student {
+public:
+    void showInfo() {
+        // this 指向调用该函数的对象
+        cout &lt;&lt; this-&gt;name;  // 等价于直接写 name
+    }
+    // 当参数名与成员变量名相同时必须用 this
+    void setName(string name) {
+        this-&gt;name = name;  // 左边是成员，右边是参数
+    }
+};</code></pre></div>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🧠 栈 vs 堆——对象的内存分配</div>
+<p><strong>栈上对象</strong>：<code>Student stu;</code> —— 内存自动分配和释放，速度快，但生命周期受限于作用域。超出花括号 <code>{}</code> 后自动调用析构函数。</p>
+<p><strong>堆上对象</strong>：<code>Student *p = new Student(...);</code> —— 手动分配和释放（<code>delete p;</code>），生命周期由你控制，但<strong>忘记 delete 会导致内存泄漏</strong>。</p>
+<p>堆对象通过指针 <code>p-&gt;</code> 访问成员，栈对象通过点号 <code>stu.</code> 访问成员——但本质完全相同。</p>
+</div>
+
+<hr />
+<h3>2.2 构造函数与析构函数</h3>
+<h4>构造函数特点</h4>
+<table class="styled-table">
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数名</td>
+<td>与类名相同，无返回值</td>
+</tr>
+<tr>
+<td>自动调用</td>
+<td>创建对象时自动执行</td>
+</tr>
+<tr>
+<td>可重载</td>
+<td>可以有多个构造函数（参数不同）</td>
+</tr>
+<tr>
+<td>默认构造</td>
+<td>若不写任何构造函数，编译器自动生成一个无参空构造</td>
+</tr>
+<tr>
+<td>初始化列表</td>
+<td>在函数体之前初始化成员，效率更高</td>
+</tr>
+</tbody>
+</table>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Example {
+private:
+    const int a;       // const 成员必须在初始化列表初始化
+    int &amp;ref;          // 引用成员也必须用初始化列表
+public:
+    // 初始化列表语法：
+    Example(int x, int y) : a(x), ref(y) {
+        // 函数体
+    }
+};</code></pre></div>
+
+<div class="highlight-box green">
+<div class="hb-title">📋 拷贝构造函数（Copy Constructor）</div>
+<p>拷贝构造函数是一种特殊的构造函数，用<strong>已有的同类对象</strong>来初始化新创建的对象。形式为：<code>类名(const 类名 &amp;other)</code>。</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">class Student {
+public:
+    Student(string n, int a) : name(n), age(a) {}
+    // 拷贝构造函数
+    Student(const Student &amp;other) : name(other.name), age(other.age) {
+        cout &lt;&lt; "拷贝构造: " &lt;&lt; name &lt;&lt; endl;
+    }
+};
+Student s1("小明", 16);
+Student s2 = s1;   // 调用拷贝构造函数</code></pre></div>
+<p>如果你不定义拷贝构造函数，编译器会生成一个<strong>默认拷贝构造</strong>，逐个字节复制成员（浅拷贝）。当类中有<strong>指针类型成员</strong>时，必须自己定义拷贝构造函数来实现<strong>深拷贝</strong>。</p>
+</div>
+
+<h4>析构函数特点</h4>
+<table class="styled-table">
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>函数名</td>
+<td><code class="inline-code">~类名</code>，无参数无返回值</td>
+</tr>
+<tr>
+<td>自动调用</td>
+<td>对象销毁时自动执行</td>
+</tr>
+<tr>
+<td>唯一</td>
+<td>每个类只有一个析构函数（不可重载）</td>
+</tr>
+<tr>
+<td>资源释放</td>
+<td>用于释放动态内存、关闭文件等</td>
+</tr>
+</tbody>
+</table>
+<h4>继承中的构造与析构顺序</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    Base() { cout &lt;&lt; "Base 构造\n"; }
+    ~Base() { cout &lt;&lt; "Base 析构\n"; }
+};
+
+class Derived : public Base {
+public:
+    Derived() { cout &lt;&lt; "Derived 构造\n"; }
+    ~Derived() { cout &lt;&lt; "Derived 析构\n"; }
+};
+
+int main() {
+    Derived d;
+    return 0;
+}
+// 输出：
+// Base 构造
+// Derived 构造
+// Derived 析构
+// Base 析构</code></pre></div>
+
+<p><strong>关键规律</strong>：构造从基类到派生类（先父后子），析构从派生类到基类（先子后父）。</p>
+<hr />
+<h3>2.3 静态成员</h3>
+<p>静态成员用一个 <code class="inline-code">static</code> 关键字声明，<strong>属于类本身，而不是属于某个对象</strong>。所有对象共享同一份。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Counter {
+private:
+    static int count;  // 静态成员变量声明
+
+public:
+    Counter() { count++; }
+    ~Counter() { count--; }
+
+    static int getCount() { return count; }  // 静态成员函数
+};
+
+// 静态成员变量必须在类外单独定义初始化
+int Counter::count = 0;
+
+int main() {
+    cout &lt;&lt; "当前对象数：" &lt;&lt; Counter::getCount() &lt;&lt; endl;  // 0
+    Counter c1, c2;
+    cout &lt;&lt; "当前对象数：" &lt;&lt; Counter::getCount() &lt;&lt; endl;  // 2
+    { Counter c3; }
+    cout &lt;&lt; "当前对象数：" &lt;&lt; Counter::getCount() &lt;&lt; endl;  // 2（c3 已析构）
+    return 0;
+}</code></pre></div>
+
+<p><strong>静态成员要点</strong>：</p>
+<table class="styled-table">
+<thead>
+<tr>
+<th>要点</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类外定义</td>
+<td>静态成员变量必须在类外单独定义和初始化</td>
+</tr>
+<tr>
+<td>通过类名访问</td>
+<td><code class="inline-code">类名::静态成员</code> 或通过对象 <code class="inline-code">.</code> 运算符</td>
+</tr>
+<tr>
+<td>静态函数</td>
+<td>只能访问静态成员，不能访问普通成员（没有 this 指针）</td>
+</tr>
+<tr>
+<td>共享性</td>
+<td>所有对象共享同一份，修改一个全部改变</td>
+</tr>
+</tbody>
+</table>
+
+<div class="highlight-box yellow">
+<div class="hb-title">🔧 静态常量成员（const static）</div>
+<p>如果静态成员同时是 <code class="inline-code">const</code> 且是整数或枚举类型，可以在类<strong>内部直接初始化</strong>，不需要到类外定义：</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">class Math {
+public:
+    const static double PI = 3.14159;   // ❌ 浮点数不能类内初始化
+    const static int MAX = 100;          // ✅ 整型可以类内初始化
+};</code></pre></div>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🧠 RAII（资源获取即初始化）</div>
+<p>RAII 是 C++ 中一种重要的编程思想：<strong>在构造函数中获取资源（如内存、文件句柄），在析构函数中释放资源</strong>。这样资源管理被绑定到对象的生命周期上，对象销毁时资源自动释放，避免了手动管理带来的泄漏问题。</p>
+<p>例如上面的 <code>BankAccount</code> 类，如果它有动态内存成员，就应该在析构函数中释放。这也是为什么<strong>基类析构函数通常要声明为 virtual</strong> 的原因之一。</p>
+</div>
+
+<div class="card flat">
+<div class="card-title">📋 构造函数 vs 析构函数 —— 对比总结</div>
+<table class="compact striped">
+<thead>
+<tr><th>比较维度</th><th>构造函数</th><th>析构函数</th></tr>
+</thead>
+<tbody>
+<tr><td>函数名</td><td>与类名相同</td><td><code>~</code> + 类名</td></tr>
+<tr><td>返回值</td><td>无（不能写 void）</td><td>无（不能写 void）</td></tr>
+<tr><td>参数</td><td>可以有参数</td><td>无参数</td></tr>
+<tr><td>重载</td><td>✅ 可以重载（多个构造）</td><td>❌ 不能重载（唯一一个）</td></tr>
+<tr><td>virtual 关键字</td><td>❌ 不能声明为 virtual</td><td>✅ 应声明为 virtual（基类）</td></tr>
+<tr><td>调用时机</td><td>对象创建时自动调用</td><td>对象销毁时自动调用</td></tr>
+<tr><td>调用顺序（继承）</td><td>先基类 → 后派生类</td><td>先派生类 → 后基类</td></tr>
+<tr><td>默认生成</td><td>无构造时编译器自动生成</td><td>编译器自动生成</td></tr>
+<tr><td>主要用途</td><td>初始化成员、分配资源</td><td>释放资源、清理工作</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr />
+
+</section>
+
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 3. 三大特性详解</h2>
+
+<h3>3.1 封装（Encapsulation）</h3>
+<p><strong>封装</strong>是将数据和操作数据的方法捆绑在一起，并对外隐藏内部实现细节。对外只暴露必要的接口。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class BankAccount {
+private:
+    double balance;          // 余额对外隐藏
+
+public:
+    BankAccount(double init) : balance(init) {}
+
+    // 对外只暴露操作接口
+    void deposit(double m) {       // 存款
+        if (m &gt; 0) balance += m;
+    }
+
+    bool withdraw(double m) {      // 取款（带安全检查）
+        if (m &gt; 0 &amp;&amp; m &lt;= balance) {
+            balance -= m;
+            return true;
+        }
+        return false;
+    }
+
+    double getBalance() { return balance; }
+};</code></pre></div>
+
+<p><strong>封装的好处</strong>：
+- 保护数据不被外部随意篡改
+- 内部实现改变不影响外部调用（比如修改利息计算方式）
+- 降低耦合，便于维护</p>
+<hr />
+<h3>3.2 继承（Inheritance）</h3>
+<p>继承让一个类（派生类）拥有另一个类（基类）的成员，并可以添加或重写。</p>
+<h4>三种继承方式</h4>
+<table class="styled-table">
+<thead>
+<tr>
+<th>继承方式</th>
+<th style="text-align: center;">基类 <code class="inline-code">private</code> → 派生类</th>
+<th style="text-align: center;">基类 <code class="inline-code">protected</code> → 派生类</th>
+<th style="text-align: center;">基类 <code class="inline-code">public</code> → 派生类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="inline-code">public</code> 继承</td>
+<td style="text-align: center;">不可访问</td>
+<td style="text-align: center;"><code class="inline-code">protected</code></td>
+<td style="text-align: center;"><code class="inline-code">public</code></td>
+</tr>
+<tr>
+<td><code class="inline-code">protected</code> 继承</td>
+<td style="text-align: center;">不可访问</td>
+<td style="text-align: center;"><code class="inline-code">protected</code></td>
+<td style="text-align: center;"><code class="inline-code">protected</code></td>
+</tr>
+<tr>
+<td><code class="inline-code">private</code> 继承</td>
+<td style="text-align: center;">不可访问</td>
+<td style="text-align: center;"><code class="inline-code">private</code></td>
+<td style="text-align: center;"><code class="inline-code">private</code></td>
+</tr>
+</tbody>
+</table>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+private:
+    int a;
+protected:
+    int b;
+public:
+    int c;
+};
+
+// public 继承
+class PubDerived : public Base {
+    // a 不可访问
+    // b 是 protected
+    // c 是 public
+};
+
+// protected 继承
+class ProDerived : protected Base {
+    // a 不可访问
+    // b 是 protected
+    // c 是 protected
+};
+
+// private 继承
+class PriDerived : private Base {
+    // a 不可访问
+    // b 是 private
+    // c 是 private
+};</code></pre></div>
+
+<h4>派生类调用基类构造函数</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    Base(int x) { cout &lt;&lt; "Base(" &lt;&lt; x &lt;&lt; ")\n"; }
+};
+
+class Derived : public Base {
+public:
+    // 必须在初始化列表中调用基类构造函数
+    Derived(int x, int y) : Base(x) {
+        cout &lt;&lt; "Derived(" &lt;&lt; y &lt;&lt; ")\n";
+    }
+};</code></pre></div>
+
+<p>如果不显式调用，会调用基类的<strong>默认无参构造函数</strong>；如果基类没有默认构造，则必须显式调用。</p>
+
+<div class="warning-box">
+<div class="wb-title">🚨 菱形继承与虚继承</div>
+<p>当两个派生类继承同一个基类，又有一个类同时继承这两个派生类时，形成<strong>菱形继承</strong>（Diamond Inheritance）：</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">class A { public: int val; };
+class B : public A { };
+class C : public A { };
+class D : public B, public C { };
+// D d; d.val;  // ❌ 二义性！不知道来自 B::val 还是 C::val</code></pre></div>
+<p>解决方法：使用<strong>虚继承（virtual inheritance）</strong>，让 B 和 C 虚继承自 A，确保 A 的成员在 D 中只有一份拷贝。</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">class B : virtual public A { };
+class C : virtual public A { };
+class D : public B, public C { };
+// D d; d.val;  // ✅ 唯一确定，来自最顶层的 A</code></pre></div>
+<p class="key-point warn">考试常考：菱形继承会导致基类成员在派生类中有多份拷贝，使用 <code>virtual</code> 继承可解决二义性。</p>
+</div>
+
+<hr />
+<h3>3.3 多态（Polymorphism）</h3>
+<p>多态让<strong>同一个调用在不同的对象上产生不同的行为</strong>。</p>
+<h4>虚函数</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Animal {
+public:
+    virtual void speak() {    // virtual 关键字
+        cout &lt;&lt; "动物发出声音" &lt;&lt; endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    void speak() override {   // override 表示重写（C++11 推荐）
+        cout &lt;&lt; "汪汪！" &lt;&lt; endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout &lt;&lt; "喵喵！" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Animal *p;
+    Dog d;
+    Cat c;
+
+    p = &amp;d;
+    p-&gt;speak();   // 调用 Dog::speak → 汪汪！
+    p = &amp;c;
+    p-&gt;speak();   // 调用 Cat::speak → 喵喵！
+    return 0;
+}</code></pre></div>
+
+<p><strong>虚函数工作原理（vptr + vtable）</strong>：每个含有虚函数的类会生成一张<strong>虚函数表（vtable）</strong>，表中按声明顺序存放所有虚函数的地址。每个对象中有一个隐式的<strong>虚指针（vptr）</strong>指向该类对应的 vtable。</p>
+
+<div class="think-box">
+<div class="tb-title">🧠 虚函数调用过程分解</div>
+<p>当通过基类指针调用虚函数时，运行时的执行流程：</p>
+<ol>
+<li>通过指针找到对象</li>
+<li>通过对象的 <strong>vptr</strong> 找到所在类的 vtable</li>
+<li>通过 vtable 中找到对应的函数地址</li>
+<li>跳转到该地址执行实际的函数</li>
+</ol>
+<p>这个过程叫做<strong>动态绑定（dynamic binding/晚期绑定）</strong>。相比普通函数的<strong>静态绑定（编译期确定）</strong>，动态绑定多了一次间接寻址，有轻微性能开销，但带来了极大的灵活性。</p>
+</div>
+
+<div class="highlight-box red">
+<div class="hb-title">⚠️ 重要考点：构造函数不能是虚函数</div>
+<p>原因：对象的 vptr 是在<strong>构造函数执行期间</strong>才初始化的。在构造函数执行之前，vptr 还不存在（或指向错误的位置），因此<strong>虚函数机制在构造期间尚未建立</strong>。如果构造函数是虚函数，将无法通过 vptr 调用它——这就成了"先有鸡还是先有蛋"的悖论。</p>
+<p class="key-point danger">记忆技巧：构造函数负责初始化 vptr，所以它自己不能依赖 vptr。</p>
+</div>
+
+<h4>纯虚函数与抽象类</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Shape {          // 抽象类（含纯虚函数）
+public:
+    virtual double area() = 0;     // 纯虚函数，不实现
+    virtual void draw() = 0;
+};
+
+class Circle : public Shape {
+private:
+    double r;
+public:
+    Circle(double r) : r(r) {}
+    double area() override { return 3.14 * r * r; }
+    void draw() override { cout &lt;&lt; "画一个圆\n"; }
+};
+
+// Shape s; // 错误！不能实例化抽象类
+Circle c(5);  // 正确</code></pre></div>
+
+<table class="styled-table">
+<thead>
+<tr>
+<th>概念</th>
+<th>要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>纯虚函数</td>
+<td><code class="inline-code">virtual 返回值 函数名() = 0;</code></td>
+</tr>
+<tr>
+<td>抽象类</td>
+<td>含至少一个纯虚函数的类，不能创建对象</td>
+</tr>
+<tr>
+<td>具体类</td>
+<td>实现了所有纯虚函数的派生类，可以创建对象</td>
+</tr>
+</tbody>
+</table>
+<h4>虚析构函数</h4>
+<p>当通过基类指针删除派生类对象时，如果析构函数不是虚函数，<strong>派生类析构函数不会调用</strong>，导致资源泄漏。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    virtual ~Base() {   // 虚析构函数
+        cout &lt;&lt; "Base 析构\n";
+    }
+};
+
+class Derived : public Base {
+private:
+    int *data;
+public:
+    Derived() { data = new int[100]; }
+    ~Derived() override {
+        delete[] data;    // 释放动态内存
+        cout &lt;&lt; "Derived 析构\n";
+    }
+};
+
+int main() {
+    Base *p = new Derived();
+    delete p;   // 若~Base非虚，只调用Base析构，不会释放data
+    return 0;
+}</code></pre></div>
+
+<p><strong>规则</strong>：如果类用作基类，且通过基类指针删除派生类对象，则基类析构函数必须声明为虚函数。</p>
+<hr />
+
+</section>
+
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 4. 手工模拟</h2>
+
+<h3>4.1 静态成员代码执行推演</h3>
+<p>逐行推演以下代码的执行结果：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class A {
+private:
+    static int s;
+    int x;
+public:
+    A(int v) : x(v) { s++; }
+    ~A() { s--; }
+    static int getS() { return s; }
+    int getX() { return x; }
+};
+
+int A::s = 0;
+
+int main() {
+    cout &lt;&lt; A::getS() &lt;&lt; endl;   // ①
+    A a1(10);
+    cout &lt;&lt; A::getS() &lt;&lt; endl;   // ②
+    A a2(20);
+    cout &lt;&lt; a1.getS() &lt;&lt; endl;   // ③
+    cout &lt;&lt; a1.getX() &lt;&lt; endl;   // ④
+    {
+        A a3(30);
+        cout &lt;&lt; A::getS() &lt;&lt; endl;  // ⑤
+    }
+    cout &lt;&lt; A::getS() &lt;&lt; endl;   // ⑥
+    return 0;
+}</code></pre></div>
+
+<p><strong>推演过程</strong>：</p>
+<table class="styled-table">
+<thead>
+<tr>
+<th style="text-align: center;">步骤</th>
+<th>执行语句</th>
+<th style="text-align: center;">s 的值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">初始</td>
+<td><code class="inline-code">int A::s = 0;</code></td>
+<td style="text-align: center;">0</td>
+<td>静态成员初始化</td>
+</tr>
+<tr>
+<td style="text-align: center;">①</td>
+<td><code class="inline-code">cout &lt;&lt; A::getS()</code></td>
+<td style="text-align: center;">0</td>
+<td>尚未创建任何对象</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">A a1(10)</code></td>
+<td>构造 a1，s++</td>
+<td style="text-align: center;">1</td>
+<td>x=10</td>
+</tr>
+<tr>
+<td style="text-align: center;">②</td>
+<td><code class="inline-code">cout &lt;&lt; A::getS()</code></td>
+<td style="text-align: center;">1</td>
+<td>一个对象存在</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">A a2(20)</code></td>
+<td>构造 a2，s++</td>
+<td style="text-align: center;">2</td>
+<td>x=20</td>
+</tr>
+<tr>
+<td style="text-align: center;">③</td>
+<td><code class="inline-code">cout &lt;&lt; a1.getS()</code></td>
+<td style="text-align: center;">2</td>
+<td>静态函数通过对象调用，仍返回 2</td>
+</tr>
+<tr>
+<td style="text-align: center;">④</td>
+<td><code class="inline-code">cout &lt;&lt; a1.getX()</code></td>
+<td style="text-align: center;">2</td>
+<td>输出 a1.x = 10</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">A a3(30)</code></td>
+<td>构造 a3，s++</td>
+<td style="text-align: center;">3</td>
+<td>x=30</td>
+</tr>
+<tr>
+<td style="text-align: center;">⑤</td>
+<td><code class="inline-code">cout &lt;&lt; A::getS()</code></td>
+<td style="text-align: center;">3</td>
+<td>三个对象</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">}</code></td>
+<td>a3 析构，s--</td>
+<td style="text-align: center;">2</td>
+<td>离开作用域</td>
+</tr>
+<tr>
+<td style="text-align: center;">⑥</td>
+<td><code class="inline-code">cout &lt;&lt; A::getS()</code></td>
+<td style="text-align: center;">2</td>
+<td>两个对象</td>
+</tr>
+</tbody>
+</table>
+<p><strong>最终输出</strong>：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">0
+1
+2
+10
+3
+2</code></pre></div>
+
+<h3>4.2 虚函数调用过程推演</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Base {
+public:
+    void f1() { cout &lt;&lt; "Base::f1\n"; }
+    virtual void f2() { cout &lt;&lt; "Base::f2\n"; }
+    virtual void f3() { cout &lt;&lt; "Base::f3\n"; }
+};
+
+class Derived : public Base {
+public:
+    void f1() { cout &lt;&lt; "Derived::f1\n"; }      // 隐藏（非虚）
+    void f2() override { cout &lt;&lt; "Derived::f2\n"; }  // 重写
+    void f3() override { cout &lt;&lt; "Derived::f3\n"; }
+};
+
+int main() {
+    Derived d;
+    Base *p = &amp;d;
+
+    p-&gt;f1();     // ①
+    p-&gt;f2();     // ②
+    p-&gt;f3();     // ③
+    d.f1();      // ④
+    return 0;
+}</code></pre></div>
+
+<p><strong>推演过程</strong>：</p>
+<table class="styled-table">
+<thead>
+<tr>
+<th style="text-align: center;">语句</th>
+<th style="text-align: center;">绑定方式</th>
+<th style="text-align: center;">调用哪个函数</th>
+<th style="text-align: center;">输出</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><code class="inline-code">p-&gt;f1()</code></td>
+<td style="text-align: center;"><strong>静态绑定</strong>（f1 非虚）</td>
+<td style="text-align: center;"><code class="inline-code">Base::f1</code>（看指针类型）</td>
+<td style="text-align: center;">Base::f1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">p-&gt;f2()</code></td>
+<td style="text-align: center;"><strong>动态绑定</strong>（f2 虚函数）</td>
+<td style="text-align: center;"><code class="inline-code">Derived::f2</code>（看对象类型）</td>
+<td style="text-align: center;">Derived::f2</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">p-&gt;f3()</code></td>
+<td style="text-align: center;"><strong>动态绑定</strong>（f3 虚函数）</td>
+<td style="text-align: center;"><code class="inline-code">Derived::f3</code></td>
+<td style="text-align: center;">Derived::f3</td>
+</tr>
+<tr>
+<td style="text-align: center;"><code class="inline-code">d.f1()</code></td>
+<td style="text-align: center;"><strong>静态绑定</strong>（通过对象调用）</td>
+<td style="text-align: center;"><code class="inline-code">Derived::f1</code></td>
+<td style="text-align: center;">Derived::f1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>关键区别</strong>：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">非虚函数：编译器看「指针/引用的静态类型」决定调用谁
+虚函数：  程序运行时看「对象的实际类型」决定调用谁</code></pre></div>
+
+<div class="card flat" style="text-align:center">
+<div class="card-title">🎨 OOP 三大特性关系图</div>
+<svg viewBox="0 0 680 220" style="max-width:100%;height:auto;margin:10px 0">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4f6ef7;stop-opacity:1"/><stop offset="100%" style="stop-color:#6366f1;stop-opacity:1"/></linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981;stop-opacity:1"/><stop offset="100%" style="stop-color:#14b8a6;stop-opacity:1"/></linearGradient>
+    <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1"/><stop offset="100%" style="stop-color:#f97316;stop-opacity:1"/></linearGradient>
+  </defs>
+  <!-- 封装 -->
+  <rect x="20" y="20" width="200" height="180" rx="12" fill="url(#g1)" opacity=".08" stroke="url(#g1)" stroke-width="2"/>
+  <text x="120" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#4f6ef7">🔒 封装</text>
+  <text x="120" y="80" text-anchor="middle" font-size="12" fill="#475569">数据 + 行为捆绑</text>
+  <text x="120" y="100" text-anchor="middle" font-size="12" fill="#475569">对外隐藏实现细节</text>
+  <rect x="50" y="115" width="140" height="30" rx="6" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="120" y="134" text-anchor="middle" font-size="11" fill="#4338ca">private: 余额</text>
+  <rect x="50" y="152" width="140" height="30" rx="6" fill="#eef2ff" stroke="#c7d2fe" stroke-width="1"/>
+  <text x="120" y="171" text-anchor="middle" font-size="11" fill="#4338ca">public: getBalance()</text>
+  <!-- 继承 -->
+  <rect x="240" y="20" width="200" height="180" rx="12" fill="url(#g2)" opacity=".08" stroke="url(#g2)" stroke-width="2"/>
+  <text x="340" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#10b981">🌳 继承</text>
+  <text x="340" y="80" text-anchor="middle" font-size="12" fill="#475569">子类复用父类属性和方法</text>
+  <rect x="270" y="90" width="140" height="30" rx="6" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="340" y="109" text-anchor="middle" font-size="12" fill="#047857">class Animal {</text>
+  <rect x="270" y="127" width="140" height="30" rx="6" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1"/>
+  <text x="340" y="146" text-anchor="middle" font-size="12" fill="#047857">class Dog : Animal</text>
+  <text x="340" y="180" text-anchor="middle" font-size="11" fill="#475569">→ 复用 Animal 的属性和方法</text>
+  <!-- 多态 -->
+  <rect x="460" y="20" width="200" height="180" rx="12" fill="url(#g3)" opacity=".08" stroke="url(#g3)" stroke-width="2"/>
+  <text x="560" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#f59e0b">🎭 多态</text>
+  <text x="560" y="80" text-anchor="middle" font-size="12" fill="#475569">同一接口，不同实现</text>
+  <rect x="490" y="95" width="140" height="25" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+  <text x="560" y="113" text-anchor="middle" font-size="11" fill="#92400e">Animal* p = &amp;dog</text>
+  <rect x="490" y="127" width="140" height="25" rx="6" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+  <text x="560" y="145" text-anchor="middle" font-size="11" fill="#92400e">p-&gt;speak() // 汪汪！</text>
+  <text x="560" y="183" text-anchor="middle" font-size="11" fill="#059669">✨ virtual + 运行时绑定</text>
+</svg>
+</div>
+
+<div class="card flat">
+<div class="card-title">📋 OOP 三大特性 —— 对比总结</div>
+<table class="compact striped">
+<thead>
+<tr><th>特性</th><th>核心思想</th><th>实现方式</th><th>常考关键词</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>封装</strong></td><td>数据+行为捆绑，对外隐藏细节</td><td><code>private/protected/public</code></td><td>访问权限、getter/setter</td></tr>
+<tr><td><strong>继承</strong></td><td>子类复用父类属性和方法</td><td><code>class 子类 : public 父类</code></td><td>构造/析构顺序、权限变化</td></tr>
+<tr><td><strong>多态</strong></td><td>同一接口不同实现</td><td><code>virtual + override</code></td><td>vptr/vtable、虚析构</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr />
+
+</section>
+
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 5. 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：基类析构函数不是虚函数</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    ~Base() { cout &lt;&lt; "~Base\n"; }
+};
+
+class Derived : public Base {
+    int *p = new int[100];
+public:
+    ~Derived() { delete[] p; cout &lt;&lt; "~Derived\n"; }
+};
+
+Base *b = new Derived();
+delete b;   // 只调用了 ~Base！！内存泄漏！</code></pre></div>
+<p><span class="key-point success">修复</span>：基类析构函数前加 <code class="inline-code">virtual</code>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：构造函数中调用虚函数</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    Base() { f(); }
+    virtual void f() { cout &lt;&lt; "Base::f\n"; }
+};
+
+class Derived : public Base {
+public:
+    Derived() : Base() {}
+    void f() override { cout &lt;&lt; "Derived::f\n"; }
+};
+
+Derived d;  // 输出 Base::f，不是 Derived::f</code></pre></div>
+<p><span class="key-point danger">原因</span>：构造函数执行时，对象的 vptr 指向当前正在构造的类的虚表，尚未指向派生类。<strong>构造和析构期间不要调用虚函数</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：混淆隐藏（hide）与重写（override）</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+public:
+    virtual void f(int x) { }
+};
+
+class Derived : public Base {
+public:
+    void f() { }          // 隐藏了 Base::f(int)，不是重写！
+    // 使用 override 关键字会让编译器报错：
+    // void f() override { }  // 错误：no matching function to override
+};</code></pre></div>
+<p><span class="key-point warn">区别</span>：重写要求函数签名完全一致（包括参数列表），隐藏只要求函数名相同。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：静态成员函数访问非静态成员</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Demo {
+    int x;
+public:
+    static void show() {
+        cout &lt;&lt; x;   // 错误！静态函数不能访问非静态成员
+    }
+};</code></pre></div>
+<p><span class="key-point danger">原因</span>：静态函数没有 this 指针，不知道访问哪个对象的成员。只能访问静态成员。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：拷贝构造函数中的浅拷贝问题</div>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class StringWrapper {
+private:
+    char *str;
+public:
+    StringWrapper(const char *s) {
+        str = new char[strlen(s) + 1];
+        strcpy(str, s);
+    }
+    ~StringWrapper() { delete[] str; }
+};
+
+int main() {
+    StringWrapper s1("hello");
+    StringWrapper s2 = s1;  // 浅拷贝：s1.str == s2.str
+    return 0;               // 析构时 double free！
+}</code></pre></div>
+<p><span class="key-point success">修复</span>：定义拷贝构造函数，实现<strong>深拷贝</strong>——为新对象分配独立的内存并复制内容。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">StringWrapper(const StringWrapper &amp;other) {
+    str = new char[strlen(other.str) + 1];
+    strcpy(str, other.str);  // 深拷贝：各自独立的内存
+}</code></pre></div>
+<p class="key-point danger">考试常考：类中有指针成员时，必须自定义拷贝构造函数和拷贝赋值运算符，否则会导致双重释放（double free）或悬挂指针。</p>
+</div>
+
+</section>
+
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>25 道选择题</strong> + <strong>11 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📌 知识点一：OOP 三大特性</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第2题）</div>
+<p>面向对象的编程思想主要包括以下哪些原则？</p>
+
+<p>A. 贪心、动态规划、回溯</p>
+<p>B. 并发、并行、异步</p>
+<p>C. 递归、循环、分治</p>
+<p>D. 封装、继承、多态</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年6月第1题）</div>
+<p>面向对象的编程思想主要包括什么原则？</p>
+
+<p>A. 贪心、动态规划、回溯</p>
+<p>B. 并发、并行、异步</p>
+<p>C. 递归、循环、分治</p>
+<p>D. 封装、继承、多态</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年12月第1题）</div>
+<p>面向对象编程(OOP)是一种特殊的程序设计方法。下面哪一项不是重要的OOP特性？</p>
+
+<p>A. 抽象</p>
+<p>B. 封装</p>
+<p>C. 继承</p>
+<p>D. 模块化</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：OOP 四大核心特性通常指**抽象、封装、继承、多态**，其中"模块化"不是 OOP 独有的特性。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024年9月第1题）</div>
+<p>以下哪一项没有涉及 C++ 语言的面向对象特性支持。</p>
+
+<p>A. C++ 中构造一个 class 或 struct</p>
+<p>B. C++ 中调用 printf 函数</p>
+<p>C. C++ 中调用用户定义的类成员函数</p>
+<p>D. C++ 中构造来源于同一基类的多个派生类</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：printf 是 C 语言风格的函数，不涉及面向对象特性。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2025年3月第1题）</div>
+<p>下面关于类的描述中，不正确的是哪一项？</p>
+
+<p>A. 类是一个抽象的概念，用于描述具有相同属性和行为的对象集合</p>
+<p>B. 类可以包含属性和方法，属性用于描述对象的状态，方法用于描述对象的行为</p>
+<p>C. 类可以被实例化，生成具体的对象</p>
+<p>D. 类一旦定义后，其属性和方法不能被修改或扩展</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：类可以通过继承来扩展，不能说"不能被修改或扩展"。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2025年6月第1题）</div>
+<p>下列哪一项不是面向对象编程的基本特征？</p>
+
+<p>A. 继承</p>
+<p>B. 封装</p>
+<p>C. 多态</p>
+<p>D. 链接</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2025年9月第2题）</div>
+<p>假设变量 veh 是类 Car 的一个实例，我们可以调用 veh.move()，是因为面向对象编程有什么性质？</p>
+<p>A. 继承</p>
+<p>B. 封装</p>
+<p>C. 多态</p>
+<p>D. 链接</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：通过对象调用其方法，体现了封装性——方法被封装在类内部。
+☝️ **重要**：类中成员**默认是 private**（与 struct 不同，struct 默认是 public）。</div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📦 知识点二：类与对象</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第4题）</div>
+<p>给定一个简单的类定义，在类的外部正确地创建了一个 Circle 对象并调用了 getArea 函数的语句是哪一个？</p>
+
+<p>A. Circle c = Circle(5.0); c.getArea(c);</p>
+<p>B. Circle c(5.0); getArea(c);</p>
+<p>C. Circle c = new Circle(5.0); c.getArea();</p>
+<p>D. Circle c(5.0); c.getArea();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：`Circle c(5.0)` 是创建对象的正确方式。`c.getArea()` 通过对象调用成员函数。C 选项中 `new Circle(5.0)` 返回的是指针，应用 `-&gt;` 调用。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年12月第2题）</div>
+<p>以下关于C++中类的说法，哪一项是正确的？</p>
+
+<p>A. 类中定义的所有成员变量和成员函数默认是 public 访问权限。</p>
+<p>B. 类的构造函数必须显式声明返回类型为 void。</p>
+<p>C. 在C++中，类的数据一般设置为私有，其公有成员函数提供访问私有数据的唯一途径。</p>
+<p>D. 同一个类的实例有各自的成员数据和成员函数。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：A 错，默认是 private。B 错，构造函数没有返回类型。D 错，成员函数是所有实例共享的（代码区），成员数据才是各自独立的。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年12月第3题）</div>
+<p>以下C++代码段中存在语法错误或逻辑错误，哪一项是正确的？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class MyClass {
+public:
+    MyClass() { cout &lt;&lt; "Constructor called!" &lt;&lt; endl; }
+    void display() { cout &lt;&lt; "Display function called!" &lt;&lt; endl; }
+};
+int main() {
+    MyClass* obj = NULL;
+    obj-&gt;display();  // 空指针访问！
+    return 0;
+}</code></pre></div>
+<p>A. NULL 在C++中无法用于指针初始化，应使用 nullptr</p>
+<p>B. obj 的定义应该是 MyClass obj; 而不是指针类型</p>
+<p>C. obj-&gt;display() 语句存在空指针访问错误</p>
+<p>D. obj-&gt;display() 语句会调用 display() 函数，但它没有输出任何内容</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：obj 被初始化为 NULL，调用 obj-&gt;display() 会导致空指针访问错误。正确答案是 C。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2026年3月第1题）</div>
+<p>下列关于 C++ 中类的描述，正确的是哪一项？</p>
+
+<p>A. 如果类没有用户声明的构造函数，那么编译器会隐式声明一个默认构造函数</p>
+<p>B. 类的析构函数可以被重载，一个类可以有多个析构函数</p>
+<p>C. 类中的所有成员都必须声明为 public</p>
+<p>D. 类和结构体在 C++ 中没有区别，包括默认访问权限也相同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：B 错，析构函数不能重载，只能有一个。C 错，类可以有 private/protected/public 成员。D 错，class 默认 private，struct 默认 public。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2026年3月第3题）</div>
+<p>下面代码在 main() 中有一行会导致编译错误，请找出来。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Pet {
+public:
+    Pet(string n, int a) : name(n), age(a) {}
+    string getName()  { return name; }
+    void   birthday() { age++; }
+private:
+    string name;
+    int    age;
+};
+int main() {
+    Pet cat("奶茶", 2);
+    cout &lt;&lt; cat.getName();    // ① OK
+    cat.birthday();           // ② OK
+    cat.name = "大橘";        // ③ ERROR: name是private
+    cout &lt;&lt; cat.getName();    // ④ OK
+}</code></pre></div>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：第③行编译错误：name 是私有成员，不能在类外直接访问。</div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--accent);background:linear-gradient(135deg,var(--accent-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--accent-dark)">🔧 知识点三：构造函数与析构函数</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2025年3月第8题）</div>
+<p>以下代码中，类的构造函数被调用了多少次？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class MyClass {
+public:
+    MyClass() { cout &lt;&lt; "Constructor called!" &lt;&lt; endl; }
+};
+int main() {
+    MyClass obj1;       // 调用一次构造函数
+    MyClass obj2 = obj1; // 这里调用的是拷贝构造函数（默认），不是普通构造函数
+    return 0;
+}</code></pre></div>
+<p>A. 1</p>
+<p>B. 2</p>
+<p>C. 3</p>
+<p>D. 0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：`MyClass obj2 = obj1;` 此处调用的是编译器自动生成的**拷贝构造函数**，也是构造函数的一种。因此构造函数被调用了 2 次（一次默认构造，一次拷贝构造）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2025年12月第1题）</div>
+<p>下列关于虚函数的描述中，错误的是哪一项？</p>
+
+<p>A. 虚函数用于支持运行时多态</p>
+<p>B. 通过基类指针调用虚函数时，会根据对象实际类型决定调用版本</p>
+<p>C. 构造函数可以声明为虚函数以支持多态</p>
+<p>D. 基类析构函数常声明为虚函数以避免资源泄漏</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：构造函数不能声明为虚函数。C++ 中虚函数机制依赖于对象的虚函数表指针（vptr），而 vptr 是在构造函数执行期间初始化的，因此构造函数不能是虚函数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025年9月第1题）</div>
+<p>下列关于类的说法，错误的是哪一项？</p>
+
+<p>A. 构造函数不能声明为虚函数，但析构函数可以</p>
+<p>B. 函数参数如声明为类的引用类型，调用时不会调用该类的复制构造函数</p>
+<p>C. 静态方法属于类而不是某个具体对象，因此推荐用 类名::方法(...) 调用</p>
+<p>D. 不管基类的析构函数是否是虚函数，都可以通过基类指针/引用正确删除派生类对象</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：D 错误。如果基类析构函数不是虚函数，通过基类指针 `delete` 派生类对象时，只会调用基类的析构函数，不会调用派生类的析构函数，导致**资源泄漏**。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025年12月第1题—判断）</div>
+<p>以下代码中，构造函数被调用的次数是 1 次。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Test {
+public:
+    Test() { cout &lt;&lt; "T "; }
+};
+int main() {
+    Test a;
+    Test b = a;  // 这行调用的是拷贝构造函数，但此处只定义了默认构造函数
+}</code></pre></div>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong><br>解析：🎯 注意：本题与 2025年3月第8题类似但有区别。关键在于类中是否定义了拷贝构造函数。如果只有默认构造函数，`Test b = a;` 仍会调用编译器隐式生成的拷贝构造，总调用次数需具体分析。</div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--success);background:linear-gradient(135deg,var(--success-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:#047857">📊 知识点四：静态成员</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年6月第2题）</div>
+<p>运行下列代码，屏幕上输出什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class my_class {
+public:
+    static int count;
+    my_class() { count++; }
+    ~my_class() { count--; }
+    static void print_count() { cout &lt;&lt; count &lt;&lt; " "; }
+};
+int my_class::count = 0;
+int main() {
+    my_class obj1; my_class::print_count();  // 输出 1
+    my_class obj2; obj2.print_count();       // 输出 2
+    my_class obj3; obj3.print_count();       // 输出 3
+    return 0;
+}</code></pre></div>
+<p>A. 1 1 1</p>
+<p>B. 1 2 3</p>
+<p>C. 1 1 2</p>
+<p>D. 1 2 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：每创建一个对象，count 自增 1。静态成员 count 被所有对象共享，所以依次输出 1、2、3。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年6月第8题）</div>
+<p>在C++中，静态成员函数只能访问静态成员变量。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第2题）</div>
+<p>在C++中，类的静态成员变量只能被该类对象的成员函数访问。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：静态成员变量属于类，可以通过 `类名::变量名` 直接访问，也可通过任意对象访问。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年12月第2题）</div>
+<p>类的静态成员函数既能访问类的静态数据成员，也能访问非静态数据成员。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--purple);background:linear-gradient(135deg,var(--purple-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--purple-dark)">🌳 知识点五：继承</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年9月第2题）</div>
+<p>关于以下C++代码，哪一行代码会引起编译错误。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Base {
+private:
+    int a;
+protected:
+    int b;
+public:
+    int c;
+};
+class Derived : public Base {
+public:
+    void show() {
+        cout &lt;&lt; a &lt;&lt; endl;   // Line 1 ❌ 不能访问基类private成员
+        cout &lt;&lt; b &lt;&lt; endl;   // Line 2 ✅ protected成员可以在派生类访问
+        cout &lt;&lt; c &lt;&lt; endl;   // Line 3 ✅ public成员可以在派生类访问
+    }
+};</code></pre></div>
+<p>A. Line 1</p>
+<p>B. Line 2</p>
+<p>C. Line 3</p>
+<p>D. 没有编译错误</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2025年6月第2题）</div>
+<p>为了让 Dog 类的构造函数能正确地调用其父类 Animal 的构造方法，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Animal {
+public:
+    std::string name;
+    Animal(std::string str) : name(str) { }
+    virtual void speak() { cout &lt;&lt; "Animal speaks" &lt;&lt; endl; }
+};
+class Dog : public Animal {
+    std::string breed;
+public:
+    Dog(std::string name, std::string b) : _________________, breed(b) { }
+    void speak() override { cout &lt;&lt; "Dog barks" &lt;&lt; endl; }
+};</code></pre></div>
+<p>A. Animal(name)</p>
+<p>B. super(name)</p>
+<p>C. Animal::Animal(name)</p>
+<p>D. Animal()</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：在派生类构造函数的初始化列表中，直接写基类名(参数) 即可调用基类构造函数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年3月第3题）</div>
+<p>继承是将已有类的属性和方法引入新类的过程。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第5题）</div>
+<p>生成一个派生类的对象时，只调用派生类的构造函数。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：创建派生类对象时，先调用基类构造函数再调用派生类构造函数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年12月第6题）</div>
+<p>在生成一个派生类的对象时，只调用派生类的构造函数。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年6月第6题）</div>
+<p>能正确继承时，子类的实例能通过其成员函数访问父类的属性 value。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：当 value 是基类的 private 成员时，派生类不能直接访问。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2026年3月第2题）</div>
+<p>C++ 中的继承支持单继承和多继承，但子类无法直接访问父类的私有成员。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--danger);background:linear-gradient(135deg,var(--danger-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:#b91c1c">🎭 知识点六：多态与虚函数</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年6月第3题）</div>
+<p>运行下列代码，屏幕上输出什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class shape {
+public:
+    virtual int area() { cout &lt;&lt; "parent class area: " &lt;&lt;endl; return 0; }
+};
+class rectangle: public shape {
+public:
+    int area () { cout &lt;&lt; "rectangle area: "; return (width * height); }
+};
+class triangle: public shape {
+public:
+    int area () { cout &lt;&lt; "triangle area: "; return (width * height / 2); }
+};
+int main() {
+    shape *pshape;
+    rectangle rec(10, 7);
+    triangle  tri(10, 5);
+    pshape = &amp;rec;
+    pshape-&gt;area();  // 输出：rectangle area:
+    pshape = &amp;tri;
+    pshape-&gt;area();  // 输出：triangle area:
+    return 0;
+}</code></pre></div>
+<p>A. rectangle area: triangle area:</p>
+<p>B. parent class area: parent class area:</p>
+<p>C. 运行时报错</p>
+<p>D. 编译时报错</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2025年9月第3题）</div>
+<p>下面代码中 v1 和 v2 调用了相同接口 move()，但输出结果不同，这体现了面向对象编程的什么特性？</p>
+
+<p>A. 继承</p>
+<p>B. 封装</p>
+<p>C. 多态</p>
+<p>D. 链接</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025年12月第2题）</div>
+<p>执行代码，会输出"钢琴：叮咚叮咚"和"吉他：咚咚当当"。体现了面向对象编程的什么特性？</p>
+
+<p>A. 继承</p>
+<p>B. 封装</p>
+<p>C. 多态</p>
+<p>D. 链接</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025年12月第3题）</div>
+<p>关于以下代码，说法正确的是哪一项？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Instrument {
+public:
+    virtual void play() { cout &lt;&lt; "乐器在演奏声音" &lt;&lt; endl; }
+    virtual ~Instrument() {}
+};
+class Piano : public Instrument { void play() override { cout &lt;&lt; "钢琴：叮咚叮咚" &lt;&lt; endl; } };
+class Guitar : public Instrument { void play() override { cout &lt;&lt; "吉他：咚咚当当" &lt;&lt; endl; } };
+int main() {
+    Instrument* instruments[2];
+    instruments[0] = new Piano();
+    instruments[1] = new Guitar();
+    for (int i = 0; i &lt; 2; ++i) { instruments[i]-&gt;play(); }
+    for (int i = 0; i &lt; 3; ++i) { delete instruments[i]; }  // ❌ 越界访问！
+    return 0;
+}</code></pre></div>
+<p>A. 执行代码会输出两行，内容分别为：钢琴：叮咚叮咚 和 吉他：咚咚当当</p>
+<p>B. 执行代码会输出两行，内容分别为：乐器在演奏声音 和 乐器在演奏声音</p>
+<p>C. 代码编译出现错误</p>
+<p>D. 代码运行出现错误</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：虚函数机制使得 `instruments[0]-&gt;play()` 调用的是实际对象类型（Piano）的版本，输出"钢琴：叮咚叮咚"。但代码最后一个循环 `i &lt; 3` 越界访问了 instruments[2]，**运行时会出错**。所以正确答案是 **D**。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2025年3月第15题）</div>
+<p>关于下面代码，说法错误的是哪一项？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class Shape {
+public:
+    virtual double area() const { return 0.0; }
+};
+class Circle : public Shape { /* override area */ };
+class Rectangle : public Shape { /* override area */ };
+int main() {
+    Circle circle("MyCircle", 5.0);
+    Rectangle rectangle("MyRectangle", 4.0, 6.0);
+    Shape* shapePtr = &amp;circle;
+    cout &lt;&lt; "Area: " &lt;&lt; shapePtr-&gt;area() &lt;&lt; endl;
+    shapePtr = &amp;rectangle;
+    cout &lt;&lt; "Area: " &lt;&lt; shapePtr-&gt;area() &lt;&lt; endl;
+}</code></pre></div>
+<p>A. 语句 Shape* shapePtr = &amp;circle; 和 shapePtr = &amp;rectangle; 出现编译错误 （这是错误的说法）</p>
+<p>B. Shape 为基类，Circle 和 Rectangle 是派生类</p>
+<p>C. 通过继承，Circle 和 Rectangle 复用了 Shape 的属性和方法</p>
+<p>D. Circle 和 Rectangle 通过重写基类的虚函数 area 和基类指针，实现了运行时多态</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：基类指针指向派生类对象是完全合法的，A 的说法是错误的，所以选 A。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2026年3月第2题）</div>
+<p>下列代码中，s1-&gt;draw() 和 s2-&gt;draw() 输出不同结果的主要原因是什么？</p>
+
+<p>A. draw() 是普通成员函数</p>
+<p>B. Shape 中的 draw() 被声明为虚函数</p>
+<p>C. Circle 和 Rectangle 中使用了 public 继承</p>
+<p>D. 指针变量名不同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第4题）</div>
+<p>运行以下C++代码，屏幕将输出"derived class"。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">class base {
+public:
+    virtual void show() { cout &lt;&lt; "base class" &lt;&lt; endl; }
+};
+class derived : public base {
+public:
+    void show() override { cout &lt;&lt; "derived class" &lt;&lt; endl; }
+};
+int main() {
+    base* b;
+    derived d;
+    b = &amp;d;
+    b-&gt;show();  // 虚函数调用，输出 derived class
+    return 0;
+}</code></pre></div>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年6月第1题）</div>
+<p>构造函数可以被声明为 virtual。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年9月第1题）</div>
+<p>当基类可能被多态使用，其析构函数应该声明为虚函数。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+</section>
+
+
+<section id="cheatsheet">
+<hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 本讲知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead>
+    <tr><th>知识点</th><th>一句话总结</th><th>常考形式</th></tr>
+</thead>
+<tbody>
+    <tr><td>类的默认访问权限</td><td>class → private，struct → public</td><td>选择题</td></tr>
+    <tr><td>构造 &amp; 析构</td><td>构造无返回值、可重载；析构无参数、不可重载</td><td>判断/选择</td></tr>
+    <tr><td>构造 &amp; 析构顺序</td><td>构造先父后子，析构先子后父</td><td>代码分析</td></tr>
+    <tr><td>静态成员</td><td>属于类，所有对象共享</td><td>代码输出</td></tr>
+    <tr><td>继承的权限</td><td>base private 永远不可访问</td><td>代码分析</td></tr>
+    <tr><td>虚函数</td><td>virtual → 运行时多态</td><td>代码输出</td></tr>
+    <tr><td>虚析构</td><td>基类析构要加 virtual，否则内存泄漏</td><td>判断</td></tr>
+    <tr><td>纯虚函数</td><td>= 0 → 抽象类，不能实例化</td><td>概念判断</td></tr>
+</tbody>
+</table>
+</div>
+
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">下一讲预告：栈（Stack）——先进后出，括号匹配、进制转换全掌握</p>
+</section>
+
+</div>
+</main>
+
+<!-- Back to Top -->
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
+
+<script>
+// ScrollSpy
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = [];
+navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+        const el = document.getElementById(href.slice(1));
+        if (el) sections.push({el, link});
+    }
+});
+
+function updateActive() {
+    const scrollY = window.scrollY + 80;
+    let current = sections[0];
+    for (const s of sections) {
+        if (s.el.offsetTop <= scrollY) current = s;
+    }
+    for (const s of sections) s.link.classList.remove('active');
+    if (current) current.link.classList.add('active');
+}
+window.addEventListener('scroll', updateActive);
+window.addEventListener('load', updateActive);
+
+// Back to Top
+const btn = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 500);
+});
+btn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+// Mobile Menu
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    menuToggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+});
+navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+            sidebar.classList.remove('open');
+            menuToggle.textContent = '☰';
+        }
+    });
+});
+
+// Answer Toggle
+function toggleAnswer(btn) {
+    const content = btn.nextElementSibling;
+    const isOpen = content.classList.contains('open');
+    if (isOpen) {
+        content.classList.remove('open');
+        btn.classList.remove('open');
+        btn.innerHTML = '<span class="arrow">▶</span> 显示答案';
+    } else {
+        content.classList.add('open');
+        btn.classList.add('open');
+        btn.innerHTML = '<span class="arrow">▶</span> 隐藏答案';
+    }
+}
+
+// Card Color Cycling — 让真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</div></main>
+</body>
+</html>

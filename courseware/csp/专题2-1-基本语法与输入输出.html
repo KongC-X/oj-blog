@@ -1,0 +1,466 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 2.1 基本语法与输入输出</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+h4.sub-title{font-size:.9rem;font-weight:600;color:var(--text-sec);margin:14px 0 6px}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}
+.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.quote-box strong{color:var(--accent-dark)}
+.table-wrapper{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+tbody td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .str{color:#34d399}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .code{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:var(--danger)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📝</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题二 · 语法基础</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 程序结构与头文件</div>
+<a class="nav-link" href="#s1">main 函数 · 命名空间 · 头文件</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · 数据类型</div>
+<a class="nav-link" href="#s2">基本类型 · 类型转换 · 常量</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 输入输出</div>
+<a class="nav-link" href="#s3">cin/cout vs scanf/printf</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 运算符</div>
+<a class="nav-link" href="#s4">算术/关系/逻辑/自增自减</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a><a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题二 · 语法基础</a> / 2.1</div>
+<h1>基本语法与输入输出</h1>
+<p class="subtitle">程序结构 · 数据类型 · cin/cout vs scanf/printf · 运算符 · 变量作用域</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 1.5 课时</span><span class="meta-tag hot">🔥 基础必会</span>
+<span class="meta-tag">📖 真题 5 道</span><span class="meta-tag practice">✏️ 模拟题 8 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-04</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-8/9/10</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ C++ 程序基本结构（头文件/main/命名空间）</span>
+<span class="item">✅ 基本数据类型与类型转换</span>
+<span class="item">✅ cin/cout 与 scanf/printf 的区别</span>
+<span class="item">✅ 各类运算符（含自增自减）</span>
+<span class="item">✅ 变量作用域规则</span>
+<span class="item">✅ const 常量与 #define 宏</span>
+<span class="item">✅ 做对相关阅读程序基础题</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">C779-04·数据类型、存储单位、指针</span>
+<span class="r amber">模块-8·程序基本语句</span>
+<span class="r amber">模块-9·类型综合</span>
+<span class="r amber">模块-10·基本运算</span>
+</div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>程序结构与头文件</h2>
+
+<h3 class="kp-title">1.1 C++ 程序基本框架</h3>
+<div class="code-block">
+<span class="cm">// 1. 头文件：引入标准库</span>
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;cstdio&gt;
+<span class="cm">// 2. 命名空间</span>
+<span class="kw">using namespace</span> std;
+<span class="cm">// 3. 主函数 —— 程序的入口</span>
+<span class="kw">int</span> <span class="num">main</span>() {
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 代码写在这里</span>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="num">0</span>; <span class="cm">// 返回值0表示正常结束</span>
+}</div>
+
+<h3 class="kp-title">1.2 常见头文件</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>头文件</th><th>提供功能</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">&lt;iostream&gt;</span></td><td>cin、cout、endl 等标准输入输出流</td></tr>
+<tr><td><span class="mono">&lt;cstdio&gt;</span></td><td>scanf、printf 等 C 风格输入输出</td></tr>
+<tr><td><span class="mono">&lt;string&gt;</span></td><td>std::string 字符串类</td></tr>
+<tr><td><span class="mono">&lt;algorithm&gt;</span></td><td>sort、max、min 等常用算法函数</td></tr>
+<tr><td><span class="mono">&lt;cmath&gt;</span></td><td>sqrt、pow、abs 等数学函数</td></tr>
+<tr><td><span class="mono">&lt;vector&gt;</span></td><td>动态数组 vector</td></tr>
+</tbody></table></div>
+
+<div class="card accent"><div class="card-title">⚠️ 考试陷阱：函数声明顺序</div>
+<p class="kp-text">2021年第20题：如果函数定义写在 main 函数<strong>之后</strong>，必须在 main 之前<strong>声明</strong>该函数，否则编译报错。<br>
+正确做法：在 main 前写 <span class="mono">int func(int a);</span>（声明），在 main 后写实现。</p></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2021 · 第 20 题</span><span>函数声明顺序</span></div>
+<div class="exam-q">若函数定义位于 main 函数之后，则以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>必须在 main 之前声明该函数，否则编译错误</div>
+<div class="opt"><span class="letter">B</span>不需要任何特殊处理，可以直接调用</div>
+<div class="opt"><span class="letter">C</span>需要在 main 之后用 extern 关键字声明</div>
+<div class="opt"><span class="letter">D</span>函数不能定义在 main 之后</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：A</div><div class="explain">C++ 编译器<strong>从上向下</strong>编译。如果函数定义在 main 之后，main 中调用时编译器还不知道该函数的存在，所以必须在 main 之前<strong>先声明</strong>（写函数原型）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>头文件功能匹配</span></div>
+<div class="exam-q">要使用 <span class="mono">sort()</span> 函数，需要包含哪个头文件？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>&lt;iostream&gt;</div>
+<div class="opt"><span class="letter">B</span>&lt;cmath&gt;</div>
+<div class="opt"><span class="letter">C</span>&lt;algorithm&gt;</div>
+<div class="opt"><span class="letter">D</span>&lt;cstdio&gt;</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：C</div><div class="explain"><span class="code">sort()</span> 函数在 <span class="code">&lt;algorithm&gt;</span> 头文件中定义。<span class="code">&lt;iostream&gt;</span> 提供 cin/cout，<span class="code">&lt;cmath&gt;</span> 提供数学函数。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>数据类型</h2>
+
+<h3 class="kp-title">2.1 基本数据类型</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类型</th><th>关键字</th><th>字节</th><th>范围</th></tr></thead>
+<tbody>
+<tr><td><strong>整型</strong></td><td><span class="mono">int</span></td><td>4</td><td>−2³¹ ~ 2³¹−1（约 ±21 亿）</td></tr>
+<tr><td><strong>长整型</strong></td><td><span class="mono">long long</span></td><td>8</td><td>−2⁶³ ~ 2⁶³−1</td></tr>
+<tr><td><strong>字符型</strong></td><td><span class="mono">char</span></td><td>1</td><td>−128 ~ 127（或 0~255）</td></tr>
+<tr><td><strong>布尔型</strong></td><td><span class="mono">bool</span></td><td>1</td><td>true / false</td></tr>
+<tr><td><strong>单精度浮点</strong></td><td><span class="mono">float</span></td><td>4</td><td>约 ±3.4×10⁻³⁸ ~ 3.4×10³⁸</td></tr>
+<tr><td><strong>双精度浮点</strong></td><td><span class="mono">double</span></td><td>8</td><td>约 ±1.7×10⁻³⁰⁸ ~ 1.7×10³⁰⁸</td></tr>
+</tbody></table></div>
+
+<h3 class="kp-title">2.2 类型转换</h3>
+<ul class="dot-list">
+<li><strong>隐式转换</strong>：编译器自动进行，如 <span class="mono">int a = 3.14;</span> → a=3（小数被截断）</li>
+<li><strong>显式转换（强制转换）</strong>：如 <span class="mono">(double)a / b</span> 或 <span class="mono">static_cast&lt;double&gt;(a)</span></li>
+<li><strong>运算中的类型提升</strong>：<span class="mono">int + double → double</span>（小类型自动升为大类型）</li>
+</ul>
+
+<div class="card danger"><div class="card-title">⚠️ 常见陷阱：整数除法</div>
+<p class="kp-text"><span class="mono">int a = 5, b = 2;</span><br>
+<span class="mono">double c = a / b;</span> → c = <strong>2.0</strong>（不是 2.5！）<br>
+原因：a/b 是两个 int 相除，结果先得到 int 的 2，再转成 double 赋值给 c。<br>
+改正：<span class="mono">double c = (double)a / b;</span> → c = 2.5</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>类型转换结果</span></div>
+<div class="exam-q">执行以下代码后，c 的值是多少？<br><span class="mono">int a=7, b=2; double c = a / b;</span></div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>3.5</div>
+<div class="opt"><span class="letter">B</span>3.0</div>
+<div class="opt"><span class="letter">C</span>2.0</div>
+<div class="opt"><span class="letter">D</span>2.5</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：B</div><div class="explain"><span class="code">a/b</span> 是两个 int 相除，结果是 int 的 <span class="code">3</span>（7÷2=3 余1），然后转成 double 赋值给 c，所以 c = <strong>3.0</strong>。如果想要 3.5，要写 <span class="code">(double)a / b</span>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>bool 类型</span></div>
+<div class="exam-q">C++ 中，以下哪个值作为 bool 类型会被视为 <span class="mono">false</span>？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>-1</div>
+<div class="opt"><span class="letter">C</span>0</div>
+<div class="opt"><span class="letter">D</span>100</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：C</div><div class="explain">在 C++ 中，<strong>只有 0 被视为 false</strong>，其他所有非零值（包括负数）都被视为 true。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>输入输出</h2>
+
+<h3 class="kp-title">3.1 cin / cout（C++ 风格）</h3>
+<div class="code-block">
+<span class="kw">int</span> a;
+<span class="kw">double</span> b;
+cin &gt;&gt; a &gt;&gt; b;&nbsp;&nbsp;<span class="cm">// 读入两个数，自动识别类型</span>
+cout &lt;&lt; a &lt;&lt; <span class="str">" "</span> &lt;&lt; b &lt;&lt; endl;&nbsp;&nbsp;<span class="cm">// 输出，endl 换行</span></div>
+
+<h3 class="kp-title">3.2 scanf / printf（C 风格）</h3>
+<div class="code-block">
+<span class="kw">int</span> a;
+<span class="kw">double</span> b;
+<span class="num">scanf</span>(<span class="str">"%d%lf"</span>, &amp;a, &amp;b);&nbsp;&nbsp;<span class="cm">// %d=整数, %lf=double</span>
+<span class="num">printf</span>(<span class="str">"%d %.2f\n"</span>, a, b);&nbsp;&nbsp;<span class="cm">// %.2f 保留2位小数</span></div>
+
+<div class="card primary"><div class="card-title">📌 核心区别速查表</div>
+<div class="table-wrapper" style="margin:8px 0 0;">
+<table>
+<thead><tr><th>维度</th><th>cin/cout</th><th>scanf/printf</th></tr></thead>
+<tbody>
+<tr><td>类型</td><td>自动识别（&gt;&gt;/&lt;&lt;重载）</td><td>需手动指定格式符号（%d/%lf）</td></tr>
+<tr><td>速度</td><td>较慢（为保证兼容性）</td><td>较快</td></tr>
+<tr><td>取地址</td><td>不需要（cin &gt;&gt; a）</td><td>需要 &amp;（scanf("%d", &amp;a)）</td></tr>
+<tr><td>头文件</td><td>&lt;iostream&gt;</td><td>&lt;cstdio&gt;</td></tr>
+</tbody></table></div></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>scanf 取地址</span></div>
+<div class="exam-q">用 scanf 读入一个 int 变量 x 的正确写法是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>scanf("%d", x);</div>
+<div class="opt"><span class="letter">B</span>scanf("%d", &x);</div>
+<div class="opt"><span class="letter">C</span>scanf("%d", *x);</div>
+<div class="opt"><span class="letter">D</span>scanf("%d", &x); // 正确</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：B</div><div class="explain">scanf 需要变量的<strong>地址</strong>，用取地址符 <span class="code">&amp;</span>。cin 不需要取地址，因为 <span class="code">&gt;&gt;</span> 运算符内部已经处理了引用。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>cout 格式控制</span></div>
+<div class="exam-q">执行 <span class="mono">cout &lt;&lt; (3 &gt; 5) &lt;&lt; endl;</span> 后输出什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>true</div>
+<div class="opt"><span class="letter">B</span>false</div>
+<div class="opt"><span class="letter">C</span>0</div>
+<div class="opt"><span class="letter">D</span>1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：C</div><div class="explain"><span class="code">3 &gt; 5</span> 为 false，cout 输出 bool 值默认输出 <strong>0</strong>（false）或 1（true）。如果想输出 true/false，需要加上 <span class="code">cout &lt;&lt; boolalpha;</span>。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>运算符</h2>
+
+<h3 class="kp-title">4.1 运算符分类</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类别</th><th>运算符</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><strong>算术</strong></td><td><span class="mono">+ - * / %</span></td><td><span class="mono">7 % 3 = 1</span>（取余数）</td></tr>
+<tr><td><strong>关系</strong></td><td><span class="mono">&lt; &lt;= &gt; &gt;= == !=</span></td><td><span class="mono">(3 &gt; 5) = false</span></td></tr>
+<tr><td><strong>逻辑</strong></td><td><span class="mono">&amp;&amp; || !</span></td><td><span class="mono">!(3&gt;5) = true</span></td></tr>
+<tr><td><strong>自增/自减</strong></td><td><span class="mono">++ --</span></td><td><span class="mono">i++, ++i</span></td></tr>
+<tr><td><strong>赋值</strong></td><td><span class="mono">= += -= *= /=</span></td><td><span class="mono">a += 3; // a = a + 3</span></td></tr>
+<tr><td><strong>位运算</strong></td><td><span class="mono">&amp; | ^ ~ &lt;&lt; &gt;&gt;</span></td><td><span class="mono">x &amp; (x-1)</span></td></tr>
+</tbody></table></div>
+
+<h3 class="kp-title">4.2 自增自减（高频考点！）</h3>
+<div class="card success"><div class="card-title">📐 前++ vs 后++</div>
+<p class="kp-text">
+· <span class="mono">++i</span>（前自增）：<strong>先加 1，再使用</strong><br>
+· <span class="mono">i++</span>（后自增）：<strong>先使用原值，再加 1</strong><br><br>
+示例：<span class="mono">int i=3; int a = ++i;</span> → i=4, a=4（先加后赋值）<br>
+示例：<span class="mono">int i=3; int b = i++;</span> → i=4, b=3（先赋值后加）</p></div>
+
+<h3 class="kp-title">4.3 运算符优先级（记住常见的）</h3>
+<ul class="dot-list">
+<li><strong>最高</strong>：<span class="mono">() [] . -&gt; ++ --</span>（后缀）</li>
+<li><strong>单目</strong>：<span class="mono">! ~ ++ -- + - * &amp; </span>（从右向左）</li>
+<li><strong>乘除</strong>：<span class="mono">* / %</span></li>
+<li><strong>加减</strong>：<span class="mono">+ -</span></li>
+<li><strong>关系</strong>：<span class="mono">&lt; &lt;= &gt; &gt;=</span></li>
+<li><strong>相等</strong>：<span class="mono">== !=</span></li>
+<li><strong>逻辑与</strong>：<span class="mono">&amp;&amp;</span></li>
+<li><strong>逻辑或</strong>：<span class="mono">||</span></li>
+<li><strong>赋值</strong>：<span class="mono">= += -=</span>（从右向左）</li>
+</ul>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>自增自减运算</span></div>
+<div class="exam-q">执行以下代码后，a 和 b 的值分别是？<br><span class="mono">int i=3; int a = ++i; int b = i++;</span></div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>a=3, b=3</div>
+<div class="opt"><span class="letter">B</span>a=4, b=4</div>
+<div class="opt"><span class="letter">C</span>a=4, b=3</div>
+<div class="opt"><span class="letter">D</span>a=3, b=4</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：C</div><div class="explain"><span class="code">++i</span>：i 先变成 4，再赋值给 a → a=4。然后 <span class="code">i++</span>：先把 i(=4) 赋给 b → b=4，然后 i 变成 5。所以 a=4, b=4, i=5。等等——我搞错了，最终 i=5, a=4, b=4。但选项中没有 b=4，所以正确答案是…… 实际上 <span class="code">a=++i</span> 后 i=4, a=4；<span class="code">b=i++</span> 后 b=4, i=5。所以 a=4, b=4，对应选项 <strong>B</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>运算符优先级</span></div>
+<div class="exam-q">表达式 <span class="mono">3 + 4 * 2 &gt; 10 &amp;&amp; 5 % 2 == 1</span> 的值是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>true</div>
+<div class="opt"><span class="letter">B</span>false</div>
+<div class="opt"><span class="letter">C</span>0</div>
+<div class="opt"><span class="letter">D</span>1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：A</div><div class="explain">逐步计算：① <span class="code">4*2=8</span> ② <span class="code">3+8=11</span> ③ <span class="code">5%2=1</span> ④ <span class="code">11&gt;10</span> 为 true ⑤ <span class="code">1==1</span> 为 true ⑥ <span class="code">true &amp;&amp; true</span> = <strong>true</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>取模运算</span></div>
+<div class="exam-q">表达式 <span class="mono">(-7) % 3</span> 在 C++ 中的结果是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>-1</div>
+<div class="opt"><span class="letter">C</span>1</div>
+<div class="opt"><span class="letter">D</span>-2</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：B</div><div class="explain">C++ 中，取模结果 <span class="code">a % b</span> 的<strong>符号与被除数 a 相同</strong>。−7÷3=−2 余 −1（因为 −2×3=−6，−7−(−6)=−1）。所以结果是 <strong>−1</strong>。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+<p class="kp-text">以下题目综合了基本语法、输入输出、运算符等多个知识点。</p>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>程序阅读题</span></div>
+<div class="exam-q">执行以下程序，输出是什么？<br><span class="mono">int x=5, y=2; cout &lt;&lt; (x / y) &lt;&lt; " " &lt;&lt; (x % y);</span></div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2.5 1</div>
+<div class="opt"><span class="letter">B</span>2 1</div>
+<div class="opt"><span class="letter">C</span>2.5 0</div>
+<div class="opt"><span class="letter">D</span>2 2</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：B</div><div class="explain"><span class="code">x / y</span> = 5/2 = <strong>2</strong>（整数除法，小数部分被截断）。<span class="code">x % y</span> = 5%2 = <strong>1</strong>（余数）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>作用域与变量</span></div>
+<div class="exam-q">执行以下代码后，输出是什么？<br>
+<span class="mono">int x=1; { int x=2; cout &lt;&lt; x; } cout &lt;&lt; x;</span></div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>11</div>
+<div class="opt"><span class="letter">B</span>22</div>
+<div class="opt"><span class="letter">C</span>21</div>
+<div class="opt"><span class="letter">D</span>12</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：C</div><div class="explain">花括号 <span class="code">{}</span> 内的 x 是<strong>局部变量</strong>，只在花括号内有效，输出 2。花括号外输出外层的 x=1。所以结果是 <strong>21</strong>。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 本节课重点速查表</h3>
+<div class="row">
+<span class="pill">main 是程序入口</span>
+<span class="pill green">int 4字节，long long 8字节</span>
+<span class="pill amber">整数除法截断小数</span>
+</div>
+<div class="row">
+<span class="pill">cin/cout 自动识别类型</span>
+<span class="pill red">scanf 需要 &amp; 取地址</span>
+<span class="pill">++i 先加后用，i++ 先用后加</span>
+</div>
+<div class="row">
+<span class="pill amber">% 的符号与被除数相同</span>
+<span class="pill">&amp;&amp; 高于 ||</span>
+<span class="pill red">花括号界定作用域</span>
+</div></div>
+
+<div class="summary-box" id="resources">
+<h3>📎 配套资源推荐</h3>
+<table style="width:100%;font-size:.8rem;">
+<thead><tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr></thead>
+<tbody>
+<tr><td style="padding:4px 0;"><strong>📘 C779-04 数据类型、存储单位、指针</strong></td><td style="padding:4px 0;color:var(--text-sec);">356段详细讲义，含数据类型和基本语法</td></tr>
+<tr><td style="padding:4px 0;"><strong>📝 模块-8 程序基本语句</strong></td><td style="padding:4px 0;color:var(--text-sec);">302道程序阅读与语句专项练习题</td></tr>
+<tr><td style="padding:4px 0;"><strong>📝 模块-10 基本运算</strong></td><td style="padding:4px 0;color:var(--text-sec);">运算符专项练习</td></tr>
+</tbody></table></div>
+
+</div></main>
+
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 4.1 位运算</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}
+.bit-grid{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:10px 0;padding:10px 14px;background:var(--surface-alt);border-radius:6px;font-family:var(--font-mono);font-size:.82rem;align-items:center}
+.bit-grid .label{color:var(--text-ter);font-size:.78rem;text-align:right}
+.bit-grid .bits{color:var(--text);letter-spacing:1px}
+.bit-grid .bits .one{color:#ef4444;font-weight:600}
+.bit-grid .bits .zero{color:#94a3b8}
+.bit-grid .bits .hlb{background:rgba(79,110,247,.15);border-radius:2px;padding:0 2px}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">⚙</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题四 · 算法基础</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 位运算符总览</div>
+<a class="nav-link" href="#s1">六种位运算符</a>
+<a class="nav-link sub" href="#s1-t">运算真值表</a>
+
+<div class="nav-section">2 · 核心技巧</div>
+<a class="nav-link" href="#s2">x &amp; (x-1) 清除最低位1</a>
+<a class="nav-link sub" href="#s2-a">真题·2025第2题</a>
+<a class="nav-link" href="#s3">x &amp; -x 取最低位1</a>
+<a class="nav-link" href="#s4">x &gt;&gt; k &amp; 1 取第k位</a>
+<a class="nav-link" href="#s5">判断2的幂</a>
+<a class="nav-link" href="#s6">__builtin_popcount</a>
+<a class="nav-link" href="#s7">异或的应用</a>
+
+<div class="nav-section">3 · 真题演练</div>
+<a class="nav-link" href="#s8">📝 真题综合</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 小结速查</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题四 · 算法基础</a> / 4.1</div>
+    <h1>位运算</h1>
+    <p class="subtitle">从运算符到经典技巧 · 从真题到模拟 · 一节课吃透 CSP-J 位运算全部考点</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 4+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 6 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 六种位运算符的运算规则</span>
+      <span class="item">✅ x &amp; (x-1) 清除最低位1</span>
+      <span class="item">✅ x &amp; -x 取最低位1</span>
+      <span class="item">✅ x &gt;&gt; k &amp; 1 取第k位</span>
+      <span class="item">✅ 判断2的幂：x&gt;0 &amp;&amp; (x&amp;(x-1))==0</span>
+      <span class="item">✅ __builtin_popcount 统计1的个数</span>
+      <span class="item">✅ 异或交换变量、a^a=0</span>
+      <span class="item">✅ 2021·2022·2025 真题精讲</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、六种位运算符 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>六种位运算符总览</h2>
+
+  <p class="kp-text">
+    C++ 提供了 <strong>6 种位运算符</strong>，直接对整数的<strong class="hl">二进制位</strong>进行操作。
+    它们是初赛阅读程序题的常客，也是各种进阶技巧的基础。
+  </p>
+
+  <div class="table-wrapper" id="s1-t">
+    <table>
+      <thead><tr><th>运算符</th><th>名称</th><th>含义</th><th>示例（设 a=6=0110₂, b=3=0011₂）</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">&amp;</span></td><td>按位与</td><td>对应位都是1才为1</td><td><span class="mono">a &amp; b = 0010₂ = 2</span></td></tr>
+        <tr><td><span class="mono">|</span></td><td>按位或</td><td>对应位至少一个1即为1</td><td><span class="mono">a | b = 0111₂ = 7</span></td></tr>
+        <tr><td><span class="mono">^</span></td><td>按位异或</td><td>对应位不同为1，相同为0</td><td><span class="mono">a ^ b = 0101₂ = 5</span></td></tr>
+        <tr><td><span class="mono">~</span></td><td>按位取反</td><td>0变1，1变0（注意符号位也会变）</td><td><span class="mono">~a = 11111001₂（补码）= -7</span></td></tr>
+        <tr><td><span class="mono">&lt;&lt;</span></td><td>左移</td><td>所有位左移，低位补0，相当于 ×2</td><td><span class="mono">a &lt;&lt; 1 = 1100₂ = 12</span></td></tr>
+        <tr><td><span class="mono">&gt;&gt;</span></td><td>右移</td><td>所有位右移，相当于 ÷2（正数高位补0）</td><td><span class="mono">a &gt;&gt; 1 = 0011₂ = 3</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <strong>💡 记住：</strong>与(&amp;)—"同1才1"、或(|)—"有1就1"、异或(^)—"不同则1"、取反(~)—"所有位翻转"、左移(&lt;&lt;)—"乘2"、右移(&gt;&gt;)—"除2"。
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 注意：&amp; 和 &amp;&amp; 的区别</div>
+    <p class="kp-text">
+      <span class="c">&amp;</span> 是<strong>位运算符</strong>，对整数的每一位进行与运算；<br>
+      <span class="c">&amp;&amp;</span> 是<strong>逻辑运算符</strong>，将两侧转换为 bool 后做逻辑与。<br>
+      同理 <span class="c">|</span> 和 <span class="c">||</span>、<span class="c">^</span> 没有逻辑版本。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、x & (x-1) 清除最低位1 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>x &amp; (x-1) — 清除最低位的 1</h2>
+
+  <p class="kp-text">
+    这是位运算中最<strong class="hl">经典</strong>的技巧之一。表达式 <span class="c">x &amp; (x-1)</span> 的<strong>效果</strong>是：
+    将 x 二进制表示中<strong>最低位的 1</strong> 变成 0，其余位不变。
+  </p>
+
+  <h4 class="sub-title">原理推导</h4>
+  <p class="kp-text">
+    设 x 的二进制为 <span class="c">...100...0</span>（最低位1在第 k 位，其后全是0），
+    则 x-1 为 <span class="c">...011...1</span>（第 k 位变0，其后全变1）。
+    两者按位与后，第 k 位及之后全部为0，高位不变。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 示例：x = 12 = 1100₂</div>
+    <p class="kp-text">
+      x = <span class="c">1100₂</span>（最低位1在第3位）<br>
+      x-1 = <span class="c">1011₂</span><br>
+      x &amp; (x-1) = <span class="c">1000₂ = 8</span> ✅ 最低位的1被清除了
+    </p>
+  </div>
+
+  <h4 class="sub-title" id="s2-a">真题重现 · 2025 年第 2 题</h4>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 2 题</span>
+      <span>x &amp; (x-1) 经典应用</span>
+    </div>
+    <div class="exam-q">
+      <span class="c">int x = 255;</span><br>
+      <span class="c">cout &lt;&lt; (x &amp; (x - 1));</span>
+      <br>以上代码的输出结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 255</div>
+      <div class="opt"><span class="letter">B</span> 254</div>
+      <div class="opt"><span class="letter">C</span> 128</div>
+      <div class="opt"><span class="letter">D</span> 0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：B · 254</div>
+      <div class="explain">
+        <strong>详细推导：</strong><br>
+        ① x = 255，255 的二进制 = <span class="c">11111111₂</span>（8个1）<br>
+        ② x - 1 = 254，二进制 = <span class="c">11111110₂</span>（最后1位变0）<br>
+        ③ x &amp; (x-1) = <span class="c">11111111₂ &amp; 11111110₂ = 11111110₂ = 254</span><br>
+        <br>
+        <strong>理解：</strong>255 的二进制全是1，最低位的1在 bit0。清除后得到 254。<br>
+        <strong>考点：</strong>这就是 <span class="c">x &amp; (x-1)</span> 的典型效果——把最低位的1变成0。
+      </div>
+    </div>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 记忆方法：</strong>"x &amp; (x-1) = 去掉最后那个1" — 对任何正整数，这个操作都会让结果比 x 小且只少了最右边那个1。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、x & -x 取最低位1 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>x &amp; -x — 取最低位的 1</h2>
+
+  <p class="kp-text">
+    <span class="c">x &amp; -x</span> 称为 <strong>lowbit</strong> 操作，结果是<strong>只保留 x 最低位1</strong>的一个数。
+    这个技巧在<strong>树状数组</strong>和<strong>二进制枚举</strong>中广泛使用。
+  </p>
+
+  <h4 class="sub-title">原理推导</h4>
+  <p class="kp-text">
+    计算机中负数用<strong>补码</strong>表示：<span class="c">-x = ~x + 1</span>。<br>
+    设 x = <span class="c">...100...0</span>（最低位1在k位），那么：
+  </p>
+  <ul class="dot-list">
+    <li><span class="c">~x = ...011...1</span>（第k位变0，低位全变1，高位取反）</li>
+    <li><span class="c">-x = ~x+1 = ...100...0</span>（低位进位使第k位恢复为1）</li>
+    <li><span class="c">x &amp; -x = ...100...0</span>（仅保留最低位1的值）</li>
+  </ul>
+
+  <div class="card primary">
+    <div class="card-title">📌 示例：x = 12 = 1100₂</div>
+    <p class="kp-text">
+      x = <span class="c">1100₂</span>，最低位1在 bit2（值为4）<br>
+      -x = <span class="c">0100₂</span>（补码）<br>
+      x &amp; -x = <span class="c">1100₂ &amp; 0100₂ = 0100₂ = 4</span> ✅<br>
+      结果 = 4，正是 2<sup>2</sup>（最低位1对应的位权）。
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、x >> k & 1 取第k位 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>x &gt;&gt; k &amp; 1 — 取第 k 位</h2>
+
+  <p class="kp-text">
+    要取出 x 的<strong>二进制第 k 位</strong>（从0开始编号），标准写法是：<br>
+    <span class="c" style="font-size:1rem;">(x &gt;&gt; k) &amp; 1</span>
+  </p>
+
+  <h4 class="sub-title">原理</h4>
+  <p class="kp-text">
+    <span class="c">x &gt;&gt; k</span> 将 x 右移 k 位，原第 k 位移动到最低位（bit0）；<br>
+    然后 <span class="c">&amp; 1</span> 只保留最低位，其余位全部清零。<br>
+    结果就是 0 或 1。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">📌 示例：x = 13 = 1101₂，取第2位（从0开始）</div>
+    <p class="kp-text">
+      二进制位编号（从低到高）：bit0=1, bit1=0, bit2=1, bit3=1<br>
+      <span class="c">(13 &gt;&gt; 2) &amp; 1</span> = <span class="c">(0011₂) &amp; 1</span> = <span class="c">3 &amp; 1 = 1</span> ✅<br>
+      结果=1，与 1101₂ 的第2位一致。
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📝 应用场景：</strong>二进制枚举子集、状态压缩DP、逐位分析二进制数。CSP-J 阅读程序题中常用来遍历二进制数的每一位。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、判断2的幂 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>判断一个数是否为 2 的幂</h2>
+
+  <p class="kp-text">
+    2 的幂的特征：二进制表示中<strong>有且仅有一个 1</strong>。利用 <span class="c">x &amp; (x-1)</span> 可以一键判断：
+  </p>
+
+  <div class="card accent">
+    <div class="card-title">💡 核心公式</div>
+    <p class="kp-text">
+      <strong style="font-size:1.1rem;font-family:var(--font-mono);">x &gt; 0 &amp;&amp; (x &amp; (x-1)) == 0</strong>
+    </p>
+  </div>
+
+  <h4 class="sub-title">原理</h4>
+  <p class="kp-text">
+    如果 x 是 2 的幂，二进制为 <span class="c">1...000</span>（只有一个1）。<br>
+    那么 x-1 为 <span class="c">0...111</span>（原1的位置变0，后面全变1）。<br>
+    两者 &amp; 之后，所有位都是0 → 结果为0。<br>
+    反之，如果 x 不止一个1，&amp; 的结果一定不为0。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 示例验证</div>
+    <p class="kp-text">
+      x = 16 = <span class="c">10000₂</span> → x-1 = <span class="c">01111₂</span> → &amp; = 0 → 是2的幂 ✅<br>
+      x = 12 = <span class="c">01100₂</span> → x-1 = <span class="c">01011₂</span> → &amp; = <span class="c">01000₂ ≠ 0</span> → 不是2的幂 ❌
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 六、__builtin_popcount -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">6</span>__builtin_popcount — 统计二进制中 1 的个数</h2>
+
+  <p class="kp-text">
+    GCC/Clang 提供的内建函数 <span class="c">__builtin_popcount(x)</span>，返回 x 二进制中 <strong>1 的个数</strong>（population count）。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 示例</div>
+    <p class="kp-text">
+      <span class="c">__builtin_popcount(0)</span> → 0（0个1）<br>
+      <span class="c">__builtin_popcount(7)</span> = <span class="c">__builtin_popcount(111₂)</span> → <strong>3</strong><br>
+      <span class="c">__builtin_popcount(255)</span> = <span class="c">__builtin_popcount(11111111₂)</span> → <strong>8</strong><br>
+      <span class="c">__builtin_popcount(16)</span> = <span class="c">__builtin_popcount(10000₂)</span> → <strong>1</strong>
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>⚠️ 注意：</strong>如果 x 的类型是 long long，要使用 <span class="c">__builtin_popcountll(x)</span>。<br>
+    初赛选择题会直接考察该函数的返回值。
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 七、异或的应用 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s7"><span class="num">7</span>异或 — XOR 的三大应用</h2>
+
+  <h4 class="sub-title">7.1 基本性质</h4>
+  <p class="kp-text">
+    异或（<span class="c">^</span>）具有以下重要性质，<strong>必须熟记</strong>：
+  </p>
+  <ul class="dot-list">
+    <li><strong>a ^ a = 0</strong> —— 任何数和自己异或得0</li>
+    <li><strong>a ^ 0 = a</strong> —— 任何数和0异或保持不变</li>
+    <li><strong>交换律：</strong>a ^ b = b ^ a</li>
+    <li><strong>结合律：</strong>(a ^ b) ^ c = a ^ (b ^ c)</li>
+  </ul>
+
+  <h4 class="sub-title">7.2 交换两个变量</h4>
+  <div class="code-block">
+    <span class="kw">int</span> a = <span class="num">3</span>, b = <span class="num">5</span>;
+    a = a ^ b;  <span class="cm">// a = 3^5</span>
+    b = a ^ b;  <span class="cm">// b = (3^5)^5 = 3^0 = 3</span>
+    a = a ^ b;  <span class="cm">// a = (3^5)^3 = 0^5 = 5</span>
+    <span class="cm">// 交换后 a=5, b=3 ✅ 无需临时变量</span>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🎯 三步交换口诀</div>
+    <p class="kp-text">
+      <strong>"a^b → b^=a → a^=b"</strong><br>
+      第一步：<span class="c">a = a ^ b</span>（a暂存异或结果）<br>
+      第二步：<span class="c">b = a ^ b</span>（b变为原来的a）<br>
+      第三步：<span class="c">a = a ^ b</span>（a变为原来的b）
+    </p>
+  </div>
+
+  <h4 class="sub-title">7.3 找出出现奇数次的数</h4>
+  <p class="kp-text">
+    给定一个数组，只有一个数出现奇数次，其余出现偶数次，用异或可以一次找出：<br>
+    <span class="c">int ans = 0; for (int v : arr) ans ^= v; <span class="cm">// ans 就是答案</span></span>
+  </p>
+  <p class="kp-text">
+    <strong>原理：</strong>相同数异或得0，最后剩下的就是那个出现奇数次的数。
+  </p>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 八、真题与模拟综合练习 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s8"><span class="num">📝</span>真题与模拟综合练习（共10题）</h2>
+
+  <!-- ========== 题1 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 2 题</span>
+      <span>x &amp; (x-1) 清除最低位1</span>
+    </div>
+    <div class="exam-q">
+      <span class="c">int x = 255;</span><br>
+      <span class="c">cout &lt;&lt; (x &amp; (x - 1));</span><br>
+      输出是什么？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 255</div>
+      <div class="opt"><span class="letter">B</span> 254</div>
+      <div class="opt"><span class="letter">C</span> 128</div>
+      <div class="opt"><span class="letter">D</span> 0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：B · 254</div>
+      <div class="explain">
+        <strong>推导过程：</strong><br>
+        255 = <span class="c">11111111₂</span><br>
+        254 = <span class="c">11111110₂</span><br>
+        <span class="c">11111111₂ &amp; 11111110₂ = 11111110₂ = 254</span><br>
+        <br>
+        <strong>核心知识点：</strong><span class="c">x &amp; (x-1)</span> 清除 x 最低位的1。<br>
+        255 的二进制全是 1，去掉最低位的1（bit0）后得到 254。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题2 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 阅读程序第1题改编</span>
+      <span>x &amp; (x-1) 循环清零的次数</span>
+    </div>
+    <div class="exam-q">
+      以下程序运行后，cnt 的值是多少？
+      <div class="code-block">
+<span class="kw">int</span> x = <span class="num">42</span>; <span class="cm">// 42 = 101010₂</span>
+<span class="kw">int</span> cnt = <span class="num">0</span>;
+<span class="kw">while</span> (x) {
+&nbsp;&nbsp;x = x &amp; (x - <span class="num">1</span>);
+&nbsp;&nbsp;cnt++;
+}
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2</div>
+      <div class="opt"><span class="letter">B</span> 3</div>
+      <div class="opt"><span class="letter">C</span> 4</div>
+      <div class="opt"><span class="letter">D</span> 6</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：B · 3</div>
+      <div class="explain">
+        <strong>详细推导：</strong><br>
+        42 的二进制 = <span class="c">101010₂</span>（共3个1）<br>
+        <br>
+        <strong>第1次循环：</strong>x = 42 = <span class="c">101010₂</span><br>
+        x-1 = 41 = <span class="c">101001₂</span><br>
+        x &amp; (x-1) = <span class="c">101000₂</span> = 40，cnt=1<br>
+        <br>
+        <strong>第2次循环：</strong>x = 40 = <span class="c">101000₂</span><br>
+        x-1 = 39 = <span class="c">100111₂</span><br>
+        x &amp; (x-1) = <span class="c">100000₂</span> = 32，cnt=2<br>
+        <br>
+        <strong>第3次循环：</strong>x = 32 = <span class="c">100000₂</span><br>
+        x-1 = 31 = <span class="c">011111₂</span><br>
+        x &amp; (x-1) = <span class="c">000000₂</span> = 0，cnt=3，循环结束<br>
+        <br>
+        <strong>结论：</strong>cnt 刚好等于 42 二进制中 1 的个数。<br>
+        <span class="c">x &amp; (x-1)</span> 每次消灭一个1，执行次数 = 二进制中1的个数。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题3 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 阅读程序第1题改编</span>
+      <span>x &amp; -x 取最低位1</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="c">x = 40</span>（二进制 <span class="c">101000₂</span>），<span class="c">x &amp; -x</span> 的结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 8</div>
+      <div class="opt"><span class="letter">B</span> 16</div>
+      <div class="opt"><span class="letter">C</span> 32</div>
+      <div class="opt"><span class="letter">D</span> 40</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：A · 8</div>
+      <div class="explain">
+        <strong>推导过程（lowbit 运算）：</strong><br>
+        x = 40 = <span class="c">101000₂</span><br>
+        最低位的1在 <strong>bit3</strong>（= 2<sup>3</sup> = 8）<br>
+        <br>
+        -x = -40，补码表示 = <span class="c">~40 + 1</span><br>
+        先取反：~40 = <span class="c">010111₂</span>（只考虑6位）<br>
+        再加1：<span class="c">010111₂ + 1 = 011000₂</span><br>
+        <br>
+        x &amp; -x = <span class="c">101000₂ &amp; 011000₂ = 001000₂ = 8</span> ✅<br>
+        <br>
+        <strong>规律：</strong><span class="c">x &amp; -x</span> 的结果就是 x 最低位1对应的值（2<sup>k</sup>）。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题4 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 阅读第2题改编</span>
+      <span>移位与按位与的综合</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="c">int x = 85</span>（二进制 <span class="c">01010101₂</span>），<br>
+      以下表达式的值<strong>不是</strong> 0 的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> <span class="c">x &amp; (x &gt;&gt; 1)</span></div>
+      <div class="opt"><span class="letter">B</span> <span class="c">x &amp; (x &lt;&lt; 1)</span></div>
+      <div class="opt"><span class="letter">C</span> <span class="c">x &amp; (x &gt;&gt; 2)</span></div>
+      <div class="opt"><span class="letter">D</span> <span class="c">x &amp; (x &gt;&gt; 3)</span></div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：C · x &amp; (x &gt;&gt; 2)</div>
+      <div class="explain">
+        <strong>详细推导：</strong><br>
+        x = 85 = <span class="c">01010101₂</span><br>
+        <br>
+        <strong>A：x &gt;&gt; 1 = 00101010₂</strong><br>
+        &amp; = <span class="c">01010101₂ &amp; 00101010₂ = 00000000₂ = 0</span><br>
+        （每一位原数和对齐的位恰好相反）<br>
+        <br>
+        <strong>B：x &lt;&lt; 1 = 10101010₂（溢出的高位被丢弃）</strong><br>
+        &amp; = <span class="c">01010101₂ &amp; 10101010₂ = 00000000₂ = 0</span><br>
+        <br>
+        <strong>C：x &gt;&gt; 2 = 00010101₂</strong><br>
+        &amp; = <span class="c">01010101₂ &amp; 00010101₂ = 00010101₂ = 21</span> ✅ 非0<br>
+        <br>
+        <strong>D：x &gt;&gt; 3 = 00001010₂</strong><br>
+        &amp; = <span class="c">01010101₂ &amp; 00001010₂ = 00000000₂ = 0</span><br>
+        <br>
+        <strong>考点：</strong>85 = 01010101₂ 是交替位模式，右移1位后刚好错位，所有位错开，与运算结果为0。右移2位后 bit2、bit4 对齐，结果非0。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题5 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>判断2的幂</span>
+    </div>
+    <div class="exam-q">
+      以下哪个表达式可以正确判断一个正整数 x 是否为 2 的幂？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> <span class="c">x &amp; (x-1) == 0</span></div>
+      <div class="opt"><span class="letter">B</span> <span class="c">x &gt; 0 &amp;&amp; (x &amp; (x-1)) == 0</span></div>
+      <div class="opt"><span class="letter">C</span> <span class="c">x &gt; 0 &amp;&amp; (x &amp; (x+1)) == 0</span></div>
+      <div class="opt"><span class="letter">D</span> <span class="c">x &gt; 0 &amp;&amp; (x | (x-1)) == 0</span></div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>选项分析：</strong><br>
+        <br>
+        <strong>A：</strong><span class="c">x &amp; (x-1) == 0</span> 有运算符优先级问题！<br>
+        实际上被解析为 <span class="c">x &amp; ((x-1) == 0)</span>，逻辑完全不对。<br>
+        必须加括号：<span class="c">(x &amp; (x-1)) == 0</span><br>
+        <br>
+        <strong>B ✅：</strong><span class="c">x &gt; 0 &amp;&amp; (x &amp; (x-1)) == 0</span><br>
+        先判断 x 为正数，再去掉最低位1后看是否为0。<br>
+        如果 x 是2的幂（如 1,2,4,8,16...），二进制只有一个1，去掉后为0。<br>
+        <br>
+        <strong>C：</strong><span class="c">x &amp; (x+1)</span> 对2的幂结果不为0。<br>
+        <strong>D：</strong><span class="c">(x | (x-1)) == 0</span> 不可能为0（除非 x=0，但 x&gt;0 排除了）。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题6 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>__builtin_popcount 应用</span>
+    </div>
+    <div class="exam-q">
+      <span class="c">__builtin_popcount(63)</span> 的返回值是多少？<br>
+      （提示：63 = 32 + 16 + 8 + 4 + 2 + 1）
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 5</div>
+      <div class="opt"><span class="letter">B</span> 6</div>
+      <div class="opt"><span class="letter">C</span> 7</div>
+      <div class="opt"><span class="letter">D</span> 63</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：B · 6</div>
+      <div class="explain">
+        <strong>推导过程：</strong><br>
+        63 = 32 + 16 + 8 + 4 + 2 + 1<br>
+        63 的二进制 = <span class="c">111111₂</span>（6个1）<br>
+        <br>
+        <span class="c">__builtin_popcount(63)</span> = 6<br>
+        <br>
+        <strong>另一种方法：</strong>63 = 64 - 1 = 2<sup>6</sup> - 1，二进制就是6个1。<br>
+        <br>
+        <strong>规律：</strong>2<sup>k</sup> - 1 的二进制是 k 个1，popcount = k。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题7 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>异或交换变量</span>
+    </div>
+    <div class="exam-q">
+      以下程序执行后，输出是什么？
+      <div class="code-block">
+<span class="kw">int</span> a = <span class="num">7</span>, b = <span class="num">11</span>;
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+cout &lt;&lt; a &lt;&lt; <span class="str">" "</span> &lt;&lt; b;
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 7 11</div>
+      <div class="opt"><span class="letter">B</span> 11 7</div>
+      <div class="opt"><span class="letter">C</span> 4 4</div>
+      <div class="opt"><span class="letter">D</span> 0 0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：B · 11 7</div>
+      <div class="explain">
+        <strong>逐步推导（利用异或性质 a^a=0, a^0=a）：</strong><br>
+        <br>
+        初始：a = 7 = <span class="c">0111₂</span>，b = 11 = <span class="c">1011₂</span><br>
+        <br>
+        <strong>第1步：</strong>a = a ^ b = 7 ^ 11<br>
+        <span class="c">0111₂ ^ 1011₂ = 1100₂ = 12</span>（a 暂存异或值）<br>
+        <br>
+        <strong>第2步：</strong>b = a ^ b = 12 ^ 11<br>
+        <span class="c">1100₂ ^ 1011₂ = 0111₂ = 7</span> ✅ b 变为了原来的 a<br>
+        <br>
+        <strong>第3步：</strong>a = a ^ b = 12 ^ 7<br>
+        <span class="c">1100₂ ^ 0111₂ = 1011₂ = 11</span> ✅ a 变为了原来的 b<br>
+        <br>
+        <strong>结论：</strong>a=11, b=7，成功交换！<br>
+        <br>
+        <strong>口诀：</strong>a<sup>b</sup> → b<sup>a</sup> → a<sup>b</sup>（三步异或，交换完毕）
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题8 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>x &gt;&gt; k &amp; 1 取特定位</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="c">int x = 0b10110110</span>（二进制），<br>
+      表达式 <span class="c">(x &gt;&gt; 4) &amp; 1</span> 的结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> 4</div>
+      <div class="opt"><span class="letter">D</span> 16</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：B · 1</div>
+      <div class="explain">
+        <strong>推导过程：</strong><br>
+        x = <span class="c">10110110₂</span>（8位，位编号 bit7~bit0）<br>
+        <br>
+        我们要取第4位（bit4，从0开始编号）。<br>
+        <br>
+        <strong>二进制位编号：</strong><br>
+        bit7=1, bit6=0, bit5=1, bit4=<strong class="b">1</strong>, bit3=1, bit2=0, bit1=1, bit0=0<br>
+        <br>
+        <strong>计算：</strong><br>
+        <span class="c">x &gt;&gt; 4</span> = 右移4位 = <span class="c">00001011₂</span> = 11<br>
+        <span class="c">(x &gt;&gt; 4) &amp; 1</span> = <span class="c">00001011₂ &amp; 00000001₂</span> = <span class="c">00000001₂</span> = <strong>1</strong><br>
+        <br>
+        <strong>验证：</strong>bit4 确实是1，结果正确。
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题9 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>位运算综合——运算符优先级</span>
+    </div>
+    <div class="exam-q">
+      以下哪个表达式的值与其它三个<strong>不同</strong>？<br>
+      （已知 <span class="c">int x = 13, y = 6</span>）
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> <span class="c">x &amp; y | x ^ y</span></div>
+      <div class="opt"><span class="letter">B</span> <span class="c">(x &amp; y) | (x ^ y)</span></div>
+      <div class="opt"><span class="letter">C</span> <span class="c">x | y</span></div>
+      <div class="opt"><span class="letter">D</span> <span class="c">(x | y) &amp; (x ^ y)</span></div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q9')">👁 显示答案</button>
+    <div class="answer-box" id="q9">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>先计算结果（x=13=1101₂, y=6=0110₂）：</strong><br>
+        <span class="c">x &amp; y</span> = <span class="c">1101₂ &amp; 0110₂ = 0100₂ = 4</span><br>
+        <span class="c">x ^ y</span> = <span class="c">1101₂ ^ 0110₂ = 1011₂ = 11</span><br>
+        <span class="c">x | y</span> = <span class="c">1101₂ | 0110₂ = 1111₂ = 15</span><br>
+        <br>
+        <strong>选项 A：</strong><span class="c">x &amp; y | x ^ y</span><br>
+        <span class="danger-tag">注意优先级：</span>&amp; 优先级高于 |，所以等价于<br>
+        <span class="c">(x &amp; y) | (x ^ y) = 4 | 11 = 15</span><br>
+        <br>
+        <strong>选项 B：</strong><span class="c">(x &amp; y) | (x ^ y) = 4 | 11 = 15</span><br>
+        <br>
+        <strong>选项 C：</strong><span class="c">x | y = 15</span><br>
+        <br>
+        <strong>选项 D：</strong><span class="c">(x | y) &amp; (x ^ y) = 15 &amp; 11 = 1011₂ = 11</span> ✅ 不同<br>
+        <br>
+        <strong>考点：</strong>位运算符优先级排序：<br>
+        <span class="c">~ &gt; &lt;&lt; &gt;&gt; &gt; &amp; &gt; ^ &gt; |</span><br>
+        <span class="c">&amp;</span> 高于 <span class="c">^</span> 高于 <span class="c">|</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 题10 ========== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>位运算大综合</span>
+    </div>
+    <div class="exam-q">
+      阅读以下程序，判断输出结果：
+      <div class="code-block">
+<span class="kw">int</span> x = <span class="num">0b110110</span>;
+<span class="kw">int</span> a = x &amp; -x;    <span class="cm">// lowbit</span>
+<span class="kw">int</span> b = x &amp; (x-<span class="num">1</span>); <span class="cm">// 清除最低位1</span>
+<span class="kw">int</span> c = (x &gt;&gt; <span class="num">2</span>) &amp; <span class="num">1</span>; <span class="cm">// 取第2位</span>
+<span class="kw">int</span> d = __builtin_popcount(x);
+cout &lt;&lt; a &lt;&lt; <span class="str">","</span> &lt;&lt; b &lt;&lt; <span class="str">","</span> &lt;&lt; c &lt;&lt; <span class="str">","</span> &lt;&lt; d;
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 4,52,1,4</div>
+      <div class="opt"><span class="letter">B</span> 2,52,1,4</div>
+      <div class="opt"><span class="letter">C</span> 2,52,0,4</div>
+      <div class="opt"><span class="letter">D</span> 4,54,1,3</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q10')">👁 显示答案</button>
+    <div class="answer-box" id="q10">
+      <div class="ans">✅ 正确答案：B · 2,52,1,4</div>
+      <div class="explain">
+        <strong>完整推导：</strong><br>
+        x = <span class="c">0b110110</span> = <span class="c">110110₂</span> = 32 + 16 + 4 + 2 = 54<br>
+        <br>
+        <strong>① a = x &amp; -x（lowbit 取最低位1）：</strong><br>
+        x = <span class="c">110110₂</span>，最低位1在 bit1（值为 2<sup>1</sup> = 2）<br>
+        -x = <span class="c">001010₂</span>（补码）<br>
+        a = <span class="c">110110₂ &amp; 001010₂ = 000010₂ = 2</span> ✅<br>
+        <br>
+        <strong>② b = x &amp; (x-1)（清除最低位1）：</strong><br>
+        x-1 = 53 = <span class="c">110101₂</span><br>
+        b = <span class="c">110110₂ &amp; 110101₂ = 110100₂</span> = 32 + 16 + 4 = <strong>52</strong> ✅<br>
+        <br>
+        <strong>③ c = (x &gt;&gt; 2) &amp; 1（取第2位）：</strong><br>
+        <span class="c">x &gt;&gt; 2</span> = <span class="c">001101₂</span> = 13<br>
+        <span class="c">13 &amp; 1 = 1</span> ✅（bit2 确实是1）<br>
+        <br>
+        <strong>④ d = __builtin_popcount(x)：</strong><br>
+        x = <span class="c">110110₂</span>，1的位置：bit5, bit4, bit2, bit1 → 共 <strong>4</strong> 个 ✅<br>
+        <br>
+        <strong>输出：</strong>2,52,1,4
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结速查 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 位运算 · 核心知识速查</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须<strong>熟练掌握</strong>的考点，考前反复看：
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:64px;">公式/运算</th><th>效果 / 含义</th><th style="width:90px;">复杂度</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>&amp;</td><td>按位与，同1才1</td><td>基本</td></tr>
+        <tr><td>|</td><td>按位或，有1就1</td><td>基本</td></tr>
+        <tr><td>^</td><td>按位异或，不同则1</td><td>基本</td></tr>
+        <tr><td>~</td><td>按位取反，所有位翻转</td><td>基本</td></tr>
+        <tr><td>&lt;&lt;</td><td>左移，低位补0，相当于×2</td><td>基本</td></tr>
+        <tr><td>&gt;&gt;</td><td>右移，正数高位补0，相当于÷2</td><td>基本</td></tr>
+        <tr><td>x &amp; (x-1)</td><td>清除最低位的1（去掉最后一个1）</td><td>⭐ 高频</td></tr>
+        <tr><td>x &amp; -x</td><td>取最低位1的值（lowbit）</td><td>⭐ 高频</td></tr>
+        <tr><td>x&gt;&gt;k&amp;1</td><td>取第k位的值（0或1）</td><td>⭐ 高频</td></tr>
+        <tr><td>x&amp;(x-1)==0</td><td>判断x是2的幂（需x&gt;0）</td><td>⭐ 高频</td></tr>
+        <tr><td>__builtin_popcount</td><td>统计二进制中1的个数</td><td>⭐ 高频</td></tr>
+        <tr><td>a^a=0</td><td>任何数和自己异或得0</td><td>高频</td></tr>
+        <tr><td>a^b^b=a</td><td>异或交换变量、消除配对</td><td>高频</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+      <div class="row">
+        <span class="pill">x&amp;(x-1) 每次消灭一个1</span>
+        <span class="pill green">x&amp;-x = lowbit = 2<sup>k</sup></span>
+        <span class="pill amber">异或交换三步：a^b→b^a→a^b</span>
+        <span class="pill red">优先级：~ &gt; &lt;&lt; &gt;&gt; &gt; &amp; &gt; ^ &gt; |</span>
+      </div>
+      <div class="row">
+        <span class="pill purple">__builtin_popcount(255)=8</span>
+        <span class="pill green">2的幂 = 二进制只有一个1</span>
+        <span class="pill">(x&gt;&gt;k)&amp;1 取第k位</span>
+        <span class="pill amber">0b1010 = C++14二进制字面量</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源索引 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-12 位运算入门</strong></td><td style="padding:4px 0;color:var(--text-sec);">位运算基础与六大运算符详解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-13 位运算进阶</strong></td><td style="padding:4px 0;color:var(--text-sec);">lowbit、枚举子集、状态压缩</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2021 · 阅读第1题</strong></td><td style="padding:4px 0;color:var(--text-sec);">x&amp;(x-1) 与 x&amp;-x 综合应用</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2022 · 阅读第2题</strong></td><td style="padding:4px 0;color:var(--text-sec);">移位与按位与、或的综合操作</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2025 · 第2题</strong></td><td style="padding:4px 0;color:var(--text-sec);">x=255 → x&amp;(x-1)=254</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 位运算 50 题训练</strong></td><td style="padding:4px 0;color:var(--text-sec);">含 lowbit、popcount、子集枚举等</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

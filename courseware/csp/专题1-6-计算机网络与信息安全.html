@@ -1,0 +1,520 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 1.6 计算机网络与信息安全</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+h4.sub-title{font-size:.9rem;font-weight:600;color:var(--text-sec);margin:14px 0 6px}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}
+.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}
+.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}
+.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}
+.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.quote-box strong{color:var(--accent-dark)}
+.table-wrapper{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+tbody td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .code{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:var(--danger)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🌐</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题一 · 计算机基础知识</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 网络基础</div>
+<a class="nav-link" href="#s1">分类·设备·发展三阶段</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · OSI 与 TCP/IP</div>
+<a class="nav-link" href="#s2">七层模型 vs 四层模型</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · IP 地址与域名</div>
+<a class="nav-link" href="#s3">IPv4/IPv6 · 分类 · 域名</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 常见协议</div>
+<a class="nav-link" href="#s4">HTTP/FTP/SMTP/POP3/DNS</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">5 · 信息安全</div>
+<a class="nav-link" href="#s5">病毒 · 防火墙 · 加密</a><a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a><a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题一 · 计算机基础知识</a> / 1.6</div>
+<h1>计算机网络与信息安全</h1>
+<p class="subtitle">网络分类与设备 · OSI/TCP/IP · IP 地址与域名 · 常见协议 · 病毒与安全</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 1.5 课时</span><span class="meta-tag">📖 真题 5 道</span><span class="meta-tag practice">✏️ 模拟题 9 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-19</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-3</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 网络分类（LAN/MAN/WAN）</span>
+<span class="item">✅ OSI 七层与 TCP/IP 四层模型</span>
+<span class="item">✅ IPv4（32位）vs IPv6（128位）</span>
+<span class="item">✅ IP 地址分类与子网掩码</span>
+<span class="item">✅ 域名系统与顶级域名</span>
+<span class="item">✅ 常见协议（HTTP/FTP/SMTP/DNS）</span>
+<span class="item">✅ 计算机病毒特征与信息安全</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">C779-19·计算机网络的诞生和发展</span>
+<span class="r amber">模块-3·计算机网络与Internet</span>
+<span class="r green">模拟卷18套·第1套第1题</span>
+</div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>计算机网络基础</h2>
+
+<p class="kp-text">计算机网络是利用<strong>通信线路和设备</strong>，将分布在不同地理位置的多台计算机连接起来，实现<strong>资源共享</strong>和<strong>信息传输</strong>的系统。它是<strong>通信技术</strong>与<strong>计算机技术</strong>相结合的产物。</p>
+
+<h3 class="kp-title">1.1 网络分类（按覆盖范围）</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类型</th><th>覆盖范围</th><th>典型例子</th></tr></thead>
+<tbody>
+<tr><td><strong>LAN（局域网）</strong></td><td>几十米~几公里</td><td>家庭 Wi-Fi、学校机房、公司内网</td></tr>
+<tr><td><strong>MAN（城域网）</strong></td><td>几公里~几十公里</td><td>城市范围的网络</td></tr>
+<tr><td><strong>WAN（广域网）</strong></td><td>几百公里以上</td><td>互联网（Internet）</td></tr>
+</tbody></table></div>
+
+<h3 class="kp-title">1.2 常见网络设备</h3>
+<ul class="dot-list">
+<li><strong>路由器</strong>：连接不同网络，负责数据包转发（工作在网络层）</li>
+<li><strong>交换机</strong>：连接同一网络内的多台设备（工作在数据链路层）</li>
+<li><strong>集线器（Hub）</strong>：将信号广播到所有端口（工作在物理层，已被交换机取代）</li>
+<li><strong>调制解调器（Modem）</strong>：数字信号和模拟信号的转换</li>
+</ul>
+
+<h3 class="kp-title">1.3 网络发展三阶段</h3>
+<ul class="dot-list">
+<li><strong>第一阶段</strong>：远程终端联机（主机-终端）</li>
+<li><strong>第二阶段</strong>：计算机-计算机网络（ARPANET，互联网的前身）</li>
+<li><strong>第三阶段</strong>：高速互联网与移动互联网</li>
+</ul>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>蓝牙和 Wi-Fi 的分类</span></div>
+<div class="exam-q">蓝牙和 Wi-Fi 都属于什么设备？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>无线广域网</div>
+<div class="opt"><span class="letter">B</span>无线城域网</div>
+<div class="opt"><span class="letter">C</span>无线局域网</div>
+<div class="opt"><span class="letter">D</span>无线路由器</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：C</div><div class="explain">蓝牙和 Wi-Fi 都是<strong>无线局域网（WLAN）</strong>技术，覆盖范围通常在几十米到几百米内。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>网络分类——覆盖范围</span></div>
+<div class="exam-q">覆盖范围最大的是哪种网络？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>LAN</div>
+<div class="opt"><span class="letter">B</span>MAN</div>
+<div class="opt"><span class="letter">C</span>WAN</div>
+<div class="opt"><span class="letter">D</span>PAN</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：C</div><div class="explain">WAN（广域网）覆盖范围最大（几百公里以上），Internet 就是最大的广域网。PAN 是个人区域网络（蓝牙等），范围最小。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>OSI 七层模型与 TCP/IP 四层模型</h2>
+
+<p class="kp-text">网络协议的分层模型是计算机网络的核心概念。最重要的两个模型是 <strong class="hl">OSI 七层模型</strong> 和 <strong class="hl">TCP/IP 四层模型</strong>。</p>
+
+<div class="compare-row" style="display:grid;grid-template-columns:2fr 2fr;gap:14px;margin:14px 0;">
+<div class="exam-block" style="box-shadow:none;margin:0;">
+<h5 style="color:var(--primary-dark);font-size:.9rem;margin-bottom:6px;">📚 OSI 七层模型（从下往上）</h5>
+<p style="font-size:.82rem;color:var(--text-sec);line-height:1.8;">
+7️⃣ <strong>应用层</strong>：HTTP/FTP/SMTP/DNS<br>
+6️⃣ <strong>表示层</strong>：数据格式转换、加密解密<br>
+5️⃣ <strong>会话层</strong>：建立/管理/终止会话<br>
+4️⃣ <strong>传输层</strong>：TCP/UDP、端到端通信<br>
+3️⃣ <strong>网络层</strong>：IP 地址、路由选择<br>
+2️⃣ <strong>数据链路层</strong>：MAC 地址、帧传输<br>
+1️⃣ <strong>物理层</strong>：比特流传输、网线/光纤</p></div>
+<div class="exam-block" style="box-shadow:none;margin:0;">
+<h5 style="color:var(--accent-dark);font-size:.9rem;margin-bottom:6px;">🔗 TCP/IP 四层模型</h5>
+<p style="font-size:.82rem;color:var(--text-sec);line-height:1.8;">
+4️⃣ <strong>应用层</strong>：HTTP/FTP/SMTP/DNS<br>
+3️⃣ <strong>传输层</strong>：TCP/UDP<br>
+2️⃣ <strong>网际层</strong>：IP（核心——负责路由）<br>
+1️⃣ <strong>网络接口层</strong>：以太网、Wi-Fi</p><br>
+<p style="font-size:.78rem;color:var(--text-ter);">💡 TCP/IP 是实际互联网使用的模型，OSI 是理论标准。</p></div></div>
+
+<div class="card success"><div class="card-title">📌 必记：各层对应关系</div>
+<p class="kp-text">
+· OSI 的应用/表示/会话层 → TCP/IP 的<strong>应用层</strong><br>
+· OSI 的传输层 → TCP/IP 的<strong>传输层</strong>（TCP/UDP）<br>
+· OSI 的网络层 → TCP/IP 的<strong>网际层</strong>（IP）<br>
+· OSI 的数据链路/物理层 → TCP/IP 的<strong>网络接口层</strong></p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>分层的比喻理解</span></div>
+<div class="exam-q">如果用现实生活中的例子来比喻网络分层模型，以下最恰当的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>中国公司的经理与波兰公司的经理交互商业文件</div>
+<div class="opt"><span class="letter">B</span>军队发布命令</div>
+<div class="opt"><span class="letter">C</span>国际会议中，每个人都与他国地位对等的人直接会谈</div>
+<div class="opt"><span class="letter">D</span>体育比赛中，每一级比赛的优胜者晋级上一级比赛</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：C</div><div class="explain">网络分层的核心是<strong>对等层通信</strong>——每层只与对方的同层"对话"，下层为上层提供服务。国际会议中地位对等的人直接会谈就是最形象的比喻。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>IP 协议所在层级</span></div>
+<div class="exam-q">IP 协议属于 TCP/IP 模型中的哪一层？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>应用层</div>
+<div class="opt"><span class="letter">B</span>传输层</div>
+<div class="opt"><span class="letter">C</span>网际层</div>
+<div class="opt"><span class="letter">D</span>网络接口层</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：C</div><div class="explain">IP（Internet Protocol）位于 TCP/IP 模型的<strong>网际层</strong>（也叫网络层），主要负责<strong>寻址和路由选择</strong>。TCP/UDP 在传输层。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>IP 地址与域名系统</h2>
+
+<h3 class="kp-title">3.1 IP 地址</h3>
+<p class="kp-text">IP 地址是互联网上每台设备的<strong>唯一标识</strong>，就像门牌号一样。</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>版本</th><th>位数</th><th>格式</th><th>地址数量</th></tr></thead>
+<tbody>
+<tr><td><strong>IPv4</strong></td><td>32 位</td><td>点分十进制，如 <span class="mono">192.168.1.1</span></td><td>约 43 亿（已基本耗尽）</td></tr>
+<tr><td><strong>IPv6</strong></td><td>128 位</td><td>冒号十六进制，如 <span class="mono">2001:db8::1</span></td><td>极大量（2¹²⁸个）</td></tr>
+</tbody></table></div>
+
+<h3 class="kp-title">3.2 IP 地址分类（IPv4 A/B/C 类）</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类别</th><th>首字节范围</th><th>默认子网掩码</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><strong>A 类</strong></td><td>1~126</td><td>255.0.0.0</td><td>大型网络</td></tr>
+<tr><td><strong>B 类</strong></td><td>128~191</td><td>255.255.0.0</td><td>中型网络</td></tr>
+<tr><td><strong>C 类</strong></td><td>192~223</td><td>255.255.255.0</td><td>小型网络（局域网常用）</td></tr>
+<tr><td><strong>特殊</strong></td><td>127</td><td>—</td><td>回环测试地址（127.0.0.1 = localhost）</td></tr>
+</tbody></table></div>
+
+<h3 class="kp-title">3.3 域名系统（DNS）</h3>
+<p class="kp-text"><strong>DNS</strong>（Domain Name System）将人类易记的域名（如 <span class="mono">www.baidu.com</span>）解析为 IP 地址。<br>顶级域名（TLD）如 <span class="mono">.cn</span>（中国）、<span class="mono">.com</span>（商业）、<span class="mono">.org</span>（组织）、<span class="mono">.edu</span>（教育）。</p>
+
+<div class="card accent"><div class="card-title">💡 考点提示</div>
+<p class="kp-text">· 中国的国家顶级域名是 <strong>.cn</strong>（不是 .ch 或 .chn）<br>
+· <span class="mono">127.0.0.1</span> 是本机回环地址，永远指向本机<br>
+· <span class="mono">192.168.x.x</span> 是私有 IP 地址，用于局域网<br>
+· IPv6 是 128 位，不是 64 位或 48 位</p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模拟卷1-1</span><span>中国顶级域名</span></div>
+<div class="exam-q">中国的国家顶级域名是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>.cn</div>
+<div class="opt"><span class="letter">B</span>.ch</div>
+<div class="opt"><span class="letter">C</span>.chn</div>
+<div class="opt"><span class="letter">D</span>.china</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：A</div><div class="explain">中国的国家顶级域名是 <strong>.cn</strong>（China 的缩写）。.ch 是瑞士的顶级域名。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>IPv6 地址位数</span></div>
+<div class="exam-q">IPv6 协议使用多少位地址？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>32 位</div>
+<div class="opt"><span class="letter">B</span>64 位</div>
+<div class="opt"><span class="letter">C</span>128 位</div>
+<div class="opt"><span class="letter">D</span>256 位</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：C</div><div class="explain">IPv6 使用 <strong>128 位</strong>地址，是 IPv4（32 位）的 4 倍长，解决了 IP 地址耗尽的问题。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>回环地址</span></div>
+<div class="exam-q">IP 地址 127.0.0.1 通常用于什么目的？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>广播地址</div>
+<div class="opt"><span class="letter">B</span>本机回环测试</div>
+<div class="opt"><span class="letter">C</span>网关地址</div>
+<div class="opt"><span class="letter">D</span>保留未使用</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：B</div><div class="explain"><span class="code">127.0.0.1</span> 是<strong>回环地址（loopback）</strong>，用来<strong>在本机测试网络功能</strong>。Ping 127.0.0.1 如果能通，说明本机的网络协议栈是正常的。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>常见网络协议</h2>
+<p class="kp-text">初赛常考的协议及其默认端口：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>协议</th><th>全称</th><th>默认端口</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">HTTP</span></td><td>超文本传输协议</td><td>80</td><td>Web 页面传输（明文）</td></tr>
+<tr><td><span class="mono">HTTPS</span></td><td>安全超文本传输协议</td><td>443</td><td>加密的 Web 传输</td></tr>
+<tr><td><span class="mono">FTP</span></td><td>文件传输协议</td><td>21</td><td>文件上传/下载</td></tr>
+<tr><td><span class="mono">SMTP</span></td><td>简单邮件传输协议</td><td>25</td><td>发送电子邮件</td></tr>
+<tr><td><span class="mono">POP3</span></td><td>邮局协议第3版</td><td>110</td><td>接收电子邮件</td></tr>
+<tr><td><span class="mono">DNS</span></td><td>域名系统</td><td>53</td><td>域名→IP 地址解析</td></tr>
+<tr><td><span class="mono">TCP</span></td><td>传输控制协议</td><td>—</td><td>可靠的面向连接传输</td></tr>
+<tr><td><span class="mono">UDP</span></td><td>用户数据报协议</td><td>—</td><td>不可靠的无连接传输</td></tr>
+</tbody></table></div>
+
+<div class="card danger"><div class="card-title">⚠️ TCP vs UDP</div>
+<p class="kp-text"><strong>TCP</strong>：可靠、有序、面向连接（如同打电话——先建立连接再通话）<br>
+<strong>UDP</strong>：不可靠、无序、无连接（如同寄明信片——直接发出不确认）<br>
+· TCP 用于网页浏览、文件传输等需要可靠性的场景<br>
+· UDP 用于视频直播、在线游戏等对速度要求高的场景</p></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>E-mail 协议</span></div>
+<div class="exam-q">以下哪个是目前互联网上常用的 E-mail 接收协议？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>HTTP</div>
+<div class="opt"><span class="letter">B</span>FTP</div>
+<div class="opt"><span class="letter">C</span>POP3</div>
+<div class="opt"><span class="letter">D</span>Telnet</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：C</div><div class="explain"><strong>POP3</strong>（Post Office Protocol version 3）是邮件接收协议。<strong>SMTP</strong> 是邮件发送协议。HTTP 是网页传输，FTP 是文件传输，Telnet 是远程登录。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>TCP vs UDP 判断</span></div>
+<div class="exam-q">以下场景中，最适合使用 TCP 协议的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>网络视频直播</div>
+<div class="opt"><span class="letter">B</span>在线网页游戏</div>
+<div class="opt"><span class="letter">C</span>网页浏览（HTTP）</div>
+<div class="opt"><span class="letter">D</span>DNS 查询</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：C</div><div class="explain"><strong>HTTP/HTTPS</strong> 基于 TCP，确保网页数据<strong>完整可靠</strong>地传输。视频直播（A）和在线游戏（B）对延迟敏感，通常用 UDP。DNS 查询可能用 TCP 或 UDP 但常用 UDP。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s5"><span class="num">5</span>信息安全与计算机病毒</h2>
+
+<h3 class="kp-title">5.1 计算机病毒</h3>
+<p class="kp-text">计算机病毒是一种<strong class="hl">恶意程序</strong>，具有<strong>传染性、隐蔽性、潜伏性、破坏性</strong>等特征。它可以通过电子邮件、U盘、网页下载等途径传播。</p>
+
+<ul class="dot-list">
+<li><strong>蠕虫</strong>：自我复制并通过网络传播，消耗系统资源</li>
+<li><strong>木马</strong>：伪装成正常程序，窃取用户信息</li>
+<li><strong>勒索病毒</strong>：加密用户文件，要求支付赎金</li>
+<li><strong>宏病毒</strong>：寄生于 Office 文档中</li>
+</ul>
+
+<h3 class="kp-title">5.2 防火墙</h3>
+<p class="kp-text">防火墙是<strong>网络安全屏障</strong>，位于内部网络和外部网络之间，根据预设规则<strong>允许或阻止</strong>数据包的通过。它可以<strong>软件形式</strong>（如 Windows 防火墙）或<strong>硬件形式</strong>实现。</p>
+
+<h3 class="kp-title">5.3 加密技术</h3>
+<ul class="dot-list">
+<li><strong>对称加密</strong>：加密和解密使用<strong>同一个密钥</strong>（如 AES、DES）</li>
+<li><strong>非对称加密</strong>：使用<strong>公钥+私钥</strong>（如 RSA），公钥加密私钥解密</li>
+<li><strong>哈希算法</strong>：不可逆的单向加密（如 MD5、SHA）</li>
+</ul>
+
+<h3 class="kp-title" id="s5-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>病毒的典型特征</span></div>
+<div class="exam-q">以下哪项<strong>不是</strong>计算机病毒的典型特征？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>传染性</div>
+<div class="opt"><span class="letter">B</span>隐蔽性</div>
+<div class="opt"><span class="letter">C</span>自我进化性</div>
+<div class="opt"><span class="letter">D</span>破坏性</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：C</div><div class="explain">计算机病毒的典型特征包括<strong>传染性、隐蔽性、潜伏性、破坏性</strong>。"自我进化性"不是病毒的特征（生物学病毒才可能进化）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>防火墙的作用</span></div>
+<div class="exam-q">以下关于防火墙的描述，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>防火墙可以防止所有病毒入侵</div>
+<div class="opt"><span class="letter">B</span>防火墙是位于内外网络之间的安全屏障</div>
+<div class="opt"><span class="letter">C</span>防火墙只能以硬件形式实现</div>
+<div class="opt"><span class="letter">D</span>开启防火墙后计算机不会再感染病毒</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：B</div><div class="explain">防火墙是<strong>内外网络之间的安全屏障</strong>，根据规则过滤数据包。但它不能防止所有病毒（A 错），可以是软件或硬件（C 错），开启后仍可能中病毒（D 错）。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+<p class="kp-text">以下题目综合了计算机网络、信息安全等多个知识点。</p>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>网络协议综合</span></div>
+<div class="exam-q">在浏览器地址栏输入网址，回车后能显示出网页，这中间用到的协议不包含？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DNS</div>
+<div class="opt"><span class="letter">B</span>HTTP</div>
+<div class="opt"><span class="letter">C</span>SMTP</div>
+<div class="opt"><span class="letter">D</span>TCP</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+<div class="answer-box" id="a12"><div class="ans">✅ 正确答案：C</div><div class="explain">浏览网页的过程：① DNS 将域名解析为 IP 地址 ② TCP 建立连接 ③ HTTP 获取网页内容。<strong>SMTP</strong> 是邮件<strong>发送</strong>协议，浏览网页不需要它。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>网络+安全混合</span></div>
+<div class="exam-q">以下说法中，<strong>正确</strong>的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>IPv4 地址为 64 位，IPv6 地址为 128 位</div>
+<div class="opt"><span class="letter">B</span>HTTP 协议默认使用 443 端口</div>
+<div class="opt"><span class="letter">C</span>防火墙可以完全防止计算机病毒入侵</div>
+<div class="opt"><span class="letter">D</span>TCP 协议提供可靠的面向连接传输服务</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+<div class="answer-box" id="a13"><div class="ans">✅ 正确答案：D</div><div class="explain">A 错——IPv4 是 32 位，IPv6 是 128 位。B 错——HTTP 是 80 端口，HTTPS 才是 443。C 错——防火墙不能完全防止病毒。D 正确——TCP 是<strong>可靠、面向连接</strong>的。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>OSI 模型层级判断</span></div>
+<div class="exam-q">在 OSI 七层模型中，路由器工作在哪一层？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>物理层</div>
+<div class="opt"><span class="letter">B</span>数据链路层</div>
+<div class="opt"><span class="letter">C</span>网络层</div>
+<div class="opt"><span class="letter">D</span>传输层</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+<div class="answer-box" id="a14"><div class="ans">✅ 正确答案：C</div><div class="explain"><strong>路由器</strong>工作在网络层（第三层），根据 IP 地址进行路由选择和转发。交换机工作在数据链路层（第二层），集线器工作在物理层（第一层）。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 本节课重点速查表</h3>
+<div class="row">
+<span class="pill">LAN&lt;MAN&lt;WAN</span>
+<span class="pill amber">中国的顶级域名：.cn</span>
+<span class="pill">IPv4=32位，IPv6=128位</span>
+</div>
+<div class="row">
+<span class="pill green">OSI 七层：物→链→网→传→会→表→应</span>
+<span class="pill green">TCP/IP 四层：网络接口→网际→传输→应用</span>
+</div>
+<div class="row">
+<span class="pill">IP=网际层，TCP/UDP=传输层</span>
+<span class="pill red">127.0.0.1 = 本机回环</span>
+<span class="pill">病毒特征：传染/隐蔽/潜伏/破坏</span>
+</div></div>
+
+<div class="summary-box" id="resources">
+<h3>📎 配套资源推荐</h3>
+<table style="width:100%;font-size:.8rem;">
+<thead><tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr></thead>
+<tbody>
+<tr><td style="padding:4px 0;"><strong>📘 C779-19 计算机网络的诞生和发展</strong></td><td style="padding:4px 0;color:var(--text-sec);">100段长篇讲义，含网络定义、发展史、TCP/IP 详解</td></tr>
+<tr><td style="padding:4px 0;"><strong>📝 模块-3 计算机网络与Internet</strong></td><td style="padding:4px 0;color:var(--text-sec);">40道网络专项练习题（协议/IP/设备）</td></tr>
+<tr><td style="padding:4px 0;"><strong>📝 模拟卷18套</strong></td><td style="padding:4px 0;color:var(--text-sec);">每套第1题多为网络常识题</td></tr>
+</tbody></table></div>
+
+</div></main>
+
+<button class="back-top" id="backTop" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

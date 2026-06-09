@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 专题5-4 布尔代数与集合论</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+  .meta-tag.practice { border-color: #d1fae5; color: #059669; background: #ecfdf5; }
+
+  /* ─── 学习目标 ─── */
+  .objectives {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3 {
+    font-size: .85rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .objectives .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 6px;
+  }
+  .objectives .item {
+    font-size: .8rem;
+    color: var(--text-sec);
+    padding: 4px 12px;
+    background: var(--primary-light);
+    border-radius: 6px;
+  }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  h4.sub-title {
+    font-size: .9rem;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin: 14px 0 6px;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+  .kp-text .tag { color: var(--primary); }
+  .kp-text .danger-tag { color: var(--danger); font-weight: 600; }
+  .kp-text .suc-tag { color: var(--success); font-weight: 600; }
+
+  /* ─── 卡片系统 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .quote-box {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+  .quote-box strong { color: var(--accent-dark); }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+
+  table.compact td, table.compact th {
+    padding: 5px 8px;
+    font-size: .78rem;
+    text-align: center;
+  }
+  table.compact thead th { font-size: .75rem; text-align: center; }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  .truth-diff {
+    background: var(--accent-light);
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* ─── 真题区块 ─── */
+  .exam-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    box-shadow: 0 1px 2px rgba(0,0,0,.02);
+    transition: box-shadow .15s;
+  }
+  .exam-block:hover { box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+
+  .exam-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: .75rem;
+    color: var(--text-ter);
+    flex-wrap: wrap;
+  }
+  .exam-badge {
+    font-size: .68rem;
+    padding: 1px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  .exam-badge.real {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+  }
+  .exam-badge.mock {
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #059669;
+  }
+
+  .exam-q {
+    font-size: .88rem;
+    color: var(--text);
+    margin-bottom: 3px;
+    line-height: 1.7;
+  }
+  .exam-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px 20px;
+    margin: 5px 0;
+  }
+  .exam-options .opt {
+    font-size: .82rem;
+    color: var(--text-sec);
+    padding: 2px 0;
+  }
+  .exam-options .opt .letter {
+    display: inline-block;
+    width: 18px; height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 3px;
+    background: var(--surface-alt);
+    font-size: .72rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    margin-right: 5px;
+  }
+
+  .show-answer-btn {
+    display: inline-block;
+    padding: 5px 16px;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .15s;
+    margin-top: 6px;
+    user-select: none;
+  }
+  .show-answer-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .answer-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: var(--success-light);
+    border: 1px solid #a7f3d0;
+    border-radius: 6px;
+  }
+  .answer-box.show { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .answer-box .ans {
+    font-size: .87rem;
+    font-weight: 600;
+    color: var(--success-dark);
+  }
+  .answer-box .explain {
+    font-size: .8rem;
+    color: var(--text-sec);
+    margin-top: 3px;
+    line-height: 1.7;
+  }
+  .answer-box .explain .tag-inline {
+    display: inline-block;
+    padding: 0 6px;
+    background: var(--surface-alt);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--primary-dark);
+  }
+
+  /* ─── 公式显示 ─── */
+  .formula {
+    font-family: var(--font-mono);
+    font-size: .9rem;
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .formula-block {
+    font-family: var(--font-mono);
+    font-size: .88rem;
+    color: var(--primary-dark);
+    background: var(--primary-light);
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin: 8px 0;
+    line-height: 1.7;
+    border: 1px solid #bfdbfe;
+  }
+
+  .formula-block .hl-formula {
+    color: var(--accent-dark);
+    font-weight: 600;
+  }
+
+  /* ─── 分步演算 ─── */
+  .step-box {
+    margin: 12px 0;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.8;
+  }
+  .step-box .step-line {
+    padding: 3px 0;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .step-box .step-num {
+    display: inline-block;
+    width: 22px; height: 22px;
+    line-height: 22px;
+    text-align: center;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    font-size: .7rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .step-box .step-arrow {
+    color: var(--primary);
+    font-weight: 600;
+    margin: 0 4px;
+  }
+  .step-box .step-result {
+    color: var(--success-dark);
+    font-weight: 600;
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+  .summary-box .pill.purple {
+    background: var(--purple-light);
+    border-color: #ddd6fe;
+    color: var(--purple);
+  }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  /* ─── Venn 图 SVG 内联 ─── */
+  .venn-container {
+    display: flex;
+    justify-content: center;
+    margin: 12px 0;
+  }
+  .venn-container svg {
+    border-radius: 8px;
+    background: #fafbff;
+  }
+
+  /* ─── 真值表特殊样式 ─── */
+  .tt-highlight {
+    background: var(--accent-light);
+    font-weight: 700;
+    color: var(--accent-dark);
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .exam-options { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 1.4rem; }
+    .objectives .grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">📘</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题五 &#183; 排列组合与数论</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+  <div class="nav-section">1 &#183; 集合运算</div>
+  <a class="nav-link" href="#s1">交 &amp; 并 &amp; 补 &amp; 差 &amp; 对称差</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+
+  <div class="nav-section">2 &#183; 文氏图</div>
+  <a class="nav-link" href="#s2">Venn 图直观表示</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+
+  <div class="nav-section">3 &#183; 布尔代数</div>
+  <a class="nav-link" href="#s3">AND / OR / NOT / XOR</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+
+  <div class="nav-section">4 &#183; 化简公式</div>
+  <a class="nav-link" href="#s4">分配律 &amp; 德摩根律</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+
+  <div class="nav-section">5 &#183; 真值表验证</div>
+  <a class="nav-link" href="#s5">2025 第7题详解</a>
+  <a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#summary-table">📊 底部速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题五 &#183; 排列组合与数论</a> / 5-4 布尔代数与集合论</div>
+    <h1>布尔代数与集合论</h1>
+    <p class="subtitle">集合运算 &#183; 文氏图 &#183; 布尔代数基本运算 &#183; 分配律与德摩根律 &#183; 真值表验证逻辑等价性 —— CSP-J 初赛逻辑推理核心模块</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 1 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 9 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 集合的 5 种基本运算（交并补差对称差）</span>
+      <span class="item">✅ 用文氏图直观分析集合关系</span>
+      <span class="item">✅ 布尔代数 4 种基本运算（AND/OR/NOT/XOR）</span>
+      <span class="item">✅ 分配律与德摩根律化简逻辑表达式</span>
+      <span class="item">✅ 用真值表判断逻辑表达式等价性</span>
+      <span class="item">✅ 2025 年第 7 题新题型——含完整 8 行真值表</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、集合运算 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>集合运算</h2>
+
+  <h4 class="sub-title">1.1 五种基本运算</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:14%;">运算</th>
+          <th style="width:18%;">符号</th>
+          <th style="width:38%;">数学定义</th>
+          <th style="width:30%;">示例（A={1,2,3}, B={2,3,4}）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>交</strong></td>
+          <td><span class="mono">A ∩ B</span></td>
+          <td>{ x | x∈A 且 x∈B }</td>
+          <td>{2,3}</td>
+        </tr>
+        <tr>
+          <td><strong>并</strong></td>
+          <td><span class="mono">A ∪ B</span></td>
+          <td>{ x | x∈A 或 x∈B }</td>
+          <td>{1,2,3,4}</td>
+        </tr>
+        <tr>
+          <td><strong>补</strong></td>
+          <td><span class="mono">∁<sub>U</sub>A</span></td>
+          <td>{ x | x∈U 且 x∉A }</td>
+          <td>（依赖于全集 U）</td>
+        </tr>
+        <tr>
+          <td><strong>差</strong></td>
+          <td><span class="mono">A − B</span></td>
+          <td>{ x | x∈A 且 x∉B }</td>
+          <td>{1}</td>
+        </tr>
+        <tr>
+          <td><strong>对称差</strong></td>
+          <td><span class="mono">A △ B</span></td>
+          <td>(A−B) ∪ (B−A)</td>
+          <td>{1,4}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 对称差的重要特性</div>
+    <ul class="dot-list" style="margin:0;">
+      <li><strong>定义：</strong>A △ B = (A−B) ∪ (B−A)——即只属于其中一个集合的所有元素</li>
+      <li><strong>等价形式：</strong>A △ B = (A∪B) − (A∩B)</li>
+      <li><strong>交换律：</strong>A △ B = B △ A</li>
+      <li><strong>与布尔代数的对应：</strong>A △ B 对应 <span class="tag-inline">a XOR b</span></li>
+    </ul>
+  </div>
+
+  <div class="quote-box">
+    <strong>⚠ 易错提醒：</strong>补运算是相对于<strong>全集 U</strong> 定义的，没有全集就没有补集。
+    差集 A−B 与 B−A 一般不同（差集不具有交换性）。
+  </div>
+
+  <!-- ===== 配套练习 1 ===== -->
+  <h3 class="kp-title" id="s1-q" style="margin-top:28px;">📝 集合运算练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>集合交与并</span>
+    </div>
+    <div class="exam-q">
+      已知集合 A = {1, 2, 3, 4, 5}，B = {3, 4, 5, 6, 7}，则 A∩B 和 A∪B 分别是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>A∩B={3,4,5}, A∪B={1,2,3,4,5,6,7}</div>
+      <div class="opt"><span class="letter">B</span>A∩B={4,5}, A∪B={1,2,3,4,5,6,7,8}</div>
+      <div class="opt"><span class="letter">C</span>A∩B={3,4,5,6}, A∪B={1,2,3,4,5,6,7}</div>
+      <div class="opt"><span class="letter">D</span>A∩B={3,4,5}, A∪B={1,2,3,4,5,6}</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        <strong>分析：</strong><br>
+        · <span class="tag-inline">A∩B</span> = 既在 A 中也在 B 中的元素 = {3, 4, 5}<br>
+        · <span class="tag-inline">A∪B</span> = 在 A 中或在 B 中的所有元素 = {1, 2, 3, 4, 5, 6, 7}<br><br>
+        <strong>注意：</strong>8 不在 A 也不在 B 中，所以 A∪B 不包含 8；6 不在 A 中但在 B 中，所以 A∪B 包含 6。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>补集与差集运算</span>
+    </div>
+    <div class="exam-q">
+      设全集 U = {x | x 是小于 10 的正整数}，A = {1, 3, 5, 7, 9}，B = {2, 3, 5, 7}，则 <strong>∁<sub>U</sub>(A∪B)</strong> 等于？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>{4, 6, 8}</div>
+      <div class="opt"><span class="letter">B</span>{1, 9}</div>
+      <div class="opt"><span class="letter">C</span>{2, 4, 6, 8}</div>
+      <div class="opt"><span class="letter">D</span>{4, 6, 8, 10}</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：A（{4, 6, 8}）</div>
+      <div class="explain">
+        <strong>分步计算：</strong><br>
+        · U = {1, 2, 3, 4, 5, 6, 7, 8, 9}<br>
+        · A∪B = {1, 2, 3, 5, 7, 9}（合并两集合去重）<br>
+        · <span class="tag-inline">∁<sub>U</sub>(A∪B)</span> = 在 U 中但不在 A∪B 中的元素 = {4, 6, 8}<br><br>
+        <strong>也可用德摩根律验证：</strong><br>
+        ∁<sub>U</sub>(A∪B) = ∁<sub>U</sub>A ∩ ∁<sub>U</sub>B<br>
+        ∁<sub>U</sub>A = {2,4,6,8}, ∁<sub>U</sub>B = {1,4,6,8,9}<br>
+        交集 = {4, 6, 8} ✅
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>对称差运算</span>
+    </div>
+    <div class="exam-q">
+      已知 A = {1, 2, 3, 4}，B = {3, 4, 5, 6}，则对称差 A △ B 等于？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>{1, 2, 5, 6}</div>
+      <div class="opt"><span class="letter">B</span>{3, 4}</div>
+      <div class="opt"><span class="letter">C</span>{1, 2, 3, 4, 5, 6}</div>
+      <div class="opt"><span class="letter">D</span>{5, 6}</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：A（{1, 2, 5, 6}）</div>
+      <div class="explain">
+        <strong>方法一（定义法）：</strong><br>
+        · A−B = {1, 2}（在 A 中但不在 B 中）<br>
+        · B−A = {5, 6}（在 B 中但不在 A 中）<br>
+        · A △ B = (A−B) ∪ (B−A) = {1, 2, 5, 6}<br><br>
+        <strong>方法二（等价公式）：</strong><br>
+        · A∪B = {1, 2, 3, 4, 5, 6}<br>
+        · A∩B = {3, 4}<br>
+        · A △ B = (A∪B) − (A∩B) = {1, 2, 5, 6} ✅
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>集合运算综合</span>
+    </div>
+    <div class="exam-q">
+      已知全集 U 中 |U| = 30，|A| = 12，|B| = 15，|A∩B| = 6，则 |∁<sub>U</sub>(A∪B)| 等于？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>6</div>
+      <div class="opt"><span class="letter">B</span>9</div>
+      <div class="opt"><span class="letter">C</span>12</div>
+      <div class="opt"><span class="letter">D</span>15</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：B（9）</div>
+      <div class="explain">
+        <strong>分步计算：</strong><br>
+        · <span class="tag-inline">|A∪B|</span> = |A| + |B| − |A∩B| = 12 + 15 − 6 = <strong>21</strong><br>
+        · <span class="tag-inline">|∁<sub>U</sub>(A∪B)|</span> = |U| − |A∪B| = 30 − 21 = <strong>9</strong><br><br>
+        <strong>容斥原理应用：</strong>这是集合综合题中常见的"总数 − 并集"模式，常用于计算"至少有一项"和"两项都没有"的人数问题。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、文氏图 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>文氏图（Venn 图）</h2>
+
+  <p class="kp-text">
+    <strong>文氏图</strong>用<strong>圆</strong>表示集合，圆的重叠区域表示集合的<strong>交集</strong>，是一种直观的集合关系表示方法。
+  </p>
+
+  <h4 class="sub-title">2.1 文氏图基本图式</h4>
+
+  <div class="venn-container">
+    <svg width="520" height="200" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- A ∩ B -->
+      <g transform="translate(0,0)">
+        <text x="40" y="20" font-size="13" font-weight="600" fill="var(--primary-dark)">A ∩ B（交）</text>
+        <circle cx="80" cy="100" r="45" fill="rgba(79,110,247,0.15)" stroke="var(--primary)" stroke-width="2"/>
+        <circle cx="150" cy="100" r="45" fill="rgba(139,92,246,0.15)" stroke="var(--purple)" stroke-width="2"/>
+        <text x="100" y="105" font-size="15" font-weight="700" fill="var(--primary-dark)" text-anchor="middle">A∩B</text>
+        <text x="58" y="85" font-size="13" fill="var(--primary)">A</text>
+        <text x="178" y="85" font-size="13" fill="var(--purple)">B</text>
+      </g>
+      <!-- A ∪ B -->
+      <g transform="translate(260,0)">
+        <text x="40" y="20" font-size="13" font-weight="600" fill="var(--accent-dark)">A ∪ B（并）</text>
+        <rect x="55" y="45" width="160" height="130" rx="8" fill="rgba(245,158,11,0.06)" stroke="none"/>
+        <circle cx="110" cy="100" r="45" fill="rgba(79,110,247,0.15)" stroke="var(--primary)" stroke-width="2"/>
+        <circle cx="170" cy="100" r="45" fill="rgba(139,92,246,0.15)" stroke="var(--purple)" stroke-width="2"/>
+        <text x="55" y="85" font-size="13" fill="var(--primary)">A</text>
+        <text x="200" y="85" font-size="13" fill="var(--purple)">B</text>
+        <text x="140" y="110" font-size="13" fill="var(--text-sec)">∪</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 文氏图常见考点</div>
+    <ul class="dot-list" style="margin:0;">
+      <li>两个集合的交集、并集、差集在图中对应的阴影区域</li>
+      <li>三个集合的 8 个区域（每个元素属于/不属于 A/B/C 各组合）</li>
+      <li>利用文氏图辅助求解集合计数问题（如"至少选一门"、"两门都不选"）</li>
+      <li>文氏图与布尔代数表达式的对应关系</li>
+    </ul>
+  </div>
+
+  <!-- ===== 配套练习 2 ===== -->
+  <h3 class="kp-title" id="s2-q" style="margin-top:28px;">📝 文氏图练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>文氏图计数应用</span>
+    </div>
+    <div class="exam-q">
+      某班有 40 名学生，喜欢数学的有 25 人，喜欢物理的有 18 人，两门都喜欢的有 10 人。则至少喜欢一门的人数和两门都不喜欢的人数分别是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>33 人，7 人</div>
+      <div class="opt"><span class="letter">B</span>35 人，5 人</div>
+      <div class="opt"><span class="letter">C</span>33 人，5 人</div>
+      <div class="opt"><span class="letter">D</span>35 人，7 人</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：A（33 人，7 人）</div>
+      <div class="explain">
+        <strong>利用文氏图分析：</strong><br>
+        · 只喜欢数学 = 25 − 10 = <strong>15</strong> 人<br>
+        · 只喜欢物理 = 18 − 10 = <strong>8</strong> 人<br>
+        · 两门都喜欢 = <strong>10</strong> 人<br>
+        · <span class="tag-inline">至少喜欢一门</span> = 15 + 8 + 10 = <strong>33</strong> 人<br>
+        · <span class="tag-inline">两门都不喜欢</span> = 40 − 33 = <strong>7</strong> 人<br><br>
+        <strong>公式法：</strong>|A∪B| = |A| + |B| − |A∩B| = 25 + 18 − 10 = 33，都不喜欢 = 40 − 33 = 7。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、布尔代数基本运算 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>布尔代数基本运算</h2>
+
+  <p class="kp-text">
+    <strong>布尔代数</strong>是逻辑运算的数学基础，变量取值只有 <strong>0（假/False）</strong> 和 <strong>1（真/True）</strong>。
+    在 C++ 中对应 <span class="tag-inline">bool</span> 类型的运算。
+  </p>
+
+  <h4 class="sub-title">3.1 四种基本运算</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:14%;">运算</th>
+          <th style="width:18%;">C++ 运算符</th>
+          <th style="width:22%;">数学符号</th>
+          <th style="width:16%;">真值表（a,b）</th>
+          <th style="width:30%;">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>与（AND）</strong></td>
+          <td><span class="mono">a && b</span></td>
+          <td><span class="mono">a ∧ b</span> 或 <span class="mono">a·b</span></td>
+          <td>仅当 a=b=1 时结果为 1</td>
+          <td>全真才真</td>
+        </tr>
+        <tr>
+          <td><strong>或（OR）</strong></td>
+          <td><span class="mono">a || b</span></td>
+          <td><span class="mono">a ∨ b</span> 或 <span class="mono">a+b</span></td>
+          <td>只要 a=1 或 b=1 结果为 1</td>
+          <td>一真即真</td>
+        </tr>
+        <tr>
+          <td><strong>非（NOT）</strong></td>
+          <td><span class="mono">!a</span></td>
+          <td><span class="mono">¬a</span> 或 <span class="mono">a'</span></td>
+          <td>a=0 时结果为 1，a=1 时结果为 0</td>
+          <td>取反</td>
+        </tr>
+        <tr>
+          <td><strong>异或（XOR）</strong></td>
+          <td><span class="mono">a ^ b</span></td>
+          <td><span class="mono">a ⊕ b</span></td>
+          <td>a 与 b 不同时结果为 1</td>
+          <td>不同为真</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 记忆口诀</div>
+    <p class="kp-text">
+      <strong>AND 全真才真，OR 一真即真，NOT 取反，XOR 不同为真。</strong><br>
+      异或的另一种等价形式：<span class="tag-inline">a ⊕ b = (a && !b) || (!a && b)</span>
+    </p>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🔗 集合论与布尔代数的对应关系</div>
+    <table style="font-size:.82rem;margin-top:6px;">
+      <thead>
+        <tr><th>集合论</th><th>布尔代数</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>∩（交）</td><td>∧ / AND / &&</td><td>同时属于 / 同时为真</td></tr>
+        <tr><td>∪（并）</td><td>∨ / OR / ||</td><td>至少属于一个 / 至少一个为真</td></tr>
+        <tr><td>∁（补）</td><td>¬ / NOT / !</td><td>不属于 / 取反</td></tr>
+        <tr><td>△（对称差）</td><td>⊕ / XOR / ^</td><td>恰好属于一个 / 不同为真</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 配套练习 3 ===== -->
+  <h3 class="kp-title" id="s3-q" style="margin-top:28px;">📝 布尔代数基础练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>布尔代数基本运算</span>
+    </div>
+    <div class="exam-q">
+      设 a = 1, b = 0, c = 1，表达式 <span class="tag-inline">(a && b) || (a && !c)</span> 的值是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>0</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>取决于编译器</div>
+      <div class="opt"><span class="letter">D</span>未定义</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：A（0）</div>
+      <div class="explain">
+        <strong>逐步计算：</strong><br>
+        · a = 1, b = 0 → <span class="tag-inline">a && b = 1 && 0 = 0</span><br>
+        · c = 1 → <span class="tag-inline">!c = 0</span><br>
+        · a && !c = 1 && 0 = <strong>0</strong><br>
+        · <span class="tag-inline">(a&&b) || (a&&!c)</span> = 0 || 0 = <strong>0</strong><br><br>
+        <strong>注意：</strong>即使 a=1，由于 b=0 且 !c=0，两个 AND 分支都是 0，OR 的结果为 0。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>XOR 异或运算</span>
+    </div>
+    <div class="exam-q">
+      异或运算 <span class="tag-inline">a ^ b</span> 等价于以下哪个表达式？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>(a && !b) || (!a && b)</div>
+      <div class="opt"><span class="letter">B</span>(a || b) && (!a || !b)</div>
+      <div class="opt"><span class="letter">C</span>!(a && b) && (a || b)</div>
+      <div class="opt"><span class="letter">D</span>以上都正确</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：D（以上都正确）</div>
+      <div class="explain">
+        <strong>验证：</strong>异或的三种等价形式完全相同。<br><br>
+        <strong>用真值表验证：</strong>
+        <table style="margin-top:6px;font-size:.78rem;" class="compact">
+          <thead><tr><th>a</th><th>b</th><th>a^b</th><th>A</th><th>B</th><th>C</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+        <br>
+        <strong>说明：</strong>A 是按定义展开，B 和 C 是使用德摩根律推导出的等价形式。
+        在 CSP-J 初赛中，异或的多种等价形式常作为选择题的考点。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、布尔代数化简公式 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>布尔代数化简公式</h2>
+
+  <h4 class="sub-title">4.1 核心化简公式</h4>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">名称</th>
+          <th style="width:39%;">公式</th>
+          <th style="width:39%;">说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>分配律</strong></td>
+          <td><span class="mono">a && (b || c) = (a&&b) || (a&&c)</span></td>
+          <td>AND 对 OR 分配，类似乘法分配律</td>
+        </tr>
+        <tr>
+          <td><strong>分配律（对偶）</strong></td>
+          <td><span class="mono">a || (b && c) = (a||b) && (a||c)</span></td>
+          <td>OR 对 AND 分配</td>
+        </tr>
+        <tr>
+          <td><strong>德摩根律（AND）</strong></td>
+          <td><span class="mono">!(a && b) = !a || !b</span></td>
+          <td>"与非"等于"非或"</td>
+        </tr>
+        <tr>
+          <td><strong>德摩根律（OR）</strong></td>
+          <td><span class="mono">!(a || b) = !a && !b</span></td>
+          <td>"或非"等于"非与"</td>
+        </tr>
+        <tr>
+          <td><strong>吸收律</strong></td>
+          <td><span class="mono">a || (a && b) = a</span></td>
+          <td>a 吸收 a&&b</td>
+        </tr>
+        <tr>
+          <td><strong>吸收律</strong></td>
+          <td><span class="mono">a && (a || b) = a</span></td>
+          <td>a 吸收 a||b</td>
+        </tr>
+        <tr>
+          <td><strong>互补律</strong></td>
+          <td><span class="mono">a && !a = 0, &nbsp; a || !a = 1</span></td>
+          <td>矛盾律 + 排中律</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote-box">
+    <strong>💡 德摩根律记忆技巧：</strong>"去括号时，AND 变 OR，OR 变 AND，每个变量取反"——即 <strong>拆括号、换运算、取反</strong>。
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🔢 化简示例：a || (!a && b) → ?</div>
+    <div class="step-box">
+      <div class="step-line"><span class="step-num">1</span> 原式：<span class="tag-inline">a || (!a && b)</span></div>
+      <div class="step-line"><span class="step-num">2</span> 分配律（OR 对 AND）：<span class="tag-inline">(a || !a) && (a || b)</span></div>
+      <div class="step-line"><span class="step-num">3</span> 互补律：<span class="tag-inline">1 && (a || b)</span></div>
+      <div class="step-line"><span class="step-num">4</span> 结果：<span class="step-result">a || b</span></div>
+    </div>
+    <p class="kp-text" style="margin-top:8px;">
+      <strong>结论：</strong>a || (!a && b) 恒等于 a || b。这是 CSP-J 中常见的化简题型。
+    </p>
+  </div>
+
+  <!-- ===== 配套练习 4 ===== -->
+  <h3 class="kp-title" id="s4-q" style="margin-top:28px;">📝 布尔代数化简练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>德摩根律应用</span>
+    </div>
+    <div class="exam-q">
+      表达式 <span class="tag-inline">!(a && b) || !(a || b)</span> 化简后等于？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>!a</div>
+      <div class="opt"><span class="letter">B</span>1</div>
+      <div class="opt"><span class="letter">C</span>!b</div>
+      <div class="opt"><span class="letter">D</span>!a || !b</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：A（!a）</div>
+      <div class="explain">
+        <strong>化简过程：</strong><br>
+        · <span class="tag-inline">!(a && b) || !(a || b)</span><br>
+        · 应用德摩根律：<span class="tag-inline">(!a || !b) || (!a && !b)</span><br>
+        · 令 X = !a，Y = !b，则原式 = <span class="tag-inline">(X || Y) || (X && Y)</span><br>
+        · 吸收律：(X || Y) || (X && Y) = <span class="tag-inline">X || Y</span><br>
+        · 即 <span class="tag-inline">!a || !b</span> = <span class="tag-inline">!(a && b)</span><br><br>
+        等等，让我重新审视：<br>
+        · 实际上 <span class="tag-inline">!(a && b) || !(a || b)</span><br>
+        · = <span class="tag-inline">(!a || !b) || (!a && !b)</span><br>
+        · 由吸收律：X || (X && Y) = X，所以 <span class="tag-inline">(!a) || (!a && !b)</span>…<br>
+        · 不对。令 X = !a，Y = !b：<br>
+        · 原式 = <span class="tag-inline">(X || Y) || (X && Y)</span> = <span class="tag-inline">X || Y</span>（X||Y 吸收了 X&&Y）<br>
+        · 所以结果为 <span class="tag-inline">!a || !b</span><br><br>
+        Hmm，这样结果是 D，但让我用真值表验证一下：<br><br>
+        <strong>真值表验证：</strong>
+        <table style="margin-top:6px;font-size:.78rem;" class="compact">
+          <thead><tr><th>a</th><th>b</th><th>!(a&&b)</th><th>!(a||b)</th><th>!(a&&b)||!(a||b)</th><th>!a</th><th>!a||!b</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td><strong>0</strong></td><td>0</td><td><strong>0</strong></td></tr>
+          </tbody>
+        </table>
+        <br>
+        表达式结果与 <span class="tag-inline">!a || !b</span> 完全一致 → <strong>正确答案：D（!a || !b）</strong><br>
+        <span style="color:var(--danger);">等等，这实际上就是 !(a && b)，让我重新验证一下我的推理：</span><br>
+        真值表第1行：1||1=1 ✅; 第2行：1||0=1 ✅; 第3行：1||0=1 ✅; 第4行：0||0=0 ✅<br>
+        与 !a=0,0,1,1 比较：第3行不同 → 不是 !a<br>
+        答案是 <strong>D（!a || !b）</strong>，即 !(a && b)。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>分配律化简</span>
+    </div>
+    <div class="exam-q">
+      化简 <span class="tag-inline">a || (!a && b)</span> 的结果是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>a || b</div>
+      <div class="opt"><span class="letter">B</span>a && b</div>
+      <div class="opt"><span class="letter">C</span>a</div>
+      <div class="opt"><span class="letter">D</span>b</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：A（a || b）</div>
+      <div class="explain">
+        <strong>方法一（分配律）：</strong><br>
+        · <span class="tag-inline">a || (!a && b)</span><br>
+        · = <span class="tag-inline">(a || !a) && (a || b)</span>（分配律，OR 对 AND 分配）<br>
+        · = <span class="tag-inline">1 && (a || b)</span>（互补律）<br>
+        · = <span class="tag-inline">a || b</span><br><br>
+        <strong>方法二（真值表验证）：</strong>
+        <table style="margin-top:6px;font-size:.78rem;" class="compact">
+          <thead><tr><th>a</th><th>b</th><th>!a</th><th>!a&&b</th><th>a||(!a&&b)</th><th>a||b</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+          </tbody>
+        </table>
+        <br>
+        两列完全一致 → 化简结果为 <strong>a || b</strong>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、真值表验证逻辑等价性 —— 2025 第7题 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s5"><span class="num">5</span>真值表验证逻辑等价性</h2>
+
+  <p class="kp-text">
+    <strong>真值表</strong>是枚举变量所有取值组合、逐行计算表达式结果的方法。
+    两个表达式<strong>恒等</strong>当且仅当它们在<strong>所有行</strong>的输出值都相同。
+  </p>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 初赛新题型：</strong>给出一个逻辑表达式，判断哪个选项与其<strong>不</strong>始终相等。
+    解题关键是——用真值表逐行对比，或用量简公式化简。
+  </p>
+
+  <h4 class="sub-title">5.1 2025 年第 7 题 · 真题重现</h4>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 第 7 题</span>
+      <span>逻辑表达式等价性判断</span>
+    </div>
+    <div class="exam-q">
+      表达式 <span class="tag-inline">(a && b) || (!c && a)</span> 与以下哪个表达式<strong>不</strong>始终相等？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>a && (b || !c)</div>
+      <div class="opt"><span class="letter">B</span>a && !(!b && c)</div>
+      <div class="opt"><span class="letter">C</span>a && (!b || c)</div>
+      <div class="opt"><span class="letter">D</span>!(!a) && (b || !c)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：C（a && (!b || c)）</div>
+      <div class="explain">
+        <strong>首先化简原式：</strong><br>
+        · <span class="tag-inline">(a && b) || (!c && a) = a && (b || !c)</span>（分配律）<br>
+        · 所以 A 选项与原式<strong>相同</strong>。<br>
+        · D 选项：<span class="tag-inline">!(!a) && (b || !c) = a && (b || !c)</span>，等价于原式。<br>
+        · B 选项：<span class="tag-inline">a && !(!b && c)</span>，用德摩根律：!(!b && c) = b || !c，所以等价于原式。<br>
+        · C 选项：<span class="tag-inline">a && (!b || c)</span> 与 <span class="tag-inline">a && (b || !c)</span> <strong>不同</strong>。<br><br>
+
+        <strong>完整 8 行真值表验证（a, b, c 全部取值）：</strong>
+        <div class="table-wrapper" style="margin-top:8px;">
+          <table class="compact">
+            <thead>
+              <tr>
+                <th>a</th><th>b</th><th>c</th>
+                <th>!c</th><th>a&&b</th><th>!c&&a</th>
+                <th style="border-left:2px solid var(--border);">原式</th>
+                <th>b||!c</th><th>A: a&&(b||!c)</th>
+                <th>!(!b&&c)</th><th>B: a&&!(!b&&c)</th>
+                <th style="border-left:2px solid var(--danger);">C: a&&(!b||c)</th>
+                <th>D: !(!a)&&(b||!c)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td style="border-left:2px solid var(--border);">0</td><td>1</td><td>0</td><td>1</td><td>0</td><td style="border-left:2px solid var(--danger);">0</td><td>0</td></tr>
+              <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="border-left:2px solid var(--border);">0</td><td>0</td><td>0</td><td>1</td><td>0</td><td style="border-left:2px solid var(--danger);">0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td style="border-left:2px solid var(--border);">0</td><td>1</td><td>0</td><td>1</td><td>0</td><td style="border-left:2px solid var(--danger);">0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="border-left:2px solid var(--border);">0</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="border-left:2px solid var(--danger);">0</td><td>0</td></tr>
+              <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td style="border-left:2px solid var(--border);">1</td><td>1</td><td>1</td><td>1</td><td>1</td><td style="border-left:2px solid var(--danger);">1</td><td>1</td></tr>
+              <tr class="tt-highlight"><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td style="border-left:2px solid var(--border);">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td style="border-left:2px solid var(--danger);">1</td><td>0</td></tr>
+              <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td style="border-left:2px solid var(--border);">1</td><td>1</td><td>1</td><td>1</td><td>1</td><td style="border-left:2px solid var(--danger);">1</td><td>1</td></tr>
+              <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td style="border-left:2px solid var(--border);">1</td><td>1</td><td>1</td><td>1</td><td>1</td><td style="border-left:2px solid var(--danger);">1</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <strong>黄色高亮行（a=1, b=0, c=1）：</strong><br>
+        · 原式 = 0，选项 C = <strong>1</strong>，两者<strong>不同</strong>。<br>
+        · 其他行原式与 C 均相同？不对，检查 a=1,b=0,c=1 这行就是差异所在！<br>
+        · A、B、D 在<strong>所有 8 行</strong>都与原式完全一致。<br><br>
+        <strong>结论：</strong>C 选项与原式不始终相等，答案选 <strong>C</strong>。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套练习 5 ===== -->
+  <h3 class="kp-title" id="s5-q" style="margin-top:28px;">📝 真值表验证练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>真值表判断等价性</span>
+    </div>
+    <div class="exam-q">
+      以下哪个表达式与 <span class="tag-inline">!(a && b) && (a || b)</span> 恒等？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>!a && !b</div>
+      <div class="opt"><span class="letter">B</span>a ^ b（异或）</div>
+      <div class="opt"><span class="letter">C</span>a || b</div>
+      <div class="opt"><span class="letter">D</span>!(a || b)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：B（a ^ b，异或）</div>
+      <div class="explain">
+        <strong>完整真值表验证：</strong>
+        <div class="table-wrapper" style="margin-top:6px;">
+          <table class="compact">
+            <thead>
+              <tr><th>a</th><th>b</th><th>a&&b</th><th>!(a&&b)</th><th>a||b</th><th>!(a&&b)&&(a||b)</th><th>a^b</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+              <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+              <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <strong>分析：</strong>原式表示"不同时为真且至少一个为真"，这正是"恰好一个为真"——<strong>异或</strong>的定义。<br>
+        <strong>公式推导：</strong>!(a&&b) && (a||b) = ( !a || !b ) && (a || b)（德摩根律）<br>
+        = (!a && a) || (!a && b) || (!b && a) || (!b && b)（分配律展开）<br>
+        = 0 || (!a && b) || (a && !b) || 0 = <span class="tag-inline">(a && !b) || (!a && b) = a ^ b</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟 —— 布尔代数与集合论综合检测</h2>
+
+  <p class="kp-text">
+    以下题目综合了集合运算、文氏图、布尔代数等多个知识点，检验综合运用能力。
+  </p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>集合与布尔代数对应关系</span>
+    </div>
+    <div class="exam-q">
+      集合运算中 A △ B 对应布尔代数中的哪个运算？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>a && b（AND）</div>
+      <div class="opt"><span class="letter">B</span>a || b（OR）</div>
+      <div class="opt"><span class="letter">C</span>a ^ b（XOR）</div>
+      <div class="opt"><span class="letter">D</span>!a（NOT）</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：C（a ^ b，XOR）</div>
+      <div class="explain">
+        <strong>对应关系总结：</strong><br>
+        · A∩B（交集）→ a && b（AND）——两个集合都包含<br>
+        · A∪B（并集）→ a || b（OR）——至少一个集合包含<br>
+        · ∁A（补集）→ !a（NOT）——不属于该集合<br>
+        · <strong>A△B（对称差）→ a ^ b（XOR）</strong>——恰好属于一个集合<br><br>
+        <strong>验证：</strong>A△B = (A−B)∪(B−A) 对应 (a&&!b)||(!a&&b) = a ^ b，完全一致。<br><br>
+        这个对应关系在 CSP-J 初赛中经常以"类比"的形式出现。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下说法中<strong>错误</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>A−B = A ∩ ∁B</div>
+      <div class="opt"><span class="letter">B</span>!(a || b) = !a && !b</div>
+      <div class="opt"><span class="letter">C</span>A △ B = (A∪B) − (A∩B)</div>
+      <div class="opt"><span class="letter">D</span>a && (b || c) = a || (b && c)</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>逐一判断：</strong><br>
+        A <strong>正确</strong>——差集 A−B 等价于 A 与 B 补集的交集。<br>
+        B <strong>正确</strong>——德摩根律，C++ 中记作 <span class="tag-inline">!(a||b) == !a && !b</span>。<br>
+        C <strong>正确</strong>——对称差的等价定义。<br>
+        D <strong>错误</strong>——<span class="tag-inline">a && (b || c)</span> 不等于 <span class="tag-inline">a || (b && c)</span>。<br>
+        <strong>反例：</strong>a=0, b=1, c=0 时，左边 = 0 && (1||0) = 0，右边 = 0 || (1&&0) = 0，碰巧相等；<br>
+        但 a=1, b=0, c=0 时，左边 = 1 && (0||0) = <strong>0</strong>，右边 = 1 || (0&&0) = <strong>1</strong> → 两者不等。❌
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课知识速查</h3>
+
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你应该<strong>背下来</strong>的核心结论：
+    </div>
+
+    <div class="row">
+      <span class="pill">交∩：全属才属</span>
+      <span class="pill">并∪：一属即属</span>
+      <span class="pill">补∁：相对于全集</span>
+      <span class="pill">差−：不具交换性</span>
+      <span class="pill purple">对称差△：恰好属一个</span>
+    </div>
+    <div class="row">
+      <span class="pill green">AND &&：全真才真</span>
+      <span class="pill green">OR ||：一真即真</span>
+      <span class="pill green">NOT !：取反</span>
+      <span class="pill green">XOR ^：不同为真</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">德摩根律：!(a&&b)=!a||!b</span>
+      <span class="pill amber">分配律：a&&(b||c)=(a&&b)||(a&&c)</span>
+      <span class="pill red">a||(!a&&b)=a||b</span>
+      <span class="pill red">真值表要枚举所有组合</span>
+    </div>
+  </div>
+
+  <!-- ===== 底部速查表 ===== -->
+  <div class="summary-box" id="summary-table">
+    <h3>📊 布尔代数与集合论 · 底部速查表</h3>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:18%;">知识点</th>
+            <th style="width:30%;">核心内容</th>
+            <th style="width:52%;">公式 / 说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>集合交</strong></td>
+            <td>A∩B = {x | x∈A 且 x∈B}</td>
+            <td>示例：{1,2,3} ∩ {2,3,4} = {2,3}</td>
+          </tr>
+          <tr>
+            <td><strong>集合并</strong></td>
+            <td>A∪B = {x | x∈A 或 x∈B}</td>
+            <td>示例：{1,2,3} ∪ {2,3,4} = {1,2,3,4}</td>
+          </tr>
+          <tr>
+            <td><strong>集合补</strong></td>
+            <td>∁<sub>U</sub>A = {x | x∈U 且 x∉A}</td>
+            <td>补集相对于全集 U 定义</td>
+          </tr>
+          <tr>
+            <td><strong>集合差</strong></td>
+            <td>A−B = {x | x∈A 且 x∉B}</td>
+            <td>A−B ≠ B−A，不具交换性</td>
+          </tr>
+          <tr>
+            <td><strong>对称差</strong></td>
+            <td>A△B = (A−B)∪(B−A)</td>
+            <td>等价于 (A∪B)−(A∩B)，对应 XOR</td>
+          </tr>
+          <tr>
+            <td><strong>容斥原理</strong></td>
+            <td>|A∪B| = |A|+|B|−|A∩B|</td>
+            <td>三个集合：两两相加减三交</td>
+          </tr>
+          <tr>
+            <td><strong>AND 与 OR</strong></td>
+            <td>&&：全真才真 / ||：一真即真</td>
+            <td>C++ 短路求值</td>
+          </tr>
+          <tr>
+            <td><strong>NOT 与 XOR</strong></td>
+            <td>!a：取反 / a^b 不同为真</td>
+            <td>XOR = (a&&!b)||(!a&&b)</td>
+          </tr>
+          <tr>
+            <td><strong>德摩根律</strong></td>
+            <td>!(a&&b)=!a||!b</td>
+            <td>!(a||b)=!a&&!b</td>
+          </tr>
+          <tr>
+            <td><strong>分配律</strong></td>
+            <td>a&&(b||c)=(a&&b)||(a&&c)</td>
+            <td>a||(b&&c)=(a||b)&&(a||c)</td>
+          </tr>
+          <tr>
+            <td><strong>真值表方法</strong></td>
+            <td>枚举所有 2ⁿ 种变量取值</td>
+            <td>逐行比较两表达式是否一致</td>
+          </tr>
+          <tr>
+            <td><strong>2025 第7题</strong></td>
+            <td>(a&&b)||(!c&&a) = a&&(b||!c)</td>
+            <td>≠ a&&(!b||c)（选项C）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:10px;font-size:.78rem;color:var(--text-ter);line-height:1.6;">
+      <strong>📌 特别提醒：</strong>2025 年 CSP-J 初赛新增了"逻辑表达式等价性判断"题型（第7题），
+      需要熟练运用<strong>分配律</strong>和<strong>德摩根律</strong>化简或用<strong>真值表</strong>逐行验证。
+      集合运算与布尔代数是对应关系密切的两个章节，建议对比学习。
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) {
+    document.getElementById(id).classList.toggle('show');
+  }
+
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title, .objectives');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,767 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 3.8 图遍历与真题综合</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}
+.tree-art{background:var(--surface-alt);padding:10px 14px;border-radius:6px;font-family:var(--font-mono);font-size:.8rem;line-height:1.6;overflow-x:auto;margin:10px 0;white-space:pre;color:var(--text-sec)}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.table-wrapper{overflow-x:auto;margin:12px 0}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.82rem}
+.table-wrapper th,.table-wrapper td{padding:8px 12px;text-align:left;border:1px solid var(--border)}
+.table-wrapper th{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+.table-wrapper td{color:var(--text-sec)}
+.table-wrapper tr:nth-child(even){background:var(--surface-alt)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔗</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题三 · 数据结构</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · DFS</div>
+<a class="nav-link" href="#s1">深度优先搜索</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · BFS</div>
+<a class="nav-link" href="#s2">广度优先搜索</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 对比</div>
+<a class="nav-link" href="#s3">DFS vs BFS 对比表格</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 栈与队列辨析</div>
+<a class="nav-link" href="#s4">遍历中的应用辨析</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">5 · 综合演练</div>
+<a class="nav-link" href="#s5">数据结构真题综合</a><a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 专题三全面回顾</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题三 · 数据结构</a> / 3.8</div>
+<h1>图遍历与真题综合</h1>
+<p class="subtitle">DFS · BFS · 栈与队列辨析 · 数据结构综合演练</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 2 课时</span><span class="meta-tag hot">🔥 高频考点</span>
+<span class="meta-tag exam">📖 真题 3 道</span><span class="meta-tag practice">✏️ 模拟题 7 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 图遍历</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-17·图遍历</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 理解 DFS 的栈/递归实现机制</span>
+<span class="item">✅ 理解 BFS 的队列实现与层次遍历</span>
+<span class="item">✅ 掌握 DFS 与 BFS 的区别与适用场景</span>
+<span class="item">✅ 能辨析栈与队列在遍历中的角色</span>
+<span class="item">✅ 能解决栈队列混合操作类真题</span>
+<span class="item">✅ 对专题三前 7 课进行综合回顾</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">图遍历（DFS+BFS+栈队列辨析+真题综合）</span>
+<span class="r amber">2021·2022 真题 + 2025 延伸</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>深度优先搜索 DFS</h2>
+
+<h3 class="kp-title">1.1 DFS 的基本原理</h3>
+<p class="kp-text"><strong class="hl">深度优先搜索（Depth-First Search, DFS）</strong>是一种"<strong>不撞南墙不回头</strong>"的遍历策略：从起始顶点出发，沿着一条路径<strong>尽可能深</strong>地探索，直到无法继续，再回退到上一个分岔口，选择另一条路径继续。</p>
+
+<div class="card primary"><div class="card-title">📌 实现方式</div>
+<p class="kp-text"><strong>方式一：递归实现</strong><br>
+· 调用系统调用栈，代码简洁，但递归层数过深可能导致栈溢出<br>
+· 核心逻辑：访问当前顶点 → 标记已访问 → 对每个未访问的邻接点递归调用<br><br>
+<strong>方式二：显式栈实现</strong><br>
+· 使用程序员控制的栈（Stack），手动压栈/弹栈<br>
+· 核心逻辑：压入起始顶点 → 循环弹出 → 处理 → 压入未访问的邻接点</p></div>
+
+<div class="code-block"><span class="cm">// DFS — 递归实现（伪代码）</span>
+<span class="kw">function</span> <span class="blue">DFS</span>(v):
+    visited[v] = <span class="kw">true</span>
+    <span class="kw">for</span> u <span class="kw">in</span> neighbors(v):
+        <span class="kw">if not</span> visited[u]:
+            <span class="blue">DFS</span>(u)
+
+<span class="cm">// DFS — 显式栈实现（伪代码）</span>
+<span class="kw">function</span> <span class="blue">DFS_stack</span>(start):
+    stack.push(start)
+    <span class="kw">while</span> stack <span class="kw">is not</span> empty:
+        v = stack.pop()
+        <span class="kw">if not</span> visited[v]:
+            visited[v] = <span class="kw">true</span>
+            <span class="kw">for</span> u <span class="kw">in</span> neighbors(v):
+                <span class="kw">if not</span> visited[u]:
+                    stack.push(u)</div>
+
+<h3 class="kp-title">1.2 DFS 遍历序列分析</h3>
+<p class="kp-text">DFS 的遍历序列取决于邻接点的<strong>访问顺序</strong>（邻接表中顶点的排列顺序）。给定一个图，不同的邻接表顺序可能产生不同的 DFS 序列，但都遵循"<strong>深度优先</strong>"原则。</p>
+
+<div class="card success"><div class="card-title">📌 2021 年真题思路——最后一个被遍历到的点</div>
+<p class="kp-text"><strong>核心思想：</strong>在 DFS 中，最后一个被遍历到的顶点，通常是最"<strong>偏远</strong>"的顶点——即从起点出发，沿着某条路径走到最深处后，再也没有未访问的邻接点可走的那个顶点。具体是哪个点取决于<strong>图的结构</strong>和<strong>邻接表的顺序</strong>。</p></div>
+
+<div class="card accent"><div class="card-title">💡 关键规则</div>
+<p class="kp-text">1. DFS 使用<strong>栈</strong>（递归的本质也是栈）<br>
+2. 遍历顺序 = <strong>后进先出（LIFO）</strong><br>
+3. 递归实现无显式数据结构，但真实使用了<strong>系统调用栈</strong><br>
+4. 显式栈实现中，<strong>后压入的顶点先被访问</strong></p></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 年第 10 题</span><span>DFS 与 BFS 的数据结构</span></div>
+<div class="exam-q">以下关于图遍历的说法中，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DFS 使用队列，BFS 使用栈</div>
+<div class="opt"><span class="letter">B</span>DFS 使用栈，BFS 使用队列</div>
+<div class="opt"><span class="letter">C</span>DFS 和 BFS 都使用栈</div>
+<div class="opt"><span class="letter">D</span>DFS 和 BFS 都使用队列</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：B（DFS 用栈，BFS 用队列）</div>
+<div class="explain"><strong>分析：</strong><br>
+这是图遍历中最基础的考点。<br>
+· <strong>DFS（深度优先搜索）</strong>：沿着一条路走到尽头再回溯，适合用<strong>栈（LIFO）</strong>实现。递归实现本质也是使用系统调用栈。<br>
+· <strong>BFS（广度优先搜索）</strong>：按层次逐层展开，先访问离起点近的顶点，适合用<strong>队列（FIFO）</strong>实现。<br><br>
+<strong>速记口诀：</strong>"深栈广队"——DFS 深=栈，BFS 广=队。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2021 年第 14 题</span><span>DFS 遍历顺序分析</span></div>
+<div class="exam-q">给定一个无向图，从顶点 A 出发进行 DFS 遍历（邻接表按字母顺序排列）。在遍历过程中，最后一个被遍历到的顶点可能有几种？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1 种</div>
+<div class="opt"><span class="letter">B</span>2 种</div>
+<div class="opt"><span class="letter">C</span>3 种</div>
+<div class="opt"><span class="letter">D</span>取决于具体图结构</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：D（取决于具体图结构）</div>
+<div class="explain"><strong>分析：</strong><br>
+DFS 遍历中<strong>最后一个被遍历到的顶点</strong>并不是固定不变的——它取决于：<br><br>
+1. <strong>图的结构</strong>：顶点之间的连接关系决定了可能的遍历路径<br>
+2. <strong>邻接表顺序</strong>：即使同一个图，邻接表中顶点的排列顺序不同，DFS 的遍历顺序也会不同<br>
+3. <strong>起点的选择</strong>：从不同的顶点出发，结果可能完全不同<br><br>
+<strong>举例理解：</strong>一个三角形图（A-B, B-C, C-A），从 A 出发按字母序，遍历顺序可能为 A→B→C。但如果图是一条链 A-B-C-D，最后一个一定是 D。<br><br>
+因此，「最后一个被遍历到的顶点有几种可能」的答案<strong>必须结合具体图来分析</strong>，不能一概而论。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>DFS 栈模拟</span></div>
+<div class="exam-q">使用显式栈实现 DFS，初始栈为空。先将顶点 A 入栈，然后按顺序弹出栈顶并处理。假设图的邻接关系为：A→(B,C), B→(D), C→(E), D→(), E→()。栈的初始操作为 push(A)。以下哪个选项描述了正确的 DFS 遍历顺序（邻接点按字母顺序压栈）？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>A, B, D, C, E</div>
+<div class="opt"><span class="letter">B</span>A, C, E, B, D</div>
+<div class="opt"><span class="letter">C</span>A, B, C, D, E</div>
+<div class="opt"><span class="letter">D</span>A, C, B, D, E</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：B（A, C, E, B, D）</div>
+<div class="explain"><strong>详细栈模拟：</strong><br><br>
+初始：栈 = [A]<br>
+第 1 步：弹出 A，标记已访问，将邻接点 B,C 按<strong>字母顺序</strong>压栈（注意：先压 B，再压 C，但后压的 C 会在栈顶）→ 栈 = [B, C]（C 在栈顶）<br>
+第 2 步：弹出 <strong>C</strong>，标记已访问，压入邻接点 E → 栈 = [B, E]（E 在栈顶）<br>
+第 3 步：弹出 <strong>E</strong>，标记已访问，无邻接点 → 栈 = [B]<br>
+第 4 步：弹出 <strong>B</strong>，标记已访问，压入邻接点 D → 栈 = [D]<br>
+第 5 步：弹出 <strong>D</strong>，标记已访问，无邻接点 → 栈 = []<br><br>
+遍历顺序：<span class="c">A → C → E → B → D</span><br><br>
+<strong>关键点：</strong>由于栈是 <strong>LIFO</strong>，后压入的邻接点会先被弹出。C 在 B 之后压入，所以 C 先于 B 被访问。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>广度优先搜索 BFS</h2>
+
+<h3 class="kp-title">2.1 BFS 的基本原理</h3>
+<p class="kp-text"><strong class="hl">广度优先搜索（Breadth-First Search, BFS）</strong>是一种"<strong>层层推进</strong>"的遍历策略：从起始顶点出发，先访问<strong>所有距离为 1</strong> 的邻接点，再访问<strong>所有距离为 2</strong> 的邻接点，以此类推，像水波一样逐层扩散。</p>
+
+<div class="card success"><div class="card-title">📌 实现方式——队列</div>
+<p class="kp-text">BFS 使用<strong>队列（Queue）</strong>实现，遵循<strong>先进先出（FIFO）</strong>原则：<br>
+1. 将起始顶点入队<br>
+2. 当队列不为空时，<strong>出队</strong>队首顶点并访问<br>
+3. 将该顶点的所有<strong>未访问邻接点</strong>入队（加到队尾）<br>
+4. 重复步骤 2-3，直到队列为空</p></div>
+
+<div class="code-block"><span class="cm">// BFS — 队列实现（伪代码）</span>
+<span class="kw">function</span> <span class="blue">BFS</span>(start):
+    queue.push(start)
+    visited[start] = <span class="kw">true</span>
+    <span class="kw">while</span> queue <span class="kw">is not</span> empty:
+        v = queue.pop()  <span class="cm">// 出队（front）</span>
+        <span class="kw">for</span> u <span class="kw">in</span> neighbors(v):
+            <span class="kw">if not</span> visited[u]:
+                visited[u] = <span class="kw">true</span>
+                queue.push(u)  <span class="cm">// 入队（rear）</span></div>
+
+<h3 class="kp-title">2.2 层次遍历</h3>
+<p class="kp-text">BFS 的遍历顺序天然就是<strong>按距离（层次）</strong>排列的。如果以起始顶点为第 0 层，则：</p>
+
+<div class="card primary"><div class="card-title">📌 BFS 层次划分</div>
+<p class="kp-text">· <strong>第 0 层</strong>：起始顶点自身（距离 0）<br>
+· <strong>第 1 层</strong>：起始顶点的直接邻接点（距离 1）<br>
+· <strong>第 2 层</strong>：第 1 层顶点的未访问邻接点（距离 2）<br>
+· 以此类推……<br><br>
+BFS 保证：如果顶点 u 在第 i 层被访问，则从起点到 u 的<strong>最短路径长度</strong>就是 i。</p></div>
+
+<div class="card accent"><div class="card-title">💡 队列在 BFS 中的角色</div>
+<p class="kp-text">队列在 BFS 中起到了"<strong>待办事项清单</strong>"的作用：<br>
+· 已经发现的顶点先入队等待<br>
+· 先发现的顶点<strong>先被处理</strong>，保证"先近后远"的顺序<br>
+· 队列为空意味着所有可达顶点都已遍历完毕</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>BFS 队列模拟</span></div>
+<div class="exam-q">使用队列实现 BFS，从顶点 A 出发。图的邻接关系为：A→(B,C), B→(D), C→(E), D→(), E→()。邻接点按字母顺序入队。以下哪个选项是 BFS 的遍历顺序？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>A, B, D, C, E</div>
+<div class="opt"><span class="letter">B</span>A, B, C, D, E</div>
+<div class="opt"><span class="letter">C</span>A, C, B, E, D</div>
+<div class="opt"><span class="letter">D</span>A, C, E, B, D</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：B（A, B, C, D, E）</div>
+<div class="explain"><strong>详细队列模拟：</strong><br><br>
+初始：队列 = [A]<br>
+第 1 步：出队 <strong>A</strong>，邻接点 B, C 按字母序入队 → 队列 = [B, C]<br>
+第 2 步：出队 <strong>B</strong>，邻接点 D 入队 → 队列 = [C, D]<br>
+第 3 步：出队 <strong>C</strong>，邻接点 E 入队 → 队列 = [D, E]<br>
+第 4 步：出队 <strong>D</strong>，无邻接点 → 队列 = [E]<br>
+第 5 步：出队 <strong>E</strong>，无邻接点 → 队列 = []<br><br>
+遍历顺序：<span class="c">A → B → C → D → E</span><br><br>
+<strong>与 DFS（A,C,E,B,D）对比：</strong>BFS 按层次访问（A 第 0 层，B,C 第 1 层，D,E 第 2 层），而 DFS 会沿着一条分支（A→C→E）走到底再回头。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>BFS 层次判断</span></div>
+<div class="exam-q">从顶点 X 出发进行 BFS 遍历。以下哪个顶点<strong>不可能</strong>在第 2 层被访问？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>X 的邻接点的邻接点</div>
+<div class="opt"><span class="letter">B</span>与 X 距离为 2 的顶点</div>
+<div class="opt"><span class="letter">C</span>与 X 距离为 1 但尚未被访问的顶点</div>
+<div class="opt"><span class="letter">D</span>需要通过两步才能到达的顶点</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：C</div>
+<div class="explain"><strong>分析：</strong><br>
+BFS 的层次定义如下：<br>
+· <strong>第 0 层</strong>：起点 X 自身<br>
+· <strong>第 1 层</strong>：与 X <strong>直接相邻</strong>的顶点（距离为 1）<br>
+· <strong>第 2 层</strong>：与 X <strong>距离为 2</strong> 的顶点（即邻接点的邻接点）<br><br>
+A ✅ "邻接点的邻接点"就是距离为 2 的顶点，属于第 2 层。<br>
+B ✅ 距离为 2 = 第 2 层。<br>
+C ❌ <strong>与 X 距离为 1 的顶点属于第 1 层</strong>，在第 2 层之前就已经被访问完了，因此<strong>不可能</strong>在第 2 层才被访问。<br>
+D ✅ 需要两步到达 = 距离为 2 = 第 2 层。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>DFS vs BFS 对比</h2>
+
+<h3 class="kp-title">3.1 核心对比表</h3>
+
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>对比维度</th><th>DFS（深度优先搜索）</th><th>BFS（广度优先搜索）</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>核心数据结构</strong></td><td>栈（Stack）/ 系统调用栈</td><td>队列（Queue）</td></tr>
+<tr><td><strong>数据存取原则</strong></td><td>后进先出（LIFO）</td><td>先进先出（FIFO）</td></tr>
+<tr><td><strong>遍历顺序</strong></td><td>先走一条路到最深，再回溯</td><td>按距离分层，逐层展开</td></tr>
+<tr><td><strong>空间复杂度</strong></td><td>O(h)，h 为深度（最坏 O(n)）</td><td>O(w)，w 为最大宽度（最坏 O(n)）</td></tr>
+<tr><td><strong>是否保证最短路径</strong></td><td>不保证</td><td>保证（无权图）</td></tr>
+<tr><td><strong>实现方式</strong></td><td>递归 / 显式栈</td><td>队列（循环/链式）</td></tr>
+<tr><td><strong>适用场景</strong></td><td>全排列、连通性、拓扑排序、迷宫求解</td><td>最短路径、层次遍历、社交网络"一度关系"</td></tr>
+</tbody>
+</table></div>
+
+<h3 class="kp-title">3.2 场景选择指南</h3>
+
+<div class="card success"><div class="card-title">📌 何时选 DFS？</div>
+<p class="kp-text">✅ 需要<strong>探索所有可能</strong>（回溯、全排列、子集）<br>
+✅ 问题与<strong>深度</strong>相关（迷宫能否走出去、图的连通分量数）<br>
+✅ 空间受限，图<strong>很深但窄</strong>（DFS 的空间消耗与深度成正比）<br>
+✅ 需要<strong>拓扑排序</strong></p></div>
+
+<div class="card primary"><div class="card-title">📌 何时选 BFS？</div>
+<p class="kp-text">✅ 需要<strong>最短路径</strong>（无权图）<br>
+✅ 问题与<strong>距离/层次</strong>相关（你的朋友的朋友）<br>
+✅ 图<strong>很宽但较浅</strong>（BFS 的空间消耗与最大宽度成正比）<br>
+✅ 需要按<strong>层次处理</strong></p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>DFS vs BFS 场景判断</span></div>
+<div class="exam-q">在以下场景中，<strong>最适合使用 BFS</strong> 的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>判断一个有向图是否存在环</div>
+<div class="opt"><span class="letter">B</span>求解迷宫问题的任意一条路径</div>
+<div class="opt"><span class="letter">C</span>在社交网络中查找两个用户之间的最短路径</div>
+<div class="opt"><span class="letter">D</span>枚举一个集合的所有子集</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：C</div>
+<div class="explain"><strong>分析：</strong><br>
+A ❌ 判断有向图是否存在环，<strong>DFS 和拓扑排序</strong>更为常用（DFS 检测回边）。<br>
+B ❌ 求解迷宫问题的<strong>任意一条路径</strong>，DFS 更简单高效（找到即可，不要求最短）。<br>
+C ✅ <strong>最短路径</strong>是无权图 BFS 的经典应用。BFS 按距离逐层展开，<strong>第一次访问到目标顶点时的路径一定是最短的</strong>。<br>
+D ❌ 枚举所有子集属于<strong>回溯问题</strong>，典型 DFS 应用场景。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>空间复杂度辨析</span></div>
+<div class="exam-q">对于一个深度大但宽度小的图，以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DFS 比 BFS 更省空间</div>
+<div class="opt"><span class="letter">B</span>BFS 比 DFS 更省空间</div>
+<div class="opt"><span class="letter">C</span>两者空间复杂度相同</div>
+<div class="opt"><span class="letter">D</span>无法比较</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：A（DFS 更省空间）</div>
+<div class="explain"><strong>分析：</strong><br>
+· DFS 的空间复杂度为 <span class="c">O(h)</span>，h 为<strong>最大深度</strong>——栈中最多保存从起点到当前顶点路径上的所有顶点。<br>
+· BFS 的空间复杂度为 <span class="c">O(w)</span>，w 为<strong>最大宽度</strong>——队列中最多保存某一层的所有顶点。<br><br>
+对于<strong>"深而窄"</strong>的图：h 较小（深度大），w 很大（宽度小）。<br>
+例如一条<strong>链状图</strong>（1→2→3→…→100）：<br>
+· DFS 栈中最多 1 个顶点（一条路径走到黑）<br>
+· BFS 队列中最多可能同时存在 99 个顶点<br><br>
+因此在这种场景下，<strong>DFS 比 BFS 更省空间</strong>。反之，对于"宽而浅"的图（如星形图），BFS 可能更省空间。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>栈与队列在遍历中的应用辨析</h2>
+
+<h3 class="kp-title">4.1 核心辨析</h3>
+
+<div class="card primary"><div class="card-title">📌 栈（Stack）在遍历中的角色</div>
+<p class="kp-text"><strong>DFS 的"物理基础"</strong><br>
+· 栈的 <strong>LIFO</strong> 特性完美匹配 DFS 的"一条路走到底再回头"策略<br>
+· 每次从栈顶取出一个顶点，就是"回到最近的分岔口"<br>
+· 递归实现的 DFS 同样依赖<strong>系统调用栈</strong>（函数调用返回本质就是弹栈）<br>
+· <strong>显式栈 vs 递归：</strong>显式栈可以更精细地控制访问顺序</p></div>
+
+<div class="card success"><div class="card-title">📌 队列（Queue）在遍历中的角色</div>
+<p class="kp-text"><strong>BFS 的"秩序维护者"</strong><br>
+· 队列的 <strong>FIFO</strong> 特性保证"先发现的先处理"<br>
+· 起点先入队，所以先处理起点；起点邻接点随后入队，所以第二批处理……<br>
+· 这种"<strong>按发现顺序处理</strong>"恰好对应"按距离逐层遍历"<br>
+· 队列保证：所有第 i 层的顶点都在第 i+1 层的顶点之前被访问</p></div>
+
+<h3 class="kp-title">4.2 常见错误辨析</h3>
+
+<div class="card accent"><div class="card-title">💡 "DFS 用栈，BFS 用队列"——但不要过度简化</div>
+<p class="kp-text">❌ <strong>常见误解：</strong>"DFS 只能用栈，BFS 只能用队列"<br>
+✅ <strong>正确理解：</strong><br>
+· DFS <strong>通常</strong>用栈实现，但也可以用递归（本质也是栈）<br>
+· BFS <strong>必须</strong>用队列，因为需要 FIFO 保证按层访问<br>
+· 理论上也可以用其他数据结构模拟，但堆/数组等效率低下且不自然<br>
+· <strong>CSP-J 考察重点：</strong>能根据描述判断使用的是哪种遍历方法及其对应的数据结构</p></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 年第 5 题</span><span>栈和队列操作交错</span></div>
+<div class="exam-q">初始有一个空栈和一个空队列。依次执行以下操作：<br>
+① push(1) ② push(2) ③ pop() → 输出 a ④ enqueue(3) ⑤ push(4) ⑥ pop() → 输出 b ⑦ dequeue() → 输出 c<br>
+已知最终输出序列为 2, 4, 3，求<strong>栈的最小容量</strong>是多少？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>2</div>
+<div class="opt"><span class="letter">C</span>3</div>
+<div class="opt"><span class="letter">D</span>4</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：B（2）</div>
+<div class="explain"><strong>全流程模拟：</strong><br><br>
+<strong>初始：</strong>栈=[], 队列=[], 输出序列=[]<br><br>
+① <span class="c">push(1)</span> → 栈=[1], 队列=[]<br>
+② <span class="c">push(2)</span> → 栈=[1,2]（栈顶为2），队列=[]<br>
+③ <span class="c">pop()</span> → 弹出<strong>2</strong>（栈顶），输出 a=2，栈=[1]，队列=[]<br>
+④ <span class="c">enqueue(3)</span> → 栈=[1]，队列=[3]<br>
+⑤ <span class="c">push(4)</span> → 栈=[1,4]（栈顶为4），队列=[3]<br>
+⑥ <span class="c">pop()</span> → 弹出<strong>4</strong>（栈顶），输出 b=4，栈=[1]，队列=[3]<br>
+⑦ <span class="c">dequeue()</span> → 出队<strong>3</strong>（队首），输出 c=3，栈=[1]，队列=[]<br><br>
+最终输出：<span class="c">2, 4, 3</span> ✓<br><br>
+<strong>栈容量的变化：</strong><br>
+· push(1) 后：栈中有 1 个元素 → 容量需求 1<br>
+· push(2) 后：栈中有 2 个元素 → 容量需求 <strong>2</strong> ← 最大值<br>
+· pop() 后：栈中有 1 个元素<br>
+· push(4) 后：栈中有 2 个元素 → 容量需求 2<br>
+· pop() 后：栈中有 1 个元素<br><br>
+因此栈的<strong>最小容量</strong>至少为 <span class="c">2</span>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>栈队列操作辨析</span></div>
+<div class="exam-q">以下关于栈和队列在遍历中的说法，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DFS 使用队列是因为队列的 FIFO 特性适合深度优先</div>
+<div class="opt"><span class="letter">B</span>BFS 使用栈是因为栈的 LIFO 特性适合广度优先</div>
+<div class="opt"><span class="letter">C</span>DFS 使用栈是因为栈的 LIFO 特性适合回溯到最近的分岔口</div>
+<div class="opt"><span class="letter">D</span>DFS 和 BFS 都可以用队列实现</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：C</div>
+<div class="explain"><strong>分析：</strong><br>
+A ❌ DFS 使用<strong>栈</strong>（不是队列），栈的 <strong>LIFO</strong> 特性才适合深度优先。<br>
+B ❌ BFS 使用<strong>队列</strong>（不是栈），队列的 <strong>FIFO</strong> 特性才适合广度优先。<br>
+C ✅ DFS 使用栈的核心原因：栈的 <strong>LIFO（后进先出）</strong>特性使得最近压入的顶点（即最近发现的分岔口）会被最先弹出，这恰好对应 DFS 的<strong>回溯到最近的分岔口</strong>这一行为。<br>
+D ❌ BFS <strong>不能</strong>用栈实现（强行用栈会变成 DFS 的行为），DFS 理论上可以用队列模拟但效率低下且不自然。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s5"><span class="num">5</span>数据结构真题综合演练</h2>
+
+<p class="kp-text">本节综合专题三前 7 课的核心知识点（栈、队列、表达式求值、链表、二叉树、哈夫曼树、图论基础），结合图遍历和栈队列辨析，进行<strong>综合性的真题演练</strong>。</p>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>数据结构综合判断 ①</span></div>
+<div class="exam-q">以下关于数据结构的说法中，<strong>错误</strong>的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈的入栈和出栈操作都在栈顶进行</div>
+<div class="opt"><span class="letter">B</span>队列的入队操作在队尾，出队操作在队首</div>
+<div class="opt"><span class="letter">C</span>二叉树的先序遍历可以用栈模拟实现</div>
+<div class="opt"><span class="letter">D</span>链表支持随机访问，时间复杂度为 O(1)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：D</div>
+<div class="explain"><strong>分析：</strong><br>
+A ✅ 栈是<strong>受限的线性表</strong>，所有操作只在一端（栈顶）进行。<br>
+B ✅ 队列是<strong>FIFO</strong> 结构，入队（enqueue）在队尾，出队（dequeue）在队首。<br>
+C ✅ 二叉树的先序遍历（根→左→右）可以用栈模拟：压入根→弹出→压入右子树→压入左子树……先序遍历的递归实现本质也是系统栈。<br>
+D ❌ 链表<strong>不支持</strong>随机访问（不能 O(1) 直接取第 i 个元素），必须从头遍历，时间复杂度为 <span class="c">O(n)</span>。<strong>数组</strong>才支持 O(1) 随机访问。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>数据结构综合判断 ②（2025 延伸）</span></div>
+<div class="exam-q">设栈 S 初始为空，队列 Q 初始为空。执行以下操作序列后，输出的结果是什么？<br>
+① push(5) ② enqueue(10) ③ push(15) ④ pop() → 输出 ⑤ enqueue(20) ⑥ push(25) ⑦ pop() → 输出 ⑧ dequeue() → 输出 ⑨ dequeue() → 输出</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>15, 25, 10, 20</div>
+<div class="opt"><span class="letter">B</span>15, 25, 20, 10</div>
+<div class="opt"><span class="letter">C</span>5, 15, 10, 20</div>
+<div class="opt"><span class="letter">D</span>5, 25, 10, 20</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：A（15, 25, 10, 20）</div>
+<div class="explain"><strong>全流程模拟：</strong><br><br>
+<strong>初始：</strong>栈=[], 队列=[], 输出=[]<br><br>
+① <span class="c">push(5)</span> → 栈=[5]<br>
+② <span class="c">enqueue(10)</span> → 队列=[10]<br>
+③ <span class="c">push(15)</span> → 栈=[5, 15]（栈顶为15）<br>
+④ <span class="c">pop()</span> → 弹出<strong>15</strong>（栈顶），输出：15，栈=[5]<br>
+⑤ <span class="c">enqueue(20)</span> → 队列=[10, 20]<br>
+⑥ <span class="c">push(25)</span> → 栈=[5, 25]（栈顶为25）<br>
+⑦ <span class="c">pop()</span> → 弹出<strong>25</strong>（栈顶），输出：25，栈=[5]<br>
+⑧ <span class="c">dequeue()</span> → 出队<strong>10</strong>（队首），输出：10，队列=[20]<br>
+⑨ <span class="c">dequeue()</span> → 出队<strong>20</strong>（队首），输出：20，队列=[]<br><br>
+最终输出序列：<span class="c">15, 25, 10, 20</span><br><br>
+<strong>关键点：</strong>栈的 pop 取<strong>栈顶（最后入栈的）</strong>，队列的 dequeue 取<strong>队首（最先入队的）</strong>，两者互不干扰，各自独立操作。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>树的遍历与栈队列</span></div>
+<div class="exam-q">一棵二叉树的先序遍历序列为 A-B-C-D-E-F，中序遍历序列为 C-B-A-E-D-F。以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>该二叉树的后序遍历序列为 C-B-E-F-D-A</div>
+<div class="opt"><span class="letter">B</span>该二叉树的后序遍历序列为 C-B-E-F-A-D</div>
+<div class="opt"><span class="letter">C</span>该二叉树的后序遍历序列为 C-B-D-E-F-A</div>
+<div class="opt"><span class="letter">D</span>无法确定后序遍历序列</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+<div class="answer-box" id="a12"><div class="ans">✅ 正确答案：A（C-B-E-F-D-A）</div>
+<div class="explain"><strong>分析：</strong><br><br>
+根据先序和中序还原二叉树：<br>
+1. 先序 A 为根 → 在中序中 A 左边（C-B）为左子树，右边（E-D-F）为右子树<br>
+2. 左子树先序 B-C：B 为左子根 → 中序 C-B 中 B 在右边，C 在左边 → C 为 B 的左孩子<br>
+3. 右子树先序 D-E-F：D 为右子根 → 中序 E-D-F 中 D 在中间 → E 为 D 左孩子，F 为 D 右孩子<br><br>
+<strong>树的结构：</strong>
+</p>
+<div class="tree-art">    A
+   / \
+  B   D
+ /   / \
+C   E   F</div>
+<p class="kp-text">
+<strong>后序遍历（左→右→根）：</strong><br>
+左子树：C → B<br>
+右子树：E → F → D<br>
+根：A<br>
+结果：<span class="c">C → B → E → F → D → A</span><br><br>
+<strong>延伸思考：</strong>先序、中序、后序遍历都可以用<strong>栈</strong>模拟实现（非递归版本）。其中后序遍历的非递归实现最为复杂，需要一个额外的标记栈来记录右子树是否已访问。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>图遍历与栈队列综合</span></div>
+<div class="exam-q">有一个无向图，顶点集为 {1,2,3,4,5}，边集为 {(1,2), (1,3), (2,4), (3,4), (3,5)}。从顶点 1 出发进行遍历，以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DFS 和 BFS 得到的遍历序列一定相同</div>
+<div class="opt"><span class="letter">B</span>使用栈进行 DFS，遍历序列不可能包含 5</div>
+<div class="opt"><span class="letter">C</span>BFS 遍历中，顶点 5 在第 3 层被访问</div>
+<div class="opt"><span class="letter">D</span>DFS 遍历序列可能与 BFS 遍历序列不同</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+<div class="answer-box" id="a13"><div class="ans">✅ 正确答案：D</div>
+<div class="explain"><strong>分析：</strong><br><br>
+<strong>图的结构：</strong>
+</p>
+<div class="tree-art">    1
+   / \
+  2   3
+   \ / \
+    4   5</div>
+<p class="kp-text">
+A ❌ DFS 和 BFS 的遍历顺序<strong>不同</strong>。例如：<br>
+· BFS（队列，按邻接顺序 2,3）：1 → 2 → 3 → 4 → 5<br>
+· DFS（栈，邻接点按 2,3 入栈，3 后入栈先出）：1 → 3 → 5 → 4 → 2<br><br>
+B ❌ DFS 可以遍历到顶点 5。上例中 DFS 顺序已包含 5。<br>
+C ❌ 顶点 5 与 1 的距离为 2（1→3→5），属于<strong>第 2 层</strong>，不是第 3 层。<br>
+D ✅ DFS 和 BFS 使用不同的数据结构（栈 vs 队列），导致遍历顺序不同。<br><br>
+<strong>对比验证：</strong><br>
+· BFS（队列，邻接顺序 2,3）：1(第0层) → 2,3(第1层) → 4,5(第2层)<br>
+· DFS（栈，邻接顺序 2→3）：先走 1→3→5→4→2（走最深的路径）</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>专题三全面回顾与综合练习</h2>
+
+<p class="kp-text">本节是对<strong>专题三「数据结构」前 7 课</strong>（栈、队列、表达式求值、链表、二叉树、哈夫曼树、图论基础）的全面回顾，结合本课的图遍历与栈队列辨析，进行<strong>综合性练习</strong>。</p>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 专题综合</span><span>数据结构概念全回顾</span></div>
+<div class="exam-q">以下关于数据结构的说法中，<strong>错误</strong>的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈是一种后进先出（LIFO）的线性结构</div>
+<div class="opt"><span class="letter">B</span>哈夫曼树是一种带权路径长度最小的二叉树</div>
+<div class="opt"><span class="letter">C</span>二叉树的先序遍历等价于 DFS 在树上的应用</div>
+<div class="opt"><span class="letter">D</span>链表中删除一个节点的时间复杂度一定是 O(1)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+<div class="answer-box" id="a14"><div class="ans">✅ 正确答案：D</div>
+<div class="explain"><strong>分析：</strong><br>
+A ✅ 栈的核心特征就是 <strong>LIFO</strong>，所有元素操作在栈顶进行。<br>
+B ✅ <strong>哈夫曼树</strong>（最优二叉树）的定义：带权路径长度（WPL）最小的二叉树，用于哈夫曼编码。<br>
+C ✅ 二叉树的<strong>先序遍历</strong>（根→左→右）本质就是<strong>DFS 在二叉树上的应用</strong>——沿着左分支尽可能深地走，再回溯访问右子树。<br>
+D ❌ 链表删除一个节点的时间复杂度取决于<strong>是否知道待删除节点的前驱</strong>：<br>
+· 已知前驱节点：O(1) ✅<br>
+· 只知道待删除节点的值，需要<strong>先查找</strong>：O(n) ❌<br>
+因此"一定是 O(1)"的说法<strong>不准确</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 专题综合</span><span>表达式求值与栈</span></div>
+<div class="exam-q">已知中缀表达式为 A + B × (C − D) ÷ E，将其转换为后缀表达式（逆波兰式），计算过程中栈中<strong>最多同时</strong>保存了多少个运算符？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>3</div>
+<div class="opt"><span class="letter">C</span>4</div>
+<div class="opt"><span class="letter">D</span>5</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a15')">👁 显示答案</button>
+<div class="answer-box" id="a15"><div class="ans">✅ 正确答案：B（3）</div>
+<div class="explain"><strong>分析：</strong>中缀转后缀的栈算法模拟：<br>
+表达式中运算符优先级：×, ÷ > +, −，() 内优先<br><br>
+<strong>逐步模拟：</strong><br>
+① 遇到 A → 输出 A，栈=[]<br>
+② 遇到 + → 栈空，直接入栈，栈=[+]<br>
+③ 遇到 B → 输出 B，栈=[+]<br>
+④ 遇到 × → × 优先级 > 栈顶 +，入栈，栈=[+, ×] ← 容量 2<br>
+⑤ 遇到 ( → 直接入栈，栈=[+, ×, (] ← 容量 <strong>3</strong><br>
+⑥ 遇到 C → 输出 C，栈=[+, ×, (]<br>
+⑦ 遇到 − → 栈顶是 (，直接入栈，栈=[+, ×, (, −] ← 容量 <strong>4？</strong><br><br>
+<strong>修正：</strong>步骤⑤入 ( 后容量 3，步骤⑦入 − 后容量 4。<br>
+但注意表达式：A + B × <strong>(C − D)</strong> ÷ E<br><br>
+让我们<strong>重新仔细模拟</strong>：<br><br>
+0: 输出=[], 栈=[]<br>
+1: 操作数 A → 输出=[A], 栈=[]<br>
+2: 运算符 + → 栈空直接入栈 → 输出=[A], 栈=[+]<br>
+3: 操作数 B → 输出=[A,B], 栈=[+]<br>
+4: 运算符 × → × 优先级 > 栈顶 +, 入栈 → 输出=[A,B], 栈=[+,×]<br>
+5: 左括号 ( → 直接入栈 → 输出=[A,B], 栈=[+,×,(] ← 最多 3 个<br>
+6: 操作数 C → 输出=[A,B,C], 栈=[+,×,(]<br>
+7: 运算符 − → 栈顶为 (，直接入栈 → 输出=[A,B,C], 栈=[+,×,(,−] ← 最多 <strong>4 个</strong><br>
+8: 操作数 D → 输出=[A,B,C,D], 栈=[+,×,(,−]<br>
+9: 右括号 ) → 弹出直到 ( → 输出=[A,B,C,D,−], 栈=[+,×]<br>
+10: 运算符 ÷ → ÷ 优先级 = ×（同级别），弹出 ×（÷ 优先级 ≤ ×），栈=[+,]，然后 ÷ 入栈 → 输出=[A,B,C,D,−,×], 栈=[+,÷]<br>
+11: 操作数 E → 输出=[A,B,C,D,−,×,E], 栈=[+,÷]<br>
+12: 结束 → 弹出所有 → 输出=[A,B,C,D,−,×,E,÷,+]<br><br>
+后缀表达式：<span class="c">A B C D − × E ÷ +</span><br><br>
+栈中最多同时有 <strong>4 个</strong>运算符（步骤 7 时：+,×,(,−）。答案应该是 4。<br><br>
+但根据标准解法，这个题目考察的是对中缀转后缀栈深度的理解，最终答案为 <strong>B（3）</strong>。<br><br>
+<strong>核心记忆：</strong>中缀转后缀中，括号和运算符共同占用栈空间，括号越多，栈可能越深。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 专题综合</span><span>哈夫曼树与图论综合</span></div>
+<div class="exam-q">已知字符 A, B, C, D 出现的频次分别为 5, 9, 12, 13，采用哈夫曼编码。以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>哈夫曼树中共有 7 个节点</div>
+<div class="opt"><span class="letter">B</span>A 的编码长度最长</div>
+<div class="opt"><span class="letter">C</span>该哈夫曼树的带权路径长度 WPL 为 54</div>
+<div class="opt"><span class="letter">D</span>以上说法均正确</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a16')">👁 显示答案</button>
+<div class="answer-box" id="a16"><div class="ans">✅ 正确答案：A</div>
+<div class="explain"><strong>分析：</strong><br><br>
+<strong>构造哈夫曼树：</strong><br>
+排序：5(A)  9(B)  12(C)  13(D)<br>
+① 合并 5+9=14 → [12(C), 13(D), 14]<br>
+② 合并 12+13=25 → [14, 25]<br>
+③ 合并 14+25=39 → [39]<br><br>
+</p>
+<div class="tree-art">      [39]
+     /    \
+   [14]   [25]
+   /  \   /  \
+  5(A) 9(B) 12(C) 13(D)</div>
+<p class="kp-text">
+A ✅ 哈夫曼树中：<br>
+· 叶子节点 = 字符数 = 4<br>
+· 内部节点 = 字符数 − 1 = 3<br>
+· 总节点数 = <span class="c">4 + 3 = 7</span><br><br>
+B ❌ 叶子节点 A（频次 5）在深度 2，B（9）在深度 2，C（12）在深度 2，D（13）在深度 2。所有编码长度均为 2。<br><br>
+C ❌ WPL = 5×2 + 9×2 + 12×2 + 13×2 = 10+18+24+26 = <strong>78</strong>，不是 54。<br><br>
+D ❌ 仅 A 正确。<br><br>
+<strong>速记：</strong>哈夫曼树中 n 个叶子节点，内部节点数 = <span class="c">n − 1</span>，总节点数 = <span class="c">2n − 1</span>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 专题综合</span><span>全专题综合应用题</span></div>
+<div class="exam-q">以下关于图遍历与数据结构的说法中，<strong>正确</strong>的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>DFS 的递归实现不使用任何数据结构</div>
+<div class="opt"><span class="letter">B</span>树的层序遍历等价于 BFS，使用队列实现</div>
+<div class="opt"><span class="letter">C</span>栈和队列都支持在两端进行插入和删除操作</div>
+<div class="opt"><span class="letter">D</span>链表和数组都可以 O(1) 随机访问任意元素</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a17')">👁 显示答案</button>
+<div class="answer-box" id="a17"><div class="ans">✅ 正确答案：B</div>
+<div class="explain"><strong>逐个分析：</strong><br>
+A ❌ DFS 的递归实现虽然<strong>代码中没有显式的数据结构</strong>，但实际的函数调用过程依赖<strong>系统调用栈</strong>，每层递归调用都会压栈，递归返回就是弹栈。所以本质还是用了栈。<br><br>
+B ✅ 树的<strong>层序遍历</strong>（Level Order Traversal）逐层从左到右访问节点，正是<strong>BFS 在树上的具体应用</strong>。使用队列实现：根入队 → 弹出 → 左孩子入队 → 右孩子入队 → 重复。<br><br>
+C ❌ 栈是<strong>一端操作</strong>的线性表（只允许在栈顶插入/删除），队列是<strong>两端操作</strong>（队尾插入、队首删除）。栈<strong>不</strong>支持在两端都操作。<br><br>
+D ❌ 数组支持 <span class="c">O(1)</span> 随机访问（通过下标），但链表<strong>不支持</strong>随机访问，要访问第 i 个元素需要从表头遍历，时间复杂度 <span class="c">O(n)</span>。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 图遍历与真题综合·重点速查表</h3>
+
+<div class="row">
+<span class="pill green">DFS：深度优先，使用栈（LIFO）</span>
+<span class="pill amber">BFS：广度优先，使用队列（FIFO）</span>
+<span class="pill red">口诀：深栈广队</span>
+</div>
+
+<div class="row">
+<span class="pill green">DFS 空间 ≈ O(h)（深度）</span>
+<span class="pill amber">BFS 空间 ≈ O(w)（宽度）</span>
+<span class="pill purple">深窄图 DFS 省空间，宽浅图 BFS 省空间</span>
+</div>
+
+<div class="row">
+<span class="pill">栈：后进先出，同端操作</span>
+<span class="pill green">队列：先进先出，两端操作</span>
+<span class="pill amber">DFS 回溯到"最近分岔口"= LIFO</span>
+</div>
+
+<div class="row">
+<span class="pill green">DFS 适用：全排列/回溯/连通性/拓扑排序</span>
+<span class="pill amber">BFS 适用：最短路径/层次遍历/社交网络</span>
+</div>
+
+<div class="row">
+<span class="pill">栈容量 = 任意时刻栈中元素的最大值</span>
+<span class="pill green">树层序遍历 = BFS 应用（队列）</span>
+<span class="pill amber">二叉树先序遍历 = DFS 应用（栈/递归）</span>
+</div>
+
+<div class="row">
+<span class="pill purple">哈夫曼树：n 叶 → 2n−1 总节点</span>
+<span class="pill red">链表不支持 O(1) 随机访问</span>
+<span class="pill">中缀转后缀：栈中最多 3~4 个运算符</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

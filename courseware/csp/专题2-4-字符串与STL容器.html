@@ -1,0 +1,436 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 2.4 字符串与 STL 容器</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}
+.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}
+.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .str{color:#34d399}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📦</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题二 · 语法基础</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · string 类</div>
+<a class="nav-link" href="#s1">声明·连接·查找·子串</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · string vs char[]</div>
+<a class="nav-link" href="#s2">区别·c_str·getline</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · STL 容器</div>
+<a class="nav-link" href="#s3">vector·stack·queue·map</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · algorithm 库</div>
+<a class="nav-link" href="#s4">sort·max/min·swap</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题二 · 语法基础</a> / 2.4</div>
+<h1>字符串与 STL 容器</h1>
+<p class="subtitle">string 类详解 · string vs char[] · vector/stack/queue/map · algorithm 库</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 1.5 课时</span><span class="meta-tag exam">📖 真题 3 道</span><span class="meta-tag practice">✏️ 模拟题 7 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-04</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-11·字符串</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ string 声明、赋值、连接、比较</span>
+<span class="item">✅ string 常用方法（length/size/substr/find）</span>
+<span class="item">✅ string vs char[] 的核心区别</span>
+<span class="item">✅ vector 动态数组的用法</span>
+<span class="item">✅ stack/queue/map 基本操作</span>
+<span class="item">✅ sort/max/min/swap 常用算法函数</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r amber">模块-11·字符串处理（199段，字符串专项）</span>
+<span class="r green">考点汇总·考点4（C++语法）</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>string 类</h2>
+<p class="kp-text"><span class="mono">string</span> 是 C++ 标准库提供的<strong class="hl">字符串类</strong>，比 C 风格字符数组更方便、更安全。需要头文件 <span class="mono">&lt;string&gt;</span>。</p>
+
+<div class="code-block"><span class="kw">#include</span> &lt;string&gt;
+<span class="kw">using namespace</span> std;
+string s1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 空字符串</span>
+string s2 = <span class="str">"Hello"</span>;&nbsp;&nbsp;<span class="cm">// 直接赋值</span>
+string s3(<span class="num">5</span>, <span class="str">'A'</span>);&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// "AAAAA"（5个A）</span>
+s2 += <span class="str">" World"</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 字符串拼接 → "Hello World"</span>
+s2 = s2 + <span class="str">'!'</span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 可以用 + 连接 char（2025第9题）</span></div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>方法</th><th>功能</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">s.length()</span></td><td>返回字符串长度</td><td><span class="mono">"ABC".length()=3</span></td></tr>
+<tr><td><span class="mono">s.size()</span></td><td>同 length()</td><td><span class="mono">"ABC".size()=3</span></td></tr>
+<tr><td><span class="mono">s[i]</span></td><td>访问第 i 个字符（下标从0）</td><td><span class="mono">s[0]='H'</span></td></tr>
+<tr><td><span class="mono">s.substr(pos, len)</span></td><td>取子串</td><td><span class="mono">"Hello".substr(1,3)="ell"</span></td></tr>
+<tr><td><span class="mono">s.find(str)</span></td><td>查找子串，返回位置或 npos</td><td><span class="mono">"Hello".find("ll")=2</span></td></tr>
+<tr><td><span class="mono">s + t</span></td><td>连接字符串</td><td><span class="mono">"A"+"B"="AB"</span></td></tr>
+</tbody></table></div>
+
+<div class="card primary"><div class="card-title">📌 2025 年第 9 题原题</div>
+<p class="kp-text"><span class="mono">string s="Hello"; s = s + '!';</span> 正确！<br>
+string 重载了 <span class="mono">+</span> 运算符，<strong>可以连接 string 和 char</strong>（B 选项正确）。<br>
+其他选项：A string 长度可动态变化，C length() 和 size() 返回相同值，D string 不一定以 '\0' 结尾。</p></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2025 · 第 9 题</span><span>string 类——连接操作</span></div>
+<div class="exam-q">下列关于 C++ string 类的说法，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>string 对象的长度在创建后不能改变</div>
+<div class="opt"><span class="letter">B</span>可以使用 + 运算符直接连接 string 和 char</div>
+<div class="opt"><span class="letter">C</span>length() 和 size() 可能返回不同值</div>
+<div class="opt"><span class="letter">D</span>string 必须以 '\0' 结尾，且计入 length()</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：B</div><div class="explain">string 重载了 <span class="c">+</span>，可以连接 string 和 char。A 错——string 长度<strong>动态可变</strong>；C 错——两者<strong>相同</strong>；D 错——string 不要求 '\0' 结尾。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>substr 用法</span></div>
+<div class="exam-q"><span class="mono">string s="ABCDEF"; cout &lt;&lt; s.substr(2,3);</span><br>输出是什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>"ABC"</div>
+<div class="opt"><span class="letter">B</span>"BCD"</div>
+<div class="opt"><span class="letter">C</span>"CDE"</div>
+<div class="opt"><span class="letter">D</span>"DEF"</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：C</div><div class="explain"><span class="c">substr(2,3)</span>：从下标 2 开始取 3 个字符。s[2]='C', s[3]='D', s[4]='E'，输出 <strong>"CDE"</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>find 的返回值</span></div>
+<div class="exam-q"><span class="mono">string s="banana"; int pos=s.find("na");</span><br>pos 的值是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>4</div>
+<div class="opt"><span class="letter">C</span>0</div>
+<div class="opt"><span class="letter">D</span>-1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：A</div><div class="explain">"banana" 中 "na" 第一次出现的位置：b[0], a[1], <strong>n[2]a[3]</strong>，所以 pos=<strong>2</strong>。如果找不到，返回 <span class="c">string::npos</span>（通常为 -1 的无符号形式）。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>string vs char[]</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>对比维度</th><th><span class="mono">string</span></th><th><span class="mono">char a[]</span></th></tr></thead>
+<tbody>
+<tr><td><strong>长度</strong></td><td>动态可变</td><td>固定大小</td></tr>
+<tr><td><strong>连接</strong></td><td><span class="mono">+</span> 直接连接</td><td><span class="mono">strcat</span> 函数</td></tr>
+<tr><td><strong>比较</strong></td><td><span class="mono">== != &gt; &lt;</span> 直接比较</td><td><span class="mono">strcmp</span> 函数</td></tr>
+<tr><td><strong>赋值</strong></td><td><span class="mono">s1 = s2;</span> 直接赋值</td><td><span class="mono">strcpy</span> 函数</td></tr>
+<tr><td><strong>'\0'结尾</strong></td><td>不必须</td><td>必须（标志字符串结束）</td></tr>
+<tr><td><strong>安全性</strong></td><td>越界检查（at()方法）</td><td>不检查越界</td></tr>
+</tbody></table></div>
+
+<div class="code-block"><span class="cm">// string 转 char*</span>
+string s = <span class="str">"Hello"</span>;
+<span class="kw">const</span> <span class="kw">char</span> *cstr = s.c_str();&nbsp;&nbsp;<span class="cm">// 获取 C 风格字符串</span>
+<span class="cm">// char[] 转 string</span>
+<span class="kw">char</span> arr[] = <span class="str">"World"</span>;
+string t = arr;&nbsp;&nbsp;<span class="cm">// 直接赋值即可</span></div>
+
+<div class="card accent"><div class="card-title">💡 输入技巧</div>
+<p class="kp-text">· <span class="mono">cin &gt;&gt; s;</span> 读到<strong>空白字符（空格/换行）</strong>停止<br>
+· <span class="mono">getline(cin, s);</span> 读取<strong>一整行</strong>（含空格）<br>
+· 如果 <span class="mono">cin &gt;&gt;</span> 和 <span class="mono">getline</span> 混用，注意清空缓冲区！</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>char[] 的'\0'结尾</span></div>
+<div class="exam-q"><span class="mono">char s[10]="Hi"; cout &lt;&lt; strlen(s);</span><br>输出是什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>10</div>
+<div class="opt"><span class="letter">C</span>3</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：A</div><div class="explain"><span class="c">strlen</span> 统计的是'\0'之前的字符数。"Hi" 实际存储为 <span class="c">'H','i','\0',...</span>，所以 strlen 返回 <strong>2</strong>（不包含结尾的 '\0'）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>getline 用法</span></div>
+<div class="exam-q">要读取包含空格的整行输入，应该使用？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>cin &gt;&gt; s</div>
+<div class="opt"><span class="letter">B</span>scanf("%s", s)</div>
+<div class="opt"><span class="letter">C</span>getline(cin, s)</div>
+<div class="opt"><span class="letter">D</span>gets(s)</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：C</div><div class="explain"><span class="c">getline(cin, s)</span> 读取一整行（包括中间的空格）。<span class="c">cin &gt;&gt; s</span> 和 <span class="c">scanf</span> 遇到空格就停止。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>STL 容器</h2>
+
+<h3 class="kp-title">3.1 vector（动态数组）</h3>
+<div class="code-block"><span class="kw">#include</span> &lt;vector&gt;
+vector&lt;<span class="kw">int</span>&gt; v;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 空vector</span>
+v.push_back(<span class="num">10</span>);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 末尾添加元素</span>
+cout &lt;&lt; v[<span class="num">0</span>] &lt;&lt; v.size();&nbsp;&nbsp;<span class="cm">// 访问和大小</span>
+v.pop_back();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 删除末尾元素</span></div>
+
+<h3 class="kp-title">3.2 stack（栈）</h3>
+<div class="code-block"><span class="kw">#include</span> &lt;stack&gt;
+stack&lt;<span class="kw">int</span>&gt; st;
+st.push(<span class="num">1</span>);&nbsp;&nbsp;<span class="cm">// 入栈</span>
+st.top();&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 查看栈顶元素</span>
+st.pop();&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 出栈（不返回元素）</span>
+st.empty();&nbsp;&nbsp;<span class="cm">// 是否为空</span>
+st.size();&nbsp;&nbsp;&nbsp;<span class="cm">// 元素个数</span></div>
+
+<h3 class="kp-title">3.3 queue（队列）</h3>
+<div class="code-block"><span class="kw">#include</span> &lt;queue&gt;
+queue&lt;<span class="kw">int</span>&gt; q;
+q.push(<span class="num">1</span>);&nbsp;&nbsp;<span class="cm">// 入队（队尾）</span>
+q.front();&nbsp;&nbsp;<span class="cm">// 查看队头元素</span>
+q.back();&nbsp;&nbsp;&nbsp;<span class="cm">// 查看队尾元素</span>
+q.pop();&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 出队（队头）</span></div>
+
+<h3 class="kp-title">3.4 map（键值对）</h3>
+<div class="code-block"><span class="kw">#include</span> &lt;map&gt;
+map&lt;string, <span class="kw">int</span>&gt; mp;
+mp[<span class="str">"Alice"</span>] = <span class="num">90</span>;&nbsp;&nbsp;<span class="cm">// 插入/修改</span>
+cout &lt;&lt; mp[<span class="str">"Alice"</span>];&nbsp;&nbsp;<span class="cm">// 查找：输出 90</span>
+<span class="cm">// 遍历 map（C++11 范围 for）</span>
+<span class="kw">for</span> (<span class="kw">auto</span> &amp;p : mp)
+&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt; p.first &lt;&lt; <span class="str">": "</span> &lt;&lt; p.second;</div>
+
+<div class="card primary"><div class="card-title">📌 stack 和 queue 的注意事项</div>
+<p class="kp-text">· <span class="mono">stack::pop()</span> 和 <span class="mono">queue::pop()</span> <strong>不返回被删除的元素</strong>！必须先 <span class="mono">top()</span> 或 <span class="mono">front()</span> 再 <span class="mono">pop()</span><br>
+· 2021-2022 年真题多次考察 stack 和 queue 的操作特性</p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>vector 的 push_back</span></div>
+<div class="exam-q">
+<span class="mono">vector&lt;int&gt; v; v.push_back(3); v.push_back(1); v.push_back(4); cout &lt;&lt; v[1];</span><br>输出是什么？
+</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>3</div>
+<div class="opt"><span class="letter">B</span>1</div>
+<div class="opt"><span class="letter">C</span>4</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：B</div><div class="explain">依次 push_back 后，v = {3, 1, 4}。v[1] 是<strong>第2个元素=1</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>stack 操作</span></div>
+<div class="exam-q">
+<span class="mono">stack&lt;int&gt; s; s.push(5); s.push(2); s.pop(); cout &lt;&lt; s.top();</span><br>输出是什么？
+</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>5</div>
+<div class="opt"><span class="letter">C</span>不确定</div>
+<div class="opt"><span class="letter">D</span>0</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：B</div><div class="explain">push(5)→[5], push(2)→[5,2], pop() 删除栈顶 2→[5]。top() 返回 <strong>5</strong>。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>algorithm 常用函数</h2>
+<p class="kp-text">头文件 <span class="mono">&lt;algorithm&gt;</span> 提供了大量常用算法函数，初赛中常出现在阅读程序里。</p>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>功能</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">sort(a, a+n)</span></td><td>对数组/vector 排序（默认升序）</td><td><span class="mono">sort(v.begin(), v.end())</span></td></tr>
+<tr><td><span class="mono">max(a, b)</span></td><td>返回较大值</td><td><span class="mono">int m = max(3, 5); // 5</span></td></tr>
+<tr><td><span class="mono">min(a, b)</span></td><td>返回较小值</td><td><span class="mono">int m = min(3, 5); // 3</span></td></tr>
+<tr><td><span class="mono">swap(a, b)</span></td><td>交换两个变量的值</td><td><span class="mono">swap(x, y);</span></td></tr>
+<tr><td><span class="mono">reverse(a, a+n)</span></td><td>反转区间</td><td><span class="mono">reverse(v.begin(), v.end())</span></td></tr>
+<tr><td><span class="mono">unique(a, a+n)</span></td><td>去重（要求已排序，返回新结尾）</td><td><span class="mono">int m = unique(a,a+n)-a;</span></td></tr>
+</tbody></table></div>
+
+<div class="code-block"><span class="cm">// sort 排序</span>
+<span class="kw">int</span> a[] = {<span class="num">3</span>,<span class="num">1</span>,<span class="num">4</span>,<span class="num">1</span>,<span class="num">5</span>,<span class="num">9</span>};
+sort(a, a+<span class="num">6</span>);&nbsp;&nbsp;<span class="cm">// 数组排序</span>
+vector&lt;<span class="kw">int</span>&gt; v = {<span class="num">3</span>,<span class="num">1</span>,<span class="num">4</span>};
+sort(v.begin(), v.end());&nbsp;&nbsp;<span class="cm">// vector 排序</span></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>sort 排序结果</span></div>
+<div class="exam-q">
+<span class="mono">int a[]={4,2,5,1,3}; sort(a, a+5); cout &lt;&lt; a[2];</span><br>输出是什么？
+</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>2</div>
+<div class="opt"><span class="letter">C</span>3</div>
+<div class="opt"><span class="letter">D</span>4</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：C</div><div class="explain">排序后数组为 {1,2,3,4,5}。a[2] 是<strong>第3个元素=3</strong>（下标从0开始）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>max 和 min</span></div>
+<div class="exam-q"><span class="mono">cout &lt;&lt; max(10, min(20, 15));</span><br>输出是什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>10</div>
+<div class="opt"><span class="letter">B</span>15</div>
+<div class="opt"><span class="letter">C</span>20</div>
+<div class="opt"><span class="letter">D</span>编译错误</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：B</div><div class="explain">先算内部的 <span class="c">min(20,15)=15</span>，再算外层的 <span class="c">max(10,15)=<strong>15</strong></span>。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+<p class="kp-text">以下题目综合了字符串、STL 容器和 algorithm 函数。</p>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>字符串+算法混合</span></div>
+<div class="exam-q">
+<span class="mono">string s="cba"; sort(&s[0], &s[0]+3); cout &lt;&lt; s;</span><br>输出是什么？
+</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>"cba"</div>
+<div class="opt"><span class="letter">B</span>"abc"</div>
+<div class="opt"><span class="letter">C</span>"bac"</div>
+<div class="opt"><span class="letter">D</span>编译错误</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：B</div><div class="explain"><span class="c">&amp;s[0]</span> 获取 string 内部字符数组的起始地址，sort 对其进行排序。'c','b','a' 升序排列为 'a','b','c'，s 变成 <strong>"abc"</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>STL 综合阅读题</span></div>
+<div class="exam-q">
+<span class="mono">map&lt;string,int&gt; m; m["a"]=1; m["b"]=2; m["a"]=3; cout &lt;&lt; m["a"] &lt;&lt; m["b"];</span><br>输出是什么？
+</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>12</div>
+<div class="opt"><span class="letter">B</span>32</div>
+<div class="opt"><span class="letter">C</span>31</div>
+<div class="opt"><span class="letter">D</span>21</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：B</div><div class="explain">m["a"]=1, m["b"]=2, 然后 m["a"]=<strong>3</strong>（覆盖了旧值1）。所以 m["a"]=3, m["b"]=2，输出 <strong>32</strong>。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 本节课重点速查表</h3>
+<div class="row">
+<span class="pill green">string 可动态变长</span>
+<span class="pill green">+ 可连接 string 和 char</span>
+<span class="pill amber">substr(pos, len)</span>
+<span class="pill amber">find 返回位置或 npos</span>
+</div>
+<div class="row">
+<span class="pill">char[] 必须 '\0' 结尾</span>
+<span class="pill red">cin 遇空格停</span>
+<span class="pill green">getline 读整行</span>
+</div>
+<div class="row">
+<span class="pill">vector 动态数组</span>
+<span class="pill">stack LIFO</span>
+<span class="pill">queue FIFO</span>
+<span class="pill">map 键值对</span>
+<span class="pill">sort 升序排列</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 冲刺终极手册</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ==================== 侧边栏 ==================== */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+
+  .sidebar-logo {
+    padding: 0 20px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidebar-logo .icon {
+    width: 34px; height: 34px;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95rem;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .sidebar-logo .title { font-size: .82rem; font-weight: 700; color: var(--text); line-height: 1.3; }
+  .sidebar-logo .sub { font-size: .66rem; color: var(--text-ter); }
+
+  .nav-section {
+    padding: 6px 20px 3px;
+    font-size: .68rem;
+    font-weight: 600;
+    color: var(--text-ter);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .nav-link {
+    display: block;
+    padding: 6px 20px 6px 28px;
+    font-size: .8rem;
+    color: var(--text-sec);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: .12s;
+    cursor: pointer;
+  }
+  .nav-link:hover { color: var(--primary); background: var(--primary-light); }
+  .nav-link.active {
+    color: var(--primary);
+    border-left-color: var(--primary);
+    background: var(--primary-light);
+    font-weight: 500;
+  }
+  .nav-link.sub { padding-left: 40px; font-size: .76rem; }
+
+  /* ==================== 主内容 ==================== */
+  .main-content {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-width: 0;
+  }
+  .content-wrapper {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 44px 44px 80px;
+  }
+
+  /* ─── 头部 ─── */
+  .page-header {
+    margin-bottom: 36px;
+    padding-bottom: 22px;
+    border-bottom: 2px solid var(--border-light);
+  }
+  .breadcrumb {
+    font-size: .76rem;
+    color: var(--text-ter);
+    margin-bottom: 10px;
+  }
+  .breadcrumb a { color: var(--primary); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .page-header h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.5px;
+  }
+  .page-header .subtitle {
+    font-size: .88rem;
+    color: var(--text-sec);
+    margin-top: 6px;
+  }
+  .meta-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-tag {
+    font-size: .7rem;
+    padding: 2px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    background: var(--surface);
+  }
+  .meta-tag.hot { border-color: #fecaca; color: #dc2626; background: #fef2f2; }
+  .meta-tag.exam { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+
+  /* ─── 章节标题 ─── */
+  h2.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 38px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2.section-title .num {
+    font-size: .78rem;
+    background: linear-gradient(135deg, var(--primary), var(--purple));
+    color: #fff;
+    width: 26px; height: 26px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  h3.kp-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 22px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h3.kp-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─── 知识文本 ─── */
+  .kp-text {
+    font-size: .9rem;
+    color: var(--text-sec);
+    margin-bottom: 10px;
+    line-height: 1.9;
+  }
+  .kp-text strong { color: var(--text); font-weight: 600; }
+  .kp-text .hl { color: var(--primary-dark); font-weight: 600; }
+  .kp-text .tag { color: var(--primary); }
+  .kp-text .danger-tag { color: var(--danger); font-weight: 600; }
+  .kp-text .suc-tag { color: var(--success); font-weight: 600; }
+
+  /* ─── 卡片系统 ─── */
+  .card {
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    border: 1px solid;
+    background: var(--surface);
+  }
+  .card.accent { border-color: #fde68a; background: var(--accent-light); }
+  .card.accent .card-title { color: var(--accent-dark); }
+  .card.primary { border-color: #bfdbfe; background: var(--primary-light); }
+  .card.primary .card-title { color: var(--primary-dark); }
+  .card.success { border-color: #a7f3d0; background: var(--success-light); }
+  .card.success .card-title { color: var(--success-dark); }
+  .card.danger { border-color: #fecaca; background: var(--danger-light); }
+  .card.danger .card-title { color: var(--danger); }
+  .card.purple { border-color: #ddd6fe; background: var(--purple-light); }
+  .card.purple .card-title { color: var(--purple); }
+  .card-title {
+    font-size: .82rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  .card p, .card .kp-text { font-size: .85rem; margin: 0; }
+
+  .info-box {
+    background: var(--primary-light);
+    border-left: 3px solid var(--primary);
+    padding: 10px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 14px 0;
+    font-size: .85rem;
+    color: var(--text-sec);
+    line-height: 1.7;
+  }
+
+  /* ─── 表格 ─── */
+  .table-wrapper {
+    overflow-x: auto;
+    margin: 14px 0;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .83rem;
+  }
+  thead th {
+    background: var(--surface-alt);
+    color: var(--text-sec);
+    font-weight: 600;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    font-size: .8rem;
+  }
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-sec);
+    font-size: .82rem;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--surface-alt); }
+  .mono { font-family: var(--font-mono); color: var(--primary-dark); font-size: .8rem; }
+
+  ul.dot-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+  }
+  ul.dot-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.dot-list li::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  ul.dot-list li strong { color: var(--text); }
+
+  /* ─── 卡片网格（公式速记卡） ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .formula-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: box-shadow .15s, transform .12s;
+    display: flex;
+    flex-direction: column;
+  }
+  .formula-card:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+    transform: translateY(-2px);
+  }
+  .formula-card .fc-label {
+    font-size: .72rem;
+    color: var(--text-ter);
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .formula-card .fc-formula {
+    font-size: .92rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+  }
+  .formula-card .fc-desc {
+    font-size: .76rem;
+    color: var(--text-sec);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .formula-card.accent { border-left: 3px solid var(--accent); }
+  .formula-card.primary { border-left: 3px solid var(--primary); }
+  .formula-card.success { border-left: 3px solid var(--success); }
+  .formula-card.danger { border-left: 3px solid var(--danger); }
+  .formula-card.purple { border-left: 3px solid var(--purple); }
+
+  /* ─── 易错点列表 ─── */
+  ol.num-list {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 12px;
+    counter-reset: pitfall;
+  }
+  ol.num-list li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 5px 0 5px 32px;
+    position: relative;
+    line-height: 1.65;
+    border-bottom: 1px dashed var(--border-light);
+  }
+  ol.num-list li:last-child { border-bottom: none; }
+  ol.num-list li::before {
+    counter-increment: pitfall;
+    content: counter(pitfall);
+    position: absolute;
+    left: 0; top: 5px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--danger-light);
+    border: 1px solid #fecaca;
+    color: var(--danger);
+    font-size: .72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  ol.num-list li strong { color: var(--text); }
+
+  /* ─── 策略卡片 ─── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .strategy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+  }
+  .strategy-card .sc-title {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+  }
+  .strategy-card .sc-text {
+    font-size: .8rem;
+    color: var(--text-sec);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .strategy-grid { grid-template-columns: 1fr; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ─── 小结 ─── */
+  .summary-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin: 36px 0 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.03);
+  }
+  .summary-box h3 {
+    font-size: .92rem;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-box .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .summary-box .pill {
+    font-size: .78rem;
+    padding: 3px 12px;
+    background: var(--primary-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 14px;
+    color: var(--primary-dark);
+  }
+  .summary-box .pill.green {
+    background: var(--success-light);
+    border-color: #a7f3d0;
+    color: var(--success-dark);
+  }
+  .summary-box .pill.amber {
+    background: var(--accent-light);
+    border-color: #fde68a;
+    color: var(--accent-dark);
+  }
+  .summary-box .pill.red {
+    background: var(--danger-light);
+    border-color: #fecaca;
+    color: var(--danger);
+  }
+
+  /* ─── Checklist ─── */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0;
+  }
+  .checklist li {
+    font-size: .85rem;
+    color: var(--text-sec);
+    padding: 7px 0 7px 28px;
+    position: relative;
+    line-height: 1.6;
+    border-bottom: 1px dashed var(--border-light);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 0;
+    font-size: 1rem;
+    color: var(--primary);
+  }
+  .checklist li strong { color: var(--text); }
+
+  hr.divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+  hr.divider.dashed {
+    background: none;
+    border-top: 1px dashed var(--border);
+  }
+
+  /* ─── 代码块（保留样式） ─── */
+  pre.code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 12px 0;
+  }
+
+  /* ─── 回到顶部 ─── */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-ter);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    transition: .15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible { display: flex; }
+  .back-top:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* ─── 汉堡菜单 ─── */
+  .hamburger {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.3);
+    z-index: 99;
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { transform: translateX(-100%); transition: transform .3s ease; }
+    .sidebar.open { transform: translateX(0); }
+    .main-content { margin-left: 0; }
+    .content-wrapper { padding: 40px 18px 60px; }
+    .hamburger { display: flex; }
+    .page-header h1 { font-size: 1.4rem; }
+    .card-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 900px) {
+    .overlay.show { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">⚡</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">冲刺终极手册</div>
+    </div>
+  </div>
+
+  <div class="nav-section">开篇</div>
+  <a class="nav-link" href="#overview">📋 试卷结构速览</a>
+
+  <div class="nav-section">一 · 八大专题</div>
+  <a class="nav-link" href="#topics">考点速查表</a>
+
+  <div class="nav-section">二 · 公式速记</div>
+  <a class="nav-link" href="#formulas">高频公式速记卡</a>
+
+  <div class="nav-section">三 · 阅读得分</div>
+  <a class="nav-link" href="#reading">阅读程序得分秘籍</a>
+
+  <div class="nav-section">四 · 完善三步</div>
+  <a class="nav-link" href="#completion">完善程序三步法</a>
+
+  <div class="nav-section">五 · 十大易错</div>
+  <a class="nav-link" href="#pitfalls">十大易错点</a>
+
+  <div class="nav-section">六 · 答题策略</div>
+  <a class="nav-link" href="#strategy">答题策略</a>
+
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#checklist">📌 考前48h Checklist</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">CSP-J 初赛集训</a> / 冲刺终极手册</div>
+    <h1>CSP-J 初赛 · 冲刺终极手册</h1>
+    <p class="subtitle">考前快速回顾 · 八大专题速查 · 高频公式 · 易错TOP10 · 答题策略</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 考前快速浏览</span>
+      <span class="meta-tag hot">🔥 冲刺必读</span>
+      <span class="meta-tag exam">📖 涵盖全部专题</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、试卷结构速览 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="overview"><span class="num">1</span>试卷结构速览</h2>
+
+  <p class="kp-text">
+    了解整卷结构，合理分配时间，是考场上从容发挥的第一步。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>题型</th>
+          <th>题量</th>
+          <th>分值</th>
+          <th>建议用时</th>
+          <th>策略</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>单选题</strong></td>
+          <td>15 题</td>
+          <td>30 分</td>
+          <td><span class="mono">25 min</span></td>
+          <td>排除法，不确定的先跳过</td>
+        </tr>
+        <tr>
+          <td><strong>阅读程序题</strong></td>
+          <td>3 ~ 4 题</td>
+          <td>40 分</td>
+          <td><span class="mono">45 min</span></td>
+          <td>判断2分必拿，选择4分谨慎</td>
+        </tr>
+        <tr>
+          <td><strong>完善程序题</strong></td>
+          <td>2 题</td>
+          <td>30 分</td>
+          <td><span class="mono">35 min</span></td>
+          <td>三遍法 + 代入验证</td>
+        </tr>
+        <tr>
+          <td><strong>检查</strong></td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="mono">15 min</span></td>
+          <td>涂卡核对、攻克标记题</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">⏱ 时间分配口诀</div>
+    <p class="kp-text">
+      <strong>"25 + 45 + 35 + 15 = 120"</strong><br>
+      单选<strong>半小时内</strong>搞定，阅读<strong>多花时间</strong>慢慢推，完善<strong>代入验证</strong>别着急，最后<strong>留一刻钟</strong>检查涂卡。
+    </p>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 二、八大专题考点速查 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="topics"><span class="num">2</span>八大专题考点速查</h2>
+
+  <p class="kp-text">
+    每个专题一行速览核心考点与高频陷阱，考前过一遍，心中有数。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:16%;">专题</th>
+          <th style="width:44%;">核心考点</th>
+          <th style="width:40%;">高频陷阱</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. 计算机基础</strong></td>
+          <td>四代计算机、冯诺依曼、图灵奖、进制转换、网络协议</td>
+          <td><span class="danger-tag">⚠</span> 人物张冠李戴、二进制位权混淆</td>
+        </tr>
+        <tr>
+          <td><strong>2. 语法基础</strong></td>
+          <td>数据类型、引用传参、指针、string</td>
+          <td><span class="danger-tag">⚠</span> 传引用 vs 传值、指针步长</td>
+        </tr>
+        <tr>
+          <td><strong>3. 数据结构</strong></td>
+          <td>栈(出栈序列)、队列(FIFO)、二叉树(遍历/数组存储)、哈夫曼、图(度/连通性)</td>
+          <td><span class="danger-tag">⚠</span> 出栈序列计算漏解、二叉树叶子公式记错</td>
+        </tr>
+        <tr>
+          <td><strong>4. 算法基础</strong></td>
+          <td>位运算(lowbit)、冒泡交换次数、递归模拟、二分、DP(编辑距离/LCS)</td>
+          <td><span class="danger-tag">⚠</span> x&amp;(x-1)误认为求值、DP边界忘初始化</td>
+        </tr>
+        <tr>
+          <td><strong>5. 排列组合与数论</strong></td>
+          <td>排列组合公式、棋盘路径、"至少"补集法、辗转相除法gcd、斐波那契周期</td>
+          <td><span class="danger-tag">⚠</span> 分组不除以阶乘、gcd递归改错</td>
+        </tr>
+        <tr>
+          <td><strong>6. 程序阅读</strong></td>
+          <td>手动模拟四步法、变量追踪、边界条件、陷阱识别</td>
+          <td><span class="danger-tag">⚠</span> 整数除法截断、运算符优先级 &amp;&amp;短路</td>
+        </tr>
+        <tr>
+          <td><strong>7. 程序完善</strong></td>
+          <td>三遍法、三要素(初始值/循环体/返回值)、常用填空套路</td>
+          <td><span class="danger-tag">⚠</span> 循环边界差1、比较符号反了</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 三、高频公式速记卡 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="formulas"><span class="num">3</span>高频公式速记卡</h2>
+
+  <p class="kp-text">
+    考前反复看，做到<strong>条件反射</strong>——看到题就能想到公式。
+  </p>
+
+  <div class="card-grid">
+    <div class="formula-card primary">
+      <div class="fc-label">进制转换</div>
+      <div class="fc-formula">2 ↔ 8 / 2 ↔ 16</div>
+      <div class="fc-desc">二进制 ↔ 八进制：<strong>3位一组</strong><br>二进制 ↔ 十六进制：<strong>4位一组</strong></div>
+    </div>
+    <div class="formula-card accent">
+      <div class="fc-label">无符号整数范围</div>
+      <div class="fc-formula">0 ~ 2<sup>n</sup>−1</div>
+      <div class="fc-desc">n位无符号整数的取值范围</div>
+    </div>
+    <div class="formula-card danger">
+      <div class="fc-label">有符号补码范围</div>
+      <div class="fc-formula">−2<sup>n−1</sup> ~ 2<sup>n−1</sup>−1</div>
+      <div class="fc-desc">n位有符号补码表示的范围</div>
+    </div>
+    <div class="formula-card success">
+      <div class="fc-label">完全二叉树叶子</div>
+      <div class="fc-formula">ceil(n / 2)</div>
+      <div class="fc-desc">n个结点的完全二叉树<br>叶子结点数 = ceil(n/2)</div>
+    </div>
+    <div class="formula-card purple">
+      <div class="fc-label">排列</div>
+      <div class="fc-formula">P(n,m) = n! / (n−m)!</div>
+      <div class="fc-desc">从n个中选m个<b>有序</b>排列</div>
+    </div>
+    <div class="formula-card primary">
+      <div class="fc-label">组合</div>
+      <div class="fc-formula">C(n,m) = n! / [m!(n−m)!]</div>
+      <div class="fc-desc">从n个中选m个<b>无序</b>组合</div>
+    </div>
+    <div class="formula-card accent">
+      <div class="fc-label">棋盘路径</div>
+      <div class="fc-formula">C(m+n−2, m−1)</div>
+      <div class="fc-desc">m×n网格从左下到右上的最短路径数</div>
+    </div>
+    <div class="formula-card success">
+      <div class="fc-label">哈夫曼 WPL</div>
+      <div class="fc-formula">Σ(叶子权值 × 路径长度)</div>
+      <div class="fc-desc">所有叶子权值与路径长度的乘积之和</div>
+    </div>
+    <div class="formula-card danger">
+      <div class="fc-label">有向图</div>
+      <div class="fc-formula">入度和 = 出度和 = 边数</div>
+      <div class="fc-desc">有向图所有顶点入度之和 = 出度之和 = 边数</div>
+    </div>
+    <div class="formula-card purple">
+      <div class="fc-label">树的边数</div>
+      <div class="fc-formula">边数 = n − 1</div>
+      <div class="fc-desc">树是n个结点、n−1条边的连通图</div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 四、阅读程序得分秘籍 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="reading"><span class="num">4</span>阅读程序得分秘籍</h2>
+
+  <p class="kp-text">
+    阅读程序题占<strong>40分</strong>（整卷最高），掌握正确方法可以大幅减少失分。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">🔍 五大得分要点</div>
+    <p class="kp-text">
+      <strong>① 先看代码整体结构</strong><br>
+      main → 循环 → 递归 → 函数 → 数据结构，快速理解程序在做什么。<br><br>
+      <strong>② 逐行手动模拟，画变量变化表</strong><br>
+      准备草稿纸，每遇到循环/递归就画一张表，记录每个变量的值变化。<br><br>
+      <strong>③ 判断题陷阱："一定"→找反例；"不可能"→找可能</strong><br>
+      "一定正确"只需找到一个反例即可推翻；"不可能"只需找到一个可能的情况即可推翻。<br><br>
+      <strong>④ 优先模拟简单输入（n=0/1/2）</strong><br>
+      用最小边界输入验证程序行为，大多数时候边界就是考点。<br><br>
+      <strong>⑤ 特别注意三个陷阱</strong><br>
+      <span class="danger-tag">整数除法截断</span>（5/2=2）、
+      <span class="danger-tag">&amp;&amp;和||短路</span>（前假后不执行）、
+      <span class="danger-tag">自增自减副作用</span>（i++ vs ++i）
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 判断题得分策略</div>
+    <p class="kp-text">
+      · <strong>判断题（2分）一定要拿</strong>——通常是最简单的，考的是对代码的粗粒度理解。<br>
+      · <strong>选择题（4分）要谨慎</strong>——往往涉及复杂逻辑或边界情况，不确定时先用排除法。
+    </p>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 五、完善程序三步法 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="completion"><span class="num">5</span>完善程序三步法</h2>
+
+  <p class="kp-text">
+    完善程序题是整卷"性价比"最高的部分——掌握模板套路后，正确率可以大幅提高。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">📌 三步法详解</div>
+    <p class="kp-text">
+      <strong>第一步：读题，理解算法要做什么</strong><br>
+      花1-2分钟看清题目的输入输出描述，明确算法目标。不要上来就看代码。<br><br>
+      <strong>第二步：看框架，找初始化、循环、递归、输出</strong><br>
+      快速扫描代码结构，确定填空所在的位置（初始化？循环条件？递归边界？输出？）。<br><br>
+      <strong>第三步：逐空推敲，代入验证法</strong><br>
+      对每个空，先自己思考应该填什么，再看选项。把每个选项代入代码中"走一遍"看是否合理。
+    </p>
+  </div>
+
+  <h3 class="kp-title">常用填空模板</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>场景</th>
+          <th>常用模板</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>累加初始化</strong></td>
+          <td><span class="mono">sum = 0</span></td>
+          <td>累加/计数初值设为0</td>
+        </tr>
+        <tr>
+          <td><strong>乘积初始化</strong></td>
+          <td><span class="mono">prod = 1</span></td>
+          <td>连乘初值设为1</td>
+        </tr>
+        <tr>
+          <td><strong>循环条件(0-based)</strong></td>
+          <td><span class="mono">i &lt; n</span></td>
+          <td><span class="mono">for(i=0; ___; i++)</span> 用 <span class="mono">i &lt; n</span></td>
+        </tr>
+        <tr>
+          <td><strong>循环条件(1-based)</strong></td>
+          <td><span class="mono">i &lt;= n</span></td>
+          <td><span class="mono">for(i=1; ___; i++)</span> 用 <span class="mono">i &lt;= n</span></td>
+        </tr>
+        <tr>
+          <td><strong>比较符号</strong></td>
+          <td><span class="mono">&gt; vs &gt;=</span></td>
+          <td>注意边界是否取等，<span class="danger-tag">差1错误</span>是最常见的坑</td>
+        </tr>
+        <tr>
+          <td><strong>DP 初始化</strong></td>
+          <td><span class="mono">dp[0]=0</span> 或 <span class="mono">dp[1]=1</span></td>
+          <td>DP边界条件忘记初始化直接扣分</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 六、十大易错点 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="pitfalls"><span class="num">6</span>十大易错点</h2>
+
+  <p class="kp-text">
+    这些是历届考生<strong>最常犯错</strong>的地方，考前必须过一遍，避免在考场上"踩坑"。
+  </p>
+
+  <ol class="num-list">
+    <li><strong>把数值本身当1的个数</strong>——例如 x=7（二进制111）有<strong>3个1</strong>，不是7个1；<span class="tag">x&amp;(x-1)</span> 统计1的个数</li>
+    <li><strong>二叉树叶子数记混</strong>——完全二叉树总叶子数 = <span class="mono">ceil(n/2)</span>，不是 n/2 向下取整</li>
+    <li><strong>分组排列忘了除以组数的阶乘</strong>——将n个不同元素分成k组，若组间无区别需除以 <span class="mono">k!</span></li>
+    <li><strong>DFS用栈、BFS用队列混淆</strong>——DFS用栈（递归或手动栈），BFS用队列（先进先出）</li>
+    <li><strong>gcd递归写法改错导致死循环</strong>—— <span class="mono">return gcd(b, a%b)</span> 写成了 <span class="mono">return gcd(a, a%b)</span> 导致参数不变</li>
+    <li><strong>传引用 vs 传值</strong>——引用参数在函数内修改<strong>会影响</strong>实参，值参数修改<strong>不影响</strong>实参</li>
+    <li><strong>运算符优先级</strong>——特别注意 <span class="mono">&lt;&lt;</span> 和 <span class="mono">+</span> 的优先级（<span class="mono">1&lt;&lt;2+3</span> = <span class="mono">1&lt;&lt;5 = 32</span>）、<span class="mono">&amp;&amp;</span> 和 <span class="mono">||</span> 的短路特性</li>
+    <li><strong>冒泡排序交换次数 vs 比较次数</strong>——交换次数是逆序对数，比较次数通常是 <span class="mono">n(n-1)/2</span></li>
+    <li><strong>栈的容量最小值计算</strong>——双端操作（同时入栈和出栈）时，需要模拟过程找最大栈深</li>
+    <li><strong>&amp;&amp;短路特性</strong>——条件从左到右判断，前一个为false则<strong>不再执行</strong>后面的表达式；<span class="danger-tag">a &gt; 0 &amp;&amp; b/a &gt; 1</span> 不会除以0</li>
+  </ol>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 考前必看</div>
+    <p class="kp-text">
+      把这10条抄在草稿纸上，考试时<strong>每做完一道题扫一眼</strong>，看自己有没有犯这些错误。
+    </p>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 七、答题策略 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="strategy"><span class="num">7</span>答题策略</h2>
+
+  <p class="kp-text">
+    正确的考试策略可以让你在同等水平下多拿<strong>5~10分</strong>。
+  </p>
+
+  <div class="strategy-grid">
+    <div class="strategy-card">
+      <div class="sc-title">先易后难</div>
+      <div class="sc-text">先做有把握的题目，标记不确定的，回头再攻克。不要在一道题上纠结超过5分钟。</div>
+    </div>
+    <div class="strategy-card">
+      <div class="sc-title">选择题排除法</div>
+      <div class="sc-text">先划掉明显错误的选项，再在剩下的选项中比较。四选一变成二选一，正确率翻倍。</div>
+    </div>
+    <div class="strategy-card">
+      <div class="sc-title">阅读题分工</div>
+      <div class="sc-text"><strong>判断题（2分）</strong>一定要拿，通常比较简单。<br><strong>选择题（4分）</strong>要谨慎，往往涉及复杂逻辑，先排除再选。</div>
+    </div>
+    <div class="strategy-card">
+      <div class="sc-title">代入验证法</div>
+      <div class="sc-text">完善程序的每个空，把选项代进代码里"走一遍"看是否合理。不要靠猜。</div>
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">✅ 考场行动清单</div>
+    <p class="kp-text">
+      ① 发卷后先<strong>浏览全卷</strong>，了解题目难度分布<br>
+      ② 从<strong>单选题</strong>开始做，建立信心<br>
+      ③ 不确定的题在题号上<strong>画圈标记</strong>，做完有把握的再来攻克<br>
+      ④ <strong>留15分钟</strong>检查：核对答题卡涂写、回头做标记题<br>
+      ⑤ 最后<strong>不要改答案</strong>除非确认自己选错了——第一直觉往往是对的
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 八、考前48小时 Checklist -->
+  <!-- ================================================================== -->
+  <div class="summary-box" id="checklist">
+    <h3>📋 考前48小时 Checklist</h3>
+    <p class="kp-text" style="font-size:.82rem;margin-bottom:6px;">
+      考前最后两天，按以下清单逐项完成，稳住心态、确保万无一失。
+    </p>
+
+    <ul class="checklist">
+      <li><strong>过一遍八大专题核心考点速查表</strong> —— 每个专题的"核心考点"和"高频陷阱"都要看一遍</li>
+      <li><strong>背诵高频公式速记卡</strong> —— 达到条件反射级别：看到题就想到公式</li>
+      <li><strong>做一份完整模拟卷练手</strong> —— 保持手感，严格按照120分钟计时完成</li>
+      <li><strong>记牢易错点TOP10</strong> —— 对照自己的错题本，确保不再犯同样的错误</li>
+      <li><strong>复习阅读程序与完善程序的答题方法</strong> —— 手动模拟+三遍法，形成肌肉记忆</li>
+      <li><strong>准备好考试用品</strong> —— 准考证、身份证、2B铅笔、黑色签字笔、橡皮、草稿纸</li>
+      <li><strong>早点休息，保证充足睡眠</strong> —— 好的精神状态比多刷一套题更重要</li>
+    </ul>
+
+    <div style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--text-sec);">
+      <span style="font-size:1.1rem;">🍀</span>
+      <span>祝你 CSP-J 初赛顺利，成功晋级！—— 天道酬勤，功不唐捐。</span>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  // 回到顶部
+  window.addEventListener('scroll', function() {
+    document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+  });
+
+  // 滚动高亮
+  const targets = document.querySelectorAll('h2.section-title');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  document.querySelectorAll('.nav-link').forEach(l => {
+    l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+  });
+</script>
+
+</body>
+</html>

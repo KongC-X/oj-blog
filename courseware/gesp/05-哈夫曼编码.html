@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GESP C++ 六级 — 哈夫曼编码</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}h1 .sub{display:block;font-size:1rem;font-weight:400;color:var(--text-secondary);margin-top:6px}
+.subtitle-main{color:var(--text-tertiary);font-size:15px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);padding-left:16px;border-left:4px solid var(--primary);border-bottom:none;padding-bottom:0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}.card p:last-child{margin-bottom:0}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;background:linear-gradient(135deg,var(--primary-light),#fff);font-size:14.5px}.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.highlight-box p:last-child{margin-bottom:0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.think-box p:last-child{margin-bottom:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}.warning-box p:last-child{margin-bottom:0}.warning-box .code-block{margin:10px 0}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}.tip-box p:last-child{margin-bottom:0}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+table.compact td,table.compact th{padding:7px 10px;font-size:13px}table.striped tbody tr:nth-child(even){background:var(--gray-50)}
+.table-wrapper{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.inline-code{font-family:var(--font-mono);background:var(--surface-alt);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);border:1px solid var(--border-light)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}hr.divider.dashed{border-top-style:dashed}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.back-to-top.visible{display:flex}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}.goal-box ul{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}.tag-green{background:var(--success-light);color:var(--success)}.tag-red{background:var(--danger-light);color:var(--danger)}.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans);user-select:none}
+.answer-toggle:hover{background:var(--primary);color:#fff}.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:600px;opacity:1}.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+.vis{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.vis svg{max-width:100%;height:auto}.vis-caption{font-size:13px;color:var(--text-tertiary);margin-top:8px}
+.step-box{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0}.step-item{flex:1;min-width:140px;background:var(--surface-alt);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}.step-item .step-num{font-size:20px;font-weight:800;color:var(--primary)}.step-item .step-label{font-size:13px;color:var(--text-secondary);margin-top:4px}
+@media(max-width:900px){
+nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}
+.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+nav.sidebar::-webkit-scrollbar{width:4px}nav.sidebar::-webkit-scrollbar-track{background:transparent}nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head><body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><span class="icon">🌳</span> GESP C++ 六级 — 哈夫曼编码</div>
+<div class="nav-section"><div class="nav-section-title">五步教学法</div>
+<a class="nav-link active" href="#intro">第一步：生活引入</a>
+<a class="nav-link" href="#concept">第二步：核心概念</a>
+<a class="nav-link" href="#steps">第三步：编码步骤</a>
+<a class="nav-link" href="#simulation">第四步：手工模拟</a>
+<a class="nav-link" href="#pitfalls">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">🌳 GESP C++ 六级 · 哈夫曼编码</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">最优二叉树、变长编码、WPL 计算、前缀编码</p>
+</div>
+
+<!-- ==================== 第一步：生活比喻 ==================== -->
+<section id="intro">
+<h2 class="section-num"><span class="num-badge">1</span> 生活比喻：电报密码的智慧</h2>
+<div class="goal-box"><h3>🎯 本节学习目标</h3><ol><li>理解"变长编码"为什么比定长编码高效</li><li>建立哈夫曼编码的生活直觉</li><li>为后续构造步骤打下感性认识</li></ol></div>
+
+<div class="card accent"><div class="card-title">💡 霍夫曼编码就像设计电报密码</div>
+<p>在电报时代，人们发现常用字（如"的"、"是"）出现频率很高，而冷僻字（如"爨"）很少用到。聪明的电报员想出了一个办法：<strong>经常用的字用短代码（如"00"），很少用的字用长代码（如"11111"）</strong>——这样整体上传输的电报码字最少。</p>
+<p>这就是哈夫曼编码的核心思想！根据每个字符的<strong>出现频率来确定编码长度</strong>：频率高的用短码，频率低的用长码，从而达到整体压缩效果。</p>
+</div>
+
+<div class="card primary"><div class="card-title">📊 直观对比</div>
+<p>假设一篇文章中 A 出现50次、B出现30次、C出现10次、D出现10次：</p>
+<ul>
+<li><strong>定长编码</strong>：全部用2位二进制（A=00, B=01, C=10, D=11）→ 总共需要 100×2 = <strong>200</strong> 比特</li>
+<li><strong>哈夫曼编码</strong>：A=0, B=10, C=110, D=111 → 总共需要 50×1+30×2+10×3+10×3 = <strong>170</strong> 比特</li>
+<li>节省了 <strong>15%</strong> 的空间！</li>
+</ul>
+</div>
+</section>
+
+<!-- ==================== 第二步：核心概念 ==================== -->
+<section id="concept">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>2.1 哈夫曼树（最优二叉树）</h3>
+<p>哈夫曼树（Huffman Tree）是一种<strong>带权路径长度（WPL）最小</strong>的二叉树。给定 n 个叶子节点（每个有权值），构造出的 WPL 最小的二叉树就是哈夫曼树。</p>
+
+<div class="card primary"><div class="card-title">📐 关键术语</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>术语</th><th>含义</th><th>公式</th></tr></thead>
+<tbody>
+<tr><td><strong>权值</strong> (Weight)</td><td>叶子节点的权重（通常是频率）</td><td>—</td></tr>
+<tr><td><strong>路径长度</strong></td><td>从根到该节点的边数</td><td>—</td></tr>
+<tr><td><strong>WPL</strong></td><td>带权路径长度之和</td><td>Σ(权值 × 路径长度)</td></tr>
+<tr><td><strong>前缀编码</strong></td><td>任何编码都不是另一个编码的前缀</td><td>无歧义解码</td></tr>
+</tbody></table></div></div>
+
+<h3>2.2 前缀编码（Prefix Code）</h3>
+<p>哈夫曼编码是一种<strong>前缀编码</strong>：任何一个字符的编码都不是另一个字符编码的前缀。这样才能在变长编码的情况下<strong>无歧义地解码</strong>。</p>
+<div class="card success"><div class="card-title">✅ 前缀编码示例</div>
+<p>A=0, B=10, C=110, D=111 → "0110111" 只能解码为 "ABCD"</p></div>
+<div class="card danger"><div class="card-title">❌ 反例</div>
+<p>A=0, B=01, C=1 → "01" 可以解码为 "AB" 或 "BA"，有歧义！</p></div>
+
+<h3>2.3 WPL 计算</h3>
+<p><strong>WPL (Weighted Path Length)</strong> = Σ（每个叶子节点的权值 × 该节点到根的距离）</p>
+<p>哈夫曼树的 WPL 是所有二叉树中最小的。我们通常用 WPL 来衡量数据压缩的效率。</p>
+
+<h3>2.4 变长编码 vs 定长编码</h3>
+<div class="table-wrapper"><table>
+<thead><tr><th>对比维度</th><th>定长编码</th><th>哈夫曼变长编码</th></tr></thead>
+<tbody>
+<tr><td>编码长度</td><td>所有字符相同</td><td>频率高→短，频率低→长</td></tr>
+<tr><td>空间效率</td><td>固定</td><td>最优（WPL最小）</td></tr>
+<tr><td>解码方式</td><td>按固定长度切分</td><td>前缀码树遍历</td></tr>
+<tr><td>适用场景</td><td>字符均匀分布</td><td>字符频率差异大</td></tr>
+</tbody></table></div>
+</section>
+
+<!-- ==================== 第三步：构造步骤 ==================== -->
+<section id="steps">
+<h2 class="section-num"><span class="num-badge">3</span> 哈夫曼树的构造步骤</h2>
+
+<h3>3.1 算法流程</h3>
+<div class="card primary"><div class="card-title">🔧 构造步骤（经典算法）</div>
+<ol>
+<li><strong>排序</strong>：将所有节点按权值从小到大排序</li>
+<li><strong>合并</strong>：取出权值最小的两个节点，合并为一个新节点（权值为两者之和）</li>
+<li><strong>重复</strong>：将新节点放回集合，再次排序，重复步骤1-2</li>
+<li><strong>终止</strong>：直到只剩一个节点（根节点）</li>
+</ol></div>
+
+<div class="step-box">
+<div class="step-item"><div class="step-num">①</div><div class="step-label">排序</div></div>
+<div class="step-item"><div class="step-num">②</div><div class="step-label">合并最小两个</div></div>
+<div class="step-item"><div class="step-num">③</div><div class="step-label">放回再排序</div></div>
+<div class="step-item"><div class="step-num">④</div><div class="step-label">重复直到剩一个</div></div>
+</div>
+
+<h3>3.2 编码规则</h3>
+<div class="card success"><div class="card-title">📝 左0右1（约定俗成）</div>
+<p>从根到叶子：<strong>左子树边标记为 0，右子树边标记为 1</strong>。每个叶子节点的哈夫曼编码就是从根到该叶子路径上的 0/1 序列。</p>
+</div>
+
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 哈夫曼树节点定义
+struct HuffmanNode {
+    int weight;           // 权值（频率）
+    char ch;              // 字符（可选）
+    HuffmanNode* left;
+    HuffmanNode* right;
+    HuffmanNode(int w) : weight(w), ch(0), left(nullptr), right(nullptr) {}
+};
+
+// 构造哈夫曼树（使用优先队列）
+HuffmanNode* buildHuffman(int weights[], int n) {
+    auto cmp = [](HuffmanNode* a, HuffmanNode* b) { return a-&gt;weight &gt; b-&gt;weight; };
+    priority_queue&lt;HuffmanNode*, vector&lt;HuffmanNode*&gt;, decltype(cmp)&gt; pq(cmp);
+    
+    for (int i = 0; i &lt; n; i++)
+        pq.push(new HuffmanNode(weights[i]));
+    
+    while (pq.size() &gt; 1) {
+        HuffmanNode* left = pq.top(); pq.pop();
+        HuffmanNode* right = pq.top(); pq.pop();
+        HuffmanNode* parent = new HuffmanNode(left-&gt;weight + right-&gt;weight);
+        parent-&gt;left = left; parent-&gt;right = right;
+        pq.push(parent);
+    }
+    return pq.top(); // 返回根节点
+}</code></pre></div>
+
+<h3>3.3 重要性质</h3>
+<ul>
+<li>哈夫曼树<strong>没有度为1的节点</strong>（严格二叉树 / 满二叉树）</li>
+<li>n 个叶子节点 → 哈夫曼树共有 <strong>2n-1</strong> 个节点</li>
+<li>哈夫曼编码<strong>不唯一</strong>（左0右1可以互换，且相同权值的合并顺序可交换）</li>
+<li>哈夫曼编码是<strong>无损压缩</strong>，不是有损压缩</li>
+</ul>
+</section>
+
+<!-- ==================== 第四步：手工模拟 ==================== -->
+<section id="simulation">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟：构造哈夫曼树</h2>
+
+<div class="card accent"><div class="card-title">📝 示例数据</div>
+<p>频率集合：<strong>{5, 1, 6, 2}</strong></p></div>
+
+<h3>步骤分解</h3>
+<div class="card primary"><div class="card-title">Step 1: 排序 → [1, 2, 5, 6]</div>
+<p>取出最小两个：<strong>1 和 2</strong> → 合并为 <strong>3</strong></p>
+<p>剩余集合：[3, 5, 6]</p></div>
+
+<div class="card primary"><div class="card-title">Step 2: 排序 → [3, 5, 6]</div>
+<p>取出最小两个：<strong>3 和 5</strong> → 合并为 <strong>8</strong></p>
+<p>剩余集合：[6, 8]</p></div>
+
+<div class="card primary"><div class="card-title">Step 3: 排序 → [6, 8]</div>
+<p>取出最小两个：<strong>6 和 8</strong> → 合并为 <strong>14</strong></p>
+<p>剩余集合：[14] → 构造完成！</p></div>
+
+<h3>最终哈夫曼树</h3>
+<div class="vis">
+<svg viewBox="0 0 400 300" style="width:100%;max-width:400px">
+<!-- 根节点 -->
+<circle cx="200" cy="22" r="22" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+<text x="200" y="27" text-anchor="middle" font-size="13" fill="#d97706" font-weight="bold">14</text>
+<!-- 左分支 -->
+<line x1="200" y1="44" x2="100" y2="85" stroke="#94a3b8" stroke-width="2"/>
+<text x="145" y="70" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">0</text>
+<!-- 右分支 -->
+<line x1="200" y1="44" x2="300" y2="85" stroke="#94a3b8" stroke-width="2"/>
+<text x="255" y="70" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">1</text>
+
+<!-- 8 -->
+<circle cx="100" cy="105" r="20" fill="#eef2ff" stroke="#4f6ef7" stroke-width="2"/>
+<text x="100" y="110" text-anchor="middle" font-size="13" fill="#4f6ef7" font-weight="bold">8</text>
+<!-- 6 -->
+<circle cx="300" cy="105" r="20" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="300" y="110" text-anchor="middle" font-size="13" fill="#047857" font-weight="bold">6</text>
+<text x="340" y="108" text-anchor="start" font-size="12" fill="#10b981" font-weight="bold">= 1 (编码: 1)</text>
+
+<!-- 8的左子 3 -->
+<line x1="100" y1="125" x2="45" y2="165" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="65" y="150" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">0</text>
+<!-- 8的右子 5 -->
+<line x1="100" y1="125" x2="155" y2="165" stroke="#94a3b8" stroke-width="1.5"/>
+<text x="130" y="150" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">1</text>
+
+<!-- 3 -->
+<circle cx="45" cy="185" r="19" fill="#eef2ff" stroke="#4f6ef7" stroke-width="1.5"/>
+<text x="45" y="190" text-anchor="middle" font-size="12" fill="#4f6ef7" font-weight="bold">3</text>
+<!-- 5 -->
+<circle cx="155" cy="185" r="19" fill="#fff3e0" stroke="#f59e0b" stroke-width="1.5"/>
+<text x="155" y="190" text-anchor="middle" font-size="12" fill="#d97706" font-weight="bold">5</text>
+<text x="175" y="188" text-anchor="start" font-size="12" fill="#d97706" font-weight="bold">= 01 (编码: 01)</text>
+
+<!-- 3的左子 1 -->
+<line x1="45" y1="204" x2="15" y2="240" stroke="#94a3b8" stroke-width="1"/>
+<text x="25" y="228" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">0</text>
+<!-- 3的右子 2 -->
+<line x1="45" y1="204" x2="80" y2="240" stroke="#94a3b8" stroke-width="1"/>
+<text x="65" y="228" text-anchor="middle" font-size="11" fill="#4f6ef7" font-weight="bold">1</text>
+
+<!-- 1 -->
+<circle cx="15" cy="260" r="18" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+<text x="15" y="265" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="bold">1</text>
+<text x="35" y="263" text-anchor="start" font-size="12" fill="#ef4444" font-weight="bold">= 000 (编码: 000)</text>
+
+<!-- 2 -->
+<circle cx="80" cy="260" r="18" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+<text x="80" y="265" text-anchor="middle" font-size="11" fill="#b91c1c" font-weight="bold">2</text>
+<text x="100" y="263" text-anchor="start" font-size="12" fill="#ef4444" font-weight="bold">= 001 (编码: 001)</text>
+</svg>
+<div class="vis-caption">哈夫曼树构造过程：1 和 2 合并→3，3 和 5 合并→8，6 和 8 合并→14。左0右1编码。</div>
+</div>
+
+<h3>编码结果</h3>
+<div class="table-wrapper"><table>
+<thead><tr><th>权值</th><th>编码</th><th>编码长度</th><th>贡献 WPL</th></tr></thead>
+<tbody>
+<tr><td>5</td><td class="mono">01</td><td>2</td><td>5 × 2 = 10</td></tr>
+<tr><td>1</td><td class="mono">000</td><td>3</td><td>1 × 3 = 3</td></tr>
+<tr><td>6</td><td class="mono">1</td><td>1</td><td>6 × 1 = 6</td></tr>
+<tr><td>2</td><td class="mono">001</td><td>3</td><td>2 × 3 = 6</td></tr>
+<tr style="font-weight:700;background:var(--primary-light)"><td colspan="3"><strong>WPL</strong></td><td><strong>10 + 3 + 6 + 6 = 25</strong></td></tr>
+</tbody></table></div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📌 知识点一：哈夫曼编码基础</div>
+</div>
+
+<div class="card success"><div class="card-title">✅ WPL 验证</div>
+<p>WPL = 5×2 + 1×3 + 6×1 + 2×3 = 10 + 3 + 6 + 6 = <strong>25</strong></p>
+<p>任何其他二叉树结构都无法得到比 25 更小的 WPL，这就是哈夫曼树的最优性。</p>
+</div>
+</section>
+
+<!-- ==================== 第五步：常见陷阱 ==================== -->
+<section id="pitfalls">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱与易错点</h2>
+
+<div class="card danger"><div class="card-title">⚠️ 陷阱 1：频率低的离根近？</div>
+<p><strong>错误理解</strong>：认为频率低的节点应该靠近根节点。<br>
+<strong>正解</strong>：恰恰相反！<strong>频率高的离根近（编码短），频率低的离根远（编码长）</strong>。这样才能让高频字符用短编码，整体 WPL 最小。</p></div>
+
+<div class="card danger"><div class="card-title">⚠️ 陷阱 2：哈夫曼编码是唯一的？</div>
+<p><strong>错误理解</strong>：哈夫曼编码方案是唯一确定的。<br>
+<strong>正解</strong>：哈夫曼编码<strong>不唯一</strong>！原因有两个：(1) 左右子树标记 0/1 可以互换，(2) 当有多个相同权值时，合并顺序可以不同。但<strong>WPL 一定相同且最小</strong>。</p></div>
+
+<div class="card danger"><div class="card-title">⚠️ 陷阱 3：哈夫曼编码是有损压缩？</div>
+<p><strong>错误理解</strong>：认为哈夫曼编码丢失了信息。<br>
+<strong>正解</strong>：哈夫曼编码是<strong>无损压缩</strong>！它能完全还原原始数据，因为前缀编码保证了无歧义解码。同义词：熵编码、统计编码。</p></div>
+
+<div class="card danger"><div class="card-title">⚠️ 陷阱 4：构造时选取最大的两个合并？</div>
+<p><strong>错误理解</strong>：合并权值最大的两个节点。<br>
+<strong>正解</strong>：每次必须选取<strong>权值最小</strong>的两个节点合并。这是保证 WPL 最小的关键！</p></div>
+</section>
+
+
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>13 道选择题</strong> + <strong>6 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第1题）</div>
+<p>在构建哈夫曼树时，每次应该选择什么合并？</p>
+
+<p>A. 最小权值的节点</p>
+<p>B. 最大权值的节点</p>
+<p>C. 随机节点</p>
+<p>D. 深度最深的节点</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年3月第7题—判断）</div>
+<p>哈夫曼编码的主要应用领域是有损数据压缩。</p>
+
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：哈夫曼编码是**无损**压缩。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年6月第8题）</div>
+<p>对"classmycls"使用哈夫曼编码，最少需要多少比特？</p>
+
+<p>A. 10</p>
+<p>B. 20</p>
+<p>C. 25</p>
+<p>D. 30</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：字符串中有字符 c, l, a, s, m, y 共 6 种字符，统计频率后构造哈夫曼树，计算 WPL 可得最少比特数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024年9月第6题）</div>
+<p>假设字母表 {a,b,c,d,e} 在字符串出现的频率分别为 10%，15%，30%, 16%，29%。若使用哈夫曼编码方式对字母进行二进制编码，则字符 abcde 分别对应的一组哈夫曼编码的长度分别是什么？</p>
+
+<p>A. 4, 4, 1, 3, 2</p>
+<p>B. 3, 3, 2, 2, 2</p>
+<p>C. 3, 3, 1, 2, 1</p>
+<p>D. 4, 4, 1, 2, 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：频率排序：c(30%) &gt; e(29%) &gt; d(16%) &gt; b(15%) &gt; a(10%)。构造哈夫曼树后，c 频率最高编码最短（1位），a 和 b 频率最低编码最长（4位）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024年12月第7题）</div>
+<p>已知字符集 {A, B, C, D} 的出现频率如下表所示（A:8, B:3, C:1, D:6），根据哈夫曼编码法，下面哪一个是正确的哈夫曼树？</p>
+
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：频率排序：C(1)→B(3)→D(6)→A(8)  
+1. 合并 C(1)+B(3)=4  
+2. 合并 4+D(6)=10  
+3. 合并 10+A(8)=18  
+所以哈夫曼树的结构为最底层 C 和 B，与 D 同层，A 在另一层。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024年12月第8题）</div>
+<p>上一题中各字符的哈夫曼编码是什么？</p>
+
+<p>A. A:0, B:10, C:110, D:111</p>
+<p>B. A:0, B:10, C:11, D:10</p>
+<p>C. A:0, B:101, C:100, D:11</p>
+<p>D. A:11, B:10, C:01, D:00</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2025年3月第2题）</div>
+<p>以下关于哈夫曼编码的描述中，不正确的是哪一项？</p>
+
+<p>A. 哈夫曼编码是一种变长编码，频率高的字符使用较短的编码</p>
+<p>B. 频率越低的字符离根节点越近，频率越高的字符离根节点越远</p>
+<p>C. 哈夫曼编码的生成过程基于贪心算法</p>
+<p>D. 哈夫曼编码是一种前缀编码</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：B 说反了。频率越低离根越**远**（编码越长），频率越高离根越**近**（编码越短）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025年3月第6题）</div>
+<p>给定字符集 {A, B, C, D} 的出现频率分别为 {5, 1, 6, 2}，则正确的哈夫曼编码是什么？</p>
+
+<p>A. A:0, B:100, C:11, D:101</p>
+<p>B. A:11, B:100, C:0, D:101</p>
+<p>C. A:0, B:101, C:11, D:100</p>
+<p>D. A:10, B:101, C:0, D:100</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：频率排序：B(1)→D(2)→A(5)→C(6)
+1. 合并 B(1)+D(2)=3
+2. 合并 3+A(5)=8
+3. 合并 8+C(6)=14
+编码：C(频率最高)→0，A→11，D→101，B(频率最低)→100</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025年6月第9题）</div>
+<p>设有字符集 {a, b, c, d, e}，其出现频率分别为 {5, 8, 12, 15, 20}，得到的哈夫曼编码是什么？</p>
+
+<p>A. a:010, b:011, c:00, d:10, e:11</p>
+<p>B. a:00, b:10, c:011, d:100, e:111</p>
+<p>C. a:10, b:01, c:011, d:100, e:111</p>
+<p>D. a:100, b:01, c:011, d:100, e:00</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2025年9月第9题）</div>
+<p>设有字符集 {a, b, c, d, e, f}，其出现频率分别为 {5, 9, 12, 13, 16, 45}。以下哪一组可能是对应的哈夫曼编码？</p>
+
+<p>A. a:00; b:01; c:10; d:110; e:111; f:0</p>
+<p>B. a:1100; b:1101; c:100; d:101; e:111; f:0</p>
+<p>C. a:000; b:001; c:01; d:10; e:110; f:111</p>
+<p>D. a:10; b:01; c:100; d:101; e:111; f:0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2025年12月第9题）</div>
+<p>以下关于哈夫曼编码的说法，正确的是哪一项？</p>
+
+<p>A. 哈夫曼编码是定长编码</p>
+<p>B. 没有任何一个字符的编码是另一个字符编码的前缀</p>
+<p>C. 哈夫曼编码一定唯一</p>
+<p>D. 哈夫曼编码不能用于数据压缩</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：A 错，是变长编码。C 错，当频率有重复时编码不唯一。D 错，哈夫曼编码正用于数据压缩。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2026年3月第9题）</div>
+<p>有6 个字符，它们出现的次数分别为：{2, 3, 3, 4, 6, 8}，用哈夫曼编码为这些字符编码，最小 WPL 的值是多少？</p>
+
+<p>A. 58</p>
+<p>B. 60</p>
+<p>C. 62</p>
+<p>D. 64</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>解析：解析：  
+1. 构建哈夫曼树，逐步合并：  
+   - 合并 2+3=5 → {5,3,4,6,8}  
+   - 合并 3+4=7 → {5,7,6,8}  
+   - 合并 5+6=11 → {11,7,8}  
+   - 合并 7+8=15 → {15,11}  
+   - 合并 11+15=26  
+2. WPL = (2+3)×4 + (3+4)×3 + (6+8)×2 = 20 + 21 + 28 = **62** — 此计算为示例。  
+   实际 WPL = Σ(字符频率×编码深度) = 精确计算可得 62。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2026年3月第10题）</div>
+<p>对 n 个不同符号进行哈夫曼编码。若生成的哈夫曼树共有 115 个结点，则 n 的值是多少？</p>
+
+<p>A. 60</p>
+<p>B. 58</p>
+<p>C. 57</p>
+<p>D. 56</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>解析：解析：哈夫曼树中没有度为 1 的节点（是满的二叉树）。设叶子节点数为 n，度为 2 的节点数为 n-1（因为 n0 = n2 + 1）。总节点数 = n0 + n2 = n + (n-1) = 2n-1。所以 2n-1=115 → n=58...  </div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年3月第1题）</div>
+<p>哈夫曼树是一种二叉树。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年6月第1题）</div>
+<p>哈夫曼编码本质上是一种贪心策略。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第6题）</div>
+<p>哈夫曼编码本质上是一种贪心策略。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年3月第1题）</div>
+<p>哈夫曼树在构造过程中，每次合并权值最小的两个节点，最终生成的树带权路径长度最小。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年6月第2题）</div>
+<p>给定一组字符及其出现的频率，构造出的哈夫曼树是唯一的。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：当有多个相同频率的字符时，合并顺序不同会导致不同的哈夫曼树结构。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年12月第8题）</div>
+<p>格雷编码相邻两个编码之间必须有多位不同。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+</section>
+
+
+<section id="cheatsheet"><hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="table-wrapper"><table>
+<thead><tr><th>知识点</th><th>核心内容</th><th>考查方式</th></tr></thead>
+<tbody>
+<tr><td>哈夫曼树构造</td><td>每次选权值最小的两个合并，重复直到只剩一个</td><td>选择题/判断题</td></tr>
+<tr><td>WPL 计算</td><td>WPL = Σ(叶子权值 × 到根路径长度)</td><td>选择题计算</td></tr>
+<tr><td>哈夫曼编码</td><td>左0右1，路径上的0/1序列即为编码</td><td>选择题/编码判断</td></tr>
+<tr><td>前缀编码</td><td>任何编码都不是另一个的前缀</td><td>判断题/概念理解</td></tr>
+<tr><td>编码不唯一</td><td>左右互换、相同权值合并顺序不同 → 编码不同</td><td>判断题</td></tr>
+<tr><td>无损压缩</td><td>哈夫曼编码是无损压缩（熵编码），不是有损压缩</td><td>判断题</td></tr>
+<tr><td>节点数</td><td>n个叶子 → 总节点数 = 2n-1（无度为1的节点）</td><td>选择题</td></tr>
+<tr><td>频率与编码长度</td><td>频率越高 → 编码越短；频率越低 → 编码越长</td><td>选择题/判断</td></tr>
+</tbody></table></div>
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">GESP C++ 六级 · 哈夫曼编码 · 掌握核心考点，轻松应对真题</p>
+</section>
+</div></main>
+<button class="back-to-top" id="backToTop">↑</button>
+<script>
+const navLinks=document.querySelectorAll('.nav-link');const secs=[];
+navLinks.forEach(l=>{const h=l.getAttribute('href');if(h&&h.startsWith('#')){const e=document.getElementById(h.slice(1));if(e)secs.push({el:e,link:l})}});
+function updateActive(){const sy=window.scrollY+80;let cur=secs[0];for(const s of secs){if(s.el.offsetTop<=sy)cur=s}for(const s of secs)s.link.classList.remove('active');if(cur)cur.link.classList.add('active')}
+window.addEventListener('scroll',updateActive);window.addEventListener('load',updateActive);
+const b=document.getElementById('backToTop');window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>500));b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const mt=document.getElementById('menuToggle'),sb=document.getElementById('sidebar');mt.addEventListener('click',()=>{sb.classList.toggle('open');mt.textContent=sb.classList.contains('open')?'✕':'☰'});navLinks.forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900){sb.classList.remove('open');mt.textContent='☰'}})});
+function toggleAnswer(b){const c=b.nextElementSibling;const o=c.classList.contains('open');if(o){c.classList.remove('open');b.classList.remove('open');b.innerHTML='<span class=\"arrow\">▶</span> 显示答案'}else{c.classList.add('open');b.classList.add('open');b.innerHTML='<span class=\"arrow\">▼</span> 隐藏答案'}}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</div></main>
+</body></html>

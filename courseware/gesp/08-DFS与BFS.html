@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GESP六级培训 · DFS与BFS</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}h1 .sub{display:block;font-size:1rem;font-weight:400;color:var(--text-secondary);margin-top:6px}
+.subtitle-main{color:var(--text-tertiary);font-size:15px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);padding-left:16px;border-left:4px solid var(--primary);border-bottom:none;padding-bottom:0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;background:linear-gradient(135deg,var(--primary-light),#fff);font-size:14.5px}.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.highlight-box p:last-child{margin-bottom:0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.think-box p:last-child{margin-bottom:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}.warning-box p:last-child{margin-bottom:0}.warning-box .code-block{margin:10px 0}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}.tip-box p:last-child{margin-bottom:0}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}.card p:last-child{margin-bottom:0}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.table-wrapper{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.inline-code{font-family:var(--font-mono);background:var(--surface-alt);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);border:1px solid var(--border-light)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}hr.divider.dashed{border-top-style:dashed}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.back-to-top.visible{display:flex}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}.goal-box ul{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}.tag-green{background:var(--success-light);color:var(--success)}.tag-red{background:var(--danger-light);color:var(--danger)}.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:600px;opacity:1}.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+.vis{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.vis svg{max-width:100%;height:auto}.vis-caption{font-size:13px;color:var(--text-tertiary);margin-top:8px}
+@media(max-width:900px){
+nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}
+.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+nav.sidebar::-webkit-scrollbar{width:4px}nav.sidebar::-webkit-scrollbar-track{background:transparent}nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head><body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><span class="icon">🌲</span> GESP 六级 · DFS/BFS</div>
+<div class="nav-section"><div class="nav-section-title">教学流程</div>
+<a class="nav-link active" href="#intro">第一步：生活引入</a>
+<a class="nav-link" href="#core">第二步：核心概念</a>
+<a class="nav-link" href="#code">第三步：代码实现</a>
+<a class="nav-link" href="#simulate">第四步：手工模拟</a>
+<a class="nav-link" href="#traps">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">🌲 GESP C++ 六级 · DFS 与 BFS</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">深度优先搜索、广度优先搜索、栈实现、队列实现</p>
+</div>
+
+<section id="intro">
+<h2 class="section-num"><span class="num-badge">1</span> 第一讲：生活比喻——建立直觉</h2>
+<div class="goal-box"><h3>🎯 学习目标</h3><ol>
+<li>理解 DFS 与 BFS 的本质区别：栈 vs 队列</li>
+<li>掌握 DFS 递归实现三种遍历顺序</li>
+<li>掌握 DFS 非递归（栈）和 BFS（队列）的代码模板</li>
+<li>能通过手工模拟分析遍历过程</li>
+</ol></div>
+
+<h3>🧩 走迷宫（DFS）</h3>
+<p>想象你走进一个巨大的迷宫。你的策略是：选一条路<strong>一直走到头</strong>，走不通了就<strong>原路退回上一个岔路口</strong>，换另一条路继续走。这就是<strong>深度优先搜索（DFS）</strong>——"一条路走到黑再回头"。</p>
+<div class="card primary"><div class="card-title">📌 DFS 的核心数据结构：<strong>栈</strong></div>
+<p>每次走到岔路口，把能走的方向<strong>压入栈</strong>（记下来）；走不通时从栈中<strong>弹出</strong>上一个位置，回溯继续探索。整个过程符合"后进先出（LIFO）"。</p></div>
+
+<h3>🌊 水波扩散（BFS）</h3>
+<p>往平静的湖面扔一块石头，水波会以石头为中心<strong>一圈一圈向外扩散</strong>——先覆盖最近的区域，再逐步扩展到更远的地方。这就是<strong>广度优先搜索（BFS）</strong>——"层层推进"。</p>
+<div class="card success"><div class="card-title">📌 BFS 的核心数据结构：<strong>队列</strong></div>
+<p>初始节点入队，每次取<strong>队首</strong>节点访问，将其相邻节点<strong>加入队尾</strong>。整个过程符合"先进先出（FIFO）"，保证按距离递增顺序访问。</p></div>
+
+<div class="vis">
+<svg viewBox="0 0 500 160" style="width:100%;max-width:500px">
+<rect x="10" y="10" width="220" height="140" rx="8" fill="#eef2ff" stroke="#4f6ef7" stroke-width="1.5" stroke-dasharray="4"/>
+<text x="120" y="35" text-anchor="middle" font-size="14" fill="#4f6ef7" font-weight="bold">DFS → 栈 (Stack)</text>
+<text x="120" y="60" text-anchor="middle" font-size="12" fill="#5a6072">后进先出 (LIFO)</text>
+<text x="120" y="85" text-anchor="middle" font-size="13" fill="#1a1d28">push/pop</text>
+<text x="120" y="110" text-anchor="middle" font-size="12" fill="#5a6072">一条路走到黑 → 回溯</text>
+<rect x="270" y="10" width="220" height="140" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4"/>
+<text x="380" y="35" text-anchor="middle" font-size="14" fill="#10b981" font-weight="bold">BFS → 队列 (Queue)</text>
+<text x="380" y="60" text-anchor="middle" font-size="12" fill="#5a6072">先进先出 (FIFO)</text>
+<text x="380" y="85" text-anchor="middle" font-size="13" fill="#1a1d28">push / front / pop</text>
+<text x="380" y="110" text-anchor="middle" font-size="12" fill="#5a6072">一圈一圈层层推进</text>
+</svg>
+<div class="vis-caption">两种搜索范式：DFS = 栈（LIFO），BFS = 队列（FIFO）</div>
+</div>
+</section>
+
+<section id="core">
+<h2 class="section-num"><span class="num-badge">2</span> 第二讲：核心概念</h2>
+
+<h3>DFS —— 深度优先搜索</h3>
+<p>DFS 沿着树的一条分支一直往下走，走到叶子（或无子节点）后回溯到最近的有未访问子节点的祖先节点。实现方式有两种：<strong>递归</strong>（系统栈）和 <strong>显式栈</strong>（手动维护）。</p>
+
+<div class="card primary"><div class="card-title">📌 DFS 的三种遍历顺序</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>遍历方式</th><th>访问顺序</th><th>特点</th><th>栈中节点变化（递归版）</th></tr></thead>
+<tbody>
+<tr><td><strong>先序</strong></td><td>根 → 左 → 右</td><td>先访问根，再递归左右</td><td>先压右子，再压左子（或不用压）</td></tr>
+<tr><td><strong>中序</strong></td><td>左 → 根 → 右</td><td>BST中序有序</td><td>一路向左到底再处理</td></tr>
+<tr><td><strong>后序</strong></td><td>左 → 右 → 根</td><td>最后访问根</td><td>需额外标记第二次访问</td></tr>
+</tbody></table></div></div>
+
+<h3>BFS —— 广度优先搜索</h3>
+<p>BFS 按<strong>层</strong>遍历树：先访问根节点（第1层），然后访问第2层所有节点，再第3层……直到最后一层。同一层内按从左到右顺序访问。</p>
+
+<div class="card success"><div class="card-title">📌 BFS 遍历顺序：按层逐层输出</div>
+<p>例如树：根=1，左子=2，右子=3 → BFS顺序：<span class="mono">1 2 3</span><br>
+若树为：1(左=2,右=3)，2(左=4,右=5)，3(左=6,右=7) → BFS顺序：<span class="mono">1 2 3 4 5 6 7</span></p></div>
+
+<section id="traversal-compare">
+<h3>DFS 与 BFS 对比总结</h3>
+<div class="table-wrapper"><table>
+<thead><tr><th>特性</th><th>DFS</th><th>BFS</th></tr></thead>
+<tbody>
+<tr><td><strong>数据结构</strong></td><td>栈（显式或递归系统栈）</td><td>队列</td></tr>
+<tr><td><strong>特点</strong></td><td>沿一条分支深入，回溯</td><td>按层次逐层访问</td></tr>
+<tr><td><strong>应用</strong></td><td>先/中/后序遍历、路径搜索</td><td>层序遍历、最短路径</td></tr>
+<tr><td><strong>时间复杂度</strong></td><td>O(n)</td><td>O(n)</td></tr>
+<tr><td><strong>空间复杂度</strong></td><td>O(h)，h为树高</td><td>O(w)，w为树的最大宽度</td></tr>
+</tbody></table></div>
+</section>
+</section>
+
+<section id="code">
+<h2 class="section-num"><span class="num-badge">3</span> 第三讲：代码实现</h2>
+
+<section id="dfs-recursive">
+<h3>DFS 递归实现——三种遍历</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// 先序遍历：根 → 左 → 右
+void preorder(TreeNode* root) {
+    if (!root) return;
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";        // 访问根
+    preorder(root-&gt;left);             // 递归左子树
+    preorder(root-&gt;right);            // 递归右子树
+}
+
+// 中序遍历：左 → 根 → 右
+void inorder(TreeNode* root) {
+    if (!root) return;
+    inorder(root-&gt;left);              // 递归左子树
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";        // 访问根
+    inorder(root-&gt;right);             // 递归右子树
+}
+
+// 后序遍历：左 → 右 → 根
+void postorder(TreeNode* root) {
+    if (!root) return;
+    postorder(root-&gt;left);            // 递归左子树
+    postorder(root-&gt;right);           // 递归右子树
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";        // 访问根
+}</code></pre></div>
+<div class="card accent"><div class="card-title">💡 记忆口诀</div>
+<p><strong>先序</strong>：根左右 — 先访问根，再访问左子树，最后右子树<br>
+<strong>中序</strong>：左根右 — 先访问左子树，再访问根，最后右子树<br>
+<strong>后序</strong>：左右根 — 先访问左子树，再访问右子树，最后访问根</p>
+<p><strong>快速识别</strong>：根的位置决定了遍历名称——根在前面是先序，在中间是中序，在最后是后序。</p></div>
+</section>
+
+<section id="dfs-stack">
+<h3>DFS 非递归实现（显式栈）—— 先序遍历</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 先序遍历（栈实现）
+void preorderStack(TreeNode* root) {
+    if (!root) return;
+    stack&lt;TreeNode*&gt; s;
+    s.push(root);                     // 根节点入栈
+    while (!s.empty()) {
+        TreeNode* node = s.top();     // 取栈顶
+        s.pop();                      // 弹出
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";    // 访问
+        if (node-&gt;right) s.push(node-&gt;right);  // 先压右(后访问)
+        if (node-&gt;left)  s.push(node-&gt;left);   // 后压左(先访问)
+    }
+}
+
+// 中序遍历（栈实现）
+void inorderStack(TreeNode* root) {
+    stack&lt;TreeNode*&gt; s;
+    TreeNode* cur = root;
+    while (cur || !s.empty()) {
+        while (cur) {                 // 一路向左
+            s.push(cur);
+            cur = cur-&gt;left;
+        }
+        cur = s.top(); s.pop();        // 弹出
+        cout &lt;&lt; cur-&gt;val &lt;&lt; " ";     // 访问
+        cur = cur-&gt;right;              // 转向右子树
+    }
+}
+
+// 后序遍历（栈实现，双栈法）
+void postorderStack(TreeNode* root) {
+    if (!root) return;
+    stack&lt;TreeNode*&gt; s1, s2;
+    s1.push(root);
+    while (!s1.empty()) {
+        TreeNode* node = s1.top(); s1.pop();
+        s2.push(node);                 // 利用s2反转顺序
+        if (node-&gt;left)  s1.push(node-&gt;left);
+        if (node-&gt;right) s1.push(node-&gt;right);
+    }
+    while (!s2.empty()) {
+        cout &lt;&lt; s2.top()-&gt;val &lt;&lt; " ";
+        s2.pop();
+    }
+}</code></pre></div>
+<div class="card danger"><div class="card-title">⚠️ 关键细节</div>
+<p><strong>先序遍历栈实现中</strong>：先压右子节点，再压左子节点。因为栈是 LIFO，<strong>后压的节点先出栈</strong>，这样左子节点会先于右子节点被访问，符合"根→左→右"的顺序。</p></div>
+</section>
+
+<section id="bfs-queue">
+<h3>BFS 实现（队列）—— 层序遍历</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// BFS 层序遍历（队列实现）
+void bfs(TreeNode* root) {
+    if (!root) return;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);                     // 根节点入队
+    while (!q.empty()) {
+        TreeNode* node = q.front();   // 取队首
+        q.pop();                      // 弹出队首
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";    // 访问
+        if (node-&gt;left)  q.push(node-&gt;left);   // 左子入队
+        if (node-&gt;right) q.push(node-&gt;right);  // 右子入队
+    }
+}
+
+// 层序遍历——按层输出（统计每层宽度）
+void bfsLevelOrder(TreeNode* root) {
+    if (!root) return;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        int levelSize = q.size();       // 当前层节点数
+        for (int i = 0; i &lt; levelSize; i++) {
+            TreeNode* node = q.front(); q.pop();
+            cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+            if (node-&gt;left)  q.push(node-&gt;left);
+            if (node-&gt;right) q.push(node-&gt;right);
+        }
+        cout &lt;&lt; endl;                 // 每层输出换行
+    }
+}</code></pre></div>
+<div class="card primary"><div class="card-title">📌 BFS 关键点：<span class="inline-code">q.front()</span> + <span class="inline-code">q.pop()</span></div>
+<p>BFS 使用队列：<span class="inline-code">q.front()</span> 获取队首节点（最早入队的），<span class="inline-code">q.pop()</span> 将其弹出。子节点从左到右依次 <span class="inline-code">q.push()</span> 入队。这样保证了同一层内从左到右、层与层之间从上到下的访问顺序。</p></div>
+
+<div class="card success"><div class="card-title">📐 DFS 非递归与 BFS 代码对比</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>操作</th><th>DFS（栈）</th><th>BFS（队列）</th></tr></thead>
+<tbody>
+<tr><td>获取待访问节点</td><td><span class="inline-code">s.top()</span></td><td><span class="inline-code">q.front()</span></td></tr>
+<tr><td>移除节点</td><td><span class="inline-code">s.pop()</span></td><td><span class="inline-code">q.pop()</span></td></tr>
+<tr><td>加入子节点</td><td><span class="inline-code">s.push(...)</span></td><td><span class="inline-code">q.push(...)</span></td></tr>
+<tr><td>子节点加入顺序</td><td>先压右、再压左</td><td>左子、右子依次入队</td></tr>
+<tr><td>访问顺序特点</td><td>沿分支深入再回溯</td><td>按层逐层推进</td></tr>
+</tbody></table></div></div>
+</section>
+</section>
+
+<section id="simulate">
+<h2 class="section-num"><span class="num-badge">4</span> 第四讲：手工模拟</h2>
+
+<h3>示例树结构</h3>
+<p>我们使用下面这棵二叉树进行手工模拟：</p>
+<div class="vis">
+<svg viewBox="0 0 450 230" style="width:100%;max-width:450px">
+<circle cx="225" cy="25" r="20" fill="#eef2ff" stroke="#4f6ef7" stroke-width="2.5"/><text x="225" y="30" text-anchor="middle" font-size="14" fill="#4f6ef7" font-weight="bold">1</text>
+<line x1="225" y1="45" x2="125" y2="85" stroke="#94a3b8" stroke-width="1.8"/>
+<line x1="225" y1="45" x2="325" y2="85" stroke="#94a3b8" stroke-width="1.8"/>
+<circle cx="125" cy="105" r="18" fill="#eef2ff" stroke="#4f6ef7" stroke-width="1.8"/><text x="125" y="110" text-anchor="middle" font-size="13" fill="#4f6ef7" font-weight="bold">2</text>
+<circle cx="325" cy="105" r="18" fill="#eef2ff" stroke="#4f6ef7" stroke-width="1.8"/><text x="325" y="110" text-anchor="middle" font-size="13" fill="#4f6ef7" font-weight="bold">3</text>
+<line x1="125" y1="123" x2="55" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="125" y1="123" x2="195" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="325" y1="123" x2="255" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+<line x1="325" y1="123" x2="395" y2="160" stroke="#94a3b8" stroke-width="1.5"/>
+<circle cx="55" cy="183" r="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.3"/><text x="55" y="188" text-anchor="middle" font-size="11" fill="#5a6072">4</text>
+<circle cx="195" cy="183" r="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.3"/><text x="195" y="188" text-anchor="middle" font-size="11" fill="#5a6072">5</text>
+<circle cx="255" cy="183" r="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.3"/><text x="255" y="188" text-anchor="middle" font-size="11" fill="#5a6072">6</text>
+<circle cx="395" cy="183" r="16" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.3"/><text x="395" y="188" text-anchor="middle" font-size="11" fill="#5a6072">7</text>
+</svg>
+<div class="vis-caption">完全二叉树：根1 → 左右子2/3 → 4/5/6/7</div>
+</div>
+
+<h3>BFS 访问过程模拟</h3>
+<div class="card primary"><div class="card-title">📌 队列变化过程（→表示入队，←表示出队）</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>步骤</th><th>操作</th><th>队列内容（队首→队尾）</th><th>输出</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>初始化</td><td>[]</td><td>—</td></tr>
+<tr><td>1</td><td>根节点 1 入队</td><td>[1]</td><td>—</td></tr>
+<tr><td>2</td><td>弹出 1 ← 访问 1，左右子入队</td><td>[2, 3]</td><td><strong>1</strong></td></tr>
+<tr><td>3</td><td>弹出 2 ← 访问 2，左右子(4,5)入队</td><td>[3, 4, 5]</td><td>1 <strong>2</strong></td></tr>
+<tr><td>4</td><td>弹出 3 ← 访问 3，左右子(6,7)入队</td><td>[4, 5, 6, 7]</td><td>1 2 <strong>3</strong></td></tr>
+<tr><td>5</td><td>弹出 4 ← 访问 4（无子节点）</td><td>[5, 6, 7]</td><td>1 2 3 <strong>4</strong></td></tr>
+<tr><td>6</td><td>弹出 5 ← 访问 5（无子节点）</td><td>[6, 7]</td><td>1 2 3 4 <strong>5</strong></td></tr>
+<tr><td>7</td><td>弹出 6 ← 访问 6（无子节点）</td><td>[7]</td><td>1 2 3 4 5 <strong>6</strong></td></tr>
+<tr><td>8</td><td>弹出 7 ← 访问 7（无子节点）</td><td>[]</td><td>1 2 3 4 5 6 <strong>7</strong></td></tr>
+</tbody></table></div>
+<p>BFS 输出：<span class="mono" style="font-size:16px">1 2 3 4 5 6 7</span></p></div>
+
+<h3>DFS 先序遍历（非递归-栈）模拟</h3>
+<div class="primary card"><div class="card-title">📌 栈变化过程</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>步骤</th><th>操作</th><th>栈内容（栈顶→栈底）</th><th>输出</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>初始化，1入栈</td><td>[1]</td><td>—</td></tr>
+<tr><td>1</td><td>← 弹1访问1，压右3、再压左2</td><td>[2, 3]</td><td><strong>1</strong></td></tr>
+<tr><td>2</td><td>← 弹2访问2，压右5、再压左4</td><td>[4, 5, 3]</td><td>1 <strong>2</strong></td></tr>
+<tr><td>3</td><td>← 弹4访问4（无子节点）</td><td>[5, 3]</td><td>1 2 <strong>4</strong></td></tr>
+<tr><td>4</td><td>← 弹5访问5（无子节点）</td><td>[3]</td><td>1 2 4 <strong>5</strong></td></tr>
+<tr><td>5</td><td>← 弹3访问3，压右7、再压左6</td><td>[6, 7]</td><td>1 2 4 5 <strong>3</strong></td></tr>
+<tr><td>6</td><td>← 弹6访问6（无子节点）</td><td>[7]</td><td>1 2 4 5 3 <strong>6</strong></td></tr>
+<tr><td>7</td><td>← 弹7访问7（无子节点）</td><td>[]</td><td>1 2 4 5 3 6 <strong>7</strong></td></tr>
+</tbody></table></div>
+<p>DFS 先序输出：<span class="mono" style="font-size:16px">1 2 4 5 3 6 7</span></p></div>
+
+<div class="card accent"><div class="card-title">🔍 三种遍历对比（基于同一棵树）</div>
+<div class="table-wrapper"><table>
+<thead><tr><th>遍历方式</th><th>输出顺序</th></tr></thead>
+<tbody>
+<tr><td><strong>先序</strong>（根左右）</td><td>1 2 4 5 3 6 7</td></tr>
+<tr><td><strong>中序</strong>（左根右）</td><td>4 2 5 1 6 3 7</td></tr>
+<tr><td><strong>后序</strong>（左右根）</td><td>4 5 2 6 7 3 1</td></tr>
+<tr><td><strong>BFS/层序</strong></td><td>1 2 3 4 5 6 7</td></tr>
+</tbody></table></div>
+</div>
+
+<div class="vis">
+<svg viewBox="0 0 500 140" style="width:100%;max-width:500px">
+<text x="250" y="25" text-anchor="middle" font-size="14" fill="#4f6ef7" font-weight="bold">完整遍历顺序示意图</text>
+<text x="50" y="55" font-size="12" fill="#3b54d4" font-weight="bold">先序</text><text x="100" y="55" font-size="12" fill="#1a1d28">1 → 2 → 4 → 5 → 3 → 6 → 7</text>
+<text x="50" y="80" font-size="12" fill="#047857" font-weight="bold">中序</text><text x="100" y="80" font-size="12" fill="#1a1d28">4 → 2 → 5 → 1 → 6 → 3 → 7</text>
+<text x="50" y="105" font-size="12" fill="#d97706" font-weight="bold">后序</text><text x="100" y="105" font-size="12" fill="#1a1d28">4 → 5 → 2 → 6 → 7 → 3 → 1</text>
+<text x="50" y="130" font-size="12" fill="#10b981" font-weight="bold">BFS</text><text x="100" y="130" font-size="12" fill="#1a1d28">1 → 2 → 3 → 4 → 5 → 6 → 7</text>
+</svg>
+<div class="vis-caption">先序第一个是根(1)，后序最后一个是根(1)，中序根在中间，BFS从根层开始逐层展开</div>
+</div>
+</section>
+
+<section id="traps">
+<h2 class="section-num"><span class="num-badge">5</span> 第五讲：常见陷阱</h2>
+
+<div class="card danger"><div class="card-title">🔴 陷阱 1：DFS 用队列辅助</div>
+<p>有的同学在写 DFS 非递归时，错误地使用了队列而不是栈。记住：<strong>DFS = 栈</strong>（LIFO），<strong>BFS = 队列</strong>（FIFO）。把 DFS 写成 <span class="inline-code">queue.push(...); queue.front(); queue.pop()</span> 实际上是 BFS，结果会变成层序遍历。</p></div>
+
+<div class="card danger"><div class="card-title">🔴 陷阱 2：混淆 <span class="inline-code">front()</span> 与 <span class="inline-code">top()</span></div>
+<p><span class="inline-code">stack</span> 用 <span class="inline-code">.top()</span> 获取栈顶元素，<span class="inline-code">queue</span> 用 <span class="inline-code">.front()</span> 获取队首元素。二者混用会导致编译错误或取到错误元素。</p>
+<ul>
+<li>✅ DFS 栈实现：<span class="inline-code">s.top()</span> + <span class="inline-code">s.pop()</span></li>
+<li>✅ BFS 队列实现：<span class="inline-code">q.front()</span> + <span class="inline-code">q.pop()</span></li>
+<li>❌ 二者不可互换</li>
+</ul></div>
+
+<div class="card danger"><div class="card-title">🔴 陷阱 3：先序遍历栈实现中压栈顺序</div>
+<p>先序遍历非递归（栈实现）时，需要<strong>先压右子节点、再压左子节点</strong>。因为栈是后进先出，后压的左子节点会先出栈访问，从而保证"根→左→右"的顺序。如果搞反了就变成"根→右→左"了。</p></div>
+
+<div class="card danger"><div class="card-title">🔴 陷阱 4：BFS 使用 <span class="inline-code">stack</span></div>
+<p>BFS 必须使用队列，有人错误地使用 <span class="inline-code">stack</span> 来做"层序遍历"，结果输出变成了类似逆序的遍历，完全不符合层序要求。<strong>队列的先进先出特性</strong>才能保证"先进入的节点先被访问"。</p></div>
+
+<div class="card danger"><div class="card-title">🔴 陷阱 5：忘记处理空子树</div>
+<p>无论是 DFS 还是 BFS，在将子节点入栈/入队前，必须检查该子节点是否存在（<span class="inline-code">if (node->left) ...</span>）。将 <span class="inline-code">nullptr</span> 入栈/入队会导致后续访问空指针错误。</p></div>
+</section>
+
+<section 
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>18 道选择题</strong> + <strong>5 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第8题）</div>
+<p>使用 BFS 遍历以下这棵树，可能的输出是什么？</p>
+<div class="code-block"><span class="lang-tag">Tree</span>
+<pre><code class="language-plaintext">        1
+       / \
+      2   3
+     / \   \
+    8   9   6
+       / \   \
+      4   5   7
+             / \
+            10  11</code></pre></div>
+
+<p>A. 1 2 8 9 4 5 3 6 7 10 11</p>
+<p>B. 1 2 3 4 5 6 7 8 9 10 11</p>
+<p>C. 1 2 3 8 9 4 5 7 6 10 11</p>
+<p>D. 1 2 3 8 9 6 4 5 7 10 11</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：BFS 按层从左到右依次访问，1→2,3→8,9,6→4,5,7→10,11。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年3月第6题—判断）</div>
+<p>在宽度优先搜索中，通常使用队列来辅助实现。</p>
+
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年6月第13题）</div>
+<p>阅读以下 BFS 代码，在给出的二叉树中搜索数值5时，可能的输出是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">struct TreeNode {
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+// 宽度优先搜索（BFS）迭代实现
+TreeNode* bfs(TreeNode* root, int a) {
+    if (root == nullptr) return nullptr;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode* node = q.front();
+        q.pop();
+        if (node-&gt;val == a) return node;
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+        if (node-&gt;left) q.push(node-&gt;left);
+        if (node-&gt;right) q.push(node-&gt;right);
+    }
+    return nullptr;
+}</code></pre></div>
+<div class="code-block"><span class="lang-tag">Tree</span>
+<pre><code class="language-plaintext">      5
+     / \
+    2   17
+   / \   \
+ -4  3    9</code></pre></div>
+
+<p>A. 5 2 -4 3 17 9</p>
+<p>B. -4 2 3 5 9 17</p>
+<p>C. 5 2 17 -4 3 9</p>
+<p>D. 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024年6月第14题）</div>
+<p>同上题中的二叉树，阅读以下非递归 DFS 代码，搜索数值5时，可能的输出是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 非递归深度优先搜索（DFS）
+TreeNode* dfs(TreeNode* root, int a) {
+    if (root == nullptr) return nullptr;
+    stack&lt;TreeNode*&gt; stk;
+    stk.push(root);
+    while (!stk.empty()) {
+        TreeNode* node = stk.top();
+        stk.pop();
+        if (node-&gt;val == a) return node;
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+        if (node-&gt;right) stk.push(node-&gt;right);
+        if (node-&gt;left) stk.push(node-&gt;left);
+    }
+    return nullptr;
+}</code></pre></div>
+
+<p>A. 5 2 -4 3 17 9</p>
+<p>B. -4 2 3 5 9 17</p>
+<p>C. 5 2 17 -4 3 9</p>
+<p>D. 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：DFS 先序遍历方向为根→左→右，用栈辅助，先压右再压左。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024年12月第11题）</div>
+<p>阅读 DFS 代码，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void dfs(TreeNode* root) {
+    if (root == nullptr) return;
+    stack&lt;TreeNode*&gt; s;
+    s.push(root);
+    while (!s.empty()) {
+        ____________________ // 在此处填入代码
+        cout &lt;&lt; node-&gt;value &lt;&lt; " ";
+        if (node-&gt;right) s.push(node-&gt;right);
+        if (node-&gt;left) s.push(node-&gt;left);
+    }
+}</code></pre></div>
+<p>A. TreeNode* node = s.top();</p>
+<p>B. TreeNode* node = s.top(); s.pop();</p>
+<p>C. TreeNode* node = s.front();</p>
+<p>D. TreeNode* node = s.front(); s.pop();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024年12月第12题）</div>
+<p>阅读 BFS 代码，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void bfs(TreeNode* root) {
+    if (root == NULL) return;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        ____________________ // 在此处填入代码
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+        if (node-&gt;left) q.push(node-&gt;left);
+        if (node-&gt;right) q.push(node-&gt;right);
+    }
+}</code></pre></div>
+<p>A. TreeNode* node = q.top();</p>
+<p>B. TreeNode* node = q.top(); q.pop();</p>
+<p>C. TreeNode* node = q.front();</p>
+<p>D. TreeNode* node = q.front(); q.pop();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2025年3月第3题）</div>
+<p>以下代码实现了树的哪种遍历方式？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void traverse(TreeNode* root) {
+    if (root == nullptr) return;
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+    traverse(root-&gt;left);
+    traverse(root-&gt;right);
+}</code></pre></div>
+<p>A. 前序遍历</p>
+<p>B. 中序遍历</p>
+<p>C. 后序遍历</p>
+<p>D. 层次遍历</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025年3月第10题）</div>
+<p>DFS 统计叶子结点数量，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int countLeafNodes(TreeNode* root) {
+    stack&lt;TreeNode*&gt; s;
+    s.push(root);
+    int count = 0;
+    while (!s.empty()) {
+        TreeNode* node = s.top(); s.pop();
+        if (node-&gt;left == nullptr &amp;&amp; node-&gt;right == nullptr) count++;
+        if (node-&gt;right) s.push(node-&gt;right);
+        ____________________ // 在此处填入代码
+    }
+    return count;
+}</code></pre></div>
+<p>A. if (node-&gt;left) s.push(node-&gt;left);</p>
+<p>B. if (node-&gt;left) s.pop(node-&gt;left);</p>
+<p>C. if (node-&gt;left) s.front(node-&gt;left);</p>
+<p>D. if (node-&gt;left) s.push(node-&gt;right);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025年3月第11题）</div>
+<p>BFS 查找特定值节点，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">TreeNode* findNode(TreeNode* root, int target) {
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode* current = q.front(); q.pop();
+        if (current-&gt;val == target) return current;
+        ____________________ // 在此处填入代码
+    }
+    return nullptr;
+}</code></pre></div>
+<p>A. if (current-&gt;left) q.push(current-&gt;left); if (current-&gt;right) q.push(current-&gt;right);</p>
+<p>B. if (current-&gt;left) q.pop(current-&gt;left); if (current-&gt;right) q.pop(current-&gt;right);</p>
+<p>C. if (current-&gt;left) q.front(current-&gt;left); if (current-&gt;right) q.front(current-&gt;right);</p>
+<p>D. if (current-&gt;left) q.push(current-&gt;right); if (current-&gt;right) q.push(current-&gt;left);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2025年6月第11题）</div>
+<p>DFS 代码补充完整，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void dfs(TreeNode* root, vector&lt;int&gt;&amp; result) {
+    if (root == nullptr) return;
+    __________________________
+}</code></pre></div>
+<p>A. result.push_back(root-&gt;left-&gt;val); dfs(root-&gt;left); dfs(root-&gt;right);</p>
+<p>B. result.push_back(root-&gt;left-&gt;val); dfs(root-&gt;right); dfs(root-&gt;left);</p>
+<p>C. result.push_back(root-&gt;val); dfs(root-&gt;left); dfs(root-&gt;right);</p>
+<p>D. result.push_back(root-&gt;right-&gt;val); dfs(root-&gt;right); dfs(root-&gt;left);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2025年6月第12题）</div>
+<p>BFS 返回每层最大节点值，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;int&gt; largestValues(TreeNode* root) {
+    vector&lt;int&gt; result;
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        int sz = q.size();
+        int maxVal = INT_MIN;
+        for (int i = 0; i &lt; sz; ++i) {
+            TreeNode* node;
+            _______________________________
+            maxVal = max(maxVal, node-&gt;val);
+            if (node-&gt;left) q.push(node-&gt;left);
+            if (node-&gt;right) q.push(node-&gt;right);
+        }
+        result.push_back(maxVal);
+    }
+    return result;
+}</code></pre></div>
+<p>A. node = q.end();</p>
+<p>B. node = q.front();</p>
+<p>C. q.pop(); node = q.front();</p>
+<p>D. node = q.front(); q.pop();</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2025年9月第11题）</div>
+<p>DFS 代码补充完整，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void dfs(TreeNode* root) {
+    if (!root) return;
+    ______&lt;TreeNode*&gt; temp;  // 在此处填写代码
+    temp.push(root);
+    while (!temp.empty()) {
+        TreeNode* node = temp.top();
+        temp.pop();
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+        if (node-&gt;right) temp.push(node-&gt;right);
+        if (node-&gt;left) temp.push(node-&gt;left);
+    }
+}</code></pre></div>
+<p>A. vector</p>
+<p>B. list</p>
+<p>C. queue</p>
+<p>D. stack</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：DFS 非递归使用栈（stack）作为辅助数据结构。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2025年9月第12题）</div>
+<p>BFS 的时间复杂度是什么？</p>
+
+<p>A. O(n)</p>
+<p>B. O(n²)</p>
+<p>C. O(log n)</p>
+<p>D. O(n log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>解析：解析：BFS 需要访问每个节点恰好一次，所以时间复杂度为 O(n)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 14（2025年12月第7题）</div>
+<p>以下代码实现了二叉树的什么遍历？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void traverse(TreeNode* root) {
+    if (!root) return;
+    traverse(root-&gt;left);
+    traverse(root-&gt;right);
+    cout &lt;&lt; root-&gt;val &lt;&lt; " ";
+}</code></pre></div>
+<p>A. 前序遍历</p>
+<p>B. 中序遍历</p>
+<p>C. 后序遍历</p>
+<p>D. 层序遍历</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 15（2025年12月第11题）</div>
+<p>DFS 横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void dfs(TreeNode* root) {
+    if (!root) return;
+    stack&lt;TreeNode*&gt; st;
+    st.push(root);
+    while (!st.empty()) {
+        TreeNode* node = st.top(); st.pop();
+        cout &lt;&lt; node-&gt;val &lt;&lt; " ";
+        if (node-&gt;right) st.push(node-&gt;right);
+        ________________________
+    }
+}</code></pre></div>
+<p>A. if (node-&gt;left) st.push(node-&gt;left);</p>
+<p>B. if (node-&gt;left) st.pop(node-&gt;left);</p>
+<p>C. if (node-&gt;left) st.front(node-&gt;left);</p>
+<p>D. if (node-&gt;left) st.push(node-&gt;right);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 16（2025年12月第12题）</div>
+<p>BFS 查找节点，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">TreeNode* bfsFind(TreeNode* root, int x) {
+    queue&lt;TreeNode*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        TreeNode* cur = q.front(); q.pop();
+        if (cur-&gt;val == x) return cur;
+        ________________________
+    }
+    return nullptr;
+}</code></pre></div>
+<p>A. if (cur-&gt;left) q.push(cur-&gt;left); if (cur-&gt;right) q.push(cur-&gt;right);</p>
+<p>B. q.push(cur-&gt;left); q.push(cur-&gt;right);</p>
+<p>C. if (cur-&gt;right) q.push(cur-&gt;right);</p>
+<p>D. q.push(cur);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 17（2026年3月第12题）</div>
+<p>BFS 返回右视图，横线处应填入什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;int&gt; rightSideView(TreeNode* root) {
+    // ...
+    while (!nodeQueue.empty()) {
+        TreeNode* node = nodeQueue.front(); nodeQueue.pop();
+        int depth = depthQueue.front(); depthQueue.pop();
+        if (node != NULL) {
+            max_depth = max(max_depth, depth);
+            rightmostValueAtDepth[depth] = node-&gt;val;
+            nodeQueue.push(node-&gt;left);
+            nodeQueue.push(node-&gt;right);
+            depthQueue.push(________);
+            depthQueue.push(________);
+        }
+    }
+    // ...
+}</code></pre></div>
+<p>A. depth, depth</p>
+<p>B. depth + 1, depth + 1</p>
+<p>C. depth + 1, depth</p>
+<p>D. depth, depth + 1</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 18（2026年3月第13题）</div>
+<p>下列关于树的 DFS 的说法中，正确的是（ ）。</p>
+
+<p>A. 对树进行 DFS 时，一定是按层从上到下依次访问结点</p>
+<p>B. 对任意一棵树进行 DFS，得到的遍历序列唯一</p>
+<p>C. 对一棵树进行 DFS 时，常借助递归或栈实现</p>
+<p>D. DFS 只能用于二叉树，不能用于普通树</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年6月第9题）</div>
+<p>在深度优先搜索中，通常使用队列来辅助实现。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：DFS 使用栈，BFS 使用队列。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第8题）</div>
+<p>在非递归实现的树的广度优先搜索中，通常使用栈来辅助实现。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：BFS 使用队列而非栈。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年3月第3题）</div>
+<p>在树的深度优先搜索（DFS）中，使用队列作为辅助数据结构。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年6月第9题）</div>
+<p>在树的深度优先搜索（DFS）中，使用栈作为辅助数据结构。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年12月第4题）</div>
+<p>广度优先遍历二叉树可用栈来实现。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong></div></div>
+</div>
+
+</section>
+
+<section id="cheatsheet"><hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="table-wrapper"><table>
+<thead><tr><th>知识点</th><th>一句话总结</th><th>常考形式</th></tr></thead>
+<tbody>
+<tr><td>DFS 本质</td><td>深度优先，一条路走到底再回溯</td><td>概念理解</td></tr>
+<tr><td>DFS 数据结构</td><td>栈（递归用系统栈，非递归用显式栈 <span class="inline-code">stack</span>）</td><td>代码填空</td></tr>
+<tr><td>DFS 核心操作</td><td><span class="inline-code">s.top()</span> + <span class="inline-code">s.pop()</span></td><td>代码填空</td></tr>
+<tr><td>DFS 先序非递归</td><td>先压右、再压左（保证左子树先访问）</td><td>选择/填空</td></tr>
+<tr><td>DFS 递归三种遍历</td><td>先根左右，中左根右，后左右根</td><td>代码/序列</td></tr>
+<tr><td>BFS 本质</td><td>广度优先，按层逐层推进</td><td>概念理解</td></tr>
+<tr><td>BFS 数据结构</td><td>队列 <span class="inline-code">queue</span></td><td>代码填空</td></tr>
+<tr><td>BFS 核心操作</td><td><span class="inline-code">q.front()</span> + <span class="inline-code">q.pop()</span></td><td>代码填空</td></tr>
+<tr><td>BFS 子节点入队</td><td>左子先入、右子后入（保证从左到右）</td><td>代码填空</td></tr>
+<tr><td>时间复杂度</td><td>DFS 和 BFS 均为 O(n)</td><td>选择</td></tr>
+<tr><td>空间复杂度</td><td>DFS 最差 O(h)，BFS 最差 O(w)</td><td>概念</td></tr>
+</tbody></table></div>
+
+<div class="card accent"><div class="card-title">🔑 核心口诀</div>
+<p><strong>DFS用栈，BFS用队；栈看top，队看front；先序先压右再压左，BFS先入左再入右；时间复杂度都是O(n)，空间DFS看高度BFS看宽度。</strong></p></div>
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">下一讲预告：图论基础</p>
+</section>
+</div></main>
+<button class="back-to-top" id="backToTop">↑</button>
+<script>
+const navLinks=document.querySelectorAll('.nav-link');const secs=[];
+navLinks.forEach(l=>{const h=l.getAttribute('href');if(h&&h.startsWith('#')){const e=document.getElementById(h.slice(1));if(e)secs.push({el:e,link:l})}});
+function updateActive(){const sy=window.scrollY+80;let cur=secs[0];for(const s of secs){if(s.el.offsetTop<=sy)cur=s}for(const s of secs)s.link.classList.remove('active');if(cur)cur.link.classList.add('active')}
+window.addEventListener('scroll',updateActive);window.addEventListener('load',updateActive);
+const b=document.getElementById('backToTop');window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>500));b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const mt=document.getElementById('menuToggle'),sb=document.getElementById('sidebar');mt.addEventListener('click',()=>{sb.classList.toggle('open');mt.textContent=sb.classList.contains('open')?'✕':'☰'});navLinks.forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900){sb.classList.remove('open');mt.textContent='☰'}})});
+function toggleAnswer(b){const c=b.nextElementSibling;const o=c.classList.contains('open');if(o){c.classList.remove('open');b.classList.remove('open');b.innerHTML='<span class=\"arrow\">▶</span> 显示答案'}else{c.classList.add('open');b.classList.add('open');b.innerHTML='<span class=\"arrow\">▶</span> 隐藏答案'}}
+
+// Card Color Cycling
+document.addEventListener('DOMContentLoaded',function(){const colors=['purple','pink','teal','indigo','orange'];const cards=document.querySelectorAll('#step6>.card.success');cards.forEach((card,i)=>{card.classList.remove('success');card.classList.add(colors[i%colors.length])})});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</div></main>
+</body></html>

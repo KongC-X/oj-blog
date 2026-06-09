@@ -1,0 +1,810 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 6.4 数论与编码型阅读</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.obj-warn{font-size:.78rem;color:#dc2626;background:#fef2f2;padding:4px 10px;border-radius:6px;margin-top:8px;display:inline-block}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}.code-block .grn{color:#34d399}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.judge{background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.answer-box .explain .ok{display:inline-block;padding:0 6px;background:var(--success-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--success-dark);font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.step-box .step .sn.accent{background:var(--accent-dark)}.step-box .step .sn.green{background:var(--success-dark)}.step-box .step .sn.red{background:var(--danger)}
+.step-box .step .sn.purple{background:#8b5cf6}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.bs-viz .lb{color:#2563eb;font-weight:600}
+.bs-viz .rb{color:#dc2626;font-weight:600}
+.bs-viz .mb{color:#8b5cf6;font-weight:600}
+.bs-viz .yl{color:#d97706;font-weight:600}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🧮</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题六 · 程序阅读真题解析</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 2021 阅读 2</div>
+<a class="nav-link" href="#s1">Base64 解码程序</a>
+<a class="nav-link sub" href="#s1a">原理 &amp; 代码模拟</a>
+<a class="nav-link sub" href="#s1b">真题精讲</a>
+
+<div class="nav-section">2 · 2025 阅读 1</div>
+<a class="nav-link" href="#s2">gcd 互质三元组</a>
+<a class="nav-link sub" href="#s2a">代码分步模拟</a>
+<a class="nav-link sub" href="#s2b">真题精讲</a>
+
+<div class="nav-section">3 · 2025 阅读 4</div>
+<a class="nav-link" href="#s3">RLE 行程编码</a>
+<a class="nav-link sub" href="#s3a">完善填空分析</a>
+<a class="nav-link sub" href="#s3b">真题精讲</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 速查表 · 总结</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题六 · 程序阅读真题解析</a> / 6.4</div>
+    <h1>数论与编码型阅读</h1>
+    <p class="subtitle">Base64 解码 · gcd 互质三元组 · RLE 行程编码 — 编码类 &amp; 数论类阅读题全覆盖</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 近年新考向</span>
+      <span class="meta-tag exam">📖 真题 3 套</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 12 道核心题</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 2021 阅读 2：Base64 解码原理（4 字符 → 3 字节）及代码模拟</span>
+      <span class="item">✅ 2025 阅读 1：gcd 辗转相除法 + 三重循环求互质三元组个数</span>
+      <span class="item">✅ 2025 阅读 4：RLE 行程编码解码原理 + 完善填空 5 处推导</span>
+      <span class="item">✅ 编码类阅读识别特征：查表、映射、位拆分 → 编解码</span>
+      <span class="item">✅ 数论类阅读常见模式：gcd、素数判断、互质检测</span>
+      <span class="item">✅ 12 道真题级题目 + 点击显示答案 + 详细解析</span>
+    </div>
+    <div class="obj-warn">⚠️ 编码类阅读（Base64 / RLE）是 2021、2025 年新增考向，务必掌握其解码映射逻辑</div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、2021 阅读 2 — Base64 解码程序 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>2021 阅读 2 — Base64 解码程序</h2>
+
+  <p class="kp-text">
+    <strong>2021 年 CSP-J 阅读程序第 2 题</strong>考查的是 <strong>Base64 解码</strong>算法。
+    Base64 是一种用 64 个可打印字符来表示任意二进制数据的编码方式。
+    它将每 <strong>3 个字节</strong>（24 位）的数据分成 <strong>4 组</strong>，
+    每组 <strong>6 位</strong>，映射到 <span class="c">base[64]</span> 编码表中的对应字符。
+  </p>
+
+  <h3 class="kp-title" id="s1a">Base64 编码表 &amp; 解码原理</h3>
+
+  <div class="card primary">
+    <div class="card-title">Base64 索引表（base[64]）</div>
+    <p class="kp-text">
+      <span class="c">base[0]='A'</span>, <span class="c">base[1]='B'</span>, ..., <span class="c">base[25]='Z'</span><br>
+      <span class="c">base[26]='a'</span>, <span class="c">base[27]='b'</span>, ..., <span class="c">base[51]='z'</span><br>
+      <span class="c">base[52]='0'</span>, <span class="c">base[53]='1'</span>, ..., <span class="c">base[61]='9'</span><br>
+      <span class="c">base[62]='+'</span>, <span class="c">base[63]='/'</span>
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 解码核心流程：</strong>每 4 个字符 → 查 base[] 得到 4 个 6 位值 → 拼接成 24 位 → 拆分为 3 个字节（8 位）。
+    如果编码时末尾有填充字符 '='，表示最后一个分组不足 3 字节，解码时需做特殊处理。
+  </div>
+
+  <div class="bs-viz">编码示意图（3 字节 → 4 字符）：
++--------+--------+--------+
+| 字节 1  | 字节 2  | 字节 3  |    24 位原始数据
++--------+--------+--------+
+| 6位 | 6位 | 6位 | 6位 |        每个 6 位查表
++----+----+----+----+
+| c1  | c2  | c3  | c4  |          4 个 Base64 字符</div>
+
+  <h3 class="kp-title">2021 阅读 2 程序代码</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2021 真题 · 阅读程序第 2 题</span>
+      <span class="exam-badge judge">判断题 + 选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~3 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;cstring&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">const</span> <span class="kw">char</span> base[] = <span class="str">"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"</span>;
+
+<span class="kw">int</span> <span class="blue">pos</span>(<span class="kw">char</span> c) {
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; <span class="num">64</span>; i++) {
+        <span class="kw">if</span> (base[i] == c) <span class="kw">return</span> i;
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">char</span> s[<span class="num">100</span>];
+    cin &gt;&gt; s;
+    <span class="kw">int</span> len = strlen(s);
+    <span class="kw">int</span> pad = <span class="num">0</span>;
+    <span class="kw">if</span> (len % <span class="num">4</span> != <span class="num">0</span>) <span class="kw">return</span> <span class="num">1</span>;
+    <span class="kw">if</span> (len &gt; <span class="num">0</span> && s[len-<span class="num">1</span>] == <span class="str">'='</span>) pad++;
+    <span class="kw">if</span> (len &gt; <span class="num">1</span> && s[len-<span class="num">2</span>] == <span class="str">'='</span>) pad++;
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; len; i += <span class="num">4</span>) {
+        <span class="kw">int</span> a[<span class="num">4</span>];
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; <span class="num">4</span>; j++) {
+            a[j] = pos(s[i + j]);
+        }
+        <span class="kw">int</span> val = (a[<span class="num">0</span>] &lt;&lt; <span class="num">18</span>) | (a[<span class="num">1</span>] &lt;&lt; <span class="num">12</span>)
+                | (a[<span class="num">2</span>] &lt;&lt; <span class="num">6</span>) | a[<span class="num">3</span>];
+        <span class="kw">unsigned char</span> b[<span class="num">3</span>];
+        b[<span class="num">0</span>] = (val &gt;&gt; <span class="num">16</span>) & <span class="num">0xFF</span>;
+        b[<span class="num">1</span>] = (val &gt;&gt; <span class="num">8</span>) & <span class="num">0xFF</span>;
+        b[<span class="num">2</span>] = val & <span class="num">0xFF</span>;
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; <span class="num">3</span> - pad; j++) {
+            cout &lt;&lt; b[j];
+        }
+    }
+    cout &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <!-- ===== 真题精讲 ===== -->
+    <h3 class="kp-title" id="s1b" style="margin-top:12px;font-size:.95rem;">真题精讲 · 3 问</h3>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>输入字符串长度一定为 4 的倍数，否则程序返回 1。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('b64q1')">点击显示答案</div>
+    <div class="answer-box" id="b64q1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>代码第 13 行 <span class="c">if (len % 4 != 0) return 1;</span> 明确检查了长度是否为 4 的倍数。
+        Base64 编码后的字符串长度必定是 4 的倍数（包括填充字符 '='），因此该判断合法。
+        若长度不满足条件，程序直接返回 1（异常退出）。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>若输入字符串为 <span class="c">"TWFu"</span>（对应 Base64 编码），则输出解码后的内容是？<br>
+    （提示：'T'→19, 'W'→22, 'F'→5, 'u'→46）</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> "Man"</span>
+      <span class="opt"><span class="letter">B</span> "Mbn"</span>
+      <span class="opt"><span class="letter">C</span> "Nao"</span>
+      <span class="opt"><span class="letter">D</span> "Lan"</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('b64q2')">点击显示答案</div>
+    <div class="answer-box" id="b64q2">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>手动模拟解码流程：<br><br>
+        <span class="ok">Step 1:</span> a[0]=19, a[1]=22, a[2]=5, a[3]=46（通过 <span class="c">pos()</span> 查表得到）<br>
+        <span class="ok">Step 2:</span> val = (19&lt;&lt;18) | (22&lt;&lt;12) | (5&lt;&lt;6) | 46<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;二进制：19=010011, 22=010110, 5=000101, 46=101110<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;拼接：010011 010110 000101 101110（24 位）<br>
+        <span class="ok">Step 3:</span> 拆分为 3 字节：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;b[0] = 01001101 = 77 → 'M'<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;b[1] = 01100001 = 97 → 'a'<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;b[2] = 01101110 = 110 → 'n'<br>
+        输出为 <strong>"Man"</strong>，对应选项 A。
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>若输入 <span class="c">"TWFu=="</span>（带 2 个填充符），以下说法正确的是？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> pad=2，最后 3-pad=1，只输出 1 个字节</span>
+      <span class="opt"><span class="letter">B</span> pad=2，最后输出 2 个字节</span>
+      <span class="opt"><span class="letter">C</span> pad=1，最后输出 2 个字节</span>
+      <span class="opt"><span class="letter">D</span> 程序会报错</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('b64q3')">点击显示答案</div>
+    <div class="answer-box" id="b64q3">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        <span class="ok">分析填充逻辑：</span>输入 "TWFu==" 长度 len=6。<br>
+        第 14 行 <span class="c">if (len>0 && s[len-1]=='=') pad++;</span> → s[5]=='=' → pad=1<br>
+        第 15 行 <span class="c">if (len>1 && s[len-2]=='=') pad++;</span> → s[4]=='=' → pad=2<br>
+        最终 <strong>pad=2</strong>。<br><br>
+        第 22 行 <span class="c">for (int j=0; j&lt;3-pad; j++)</span> → 循环 <span class="c">3-2=1</span> 次 → 只输出 <strong>b[0]</strong> 这一个字节。<br><br>
+        这是因为 Base64 中每出现一个 '=' 表示原始数据少了 1 个字节（填充 2 个 '=' 表示原始数据只有 1 个字节）。
+        程序通过 <span class="c">pad</span> 变量控制输出字节数，避免输出填充产生的无效数据。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>编码类阅读识别要点：</strong>看到 <span class="c">base[]</span> 常量字符串 + <span class="c">pos()</span> 查表函数 + 位拼接 <span class="c">&lt;&lt;</span> / <span class="c">|</span> 操作 → <strong>Base64 编解码</strong>。<br>
+      核心规律：4 字符对应 3 字节，每个字符映射为 6 位值，拼接后拆分。'=' 表示填充，pad 控制输出长度。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 二、2025 阅读 1 — gcd 互质三元组 -->
+  <!-- ================================================================== -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>2025 阅读 1 — gcd 互质三元组</h2>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 阅读程序第 1 题</strong>考查的是<strong>欧几里得算法（辗转相除法）</strong>求最大公约数，
+    以及<strong>三重循环枚举</strong>互质三元组的个数。本题是典型的<strong>数论 + 暴力枚举</strong>型阅读题。
+  </p>
+
+  <h3 class="kp-title" id="s2a">知识点：辗转相除法 gcd</h3>
+
+  <div class="card primary">
+    <div class="card-title">欧几里得算法（辗转相除法）</div>
+    <p class="kp-text">
+      <strong>原理：</strong><span class="c">gcd(a, b) = gcd(b, a % b)</span><br>
+      <strong>边界：</strong>当 <span class="c">b == 0</span> 时，<span class="c">gcd(a, 0) = a</span><br>
+      <strong>两个数互质：</strong><span class="c">gcd(a, b) = 1</span>
+    </p>
+  </div>
+
+  <div class="code-block">
+    <span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> a;
+    <span class="kw">return</span> gcd(b, a % b);
+}</div>
+
+  <div class="quote-box">
+    <strong>💡 模拟技巧：</strong>gcd(12, 8) → gcd(8, 4) → gcd(4, 0) → 返回 4。<br>
+    gcd(10, 7) → gcd(7, 3) → gcd(3, 1) → gcd(1, 0) → 返回 1（互质）。
+  </div>
+
+  <h3 class="kp-title">2025 阅读 1 程序代码</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2025 真题 · 阅读程序第 1 题</span>
+      <span class="exam-badge judge">判断题 3 道 + 选择题 3 道</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~6 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">gcd</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> a;
+    <span class="kw">return</span> gcd(b, a % b);
+}
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">int</span> n, cnt = <span class="num">0</span>;
+    cin &gt;&gt; n;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= n; j++) {
+            <span class="kw">for</span> (<span class="kw">int</span> k = <span class="num">1</span>; k &lt;= n; k++) {
+                <span class="kw">if</span> (gcd(i, j) == <span class="num">1</span> && gcd(j, k) == <span class="num">1</span>
+                    && gcd(i, k) == <span class="num">1</span>) {
+                    cnt++;
+                }
+            }
+        }
+    }
+    cout &lt;&lt; cnt &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <h3 class="kp-title" id="s2b" style="margin-top:12px;font-size:.95rem;">真题精讲 · 6 问</h3>
+
+    <!-- 判断题第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>若输入 n=1，则输出为 0。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcda1')">点击显示答案</div>
+    <div class="answer-box" id="gcda1">
+      <div class="ans">答案：✗ 错误</div>
+      <div class="explain">
+        <strong>解析：</strong>n=1 时，i=j=k=1。<br>
+        判断条件为 <span class="c">gcd(1,1)==1 && gcd(1,1)==1 && gcd(1,1)==1</span>。<br>
+        <span class="c">gcd(1,1)</span>：gcd(1,1) → gcd(1,0) → <strong>返回 1</strong>。<br>
+        三个条件都成立，cnt++ 执行一次，<strong>输出 1</strong>，而不是 0。<br>
+        <span class="b">陷阱提示：</span>gcd(1,1)=1，1 和 1 是互质的！要记住 gcd(1,任何数)=1。
+      </div>
+    </div>
+
+    <!-- 判断题第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【判断题】</strong>若 i, j, k 中有任意两个相等，则三者一定不互质。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcda2')">点击显示答案</div>
+    <div class="answer-box" id="gcda2">
+      <div class="ans">答案：✗ 错误</div>
+      <div class="explain">
+        <strong>解析：</strong>反例：i=j=1, k=2。<br>
+        i=j=1，但 gcd(1,1)=1，gcd(1,2)=1，gcd(1,2)=1，三个条件全部成立。<br>
+        所以 i=j=1 且 k=2 时，三者互质，<strong>命题不成立</strong>。<br>
+        <span class="b">注意：</span>只有当相等的数 <strong>&gt; 1</strong> 时，gcd(x, x)=x≠1（x&gt;1），才不互质。
+      </div>
+    </div>
+
+    <!-- 判断题第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【判断题】</strong>将条件 <span class="c">gcd(i, j) == 1</span> 改为 <span class="c">gcd(i, j) &gt; 1</span>，程序输出的是"至少有一对不互质"的三元组个数。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcda3')">点击显示答案</div>
+    <div class="answer-box" id="gcda3">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>修改后的条件是 <span class="c">gcd(i,j)&gt;1 && gcd(j,k)&gt;1 && gcd(i,k)&gt;1</span>，要求<strong>三对都</strong>不互质才计数。
+        而"至少有一对不互质"的反面是"三对都互质"。所以修改后统计的是<strong>三对都不互质</strong>的三元组，
+        <span class="b">不是</span>"至少有一对不互质"。<br><br>
+        <strong>正确定义：</strong><br>
+        - "三对都互质" = gcd(i,j)==1 && gcd(j,k)==1 && gcd(i,k)==1<br>
+        - "至少有一对不互质" = 总三元组数 - "三对都互质"数<br>
+        - "三对都不互质" = gcd(i,j)&gt;1 && gcd(j,k)&gt;1 && gcd(i,k)&gt;1<br>
+        <span class="b">注意区分：</span>"至少有一对不互质"与"三对都不互质"是不同的概念！
+      </div>
+    </div>
+
+    <!-- 选择题第1题 -->
+    <div class="exam-q" style="margin-top:14px;"><strong>4.【选择题】</strong>输入 n=2，输出为多少？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 8</span>
+      <span class="opt"><span class="letter">B</span> 6</span>
+      <span class="opt"><span class="letter">C</span> 4</span>
+      <span class="opt"><span class="letter">D</span> 12</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcdb1')">点击显示答案</div>
+    <div class="answer-box" id="gcdb1">
+      <div class="ans">答案：C</div>
+      <div class="explain">
+        <strong>解析：</strong>n=2，i,j,k 取值范围为 {1, 2}，共 2³=8 种组合。<br><br>
+        枚举全部 8 种组合：
+        <div class="bs-viz" style="font-size:.7rem;margin:6px 0;">
+(1,1,1) → gcd(1,1)=1 ✓ → <span class="green">计数</span>
+(1,1,2) → gcd(1,1)=1, gcd(1,2)=1, gcd(1,2)=1 → <span class="green">计数</span>
+(1,2,1) → 同上 → <span class="green">计数</span>
+(1,2,2) → gcd(1,2)=1, gcd(2,2)=2≠1 ✗ → <span class="dim">不计数</span>
+(2,1,1) → 同(1,1,2) → <span class="green">计数</span>
+(2,1,2) → gcd(2,2)=2≠1 ✗ → <span class="dim">不计数</span>
+(2,2,1) → gcd(2,2)=2≠1 ✗ → <span class="dim">不计数</span>
+(2,2,2) → gcd(2,2)=2≠1 ✗ → <span class="dim">不计数</span>
+        </div>
+        计数 4 个，<strong>答案为 C（4）</strong>。<br>
+        <span class="ok">规律：</span>只有所有数都是 1 或者只有部分数为 2 但必须保证任何一对的 gcd=1 → 实际上就是 <strong>不能同时出现两个 2</strong>。
+      </div>
+    </div>
+
+    <!-- 选择题第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>5.【选择题】</strong>若将第一层循环改为 <span class="c">for (int i = 0; i &lt;= n; i++)</span>，输入 n=1 时的输出为？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 1</span>
+      <span class="opt"><span class="letter">B</span> 0</span>
+      <span class="opt"><span class="letter">C</span> 2</span>
+      <span class="opt"><span class="letter">D</span> 8</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcdb2')">点击显示答案</div>
+    <div class="answer-box" id="gcdb2">
+      <div class="ans">答案：C</div>
+      <div class="explain">
+        <strong>解析：</strong>修改后 i 从 0 到 n（含 0），j、k 仍从 1 开始。<br><br>
+        n=1 时，i 取值范围为 {0, 1}，j=k=1（因为 1≤j≤1, 1≤k≤1），共 2 种组合：<br><br>
+        <strong>(i=0, j=1, k=1)：</strong><br>
+        <span class="c">gcd(0,1)</span> → gcd(1, 0%1=0) → gcd(1,0) → <strong>返回 1</strong><br>
+        <span class="c">gcd(1,1)</span> → gcd(1, 1%1=0) → gcd(1,0) → <strong>返回 1</strong><br>
+        <span class="c">gcd(0,1)</span> = 1<br>
+        三者都 == 1 → ✓ cnt++<br><br>
+        <strong>(i=1, j=1, k=1)：</strong><br>
+        <span class="c">gcd(1,1)=1 && gcd(1,1)=1 && gcd(1,1)=1</span> → ✓ cnt++<br><br>
+        总计数 <strong>cnt = 2</strong>，选 <strong>C（2）</strong>。<br><br>
+        <span class="b">注意：</span>i 从 0 开始时，组合数变为 2×1×1=2 种。不要漏掉 i=0 的情况，且 <span class="c">gcd(0,x)=x</span> 是一个重要边界。
+      </div>
+    </div>
+
+    <!-- 选择题第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>6.【选择题】</strong>函数 <span class="c">gcd</span> 的时间复杂度为？（假设输入参数为 a 和 b，a ≥ b）</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> O(1)</span>
+      <span class="opt"><span class="letter">B</span> O(log(min(a,b)))</span>
+      <span class="opt"><span class="letter">C</span> O(√n)</span>
+      <span class="opt"><span class="letter">D</span> O(a)</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('gcdb3')">点击显示答案</div>
+    <div class="answer-box" id="gcdb3">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>辗转相除法的核心是每次递归调用参数从 (a, b) 变为 (b, a%b)。<br>
+        由于 <span class="c">a % b &lt; a / 2</span>（当 a ≥ b 时），每次递归问题规模至少减半。<br>
+        因此递归次数不超过 <span class="c">O(log min(a,b))</span> 次。<br><br>
+        <strong>举例：</strong>gcd(1000000, 1) 只需要 2 次递归 → gcd(1,0) 返回。<br>
+        <strong>最坏情况：</strong>斐波那契数列相邻项，如 gcd(144, 89) 约需要 10 次递归。<br>
+        因此复杂度为 <strong>O(log(min(a,b)))</strong>。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>数论类阅读识别要点：</strong><br>
+      • 看到 <span class="c">gcd()</span> 函数 + 递归调用 + <span class="c">b==0</span> 边界 → 辗转相除法 / 欧几里得算法<br>
+      • 看到三重循环 + 判断条件中有 <span class="c">gcd(...) == 1</span> → 统计互质 k 元组个数<br>
+      • 边界条件：<span class="c">gcd(1,任何数)=1</span>，<span class="c">gcd(x,x)=x</span>（x≠1 时不互质），<span class="c">gcd(0,x)=x</span></div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 三、2025 阅读 4 — RLE 行程编码（完善填空） -->
+  <!-- ================================================================== -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>2025 阅读 4 — RLE 行程编码（完善填空）</h2>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 阅读程序第 4 题</strong>是<strong>完善程序（完善填空）</strong>题，
+    考查的是 <strong>RLE（Run-Length Encoding，行程编码）</strong>的解码算法。
+    RLE 是一种简单的压缩编码：将连续重复的字符用 <strong>字符 + 重复次数</strong> 表示。
+    例如 <span class="c">"aaabbc"</span> 编码为 <span class="c">"a3b2c1"</span>（或简写为 <span class="c">"a3b2c"</span>）。
+  </p>
+
+  <h3 class="kp-title" id="s3a">RLE 解码原理</h3>
+
+  <div class="card accent">
+    <div class="card-title">编码 → 解码对照</div>
+    <p class="kp-text">
+      <strong>编码：</strong><span class="c">"a3b2c"</span> → 表示 a 重复 3 次，b 重复 2 次，c 重复 1 次（省略了数字 1）<br>
+      <strong>解码：</strong>读取字符，然后读取后面的数字（可能是一位或多位），输出该字符若干次<br>
+      <strong>解码结果：</strong><span class="c">"aaabbc"</span>
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 完善填空解题策略：</strong><br>
+    1. 先通读整段代码，理解算法的整体逻辑（尤其是循环结构）<br>
+    2. 关注填空行<strong>上下文的变量类型</strong>：是 char、int 还是其他？<br>
+    3. 用<strong>具体输入数据模拟</strong>推导每个填空处应该填什么<br>
+    4. 代入后检查是否满足语法正确和逻辑正确
+  </div>
+
+  <h3 class="kp-title">2025 阅读 4 程序代码（完善填空 5 处）</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2025 真题 · 完善程序第 4 题</span>
+      <span class="exam-badge judge">完善填空 5 处</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      以下程序实现 RLE 行程编码的解码。输入编码字符串（如 "a3b2c"），输出解码结果（如 "aaabbc"）。
+      代码中有 5 处填空（①~⑤），请选择正确的选项。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;cstring&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">char</span> s[<span class="num">200</span>];
+    cin &gt;&gt; s;
+    <span class="kw">int</span> len = strlen(s);
+    <span class="kw">int</span> i = <span class="num">0</span>;
+    <span class="kw">while</span> (i &lt; len) {
+        <span class="kw">char</span> ch = s[i];                <span class="cm">// 当前字符</span>
+        i++;                            <span class="cm">// 移到数字部分</span>
+        <span class="kw">int</span> num = <span class="num">0</span>;
+        <span class="kw">while</span> (i &lt; len && ①) {       <span class="cm">// ① 填空</span>
+            num = num * <span class="num">10</span> + (②);     <span class="cm">// ② 填空</span>
+            i++;
+        }
+        <span class="kw">if</span> (num == <span class="num">0</span>) ③;             <span class="cm">// ③ 填空</span>
+        <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt; ④; j++) {  <span class="cm">// ④ 填空</span>
+            cout &lt;&lt; ch;
+        }
+    }
+    cout &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <h3 class="kp-title" id="s3b" style="margin-top:12px;font-size:.95rem;">填空分析 + 真题精讲 · 3 问</h3>
+
+    <div class="card success">
+      <div class="card-title">5 处填空的选项分析</div>
+      <p class="kp-text" style="margin:0;">
+        <strong>①：</strong>A. <span class="c">s[i] >= '0' && s[i] <= '9'</span> &nbsp;|&nbsp; B. <span class="c">s[i] >= 'a' && s[i] <= 'z'</span><br>
+        <strong>②：</strong>A. <span class="c">s[i] - '0'</span> &nbsp;|&nbsp; B. <span class="c">s[i] - 'a'</span> &nbsp;|&nbsp; C. <span class="c">(int)s[i]</span><br>
+        <strong>③：</strong>A. <span class="c">num = 1</span> &nbsp;|&nbsp; B. <span class="c">num = 0</span> &nbsp;|&nbsp; C. <span class="c">continue</span><br>
+        <strong>④：</strong>A. <span class="c">num</span> &nbsp;|&nbsp; B. <span class="c">num + 1</span> &nbsp;|&nbsp; C. <span class="c">num - 1</span><br>
+        <strong>⑤：</strong>（无⑤，本题只有4个填空）<br>
+      </p>
+    </div>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【完善填空①】</strong>第一个 while 循环的条件应该是什么？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> <span class="mono">s[i] >= '0' && s[i] <= '9'</span></span>
+      <span class="opt"><span class="letter">B</span> <span class="mono">s[i] >= 'a' && s[i] <= 'z'</span></span>
+      <span class="opt"><span class="letter">C</span> <span class="mono">s[i] != '\0'</span></span>
+      <span class="opt"><span class="letter">D</span> <span class="mono">s[i] != ' '</span></span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('rle1')">点击显示答案</div>
+    <div class="answer-box" id="rle1">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>RLE 编码格式是 <span class="c">"字符 + 重复次数"</span>。<br>
+        读取一个字符 ch 后，接下来应该读取该字符的重复次数（数字）。<br>
+        所以内层 while 循环应该<strong>连续读取数字字符</strong>，直到遇到下一个字母或字符串结束。<br>
+        条件应为 <span class="c">s[i] >= '0' && s[i] <= '9'</span>，即当前位置是数字字符。<br><br>
+        <strong>举例：</strong>输入 <span class="c">"a12b3c"</span>，读取 ch='a' 后，需要读取 "12" 这两个数字字符，
+        拼成数字 12，然后输出 12 个 'a'。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【完善填空②】</strong>数字拼接的表达式应该是什么？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> <span class="mono">s[i] - '0'</span></span>
+      <span class="opt"><span class="letter">B</span> <span class="mono">s[i] - 'a'</span></span>
+      <span class="opt"><span class="letter">C</span> <span class="mono">(int)s[i]</span></span>
+      <span class="opt"><span class="letter">D</span> <span class="mono">s[i] + '0'</span></span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('rle2')">点击显示答案</div>
+    <div class="answer-box" id="rle2">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>要正确解析多位数，需要将数字字符转换为对应的整数值。<br>
+        数字字符 <span class="c">'0'~'9'</span> 的 ASCII 码是连续的，<br>
+        因此用 <span class="c">s[i] - '0'</span> 即可得到对应的数字 0~9。<br><br>
+        <strong>举例：</strong>输入 "a12"，当 i 指向 '1' 时：<br>
+        num = 0*10 + ('1' - '0' = 1) → num = 1<br>
+        i++ → i 指向 '2'：<br>
+        num = 1*10 + ('2' - '0' = 2) → num = 12 ✓<br><br>
+        B 选项的 <span class="c">s[i] - 'a'</span> 将字母映射到 0~25，不适用。<br>
+        C 选项的 <span class="c">(int)s[i]</span> 得到的是 ASCII 码值（如 '1'→49），不符合要求。
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【完善填空③和④】</strong>以下哪个选项对③和④的填写是正确的？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> ③ <span class="mono">num = 1</span>，④ <span class="mono">num</span></span>
+      <span class="opt"><span class="letter">B</span> ③ <span class="mono">num = 0</span>，④ <span class="mono">num</span></span>
+      <span class="opt"><span class="letter">C</span> ③ <span class="mono">num = 1</span>，④ <span class="mono">num + 1</span></span>
+      <span class="opt"><span class="letter">D</span> ③ <span class="mono">continue</span>，④ <span class="mono">num</span></span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('rle3')">点击显示答案</div>
+    <div class="answer-box" id="rle3">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>RLE 编码中，如果字符后面没有数字，表示重复 1 次（如 <span class="c">"abc"</span> 表示 a1b1c1）。<br><br>
+        当内层 while 循环没有读取到任何数字时（num 保持为 0），说明该字符重复次数为 1。<br>
+        所以 <strong>③ 处应填入 <span class="c">num = 1</span></strong>。<br><br>
+        ④ 处是 for 循环的终止条件，需要输出 ch 共 <span class="c">num</span> 次。<br>
+        由于 num 在③处已被修正（当 num=0 时设为 1），所以 <strong>④ 处应填入 <span class="c">num</span></strong>。<br><br>
+        <strong>验证：</strong>输入 <span class="c">"a3b2c"</span><br>
+        • ch='a', 读取 "3" → num=3 → 输出 'a'×3 → "aaa"<br>
+        • ch='b', 读取 "2" → num=2 → 输出 'b'×2 → "aaabb"<br>
+        • ch='c', 没有数字 → num=0 → ③ <span class="c">num=1</span> → 输出 'c'×1 → "aaabbc" ✓<br><br>
+        <span class="b">注意：</span>RLE 编码通常省略数字 1，所以必须有③处的处理来补全默认值 1。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>完善填空解题要点：</strong><br>
+      • 先理解整体功能：RLE 解码 = 字符 + 数字 → 重复输出<br>
+      • 数字可以是多位：需要循环读取直到遇到非数字 → ①处判断数字字符<br>
+      • 数字拼接：<span class="c">num = num*10 + (s[i]-'0')</span> → ②的标准写法<br>
+      • 省略数字 1 的情况：需要默认值处理 → ③ <span class="c">num = 1</span><br>
+      • 每个填空代入具体数据验证：用 "a3b2c" 模拟一遍流程</div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 速查总结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 编码类 &amp; 数论类阅读速查表</h3>
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">一、编码类阅读识别要点</p>
+
+    <table>
+      <thead><tr><th>特征代码</th><th>含义</th><th>典型场景</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">base[] = "ABC...+/"</span></td><td>Base64 编码表（64 字符）</td><td>2021 阅读 2</td></tr>
+        <tr><td><span class="mono">pos() 查找字符位置</span></td><td>解码时查表获取 6 位索引值</td><td>Base64 解码</td></tr>
+        <tr><td><span class="mono">val = (a0&lt;&lt;18)|(a1&lt;&lt;12)|...</span></td><td>4 个 6 位值拼成 24 位</td><td>Base64 解码</td></tr>
+        <tr><td><span class="mono">b[i] = (val&gt;&gt;16)&0xFF</span></td><td>24 位拆分为 3 个 8 位字节</td><td>Base64 解码</td></tr>
+        <tr><td><span class="mono">'=' 填充 / pad 变量</span></td><td>末尾填充标记，控制输出字节数</td><td>Base64</td></tr>
+        <tr><td><span class="mono">字符 + 数字交替出现</span></td><td>RLE 行程编码格式</td><td>2025 阅读 4</td></tr>
+        <tr><td><span class="mono">num = num*10 + (c-'0')</span></td><td>将连续数字字符解析为整数</td><td>RLE 解码</td></tr>
+        <tr><td><span class="mono">while(isDigit)</span></td><td>读取多位数（编码/解码通用）</td><td>RLE 解码</td></tr>
+      </tbody>
+    </table>
+
+    <hr style="border:none;border-top:1px solid var(--border-light);margin:14px 0;">
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">二、数论类阅读常见模式</p>
+
+    <table>
+      <thead><tr><th>特征代码</th><th>含义</th><th>典型场景</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">if(b==0) return a</span></td><td>辗转相除法（欧几里得算法）边界</td><td>求 gcd</td></tr>
+        <tr><td><span class="mono">return gcd(b, a%b)</span></td><td>递归调用缩小问题规模</td><td>求 gcd</td></tr>
+        <tr><td><span class="mono">gcd(i,j)==1</span></td><td>判断两数互质</td><td>2025 阅读 1</td></tr>
+        <tr><td><span class="mono">三重循环 1~n</span></td><td>枚举所有可能的三元组</td><td>互质三元组</td></tr>
+        <tr><td><span class="mono">i%j==0</span> 整除判断</td><td>素数检测或约数统计</td><td>数论题</td></tr>
+        <tr><td><span class="mono">sqrt(n) 循环上界</span></td><td>素数判断优化（试除到 √n）</td><td>判断素数</td></tr>
+        <tr><td><span class="mono">cnt++ 计数模式</span></td><td>统计满足条件的组合个数</td><td>各类计数</td></tr>
+      </tbody>
+    </table>
+
+    <hr style="border:none;border-top:1px solid var(--border-light);margin:14px 0;">
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">三、快速识别口诀</p>
+    <div class="row">
+      <span class="pill blue">base[64] + 位拼接 → Base64</span>
+      <span class="pill green">4字符 → 3字节 → 查6位表</span>
+      <span class="pill amber">字符+数字交替 → RLE编码</span>
+      <span class="pill purple">if(b==0) → 欧几里得 gcd</span>
+      <span class="pill red">三重循环+gcd==1 → 互质计数</span>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border-light);margin:14px 0;">
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">四、重要边界条件与易错点</p>
+    <ul class="dot-list">
+      <li><strong>Base64 填充：</strong>末尾 '=' 的数量决定解码输出字节数——1 个 '=' 少 1 字节，2 个 '=' 少 2 字节</li>
+      <li><strong>gcd 边界：</strong><span class="c">gcd(1,任何数)=1</span>（1和任何数互质），<span class="c">gcd(x,x)=x</span>（x&gt;1时不互质），<span class="c">gcd(0,x)=x</span></li>
+      <li><strong>RLE 省略数字 1：</strong>如 "abc" 表示 a¹b¹c¹，代码必须处理无数字时默认重复 1 次</li>
+      <li><strong>完善填空验证：</strong>一定代入具体输入手动模拟一遍所有填空位置</li>
+      <li><strong>编码/解码区分：</strong>Base64 和 RLE 都需要区分是编码（压缩）还是解码（还原）方向</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <p class="kp-text" style="text-align:center;color:var(--text-ter);font-size:.8rem;">
+    本节完 · 共讲解 3 道真题 · 12 道核心题 · 覆盖数论与编码型阅读全部考点
+  </p>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+    var box = document.getElementById(id);
+    if (box) box.classList.toggle('show');
+}
+
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+}
+
+// Back to top
+window.addEventListener('scroll', function() {
+    var btn = document.getElementById('backTop');
+    if (window.scrollY > 300) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+});
+
+// Auto-close sidebar on nav link click (mobile)
+document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        if (window.innerWidth <= 900) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+    });
+});
+</script>
+
+</body></html>

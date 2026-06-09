@@ -1,0 +1,1464 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 7.3 动态规划完善程序</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.obj-warn{font-size:.78rem;color:#dc2626;background:#fef2f2;padding:4px 10px;border-radius:6px;margin-top:8px;display:inline-block}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.code-block .blank{display:inline-block;min-width:50px;border-bottom:2px solid #fbbf24;color:#fbbf24;text-align:center;font-weight:600}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.judge{background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.answer-box .explain .ok{display:inline-block;padding:0 6px;background:var(--success-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--success-dark);font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.step-box .step .sn.accent{background:var(--accent-dark)}.step-box .step .sn.green{background:var(--success-dark)}.step-box .step .sn.red{background:var(--danger)}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.dp-table{font-family:var(--font-mono);font-size:.72rem;line-height:1.5;padding:8px 12px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.dp-table .hl{color:var(--primary-dark);font-weight:600}
+.dp-table .red{color:#ef4444;font-weight:600}
+.dp-table .green{color:#059669;font-weight:600}
+.dp-table .blue{color:#2563eb;font-weight:600}
+.dp-table .dim{color:var(--text-ter)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📖</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题七 · 程序完善真题解析</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · DP特征</div>
+<a class="nav-link" href="#s1">DP完善程序特征识别</a>
+<a class="nav-link sub" href="#s1a">一维 / 二维DP</a>
+<a class="nav-link sub" href="#s1b">递推关系与边界</a>
+
+<div class="nav-section">2 · 经典DP模型</div>
+<a class="nav-link" href="#s2">编辑距离（2022/2023原题）</a>
+<a class="nav-link sub" href="#s2a">DP表手动推导</a>
+<a class="nav-link" href="#s3">杨辉三角形（2025原题）</a>
+<a class="nav-link sub" href="#s3a">DP表手动推导</a>
+<a class="nav-link" href="#s4">爬楼梯 / 斐波那契</a>
+
+<div class="nav-section">3 · 实战演练</div>
+<a class="nav-link" href="#p1">📝 题1：DP特征识别</a>
+<a class="nav-link" href="#p2">📝 题2：爬楼梯DP</a>
+<a class="nav-link" href="#p3">📝 题3：编辑距离DP</a>
+<a class="nav-link" href="#p4">📝 题4：杨辉三角DP</a>
+<a class="nav-link" href="#p5">📝 题5：最大子段和DP</a>
+<a class="nav-link" href="#p6">📝 题6：数字三角形DP</a>
+<a class="nav-link" href="#p7">📝 题7：0/1背包DP</a>
+<a class="nav-link" href="#p8">📝 题8：最长上升子序列</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 DP完善程序速查表</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题七 · 程序完善真题解析</a> / 7.3</div>
+    <h1>动态规划完善程序</h1>
+    <p class="subtitle">特征识别 · 编辑距离DP · 杨辉三角DP · 爬楼梯DP · 手动填表推导 · 8道精选题</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 2022/2023完善2原题 · 2025完善1原题</span>
+      <span class="meta-tag exam">📖 真题改编 4+ 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 4 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ DP完善程序的快速识别方法（dp数组、递推式、边界条件）</span>
+      <span class="item">✅ 编辑距离 DP 完整代码 + 5个填空 + 手动填表推导</span>
+      <span class="item">✅ 杨辉三角 DP 完整代码 + 5个填空 + 手动填表推导</span>
+      <span class="item">✅ 爬楼梯 / 斐波那契 DP 变体题型</span>
+      <span class="item">✅ DP完善程序常见填空位置：初始化 / 边界条件 / 状态转移 / 取最值</span>
+      <span class="item">✅ 最大子段和、数字三角形、0/1背包、LIS四大模型</span>
+      <span class="item">✅ 8 道精选填空实战 + 底部速查表</span>
+    </div>
+    <div class="obj-warn">⚠️ 动态规划是初赛完善题最高频考点——2022~2025连续四年均出现DP类型</div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、DP完善程序特征识别 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>DP完善程序特征识别</h2>
+
+  <p class="kp-text">
+    <strong class="hl">动态规划（DP）</strong>是 CSP-J 完善程序最常考察的算法类型之一。
+    从2022年到2025年，每年至少有一道完整程序题是DP类型。
+    快速识别DP程序的<strong>三大特征</strong>，是高效解题的第一步。
+  </p>
+
+  <h3 class="kp-title">1.1 一维DP vs 二维DP</h3>
+
+  <p class="kp-text">
+    看数组定义就能快速区分：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">一维DP特征</div>
+    <p class="kp-text">
+      <strong>数组定义：</strong><span class="c">int f[N]</span> 或 <span class="c">int dp[N]</span><br>
+      <strong>典型递推：</strong><span class="c">f[i] = f[i-1] + f[i-2]</span>（斐波那契）<br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong><span class="c">dp[i] = max(dp[i-1] + a[i], a[i])</span>（最大子段和）<br>
+      <strong>典型题：</strong>爬楼梯、斐波那契、最大子段和、最长上升子序列<br>
+      <strong>填空重点：</strong>初始边界（f[0]/f[1]）、递推式写法、循环起始值
+    </p>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">二维DP特征</div>
+    <p class="kp-text">
+      <strong>数组定义：</strong><span class="c">int dp[N][M]</span><br>
+      <strong>典型递推：</strong><span class="c">dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost)</span><br>
+      <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong><span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span>（杨辉三角）<br>
+      <strong>典型题：</strong>编辑距离、杨辉三角、数字三角形、0/1背包<br>
+      <strong>填空重点：</strong>二维边界初始化、双层循环范围、状态转移方程
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s1a">1.2 递推关系识别</h3>
+
+  <p class="kp-text">
+    DP程序的<strong>核心就是递推关系</strong>。识别递推关系的类型，能帮你快速定位填空位置：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th style="width:130px;">递推类型</th><th>典型公式</th><th>应用场景</th><th>挖空位置</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>累加型</strong></td>
+          <td><span class="mono">f[i] = f[i-1] + f[i-2]</span></td>
+          <td>斐波那契、爬楼梯</td>
+          <td>运算符（+）或下标（-1, -2）</td>
+        </tr>
+        <tr>
+          <td><strong>取最值型</strong></td>
+          <td><span class="mono">dp[i] = max(dp[i-1]+a[i], a[i])</span></td>
+          <td>最大子段和、LIS</td>
+          <td>max/min函数参数</td>
+        </tr>
+        <tr>
+          <td><strong>组合型</strong></td>
+          <td><span class="mono">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span></td>
+          <td>杨辉三角、组合数</td>
+          <td>递推式中两个子问题的下标</td>
+        </tr>
+        <tr>
+          <td><strong>最小代价型</strong></td>
+          <td><span class="mono">dp[i][j] = min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+c)</span></td>
+          <td>编辑距离</td>
+          <td>三种操作的代价表达式</td>
+        </tr>
+        <tr>
+          <td><strong>选择型</strong></td>
+          <td><span class="mono">dp[j] = max(dp[j], dp[j-w[i]]+v[i])</span></td>
+          <td>0/1背包</td>
+          <td>内层循环方向、下标偏移</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="kp-title" id="s1b">1.3 边界条件</h3>
+
+  <p class="kp-text">
+    DP程序的<strong>边界条件</strong>是填空的热门位置。常见的模式：
+  </p>
+
+  <ul class="dot-list">
+    <li><strong>一维DP边界：</strong><span class="c">f[0] = 0</span>、<span class="c">f[1] = 1</span>（斐波那契）；<span class="c">f[1] = 1</span>（爬楼梯）</li>
+    <li><strong>二维DP第一行/列：</strong>编辑距离中 <span class="c">dp[i][0] = i</span>、<span class="c">dp[0][j] = j</span></li>
+    <li><strong>二维DP对角线/边：</strong>杨辉三角中 <span class="c">dp[i][1] = 1</span>、<span class="c">dp[i][i] = 1</span></li>
+    <li><strong>循环起始值：</strong>一维从 i=2 开始、二维从 i=1/j=1 或 i=3/j=2 开始</li>
+  </ul>
+
+  <div class="card accent">
+    <div class="card-title">🧠 DP完善程序"三步判断法"</div>
+    <p class="kp-text">
+      <strong>第一步：看数组</strong> — 几维的dp数组？一维还是二维？<br>
+      <strong>第二步：看边界</strong> — 初始化了几行几列？初值是多少？<br>
+      <strong>第三步：看循环</strong> — 循环从几到几？内层循环的边界条件是什么？<br><br>
+      <strong>口诀：</strong>"数组维度定方向，边界初值先看透，循环范围不跨界，递推公式是核心。"
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、编辑距离 DP（2022/2023原题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>编辑距离 DP（2022/2023 完善2原题）</h2>
+
+  <p class="kp-text">
+    <strong>编辑距离（Edit Distance）</strong>是 CSP-J 2022年 和 2023年 连续两年作为完善程序第2题考察。
+    题目要求计算将字符串 <span class="c">a</span> 转换为字符串 <span class="c">b</span> 所需的最少操作次数。
+    允许的操作有3种：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">三种操作定义</div>
+    <p class="kp-text">
+      <strong>① 插入（Insert）：</strong>在 a 中插入一个字符，花费 1<br>
+      <strong>② 删除（Delete）：</strong>从 a 中删除一个字符，花费 1<br>
+      <strong>③ 替换（Replace）：</strong>将 a 中的一个字符替换成另一个，花费 1<br><br>
+      <span class="hl">等价操作角度：</span>也可以理解为对 <span class="c">a[1..i]</span> 进行操作使其变为 <span class="c">b[1..j]</span>。
+    </p>
+  </div>
+
+  <h3 class="kp-title">2.1 DP状态定义与递推公式</h3>
+
+  <p class="kp-text">
+    <strong>状态定义：</strong><span class="c">dp[i][j]</span> 表示 <span class="c">a[1..i]</span> 转换到 <span class="c">b[1..j]</span> 的编辑距离<br>
+    <strong>边界条件：</strong><br>
+    &nbsp;&nbsp;• <span class="c">dp[i][0] = i</span>：把 a[1..i] 全部删除，需要 i 次<br>
+    &nbsp;&nbsp;• <span class="c">dp[0][j] = j</span>：在空串中插入 b[1..j]，需要 j 次<br>
+    <strong>递推公式：</strong>
+  </p>
+
+  <div class="card success">
+    <div class="card-title">递推公式</div>
+    <p class="kp-text" style="font-size:.88rem;">
+      <strong>如果 a[i] == b[j]：</strong><br>
+      &nbsp;&nbsp;<span class="c">dp[i][j] = dp[i-1][j-1]</span>（末尾字符相同，不需要额外操作）<br><br>
+      <strong>如果 a[i] != b[j]：</strong><br>
+      &nbsp;&nbsp;<span class="c">dp[i][j] = min(</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">dp[i-1][j] + 1,</span>&nbsp;&nbsp;← 删除 a[i]（删完后 a[1..i-1] 变成 b[1..j]）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">dp[i][j-1] + 1,</span>&nbsp;&nbsp;← 在 a 中插入 b[j]（插入后 a[1..i] 变成 b[1..j-1]）<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="c">dp[i-1][j-1] + 1</span>&nbsp;&nbsp;← 将 a[i] 替换为 b[j]<br>
+      &nbsp;&nbsp;<span class="c">)</span>
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s2a">2.2 手动填表推导</h3>
+
+  <p class="kp-text">
+    以 <span class="c">a = "cat"</span>（n=3）、<span class="c">b = "car"</span>（m=3）为例，手动模拟编辑距离的DP填表过程：
+  </p>
+
+  <div class="card">
+    <div class="card-title">初始表格（边界）</div>
+    <div class="dp-table">
+        j    0    1    2    3
+        ''   c    a    r
+i=0  ''   <span class="hl">0</span>    <span class="hl">1</span>    <span class="hl">2</span>    <span class="hl">3</span>
+i=1  c    <span class="hl">1</span>    ?    ?    ?
+i=2  a    <span class="hl">2</span>    ?    ?    ?
+i=3  t    <span class="hl">3</span>    ?    ?    ?
+    </div>
+    <p class="kp-text" style="font-size:.78rem;">
+      第一行：dp[0][j] = j，表示从空串到 b[1..j] 需要插入 j 次<br>
+      第一列：dp[i][0] = i，表示从 a[1..i] 到空串需要删除 i 次
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">逐格计算</div>
+    <div class="dp-table">
+<strong>dp[1][1]:</strong> a[1]=c, b[1]=c → 相等 → dp[1][1]=dp[0][0]=<span class="hl">0</span>
+<strong>dp[1][2]:</strong> a[1]=c, b[2]=a → 不等 →
+  min(dp[0][2]+1=3, dp[1][1]+1=1, dp[0][1]+1=2) = <span class="hl">1</span>
+<strong>dp[1][3]:</strong> a[1]=c, b[3]=r → 不等 →
+  min(dp[0][3]+1=4, dp[1][2]+1=2, dp[0][2]+1=3) = <span class="hl">2</span>
+<strong>dp[2][1]:</strong> a[2]=a, b[1]=c → 不等 →
+  min(dp[1][1]+1=1, dp[2][0]+1=3, dp[1][0]+1=2) = <span class="hl">1</span>
+<strong>dp[2][2]:</strong> a[2]=a, b[2]=a → 相等 → dp[2][2]=dp[1][1]=<span class="hl">0</span>
+<strong>dp[2][3]:</strong> a[2]=a, b[3]=r → 不等 →
+  min(dp[1][3]+1=3, dp[2][2]+1=1, dp[1][2]+1=2) = <span class="hl">1</span>
+<strong>dp[3][1]:</strong> a[3]=t, b[1]=c → 不等 →
+  min(dp[2][1]+1=2, dp[3][0]+1=4, dp[2][0]+1=3) = <span class="hl">2</span>
+<strong>dp[3][2]:</strong> a[3]=t, b[2]=a → 不等 →
+  min(dp[2][2]+1=1, dp[3][1]+1=3, dp[2][1]+1=2) = <span class="hl">1</span>
+<strong>dp[3][3]:</strong> a[3]=t, b[3]=r → 不等 →
+  min(dp[2][3]+1=2, dp[3][2]+1=2, dp[2][2]+1=1) = <span class="hl">1</span>
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">最终结果</div>
+    <div class="dp-table">
+        j    0    1    2    3
+        ''   c    a    r
+i=0  ''   0    1    2    3
+i=1  c    1    <span class="hl">0</span>    1    2
+i=2  a    2    1    <span class="hl">0</span>    1
+i=3  t    3    2    1    <span class="hl">1</span>
+    </div>
+    <p class="kp-text" style="font-size:.78rem;">
+      <strong>结果：</strong>cat → car 的编辑距离为 <span class="hl">1</span>（将 t 替换为 r 即可）
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、杨辉三角形 DP（2025完善1原题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>杨辉三角形 DP（2025 完善1原题）</h2>
+
+  <p class="kp-text">
+    <strong>杨辉三角形</strong>是 2025 年 CSP-J 完善程序第1题的考点。
+    程序用二维DP数组生成杨辉三角形并输出。
+  </p>
+
+  <h3 class="kp-title">3.1 杨辉三角形数学性质</h3>
+
+  <p class="kp-text">
+    杨辉三角（Pascal's Triangle）每一行是二项式系数。核心性质：
+  </p>
+
+  <ul class="dot-list">
+    <li>每行第一个和最后一个数都是 <strong>1</strong>：<span class="c">dp[i][1] = dp[i][i] = 1</span></li>
+    <li>中间每个数等于它<strong>左上方 + 右上方</strong>（或上一行两个相邻数之和）：<span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span></li>
+    <li>从第3行开始才有中间元素（i ≥ 3 时，j 从 2 到 i-1）</li>
+  </ul>
+
+  <div class="card primary">
+    <div class="card-title">杨辉三角 DP 结构</div>
+    <div class="bs-viz" style="font-size:.65rem;">
+行1:          <span class="hl">1</span>
+行2:        <span class="hl">1</span>   <span class="hl">1</span>
+行3:      <span class="hl">1</span>   <span class="green">2</span>   <span class="hl">1</span>
+行4:    <span class="hl">1</span>   <span class="green">3</span>   <span class="green">3</span>   <span class="hl">1</span>
+行5:  <span class="hl">1</span>   <span class="green">4</span>   <span class="green">6</span>   <span class="green">4</span>   <span class="hl">1</span>
+<span class="dim">蓝色 = 边界（dp[i][1] = dp[i][i] = 1）</span>
+<span class="green" style="color:#059669;">绿色 = 递推（dp[i][j] = dp[i-1][j-1] + dp[i-1][j]）</span>
+    </div>
+  </div>
+
+  <h3 class="kp-title" id="s3a">3.2 手动填表推导</h3>
+
+  <p class="kp-text">
+    以 n=5 为例，手动模拟杨辉三角 DP 的完整填表过程：
+  </p>
+
+  <div class="card">
+    <div class="card-title">Step 1：初始化（i=1, i=2）</div>
+    <div class="dp-table">
+i=1: dp[1][1] = 1
+i=2: dp[2][1] = 1, dp[2][2] = 1
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Step 2：递推计算（i=3 到 i=5）</div>
+    <div class="dp-table">
+<strong>i=3:</strong>
+  j=2: dp[3][2] = dp[2][1] + dp[2][2] = 1 + 1 = <span class="hl">2</span>
+  dp[3][1]=1, dp[3][3]=1
+
+<strong>i=4:</strong>
+  j=2: dp[4][2] = dp[3][1] + dp[3][2] = 1 + 2 = <span class="hl">3</span>
+  j=3: dp[4][3] = dp[3][2] + dp[3][3] = 2 + 1 = <span class="hl">3</span>
+  dp[4][1]=1, dp[4][4]=1
+
+<strong>i=5:</strong>
+  j=2: dp[5][2] = dp[4][1] + dp[4][2] = 1 + 3 = <span class="hl">4</span>
+  j=3: dp[5][3] = dp[4][2] + dp[4][3] = 3 + 3 = <span class="hl">6</span>
+  j=4: dp[5][4] = dp[4][3] + dp[4][4] = 3 + 1 = <span class="hl">4</span>
+  dp[5][1]=1, dp[5][5]=1
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">最终二维DP表</div>
+    <div class="dp-table">
+i\j   1    2    3    4    5
+1     <span class="hl">1</span>
+2     <span class="hl">1</span>    <span class="hl">1</span>
+3     <span class="hl">1</span>    <span class="green">2</span>    <span class="hl">1</span>
+4     <span class="hl">1</span>    <span class="green">3</span>    <span class="green">3</span>    <span class="hl">1</span>
+5     <span class="hl">1</span>    <span class="green">4</span>    <span class="green">6</span>    <span class="green">4</span>    <span class="hl">1</span>
+    </div>
+    <p class="kp-text" style="font-size:.78rem;">
+      <span class="hl">蓝色</span> = 边界初值（每行首尾均为1）<br>
+      <span class="green">绿色</span> = 递推结果（左上方+右上方之和）<br>
+      输出第5行：1 4 6 4 1
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、爬楼梯 / 斐波那契 DP（2024阅读2扩展） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>爬楼梯 / 斐波那契 DP</h2>
+
+  <p class="kp-text">
+    <strong>爬楼梯问题</strong>是 CSP-J 的经典DP入门题型，也是 2024 年阅读程序第2题的题型扩展。
+    问题是：上到第 n 级台阶，每次可以跨 1 级或 2 级台阶，求有多少种不同的走法。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">爬楼梯 DP 模型</div>
+    <p class="kp-text">
+      <strong>状态定义：</strong><span class="c">f[i]</span> 表示上到第 i 级台阶的走法数<br>
+      <strong>边界：</strong><span class="c">f[1] = 1</span>（1级台阶只有1种走法：1步）；<span class="c">f[2] = 2</span>（2级台阶有2种：1+1 或 2）<br>
+      <strong>递推：</strong><span class="c">f[i] = f[i-1] + f[i-2]</span>（到第 i 级可以从 i-1 跨1步，或从 i-2 跨2步）<br><br>
+      <strong>与斐波那契数列的关联：</strong>爬楼梯的 f[n] 就是斐波那契数列的第 n+1 项（f[0]=0, f[1]=1 时）
+    </p>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">2024阅读程序第2题扩展</div>
+    <p class="kp-text">
+      2024年阅读程序第2题考察了斐波那契变体。完善程序可能在此基础上增加条件：
+    </p>
+    <ul class="dot-list" style="margin-bottom:0;">
+      <li>每次可以跨 1、2 或 3 级：<span class="c">f[i] = f[i-1] + f[i-2] + f[i-3]</span></li>
+      <li>带"不能连续跨2级"的限制</li>
+      <li>求最少步数（用 min 而不是 +）</li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- ====== 五、实战演练 ====== -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" style="border-bottom:2px solid var(--primary);padding-bottom:10px;"><span class="num">📝</span>实战演练 · 8 道 DP 完善填空</h2>
+
+  <p class="kp-text">
+    以下 8 道题涵盖 DP 完善程序的<strong>全部核心题型</strong>。
+    每道题的填空题以 <span class="c" style="background:var(--accent-light);color:var(--accent-dark);font-weight:600;">____</span> 标记，点击"显示答案"查看详细解析和手动推导。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：DP特征识别（选择题） -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p1">
+    <div class="exam-header">
+      <span class="exam-badge judge">📝 真题 · 特征识别</span>
+      <span>考：一维/二维DP判断 + 边界 + 递推</span>
+    </div>
+    <div class="exam-q">
+      <strong>以下哪个特征最可能表明一个完善程序题是"动态规划"类型？</strong><br><br>
+      <div class="exam-options" style="grid-template-columns:1fr;">
+        <div class="opt"><span class="letter">A</span> 变量名包含 l、r、mid，循环条件为 l &lt; r</div>
+        <div class="opt"><span class="letter">B</span> 函数内部调用自身，有递归终止条件</div>
+        <div class="opt"><span class="letter">C</span> 定义了 dp 或 f 数组，有明确的初值设置和递推式循环</div>
+        <div class="opt"><span class="letter">D</span> 有 swap 交换操作和双层 for 循环</div>
+      </div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>DP程序的三个核心特征：</strong><br>
+        &nbsp;&nbsp;• <strong>数组命名：</strong>使用 <span class="c">dp</span>、<span class="c">f</span> 等作为DP数组<br>
+        &nbsp;&nbsp;• <strong>边界初值：</strong>有明确的初始条件（如 <span class="c">f[0]=0, f[1]=1</span>）<br>
+        &nbsp;&nbsp;• <strong>递推循环：</strong>循环体内有状态转移公式（如 <span class="c">f[i]=f[i-1]+f[i-2]</span>）<br><br>
+        <strong>其他选项分析：</strong><br>
+        &nbsp;&nbsp;• <strong>A：</strong>l、r、mid 是<strong>二分查找</strong>的典型特征<br>
+        &nbsp;&nbsp;• <strong>B：</strong>函数自调用是<strong>递归</strong>的典型特征<br>
+        &nbsp;&nbsp;• <strong>D：</strong>双层 for + swap 是<strong>排序算法</strong>的典型特征（如冒泡排序）<br><br>
+        <strong>💡 DP完善程序判断口诀：</strong><br>
+        "dp f 是名字，边界初值先设置，循环递推是核心，三种特征就识别。"
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：爬楼梯 DP -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p2">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 爬楼梯DP</span>
+      <span>考：边界初值 + 递推式</span>
+    </div>
+    <div class="exam-q">
+      以下程序求上到第 n 级台阶的走法数（每次可跨 1 级或 2 级）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n; cin &gt;&gt; n;
+<span class="kw">int</span> f[<span class="num">55</span>];
+f[<span class="num">1</span>] = <span class="blank">①</span>;
+f[<span class="num">2</span>] = <span class="blank">②</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">3</span>; i &lt;= n; i++) {
+  f[i] = f[i<span class="blank">③</span>] + f[i<span class="blank">④</span>];
+}
+cout &lt;&lt; f[n];
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1</div>
+      <div class="opt"><span class="letter">B</span> 0</div>
+      <div class="opt"><span class="letter">C</span> 2</div>
+      <div class="opt"><span class="letter">D</span> -1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1</div>
+      <div class="opt"><span class="letter">B</span> 2</div>
+      <div class="opt"><span class="letter">C</span> 0</div>
+      <div class="opt"><span class="letter">D</span> 3</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> -2</div>
+      <div class="opt"><span class="letter">C</span> +1</div>
+      <div class="opt"><span class="letter">D</span> +2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> -1</div>
+      <div class="opt"><span class="letter">B</span> -2</div>
+      <div class="opt"><span class="letter">C</span> +1</div>
+      <div class="opt"><span class="letter">D</span> +2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：① A (1) · ② B (2) · ③ A (-1) · ④ B (-2)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：f[1] 的初值</strong><br>
+        &nbsp;&nbsp;• 1 级台阶只有 1 种走法：直接跨 1 级。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">f[1] = 1</span>，选 A。<br><br>
+        <strong>空 ②：f[2] 的初值</strong><br>
+        &nbsp;&nbsp;• 2 级台阶有 2 种走法：1+1 或 直接跨 2 级。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">f[2] = 2</span>，选 B。<br><br>
+        <strong>空 ③ 和 ④：递推式</strong><br>
+        &nbsp;&nbsp;• 到第 i 级可以从 i-1 跨 1 步，或从 i-2 跨 2 步。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">f[i] = f[i-1] + f[i-2]</span>。<br>
+        &nbsp;&nbsp;• ③ 选 <span class="c">-1</span>（A），④ 选 <span class="c">-2</span>（B）（或交换也可）。<br><br>
+        <strong>手动填表验证（n=5）：</strong><br>
+        <div class="dp-table" style="font-size:.7rem;">
+f[1]=1, f[2]=2
+f[3] = f[2]+f[1] = 2+1 = <span class="hl">3</span>
+f[4] = f[3]+f[2] = 3+2 = <span class="hl">5</span>
+f[5] = f[4]+f[3] = 5+3 = <span class="hl">8</span>
+1→1→2→3→5→8 ✅
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：编辑距离 DP 完整代码（5空） -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p3">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 2022/2023 真题 · 编辑距离 DP</span>
+      <span>考：二维DP边界 + 三等操作递推 + 完整5空</span>
+    </div>
+    <div class="exam-q">
+      以下程序计算字符串 a 到 b 的编辑距离。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.76rem;">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">#include</span> &lt;string&gt;
+<span class="kw">using namespace</span> std;
+
+<span class="kw">int</span> min3(<span class="kw">int</span> x, <span class="kw">int</span> y, <span class="kw">int</span> z) {
+  <span class="kw">return</span> min(min(x, y), z);
+}
+
+<span class="kw">int</span> main() {
+  string a, b; cin &gt;&gt; a &gt;&gt; b;
+  <span class="kw">int</span> n = a.size(), m = b.size();
+  <span class="kw">int</span> dp[<span class="num">55</span>][<span class="num">55</span>];
+
+  <span class="cm">// 边界初始化</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= n; i++)
+    dp[i][<span class="num">0</span>] = <span class="blank">①</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">0</span>; j &lt;= m; j++)
+    dp[<span class="num">0</span>][j] = <span class="blank">②</span>;
+
+  <span class="cm">// 逐格递推</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= m; j++) {
+      <span class="kw">if</span> (a[i<span class="num">-1</span>] == b[j<span class="num">-1</span>]) {
+        dp[i][j] = <span class="blank">③</span>;
+      } <span class="kw">else</span> {
+        dp[i][j] = min3(
+          dp[i<span class="num">-1</span>][j] + <span class="num">1</span>,      <span class="cm">// ④：删除</span>
+          dp[i][j<span class="num">-1</span>] + <span class="num">1</span>,      <span class="cm">// ⑤：插入</span>
+          dp[i<span class="num">-1</span>][j<span class="num">-1</span>] + <span class="num">1</span>   <span class="cm">// 替换</span>
+        );
+      }
+    }
+  }
+  cout &lt;&lt; dp[n][m] &lt;&lt; endl;
+  <span class="kw">return</span> <span class="num">0</span>;
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> i</div>
+      <div class="opt"><span class="letter">B</span> j</div>
+      <div class="opt"><span class="letter">C</span> 0</div>
+      <div class="opt"><span class="letter">D</span> 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> i</div>
+      <div class="opt"><span class="letter">B</span> j</div>
+      <div class="opt"><span class="letter">C</span> 0</div>
+      <div class="opt"><span class="letter">D</span> 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> dp[i-1][j] + 1</div>
+      <div class="opt"><span class="letter">B</span> dp[i][j-1] + 1</div>
+      <div class="opt"><span class="letter">C</span> dp[i-1][j-1]</div>
+      <div class="opt"><span class="letter">D</span> dp[i-1][j-1] + 1</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 删除操作：dp[i-1][j] + 1（已给出）</div>
+      <div class="opt"><span class="letter">B</span> 插入操作：dp[i][j-1] + 1（已给出）</div>
+      <div class="opt"><span class="letter">C</span> 替换操作：dp[i-1][j-1] + 1（已给出）</div>
+      <div class="opt"><span class="letter">D</span> 无需修改（注释标注正确）</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 删除操作：dp[i-1][j] + 1（已给出）</div>
+      <div class="opt"><span class="letter">B</span> 插入操作：dp[i][j-1] + 1（已给出）</div>
+      <div class="opt"><span class="letter">C</span> 替换操作：dp[i-1][j-1] + 1（已给出）</div>
+      <div class="opt"><span class="letter">D</span> 无需修改（注释标注正确）</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：① A (i) · ② B (j) · ③ C (dp[i-1][j-1]) · ④ D · ⑤ D</div>
+      <div class="explain">
+        <strong>逐空分析：</strong><br><br>
+
+        <strong>空 ①：dp[i][0] 的初值</strong><br>
+        &nbsp;&nbsp;• dp[i][0] 表示 a[1..i] 变成空串的操作次数。<br>
+        &nbsp;&nbsp;• 需要删除 i 个字符 → <span class="c">dp[i][0] = i</span>。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">i</span>（A）。<br><br>
+
+        <strong>空 ②：dp[0][j] 的初值</strong><br>
+        &nbsp;&nbsp;• dp[0][j] 表示空串变成 b[1..j] 的操作次数。<br>
+        &nbsp;&nbsp;• 需要插入 j 个字符 → <span class="c">dp[0][j] = j</span>。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">j</span>（B）。<br><br>
+
+        <strong>空 ③：字符相等时的递推</strong><br>
+        &nbsp;&nbsp;• 当 a[i] == b[j] 时，末尾字符无需操作。<br>
+        &nbsp;&nbsp;• 编辑距离等于 dp[i-1][j-1]（前面部分的结果）。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">dp[i-1][j-1]</span>（C）。<br><br>
+
+        <strong>空 ④ 和 ⑤：注释标注验证</strong><br>
+        &nbsp;&nbsp;• 题目代码已将三个操作正确标注：<br>
+        &nbsp;&nbsp;• <span class="c">dp[i-1][j] + 1</span> = 删除 a[i]（注释"删除"正确）<br>
+        &nbsp;&nbsp;• <span class="c">dp[i][j-1] + 1</span> = 在 a 中插入 b[j]（注释"插入"正确）<br>
+        &nbsp;&nbsp;• <span class="c">dp[i-1][j-1] + 1</span> = 替换 a[i] 为 b[j]（注释"替换"正确）<br>
+        &nbsp;&nbsp;• ④ 和 ⑤ 选 <span class="c">无需修改</span>（注释已正确标注）<br><br>
+
+        <strong>完整手动填表验证（a="cat", b="car"）：</strong>
+        <div class="dp-table" style="font-size:.68rem;">
+<span class="dim">边界：</span>
+  dp[0][0..3] = [0, 1, 2, 3]
+  dp[0..3][0] = [0, 1, 2, 3]
+
+<span class="dim">i=1 (a[1]=c)：</span>
+  j=1 (b[1]=c): 相等 → dp[1][1]=dp[0][0]=<span class="hl">0</span>
+  j=2 (b[2]=a): 不等 → min(dp[0][2]+1=3, dp[1][1]+1=1, dp[0][1]+1=2)=<span class="hl">1</span>
+  j=3 (b[3]=r): 不等 → min(dp[0][3]+1=4, dp[1][2]+1=2, dp[0][2]+1=3)=<span class="hl">2</span>
+
+<span class="dim">i=2 (a[2]=a)：</span>
+  j=1 (b[1]=c): 不等 → min(dp[1][1]+1=1, dp[2][0]+1=3, dp[1][0]+1=2)=<span class="hl">1</span>
+  j=2 (b[2]=a): 相等 → dp[2][2]=dp[1][1]=<span class="hl">0</span>
+  j=3 (b[3]=r): 不等 → min(dp[1][3]+1=3, dp[2][2]+1=1, dp[1][2]+1=2)=<span class="hl">1</span>
+
+<span class="dim">i=3 (a[3]=t)：</span>
+  j=1 (b[1]=c): 不等 → min(dp[2][1]+1=2, dp[3][0]+1=4, dp[2][0]+1=3)=<span class="hl">2</span>
+  j=2 (b[2]=a): 不等 → min(dp[2][2]+1=1, dp[3][1]+1=3, dp[2][1]+1=2)=<span class="hl">1</span>
+  j=3 (b[3]=r): 不等 → min(dp[2][3]+1=2, dp[3][2]+1=2, dp[2][2]+1=1)=<span class="hl">1</span>
+
+<span class="hl">结果：dp[3][3] = 1</span>（cat→car 替换 t→r，只需1步）
+        </div>
+
+        <div class="card accent" style="margin-top:10px;">
+          <div class="card-title">🧠 2022 vs 2023 差异点</div>
+          <p class="kp-text" style="font-size:.78rem;">
+            <strong>2022年</strong>：考察了 dp[i][0] 和 dp[0][j] 的边界初始化，以及 if(a[i]==b[j]) 分支下的递推<br>
+            <strong>2023年</strong>：调整了 min3 函数的实现方式（用三个参数 vs 嵌套调用），递推部分不变<br>
+            <strong>共同点：</strong>核心递推公式完全相同，每年约 2/5 的空考查边界，3/5 考查递推
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：杨辉三角 DP 完整代码（5空） -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p4">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 2025 真题 · 杨辉三角 DP</span>
+      <span>考：二维DP边界 + 递推 + 循环范围 + 完整5空</span>
+    </div>
+    <div class="exam-q">
+      以下程序生成杨辉三角形的前 n 行。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.76rem;">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> std;
+
+<span class="kw">int</span> main() {
+  <span class="kw">int</span> n; cin &gt;&gt; n;
+  <span class="kw">int</span> dp[<span class="num">105</span>][<span class="num">105</span>] = {{<span class="num">0</span>}};
+
+  <span class="cm">// 设置每行边界：首尾为1</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+    dp[i][<span class="num">1</span>] = <span class="blank">①</span>;
+    dp[i][i] = <span class="blank">②</span>;
+  }
+
+  <span class="cm">// 从第3行开始递推中间元素</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="blank">③</span>; i &lt;= n; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">2</span>; j <span class="blank">④</span>; j++) {
+      dp[i][j] = <span class="blank">⑤</span>;
+    }
+  }
+
+  <span class="cm">// 输出杨辉三角</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= i; j++)
+      cout &lt;&lt; dp[i][j] &lt;&lt; <span class="str">" "</span>;
+    cout &lt;&lt; endl;
+  }
+  <span class="kw">return</span> <span class="num">0</span>;
+}
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> i</div>
+      <div class="opt"><span class="letter">D</span> dp[i-1][1]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> i</div>
+      <div class="opt"><span class="letter">D</span> dp[i-1][i-1]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1</div>
+      <div class="opt"><span class="letter">B</span> 2</div>
+      <div class="opt"><span class="letter">C</span> 3</div>
+      <div class="opt"><span class="letter">D</span> n</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt; i</div>
+      <div class="opt"><span class="letter">B</span> &lt;= i</div>
+      <div class="opt"><span class="letter">C</span> &lt;= i-1</div>
+      <div class="opt"><span class="letter">D</span> &lt;= n</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> dp[i-1][j-1] + dp[i-1][j]</div>
+      <div class="opt"><span class="letter">B</span> dp[i][j-1] + dp[i][j]</div>
+      <div class="opt"><span class="letter">C</span> dp[i-1][j] + dp[i][j-1]</div>
+      <div class="opt"><span class="letter">D</span> dp[i][j-1] + dp[i-1][j-1]</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：① B (1) · ② B (1) · ③ C (3) · ④ A (&lt; i) · ⑤ A (dp[i-1][j-1] + dp[i-1][j])</div>
+      <div class="explain">
+        <strong>逐空分析：</strong><br><br>
+
+        <strong>空 ①：每行第一个元素</strong><br>
+        &nbsp;&nbsp;• 杨辉三角每行第一个数是 <span class="hl">1</span>。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[i][1] = 1</span>，选 B。<br><br>
+
+        <strong>空 ②：每行最后一个元素</strong><br>
+        &nbsp;&nbsp;• 杨辉三角每行最后一个数也是 <span class="hl">1</span>。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[i][i] = 1</span>，选 B。<br><br>
+
+        <strong>空 ③：外层循环起始值</strong><br>
+        &nbsp;&nbsp;• 第 1 行只有 1 个元素（已通过边界赋值）。<br>
+        &nbsp;&nbsp;• 第 2 行两个元素都是边界 1（也已赋值）。<br>
+        &nbsp;&nbsp;• 从 <strong>第 3 行</strong>开始才有中间元素需要递推。<br>
+        &nbsp;&nbsp;• 所以 i 从 <span class="c">3</span> 开始，选 C。<br><br>
+
+        <strong>空 ④：内层循环边界</strong><br>
+        &nbsp;&nbsp;• 第 i 行有 i 个元素，边界（j=1 和 j=i）已赋值。<br>
+        &nbsp;&nbsp;• 中间元素：j 从 2 到 <strong>i-1</strong>。<br>
+        &nbsp;&nbsp;• 所以条件为 <span class="c">j &lt; i</span>（即 j &lt;= i-1），选 A。<br>
+        &nbsp;&nbsp;• 如果选 <span class="c">j &lt;= i</span>，会覆盖边界值（把 1 改成错误值）。<br><br>
+
+        <strong>空 ⑤：核心递推式</strong><br>
+        &nbsp;&nbsp;• 杨辉三角性质：当前位置 = 左上方 + 右上方。<br>
+        &nbsp;&nbsp;• 左上方 = <span class="c">dp[i-1][j-1]</span>，右上方 = <span class="c">dp[i-1][j]</span>。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span>，选 A。<br><br>
+
+        <strong>手动填表验证（n=5）：</strong>
+        <div class="dp-table" style="font-size:.68rem;">
+<span class="dim">步骤1：边界赋值（i=1..5, dp[i][1]=1, dp[i][i]=1）</span>
+  行1: [1]
+  行2: [1, 1]
+  行3: [1, ?, 1]
+  行4: [1, ?, ?, 1]
+  行5: [1, ?, ?, ?, 1]
+
+<span class="dim">步骤2：递推（i=3, j=2..i-1）</span>
+  i=3, j=2: dp[3][2] = dp[2][1]+dp[2][2] = 1+1 = <span class="hl">2</span>
+  → 行3: [1, 2, 1]
+
+  i=4, j=2: dp[4][2] = dp[3][1]+dp[3][2] = 1+2 = <span class="hl">3</span>
+  i=4, j=3: dp[4][3] = dp[3][2]+dp[3][3] = 2+1 = <span class="hl">3</span>
+  → 行4: [1, 3, 3, 1]
+
+  i=5, j=2: dp[5][2] = dp[4][1]+dp[4][2] = 1+3 = <span class="hl">4</span>
+  i=5, j=3: dp[5][3] = dp[4][2]+dp[4][3] = 3+3 = <span class="hl">6</span>
+  i=5, j=4: dp[5][4] = dp[4][3]+dp[4][4] = 3+1 = <span class="hl">4</span>
+  → 行5: [1, 4, 6, 4, 1] ✅
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：最大子段和 DP（Kadane算法） -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p5">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 最大子段和 DP</span>
+      <span>考：状态转移 + 全局最值更新</span>
+    </div>
+    <div class="exam-q">
+      以下程序求数组 a 的最大子段和（Kadane算法）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, a[<span class="num">100</span>]; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+
+<span class="kw">int</span> cur = a[<span class="num">0</span>];  <span class="cm">// 以当前元素结尾的最大子段和</span>
+<span class="kw">int</span> ans = a[<span class="num">0</span>];  <span class="cm">// 全局最大子段和</span>
+
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; n; i++) {
+  cur = max(a[i], <span class="blank">①</span>);
+  ans = max(ans, <span class="blank">②</span>);
+}
+cout &lt;&lt; ans;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> cur + a[i]</div>
+      <div class="opt"><span class="letter">B</span> cur</div>
+      <div class="opt"><span class="letter">C</span> ans + a[i]</div>
+      <div class="opt"><span class="letter">D</span> a[i-1]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> cur</div>
+      <div class="opt"><span class="letter">B</span> a[i]</div>
+      <div class="opt"><span class="letter">C</span> ans + a[i]</div>
+      <div class="opt"><span class="letter">D</span> cur + ans</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：① A (cur + a[i]) · ② A (cur)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        Kadane 算法的核心思想：<br><br>
+        <strong>状态定义：</strong><br>
+        &nbsp;&nbsp;• <span class="c">cur</span> = 以当前位置结尾的最大子段和<br>
+        &nbsp;&nbsp;• <span class="c">ans</span> = 全局最大子段和（历史所有 cur 的最大值）<br><br>
+
+        <strong>空 ①：cur 的状态转移</strong><br>
+        &nbsp;&nbsp;• 对于 a[i]，有两种选择：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- 自己开始一个新子段：<span class="c">a[i]</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- 接在之前的子段后面：<span class="c">cur + a[i]</span><br>
+        &nbsp;&nbsp;• 取两者较大值：<span class="c">cur = max(a[i], cur + a[i])</span><br>
+        &nbsp;&nbsp;• 所以选 <span class="c">cur + a[i]</span>（A）。<br><br>
+
+        <strong>空 ②：全局最值更新</strong><br>
+        &nbsp;&nbsp;• 每轮用当前 cur 更新全局最大值。<br>
+        &nbsp;&nbsp;• <span class="c">ans = max(ans, cur)</span>。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">cur</span>（A）。<br><br>
+
+        <strong>手动模拟验证（a=[-2,1,-3,4,-1,2,1,-5,4]）：</strong>
+        <div class="dp-table" style="font-size:.68rem;">
+初始: cur=a[0]=<span class="hl">-2</span>, ans=<span class="hl">-2</span>
+
+i=1 (a=1):  cur=max(1, -2+1)=<span class="hl">1</span>,  ans=max(-2,1)=<span class="hl">1</span>
+i=2 (a=-3): cur=max(-3, 1-3)=<span class="hl">-2</span>, ans=max(1,-2)=<span class="hl">1</span>
+i=3 (a=4):  cur=max(4, -2+4)=<span class="hl">4</span>,  ans=max(1,4)=<span class="hl">4</span>
+i=4 (a=-1): cur=max(-1, 4-1)=<span class="hl">3</span>,  ans=max(4,3)=<span class="hl">4</span>
+i=5 (a=2):  cur=max(2, 3+2)=<span class="hl">5</span>,  ans=max(4,5)=<span class="hl">5</span>
+i=6 (a=1):  cur=max(1, 5+1)=<span class="hl">6</span>,  ans=max(5,6)=<span class="hl">6</span>
+i=7 (a=-5): cur=max(-5, 6-5)=<span class="hl">1</span>,  ans=max(6,1)=<span class="hl">6</span>
+i=8 (a=4):  cur=max(4, 1+4)=<span class="hl">5</span>,  ans=max(6,5)=<span class="hl">6</span>
+
+<span class="hl">最大子段和 = 6</span>（子段 [4,-1,2,1] = 6）✅
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：数字三角形 DP -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p6">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 数字三角形 DP</span>
+      <span>考：二维DP边界 + 自底向上递推 + 取最值</span>
+    </div>
+    <div class="exam-q">
+      以下程序求解数字三角形从顶部到底部的最大路径和（每次可向下或右下走）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, a[<span class="num">105</span>][<span class="num">105</span>];
+cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++)
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= i; j++)
+    cin &gt;&gt; a[i][j];
+
+<span class="cm">// 自底向上DP</span>
+<span class="kw">for</span> (<span class="kw">int</span> i = n<span class="blank">①</span>; i &gt;= <span class="num">1</span>; i<span class="blank">②</span>) {
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j <span class="blank">③</span> i; j++) {
+    a[i][j] += max(a[i<span class="blank">④</span>][j], a[i<span class="blank">⑤</span>][j<span class="num">+1</span>]);
+  }
+}
+cout &lt;&lt; a[<span class="num">1</span>][<span class="num">1</span>];
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> - 1</div>
+      <div class="opt"><span class="letter">B</span> + 1</div>
+      <div class="opt"><span class="letter">C</span> + 0</div>
+      <div class="opt"><span class="letter">D</span> - 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ++</div>
+      <div class="opt"><span class="letter">B</span> --</div>
+      <div class="opt"><span class="letter">C</span> += 2</div>
+      <div class="opt"><span class="letter">D</span> -= 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> &gt;=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> +2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ⑤ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +1</div>
+      <div class="opt"><span class="letter">B</span> -1</div>
+      <div class="opt"><span class="letter">C</span> +0</div>
+      <div class="opt"><span class="letter">D</span> +2</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：① A (-1) · ② B (--) · ③ B (&lt;=) · ④ A (+1) · ⑤ A (+1)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>整体思路：自底向上DP</strong><br>
+        &nbsp;&nbsp;• 从倒数第2行开始，逐行向上计算。<br>
+        &nbsp;&nbsp;• 每个位置加上<strong>下一行相邻两个位置的较大值</strong>。<br><br>
+
+        <strong>空 ①：外层循环起始</strong><br>
+        &nbsp;&nbsp;• 自底向上：从 n-1 行开始（最后一行不用算）。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">i = n - 1</span>，选 A（<span class="c">-1</span>）。<br><br>
+
+        <strong>空 ②：循环变量变化</strong><br>
+        &nbsp;&nbsp;• 从下往上，i 递减。<br>
+        &nbsp;&nbsp;• 所以用 <span class="c">i--</span>，选 B。<br><br>
+
+        <strong>空 ③：内层循环边界</strong><br>
+        &nbsp;&nbsp;• 第 i 行有 i 个元素，j 从 1 到 i。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">j &lt;= i</span>，选 B。<br><br>
+
+        <strong>空 ④ 和 ⑤：下一行的两个相邻位置</strong><br>
+        &nbsp;&nbsp;• 当前位置 (i, j) 的下一行同列 = <span class="c">a[i+1][j]</span>。<br>
+        &nbsp;&nbsp;• 当前位置 (i, j) 的下一行列+1 = <span class="c">a[i+1][j+1]</span>。<br>
+        &nbsp;&nbsp;• 所以 ④ 和 ⑤ 都选 <span class="c">+1</span>（A）。<br><br>
+
+        <strong>手动模拟验证：</strong>
+        <div class="dp-table" style="font-size:.68rem;">
+<span class="dim">输入三角形：</span>
+   7
+  3 8
+ 8 1 0
+2 7 4 4
+
+<span class="dim">自底向上：</span>
+i=3 (第3行): 
+  j=1: 8 + max(2,7)=8+7=<span class="hl">15</span>
+  j=2: 1 + max(7,4)=1+7=<span class="hl">8</span>
+  j=3: 0 + max(4,4)=0+4=<span class="hl">4</span>
+→ 第3行: [15, 8, 4]
+
+i=2 (第2行):
+  j=1: 3 + max(15,8)=3+15=<span class="hl">18</span>
+  j=2: 8 + max(8,4)=8+8=<span class="hl">16</span>
+→ 第2行: [18, 16]
+
+i=1 (第1行):
+  j=1: 7 + max(18,16)=7+18=<span class="hl">25</span>
+
+<span class="hl">最大路径和 = 25</span>（7→3→8→7=25）✅
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：0/1 背包 DP -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p7">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题 · 0/1背包 DP</span>
+      <span>考：一维DP压缩 + 内层循环方向</span>
+    </div>
+    <div class="exam-q">
+      以下程序用一维DP数组求解0/1背包问题（n个物品，容量W）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, W; cin &gt;&gt; n &gt;&gt; W;
+<span class="kw">int</span> w[<span class="num">105</span>], v[<span class="num">105</span>];
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) cin &gt;&gt; w[i] &gt;&gt; v[i];
+
+<span class="kw">int</span> dp[<span class="num">1005</span>] = {{<span class="num">0</span>}};
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+  <span class="kw">for</span> (<span class="kw">int</span> j = W; j <span class="blank">①</span> w[i]; j<span class="blank">②</span>) {
+    dp[j] = max(dp[j], dp[j <span class="blank">③</span> w[i]] <span class="blank">④</span> v[i]);
+  }
+}
+cout &lt;&lt; dp[W];
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &gt;=</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> &lt;</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ++</div>
+      <div class="opt"><span class="letter">B</span> --</div>
+      <div class="opt"><span class="letter">C</span> += 2</div>
+      <div class="opt"><span class="letter">D</span> -= 2</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +</div>
+      <div class="opt"><span class="letter">B</span> -</div>
+      <div class="opt"><span class="letter">C</span> *</div>
+      <div class="opt"><span class="letter">D</span> /</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +</div>
+      <div class="opt"><span class="letter">B</span> -</div>
+      <div class="opt"><span class="letter">C</span> *</div>
+      <div class="opt"><span class="letter">D</span> /</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：① A (&gt;=) · ② B (--) · ③ B (-) · ④ A (+)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>0/1背包一维DP的核心要点：</strong><br><br>
+
+        <strong>空 ① 和 ②：内层循环条件和方向</strong><br>
+        &nbsp;&nbsp;• 0/1背包要求<strong>每个物品最多选一次</strong>。<br>
+        &nbsp;&nbsp;• 一维DP必须<strong>逆序</strong>遍历容量（从大到小），否则同一物品会被重复使用（变成完全背包）。<br>
+        &nbsp;&nbsp;• 所以 j 从 W 到 w[i]，递减：<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- ① 选 <span class="c">&gt;=</span>（当 j &gt;= w[i] 时说明还能装下当前物品）<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;- ② 选 <span class="c">--</span>（从大到小遍历）<br><br>
+
+        <strong>空 ③：背包容量减少</strong><br>
+        &nbsp;&nbsp;• 放入物品 i，容量减少 w[i]。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[j - w[i]]</span>，选 <span class="c">-</span>。<br><br>
+
+        <strong>空 ④：价值增加</strong><br>
+        &nbsp;&nbsp;• 放入物品 i，价值增加 v[i]。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[j - w[i]] + v[i]</span>，选 <span class="c">+</span>。<br><br>
+
+        <strong>标准转移方程：</strong><br>
+        &nbsp;&nbsp;<span class="c">dp[j] = max(dp[j], dp[j-w[i]] + v[i])</span><br><br>
+
+        <div class="card accent" style="margin:8px 0;">
+          <div class="card-title">⚠️ 易错点提醒</div>
+          <p class="kp-text" style="font-size:.78rem;">
+            <strong>为什么必须逆序？</strong><br>
+            如果正序（j 从小到大），dp[j-w[i]] 可能已经包含了当前物品 i，即"重复选了同一个物品"，
+            这就不符合 0/1 背包每个物品只能选一次的要求了。<br><br>
+            <strong>口诀：</strong>"0/1背包逆序走，完全背包正序行。物品在外容在内，一维切记方向定。"
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 8：最长上升子序列 LIS -->
+  <!-- ============================== -->
+  <div class="exam-block" id="p8">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题改编 · LIS</span>
+      <span>考：二维LIS DP + 取最值</span>
+    </div>
+    <div class="exam-q">
+      以下程序求数组 a 的最长上升子序列长度（经典 LIS，O(n²) DP）。请选择填入空缺处的正确代码：<br><br>
+      <div class="code-block" style="font-size:.78rem;">
+<span class="kw">int</span> n, a[<span class="num">1005</span>]; cin &gt;&gt; n;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i];
+
+<span class="kw">int</span> dp[<span class="num">1005</span>], ans = <span class="num">0</span>;
+<span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+  dp[i] = <span class="blank">①</span>;  <span class="cm">// 每个位置至少长度为1</span>
+  <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j <span class="blank">②</span> i; j++) {
+    <span class="kw">if</span> (a[j] <span class="blank">③</span> a[i]) {
+      dp[i] = max(dp[i], dp[j] <span class="blank">④</span> <span class="num">1</span>);
+    }
+  }
+  ans = max(ans, dp[i]);
+}
+cout &lt;&lt; ans;
+      </div>
+    </div>
+    
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ① ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 0</div>
+      <div class="opt"><span class="letter">B</span> 1</div>
+      <div class="opt"><span class="letter">C</span> -1</div>
+      <div class="opt"><span class="letter">D</span> a[i]</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ② ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &lt;=</div>
+      <div class="opt"><span class="letter">C</span> &gt;</div>
+      <div class="opt"><span class="letter">D</span> !=</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ③ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> &lt;</div>
+      <div class="opt"><span class="letter">B</span> &gt;</div>
+      <div class="opt"><span class="letter">C</span> &lt;=</div>
+      <div class="opt"><span class="letter">D</span> ==</div>
+      </div>
+
+      <div style="font-size:.75rem;font-weight:600;color:var(--text-sec);margin:6px 0 2px 0;">—— ④ ——</div>
+      <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> +</div>
+      <div class="opt"><span class="letter">B</span> -</div>
+      <div class="opt"><span class="letter">C</span> *</div>
+      <div class="opt"><span class="letter">D</span> /</div>
+      </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：① B (1) · ② A (&lt;) · ③ A (&lt;) · ④ A (+)</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        <strong>空 ①：dp[i] 初值</strong><br>
+        &nbsp;&nbsp;• 每个位置的元素本身构成一个长度为 1 的上升子序列。<br>
+        &nbsp;&nbsp;• 所以 <span class="c">dp[i] = 1</span>，选 B。<br><br>
+
+        <strong>空 ②：内层循环范围</strong><br>
+        &nbsp;&nbsp;• 对于每个 a[i]，检查它前面的元素 a[1..i-1]。<br>
+        &nbsp;&nbsp;• 所以 j 从 1 到 <span class="c">i-1</span>，条件为 <span class="c">j &lt; i</span>，选 A。<br><br>
+
+        <strong>空 ③：上升条件判断</strong><br>
+        &nbsp;&nbsp;• "上升"子序列要求 a[j] <span class="hl">&lt;</span> a[i]（严格递增）。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">&lt;</span>，A。<br>
+        &nbsp;&nbsp;• 如果题目要求"非递减"则用 <span class="c">&lt;=</span>。<br><br>
+
+        <strong>空 ④：长度累加</strong><br>
+        &nbsp;&nbsp;• 如果可以接在 a[j] 后面，则长度为 <span class="c">dp[j] + 1</span>。<br>
+        &nbsp;&nbsp;• 所以选 <span class="c">+</span>，A。<br><br>
+
+        <strong>完整转移方程：</strong><br>
+        &nbsp;&nbsp;<span class="c">dp[i] = max(dp[i], dp[j] + 1)</span> 当 <span class="c">a[j] &lt; a[i]</span><br><br>
+
+        <strong>手动模拟验证（a=[3,1,2,6,4,5]）：</strong>
+        <div class="dp-table" style="font-size:.68rem;">
+i=1 (a=3): dp[1]=<span class="hl">1</span>, ans=1
+i=2 (a=1): dp[2]=<span class="hl">1</span> （没有j&lt;2且a[j]&lt;1的）, ans=1
+i=3 (a=2): 检查j=1: 3&gt;2✗; j=2: 1&lt;2✓ → dp[3]=max(1, dp[2]+1=max(1,2))=<span class="hl">2</span>, ans=2
+i=4 (a=6): 检查j=1:3&lt;6✓→dp[4]=max(1,1+1)=2; j=2:1&lt;6✓→dp[4]=max(2,1+1)=2; j=3:2&lt;6✓→dp[4]=max(2,2+1)=<span class="hl">3</span>, ans=3
+i=5 (a=4): 检查j=1:3&lt;4✓→2; j=2:1&lt;4✓→2; j=3:2&lt;4✓→max(2,2+1)=<span class="hl">3</span>; j=4:6&gt;4✗ → dp[5]=3, ans=3
+i=6 (a=5): j=1:3&lt;5✓→2; j=2:1&lt;5✓→2; j=3:2&lt;5✓→max(2,2+1)=3; j=4:6&gt;5✗; j=5:4&lt;5✓→max(3,3+1)=<span class="hl">4</span>, ans=4
+
+<span class="hl">最长上升子序列长度 = 4</span>（[1,2,4,5] 或 [1,2,6]❌→[1,2,4,5]=4 ✅）
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- DP完善程序速查表 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 DP完善程序"三看一填"速查表</h3>
+    <p class="kp-text" style="font-size:.82rem;">
+      以下总结了 DP 完善程序题的<strong>标准解题流程</strong>和<strong>各模型要点</strong>，
+      考试中遇到 DP 类型时按此流程操作，可系统性地快速解题。
+    </p>
+
+    <table>
+      <thead>
+        <tr><th style="width:50px;">步骤</th><th style="width:100px;">名称</th><th>操作内容</th><th>常见遗漏点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align:center;"><span class="mono">1</span></td>
+          <td><strong>看数组</strong></td>
+          <td>判断几维DP：一维（f/dp[N]）还是二维（dp[N][M]），确定维度有助于定位填空</td>
+          <td style="color:var(--danger);font-size:.76rem;">忽略数组大小定义，无法确定循环范围</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">2</span></td>
+          <td><strong>看边界</strong></td>
+          <td>找初始化代码：dp[0]=?, dp[i][0]=?, dp[0][j]=? 边界值决定算法正确性</td>
+          <td style="color:var(--danger);font-size:.76rem;">混淆 0 和 1 的初始值；忘记某些边界</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">3</span></td>
+          <td><strong>看循环</strong></td>
+          <td>确认循环范围：从几开始到几结束？正序还是逆序？包含等号吗？</td>
+          <td style="color:var(--danger);font-size:.76rem;">一维/二维混淆；背包正逆序搞错</td>
+        </tr>
+        <tr>
+          <td style="text-align:center;"><span class="mono">4</span></td>
+          <td><strong>填递推</strong></td>
+          <td>根据模型填状态转移：min/max/?运算符，?下标偏移，?加减常数</td>
+          <td style="color:var(--danger);font-size:.76rem;">递推式中下标写错（-1/-2混淆）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="row" style="margin-top:12px;">
+      <span class="pill">💡 三看一填：看数组·看边界·看循环·填递推</span>
+      <span class="pill green">✅ 一维DP：初始 + 递推 + 循环范围</span>
+      <span class="pill red">⚠️ 二维DP：双重边界 + 内外层循环 + 递推</span>
+      <span class="pill amber">🔍 编辑距离：dp[i][j] = 相等?继承 : min(删+1,插+1,替+1)</span>
+      <span class="pill purple">📊 杨辉三角：边界=1，递推=左上+右上，从i=3开始</span>
+      <span class="pill blue">🔄 0/1背包：逆序（--），0/1背包逆序走</span>
+    </div>
+
+    <div class="card success" style="margin:12px 0 0;">
+      <div class="card-title">📌 DP各模型填空位置对照表</div>
+      <table>
+        <thead>
+          <tr><th>DP模型</th><th>数组维度</th><th>边界填空</th><th>递推填空</th><th>循环填空</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>爬楼梯/斐波那契</td><td>一维 f[n]</td><td>f[1]=1, f[2]=2</td><td>f[i-1] + f[i-2]</td><td>i=3 开始</td></tr>
+          <tr><td>编辑距离</td><td>二维 dp[n][m]</td><td>dp[i][0]=i, dp[0][j]=j</td><td>min(删+1, 插+1, 替+1/继承)</td><td>i=1..n, j=1..m</td></tr>
+          <tr><td>杨辉三角</td><td>二维 dp[n][n]</td><td>dp[i][1]=1, dp[i][i]=1</td><td>dp[i-1][j-1] + dp[i-1][j]</td><td>i=3..n, j=2..i-1</td></tr>
+          <tr><td>最大子段和</td><td>一维（滚动）</td><td>cur=ans=a[0]</td><td>max(a[i], cur+a[i])</td><td>i=1..n-1</td></tr>
+          <tr><td>数字三角形</td><td>二维 a[n][n]</td><td>读入数据即初值</td><td>+max(下, 右下)</td><td>i=n-1..1, j=1..i</td></tr>
+          <tr><td>0/1背包</td><td>一维 dp[W]</td><td>dp[0..W]=0</td><td>max(dp[j], dp[j-w[i]]+v[i])</td><td>j=W..w[i] 逆序</td></tr>
+          <tr><td>最长上升子序列</td><td>一维 dp[n]</td><td>dp[i]=1</td><td>max(dp[i], dp[j]+1)</td><td>j=1..i-1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card primary" style="margin:12px 0 0;">
+      <div class="card-title">📝 考场口诀</div>
+      <p class="kp-text" style="font-size:.82rem;">
+        <strong>DP 完善程序"18字口诀"：</strong><br>
+        "一维看初值与递推，二维看双界与双循环。<br>
+        编辑距离三等操作，杨辉三角两边为 1。<br>
+        爬楼梯 i 从 3 开始起，背包逆序要牢记。<br>
+        数字三角形自底向上，LIS 只往前看。"<br><br>
+        <strong>核心检查方法：</strong><br>
+        选完答案后，<strong>用最小的输入数据（n=2 或 n=3）手动模拟一遍</strong>，
+        确认每一步的变量值都正确。这是防止填空错误最有效的手段。
+      </p>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body>
+</html>

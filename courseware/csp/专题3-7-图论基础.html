@@ -1,0 +1,529 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 3.7 图论基础</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}
+.code-block .blue{color:#60a5fa}
+.tree-art{background:var(--surface-alt);padding:10px 14px;border-radius:6px;font-family:var(--font-mono);font-size:.8rem;line-height:1.6;overflow-x:auto;margin:10px 0;white-space:pre;color:var(--text-sec)}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.table-wrapper{overflow-x:auto;margin:12px 0}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.82rem}
+.table-wrapper th,.table-wrapper td{padding:8px 12px;text-align:left;border:1px solid var(--border)}
+.table-wrapper th{background:var(--primary-light);color:var(--primary-dark);font-weight:600}
+.table-wrapper td{color:var(--text-sec)}
+.table-wrapper tr:nth-child(even){background:var(--surface-alt)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔗</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题三 · 数据结构</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 基本概念</div>
+<a class="nav-link" href="#s1">有向/无向图·顶点·边</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · 度</div>
+<a class="nav-link" href="#s2">入度·出度·度数</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 连通图与分量</div>
+<a class="nav-link" href="#s3">连通性·连通分量</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 树</div>
+<a class="nav-link" href="#s4">树 = n-1 条边的连通图</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">5 · 邻接矩阵</div>
+<a class="nav-link" href="#s5">矩阵表示·非零元素</a><a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题三 · 数据结构</a> / 3.7</div>
+<h1>图论基础</h1>
+<p class="subtitle">有向/无向图 · 度 · 连通性 · 树 · 邻接矩阵</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 2 课时</span><span class="meta-tag hot">🔥 高频考点</span>
+<span class="meta-tag exam">📖 真题 3 道</span><span class="meta-tag practice">✏️ 模拟题 5 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 图论</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-16·图与树</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 区分有向图与无向图的基本概念</span>
+<span class="item">✅ 理解度的概念：无向图度 / 有向图入度出度</span>
+<span class="item">✅ 掌握入度之和 = 出度之和 = 边数</span>
+<span class="item">✅ 理解连通图、连通分量与强连通分量</span>
+<span class="item">✅ 掌握树的性质：n 个顶点 n−1 条边的连通图</span>
+<span class="item">✅ 理解邻接矩阵表示法及其非零元素个数含义</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">图论基础（概念+度+连通+树+邻接矩阵）</span>
+<span class="r amber">2021·2022·2025 真题</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>图的基本概念</h2>
+
+<h3 class="kp-title">1.1 什么是图？</h3>
+<p class="kp-text"><strong class="hl">图（Graph）</strong>由<strong>顶点（Vertex）</strong>和<strong>边（Edge）</strong>组成，记为 <span class="c">G = (V, E)</span>，其中 V 是顶点集合，E 是边集合。图是<strong>数据结构</strong>中<strong>最灵活</strong>的结构——树、链表本质上是图的特例。</p>
+
+<h3 class="kp-title">1.2 有向图 vs 无向图</h3>
+
+<div class="card primary"><div class="card-title">📌 无向图（Undirected Graph）</div>
+<p class="kp-text">· 边<strong>没有方向</strong>，记为 <span class="c">(u, v)</span>，表示 u 和 v 之间是<strong>对等关系</strong><br>
+· 边 <span class="c">(u, v)</span> = <span class="c">(v, u)</span>，<strong>无顺序</strong><br>
+· 常见场景：<strong>朋友关系</strong>、<strong>道路网络</strong>（双向通行）</p></div>
+
+<div class="card success"><div class="card-title">📌 有向图（Directed Graph / Digraph）</div>
+<p class="kp-text">· 边<strong>有方向</strong>，记为 <span class="c">&lt;u, v&gt;</span>，表示从 u <strong>指向</strong> v<br>
+· 边 <span class="c">&lt;u, v&gt;</span> ≠ <span class="c">&lt;v, u&gt;</span>，<strong>有顺序</strong><br>
+· 常见场景：<strong>关注关系</strong>、<strong>课程前置依赖</strong></p></div>
+
+<div class="card accent"><div class="card-title">💡 核心术语对比</div>
+<p class="kp-text">· <strong>顶点数</strong>记为 n（或 |V|），<strong>边数</strong>记为 m（或 |E|）<br>
+· <strong>有向边</strong>也称<strong>弧（Arc）</strong>，起点为<strong>弧尾</strong>，终点为<strong>弧头</strong><br>
+· <strong>无向边</strong>简称<strong>边</strong>，两端点地位平等</p></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>图的基本概念</span></div>
+<div class="exam-q">以下关于图的说法，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>有向图的边没有方向</div>
+<div class="opt"><span class="letter">B</span>无向图的一条边可以表示为 (u, v) 或 (v, u)，两者含义相同</div>
+<div class="opt"><span class="letter">C</span>图的顶点必须用字母编号，不能用数字</div>
+<div class="opt"><span class="letter">D</span>有向图的边数一定大于无向图的边数</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：B</div>
+<div class="explain"><strong>分析：</strong><br>
+A ❌ 有向图的边<strong>有方向</strong>，记为 &lt;u, v&gt;。<br>
+B ✅ 无向图的边<strong>无方向</strong>，<span class="c">(u, v) = (v, u)</span>，表示同样的连接关系。<br>
+C ❌ 顶点可以用<strong>任意标识符</strong>，数字、字母均可，常见的图论问题中多用数字编号。<br>
+D ❌ 边数多少取决于具体图的结构，与"有向/无向"的分类<strong>无关</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>有向图边数理解</span></div>
+<div class="exam-q">有 4 个顶点的有向完全图中，共有多少条边？（提示：有向完全图中每对顶点之间都有两条方向相反的边）</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>6</div>
+<div class="opt"><span class="letter">B</span>8</div>
+<div class="opt"><span class="letter">C</span>12</div>
+<div class="opt"><span class="letter">D</span>16</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：C（12 条边）</div>
+<div class="explain"><strong>分析：</strong><br>
+有向完全图：每对顶点之间有<strong>两条方向相反</strong>的边。<br>
+4 个顶点中<strong>任选 2 个</strong>的组合数为 <span class="c">C(4,2) = 6</span>。<br>
+每组两个顶点产生 <strong>2 条方向相反</strong>的有向边，故总边数 = <span class="c">6 × 2 = 12</span>。<br><br>
+<strong>公式：</strong>n 个顶点的有向完全图边数 = <span class="c">n × (n − 1)</span><br>
+代入 n=4：<span class="c">4 × 3 = 12</span>。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>度</h2>
+
+<h3 class="kp-title">2.1 无向图的度</h3>
+<p class="kp-text"><strong class="hl">度（Degree）</strong>：在<strong>无向图</strong>中，一个顶点的度 = 与该顶点<strong>相连的边数</strong>，记为 <span class="c">deg(v)</span>。</p>
+
+<div class="card primary"><div class="card-title">📌 无向图度的重要性质</div>
+<p class="kp-text"><strong>握手定理：</strong>所有顶点的度数之和 = <span class="c">2 × 边数</span><br>
+· 每条边贡献 <strong>2 度</strong>（连接两个顶点，各贡献 1 度）<br>
+· <span class="c">Σ deg(v) = 2|E|</span><br>
+· <strong>推论：</strong>度数为<strong>奇数</strong>的顶点有<strong>偶数个</strong></p></div>
+
+<h3 class="kp-title">2.2 有向图的入度与出度</h3>
+<p class="kp-text">在<strong>有向图</strong>中，一个顶点的度分为两部分：</p>
+
+<div class="card success"><div class="card-title">📌 入度（In-degree）与出度（Out-degree）</div>
+<p class="kp-text">· <strong>入度</strong>：<strong>指向</strong>该顶点的边数，记为 <span class="c">indeg(v)</span><br>
+· <strong>出度</strong>：从该顶点<strong>出发</strong>的边数，记为 <span class="c">outdeg(v)</span><br>
+· <strong>总度</strong>：<span class="c">deg(v) = indeg(v) + outdeg(v)</span></p></div>
+
+<div class="card accent"><div class="card-title">💡 核心恒等式</div>
+<p class="kp-text"><strong class="hl">所有顶点的入度之和 = 所有顶点的出度之和 = 边数</strong><br>
+· 每条有向边贡献 <strong>1 个出度</strong>（起点）和 <strong>1 个入度</strong>（终点）<br>
+· <span class="c">Σ indeg(v) = Σ outdeg(v) = |E|</span><br>
+· 这个性质在 <strong>2025 年 CSP-J 初赛</strong>中直接考察</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2025 年第 5 题</span><span>有向图入度之和与出度之和</span></div>
+<div class="exam-q">下列关于有向图的说法中，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>所有顶点的入度之和等于出度之和</div>
+<div class="opt"><span class="letter">B</span>所有顶点的出度之和等于边数的两倍</div>
+<div class="opt"><span class="letter">C</span>所有顶点的入度之和等于边数的两倍</div>
+<div class="opt"><span class="letter">D</span>所有顶点的入度之和与出度之和无关</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：A</div>
+<div class="explain"><strong>分析：</strong><br>
+在有向图中，每条有向边 &lt;u, v&gt; 会为 u 贡献 <strong>1 个出度</strong>，为 v 贡献 <strong>1 个入度</strong>。<br>
+因此<strong>所有顶点的入度之和 = 所有顶点的出度之和 = 边数</strong>。<br><br>
+逐项分析：<br>
+A ✅ 入度之和 = 出度之和（都 = 边数）<br>
+B ❌ 出度之和 = 边数，<strong>不是</strong>边数的两倍<br>
+C ❌ 入度之和 = 边数，<strong>不是</strong>边数的两倍（两倍是无向图的性质）<br>
+D ❌ 入度之和与出度之和<strong>相等</strong>，并非无关</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>无向图握手定理</span></div>
+<div class="exam-q">某无向图有 8 个顶点，各顶点的度数分别为 3, 3, 4, 4, 5, 5, 6, 6。该图有多少条边？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>16</div>
+<div class="opt"><span class="letter">B</span>18</div>
+<div class="opt"><span class="letter">C</span>20</div>
+<div class="opt"><span class="letter">D</span>36</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：B（18 条边）</div>
+<div class="explain"><strong>分析：</strong><br>
+根据<strong>握手定理</strong>：无向图中所有顶点的度数之和 = <span class="c">2 × 边数</span>。<br><br>
+度数之和 = 3 + 3 + 4 + 4 + 5 + 5 + 6 + 6<br>
+= <span class="c">36</span><br><br>
+边数 = 度数之和 ÷ 2 = <span class="c">36 ÷ 2 = 18</span>。<br><br>
+<strong>快速验算：</strong>边数为整数，度数之和必须为偶数。36 是偶数 ✅</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>连通图与连通分量</h2>
+
+<h3 class="kp-title">3.1 连通图</h3>
+<p class="kp-text"><strong class="hl">连通图（Connected Graph）</strong>：在<strong>无向图</strong>中，如果任意两个顶点之间都<strong>至少有一条路径</strong>相连，则该图是连通图。</p>
+
+<h3 class="kp-title">3.2 连通分量</h3>
+<p class="kp-text"><strong class="hl">连通分量（Connected Component）</strong>：无向图的<strong>极大连通子图</strong>。一个连通图只有一个连通分量（即自身）；非连通图则包含多个连通分量。</p>
+
+<div class="card primary"><div class="card-title">📌 有向图的连通性</div>
+<p class="kp-text">· <strong>强连通图</strong>：有向图中，任意两个顶点 <span class="c">u</span>、<span class="c">v</span> 之间<strong>互相可达</strong>（既有 u→v 的路径，也有 v→u 的路径）<br>
+· <strong>强连通分量（SCC）</strong>：有向图的<strong>极大强连通子图</strong><br>
+· <strong>弱连通图</strong>：忽略方向后（视为无向图）是连通的</p></div>
+
+<div class="card success"><div class="card-title">💡 连通分量数量规律</div>
+<p class="kp-text">· 一个 n 个顶点的连通图<strong>至少</strong>需要 <span class="c">n − 1</span> 条边（此时为树）<br>
+· n 个顶点 <strong>k</strong> 个连通分量的无向图，<strong>至少</strong>有 <span class="c">n − k</span> 条边<br>
+· <strong>孤立点</strong>也算一个连通分量</p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>连通图判断</span></div>
+<div class="exam-q">一个有 6 个顶点的无向图有 4 条边，以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>该图一定是连通图</div>
+<div class="opt"><span class="letter">B</span>该图一定是非连通图</div>
+<div class="opt"><span class="letter">C</span>该图可能连通也可能不连通</div>
+<div class="opt"><span class="letter">D</span>该图至少有 2 个连通分量</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：C</div>
+<div class="explain"><strong>分析：</strong><br>
+6 个顶点的连通图<strong>至少</strong>需要 <span class="c">n − 1 = 5</span> 条边。<br>
+该图只有 4 条边 &lt; 5，说明<strong>一定不是</strong>连通图。<br>
+n 个顶点 k 个连通分量，最少边数为 <span class="c">n − k</span>。<br>
+设 k 个连通分量，则 <span class="c">6 − k ≤ 4</span>，解得 <span class="c">k ≥ 2</span>。<br>
+因此该图<strong>至少有 2 个连通分量</strong>。<br><br>
+A ❌ 4 条边不足以使 6 个顶点连通（至少需 5 条）<br>
+B ❌ "一定不连通"是对的，但 D 更精确<br>
+C ❌ 4 条边的情况下不可能连通<br>
+D ✅ 至少 2 个连通分量（最极端：5 个顶点形成树需 4 条边，剩余 1 个孤立点）</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>树</h2>
+
+<h3 class="kp-title">4.1 树的定义</h3>
+<p class="kp-text"><strong class="hl">树（Tree）</strong>是<strong>连通</strong>且<strong>无环</strong>的<strong>无向图</strong>。树是图的一种<strong>特殊形式</strong>，也是数据结构中最重要的结构之一。</p>
+
+<div class="card success"><div class="card-title">📌 树的核心性质</div>
+<p class="kp-text">· <strong>n 个顶点的树有 n − 1 条边</strong>（标志性性质）<br>
+· 树是<strong>极小连通图</strong>：删除任意一条边就不再连通<br>
+· 树是<strong>极大无环图</strong>：添加任意一条边就会产生环<br>
+· 树中任意两个顶点之间有<strong>唯一的一条路径</strong></p></div>
+
+<div class="card primary"><div class="card-title">📌 从图到树：删除多余边</div>
+<p class="kp-text">对于一个 n 个顶点 m 条边的<strong>无向连通图</strong>，若要将其变为一棵树：<br>
+· 树需要 <span class="c">n − 1</span> 条边<br>
+· 当前有 <span class="c">m</span> 条边<br>
+· 需要删除的边数 = <span class="c">m − (n − 1) = m − n + 1</span><br>
+· 这个结果就是<strong>回边数</strong>（图中环的数量）</p></div>
+
+<h3 class="kp-title">4.2 生成树</h3>
+<p class="kp-text"><strong class="hl">生成树（Spanning Tree）</strong>：连通图的一个<strong>子图</strong>，该子图是<strong>包含所有顶点的树</strong>。<br>
+· 一个有 n 个顶点的连通图，其生成树有 <span class="c">n − 1</span> 条边<br>
+· 同一个图可能有<strong>多种</strong>不同的生成树</p>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2021 年第 6 题</span><span>连通图删边变树</span></div>
+<div class="exam-q">一个无向连通图有 n 个顶点、m 条边，则至少需要删除多少条边才能使其变成一棵树？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>n − 1</div>
+<div class="opt"><span class="letter">B</span>m − n</div>
+<div class="opt"><span class="letter">C</span>m − n + 1</div>
+<div class="opt"><span class="letter">D</span>m − n − 1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：C（m − n + 1）</div>
+<div class="explain"><strong>分析：</strong><br>
+一棵有 n 个顶点的树恰好有 <span class="c">n − 1</span> 条边。<br>
+当前连通图有 <span class="c">m</span> 条边。<br>
+要变成树，需要删除 <span class="c">m − (n − 1) = m − n + 1</span> 条边。<br><br>
+<strong>举例理解：</strong><br>
+n = 6, m = 8 的连通图，树需要 5 条边，需删除 <span class="c">8 − 6 + 1 = 3</span> 条边。<br>
+这 3 条边就是图中 <strong>多余的环边</strong>（回边）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>树与生成树</span></div>
+<div class="exam-q">一个有 10 个顶点的连通图，其生成树有多少条边？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>9</div>
+<div class="opt"><span class="letter">B</span>10</div>
+<div class="opt"><span class="letter">C</span>11</div>
+<div class="opt"><span class="letter">D</span>取决于具体图的边数</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：A（9 条边）</div>
+<div class="explain"><strong>分析：</strong><br>
+<strong>生成树</strong>是包含连通图中<strong>所有顶点</strong>的树。<br>
+任何 n 个顶点的树都恰好有 <span class="c">n − 1</span> 条边。<br>
+因此 10 个顶点的生成树有 <span class="c">10 − 1 = 9</span> 条边。<br><br>
+<strong>易错提醒：</strong>不要被原图的边数干扰——<strong>无论原图有多少条边</strong>，生成树的边数<strong>固定</strong>为 n − 1。原图的边越多，意味着生成时需要删除的边越多。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s5"><span class="num">5</span>邻接矩阵</h2>
+
+<h3 class="kp-title">5.1 什么是邻接矩阵？</h3>
+<p class="kp-text"><strong class="hl">邻接矩阵（Adjacency Matrix）</strong>是表示图的一种方式。对于一个有 n 个顶点的图，使用一个 <span class="c">n × n</span> 的矩阵 <span class="c">A</span> 来存储：</p>
+
+<div class="card primary"><div class="card-title">📌 矩阵定义</div>
+<p class="kp-text"><strong>无向图：</strong><br>
+· A[i][j] = 1（如果顶点 i 和 j 之间有边），否则为 0<br>
+· 矩阵关于<strong>主对角线对称</strong>（A[i][j] = A[j][i]）<br><br>
+<strong>有向图：</strong><br>
+· A[i][j] = 1（如果存在从 i 指向 j 的边），否则为 0<br>
+· 矩阵<strong>不一定对称</strong></p></div>
+
+<h3 class="kp-title">5.2 邻接矩阵的重要性质</h3>
+
+<div class="card success"><div class="card-title">📌 非零元素个数与边数的关系</div>
+<p class="kp-text"><strong>无向图：</strong>邻接矩阵是<strong>对称矩阵</strong>，每条边对应 <strong>2 个 1</strong>（上三角和下三角各一个）<br>
+· 非零元素个数 = <span class="c">2 × 边数</span><br><br>
+<strong>有向图：</strong>每条边对应 <strong>1 个 1</strong><br>
+· 非零元素个数 = <span class="c">边数</span></p></div>
+
+<div class="card accent"><div class="card-title">💡 邻接矩阵的优缺点</div>
+<p class="kp-text">✅ <strong>优点</strong>：判断任意两顶点之间<strong>是否有边</strong>只需 O(1) 时间<br>
+✅ <strong>优点</strong>：适合<strong>稠密图</strong>（边数多的图）<br>
+❌ <strong>缺点</strong>：空间复杂度为 <span class="c">O(n²)</span>，对于<strong>稀疏图</strong>浪费空间</p></div>
+
+<h3 class="kp-title" id="s5-q">📝 配套练习</h3>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 年第 9 题</span><span>有向连通图邻接矩阵</span></div>
+<div class="exam-q">一个有 N 个顶点的有向连通图，它的邻接矩阵中至少有多少个非零元素？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>N − 1</div>
+<div class="opt"><span class="letter">B</span>N</div>
+<div class="opt"><span class="letter">C</span>2N</div>
+<div class="opt"><span class="letter">D</span>N² − N</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：B（N 个非零元素）</div>
+<div class="explain"><strong>分析：</strong><br>
+有向连通图<strong>至少</strong>需要 <span class="c">N</span> 条边（构成一个<strong>有向环</strong>即可连通所有顶点）。<br>
+在有向图的邻接矩阵中，每条边对应 <strong>1 个非零元素</strong>。<br>
+因此最少非零元素个数 = <strong>最少边数</strong> = <span class="c">N</span>。<br><br>
+<strong>构造示例：</strong>N 个顶点排成一个环 <span class="c">1→2→3→⋯→N→1</span>，共 N 条边，这就是一个有向连通图。<br><br>
+A ❌ N − 1 条边构成的<strong>有向树</strong>不能保证强连通<br>
+B ✅ N 条边构成环，确保每个顶点可达<br>
+C ❌ 2N 是上界，不是"至少"<br>
+D ❌ N² − N 是完全图的非零元素数</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>无向图邻接矩阵</span></div>
+<div class="exam-q">一个无向连通图有 6 个顶点和 7 条边，其邻接矩阵中非零元素共有多少个？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>7</div>
+<div class="opt"><span class="letter">B</span>12</div>
+<div class="opt"><span class="letter">C</span>14</div>
+<div class="opt"><span class="letter">D</span>36</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：C（14 个非零元素）</div>
+<div class="explain"><strong>分析：</strong><br>
+无向图的邻接矩阵是<strong>对称矩阵</strong>。<br>
+每条无向边连接两个顶点，会在矩阵中产生 <span class="c">2 个 1</span>：<br>
+· A[i][j] = 1（下三角）<br>
+· A[j][i] = 1（上三角）<br><br>
+非零元素总数 = <span class="c">2 × 边数</span> = <span class="c">2 × 7 = 14</span>。<br><br>
+<strong>速记：</strong><br>
+· 有向图：非零元素个数 = 边数<br>
+· 无向图：非零元素个数 = 2 × 边数</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>图论综合判断</span></div>
+<div class="exam-q">以下关于图的说法中，错误的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>有向图中，所有顶点的入度之和等于出度之和</div>
+<div class="opt"><span class="letter">B</span>无向连通图的生成树有 n − 1 条边</div>
+<div class="opt"><span class="letter">C</span>邻接矩阵中非零元素的个数一定等于图中边数的两倍</div>
+<div class="opt"><span class="letter">D</span>树是连通且无环的图</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：C</div>
+<div class="explain"><strong>逐个分析：</strong><br>
+A ✅ 这是有向图的基本性质：<span class="c">Σ indeg = Σ outdeg = |E|</span>。<br>
+B ✅ 生成树包含所有 n 个顶点，树有 <span class="c">n − 1</span> 条边，正确。<br>
+C ❌ <strong>不一定。</strong>无向图的邻接矩阵中非零元素 = <span class="c">2 × 边数</span>，但<strong>有向图</strong>的邻接矩阵中非零元素 = <span class="c">边数</span>（每条有向边只对应 1 个非零元素）。因此"一定等于两倍"的说法<strong>有误</strong>。<br>
+D ✅ 树的定义是<strong>连通 + 无环</strong>，正确。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>树与图综合</span></div>
+<div class="exam-q">一个无向连通图有 12 个顶点和 15 条边，以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>该图一定是树</div>
+<div class="opt"><span class="letter">B</span>该图至少删除 3 条边能变成树</div>
+<div class="opt"><span class="letter">C</span>该图至少有 4 个环</div>
+<div class="opt"><span class="letter">D</span>该图的邻接矩阵有 15 个非零元素</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：B</div>
+<div class="explain"><strong>分析：</strong><br>
+A ❌ 树需要 <span class="c">n − 1 = 11</span> 条边，该图有 15 条边 > 11，<strong>不是树</strong>。<br>
+B ✅ 变成树需要 <span class="c">n − 1 = 11</span> 条边，现有 15 条，需删除 <span class="c">15 − 11 = 4</span> 条边。<br>
+C ❌ 环的数量 = 回边数 = <span class="c">m − n + 1 = 15 − 12 + 1 = 4</span>，但环可能<strong>嵌套</strong>，不一定恰好 4 个独立环。<br>
+D ❌ 无向图邻接矩阵非零元素 = <span class="c">2 × 边数 = 30</span>，不是 15。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 图论基础重点速查表</h3>
+<div class="row">
+<span class="pill green">无向图：边 (u,v) 无方向，对称关系</span>
+<span class="pill amber">有向图：边 &lt;u,v&gt; 有方向，弧尾→弧头</span>
+<span class="pill red">n 个顶点的无向完全图：n(n−1)/2 条边</span>
+</div>
+<div class="row">
+<span class="pill green">握手定理：无向图 Σ deg(v) = 2 × 边数</span>
+<span class="pill amber">有向图：Σ indeg = Σ outdeg = 边数</span>
+<span class="pill red">度数为奇数的顶点有偶数个</span>
+</div>
+<div class="row">
+<span class="pill">连通图无向图中任意两个顶点有路径</span>
+<span class="pill green">强连通图：有向图中任意两点互相可达</span>
+<span class="pill amber">n 顶点连通图至少 n−1 条边</span>
+</div>
+<div class="row">
+<span class="pill green">树：连通 + 无环，n 顶点 n−1 条边</span>
+<span class="pill amber">生成树：包含所有顶点的树，n−1 条边</span>
+<span class="pill red">连通图 → 树：删 m − n + 1 条边</span>
+</div>
+<div class="row">
+<span class="pill">邻接矩阵：n×n，O(1) 判边，O(n²) 空间</span>
+<span class="pill green">无向图：非零元素 = 2 × 边数（对称）</span>
+<span class="pill amber">有向图：非零元素 = 边数</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

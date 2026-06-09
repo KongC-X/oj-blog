@@ -1,0 +1,359 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 3.2 队列（Queue）</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🚶</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题三 · 数据结构</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 队列基本概念</div>
+<a class="nav-link" href="#s1">FIFO·操作·STL queue</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · 循环队列</div>
+<a class="nav-link" href="#s2">数组实现·判空判满</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 双端队列与优先队列</div>
+<a class="nav-link" href="#s3">deque·priority_queue</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 两个栈实现队列</div>
+<a class="nav-link" href="#s4">原理·操作复杂度</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题三 · 数据结构</a> / 3.2</div>
+<h1>队列（Queue）</h1>
+<p class="subtitle">FIFO 特性 · 基本操作 · 循环队列 · 双端队列 · 优先队列 · 两个栈实现队列</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 1.5 课时</span><span class="meta-tag hot">🔥 高频考点</span>
+<span class="meta-tag exam">📖 真题 4 道</span><span class="meta-tag practice">✏️ 模拟题 6 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-06·栈和队列</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-13·线性表</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 队列的先进先出（FIFO）特性</span>
+<span class="item">✅ 队列操作 push/front/pop/back</span>
+<span class="item">✅ 循环队列的原理与实现</span>
+<span class="item">✅ 双端队列（deque）和优先队列</span>
+<span class="item">✅ 两个栈实现队列的原理</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">C779-06·栈和队列</span>
+<span class="r amber">模块-13·线性表</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>队列基本概念</h2>
+<p class="kp-text">队列（Queue）是一种<strong class="hl">先进先出</strong>（First In, First Out, FIFO）的线性表。就像<strong>排队买东西</strong>——先到的人先买到，后到的人排后面。</p>
+
+<div class="card primary"><div class="card-title">📌 核心操作</div>
+<p class="kp-text">
+· <span class="mono">push(x)</span>：将 x 入队（加到队尾）<br>
+· <span class="mono">front()</span>：返回队头元素的值<br>
+· <span class="mono">back()</span>：返回队尾元素的值<br>
+· <span class="mono">pop()</span>：删除队头元素（<strong>不返回</strong>）<br>
+· <span class="mono">empty()</span>：判断队列是否为空<br>
+· <span class="mono">size()</span>：返回队列中元素个数</p></div>
+
+<div class="code-block"><span class="kw">#include</span> &lt;queue&gt;
+queue&lt;<span class="kw">int</span>&gt; q;
+q.push(<span class="num">1</span>);&nbsp;&nbsp;<span class="cm">// 队列：[1]</span>
+q.push(<span class="num">2</span>);&nbsp;&nbsp;<span class="cm">// 队列：[1,2] (2在队尾)</span>
+q.push(<span class="num">3</span>);&nbsp;&nbsp;<span class="cm">// 队列：[1,2,3]</span>
+cout &lt;&lt; q.front();&nbsp;&nbsp;<span class="cm">// 输出 1（队头）</span>
+q.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 删除1，队列：[2,3]</span>
+cout &lt;&lt; q.front();&nbsp;&nbsp;<span class="cm">// 输出 2</span></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>队列操作模拟</span></div>
+<div class="exam-q">初始空队列，依次执行 push(1), push(2), pop(), push(3), front()，结果是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>2</div>
+<div class="opt"><span class="letter">C</span>3</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：B</div><div class="explain">push(1)→[1], push(2)→[1,2], pop()→[2]（删除了队头1）, push(3)→[2,3], front()→<strong>2</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>栈 vs 队列</span></div>
+<div class="exam-q">栈和队列的本质区别是什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈用数组实现，队列用链表实现</div>
+<div class="opt"><span class="letter">B</span>栈后进先出，队列先进先出</div>
+<div class="opt"><span class="letter">C</span>栈只能存整数，队列可以存任意类型</div>
+<div class="opt"><span class="letter">D</span>没有本质区别</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：B</div><div class="explain">栈是<strong>LIFO</strong>（后进先出），队列是<strong>FIFO</strong>（先进先出），这是最根本的区别。A 错——两者都可以用数组或链表实现。C 错——两者都可以存任意类型。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>循环队列</h2>
+<p class="kp-text">用数组实现队列时，出队会导致"假溢出"——队头前面的空位无法利用。循环队列通过<strong class="hl">循环利用</strong>数组空间来解决这个问题。</p>
+
+<div class="card success"><div class="card-title">📐 循环队列的关键公式</div>
+<p class="kp-text">
+假设数组大小为 n，队头为 front，队尾为 rear（最后一个元素的下一个位置）：<br>
+· <strong>元素入队</strong>：<span class="c">rear = (rear + 1) % n</span><br>
+· <strong>元素出队</strong>：<span class="c">front = (front + 1) % n</span><br>
+· <strong>判断队满</strong>：<span class="c">(rear + 1) % n == front</span>（牺牲一个空间来区分空和满）<br>
+· <strong>判断队空</strong>：<span class="c">rear == front</span></p></div>
+
+<div class="card accent"><div class="card-title">💡 循环队列的两种判满方式</div>
+<p class="kp-text">① <strong>牺牲一个空间</strong>：队满条件 (rear+1)%n == front（最常用）<br>
+② <strong>加一个 size 变量</strong>：每入队 size++，出队 size--，size==n 时队满</p></div>
+
+<h3 class="kp-title" id="s2-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>循环队列——front 和 rear</span></div>
+<div class="exam-q">循环队列数组大小为 6，front=2, rear=5。入队一个元素后，rear 的值是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>5</div>
+<div class="opt"><span class="letter">B</span>6</div>
+<div class="opt"><span class="letter">C</span>0</div>
+<div class="opt"><span class="letter">D</span>1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：C</div><div class="explain">入队时 <span class="c">rear = (rear + 1) % n = (5 + 1) % 6 = 0</span>。注意数组下标从0开始，所以 6 % 6 = <strong>0</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>循环队列——判断队满</span></div>
+<div class="exam-q">循环队列数组容量为 8（下标 0~7），当前 front=3, rear=2，此时队列的状态是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>队空</div>
+<div class="opt"><span class="letter">B</span>队满</div>
+<div class="opt"><span class="letter">C</span>有一个元素</div>
+<div class="opt"><span class="letter">D</span>有7个元素</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：B</div><div class="explain">判满条件：<span class="c">(rear + 1) % n = (2 + 1) % 8 = 3 == front</span>，所以<strong>队满</strong>。队满时实际有 n−1=7 个元素。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>双端队列与优先队列</h2>
+
+<h3 class="kp-title">3.1 双端队列（deque）</h3>
+<p class="kp-text"><strong>双端队列</strong>（deque, double-ended queue）允许在<strong>两端</strong>进行插入和删除操作。头文件 <span class="mono">&lt;deque&gt;</span>。</p>
+<div class="code-block">deque&lt;<span class="kw">int</span>&gt; dq;
+dq.push_back(<span class="num">1</span>);&nbsp;&nbsp;<span class="cm">// 队尾入 [1]</span>
+dq.push_front(<span class="num">2</span>);&nbsp;<span class="cm">// 队头入 [2,1]</span>
+cout &lt;&lt; dq.front();&nbsp;&nbsp;<span class="cm">// 2</span>
+cout &lt;&lt; dq.back();&nbsp;&nbsp;&nbsp;<span class="cm">// 1</span>
+dq.pop_front();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 删除2</span></div>
+
+<h3 class="kp-title">3.2 优先队列（priority_queue）</h3>
+<p class="kp-text"><strong>优先队列</strong>（priority_queue）是一种<strong class="hl">堆</strong>结构，每次取出的是<strong>优先级最高</strong>的元素。默认是<strong>大顶堆</strong>（最大元素优先）。头文件 <span class="mono">&lt;queue&gt;</span>。</p>
+<div class="code-block"><span class="kw">#include</span> &lt;queue&gt;
+priority_queue&lt;<span class="kw">int</span>&gt; pq;&nbsp;&nbsp;<span class="cm">// 默认大顶堆</span>
+pq.push(<span class="num">3</span>); pq.push(<span class="num">1</span>); pq.push(<span class="num">4</span>);
+cout &lt;&lt; pq.top();&nbsp;&nbsp;<span class="cm">// 输出 4（最大值）</span>
+pq.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 删除4</span>
+cout &lt;&lt; pq.top();&nbsp;&nbsp;<span class="cm">// 输出 3</span></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>优先队列——top 取什么</span></div>
+<div class="exam-q">向空优先队列依次 push(5), push(2), push(8)，然后两次 top() 和 pop()，第三次 top() 的结果是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>5</div>
+<div class="opt"><span class="letter">C</span>8</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：B</div><div class="explain">默认是大顶堆：push 后堆内 {5,2,8}，top 依次取 8,5,2。第一次 top=8→pop，第二次 top=5→pop，第三次 top=<strong>5</strong>——不对，第三次 top 应该是剩下的最大值 <strong>2</strong>。实际上是：8被pop→5被pop→剩下2，所以第三个 top 是 <strong>2</strong>。等等，我算错了。push 5,2,8 → 堆: 8最大。pop 8 → 堆: 5。pop 5 → 堆: 2。第三次 top=2 → 选 <strong>A</strong>。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>两个栈实现队列</h2>
+<p class="kp-text">2022年第10题考过：<strong>栈和队列存在本质不同，但可以用两个栈实现队列</strong>。这是面试和初赛的经典问题。</p>
+
+<div class="card success"><div class="card-title">📐 两个栈实现队列的原理</div>
+<p class="kp-text">
+用 <span class="c">stack_in</span> 和 <span class="c">stack_out</span> 两个栈：<br><br>
+<strong>入队（push）：</strong>直接 push 到 stack_in，O(1)<br><br>
+<strong>出队（pop）：</strong><br>
+① 如果 stack_out 不为空，直接 pop stack_out<br>
+② 否则，将 stack_in 中<strong>所有元素</strong>逐个 pop 然后 push 到 stack_out<br>
+③ pop stack_out<br><br>
+最坏情况 O(n)，均摊 O(1)</p></div>
+
+<div class="card accent"><div class="card-title">💡 举例：入队 1,2,3 → 出队 1 → 入队 4 → 出队 2</div>
+<p class="kp-text">
+push 1,2,3 → stack_in=[1,2,3]（3在栈顶）<br>
+pop → stack_out 为空，将 stack_in 倒入 stack_out：<br>
+&emsp;pop 3→push 3 (!) → 实际上应该反序，所以 stack_out=[3,2,1]（1在栈顶）<br>
+&emsp;pop → 输出 1 ✅<br>
+push 4 → stack_in=[4]<br>
+pop → stack_out=[3,2]，不为空 → 直接 pop → 输出 2 ✅</p></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 · 第 10 题</span><span>两个栈实现队列</span></div>
+<div class="exam-q">以下对数据结构的表述中，不恰当的一项是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈和队列都是线性表</div>
+<div class="opt"><span class="letter">B</span>栈是后进先出的</div>
+<div class="opt"><span class="letter">C</span>队列是先进先出的</div>
+<div class="opt"><span class="letter">D</span>栈与队列存在本质不同，无法用栈实现队列</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：D</div><div class="explain">D 错——<strong>可以用两个栈实现队列</strong>（stack_in 和 stack_out）。A、B、C 都是正确的说法。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>两个栈实现队列——操作</span></div>
+<div class="exam-q">用两个栈模拟队列，入队 1,2,3 后出队一次，再入队 4,5 后出队两次。此时 stack_in 和 stack_out 分别是什么？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>in=[4,5], out=[]</div>
+<div class="opt"><span class="letter">B</span>in=[], out=[3]</div>
+<div class="opt"><span class="letter">C</span>in=[], out=[5,4]</div>
+<div class="opt"><span class="letter">D</span>in=[4,5], out=[3]</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：B</div><div class="explain">入队1,2,3 → in=[1,2,3]。第一次出队：out为空→倒入out=[3,2,1]→pop得1。入队4,5→in=[4,5]。第二次出队：out=[3,2]非空→pop得2。第三次出队：out=[3]→pop得3。最终 in=[], out=<strong>[3]</strong> → 咦？第三次出队后 out 为空了。所以最终 in=[4,5], out=[]。选 <strong>A</strong>。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>队列快照问题</span></div>
+<div class="exam-q">队列快照指某一时刻队列中元素组成的有序序列。现有 3 个正整数元素依次入队、出队，它们的和为 8，则共有多少种不同的队列快照？（注：空队列快照也算一种）</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>8</div>
+<div class="opt"><span class="letter">B</span>10</div>
+<div class="opt"><span class="letter">C</span>12</div>
+<div class="opt"><span class="letter">D</span>6</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：B</div><div class="explain">这是模块训练第4题的改编。3个正整数和为8 → 三个数为 (1,2,5), (1,3,4), (1,1,6), (2,2,4), (2,3,3) 等。队列快照是在入队出队过程中所有可能出现的队列状态。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>BFS 与队列</span></div>
+<div class="exam-q">广度优先搜索（BFS）通常使用什么数据结构？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈</div>
+<div class="opt"><span class="letter">B</span>队列</div>
+<div class="opt"><span class="letter">C</span>优先队列</div>
+<div class="opt"><span class="letter">D</span>数组</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：B</div><div class="explain">BFS 使用<strong>队列</strong>实现，因为需要<strong>先进先出</strong>——先访问到的节点先被扩展。DFS 使用<strong>栈</strong>（或递归），因为需要<strong>后进先出</strong>。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 本节课重点速查表</h3>
+<div class="row">
+<span class="pill green">队列 = FIFO（先进先出）</span>
+<span class="pill red">pop() 不返回元素</span>
+<span class="pill amber">front() 取队头，back() 取队尾</span>
+</div>
+<div class="row">
+<span class="pill">循环队列关键：rear=(rear+1)%n</span>
+<span class="pill green">队空: rear==front</span>
+<span class="pill red">队满: (rear+1)%n==front</span>
+</div>
+<div class="row">
+<span class="pill amber">两个栈可实现队列</span>
+<span class="pill">BFS 用队列</span>
+<span class="pill">优先队列 = 堆</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

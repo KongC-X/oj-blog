@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 3.1 栈（Stack）</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px}
+.res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px}
+.res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple)}
+.res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{background:none;border-top:1px dashed var(--border)}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">📚</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题三 · 数据结构</div></div></div>
+<div class="nav-section">开篇</div><a class="nav-link active" href="#obj">🎯 学习目标</a>
+<div class="nav-section">1 · 栈的基本概念</div>
+<a class="nav-link" href="#s1">LIFO·操作·STL stack</a><a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+<div class="nav-section">2 · 出栈序列判断</div>
+<a class="nav-link" href="#s2">模拟法·技巧·真题精讲</a><a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+<div class="nav-section">3 · 栈的应用</div>
+<a class="nav-link" href="#s3">括号匹配·表达式·函数调用</a><a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+<div class="nav-section">4 · 栈与队列交错</div>
+<a class="nav-link" href="#s4">2025真题·奇偶数模拟</a><a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#comprehensive">📝 综合模拟</a><a class="nav-link" href="#summary">📌 全章小结</a>
+</nav>
+
+<main class="main-content"><div class="content-wrapper">
+
+<div class="page-header">
+<div class="breadcrumb"><a href="#">专题三 · 数据结构</a> / 3.1</div>
+<h1>栈（Stack）</h1>
+<p class="subtitle">LIFO 特性 · 基本操作 · 出栈序列判断（每年必考） · 栈的应用 · 栈队列交错</p>
+<div class="meta-bar">
+<span class="meta-tag">⏱ 约 2 课时</span><span class="meta-tag hot">🔥 每年必考</span>
+<span class="meta-tag exam">📖 真题 6 道</span><span class="meta-tag practice">✏️ 模拟题 6 道</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-06·栈和队列</span>
+<span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-13·线性表</span>
+</div></div>
+
+<div class="objectives" id="obj">
+<h3>🎯 学完本节课你将掌握</h3>
+<div class="grid">
+<span class="item">✅ 栈的后进先出（LIFO）特性</span>
+<span class="item">✅ 栈的基本操作（push/pop/top）</span>
+<span class="item">✅ 出栈序列的判断方法（模拟法）</span>
+<span class="item">✅ 栈的典型应用（括号匹配/表达式求值）</span>
+<span class="item">✅ 栈与队列交错操作模拟</span>
+<span class="item">✅ 做对所有栈相关的真题</span>
+</div></div>
+
+<div class="res-bar">
+<span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+<span class="r purple">C779-06·栈和队列（96段，含出入栈合法性判断）</span>
+<span class="r amber">模块-13·线性表</span></div>
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s1"><span class="num">1</span>栈的基本概念</h2>
+<p class="kp-text">栈（Stack）是一种<strong class="hl">后进先出</strong>（Last In, First Out, LIFO）的线性表。它就像一个<strong>羽毛球桶</strong>——最先放进去的球在最底下，最后才能拿出来；后放进去的在最上面，最先被拿走。</p>
+
+<div class="card primary"><div class="card-title">📌 核心操作</div>
+<p class="kp-text">
+· <span class="mono">push(x)</span>：将元素 x 压入栈顶<br>
+· <span class="mono">pop()</span>：删除栈顶元素（不返回）<br>
+· <span class="mono">top()</span>：返回栈顶元素的值<br>
+· <span class="mono">empty()</span>：判断栈是否为空<br>
+· <span class="mono">size()</span>：返回栈中元素个数</p></div>
+
+<div class="code-block"><span class="kw">#include</span> &lt;stack&gt;
+stack&lt;<span class="kw">int</span>&gt; s;
+s.push(<span class="num">1</span>);&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 栈：[1]</span>
+s.push(<span class="num">2</span>);&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 栈：[1,2]  (2在栈顶)</span>
+s.push(<span class="num">3</span>);&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 栈：[1,2,3]</span>
+cout &lt;&lt; s.top();&nbsp;&nbsp;<span class="cm">// 输出 3</span>
+s.pop();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// 删除3，栈：[1,2]</span>
+cout &lt;&lt; s.top();&nbsp;&nbsp;<span class="cm">// 输出 2</span></div>
+
+<h3 class="kp-title" id="s1-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>栈的基本操作</span></div>
+<div class="exam-q">初始空栈，依次执行 push(1), push(2), pop(), push(3), top()，结果是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>1</div>
+<div class="opt"><span class="letter">B</span>2</div>
+<div class="opt"><span class="letter">C</span>3</div>
+<div class="opt"><span class="letter">D</span>不确定</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+<div class="answer-box" id="a1"><div class="ans">✅ 正确答案：C</div><div class="explain">push(1)→[1], push(2)→[1,2], pop()→[1], push(3)→[1,3], top()→<strong>3</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>pop 操作的返回值</span></div>
+<div class="exam-q"><span class="mono">stack&lt;int&gt; s; s.push(5); int a = s.pop();</span><br>以上代码有问题吗？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>没有问题，a=5</div>
+<div class="opt"><span class="letter">B</span>编译错误，pop() 不返回值</div>
+<div class="opt"><span class="letter">C</span>运行时错误</div>
+<div class="opt"><span class="letter">D</span>a=0</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+<div class="answer-box" id="a2"><div class="ans">✅ 正确答案：B</div><div class="explain"><span class="c">pop()</span> 的返回值是 <span class="c">void</span>——它只删除栈顶元素，<strong>不返回被删除的值</strong>。正确的写法是 <span class="c">int a = s.top(); s.pop();</span></div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s2"><span class="num">2</span>出栈序列判断</h2>
+<p class="kp-text">这是<strong class="hl">每年必考</strong>的题型！给定入栈顺序，判断某个出栈序列是否合法。</p>
+
+<h3 class="kp-title">2.1 模拟法（推荐）</h3>
+<div class="card success"><div class="card-title">📐 出栈序列判断——三步模拟法</div>
+<p class="kp-text">
+① 用一个指针指向待输出序列的第一个元素<br>
+② 依次将入栈元素 push 进栈<br>
+③ 每次 push 后<strong>检查栈顶</strong>：如果栈顶等于当前待输出元素，就 pop 并移动指针<br>
+④ 最后如果栈为空，则序列合法
+</p></div>
+
+<div class="card primary"><div class="card-title">📐 举例：入栈顺序 1,2,3,4,5，判断序列 3,2,5,4,1 是否合法</div>
+<p class="kp-text">
+push 1 → 栈[1]（栈顶1≠3）<br>
+push 2 → 栈[1,2]（栈顶2≠3）<br>
+push 3 → 栈[1,2,3]（栈顶3=3 → pop, 指针到2）<br>
+此时栈顶2=2 → pop, 指针到5<br>
+push 4 → 栈[1,4]（栈顶4≠5）<br>
+push 5 → 栈[1,4,5]（栈顶5=5 → pop, 指针到4）<br>
+栈顶4=4 → pop<br>
+栈顶1=1 → pop<br>
+栈空 → ✅ <strong>合法序列</strong>
+</p></div>
+
+<h3 class="kp-title">2.2 规律判断法</h3>
+<div class="quote-box">💡 如果入栈序列为 1,2,3,...,n，那么出栈序列中<strong>不可能</strong>出现"小下标在大下标之后出栈时，中间还有未出栈的更小下标"的情况。<br>
+例如出栈序列 3,1,2 中，3 先出栈，意味着 1 和 2 还在栈中，但接下来 1 出栈——此时 2 在 1 上面，2 应该在 1 之前出栈才对，矛盾！所以 3,1,2 是非法序列。</div>
+
+<h3 class="kp-title" id="s2-q">📝 真题专项</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2021 · 第 5 题</span><span>出栈序列合法性</span></div>
+<div class="exam-q">入栈序列为 a,b,c,d,e，下列哪个是不合法的出栈序列？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>a,b,c,d,e</div>
+<div class="opt"><span class="letter">B</span>e,d,c,b,a</div>
+<div class="opt"><span class="letter">C</span>b,a,c,d,e</div>
+<div class="opt"><span class="letter">D</span>c,d,a,e,b</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+<div class="answer-box" id="a3"><div class="ans">✅ 正确答案：D</div><div class="explain">用模拟法验证 D：push a,b,c → 栈[a,b,c]，pop c, pop d（需先push d）→ 栈[a,b,d] pop d，此时栈[a,b]。下一个要出 a，但 b 在 a 上面！b 必须先出。所以 <strong>c,d,a,e,b</strong> 非法。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2022 · 第 2 题</span><span>出栈序列——数字序列</span></div>
+<div class="exam-q">入栈序列为 6,5,4,3,2,1（6先入栈），以下哪个是不合法的出栈序列？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>6,5,4,3,2,1</div>
+<div class="opt"><span class="letter">B</span>4,5,6,3,2,1</div>
+<div class="opt"><span class="letter">C</span>3,4,6,5,2,1</div>
+<div class="opt"><span class="letter">D</span>2,3,4,5,6,1</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+<div class="answer-box" id="a4"><div class="ans">✅ 正确答案：C</div><div class="explain">注意入栈顺序是 6→5→4→3→2→1（6先入，1最后入）。<br>
+检查 C：要输出3→先push 6,5,4,3，栈[6,5,4,3]→pop 3，栈[6,5,4]，下一个要输出4→pop 4，栈[6,5]。下一个要输出6，但栈顶是5≠6→错误！因为5在6上面必须比6先出。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>入栈出栈混合序列</span></div>
+<div class="exam-q">以下关于栈的叙述，正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>栈是先进先出的数据结构</div>
+<div class="opt"><span class="letter">B</span>栈只能在一端进行插入和删除操作</div>
+<div class="opt"><span class="letter">C</span>入栈序列唯一时，出栈序列也唯一</div>
+<div class="opt"><span class="letter">D</span>栈可以用数组实现，但不可以用链表实现</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+<div class="answer-box" id="a5"><div class="ans">✅ 正确答案：B</div><div class="explain">A 错——栈是<strong>后进先出</strong>。C 错——同一入栈序列可以有多种合法出栈序列。D 错——栈可以用数组或<strong>链表</strong>实现。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s3"><span class="num">3</span>栈的典型应用</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>应用场景</th><th>原理</th></tr></thead>
+<tbody>
+<tr><td><strong>括号匹配</strong></td><td>遇到左括号 push，遇到右括号检查栈顶是否匹配，匹配则 pop</td></tr>
+<tr><td><strong>表达式求值</strong></td><td>中缀转后缀、后缀表达式求值都用栈</td></tr>
+<tr><td><strong>函数调用</strong></td><td>函数调用的返回地址、局部变量存在"调用栈"中</td></tr>
+<tr><td><strong>浏览器的后退</strong></td><td>每次访问的页面 push，后退时 pop</td></tr>
+<tr><td><strong>撤销操作（Ctrl+Z）</strong></td><td>操作历史用栈存储，撤销时 pop</td></tr>
+</tbody></table></div>
+
+<div class="card accent"><div class="card-title">💡 考试关键词提示</div>
+<p class="kp-text">试题中如果出现"递归调用深度过大可能导致的错误"，答案是<strong>栈空间溢出</strong>（递归调用栈太深）。因为每次递归调用都会在调用栈中压入一层，层数过多会导致栈溢出。</p></div>
+
+<h3 class="kp-title" id="s3-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 模块训练</span><span>递归与栈的关系</span></div>
+<div class="exam-q">在程序运行过程中，如果递归调用的层数过多，会因为什么引发错误？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>系统分配的栈空间溢出</div>
+<div class="opt"><span class="letter">B</span>系统分配的堆空间溢出</div>
+<div class="opt"><span class="letter">C</span>系统分配的队列空间溢出</div>
+<div class="opt"><span class="letter">D</span>系统分配的链表空间溢出</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+<div class="answer-box" id="a6"><div class="ans">✅ 正确答案：A</div><div class="explain">递归调用使用<strong>调用栈（call stack）</strong>，每次递归压入一个栈帧。层数过多会导致<strong>栈溢出</strong>（Stack Overflow）。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>括号匹配</span></div>
+<div class="exam-q">以下括号序列中，使用栈进行匹配时，最终栈为空（匹配成功）的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>( ) ) (</div>
+<div class="opt"><span class="letter">B</span>( ( ) ) ( )</div>
+<div class="opt"><span class="letter">C</span>) ( ) (</div>
+<div class="opt"><span class="letter">D</span>( ( ( ) )</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+<div class="answer-box" id="a7"><div class="ans">✅ 正确答案：B</div><div class="explain">B 的匹配过程：(→push, (→push, )→pop, )→pop, (→push, )→pop，栈空→✅。A 和 C 有右括号时栈为空，D 最后栈中还有一个左括号。</div></div></div>
+
+<hr class="divider dashed">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="s4"><span class="num">4</span>栈与队列交错操作</h2>
+<p class="kp-text">近年考试中出现了<strong>栈和队列混合操作</strong>的模拟题（2025年第15题），需要同时维护一个栈和一个队列，按规则操作。</p>
+
+<h3 class="kp-title">4.1 2025 年真题——奇偶数栈队列操作</h3>
+<div class="card success"><div class="card-title">📐 2025 年第 15 题——模拟过程</div>
+<p class="kp-text">
+输入队列 A: <span class="c">7,5,8,3,1,4,2</span><br>
+规则：奇数→压栈 S；偶数且栈非空→弹栈顶加入队列 P<br><br>
+<strong>手动模拟：</strong><br>
+7(奇)→S=[<strong>7</strong>]&emsp;&emsp;&emsp;5(奇)→S=[7,<strong>5</strong>]<br>
+8(偶)→弹出5→P=[5], S=[7]<br>
+3(奇)→S=[7,<strong>3</strong>]&emsp;&emsp;1(奇)→S=[7,3,<strong>1</strong>]<br>
+4(偶)→弹出1→P=[5,1], S=[7,3]<br>
+2(偶)→弹出3→P=[5,1,3], S=[7]<br>
+结果：P = <strong>5, 1, 3</strong> → 选 A</p></div>
+
+<h3 class="kp-title" id="s4-q">📝 配套练习</h3>
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge real">📝 真题 · 2025 · 第 15 题</span><span>奇偶数栈队列操作</span></div>
+<div class="exam-q">初始空栈 S 和空队列 P。输入队列 A: 7,5,8,3,1,4,2。<br>
+规则：奇数→压栈；偶数且栈非空→弹栈顶加入 P。<br>
+处理完毕后 P 的内容是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>5,1,3</div>
+<div class="opt"><span class="letter">B</span>7,5,3</div>
+<div class="opt"><span class="letter">C</span>3,1,5</div>
+<div class="opt"><span class="letter">D</span>5,1,3,7</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+<div class="answer-box" id="a8"><div class="ans">✅ 正确答案：A</div><div class="explain">模拟过程见上表。关键是理解偶数时弹栈顶，后入栈的先弹出。P 最终为 <strong>5,1,3</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 模拟题</span><span>栈队列混合——求栈最小容量</span></div>
+<div class="exam-q">初始空栈。依次执行：push(1), push(2), pop(), push(3), push(4), pop(), pop(), push(5)。整个过程中栈最多同时有多少个元素？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>2</div>
+<div class="opt"><span class="letter">B</span>3</div>
+<div class="opt"><span class="letter">C</span>4</div>
+<div class="opt"><span class="letter">D</span>5</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+<div class="answer-box" id="a9"><div class="ans">✅ 正确答案：B</div><div class="explain">最大容量在 push(4) 时：栈[1,3,4]共 <strong>3</strong> 个元素。完整过程：push1→[1], push2→[1,2]（2个）, pop→[1], push3→[1,3], push4→[1,3,4]（<strong>3个 最大</strong>）, pop→[1,3], pop→[1], push5→[1,5]。</div></div></div>
+
+<hr class="divider">
+
+<!-- ==================================================================== -->
+<h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>栈的应用综合——计算器</span></div>
+<div class="exam-q">后缀表达式 <span class="mono">5 3 + 2 *</span> 求值，用栈模拟，过程正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>5入→3入→遇到+：5+3=8入→2入→遇到*：8×2=16</div>
+<div class="opt"><span class="letter">B</span>5入→3入→遇到+：3+5=8入→2入→遇到*：8×2=16</div>
+<div class="opt"><span class="letter">C</span>5入→3入→遇到+：5×3=15入→2入→遇到*：15+2=17</div>
+<div class="opt"><span class="letter">D</span>5入→3入→遇到*：5×3=15入→2入→遇到+：15+2=17</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+<div class="answer-box" id="a10"><div class="ans">✅ 正确答案：A</div><div class="explain">后缀表达式求值规则：遇到数字入栈，遇到运算符弹出两个数运算后入栈。<span class="c">5 3 +</span> → 弹出3和5，5+3=8入栈。<span class="c">2 *</span> → 弹出2和8，8×2=<strong>16</strong>。</div></div></div>
+
+<div class="exam-block">
+<div class="exam-header"><span class="exam-badge mock">✏️ 综合模拟</span><span>两个栈实现队列</span></div>
+<div class="exam-q">用两个栈模拟一个队列的入队和出队操作，以下说法正确的是？</div>
+<div class="exam-options">
+<div class="opt"><span class="letter">A</span>不可能用两个栈实现队列</div>
+<div class="opt"><span class="letter">B</span>入队 O(1)，出队最坏 O(n)</div>
+<div class="opt"><span class="letter">C</span>入队和出队都是 O(1)</div>
+<div class="opt"><span class="letter">D</span>需要三个栈才能实现</div>
+</div>
+<button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+<div class="answer-box" id="a11"><div class="ans">✅ 正确答案：B</div><div class="explain">用两个栈实现队列：stack_in 用于入队（push到in），stack_out 用于出队。出队时如果 out 为空，将 in 中所有元素<strong>逐个 pop 再 push 到 out</strong>（这一步骤 O(n)）。所以入队 O(1)，出队<strong>均摊 O(1)</strong>，最坏 O(n)。</div></div></div>
+
+<hr class="divider">
+
+<div class="summary-box" id="summary">
+<h3>📌 本节课重点速查表</h3>
+<div class="row">
+<span class="pill green">栈 = LIFO（后进先出）</span>
+<span class="pill red">pop() 不返回元素</span>
+<span class="pill amber">出栈序列判断用模拟法</span>
+</div>
+<div class="row">
+<span class="pill">入栈 n 个元素，出栈序列数 = Catalan(n) </span>
+<span class="pill green">括号匹配用栈</span>
+<span class="pill">递归深度大→栈溢出</span>
+</div>
+<div class="row">
+<span class="pill amber">两个栈可实现队列</span>
+<span class="pill">偶数弹栈顶是2025考题</span>
+<span class="pill">后缀表达式用栈求值</span>
+</div></div>
+
+</div></main>
+<button class="back-top" id="backTop">↑</button>
+<script>
+function toggleAnswer(id){document.getElementById(id).classList.toggle('show')}
+window.addEventListener('scroll',()=>{document.getElementById('backTop').classList.toggle('visible',window.scrollY>500)})
+const t=document.querySelectorAll('h2.section-title,.objectives'),l=document.querySelectorAll('.nav-link'),
+o=new IntersectionObserver(e=>{e.forEach(e=>{if(!e.isIntersecting)return;const n=e.target.getAttribute('id');l.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+n))})},{rootMargin:'-80px 0px -60% 0px'});
+t.forEach(e=>o.observe(e))
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show')}
+document.querySelectorAll('.nav-link').forEach(e=>{e.addEventListener('click',()=>{window.innerWidth<=900&&toggleSidebar()})})
+</script>
+</body></html>

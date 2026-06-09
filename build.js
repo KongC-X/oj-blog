@@ -201,4 +201,29 @@ function build() {
   }
 }
 
+function buildTemplates() {
+  const dir = path.join(__dirname, 'templates');
+  if (!fs.existsSync(dir)) return;
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
+  const templates = files.map(f => {
+    const content = fs.readFileSync(path.join(dir, f), 'utf-8');
+    const name = f.replace('.md', '');
+    let category = '', tags = [];
+    const fmMatch = content.match(/---\n([\\s\\S]*?)\n---/);
+    if (fmMatch) {
+      const lines = fmMatch[1].split('\n');
+      for (const line of lines) {
+        const catMatch = line.match(/category:\\s*(.+)/);
+        if (catMatch) category = catMatch[1].trim();
+        const tagMatch = line.match(/tags:\\s*\\[(.+)\\]/);
+        if (tagMatch) tags = tagMatch[1].split(',').map(t => t.trim());
+      }
+    }
+    return { name, category, tags };
+  });
+  fs.writeFileSync(path.join(__dirname, 'data', 'templates.json'), JSON.stringify(templates, null, 2), 'utf-8');
+  console.log(`📝 模版索引: ${templates.length} 个`);
+}
+
 build();
+buildTemplates();

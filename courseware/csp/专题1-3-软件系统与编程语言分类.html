@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 1.3 软件系统与编程语言分类</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  :root{
+    --bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;
+    --text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;
+    --border:#e4e7ed;--border-light:#eef0f4;
+    --primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;
+    --accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;
+    --success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;
+    --danger:#ef4444;--danger-light:#fef2f2;
+    --purple:#8b5cf6;--purple-light:#f5f3ff;
+    --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --sidebar-w:240px;
+  }
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh;}
+
+  .sidebar{
+    position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);
+    border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column;
+  }
+  .sidebar::-webkit-scrollbar{width:4px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+  .sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff;}
+  .sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3;}
+  .sidebar-logo .sub{font-size:.66rem;color:var(--text-ter);}
+  .nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px;}
+  .nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer;}
+  .nav-link:hover{color:var(--primary);background:var(--primary-light);}
+  .nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500;}
+  .nav-link.sub{padding-left:40px;font-size:.76rem;}
+
+  .main-content{margin-left:var(--sidebar-w);flex:1;min-width:0;}
+  .content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px;}
+
+  .page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light);}
+  .breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px;}
+  .breadcrumb a{color:var(--primary);text-decoration:none;}
+  .page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px;}
+  .page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px;}
+  .meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface);}
+  .meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2;}
+  .meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff;}
+  .meta-tag.practice{border-color:#d1fae5;color:#059669;background:#ecfdf5;}
+
+  .objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;}
+  .objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px;}
+
+  .res-bar{display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px;}
+  .res-bar .r{font-size:.7rem;padding:1px 10px;border-radius:6px;}
+  .res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);}
+  .res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309;}
+  .res-bar .r.green{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+
+  h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px;}
+  h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0;}
+  h4.sub-title{font-size:.9rem;font-weight:600;color:var(--text-sec);margin:14px 0 6px;}
+
+  .kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9;}
+  .kp-text strong{color:var(--text);font-weight:600;}
+  .kp-text .hl{color:var(--primary-dark);font-weight:600;}
+  .kp-text .tag{color:var(--primary);}
+  .kp-text .danger-tag{color:var(--danger);font-weight:600;}
+  .kp-text .suc-tag{color:var(--success-dark);font-weight:600;}
+
+  .card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface);}
+  .card.accent{border-color:#fde68a;background:var(--accent-light);}
+  .card.accent .card-title{color:var(--accent-dark);}
+  .card.primary{border-color:#bfdbfe;background:var(--primary-light);}
+  .card.primary .card-title{color:var(--primary-dark);}
+  .card.success{border-color:#a7f3d0;background:var(--success-light);}
+  .card.success .card-title{color:var(--success-dark);}
+  .card.danger{border-color:#fecaca;background:var(--danger-light);}
+  .card.danger .card-title{color:var(--danger);}
+  .card.purple{border-color:#ddd6fe;background:var(--purple-light);}
+  .card.purple .card-title{color:var(--purple);}
+  .card-title{font-size:.82rem;font-weight:600;margin-bottom:5px;}
+  .card p,.card .kp-text{font-size:.85rem;margin:0;}
+
+  .quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7;}
+  .quote-box strong{color:var(--accent-dark);}
+
+  .table-wrapper{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;font-size:.83rem;}
+  thead th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem;}
+  tbody td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:var(--surface-alt);}
+  .mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem;}
+
+  ul.dot-list{list-style:none;padding:0;margin:8px 0 12px;}
+  ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7;}
+  ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold;}
+  ul.dot-list li strong{color:var(--text);}
+
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .compare-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;}
+  .compare-box h5{font-size:.82rem;font-weight:600;margin-bottom:4px;}
+  .compare-box p{font-size:.8rem;color:var(--text-sec);line-height:1.6;}
+  .compare-box.d1 h5{color:var(--primary-dark);}
+  .compare-box.d2 h5{color:var(--accent-dark);}
+  @media(max-width:640px){.compare-row{grid-template-columns:1fr;}}
+
+  .exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02);}
+  .exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04);}
+  .exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap;}
+  .exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500;}
+  .exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+  .exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+  .exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7;}
+  .exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0;}
+  .exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0;}
+  .exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px;}
+  .show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none;}
+  .show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd;}
+  .answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px;}
+  .answer-box.show{display:block;animation:fadeIn .25s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-3px);}to{opacity:1;transform:translateY(0);}}
+  .answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark);}
+  .answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7;}
+  .answer-box .explain .tag-inline{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark);}
+
+  .summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+  .summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark);}
+  .summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark);}
+  .summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark);}
+  .summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:var(--danger);}
+
+  hr.divider{border:none;height:1px;background:var(--border);margin:28px 0;}
+  hr.divider.dashed{background:none;border-top:1px dashed var(--border);}
+
+  .back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+  .back-top.visible{display:flex;}
+  .back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+  .hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;}
+
+  @media(max-width:900px){
+    .sidebar{transform:translateX(-100%);transition:transform .3s ease;}
+    .sidebar.open{transform:translateX(0);}.main-content{margin-left:0;}
+    .content-wrapper{padding:40px 18px 60px;}.hamburger{display:flex;}
+    .exam-options{grid-template-columns:1fr;}
+    .page-header h1{font-size:1.4rem;}
+    .objectives .grid{grid-template-columns:1fr;}
+    .overlay.show{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">💾</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题一 · 计算机基础知识</div>
+    </div>
+  </div>
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+  <div class="nav-section">1 · 软件系统分类</div>
+  <a class="nav-link" href="#s1">系统软件 vs 应用软件</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+  <div class="nav-section">2 · 编程语言发展</div>
+  <a class="nav-link" href="#s2">机器→汇编→高级语言</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+  <div class="nav-section">3 · 编译 vs 解释</div>
+  <a class="nav-link" href="#s3">编译型 vs 解释型语言</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+  <div class="nav-section">4 · OOP vs 过程式</div>
+  <a class="nav-link" href="#s4">面向对象 vs 面向过程</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+  <div class="nav-section">5 · 语言分类总结</div>
+  <a class="nav-link" href="#s5">C 语言为什么不是面向对象</a>
+  <a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题一 · 计算机基础知识</a> / 1.3</div>
+    <h1>软件系统与编程语言分类</h1>
+    <p class="subtitle">系统软件 vs 应用软件 · 机器/汇编/高级语言 · 编译 vs 解释 · 面向对象 vs 面向过程</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 6 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 7 道</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-21</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-7/8</span>
+    </div>
+  </div>
+
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 系统软件 vs 应用软件的区分</span>
+      <span class="item">✅ 机器语言→汇编→高级语言的演进</span>
+      <span class="item">✅ 编译型 vs 解释型语言的区别</span>
+      <span class="item">✅ 面向对象 vs 面向过程的核心差异</span>
+      <span class="item">✅ C 语言不是面向对象的原因</span>
+      <span class="item">✅ C++ 面向对象三大特性</span>
+      <span class="item">✅ 常见语言的分类归属</span>
+      <span class="item">✅ 做对近年所有语言分类类单选</span>
+    </div>
+  </div>
+
+  <div class="res-bar">
+    <span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+    <span class="r purple">C779-21·计算机语言</span>
+    <span class="r amber">模块-7·程序设计语言与编译运行</span>
+    <span class="r amber">模块-8·程序基本语句</span>
+    <span class="r green">考点汇总·考点1/4</span>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、软件系统 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s1"><span class="num">1</span>软件系统分类</h2>
+
+  <p class="kp-text">
+    计算机软件分为 <strong class="hl">系统软件</strong> 和 <strong class="hl">应用软件</strong> 两大类。
+    系统软件<strong>管理计算机硬件资源</strong>，为应用软件提供运行环境；
+    应用软件<strong>解决特定用户问题</strong>。
+  </p>
+
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>⚙️ 系统软件</h5>
+      <p>
+        · 管理、控制和维护计算机硬件与软件资源<br>
+        · <strong>操作系统</strong>：Windows、Linux、macOS、Android、iOS<br>
+        · <strong>编译/解释器</strong>：gcc、javac、Python 解释器<br>
+        · <strong>数据库管理系统</strong>：MySQL、Oracle、SQL Server<br>
+        · <strong>驱动程序</strong>：显卡驱动、网卡驱动、声卡驱动
+      </p>
+    </div>
+    <div class="compare-box d2">
+      <h5>📱 应用软件</h5>
+      <p>
+        · 为用户解决具体问题而设计的软件<br>
+        · <strong>办公软件</strong>：Word、Excel、PowerPoint、WPS<br>
+        · <strong>浏览器</strong>：Chrome、Edge、Safari、Firefox<br>
+        · <strong>开发工具</strong>：VS Code、Dev-C++、Sublime Text<br>
+        · <strong>媒体/娱乐</strong>：Photoshop、Premiere、各类 App
+      </p>
+    </div>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 考试高频混淆</div>
+    <p class="kp-text">
+      · <strong>操作系统（Windows/Linux）</strong>→ 系统软件 ✓<br>
+      · <strong>Office（Word/Excel）</strong>→ 应用软件 ✓<br>
+      · <strong>编译器（gcc）</strong>→ 系统软件 ✓<br>
+      · <strong>浏览器（Chrome）</strong>→ 应用软件 ✓<br>
+      · <strong>数据库（MySQL）</strong>→ 系统软件 ✓
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s1-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 改编</span>
+      <span>操作系统判断</span>
+    </div>
+    <div class="exam-q">以下属于操作系统的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Microsoft Word</div>
+      <div class="opt"><span class="letter">B</span>Windows 11</div>
+      <div class="opt"><span class="letter">C</span>Google Chrome</div>
+      <div class="opt"><span class="letter">D</span>Photoshop</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">Windows 11 是操作系统，属于<strong>系统软件</strong>。Word（文字处理）、Chrome（浏览器）、Photoshop（图像处理）都是<strong>应用软件</strong>。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>系统软件常见类型</span>
+    </div>
+    <div class="exam-q">以下不属于系统软件的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Linux 操作系统</div>
+      <div class="opt"><span class="letter">B</span>GCC 编译器</div>
+      <div class="opt"><span class="letter">C</span>微信</div>
+      <div class="opt"><span class="letter">D</span>MySQL 数据库系统</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain"><strong>微信</strong>是即时通讯软件，属于<strong>应用软件</strong>。Linux（操作系统）、GCC（编译器）、MySQL（数据库管理系统）都属于<strong>系统软件</strong>。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、编程语言发展 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s2"><span class="num">2</span>编程语言的三代演进</h2>
+
+  <p class="kp-text">
+    编程语言经历过三代发展，越往后<strong>越接近人类自然语言</strong>，编程效率越高。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>语言级别</th><th>特点</th><th>例子</th><th>如何执行</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>机器语言</strong></td>
+          <td>由 0 和 1 组成的二进制代码，计算机直接执行</td>
+          <td><span class="mono">10110000 01100001</span></td>
+          <td>无须翻译，直接执行</td>
+        </tr>
+        <tr>
+          <td><strong>汇编语言</strong></td>
+          <td>用助记符代替二进制指令，需<strong>汇编器</strong>转换</td>
+          <td><span class="mono">MOV AL, 61H</span></td>
+          <td>汇编器 → 机器码</td>
+        </tr>
+        <tr>
+          <td><strong>高级语言</strong></td>
+          <td>接近自然语言（英语），需<strong>编译</strong>或<strong>解释</strong></td>
+          <td><span class="mono">int a = 97;</span></td>
+          <td>编译器/解释器 → 机器码</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 记忆技巧</div>
+    <p class="kp-text"><strong>机器语言</strong>（二进制）→ <strong>汇编语言</strong>（助记符）→ <strong>高级语言</strong>（自然语言）<br>越往上越容易写、越容易读、但执行效率越低（需要翻译步骤）。</p>
+  </div>
+
+  <h3 class="kp-title" id="s2-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 分模块训练</span>
+      <span>汇编语言——归类判断</span>
+    </div>
+    <div class="exam-q">汇编语言属于以下哪一类？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>高级语言</div>
+      <div class="opt"><span class="letter">B</span>中级语言</div>
+      <div class="opt"><span class="letter">C</span>低级语言</div>
+      <div class="opt"><span class="letter">D</span>机器语言</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain"><strong>汇编语言</strong>是<strong>低级语言</strong>（低层语言）。它用助记符代替二进制，但每条指令仍与机器指令一一对应，没有脱离硬件特性。高级语言（如 C/Java）才是不依赖于具体硬件的。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>计算机能直接执行的语言</span>
+    </div>
+    <div class="exam-q">计算机的 CPU 能<strong>直接</strong>识别和执行的语言是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>汇编语言</div>
+      <div class="opt"><span class="letter">B</span>高级语言</div>
+      <div class="opt"><span class="letter">C</span>机器语言</div>
+      <div class="opt"><span class="letter">D</span>自然语言</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">CPU 只能<strong>直接执行机器语言</strong>（二进制代码）。汇编语言需要<strong>汇编器</strong>翻译，高级语言需要<strong>编译器/解释器</strong>翻译，才能变成 CPU 能识别的机器码。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、编译 vs 解释 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s3"><span class="num">3</span>编译型语言 vs 解释型语言</h2>
+
+  <p class="kp-text">
+    高级语言在执行之前需要"翻译"成机器码。翻译方式有两种：
+  </p>
+
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>🔹 编译型语言</h5>
+      <p>
+        · 一次性把全部源代码<strong>编译成机器码</strong>（生成可执行文件）<br>
+        · 执行<strong>速度快</strong>，但修改后需重新编译<br>
+        · 代表：<strong>C、C++、Pascal、Go、Rust</strong>
+      </p>
+    </div>
+    <div class="compare-box d2">
+      <h5>🔹 解释型语言</h5>
+      <p>
+        · 逐行<strong>解释执行</strong>，不生成独立可执行文件<br>
+        · 开发<strong>灵活</strong>，但运行时需安装解释器、速度较慢<br>
+        · 代表：<strong>Python、JavaScript、Ruby、PHP</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">📌 区分技巧</div>
+    <p class="kp-text">
+      · 编译型 → 好比<strong>翻译一本书</strong>，整本翻完再读<br>
+      · 解释型 → 好比<strong>同声传译</strong>，说一句翻一句<br>
+      · Java 比较特殊：先<strong>编译</strong>成字节码（.class），再由 JVM <strong>解释</strong>执行（或 JIT 编译）
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s3-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 分模块训练</span>
+      <span>编译与解释的区别</span>
+    </div>
+    <div class="exam-q">以下说法正确的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>编译型语言执行速度通常慢于解释型语言</div>
+      <div class="opt"><span class="letter">B</span>解释型语言不需要翻译即可直接执行</div>
+      <div class="opt"><span class="letter">C</span>编译型语言在执行前需要将源代码全部翻译为机器码</div>
+      <div class="opt"><span class="letter">D</span>解释型语言生成的代码可以被 CPU 直接执行</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">A 错——编译型语言<strong>速度更快</strong>（一次编译后直接执行）。B 错——解释型语言需要<strong>解释器</strong>逐行翻译，不是直接执行。D 错——解释型语言并不生成 CPU 直接执行的机器码文件。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>Python 是哪种类型</span>
+    </div>
+    <div class="exam-q">Python 编程语言属于？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>编译型语言</div>
+      <div class="opt"><span class="letter">B</span>解释型语言</div>
+      <div class="opt"><span class="letter">C</span>汇编语言</div>
+      <div class="opt"><span class="letter">D</span>机器语言</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain"><strong>Python</strong> 是典型的<strong>解释型语言</strong>，由 Python 解释器逐行解释执行。当然 Python 内部也有编译步骤（先编译成字节码 .pyc），但从用户的编程体验来看，它属于解释型。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、OOP vs 过程式 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s4"><span class="num">4</span>面向对象 vs 面向过程</h2>
+
+  <p class="kp-text">
+    这是初赛单选题中<strong>最高频的送分题</strong>。记住一张表就够了：
+  </p>
+
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>📌 面向过程</h5>
+      <p>
+        · 以<strong>函数/过程</strong>为中心<br>
+        · 程序 = 数据结构 + 算法<br>
+        · 数据与操作分离<br>
+        · 代表语言：<strong>C、Pascal、Fortran</strong>
+      </p>
+    </div>
+    <div class="compare-box d2">
+      <h5>📌 面向对象（OOP）</h5>
+      <p>
+        · 以<strong>对象/类</strong>为中心<br>
+        · 支持<strong>封装、继承、多态</strong>三大特性<br>
+        · 数据与操作绑定在一起<br>
+        · 代表语言：<strong>C++、Java、Python、C#</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">🔍 OOP 三大特征详解</div>
+    <p class="kp-text">
+      <strong>① 封装</strong>：将数据和方法打包在类中，对外隐藏实现细节（通过访问权限控制）<br>
+      <strong>② 继承</strong>：子类自动拥有父类的属性和方法，可扩展或重写<br>
+      <strong>③ 多态</strong>：同一操作作用于不同对象，产生不同结果（通过虚函数/接口实现）<br>
+      2022 年第 1 题就是考这三个特性会出现在哪些 C++ 语言特性中。
+    </p>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 最容易错的点</div>
+    <p class="kp-text">
+      <span class="danger-tag">C 语言</span> 是面向过程的——但它不是唯一的过程式语言。<br>
+      有些同学以为 <strong>C++</strong> 是纯面向对象，其实 C++ 是<strong>多范式语言</strong>（兼容 C 的过程式写法，同时支持 OOP）。<br>
+      <strong>Java</strong> 则基本上是纯面向对象（所有代码必须在类中）。
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s4-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 第 1 题</span>
+      <span>面向对象语言判断</span>
+    </div>
+    <div class="exam-q">以下不属于面向对象程序设计语言的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C++</div>
+      <div class="opt"><span class="letter">B</span>Python</div>
+      <div class="opt"><span class="letter">C</span>Java</div>
+      <div class="opt"><span class="letter">D</span>C</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain"><strong>C 语言</strong>是面向过程的语言，不是面向对象。C++、Python、Java 都是面向对象语言（或支持面向对象编程）。这是 2021 年 CSP-J 第 1 题，送分题，必须拿稳。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 第 1 题</span>
+      <span>C++ 面向对象特性</span>
+    </div>
+    <div class="exam-q">以下哪种功能没有涉及 C++ 语言的面向对象特性支持？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>调用 printf 函数</div>
+      <div class="opt"><span class="letter">B</span>使用 class 定义类</div>
+      <div class="opt"><span class="letter">C</span>使用继承机制派生新类</div>
+      <div class="opt"><span class="letter">D</span>使用虚函数实现多态</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">调用 <span class="tag-inline">printf</span> 是 C 语言遗留的标准库函数调用，属于<strong>面向过程</strong>的写法，不涉及面向对象。B（class）、C（继承）、D（虚函数/多态）都是 C++ OOP 的核心特性。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>面向对象三大特征</span>
+    </div>
+    <div class="exam-q">以下哪项<strong>不属于</strong>面向对象程序设计的基本特征？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>封装</div>
+      <div class="opt"><span class="letter">B</span>继承</div>
+      <div class="opt"><span class="letter">C</span>多态</div>
+      <div class="opt"><span class="letter">D</span>递归</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain"><strong>递归</strong>是一种编程技巧（函数调用自身），任何语言都可以用，不是面向对象的特征。<br>面向对象的三大基本特征是<strong>封装、继承、多态</strong>。</div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、语言分类总结 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s5"><span class="num">5</span>常见编程语言分类速查</h2>
+
+  <p class="kp-text">
+    一张表总结常见编程语言的<strong>多维分类</strong>（初赛单选的得分关键）：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>语言</th><th>面向对象/过程</th><th>编译/解释</th><th>主要应用领域</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="mono">C</span></td><td>🔴 面向过程</td><td>编译型</td><td>操作系统、嵌入式、系统编程</td></tr>
+        <tr><td><span class="mono">C++</span></td><td>🟢 面向对象（多范式）</td><td>编译型</td><td>游戏、高性能计算、算法竞赛</td></tr>
+        <tr><td><span class="mono">Java</span></td><td>🟢 面向对象（纯OOP）</td><td>编译+解释（JVM）</td><td>企业应用、Android 开发</td></tr>
+        <tr><td><span class="mono">Python</span></td><td>🟢 面向对象</td><td>解释型</td><td>数据分析、AI、脚本、教学</td></tr>
+        <tr><td><span class="mono">JavaScript</span></td><td>🟢 面向对象</td><td>解释型</td><td>Web 前端开发</td></tr>
+        <tr><td><span class="mono">Pascal</span></td><td>🔴 面向过程</td><td>编译型</td><td>教学（NOI 早期复赛语言）</td></tr>
+        <tr><td><span class="mono">Fortran</span></td><td>🔴 面向过程</td><td>编译型</td><td>科学计算、数值分析</td></tr>
+        <tr><td><span class="mono">C#</span></td><td>🟢 面向对象</td><td>编译型（.NET）</td><td>Windows 桌面、游戏（Unity）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 速记口诀</div>
+    <p class="kp-text">
+      <strong>面向过程 = C + Pascal + Fortran</strong>（"CPF" 三个字母）<br>
+      <strong>面向对象 = C++ + Java + Python + C# + JS</strong>（常见的都会写出来）<br>
+      题目问"不是面向对象"时，优先看选项里有没有 <strong>C 语言</strong>（最经典陷阱）。
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s5-q">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2024 · 改编</span>
+      <span>语言分类——综合判断</span>
+    </div>
+    <div class="exam-q">以下属于面向对象程序设计语言的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C</div>
+      <div class="opt"><span class="letter">B</span>Fortran</div>
+      <div class="opt"><span class="letter">C</span>Pascal</div>
+      <div class="opt"><span class="letter">D</span>Java</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain"><strong>Java</strong> 是典型的面向对象语言。C、Fortran、Pascal 都是<strong>面向过程</strong>的语言。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>C++ 的多范式特性</span>
+    </div>
+    <div class="exam-q">以下关于 C++ 的说法，正确的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C++ 是纯面向对象语言，所有代码都必须写在类中</div>
+      <div class="opt"><span class="letter">B</span>C++ 是面向过程语言，不支持面向对象</div>
+      <div class="opt"><span class="letter">C</span>C++ 是一种多范式语言，同时支持面向过程和面向对象</div>
+      <div class="opt"><span class="letter">D</span>C++ 只能用于算法竞赛</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain"><strong>C++</strong> 是<strong>多范式语言</strong>：它兼容 C 的过程式语法（可以写全局函数），同时完整支持面向对象（class、继承、虚函数）。A 错——Java 才是纯面向对象；B 错——C++ 支持 OOP；D 错——C++ 应用广泛。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>语言分类——选取"过程式"</span>
+    </div>
+    <div class="exam-q">以下全部属于面向过程语言的一组是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>C++、Java、Python</div>
+      <div class="opt"><span class="letter">B</span>C、Pascal、Fortran</div>
+      <div class="opt"><span class="letter">C</span>C、C++、C#</div>
+      <div class="opt"><span class="letter">D</span>Python、JavaScript、Ruby</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain"><strong>C、Pascal、Fortran</strong> 都是经典的面向过程语言。<br>A 和 D 都是面向对象语言；C 中 C++ 和 C# 是面向对象，只有 C 是面向过程。</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟</h2>
+  <p class="kp-text">以下题目综合了软件系统和编程语言分类多个知识点。</p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>软件+语言混合判断</span>
+    </div>
+    <div class="exam-q">以下说法中，<strong>不正确</strong>的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Linux 是一种操作系统，属于系统软件</div>
+      <div class="opt"><span class="letter">B</span>C 语言是面向过程的程序设计语言</div>
+      <div class="opt"><span class="letter">C</span>Python 是编译型语言，执行前需要生成可执行文件</div>
+      <div class="opt"><span class="letter">D</span>Java 是一种面向对象的程序设计语言</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain"><strong>Python</strong> 是<strong>解释型语言</strong>，不是编译型。虽然 Python 内部会编译成字节码（.pyc），但不生成独立的可执行文件，运行时仍需解释器。A、B、D 都是正确说法。</div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>编程语言多维分类</span>
+    </div>
+    <div class="exam-q">以下关于编程语言的说法，正确的是？</div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>汇编语言直接由 CPU 执行，不需要翻译</div>
+      <div class="opt"><span class="letter">B</span>C 语言是一种面向对象的程序设计语言</div>
+      <div class="opt"><span class="letter">C</span>编译型语言的程序在执行前需要将源代码全部翻译为机器码</div>
+      <div class="opt"><span class="letter">D</span>面向对象的三大特征是顺序、选择、循环</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">A 错——汇编语言需要<strong>汇编器</strong>翻译成机器码，不能直接执行。B 错——C 是面向<strong>过程</strong>。D 错——OOP 三大特征是<strong>封装、继承、多态</strong>，顺序/选择/循环是<strong>程序控制的三种基本结构</strong>。</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课重点速查表</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">以下是你应该背下来的核心考点：</div>
+    <div class="row">
+      <span class="pill">系统软件：OS/编译器/数据库</span>
+      <span class="pill green">应用软件：Office/浏览器/游戏</span>
+      <span class="pill red">Windows 是系统软件</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">机器语言→汇编→高级</span>
+      <span class="pill amber">编译型：C/C++/Go</span>
+      <span class="pill amber">解释型：Python/JS</span>
+    </div>
+    <div class="row">
+      <span class="pill green">OOP 三大特征：封装/继承/多态</span>
+      <span class="pill red">面向过程：C/Pascal/Fortran</span>
+      <span class="pill">C++ 是多范式语言</span>
+    </div>
+  </div>
+
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-21 计算机语言</strong></td><td style="padding:4px 0;color:var(--text-sec);">编程语言分类与执行方式详解</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-7 程序设计语言</strong></td><td style="padding:4px 0;color:var(--text-sec);">编程语言分类、编译运行专项练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-8 程序基本语句</strong></td><td style="padding:4px 0;color:var(--text-sec);">C++ 基本语句专项</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 CSP-J初赛考点汇总.md</strong></td><td style="padding:4px 0;color:var(--text-sec);">考点1（编程语言常识）· 考点4（C++语法）</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script>
+  function toggleAnswer(id){document.getElementById(id).classList.toggle('show');}
+  window.addEventListener('scroll',function(){document.getElementById('backTop').classList.toggle('visible',window.scrollY>500);});
+  const tgts=document.querySelectorAll('h2.section-title,.objectives');
+  const lnks=document.querySelectorAll('.nav-link');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const id=e.target.getAttribute('id');lnks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));})},{rootMargin:'-80px 0px -60% 0px'});
+  tgts.forEach(t=>obs.observe(t));
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+  document.querySelectorAll('.nav-link').forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900)toggleSidebar();})});
+</script>
+</body>
+</html>

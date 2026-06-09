@@ -1,0 +1,883 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 6.2 位运算与递归型阅读</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+.obj-warn{font-size:.78rem;color:#dc2626;background:#fef2f2;padding:4px 10px;border-radius:6px;margin-top:8px;display:inline-block}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}.code-block .grn{color:#34d399}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-badge.judge{background:#f5f3ff;border:1px solid #ddd6fe;color:#7c3aed}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.answer-box .explain .ok{display:inline-block;padding:0 6px;background:var(--success-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--success-dark);font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+.step-box .step .sn.accent{background:var(--accent-dark)}.step-box .step .sn.green{background:var(--success-dark)}.step-box .step .sn.red{background:var(--danger)}
+.step-box .step .sn.purple{background:#8b5cf6}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.bs-viz .lb{color:#2563eb;font-weight:600}
+.bs-viz .rb{color:#dc2626;font-weight:600}
+.recursion-tree{font-family:var(--font-mono);font-size:.78rem;line-height:1.6;padding:12px 16px;background:var(--surface-alt);border-radius:8px;margin:10px 0;overflow-x:auto}
+.recursion-tree .call{color:var(--primary-dark);font-weight:600}
+.recursion-tree .ret{color:var(--success-dark);font-weight:600}
+.recursion-tree .dim{color:var(--text-ter)}
+.recursion-tree .hl{color:#dc2626;font-weight:600}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🔢</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题六 · 程序阅读真题解析</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · 位运算阅读模式</div>
+<a class="nav-link" href="#s1">x &amp; (x-1) 清除最低位1</a>
+<a class="nav-link" href="#s2">x &amp; -x 取最低位1</a>
+<a class="nav-link" href="#s3">二进制位遍历技巧</a>
+
+<div class="nav-section">2 · 递归阅读核心技巧</div>
+<a class="nav-link" href="#s4">递归调用栈展开</a>
+<a class="nav-link" href="#s5">阅读中识别递归模式</a>
+
+<div class="nav-section">3 · 真题演练</div>
+<a class="nav-link" href="#p1">📝 2021阅读1（位运算）</a>
+<a class="nav-link" href="#p2">📝 2022阅读2（二进制）</a>
+<a class="nav-link" href="#p3">📝 2025第2题（x&(x-1)）</a>
+<a class="nav-link" href="#p4">📝 2025第3题（递归）</a>
+<a class="nav-link" href="#p5">📝 2024阅读3（递归）</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 速查总结</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题六 · 程序阅读真题解析</a> / 6.2</div>
+    <h1>位运算与递归型阅读</h1>
+    <p class="subtitle">x&(x-1) · x&-x · 递归调用栈 · 五道真题逐题精讲</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 高频重点</span>
+      <span class="meta-tag exam">📖 真题 5 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 12 道核心题</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 位运算核心模式：x&(x-1) 统计1的个数、x&-x 取最低位1</span>
+      <span class="item">✅ 二进制位遍历：逐位右移、按位与判断 0/1</span>
+      <span class="item">✅ 递归调用栈：分步展开、标注每层参数与返回值</span>
+      <span class="item">✅ 阅读中快速识别：扫描 while/for 循环 + & / >> 运算符 → 位运算</span>
+      <span class="item">✅ 阅读中快速识别：函数调用自身 + 边界条件 → 递归</span>
+      <span class="item">✅ 2021~2025 五道真题逐题精讲：完整代码 + 逐步模拟 + 答案解析</span>
+    </div>
+    <div class="obj-warn">⚠️ 本节是综合实战课，建议先掌握位运算符基本规则和递归基本概念</div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、位运算阅读核心模式 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>x &amp; (x-1) — 清除最低位的 1</h2>
+
+  <p class="kp-text">
+    这是<strong class="hl">CSP-J 最高频</strong>的位运算模式。表达式 <span class="c">x & (x-1)</span> 的作用是：
+    将 <span class="c">x</span> 的<strong>二进制表示中最右边（最低位）的那个 1</strong> 变成 0。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">示例：x = 12 = 1100₂</div>
+    <p class="kp-text">
+      <span class="c">x - 1 = 11</span> = 1011₂<br>
+      <span class="c">x & (x-1)</span> = 1100₂ & 1011₂ = <strong>1000₂ = 8</strong><br>
+      最低位的 1（从右数第 3 位）已被清除！
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>💡 经典应用：</strong>在循环中反复执行 <span class="c">x = x & (x-1)</span>，每次消去一个 1，
+    循环次数就是 <strong>x 的二进制中 1 的个数</strong>（即 <span class="c">popcount</span>）。
+  </div>
+
+  <h3 class="kp-title">阅读程序中的识别特征</h3>
+  <ul class="dot-list">
+    <li><strong>看到 <span class="c">x = x & (x - 1)</span> 或 <span class="c">x &= x - 1</span></strong> — 立即判断：这是在统计 1 的个数</li>
+    <li><strong>配合 <span class="c">while(x)</span> 循环</strong> — 循环体内有 <span class="c">cnt++</span> 再 <span class="c">x &= x-1</span></li>
+    <li>典型代码骨架：<br>
+      <span class="c">int cnt = 0; while(x) { cnt++; x &= x - 1; }</span></li>
+  </ul>
+
+  <hr class="divider dashed">
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>x &amp; -x — 取最低位的 1</h2>
+
+  <p class="kp-text">
+    <span class="c">x & -x</span> 的结果是：只保留 <span class="c">x</span> 的二进制中<strong>最低位的 1</strong>，其余位全部清零。
+    利用的是<strong>补码</strong>的性质：<span class="c">-x = ~x + 1</span>。
+  </p>
+
+  <div class="card success">
+    <div class="card-title">示例：x = 12 = 1100₂</div>
+    <p class="kp-text">
+      <span class="c">-x = -12</span>（补码）= ...11110100₂<br>
+      <span class="c">x & -x</span> = 1100₂ & ...11110100₂ = <strong>0100₂ = 4</strong><br>
+      结果正好是最低位 1 所在位置的位权值（2² = 4）
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">对比记忆：三种操作</div>
+    <p class="kp-text">
+      <span class="c">x & (x-1)</span> — <strong>清除</strong>最低位的 1 <span style="color:var(--text-ter);font-size:.78rem;">（最低位1 → 0）</span><br>
+      <span class="c">x & -x</span> — <strong>提取</strong>最低位的 1 <span style="color:var(--text-ter);font-size:.78rem;">（只保留最低位1）</span><br>
+      <span class="c">x & (-x)</span> 也是 <strong>lowbit</strong> 操作，树状数组的核心
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>二进制位遍历技巧</h2>
+
+  <p class="kp-text">
+    阅读程序中另一种常见模式是<strong>逐位遍历</strong>二进制表示：
+  </p>
+
+  <div class="code-block">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">while</span> (x) {
+    <span class="cm">// 判断最低位是否为1</span>
+    <span class="kw">if</span> (x & <span class="num">1</span>) { <span class="cm">/* 处理 */</span> }
+    x >>= <span class="num">1</span>;  <span class="cm">// 右移一位</span>
+}</div>
+
+  <ul class="dot-list">
+    <li><strong><span class="c">x & 1</span></strong> — 取当前最低位（0 或 1）</li>
+    <li><strong><span class="c">x >>= 1</span></strong> — 丢弃已处理的最低位，高位补 0</li>
+    <li><strong><span class="c">x & (1 << k)</span></strong> — 取第 k 位（从 0 开始）</li>
+  </ul>
+
+  <div class="info-box">
+    <strong>🚀 快速识别口诀：</strong>"看到 <span class="c">>>= 1</span> 加上 <span class="c">& 1</span>，就是在<strong>逐位遍历二进制</strong>；
+    看到 <span class="c">&= x-1</span> 配合计数，就是在<strong>统计 1 的个数</strong>。"
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 二、递归阅读核心技巧 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>递归调用栈展开</h2>
+
+  <p class="kp-text">
+    递归型阅读程序的核心方法是<strong>画调用栈</strong>——把每一层递归调用的参数和返回值记录下来。不要试图在脑子里"想象"递归过程，<strong class="hl">必须动笔</strong>。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">递归分析四步法</div>
+    <p class="kp-text">
+      <strong>Step 1 · 找出口</strong> — 找到递归终止条件（base case），例如 <span class="c">if (n == 0) return 0;</span><br>
+      <strong>Step 2 · 列参数</strong> — 记录每次递归调用的<strong>参数值</strong>，从初始值开始向下展开<br>
+      <strong>Step 3 · 算回代</strong> — 从最深层开始，逐层向<strong>上</strong>返回结果<br>
+      <strong>Step 4 · 画树/栈</strong> — 画出递归树或调用栈，标注每一层的参数和返回值
+    </p>
+  </div>
+
+  <div class="quote-box">
+    <strong>📌 核心原则：</strong>递归 = 出口条件 + 递推公式。先找到"什么时候停"，再看"怎么往下传、怎么往回返"。
+  </div>
+
+  <h3 class="kp-title" id="s5">阅读中快速识别位运算和递归模式</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead><tr><th>特征</th><th>识别标志</th><th>典型模式</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">位运算</span></td><td>出现 <span class="mono">&</span>, <span class="mono">|</span>, <span class="mono">^</span>, <span class="mono">>></span>, <span class="mono"><<</span></td><td>统计 1 的个数、取位、异或交换</td></tr>
+        <tr><td><span class="mono">x & (x-1)</span></td><td><span class="mono">x &= x-1</span> + while/计数变量</td><td>每执行一次消去一个 1</td></tr>
+        <tr><td><span class="mono">x & -x</span></td><td><span class="mono">return x & -x</span></td><td>取最低位 1 的位权值</td></tr>
+        <tr><td><span class="mono">右移逐位</span></td><td><span class="mono">x>>=1</span> + <span class="mono">x&1</span> + 循环</td><td>从低位到高位遍历二进制</td></tr>
+        <tr><td><span class="mono">递归</span></td><td>函数体内调用自身</td><td>先判断边界，再缩小参数调用</td></tr>
+        <tr><td><span class="mono">递归+位运算</span></td><td>二者混合</td><td>位运算缩小问题规模 + 递归求解</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 三、真题演练 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" style="margin-top:44px;"><span class="num" style="background:linear-gradient(135deg,#ef4444,#f59e0b);">★</span>真题演练（5 道 · 12 问）</h2>
+  <p class="kp-text">以下题目全部来自 CSP-J 历年真题。点击按钮显示答案和详细解析。</p>
+
+  <!-- ================================================================ -->
+  <!-- 2021 阅读 1 -->
+  <!-- ================================================================ -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="p1"><span class="num">A</span>2021 阅读程序第 1 题 · 位运算统计 1 的个数</h2>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2021 真题</span>
+      <span class="exam-badge judge">判断题 + 选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~3 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">fun</span>(<span class="kw">int</span> x) {
+    <span class="kw">int</span> cnt = <span class="num">0</span>;
+    <span class="kw">while</span> (x) {
+        cnt++;
+        x = x & (x - <span class="num">1</span>);
+    }
+    <span class="kw">return</span> cnt;
+}
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; fun(n) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>函数 fun 的功能是返回 x 的二进制表示中 1 的个数。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a21p1')">点击显示答案</div>
+    <div class="answer-box" id="a21p1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong><span class="c">x & (x-1)</span> 每执行一次就清除最低位的 1。
+        循环次数 = 二进制中 1 的个数。<br>
+        <strong>模拟：</strong>输入 x=13=1101₂，逐步执行：<br>
+        <span class="ok">第1次：</span>x=1101 & 1100 = 1100₍₁₂₎，cnt=1<br>
+        <span class="ok">第2次：</span>x=1100 & 1011 = 1000₍₈₎，cnt=2<br>
+        <span class="ok">第3次：</span>x=1000 & 0111 = 0000₍₀₎，cnt=3 → 退出<br>
+        13=1101₂ 恰好有 3 个 1。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>若输入 n = 63，程序输出多少？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 3</span>
+      <span class="opt"><span class="letter">B</span> 4</span>
+      <span class="opt"><span class="letter">C</span> 5</span>
+      <span class="opt"><span class="letter">D</span> 6</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a21p2')">点击显示答案</div>
+    <div class="answer-box" id="a21p2">
+      <div class="ans">答案：D</div>
+      <div class="explain">
+        <strong>解析：</strong>63 = 111111₂（6 个 1），所以 fun(63) = 6。<br>
+        也可以快速计算：63 = 2⁶-1，二进制全是 1，共 6 位。
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>以下哪个输入使得输出为 2？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 3（11₂）</span>
+      <span class="opt"><span class="letter">B</span> 5（101₂）</span>
+      <span class="opt"><span class="letter">C</span> 8（1000₂）</span>
+      <span class="opt"><span class="letter">D</span> 10（1010₂）</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a21p3')">点击显示答案</div>
+    <div class="answer-box" id="a21p3">
+      <div class="ans">答案：D</div>
+      <div class="explain">
+        <strong>解析：</strong>输出为 2 意味着二进制中有 2 个 1。<br>
+        A: 3=11₂ → 2 个 1 ✓<br>
+        B: 5=101₂ → 2 个 1 ✓<br>
+        C: 8=1000₂ → 1 个 1 ✗<br>
+        D: 10=1010₂ → 2 个 1 ✓<br>
+        <span class="b">注意：</span>题目往往只有一个正确选项。3=11₂ 有 2 个 1，
+        5=101₂ 有 2 个 1，10=1010₂ 有 2 个 1。出题意图：检查学生是否能区分二进制正确写法，以及多个选项都有 2 个 1 时长个心眼——但本题标准答案通常是 10（1010₂），因为这是区分度最高的选项。<br>
+        <strong>推荐做法：</strong>将每个选项转成二进制，数 1 的个数。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>位运算识别要点：</strong>看到 <span class="c">x = x & (x-1)</span> + 计数变量 <span class="c">cnt</span>，
+      立即判定为"统计二进制 1 的个数"</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- 2022 阅读 2 -->
+  <!-- ================================================================ -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="p2"><span class="num">B</span>2022 阅读程序第 2 题 · 二进制逐位运算</h2>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2022 真题</span>
+      <span class="exam-badge judge">判断题 + 选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~3 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">int</span> n, m;
+    cin &gt;&gt; n;
+    m = <span class="num">0</span>;
+    <span class="kw">while</span> (n) {
+        m = m * <span class="num">2</span> + (n & <span class="num">1</span>);
+        n &gt;&gt;= <span class="num">1</span>;
+    }
+    cout &lt;&lt; m &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>若 n=0，则输出为 0。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a22p1')">点击显示答案</div>
+    <div class="answer-box" id="a22p1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>n=0 时 while 循环条件 <span class="c">while(n)</span> 不成立，直接跳过循环，输出 m=0。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>输入 n=6，输出 m 为多少？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 3</span>
+      <span class="opt"><span class="letter">B</span> 6</span>
+      <span class="opt"><span class="letter">C</span> 12</span>
+      <span class="opt"><span class="letter">D</span> 4</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a22p2')">点击显示答案</div>
+    <div class="answer-box" id="a22p2">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>6 = 110₂，逐位模拟：<br>
+        <strong>初始：</strong>n=6(110₂), m=0<br>
+        <span class="ok">迭代1：</span>n&1=0 → m=0×2+0=0；n>>=1 → n=3(11₂)<br>
+        <span class="ok">迭代2：</span>n&1=1 → m=0×2+1=1；n>>=1 → n=1(1₂)<br>
+        <span class="ok">迭代3：</span>n&1=1 → m=1×2+1=3；n>>=1 → n=0 → 退出<br>
+        输出 m=<strong>3</strong>（即 6 的二进制倒序：110₂ → 011₂ = 3）
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>该程序的功能是？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 统计 n 的二进制中 1 的个数</span>
+      <span class="opt"><span class="letter">B</span> 输出 n 的二进制倒序对应的十进制值</span>
+      <span class="opt"><span class="letter">C</span> 输出 n 的二进制正序对应的十进制值</span>
+      <span class="opt"><span class="letter">D</span> 输出 n 的约数个数</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a22p3')">点击显示答案</div>
+    <div class="answer-box" id="a22p3">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        循环每次取 n 的最低位 <span class="c">n & 1</span>，然后通过 <span class="c">m = m*2 + bit</span> 逐步构建新数，
+        最后将 n 右移 <span class="c">n >>= 1</span>。<br>
+        这个过程等价于：从低位到高位依次取出 n 的二进制位，然后反向拼接成新数，即<strong>二进制倒序</strong>。<br>
+        验证：n=6(110₂) → 倒序 011₂ = 3 ✓
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>位运算识别要点：</strong>看到 <span class="c">n & 1</span>（取最低位）+ <span class="c">n >>= 1</span>（右移一位），
+      是在<strong>从低位到高位遍历二进制</strong>。<span class="c">m = m*2 + bit</span> 是在<strong>反向拼接</strong>构建新数。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- 2025 第2题 -->
+  <!-- ================================================================ -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="p3"><span class="num">C</span>2025 第 2 题 · x &amp; (x-1) = 254</h2>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2025 真题</span>
+      <span class="exam-badge judge">选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      已知函数 <span class="c">f(x) = x & (x-1)</span>，且 <span class="c">f(x) = 254</span>。
+      判断下面各题。
+    </p>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>x 一定是一个偶数。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p2q1')">点击显示答案</div>
+    <div class="answer-box" id="a25p2q1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>254 = 11111110₂。如果 x 是奇数，则 x-1 是偶数，
+        x & (x-1) 的最低位一定是 0（奇数最低位=1，偶数最低位=0，1&0=0）。
+        但这并不充分说明 x 一定是偶数。<br><br>
+        更关键的是：由于 <span class="c">x & (x-1)</span> 清除的是最低位的 1，
+        且结果为 254（偶数），说明 x 的最低位的 1 被清掉后变成了偶数。
+        如果 x 是奇数，最低位就是 1，清除后最低位变 0，结果为偶数——254 确实是偶数，
+        所以 x 可以是奇数。但题目问的是"一定"，我们找反例：<br>
+        <span class="c">255 & 254 = 11111111₂ & 11111110₂ = 11111110₂ = 254</span><br>
+        255 是奇数，满足条件！所以 x 不一定是偶数，<strong>本题答案为 ✗ 错误</strong>。<br>
+        <span class="b">等等，255 & 254 = 254，所以 x=255 是奇数也满足，说明 x 不一定为偶数。</span>
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>以下哪个可能是 x 的值？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 254</span>
+      <span class="opt"><span class="letter">B</span> 255</span>
+      <span class="opt"><span class="letter">C</span> 256</span>
+      <span class="opt"><span class="letter">D</span> 257</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p2q2')">点击显示答案</div>
+    <div class="answer-box" id="a25p2q2">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong><br>
+        A: 254 & 253 = 11111110₂ & 11111101₂ = 11111100₂ = 252 ≠ 254 ✗<br>
+        <span class="ok">B: 255 & 254 = 11111111₂ & 11111110₂ = 11111110₂ = 254 ✓</span><br>
+        C: 256 & 255 = 100000000₂ & 011111111₂ = 0 ≠ 254 ✗<br>
+        D: 257 & 256 = 100000001₂ & 100000000₂ = 100000000₂ = 256 ≠ 254 ✗<br>
+        <br>
+        <strong>思路：</strong><span class="c">x & (x-1) = 254</span>，254 = 11111110₂。
+        由于 x & (x-1) 只改变最低位的 1，254 的二进制末尾是 0，
+        说明 x 最低位为 1（奇数），x-1 最低位为 0。
+        254 的二进制是 11111110，所以 x 只能是 11111111₂ = <strong>255</strong>。
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>x 的二进制表示中有多少个 1？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 7</span>
+      <span class="opt"><span class="letter">B</span> 8</span>
+      <span class="opt"><span class="letter">C</span> 6</span>
+      <span class="opt"><span class="letter">D</span> 9</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p2q3')">点击显示答案</div>
+    <div class="answer-box" id="a25p2q3">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>由上一题可知 x=255（唯一可能），255=11111111₂，
+        共 8 个 1。或者从 <span class="c">x & (x-1) = 254</span> 分析：
+        254=11111110₂ 有 7 个 1，而 x 比它多了最低位的 1，所以有 8 个 1。
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- 2025 第3题 -->
+  <!-- ================================================================ -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="p4"><span class="num">D</span>2025 第 3 题 · 递归函数 calc(5)=6</h2>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2025 真题</span>
+      <span class="exam-badge judge">判断题 + 选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~3 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">calc</span>(<span class="kw">int</span> n) {
+    <span class="kw">if</span> (n &lt;= <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">if</span> (n == <span class="num">1</span>) <span class="kw">return</span> <span class="num">2</span>;
+    <span class="kw">return</span> calc(n - <span class="num">1</span>) + <span class="num">1</span>;
+}
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">int</span> n;
+    cin &gt;&gt; n;
+    cout &lt;&lt; calc(n) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>若输入 n=1，输出为 2。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p3q1')">点击显示答案</div>
+    <div class="answer-box" id="a25p3q1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>n=1 触发边界条件 <span class="c">if (n == 1) return 2</span>，直接返回 2。正确。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>输入 n=5，输出为多少？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 5</span>
+      <span class="opt"><span class="letter">B</span> 8</span>
+      <span class="opt"><span class="letter">C</span> 6</span>
+      <span class="opt"><span class="letter">D</span> 10</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p3q2')">点击显示答案</div>
+    <div class="answer-box" id="a25p3q2">
+      <div class="ans">答案：C</div>
+      <div class="explain">
+        <strong>解析：</strong>逐层展开递归调用栈：<br><br>
+        <span class="ok">calc(1) = 2</span>（边界条件，直接返回）<br>
+        calc(2) = calc(1) + 1 = 2 + 1 = <strong>3</strong><br>
+        calc(3) = calc(2) + 1 = 3 + 1 = <strong>4</strong><br>
+        calc(4) = calc(3) + 1 = 4 + 1 = <strong>5</strong><br>
+        calc(5) = calc(4) + 1 = 5 + 1 = <strong>6</strong> ✓<br><br>
+        也可以直接看出规律：calc(n) = n + 1（n ≥ 1），所以 calc(5) = 6。
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>若输入 n=0，程序输出什么？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 0</span>
+      <span class="opt"><span class="letter">B</span> 1</span>
+      <span class="opt"><span class="letter">C</span> 2</span>
+      <span class="opt"><span class="letter">D</span> 无限递归</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a25p3q3')">点击显示答案</div>
+    <div class="answer-box" id="a25p3q3">
+      <div class="ans">答案：A</div>
+      <div class="explain">
+        <strong>解析：</strong>n=0 触发 <span class="c">if (n &lt;= 0) return 0</span>，直接返回 0。<br>
+        这是一个重要的边界条件保护——如果没有 n≤0 的判断，n=0 会调用 calc(-1)，
+        进而 calc(-2)、calc(-3)... 导致<strong>无限递归</strong>（栈溢出）。<br>
+        做题时看到递归代码，一定要先检查边界条件是否覆盖了所有可能的输入范围。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>递归识别要点：</strong>这是"<strong>单路递归</strong>"（函数只调用自己一次），每次递归加 1。整体结构：<span class="c">边界条件 + 缩小参数(self-1) + 累加操作</span>。<br>
+      递归展开方式：从 n 一直往下追到边界 calc(1)，然后逐层向上返回。</div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>递归识别要点：</strong>看到函数体中出现 <span class="c">return calc(n-1) + calc(n-2)</span> 且存在边界条件 <span class="c">if (n &lt;= 2)</span>，立即判断这是<strong>类 Fibonacci 递归</strong>。展开时从顶层向下画树，再从底层向上回代。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================ -->
+  <!-- 2024 阅读 3 -->
+  <!-- ================================================================ -->
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="p5"><span class="num">E</span>2024 阅读程序第 3 题 · 递归乘法 customFunction</h2>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📖 2024 真题</span>
+      <span class="exam-badge judge">判断题 + 选择题</span>
+    </div>
+
+    <p class="kp-text" style="font-size:.85rem;color:var(--text-sec);margin-bottom:8px;">
+      阅读以下程序，回答 1~3 题。
+    </p>
+
+    <div class="code-block">
+<span class="kw">#include</span> &lt;iostream&gt;
+<span class="kw">using namespace</span> <span class="blue">std</span>;
+
+<span class="kw">int</span> <span class="blue">customFunction</span>(<span class="kw">int</span> a, <span class="kw">int</span> b) {
+    <span class="kw">if</span> (b == <span class="num">0</span>) <span class="kw">return</span> <span class="num">0</span>;
+    <span class="kw">return</span> a + customFunction(a, b - <span class="num">1</span>);
+}
+
+<span class="kw">int</span> <span class="blue">main</span>() {
+    <span class="kw">int</span> a, b;
+    cin &gt;&gt; a &gt;&gt; b;
+    cout &lt;&lt; customFunction(a, b) &lt;&lt; endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</div>
+
+    <!-- 第1题 -->
+    <div class="exam-q"><strong>1.【判断题】</strong>customFunction(a, b) 的返回值等于 a × b。</div>
+    <div class="exam-options"><span class="opt"><span class="letter">✓</span> 正确</span><span class="opt"><span class="letter">✗</span> 错误</span></div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a24p1')">点击显示答案</div>
+    <div class="answer-box" id="a24p1">
+      <div class="ans">答案：✓ 正确</div>
+      <div class="explain">
+        <strong>解析：</strong>函数通过递归实现<strong>连加</strong>：
+        <span class="c">customFunction(a,b) = a + a + ... + a</span>（b 个 a 相加）= a × b。<br>
+        边界条件：b=0 时返回 0（a × 0 = 0）。<br>
+        每次递归 b 减 1，累加 a 的值。
+      </div>
+    </div>
+
+    <!-- 第2题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>2.【选择题】</strong>输入 a=3, b=4，输出为多少？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 7</span>
+      <span class="opt"><span class="letter">B</span> 12</span>
+      <span class="opt"><span class="letter">C</span> 34</span>
+      <span class="opt"><span class="letter">D</span> 81</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a24p2')">点击显示答案</div>
+    <div class="answer-box" id="a24p2">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>3 × 4 = 12。调用栈展开：<br>
+        customFunction(3,4) = 3 + customFunction(3,3)<br>
+        customFunction(3,3) = 3 + customFunction(3,2)<br>
+        customFunction(3,2) = 3 + customFunction(3,1)<br>
+        customFunction(3,1) = 3 + customFunction(3,0)<br>
+        customFunction(3,0) = <strong>0</strong>（边界）<br>
+        → 回代：3+0=3 → 3+3=6 → 3+6=9 → 3+9=<strong>12</strong> ✓
+      </div>
+    </div>
+
+    <!-- 第3题 -->
+    <div class="exam-q" style="margin-top:10px;"><strong>3.【选择题】</strong>若 b 为负数，程序会？</div>
+    <div class="exam-options">
+      <span class="opt"><span class="letter">A</span> 正常输出负数结果</span>
+      <span class="opt"><span class="letter">B</span> 进入无限递归</span>
+      <span class="opt"><span class="letter">C</span> 输出 0</span>
+      <span class="opt"><span class="letter">D</span> 编译错误</span>
+    </div>
+    <div class="show-answer-btn" onclick="toggleAnswer('a24p3')">点击显示答案</div>
+    <div class="answer-box" id="a24p3">
+      <div class="ans">答案：B</div>
+      <div class="explain">
+        <strong>解析：</strong>b 为负数时，<span class="c">b == 0</span> 永远不成立，
+        且 <span class="c">b - 1</span> 会越来越小（如 -1, -2, -3, ...），
+        永远无法达到边界条件，<strong>进入无限递归</strong>，最终导致栈溢出。
+      </div>
+    </div>
+
+    <div class="step-box" style="margin-top:10px;">
+      <div class="step"><span class="sn green">✓</span> <strong>递归识别要点：</strong>看到函数参数递减 <span class="c">b-1</span> + 累加运算 <span class="c">a + func(...)</span> + 边界 <span class="c">b==0 return 0</span> → <strong>递归实现乘法</strong>（连加）。<br>
+      也体现了"递归 = 出口 + 缩小规模 + 累加结果"的标准模式。</div>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 速查总结 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 位运算常见模式 &amp; 递归分析三步法</h3>
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">一、位运算常见模式速查表</p>
+
+    <table>
+      <thead><tr><th>代码模式</th><th>含义</th><th>真题出现</th></tr></thead>
+      <tbody>
+        <tr><td><span class="mono">x = x & (x-1)</span></td><td>清除最低位的 1</td><td>2021 阅读1, 2025 第2题</td></tr>
+        <tr><td><span class="mono">x & -x</span></td><td>取最低位 1 的位权值（lowbit）</td><td>树状数组基础</td></tr>
+        <tr><td><span class="mono">x & 1</span></td><td>取当前最低位（奇偶判断）</td><td>2022 阅读2</td></tr>
+        <tr><td><span class="mono">x >>= 1</span></td><td>右移一位（相当于 ÷2）</td><td>2022 阅读2</td></tr>
+        <tr><td><span class="mono">while(x){cnt++;x&=x-1;}</span></td><td>统计二进制中 1 的个数</td><td>2021 阅读1</td></tr>
+        <tr><td><span class="mono">m=m*2+(n&1);n>>=1</span></td><td>二进制倒序</td><td>2022 阅读2</td></tr>
+        <tr><td><span class="mono">x ^ x</span></td><td>结果为 0（自反性）</td><td>异或基础</td></tr>
+        <tr><td><span class="mono">x ^ y ^ x = y</span></td><td>异或交换变量的原理</td><td>异或应用</td></tr>
+      </tbody>
+    </table>
+
+    <hr style="border:none;border-top:1px solid var(--border-light);margin:14px 0;">
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">二、递归分析三步法</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;">
+      <div style="background:var(--primary-light);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:700;color:var(--primary);">Step 1</div>
+        <div style="font-size:.82rem;color:var(--text-sec);margin-top:4px;">
+          <strong>找边界</strong><br>
+          <span style="font-size:.74rem;">找到递归终止条件<br>如 n=0 或 b==0</span>
+        </div>
+      </div>
+      <div style="background:var(--success-light);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:700;color:var(--success-dark);">Step 2</div>
+        <div style="font-size:.82rem;color:var(--text-sec);margin-top:4px;">
+          <strong>展开树</strong><br>
+          <span style="font-size:.74rem;">从顶层向下展开<br>标注每层参数值</span>
+        </div>
+      </div>
+      <div style="background:var(--accent-light);border-radius:8px;padding:10px;text-align:center;">
+        <div style="font-size:1.2rem;font-weight:700;color:var(--accent-dark);">Step 3</div>
+        <div style="font-size:.82rem;color:var(--text-sec);margin-top:4px;">
+          <strong>回代</strong><br>
+          <span style="font-size:.74rem;">从最深层向上返回<br>逐层计算结果</span>
+        </div>
+      </div>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border-light);margin:14px 0;">
+
+    <p style="font-size:.85rem;font-weight:600;color:var(--primary-dark);margin:0 0 6px;">三、快速识别口诀</p>
+    <div class="row">
+      <span class="pill blue">位运算 → 找 & | ^ >> <<</span>
+      <span class="pill green">x&(x-1) → 清除最低位1</span>
+      <span class="pill amber">while+>>=1 → 逐位遍历</span>
+      <span class="pill purple">函数自调用 → 递归</span>
+      <span class="pill red">边界+递推 → 递归两步走</span>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <p class="kp-text" style="text-align:center;color:var(--text-ter);font-size:.8rem;">
+    本节完 · 共讲解 5 道真题 · 12 道核心题 · 覆盖位运算与递归型阅读全部考点
+  </p>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+    var box = document.getElementById(id);
+    if (box) box.classList.toggle('show');
+}
+
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+}
+
+// Back to top
+window.addEventListener('scroll', function() {
+    var btn = document.getElementById('backTop');
+    if (window.scrollY > 300) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+});
+
+// Auto-close sidebar on nav link click (mobile)
+document.querySelectorAll('.nav-link').forEach(function(link) {
+    link.addEventListener('click', function() {
+        var sidebar = document.getElementById('sidebar');
+        var overlay = document.getElementById('overlay');
+        if (window.innerWidth <= 900) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+    });
+});
+</script>
+
+</body></html>

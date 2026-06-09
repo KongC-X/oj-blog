@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GESP六级培训 · 动态规划</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}h1 .sub{display:block;font-size:1rem;font-weight:400;color:var(--text-secondary);margin-top:6px}
+.subtitle-main{color:var(--text-tertiary);font-size:15px;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);padding-left:16px;border-left:4px solid var(--primary);border-bottom:none;padding-bottom:0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;background:linear-gradient(135deg,var(--primary-light),#fff);font-size:14.5px}.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.highlight-box p:last-child{margin-bottom:0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}.think-box p:last-child{margin-bottom:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}.warning-box p:last-child{margin-bottom:0}.warning-box .code-block{margin:10px 0}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}.tip-box p:last-child{margin-bottom:0}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}.card p:last-child{margin-bottom:0}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.table-wrapper{overflow-x:auto;margin:16px 0}table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.inline-code{font-family:var(--font-mono);background:var(--surface-alt);padding:2px 6px;border-radius:4px;font-size:13px;color:var(--primary);border:1px solid var(--border-light)}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}hr.divider.dashed{border-top-style:dashed}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.back-to-top.visible{display:flex}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}.goal-box ul{margin-bottom:0}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px}
+.tag-blue{background:var(--primary-light);color:var(--primary)}.tag-green{background:var(--success-light);color:var(--success)}.tag-red{background:var(--danger-light);color:var(--danger)}.tag-yellow{background:var(--accent-light);color:var(--accent-dark)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:600px;opacity:1}.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+.vis{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--primary);border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.vis svg{max-width:100%;height:auto}.vis-caption{font-size:13px;color:var(--text-tertiary);margin-top:8px}
+@media(max-width:900px){
+nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}
+.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+nav.sidebar::-webkit-scrollbar{width:4px}nav.sidebar::-webkit-scrollbar-track{background:transparent}nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}.content-wrapper>*{animation:fadeUp .4s ease-out}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head><body>
+<button class="menu-toggle" id="menuToggle">☰</button>
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><span class="icon">📐</span> GESP 六级 · DP</div>
+<div class="nav-section"><div class="nav-section-title">教学流程</div>
+<a class="nav-link active" href="#step1">第一步：生活引入</a>
+<a class="nav-link" href="#step2">第二步：核心概念</a>
+<a class="nav-link" href="#step3">第三步：算法/代码讲解</a>
+<a class="nav-link" href="#step4">第四步：手工模拟</a>
+<a class="nav-link" href="#step5">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#cheatsheet">速查表</a>
+</nav>
+<main class="main-content"><div class="content-wrapper">
+
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px;position:relative">📐 GESP C++ 六级 · 动态规划</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px;position:relative">最优子结构、重叠子问题、0/1 背包、斐波那契</p>
+</div>
+
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 一、生活引入</h2>
+
+<h3>1.1 斐波那契与兔子繁殖——重叠子问题</h3>
+<p><strong>问题</strong>：假设有一对刚出生的兔子，每对兔子从出生后第3个月起每个月都生一对新兔子。问第 n 个月共有多少对兔子？</p>
+<p><strong>分析</strong>：
+- 第1个月：1对（幼年）
+- 第2个月：1对（成年）
+- 第3个月：1+1=2对（成年那对生了1对）
+- 第4个月：2+1=3对（第3个月的两对中，成年的那对又生了1对）
+- 第5个月：3+2=5对
+- 第6个月：5+3=8对</p>
+<p>这个序列正是 <strong>斐波那契数列</strong>：<code class="inline-code">1, 1, 2, 3, 5, 8, 13, ...</code></p>
+<p><strong>递推关系</strong>：<code class="inline-code">F(n) = F(n-1) + F(n-2)</code></p>
+<p><strong>关键观察</strong>：要计算第 n 个月，需要知道第 n-1 个月和第 n-2 个月的结果。而计算 F(5) 时又需要 F(4) 和 F(3)，计算 F(4) 又需要 F(3) 和 F(2)……如果每次都用递归重复计算，F(3) 会被计算很多次。这些<strong>被反复计算的子问题</strong>就是<strong>重叠子问题</strong>。</p>
+<p><strong>生活类比</strong>：你写周报时，发现每周的数据都依赖前两周的数据。与其每周都从头算一遍，不如记下每周的结果，下周直接用。这就是 DP 的思想——<strong>记住已经算过的结果，避免重复计算</strong>。</p>
+<hr />
+<h3>1.2 背包旅行——最优子结构</h3>
+<p><strong>问题</strong>：你要去旅行，背包容量为 8kg。你有以下物品：
+- 帐篷：4kg，价值 2000 元
+- 睡袋：2kg，价值 800 元
+- 相机：3kg，价值 1500 元
+- 水：2kg，价值 500 元
+- 食物：3kg，价值 600 元</p>
+<p>如何在不超过背包容量的前提下，让携带物品的总价值最大？</p>
+<p><strong>关键观察</strong>：如果你已经知道容量为 8kg 时能拿的最大价值，那么当考虑新物品时：
+- 方案A：不拿这件，价值 = dp[8]，
+- 方案B：拿这件（若放得下），价值 = dp[8-重量] + 这件物品的价值</p>
+<p><strong>全局最优解包含局部最优解</strong>，这就是<strong>最优子结构</strong>。</p>
+<p><strong>生活类比</strong>：你每次往箱子里放东西时，都会想：放这个进去的话，剩余空间还能放什么最好的东西？如果把所有可能都试一遍，取价值最大的方案——这就是 DP 的"选或不选"决策。</p>
+<hr />
+
+</section>
+
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 二、核心概念</h2>
+
+<h3>2.1 什么是动态规划</h3>
+<p>动态规划（Dynamic Programming, DP）是一种通过<strong>把原问题分解为相对简单的子问题</strong>来求解复杂问题的方法。它通过<strong>记住子问题的解</strong>来避免重复计算。</p>
+<h3>2.2 三个核心性质</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>性质</th>
+<th>定义</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>最优子结构</strong></td>
+<td>原问题的最优解包含了其子问题的最优解</td>
+<td>背包问题中，容量10的最优解包含容量8的最优解</td>
+</tr>
+<tr>
+<td><strong>重叠子问题</strong></td>
+<td>求解过程中反复出现相同子问题</td>
+<td>斐波那契中 F(3) 被多次计算</td>
+</tr>
+<tr>
+<td><strong>无后效性</strong></td>
+<td>一旦某个阶段状态确定，就不受之后决策的影响</td>
+<td>爬台阶时，走到第5阶的方案数只和第3、第4阶有关</td>
+</tr>
+</tbody>
+</table>
+<h3>2.3 状态转移方程</h3>
+<p><strong>DP 的灵魂</strong>。描述状态之间如何转移的数学公式。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp[i] = f(dp[i-1], dp[i-2], ...)</code></pre></div>
+
+<p>一般形式：
+- <strong>状态定义</strong>：<code class="inline-code">dp[i]</code> 表示什么含义
+- <strong>转移方程</strong>：<code class="inline-code">dp[i]</code> 如何从之前的状态计算得到
+- <strong>边界条件</strong>：最小的子问题（如 <code class="inline-code">dp[0]</code>, <code class="inline-code">dp[1]</code>）
+- <strong>结果</strong>：最终答案藏在哪个 <code class="inline-code">dp</code> 元素中</p>
+<h3>2.4 DP 解题一般步骤</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">1. 定状态 —— dp[i] / dp[i][j] 表示什么
+2. 找转移 —— 状态之间如何递推
+3. 设初始 —— 边界条件
+4. 定答案 —— 最终输出哪个状态</code></pre></div>
+
+<p><strong>口诀</strong>：<strong>定义状态 → 写出方程 → 初始化 → 循环填表 → 返回结果</strong></p>
+<hr />
+
+</section>
+
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 三、常见题型</h2>
+
+<h3>3.1 打家劫舍（不相邻元素最大和）</h3>
+<p><strong>问题描述</strong>：你是一个小偷，沿街有 n 个房子，每个房子里有不同金额的现金。相邻房子有防盗系统相连，如果同一天闯入相邻的两个房子会触发警报。求不触发警报的情况下能偷到的最大金额。</p>
+<p><strong>例题</strong>：<code class="inline-code">nums = [2, 7, 9, 3, 1]</code>，最大金额为 12（偷第1、3、5家：2+9+1=12）。</p>
+<h4>状态转移方程</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">状态定义：dp[i] 表示偷前 i 个房子（0~i-1）能得到的最大金额
+转移方程：dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])
+边界条件：dp[0] = 0         （没有房子，金额为0）
+         dp[1] = nums[0]   （只有一个房子，只能偷它）
+最终答案：dp[n]</code></pre></div>
+
+<p><strong>解释</strong>：对于第 i 个房子（下标 i-1），有两种选择：
+- <strong>不偷</strong>：金额 = <code class="inline-code">dp[i-1]</code>（前 i-1 个房子的最大金额）
+- <strong>偷</strong>：金额 = <code class="inline-code">dp[i-2] + nums[i-1]</code>（前 i-2 个房子的最大金额 + 当前房子金额）</p>
+<p>取两者的最大值即可。</p>
+<h4>完整代码</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int rob(int nums[], int n) {
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+
+    int dp[1001] = {0};
+    dp[0] = 0;          // 没有房子
+    dp[1] = nums[0];    // 只有一个房子
+
+    for (int i = 2; i &lt;= n; i++) {
+        // 不偷第i家：dp[i-1]；偷第i家：dp[i-2] + nums[i-1]
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i-1]);
+    }
+    return dp[n];
+}
+
+int main() {
+    int nums[] = {2, 7, 9, 3, 1};
+    int n = 5;
+    cout &lt;&lt; "最大金额 = " &lt;&lt; rob(nums, n) &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+
+<h4>空间优化（滚动变量）</h4>
+<p>因为 <code class="inline-code">dp[i]</code> 只依赖 <code class="inline-code">dp[i-1]</code> 和 <code class="inline-code">dp[i-2]</code>，可以用两个变量滚动：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int rob_optimized(int nums[], int n) {
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+
+    int prev2 = 0;          // dp[i-2]
+    int prev1 = nums[0];    // dp[i-1]
+    int cur;
+
+    for (int i = 2; i &lt;= n; i++) {
+        cur = max(prev1, prev2 + nums[i-1]);
+        prev2 = prev1;
+        prev1 = cur;
+    }
+    return prev1;
+}</code></pre></div>
+
+<hr />
+<h3>3.2 0/1 背包</h3>
+<p><strong>问题描述</strong>：有 n 个物品，每个物品有重量 wt[i] 和价值 val[i]。背包容量为 W。每个物品最多选一次，求背包能装下的最大价值。</p>
+<h4>二维 DP（基础版本）</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">状态定义：dp[i][j] 表示在前 i 个物品中选，总重量不超过 j 的最大价值
+转移方程：
+  dp[i][j] = dp[i-1][j]                    （不选第 i 个物品）
+  dp[i][j] = max(dp[i][j], dp[i-1][j-wt[i-1]] + val[i-1])  （选第 i 个物品，前提是 j &gt;= wt[i-1]）
+边界条件：dp[0][j] = 0（没有物品可拿，价值为0）
+         dp[i][0] = 0（容量为0，什么也装不了）
+最终答案：dp[n][W]</code></pre></div>
+
+<h4>完整代码（二维）</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int knapsack_2d(int wt[], int val[], int n, int W) {
+    int dp[101][101] = {0};  // dp[i][j]：前i个物品，容量j的最大价值
+
+    for (int i = 1; i &lt;= n; i++) {
+        for (int j = 0; j &lt;= W; j++) {
+            // 不选第i个物品
+            dp[i][j] = dp[i-1][j];
+            // 如果能装下，尝试选第i个物品
+            if (j &gt;= wt[i-1]) {
+                dp[i][j] = max(dp[i][j], dp[i-1][j-wt[i-1]] + val[i-1]);
+            }
+        }
+    }
+    return dp[n][W];
+}
+
+int main() {
+    int wt[]  = {2, 3, 4, 5};    // 重量
+    int val[] = {3, 4, 5, 6};    // 价值
+    int n = 4, W = 8;
+    cout &lt;&lt; "最大价值 = " &lt;&lt; knapsack_2d(wt, val, n, W) &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+
+<h4>一维优化（重点：为什么逆序）</h4>
+<p>观察二维转移方程：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp[i][j] = max(dp[i-1][j], dp[i-1][j-wt[i-1]] + val[i-1])</code></pre></div>
+
+<p>发现 <code class="inline-code">dp[i][j]</code> 只依赖于 <code class="inline-code">dp[i-1][...]</code>（上一行的数据）。因此可以用<strong>一维数组</strong>滚动更新，空间从 O(n×W) 优化到 O(W)。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp[j] = max(dp[j], dp[j-wt[i-1]] + val[i-1])</code></pre></div>
+
+<p><strong>关键问题</strong>：内层循环 j 为什么要从大到小（逆序）遍历？</p>
+<h4>为什么必须逆序？</h4>
+<p><strong>错误示范（正序）</strong>：假设物品1重量2价值3，物品2重量3价值4，W=5。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp数组初始：dp = [0, 0, 0, 0, 0, 0] （下标0~5）
+
+处理物品1（wt=2, val=3）—— 正序遍历 j=2~5：
+  j=2: dp[2] = max(dp[2], dp[0]+3) = max(0, 0+3) = 3
+  j=3: dp[3] = max(dp[3], dp[1]+3) = max(0, 0+3) = 3
+  j=4: dp[4] = max(dp[4], dp[2]+3) = max(0, 3+3) = 6  ← 问题！
+  j=5: dp[5] = max(dp[5], dp[3]+3) = max(0, 3+3) = 6</code></pre></div>
+
+<p><strong>发现问题了吗</strong>？当 j=4 时，<code class="inline-code">dp[2]</code> 已经在当前轮被更新为 3（表示已选了物品1）。此时 <code class="inline-code">dp[4] = dp[2] + 3 = 6</code>，相当于<strong>又选了一次物品1</strong>！这就把一个"0/1"问题变成了"无限取"问题。</p>
+<p><strong>正解（逆序）</strong>：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">处理物品1（wt=2, val=3）—— 逆序遍历 j=5~2：
+  j=5: dp[5] = max(dp[5], dp[3]+3) = max(0, 0+3) = 3
+  j=4: dp[4] = max(dp[4], dp[2]+3) = max(0, 0+3) = 3
+  j=3: dp[3] = max(dp[3], dp[1]+3) = max(0, 0+3) = 3
+  j=2: dp[2] = max(dp[2], dp[0]+3) = max(0, 0+3) = 3</code></pre></div>
+
+<p>此时 dp = [0, 0, 3, 3, 3, 3]，每个物品最多被选一次。</p>
+<p><strong>核心原因</strong>：逆序遍历保证了更新 <code class="inline-code">dp[j]</code> 时用到的 <code class="inline-code">dp[j-wt]</code> 是<strong>上一轮（未更新）的值</strong>，即每个物品只考虑一次。正序遍历则可能导致同一个物品被多次选取。</p>
+<blockquote>
+<p><strong>一句话总结</strong>：0/1背包一维优化必须逆序，是为了保证每个物品<strong>最多选一次</strong>。</p>
+</blockquote>
+<h4>完整代码（一维）</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int knapsack_1d(int wt[], int val[], int n, int W) {
+    int dp[1001] = {0};  // dp[j]：容量j的最大价值
+
+    for (int i = 0; i &lt; n; i++) {          // 遍历每个物品
+        for (int j = W; j &gt;= wt[i]; j--) { // 逆序遍历容量
+            dp[j] = max(dp[j], dp[j-wt[i]] + val[i]);
+        }
+    }
+    return dp[W];
+}</code></pre></div>
+
+<hr />
+<h3>3.3 青蛙跳台阶</h3>
+<p><strong>问题描述</strong>：一只青蛙一次可以跳上1级台阶，也可以跳上2级台阶。求青蛙跳上 n 级台阶总共有多少种跳法。</p>
+<p><strong>分析</strong>：要跳到第 n 级台阶，要么从第 n-1 级跳1步过来，要么从第 n-2 级跳2步过来。所以跳法数量满足斐波那契关系。</p>
+<h4>状态转移方程</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">状态定义：dp[i] 表示跳上 i 级台阶的跳法数量
+转移方程：dp[i] = dp[i-1] + dp[i-2]
+边界条件：dp[0] = 1  （0级台阶，不跳也是一种方案）
+         dp[1] = 1  （1级台阶，只能跳1步）
+         dp[2] = 2  （2级台阶：1+1 或 2）
+最终答案：dp[n]</code></pre></div>
+
+<h4>完整代码</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int climbStairs(int n) {
+    if (n &lt;= 1) return 1;
+
+    int dp[1001] = {0};
+    dp[0] = 1;
+    dp[1] = 1;
+
+    for (int i = 2; i &lt;= n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp[n];
+}
+
+int main() {
+    int n = 5;
+    cout &lt;&lt; "跳" &lt;&lt; n &lt;&lt; "级台阶有 " &lt;&lt; climbStairs(n) &lt;&lt; " 种方法" &lt;&lt; endl;
+    // 输出：跳5级台阶有 8 种方法
+    return 0;
+}</code></pre></div>
+
+<h4>空间优化</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int climbStairs_opt(int n) {
+    if (n &lt;= 1) return 1;
+    int a = 1, b = 1, c;  // a=dp[i-2], b=dp[i-1]
+    for (int i = 2; i &lt;= n; i++) {
+        c = a + b;
+        a = b;
+        b = c;
+    }
+    return c;
+}</code></pre></div>
+
+<hr />
+<h3>3.4 完全平方数拆分</h3>
+<p><strong>问题描述</strong>：给定一个正整数 n，求最少能由多少个<strong>完全平方数</strong>（1, 4, 9, 16, ...）相加得到。</p>
+<p><strong>示例</strong>：
+- n=12 → 4+4+4=12，需要3个
+- n=13 → 9+4=13，需要2个</p>
+<h4>状态转移方程</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">状态定义：dp[i] 表示组成 i 需要的最少完全平方数个数
+转移方程：dp[i] = min(d[i], dp[i - j*j] + 1)，其中 j*j &lt;= i
+边界条件：dp[0] = 0
+         dp[i] = i （最坏情况：全部用1相加，需要i个）
+最终答案：dp[n]</code></pre></div>
+
+<p><strong>解释</strong>：对于每个 i，尝试减去一个完全平方数 j<em>j，看剩下的 i-j</em>j 最少需要多少个完全平方数。</p>
+<h4>完整代码</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int numSquares(int n) {
+    int dp[10001];
+    // 初始化：最坏情况全用1
+    for (int i = 0; i &lt;= n; i++) dp[i] = i;
+    dp[0] = 0;
+
+    for (int i = 1; i &lt;= n; i++) {
+        for (int j = 1; j * j &lt;= i; j++) {
+            dp[i] = min(dp[i], dp[i - j*j] + 1);
+        }
+    }
+    return dp[n];
+}
+
+int main() {
+    cout &lt;&lt; "n=12需要" &lt;&lt; numSquares(12) &lt;&lt; "个" &lt;&lt; endl;  // 3
+    cout &lt;&lt; "n=13需要" &lt;&lt; numSquares(13) &lt;&lt; "个" &lt;&lt; endl;  // 2
+    return 0;
+}</code></pre></div>
+
+<hr />
+<h3>3.5 零钱兑换</h3>
+<p><strong>问题描述</strong>：给定不同面额的硬币 coins 和一个总金额 amount，求凑成总金额所需的最少硬币个数。如果无法凑成，返回 -1。</p>
+<p><strong>示例</strong>：coins = [1, 2, 5], amount = 11 → 5+5+1=11，最少需要3枚。</p>
+<h4>状态转移方程</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">状态定义：dp[a] 表示凑成金额 a 所需的最少硬币数
+转移方程：dp[a] = min(dp[a], dp[a - coins[i]] + 1)
+         其中 coins[i] 是硬币面额，且 a &gt;= coins[i]
+边界条件：dp[0] = 0（金额为0不需要硬币）
+初始化：dp[1..amount] = 一个很大的数（如 INF = amount+1）
+最终答案：如果 dp[amount] &gt; amount 则返回 -1，否则返回 dp[amount]</code></pre></div>
+
+<h4>完整代码</h4>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int coinChange(int coins[], int n, int amount) {
+    const int INF = 0x3f3f3f3f;
+    int dp[10001];
+    fill(dp, dp + amount + 1, INF);
+    dp[0] = 0;
+
+    for (int a = 1; a &lt;= amount; a++) {
+        for (int i = 0; i &lt; n; i++) {
+            if (a &gt;= coins[i]) {
+                dp[a] = min(dp[a], dp[a - coins[i]] + 1);
+            }
+        }
+    }
+    return dp[amount] &gt; amount ? -1 : dp[amount];
+}
+
+int main() {
+    int coins[] = {1, 2, 5};
+    int n = 3, amount = 11;
+    int res = coinChange(coins, n, amount);
+    cout &lt;&lt; "凑" &lt;&lt; amount &lt;&lt; "元最少需要" &lt;&lt; res &lt;&lt; "枚硬币" &lt;&lt; endl;
+    // 输出：凑11元最少需要3枚硬币
+    return 0;
+}</code></pre></div>
+
+<hr />
+
+</section>
+
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 四、手工模拟——打家劫舍 DP 表推演</h2>
+
+<p>以 <code class="inline-code">nums = [2, 7, 9, 3, 1]</code> 为例，计算打家劫舍的 DP 表。</p>
+<h3>初始状态</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp[0] = 0   （没有房子）
+dp[1] = nums[0] = 2  （只有第一家）</code></pre></div>
+
+<h3>逐行计算</h3>
+<table class="styled-table">
+<thead>
+<tr>
+<th>i</th>
+<th>nums[i-1]</th>
+<th>dp[i-2]</th>
+<th>dp[i-1]</th>
+<th>dp[i-2]+nums[i-1]</th>
+<th>dp[i]=max(dp[i-1], dp[i-2]+nums[i-1])</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>dp[0] = 0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>dp[1] = 2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>7</td>
+<td>dp[0]=0</td>
+<td>dp[1]=2</td>
+<td>0+7=7</td>
+<td>dp[2] = max(2, 7) = <strong>7</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>9</td>
+<td>dp[1]=2</td>
+<td>dp[2]=7</td>
+<td>2+9=11</td>
+<td>dp[3] = max(7, 11) = <strong>11</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>3</td>
+<td>dp[2]=7</td>
+<td>dp[3]=11</td>
+<td>7+3=10</td>
+<td>dp[4] = max(11, 10) = <strong>11</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>1</td>
+<td>dp[3]=11</td>
+<td>dp[4]=11</td>
+<td>11+1=12</td>
+<td>dp[5] = max(11, 12) = <strong>12</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>结果说明</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp = [0, 2, 7, 11, 11, 12]
+最终最大金额 = dp[5] = 12</code></pre></div>
+
+<p><strong>手动验证</strong>：偷第1家(2)、第3家(9)、第5家(1) → 2+9+1=12 ✓</p>
+<p><strong>子问题验证</strong>：
+- dp[3]=11 表示前3家（2,7,9）最大能偷11——实际是偷第1家和第3家（2+9=11）
+- dp[4]=11 表示前4家（2,7,9,3）最大能偷11——不管是偷(1,3)还是(2,4)都是2+9=11或7+3=10中取最大</p>
+<hr />
+
+</section>
+
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 五、常见陷阱</h2>
+
+<h3>陷阱1：0/1背包内层循环正序 vs 逆序混淆</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 错误：正序（变成了完全背包）
+for (int j = wt[i]; j &lt;= W; j++)
+    dp[j] = max(dp[j], dp[j-wt[i]] + val[i]);
+
+// 正确：逆序（保证每个物品只用一次）
+for (int j = W; j &gt;= wt[i]; j--)
+    dp[j] = max(dp[j], dp[j-wt[i]] + val[i]);</code></pre></div>
+
+<p><strong>记忆方法</strong>：0/1背包用<strong>逆序</strong>（1像一根棍子，从大到小，只能选1次）；完全背包用<strong>正序</strong>（可以无限选）。</p>
+<h3>陷阱2：忘记初始化</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 错误：忘记初始化
+int dp[1001];  // 未初始化的值是随机的
+dp[0] = 0;
+
+// 正确：
+int dp[1001] = {0};  // 全部初始化为0</code></pre></div>
+
+<p>对于求最小值的题目（如零钱兑换），需要初始化成一个大数：</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">const int INF = 0x3f3f3f3f;  // 约10亿，防止加法溢出
+fill(dp, dp + n + 1, INF);
+dp[0] = 0;</code></pre></div>
+
+<h3>陷阱3：递归不存储中间结果（纯递归=指数爆炸）</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 错误：纯递归，大量重复计算
+int fib(int n) {
+    if (n &lt;= 1) return n;
+    return fib(n-1) + fib(n-2);  // 时间复杂度 O(2^n)
+}
+
+// 正确：记忆化搜索（递归+备忘录）
+int memo[1001] = {0};
+int fib(int n) {
+    if (n &lt;= 1) return n;
+    if (memo[n] != 0) return memo[n];  // 直接返回已算结果
+    return memo[n] = fib(n-1) + fib(n-2);
+}</code></pre></div>
+
+<h3>陷阱4：状态定义不清晰</h3>
+<p><strong>错误示例</strong>：打家劫舍中定义 <code class="inline-code">dp[i]</code> 为"前i个"还是"第i个"？混淆会导致转移方程全错。</p>
+<p><strong>正确做法</strong>：<strong>明确下标含义，保持前后一致</strong>。建议统一用"前i个"的语义。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">dp[i]：前 i 个房子（0~i-1）能偷的最大金额
+dp[i] = max(dp[i-1], dp[i-2] + nums[i-1])</code></pre></div>
+
+<h3>陷阱5：遗漏边界条件</h3>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 0/1背包中忘记处理 j &lt; wt[i-1] 的情况
+// 错误：
+if (j &gt;= wt[i-1])
+    dp[i][j] = max(dp[i-1][j], dp[i-1][j-wt[i-1]] + val[i-1]);
+
+// 正确：
+dp[i][j] = dp[i-1][j];  // 先赋值为不选的情况
+if (j &gt;= wt[i-1])
+    dp[i][j] = max(dp[i][j], dp[i-1][j-wt[i-1]] + val[i-1]);</code></pre></div>
+
+<hr />
+
+</section>
+
+
+</section>
+
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card primary">
+<div class="card-title">📊 本讲真题概览</div>
+<p style="margin-bottom:4px">覆盖 2024年3月 ~ 2026年3月 共 9 套真题，含 <strong>19 道选择题</strong> + <strong>5 道判断题</strong>。</p>
+<p style="margin:0;font-size:14px;color:var(--text-tertiary)">提示：点击「显示答案」按钮查看答案及详细解析。</p>
+</div>
+
+<div class="card flat" style="margin:24px 0 8px;text-align:center;border-left:4px solid var(--primary);background:linear-gradient(135deg,var(--primary-light),transparent)">
+<div class="card-title" style="border:none;font-size:15px;color:var(--primary-dark)">📌 知识点一：动态规划</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024年3月第7题）</div>
+<p>以下动态规划算法的含义与目的是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int function(vector&lt;int&gt;&amp; nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0];
+    vector&lt;int&gt; dp(n, 0);
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+    for (int i = 2; i &lt; n; ++i) {
+        dp[i] = max(dp[i - 1], nums[i] + dp[i - 2]);
+    }
+    return dp[n - 1];
+}</code></pre></div>
+<p>A. 计算数组 nums 中的所有元素的和</p>
+<p>B. 计算数组 nums 中相邻元素的最大和</p>
+<p>C. 计算数组 nums 中不相邻元素的最大和</p>
+<p>D. 计算数组 nums 中的最小元素</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024年3月第11题）</div>
+<p>在求解最优化问题时，动态规划常常涉及到两个重要性质，即最优子结构和什么？</p>
+
+<p>A. 重叠子问题</p>
+<p>B. 分治法</p>
+<p>C. 贪心策略</p>
+<p>D. 回溯算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024年6月第11题）</div>
+<p>同 2024年3月第11题，答案也是重叠子问题。</p>
+
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024年6月第12题）</div>
+<p>青蛙每次能跳1或2步，下面代码计算青蛙跳到第n步台阶有多少种不同跳法。下列说法错误的是哪一项？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int jump_recur(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    return jump_recur(n - 1) + jump_recur(n - 2);
+}
+int jump_dp(int n) {
+    vector&lt;int&gt; dp(n + 1);
+    dp[1] = 1; dp[2] = 2;
+    for (int i = 3; i &lt;= n; ++i)
+        dp[i] = dp[i - 1] + dp[i - 2];
+    return dp[n];
+}</code></pre></div>
+<p>A. 函数 jump_recur() 采用递归方式</p>
+<p>B. 函数 jump_dp() 采用动态规划方法</p>
+<p>C. 当n较大时，函数 jump_recur() 存在大量重复计算</p>
+<p>D. 函数 jump_recur() 代码量小，执行效率高</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：递归版本存在大量重叠子问题，执行效率很低，时间复杂度 O(2^n)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024年9月第14题）</div>
+<p>动态规划通常用于解决什么问题？</p>
+
+<p>A. 无法分解的问题</p>
+<p>B. 可以分解成相互依赖的子问题的问题</p>
+<p>C. 可以通过贪心算法解决的问题</p>
+<p>D. 只能通过递归解决的问题</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024年9月第15题）</div>
+<p>0-1背包问题，背包容量是10kg，输入4个物品的重量分别为1，3，4，6，每个物品对应的价值分别为20，30，50，60，函数的输出是什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 0/1背包问题
+int knapsack(int W, const vector<int>& weights, const vector<int>& values, int n) {
+    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
+    for (int i = 1; i <= n; ++i) {
+        for (int w = 0; w <= W; ++w) {
+            if (weights[i - 1] <= w) {
+                dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] +values[i - 1]);
+            }
+            else{
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    return dp[n][W];
+}
+</code></pre></div>
+<p>A. 90</p>
+<p>B. 100</p>
+<p>C. 110</p>
+<p>D. 140</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024年12月第14题）</div>
+<p>以下关于动态规划的描述，哪一项是正确的？</p>
+
+<p>A. 动态规划适用于没有重叠子问题的优化问题</p>
+<p>B. 动态规划要求问题具有最优子结构和无后效性</p>
+<p>C. 动态规划通常通过递归来实现</p>
+<p>D. 动态规划与贪心算法不同，贪心算法不适用于有重叠子问题的问题</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2024年12月第15题）</div>
+<p>0/1背包问题中，背包的最大价值是多少？</p>
+
+<p>A. 70</p>
+<p>B. 90</p>
+<p>C. 100</p>
+<p>D. 120</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025年3月第7题）</div>
+<p>关于动态规划的描述，正确的是哪一项？</p>
+
+<p>A. 动态规划算法的时间复杂度总是低于贪心算法</p>
+<p>B. 动态规划要求问题必须具有最优子结构和重叠子问题两个性质</p>
+<p>C. 动态规划通过递归实现时不需要存储中间结果</p>
+<p>D. 动态规划的核心思想是将问题分解为互不重叠的子问题</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2025年3月第13题）</div>
+<p>以下代码实现了0/1背包问题，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int knapsack(int W, vector&lt;int&gt;&amp; weights, vector&lt;int&gt;&amp; values) {
+    int n = weights.size();
+    vector&lt;vector&lt;int&gt;&gt; dp(n + 1, vector&lt;int&gt;(W + 1, 0));
+    for (int i = 1; i &lt;= n; i++) {
+        for (int j = 1; j &lt;= W; j++) {
+            if (weights[i-1] &gt; j) {
+                dp[i][j] = dp[i-1][j];
+            } else {
+                dp[i][j] = max(_________________________);
+            }
+        }
+    }
+    return dp[n][W];
+}</code></pre></div>
+<p>A. dp[i-1][j], values[i-1]</p>
+<p>B. dp[i-1][j], dp[i-1][j - weights[i-1]] + values[i-1]</p>
+<p>C. dp[i][j-1], values[i-1]</p>
+<p>D. dp[i-1][j - weights[i-1]] + values[i-1], dp[i][j-1]</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2025年6月第14题）</div>
+<p>以下关于动态规划算法特性的描述，正确的是哪一项？</p>
+
+<p>A. 子问题相互独立，不重叠</p>
+<p>B. 问题包含重叠子问题和最优子结构</p>
+<p>C. 只能从底至顶迭代求解</p>
+<p>D. 必须使用递归实现，不能使用迭代</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2025年6月第15题）</div>
+<p>关于 0/1 背包一维 DP 代码，说法正确的是哪一项？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int knapsack1D(int W, vector&lt;int&gt;&amp; wt, vector&lt;int&gt;&amp; val, int n) {
+    vector&lt;int&gt; dp(W+1, 0);
+    for (int i = 0; i &lt; n; ++i) {
+        for (int w = W; w &gt;= wt[i]; --w) {
+            dp[w] = max(dp[w], dp[w - wt[i]] + val[i]);
+        }
+    }
+    return dp[W];
+}</code></pre></div>
+<p>A. 该算法不能处理背包容量为 0 的情况</p>
+<p>B. 外层循环 i 遍历背包容量，内层遍历物品</p>
+<p>C. 从大到小遍历 w 是为了避免重复使用同一物品</p>
+<p>D. 这段代码计算的是最小重量而非最大价值</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2025年9月第15题）</div>
+<p>0/1 背包一维 DP，横线上应填写什么？</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">for (int w = W; w &gt;= wt[i]; --w) {
+    ________________________
+}</code></pre></div>
+<p>A. dp[w] = max(dp[w], dp[w] + val[i]);</p>
+<p>B. dp[w] = dp[w - wt[i]] + val[i];</p>
+<p>C. dp[w] = max(dp[w - 1], dp[w - wt[i]] + val[i]);</p>
+<p>D. dp[w] = max(dp[w], dp[w - wt[i]] + val[i]);</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 14（2025年12月第14题）</div>
+<p>0/1 背包一维 DP，内层必须从大到小的原因是什么？</p>
+
+<p>A. 内层 j 必须从小到大，否则会漏解</p>
+<p>B. 内层 j 必须从大到小，否则同一件物品会被用多次</p>
+<p>C. j 从大到小或从小到大都一样</p>
+<p>D. 只要 dp 初始为 0，方向无所谓</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 15（2025年12月第15题）</div>
+<p>以下关于动态规划的说法中，错误的是哪一项？</p>
+
+<p>A. 动态规划方法通常能够列出递推公式</p>
+<p>B. 动态规划方法的时间复杂度通常为状态的个数</p>
+<p>C. 动态规划方法有递推和递归两种实现形式</p>
+<p>D. 对很多问题，递推实现和递归实现动态规划方法的时间复杂度相当</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>解析：解析：递推实现通常时间复杂度更优（没有函数调用开销），而递归实现如果不用记忆化搜索，时间复杂度可能指数级增长。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 16（2026年3月第14题）</div>
+<p>小朋友们去邻里拜年，不能连续进入两个相邻的房子。补全代码。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int visit(vector&lt;int&gt;&amp; nums) {
+    // ...
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+    for (int i = 2; i &lt; size; i++) {
+        dp[i] = ______;
+    }
+    return dp[size - 1];
+}</code></pre></div>
+<p>A. dp[i] = dp[i - 1] + nums[i];</p>
+<p>B. dp[i] = max(dp[i - 1], dp[i - 2] * nums[i]);</p>
+<p>C. dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]);</p>
+<p>D. dp[i] = dp[i - 2] + nums[i];</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 17（2026年3月第15题）</div>
+<p>元宵节小朋友沿石板路前进，每次可向前走1块或2块石板。dp[i] = dp[i-1] + dp[i-2]，dp[i] 的含义最合适的是哪一项？</p>
+
+<p>A. 走到第 i 块石板的不同走法数量</p>
+<p>B. 走到第 i 块石板时，已经走过的石板总数</p>
+<p>C. 从第 i 块石板走回起点的最少步数</p>
+<p>D. 从第 i 块石板走回起点的最大步数</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 18（2025年3月第7题—判断）</div>
+<p>在动态规划解决一维硬币找零问题时，若硬币面额为 [1, 3, 4]，目标金额为 6，则最少需要 2 枚硬币（3+3）。</p>
+
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第9题）</div>
+<p>状态转移方程是动态规划的核心，可以通过递推方式表示问题状态的变化。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2024年9月第10题）</div>
+<p>应用动态规划算法时，识别并存储重叠子问题的解是必须的。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2025年6月第10题）</div>
+<p>下面代码采用动态规划求解零钱兑换问题：给定硬币面值，每种硬币可重复选取，求凑出目标金额的最少硬币数（ ）。</p>
+<div class="code-block"><span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int visit(vector&lt;int&gt;&amp; nums) {
+int coinChangeDPComp(vector<int> &coins, int amt) {
+    int n = coins.size();
+    int MAX = amt + 1;
+    vector<int> dp(amt + 1, MAX);
+    dp[0] = 0;
+    for (int i = 1; i <= n; i++) {
+        for (int a = 1; a <= amt; a++) {
+            if (coins[i - 1] > a)
+                dp[a] = dp[a];
+            else
+                dp[a] = min(dp[a], dp[a - coins[i - 1]] + 1);
+        }
+    }   
+    return dp[amt] != MAX ? dp[amt] : -1;
+}</code></pre></div>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2026年3月第9题）</div>
+<p>0-1背包一维 DP 内层循环改成正序遍历，仍能得到正确答案。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌</strong><br>解析：解析：正序遍历会导致同一个物品被选多次，不符合 0-1 背包的要求。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题（2026年3月第10题）</div>
+<p>状态空间相同且没有重复计算的情况下，"状态转移方程+递推"与"递归+记忆化搜索"的时间复杂度通常相同。</p>
+
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div>
+</div>
+
+</section>
+
+
+<section id="cheatsheet"><hr class="divider">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="table-wrapper"><table>
+<thead><tr><th>知识点</th><th>状态定义</th><th>转移方程</th><th>常考形式</th></tr></thead>
+<tbody>
+<tr><td>打家劫舍</td><td>dp[i] = 前 i 间最大金额</td><td>dp[i] = max(dp[i-1], dp[i-2]+nums[i])</td><td>代码含义/填空</td></tr>
+<tr><td>0/1 背包（二维）</td><td>dp[i][j] = 前 i 件不超 j 的最大价值</td><td>dp[i][j] = max(dp[i-1][j], dp[i-1][j-w[i]]+v[i])</td><td>状态定义/结果</td></tr>
+<tr><td>0/1 背包（一维）</td><td>dp[j] = 容量 j 的最大价值</td><td>dp[j] = max(dp[j], dp[j-w[i]]+v[i]) 逆序</td><td>内层方向/代码填空</td></tr>
+<tr><td>青蛙跳台阶</td><td>dp[i] = 到第 i 级的跳法数</td><td>dp[i] = dp[i-1] + dp[i-2]</td><td>代码填空/含义</td></tr>
+<tr><td>完全平方数</td><td>dp[i] = i 最少平方数个数</td><td>dp[i] = min(dp[i], dp[i-j*j]+1)</td><td>代码填空</td></tr>
+<tr><td>零钱兑换</td><td>dp[a] = 金额 a 最少硬币数</td><td>dp[a] = min(dp[a], dp[a-coin]+1) 正序</td><td>代码填空</td></tr>
+</tbody></table></div>
+<hr class="divider dashed" style="margin-top:40px">
+<p style="text-align:center;color:var(--text-tertiary);font-size:14px">下一讲预告：多维数组与矩阵</p>
+</section>
+</div></main>
+<button class="back-to-top" id="backToTop">↑</button>
+<script>
+const navLinks=document.querySelectorAll('.nav-link');const secs=[];
+navLinks.forEach(l=>{const h=l.getAttribute('href');if(h&&h.startsWith('#')){const e=document.getElementById(h.slice(1));if(e)secs.push({el:e,link:l})}});
+function updateActive(){const sy=window.scrollY+80;let cur=secs[0];for(const s of secs){if(s.el.offsetTop<=sy)cur=s}for(const s of secs)s.link.classList.remove('active');if(cur)cur.link.classList.add('active')}
+window.addEventListener('scroll',updateActive);window.addEventListener('load',updateActive);
+const b=document.getElementById('backToTop');window.addEventListener('scroll',()=>b.classList.toggle('visible',window.scrollY>500));b.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+const mt=document.getElementById('menuToggle'),sb=document.getElementById('sidebar');mt.addEventListener('click',()=>{sb.classList.toggle('open');mt.textContent=sb.classList.contains('open')?'✕':'☰'});navLinks.forEach(l=>{l.addEventListener('click',()=>{if(window.innerWidth<=900){sb.classList.remove('open');mt.textContent='☰'}})});
+function toggleAnswer(b){const c=b.nextElementSibling;const o=c.classList.contains('open');if(o){c.classList.remove('open');b.classList.remove('open');b.innerHTML='<span class=\"arrow\">▶</span> 显示答案'}else{c.classList.add('open');b.classList.add('open');b.innerHTML='<span class=\"arrow\">▶</span> 隐藏答案'}}
+
+// Card Color Cycling
+document.addEventListener('DOMContentLoaded',function(){const colors=['purple','pink','teal','indigo','orange'];const cards=document.querySelectorAll('#step6>.card.success');cards.forEach((card,i)=>{card.classList.remove('success');card.classList.add(colors[i%colors.length])})});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('pre code').forEach(function(block) {
+        hljs.highlightElement(block);
+    });
+});
+</script>
+
+</div></main>
+</body></html>

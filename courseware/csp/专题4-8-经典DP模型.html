@@ -1,0 +1,1050 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>CSP-J 初赛 · 4.8 经典 DP 模型</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}:root{--bg:#f5f7fa;--surface:#fff;--surface-alt:#f0f2f5;--surface-card:#f8f9fb;--text:#1a1d28;--text-sec:#4a5070;--text-ter:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--success-dark:#059669;--danger:#ef4444;--danger-light:#fef2f2;--purple:#8b5cf6;--purple-light:#f5f3ff;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--sidebar-w:240px}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.85;display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-w);height:100vh;background:var(--surface);border-right:1px solid var(--border);padding:24px 0;overflow-y:auto;z-index:100;display:flex;flex-direction:column}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.sidebar-logo{padding:0 20px 18px;border-bottom:1px solid var(--border);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sidebar-logo .icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--purple));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;color:#fff}
+.sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3}.sidebar-logo .sub{font-size:.66rem;color:var(--text-ter)}
+.nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px}
+.nav-link{display:block;padding:6px 20px 6px 28px;font-size:.8rem;color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500}
+.nav-link.sub{padding-left:40px;font-size:.76rem}
+.main-content{margin-left:var(--sidebar-w);flex:1;min-width:0}.content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px}
+.page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light)}
+.breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px}.breadcrumb a{color:var(--primary);text-decoration:none}
+.page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px}
+.meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface)}
+.meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2}
+.meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff}
+.objectives{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:6px}
+.objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px}
+h2.section-title{font-size:1.25rem;font-weight:700;color:var(--text);margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+h2.section-title .num{font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+h3.kp-title{font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px}
+h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0}
+.kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9}
+.kp-text strong{color:var(--text);font-weight:600}.kp-text .hl{color:var(--primary-dark);font-weight:600}
+.kp-text .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.8rem;color:var(--primary-dark)}
+.card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface)}
+.card.accent{border-color:#fde68a;background:var(--accent-light)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{border-color:#bfdbfe;background:var(--primary-light)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{border-color:#a7f3d0;background:var(--success-light)}.card.success .card-title{color:var(--success-dark)}
+.card.danger{border-color:#fecaca;background:var(--danger-light)}.card.danger .card-title{color:var(--danger)}
+.card.purple{border-color:#ddd6fe;background:var(--purple-light)}.card.purple .card-title{color:var(--purple)}
+.card-title{font-size:.82rem;font-weight:600;margin-bottom:5px}.card p,.card .kp-text{font-size:.85rem;margin:0}
+.quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7}
+.code-block{background:#1e293b;color:#e2e8f0;padding:14px 18px;border-radius:8px;font-family:var(--font-mono);font-size:.82rem;line-height:1.7;overflow-x:auto;margin:12px 0;white-space:pre}
+.code-block .kw{color:#a78bfa}.code-block .cm{color:#64748b}.code-block .num{color:#fbbf24}.code-block .blue{color:#60a5fa}.code-block .re{color:#f87171}.code-block .str{color:#34d399}
+.table-wrapper{overflow-x:auto;margin:12px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface)}
+.table-wrapper table{width:100%;border-collapse:collapse;font-size:.83rem}
+.table-wrapper th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem}
+.table-wrapper td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem}
+.table-wrapper tr:last-child td{border-bottom:none}.table-wrapper tbody tr:hover td{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem}
+.exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02)}
+.exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap}
+.exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500}
+.exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+.exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669}
+.exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7}
+.exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0}
+.exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0}
+.exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px}
+.show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none}
+.show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd}
+.answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px}
+.answer-box.show{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark)}
+.answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7}
+.answer-box .explain .c{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark)}
+.answer-box .explain .b{display:inline-block;padding:0 6px;background:var(--danger-light);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:#dc2626;font-weight:600}
+.step-box{background:var(--surface);border:1px solid var(--border-light);border-radius:8px;padding:12px 16px;margin:10px 0}
+.step-box .step{font-size:.82rem;color:var(--text-sec);padding:3px 0;line-height:1.7}
+.step-box .step .sn{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:var(--primary);color:#fff;font-size:.7rem;font-weight:600;margin-right:6px;flex-shrink:0}
+ul.dot-list{list-style:none;padding:0;margin:8px 0 12px}
+ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7}
+ul.dot-list li::before{content:'\2022';position:absolute;left:2px;color:var(--primary);font-weight:bold}
+ul.dot-list li strong{color:var(--text)}
+.bs-viz{font-family:var(--font-mono);font-size:.72rem;line-height:1.6;padding:10px 14px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto}
+.bs-viz .hl{color:var(--primary-dark);font-weight:600}
+.bs-viz .red{color:#ef4444;font-weight:600}
+.bs-viz .green{color:#059669;font-weight:600}
+.bs-viz .purple{color:#8b5cf6;font-weight:600}
+.bs-viz .dim{color:var(--text-ter)}
+.bs-viz .lb{color:#2563eb;font-weight:600}
+.bs-viz .rb{color:#dc2626;font-weight:600}
+.bs-viz .mb{color:#8b5cf6;font-weight:600}
+.summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-box table{font-size:.82rem;margin:10px 0;width:100%;border-collapse:collapse}
+.summary-box table th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:.78rem}
+.summary-box table td{padding:7px 12px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.8rem}
+.summary-box table td:first-child{font-family:var(--font-mono);color:var(--primary-dark);font-weight:500}
+.summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark)}
+.summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark)}
+.summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark)}
+.summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:#dc2626}
+.summary-box .pill.purple{background:var(--purple-light);border-color:#ddd6fe;color:var(--purple)}
+.summary-box .pill.blue{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+hr.divider{border:none;height:1px;background:var(--border);margin:28px 0}
+hr.divider.dashed{border:none;border-top:1px dashed var(--border);margin:28px 0}
+.back-top{position:fixed;bottom:28px;right:28px;width:38px;height:38px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-ter);font-size:1.1rem;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.back-top.visible{display:flex}.back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff}
+.hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99}
+.dp-viz{font-family:var(--font-mono);font-size:.75rem;line-height:1.5;padding:12px 16px;background:var(--surface-alt);border-radius:6px;margin:10px 0;white-space:pre;overflow-x:auto}
+.dp-viz .hl{color:var(--primary-dark);font-weight:600}
+.dp-viz .red{color:#ef4444;font-weight:600}
+.dp-viz .green{color:var(--success-dark);font-weight:600}
+.dp-viz .dim{color:var(--text-ter)}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);transition:transform .3s ease}.sidebar.open{transform:translateX(0)}.main-content{margin-left:0}.content-wrapper{padding:40px 18px 60px}.hamburger{display:flex}.exam-options{grid-template-columns:1fr}.page-header h1{font-size:1.4rem}.objectives .grid{grid-template-columns:1fr}.overlay.show{display:block}}
+</style></head><body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button><div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ==================== 侧边栏 ==================== -->
+<nav class="sidebar" id="sidebar">
+<div class="sidebar-logo"><div class="icon">🎯</div><div><div class="title">CSP-J 初赛集训</div><div class="sub">专题四 · 算法基础</div></div></div>
+<div class="nav-section">开篇</div>
+<a class="nav-link active" href="#obj">🎯 学习目标</a>
+
+<div class="nav-section">1 · LCS 最长公共子序列</div>
+<a class="nav-link" href="#s1">二维 DP · 表格模拟</a>
+<a class="nav-link sub" href="#s1a">LCS → LIS 转化</a>
+
+<div class="nav-section">2 · 杨辉三角形 DP</div>
+<a class="nav-link" href="#s2">2025 完善 1 原题精讲</a>
+
+<div class="nav-section">3 · 双指针 DP</div>
+<a class="nav-link" href="#s3">排序去重 + ans[i]=ans[j]+1</a>
+
+<div class="nav-section">4 · 识别 DP 代码</div>
+<a class="nav-link" href="#s4">阅读程序中的 DP 特征</a>
+
+<div class="nav-section">5 · 真题演练</div>
+<a class="nav-link" href="#s6">📝 8 道真题精练</a>
+
+<div class="nav-section">收尾</div>
+<a class="nav-link" href="#summary">📌 小结速查</a>
+</nav>
+
+<!-- ==================== 主内容 ==================== -->
+<main class="main-content">
+<div class="content-wrapper">
+
+  <!-- ===== 页头 ===== -->
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题四 · 算法基础</a> / 4.8</div>
+    <h1>经典 DP 模型专题</h1>
+    <p class="subtitle">LCS 最长公共子序列 · LCS→LIS 转化 · 杨辉三角形 · 双指针 DP · 阅读程序识别技巧</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 2 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 2025 真题 3 道</span>
+      <span class="meta-tag" style="border-color:#a7f3d0;color:#059669;background:#ecfdf5;">✏️ 模拟题 5 道</span>
+    </div>
+  </div>
+
+  <!-- ===== 学习目标 ===== -->
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ LCS 最长公共子序列的二维 DP 表格模拟</span>
+      <span class="item">✅ 当 a 严格递增时 LCS → LIS 的转化技巧</span>
+      <span class="item">✅ 杨辉三角形的二维 DP 本质（2025 完善 1）</span>
+      <span class="item">✅ 排序去重 + 双指针分段 DP 模型</span>
+      <span class="item">✅ 阅读程序中快速识别 DP 代码的方法</span>
+      <span class="item">✅ 8 道基于 2025 真题的实战训练</span>
+    </div>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、LCS 最长公共子序列 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s1"><span class="num">1</span>最长公共子序列 LCS（2025 阅读 3 原题）</h2>
+
+  <p class="kp-text">
+    <strong>最长公共子序列（LCS, Longest Common Subsequence）</strong>是字符串 DP 中最经典的模型之一。
+    <strong>2025 年 CSP-J 阅读程序第 3 题</strong>正是考查了 LCS 的 DP 实现及其向 LIS 的转化。
+  </p>
+
+  <h3 class="kp-title">问题定义</h3>
+  <p class="kp-text">
+    给定两个字符串（或序列）<span class="c">A[1..n]</span> 和 <span class="c">B[1..m]</span>，求它们的最长公共子序列的长度。<br>
+    <strong>子序列</strong>是指从原序列中删除若干个元素（可以不连续）后得到的新序列。<br>
+    例如 <span class="c">A = "abcde"</span>, <span class="c">B = "ace"</span>，则 LCS 为 <span class="c">"ace"</span>，长度为 3。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">LCS 的 DP 解法核心代码</div>
+    <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// dp[i][j] 表示 A[1..i] 与 B[1..j] 的 LCS 长度</span>
+<span class="kw">int</span> lcs(string A, string B) {
+  <span class="kw">int</span> n = A.length(), m = B.length();
+  <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; dp(n+<span class="num">1</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;(m+<span class="num">1</span>, <span class="num">0</span>));
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= m; j++) {
+      <span class="kw">if</span> (A[i-<span class="num">1</span>] == B[j-<span class="num">1</span>])
+        dp[i][j] = dp[i-<span class="num">1</span>][j-<span class="num">1</span>] + <span class="num">1</span>;  <span class="cm">// 字符相等，LCS 长度 + 1</span>
+      <span class="kw">else</span>
+        dp[i][j] = max(dp[i-<span class="num">1</span>][j], dp[i][j-<span class="num">1</span>]); <span class="cm">// 取较大者</span>
+    }
+  }
+  <span class="kw">return</span> dp[n][m];
+}
+    </div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 LCS 状态转移核心思想</div>
+    <p class="kp-text">
+      <strong>分两种情况讨论：</strong><br>
+      &nbsp;&nbsp;• 若 <span class="c">A[i] == B[j]</span>：说明当前字符可以加入公共子序列，<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;则 <span class="c">dp[i][j] = dp[i-1][j-1] + 1</span><br>
+      &nbsp;&nbsp;• 若 <span class="c">A[i] != B[j]</span>：当前字符无法匹配，<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;则 <span class="c">dp[i][j] = max(dp[i-1][j], dp[i][j-1])</span><br>
+      <strong>边界：</strong><span class="c">dp[0][j] = dp[i][0] = 0</span>（空序列的 LCS 为 0）
+    </p>
+  </div>
+
+  <h3 class="kp-title" id="s1a">手动填表模拟：A = "abcde", B = "ace"</h3>
+  <p class="kp-text">
+    逐步填写 LCS 的 DP 表格，观察填表规律：
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th style="text-align:center;">dp[i][j]</th><th style="text-align:center;font-size:.78rem;">j=0<br>""</th><th style="text-align:center;font-size:.78rem;">j=1<br>"a"</th><th style="text-align:center;font-size:.78rem;">j=2<br>"c"</th><th style="text-align:center;font-size:.78rem;">j=3<br>"e"</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=0 ""</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">0</span></td></tr>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=1 "a"</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono"><strong>1</strong></span> ← 匹配</td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono">1</span></td></tr>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=2 "b"</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono">1</span></td></tr>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=3 "c"</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono"><strong>2</strong></span> ← 匹配</td><td style="text-align:center;"><span class="mono">2</span></td></tr>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=4 "d"</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono">2</span></td><td style="text-align:center;"><span class="mono">2</span></td></tr>
+        <tr><td style="font-weight:600;font-size:.78rem;">i=5 "e"</td><td style="text-align:center;"><span class="mono">0</span></td><td style="text-align:center;"><span class="mono">1</span></td><td style="text-align:center;"><span class="mono">2</span></td><td style="text-align:center;"><span class="mono"><strong>3</strong></span> ← 匹配</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="dp-viz">
+dp 表格（数字表示 LCS 长度）：
+     ""  a   c   e
+""    0   0   0   0
+"a"   0  [1]  1   1
+"b"   0   1   1   1
+"c"   0   1  [2]  2
+"d"   0   1   2   2
+"e"   0   1   2  [3]
+  </div>
+
+  <div class="step-box">
+    <div class="step"><span class="sn">1</span> 初始化：第一行、第一列全为 0</div>
+    <div class="step"><span class="sn">2</span> <span class="c">dp[1][1]</span>：A[1]='a' == B[1]='a'，匹配 → <span class="c">dp[0][0] + 1 = 1</span></div>
+    <div class="step"><span class="sn">3</span> <span class="c">dp[1][2]</span>：'a' ≠ 'c' → <span class="c">max(dp[0][2]=0, dp[1][1]=1) = 1</span></div>
+    <div class="step"><span class="sn">4</span> <span class="c">dp[3][2]</span>：A[3]='c' == B[2]='c'，匹配 → <span class="c">dp[2][1] + 1 = 1 + 1 = 2</span></div>
+    <div class="step"><span class="sn">5</span> <span class="c">dp[5][3]</span>：A[5]='e' == B[3]='e'，匹配 → <span class="c">dp[4][2] + 1 = 2 + 1 = 3</span></div>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">模拟结论</div>
+    <p class="kp-text">
+      <span class="c">dp[5][3] = 3</span>，A="abcde" 与 B="ace" 的 LCS 长度为 <strong>3</strong>。<br>
+      <strong>回溯路径：</strong>dp[5][3]→dp[4][2]→dp[1][1]→dp[0][0]，对应字符为 "e"→"c"→"a"，逆序后得到 LCS = "ace"。
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <h2 class="section-title" id="s1b"><span class="num">⚡</span>LCS → LIS 转化（2025 高难度题）</h2>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 阅读 3 的高难度版本</strong>考查了 LCS 向 LIS（最长上升子序列）的转化。
+    当其中一个序列的<strong>元素互不相同且严格递增</strong>时，LCS 问题可以转化为 LIS 问题，从而将时间复杂度从 <span class="c">O(n²)</span> 优化到 <span class="c">O(n log n)</span>。
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">转化原理</div>
+    <p class="kp-text">
+      <strong>核心思想：</strong>若序列 A 中的元素互不相同且严格递增，我们可以<strong>将 A 中元素的位置作为"映射"</strong>。<br><br>
+      <strong>具体步骤：</strong><br>
+      1. 遍历 B 中每个元素 <span class="c">b</span>，记录 <span class="c">b</span> 在 A 中的出现位置（用 pos 数组或 map 存储）<br>
+      2. 对于 B 中出现在 A 里的元素，按其在 A 中的<strong>位置</strong>组成一个新序列 C<br>
+      3. 对序列 C 求 LIS（最长上升子序列），长度即为原 LCS 的长度<br><br>
+      <strong>为什么可行？</strong>因为 A 严格递增且元素互不相同，A 中元素的位置天然就是递增的。B 中的公共子序列在 A 中的位置也一定是递增的——这就是一个上升子序列！
+    </p>
+  </div>
+
+  <div class="info-box">
+    <strong>📌 初赛考点提示：</strong><br>
+    LCS→LIS 转化是 CSP-J 近年的新趋势。题目通常不会直接告诉你"这是 LIS"，而是给出 LCS 的代码，再给出一个 <span class="c">a</span> 严格递增的输入条件，让你通过手动模拟发现最终 <span class="c">dp[n][m]</span> 的值等价于对另一个序列求 LIS 的长度。
+  </div>
+
+  <h3 class="kp-title">转化图示</h3>
+  <div class="bs-viz">
+A = [1, 2, 3, 4, 5]    (严格递增，元素互不相同)
+B = [3, 1, 5, 2, 4]
+
+Step 1: 建立元素→位置的映射
+  pos[1]=1, pos[2]=2, pos[3]=3, pos[4]=4, pos[5]=5
+
+Step 2: 对 B 中每个元素，映射为 A 中的位置
+  B  →  [3, 1, 5, 2, 4]
+  C  →  [3, 1, 5, 2, 4]   (因为 A[i]=i，所以位置就是值本身)
+
+Step 3: 对 C 求 LIS
+  C = [3, 1, 5, 2, 4]
+  LIS 长度为 2 或 2... 实际上从 C 中找最长上升子序列：
+  可能的 LIS: [3,5], [1,2,4] → 最长长度为 3 ✓
+
+  所以 LCS(A,B) = LIS(C) 的长度 = 3
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、杨辉三角形 DP -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s2"><span class="num">2</span>杨辉三角形 DP（2025 完善 1 原题）</h2>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 完善程序第 1 题</strong>考查了杨辉三角形的 DP 实现。
+    杨辉三角（Pascal's Triangle）是<strong>二维 DP</strong>的经典入门例子，
+    其核心递推关系体现了组合数的计算原理。
+  </p>
+
+  <h3 class="kp-title">杨辉三角形的递推规律</h3>
+  <p class="kp-text">
+    杨辉三角形的构造规则：<br>
+    &nbsp;&nbsp;• 每行的第一个和最后一个数字都是 <strong>1</strong><br>
+    &nbsp;&nbsp;• 其他位置的数字 = 它<strong>正上方</strong>的数 + <strong>左上方</strong>的数<br>
+    &nbsp;&nbsp;• 第 <span class="c">n</span> 行（从 0 开始）有 <span class="c">n+1</span> 个数字
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">杨辉三角形的 DP 代码（2025 完善 1 核心）</div>
+    <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// 求杨辉三角形第 n 行第 k 个数的值（0-indexed）</span>
+<span class="kw">int</span> yangHui(<span class="kw">int</span> n, <span class="kw">int</span> k) {
+  <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; dp(n + <span class="num">1</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;(n + <span class="num">1</span>, <span class="num">0</span>));
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= n; i++) {
+    dp[i][<span class="num">0</span>] = <span class="num">1</span>;  <span class="cm">// 每行第一个为 1</span>
+    dp[i][i] = <span class="num">1</span>;  <span class="cm">// 每行最后一个为 1</span>
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt; i; j++) {
+      dp[i][j] = dp[i-<span class="num">1</span>][j-<span class="num">1</span>] + dp[i-<span class="num">1</span>][j];  <span class="cm">// 左上 + 正上</span>
+    }
+  }
+  <span class="kw">return</span> dp[n][k];
+}
+    </div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 核心理解</div>
+    <p class="kp-text">
+      <strong>状态：</strong><span class="c">dp[i][j]</span> 表示杨辉三角第 i 行第 j 列的数<br>
+      <strong>转移：</strong><span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span><br>
+      <strong>边界：</strong><span class="c">dp[i][0] = dp[i][i] = 1</span>（每行首尾都是 1）<br>
+      <strong>注意：</strong>j 从 1 开始到 i-1，因为首尾已经单独初始化了
+    </p>
+  </div>
+
+  <h3 class="kp-title">手动填表：前 5 行杨辉三角</h3>
+
+  <div class="dp-viz">
+行 0:    [1]
+行 1:   [1] [1]
+行 2:  [1] [2] [1]
+行 3: [1] [3] [3] [1]
+行 4:[1] [4] [6] [4] [1]
+
+逐行填充过程：
+i=0: dp[0][0]=1
+i=1: dp[1][0]=1, dp[1][1]=1
+i=2: dp[2][0]=1, dp[2][2]=1
+     dp[2][1]=dp[1][0]+dp[1][1]=1+1=2
+i=3: dp[3][0]=1, dp[3][3]=1
+     dp[3][1]=dp[2][0]+dp[2][1]=1+2=<span class="hl">3</span>
+     dp[3][2]=dp[2][1]+dp[2][2]=2+1=<span class="hl">3</span>
+i=4: dp[4][0]=1, dp[4][4]=1
+     dp[4][1]=dp[3][0]+dp[3][1]=1+3=<span class="hl">4</span>
+     dp[4][2]=dp[3][1]+dp[3][2]=3+3=<span class="hl">6</span>
+     dp[4][3]=dp[3][2]+dp[3][3]=3+1=<span class="hl">4</span>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">与组合数的关系</div>
+    <p class="kp-text">
+      杨辉三角形第 <span class="c">n</span> 行第 <span class="c">k</span> 列的数就是组合数 <span class="c">C(n, k)</span>。<br>
+      即 <span class="c">dp[n][k] = C(n, k) = n! / (k! * (n-k)!)</span><br>
+      所以通过 DP 可以高效地计算组合数，而不需要乘除法和阶乘！
+    </p>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、双指针 DP 分段 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s3"><span class="num">3</span>双指针 DP 分段模型（2025 阅读 2）</h2>
+
+  <p class="kp-text">
+    <strong>2025 年 CSP-J 阅读程序第 2 题</strong>考查了一种经典的双指针 DP 模型：
+    先将数组排序去重，然后用 <span class="c">ans[i] = ans[j] + 1</span> 的形式进行递推。
+    这种模型常用于求解"最长连续/非连续子序列"类问题。
+  </p>
+
+  <h3 class="kp-title">问题模型</h3>
+  <p class="kp-text">
+    <strong>典型流程：</strong><br>
+    1. 对数组排序 + 去重<br>
+    2. 用两个指针（一个快指针 i，一个慢指针 j）遍历数组<br>
+    3. 当满足条件时，<span class="c">ans[i] = ans[j] + 1</span><br>
+    4. 否则 <span class="c">ans[i] = ans[i-1]</span>（保持当前最优值）
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">2025 阅读 2 核心代码结构</div>
+    <div class="code-block" style="font-size:.78rem;">
+<span class="cm">// 输入：一个无序数组 a，长度为 n</span>
+<span class="kw">int</span> solve(<span class="kw">int</span> a[], <span class="kw">int</span> n) {
+  sort(a, a + n);                       <span class="cm">// 1. 排序</span>
+  <span class="kw">int</span> m = unique(a, a + n) - a;        <span class="cm">// 2. 去重，m 为去重后长度</span>
+  <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; ans(m);
+  ans[<span class="num">0</span>] = <span class="num">1</span>;                           <span class="cm">// 边界</span>
+  <span class="kw">int</span> j = <span class="num">0</span>;                             <span class="cm">// 慢指针</span>
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; m; i++) {
+    <span class="kw">while</span> (a[i] - a[j] &gt; <span class="num">1</span>) j++;        <span class="cm">// 3. 移动 j 使差值 ≤ 1</span>
+    <span class="kw">if</span> (a[i] - a[j] == <span class="num">1</span>)
+      ans[i] = ans[j] + <span class="num">1</span>;             <span class="cm">// 4. 可以接在后面</span>
+    <span class="kw">else</span>  <span class="cm">// a[i] == a[j]</span>
+      ans[i] = ans[j];                  <span class="cm">// 5. 相同值，传递</span>
+  }
+  <span class="kw">return</span> *max_element(ans.begin(), ans.end());  <span class="cm">// 6. 取最大值</span>
+}
+    </div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 代码功能分析</div>
+    <p class="kp-text">
+      <strong>该算法的作用：</strong>求排序去重后数组中<strong>最长连续整数序列</strong>的长度。<br><br>
+      <strong>具体来说：</strong><br>
+      &nbsp;&nbsp;• 排序去重后，相邻元素要么相等，要么相差 1 或更多<br>
+      &nbsp;&nbsp;• <span class="c">ans[i]</span> 表示以第 i 个元素结尾的最长连续序列长度<br>
+      &nbsp;&nbsp;• 当 <span class="c">a[i] - a[j] == 1</span> 时，可将 a[i] 接在 a[j] 后面 → <span class="c">ans[i] = ans[j] + 1</span><br>
+      &nbsp;&nbsp;• 最终答案为所有 <span class="c">ans[i]</span> 的最大值<br><br>
+      <strong>典型应用：</strong>求无序数组中最长连续序列的长度（LeetCode 128）
+    </p>
+  </div>
+
+  <h3 class="kp-title">手动模拟：a = [100, 4, 200, 1, 3, 2]</h3>
+
+  <div class="step-box">
+    <div class="step"><span class="sn">1</span> 排序后：<span class="c">[1, 2, 3, 4, 100, 200]</span></div>
+    <div class="step"><span class="sn">2</span> 去重（没有重复元素）：<span class="c">m = 6</span></div>
+    <div class="step"><span class="sn">3</span> <span class="c">ans[0] = 1</span>（边界）</div>
+    <div class="step"><span class="sn">4</span> <span class="c">i=1, a[1]=2</span>：j=0，a[1]-a[0]=1 == 1 → <span class="c">ans[1]=ans[0]+1=2</span></div>
+    <div class="step"><span class="sn">5</span> <span class="c">i=2, a[2]=3</span>：j=0，a[2]-a[0]=2 > 1 → j++=1；a[2]-a[1]=1 == 1 → <span class="c">ans[2]=ans[1]+1=3</span></div>
+    <div class="step"><span class="sn">6</span> <span class="c">i=3, a[3]=4</span>：j=1，a[3]-a[1]=3 > 1 → j++=2；a[3]-a[2]=1 == 1 → <span class="c">ans[3]=ans[2]+1=4</span></div>
+    <div class="step"><span class="sn">7</span> <span class="c">i=4, a[4]=100</span>：j=2，a[4]-a[2]=97 > 1 → j++=3；a[4]-a[3]=96 > 1 → j++=4；a[4]-a[4]=0 == 0 → <span class="c">ans[4]=ans[4]=1</span></div>
+    <div class="step"><span class="sn">8</span> <span class="c">i=5, a[5]=200</span>：j=4，a[5]-a[4]=100 > 1 → j++=5；a[5]-a[5]=0 == 0 → <span class="c">ans[5]=ans[5]=1</span></div>
+  </div>
+
+  <div class="dp-viz">
+ans 数组最终值：
+i:     0   1   2   3   4   5
+a:    [1] [2] [3] [4] [100] [200]
+ans:  [1] [2] [3] [4] [1]   [1]
+
+最长连续序列长度 = max(ans) = 4
+最长连续序列为: 1→2→3→4
+  </div>
+
+  <div class="info-box">
+    <strong>📌 关键考点：</strong>双指针 DP 的核心是<strong>快指针 i 遍历，慢指针 j 维护"候选区间"</strong>。<br>
+    在初赛中，你需要理解 <span class="c">while (a[i] - a[j] > 1) j++;</span> 这句话的作用——它确保 j 永远指向距离 i 最近且差值不超过 1 的位置。
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 四、阅读程序中如何识别 DP 代码 -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s4"><span class="num">4</span>阅读程序：如何识别 DP 代码</h2>
+
+  <p class="kp-text">
+    CSP-J 初赛的<strong>阅读程序</strong>题中，DP 是高频考点。掌握以下特征，可以快速识别 DP 代码并理解其功能：
+  </p>
+
+  <div class="card primary">
+    <div class="card-title">DP 代码的 5 大识别特征</div>
+    <p class="kp-text">
+      <strong>1. DP 数组声明</strong><br>
+      &nbsp;&nbsp;• 一维：<span class="c">vector&lt;int&gt; dp(n)</span> 或 <span class="c">int dp[N]</span><br>
+      &nbsp;&nbsp;• 二维：<span class="c">vector&lt;vector&lt;int&gt;&gt; dp(n, vector&lt;int&gt;(m))</span><br><br>
+      <strong>2. 边界初始化</strong><br>
+      &nbsp;&nbsp;• 一维：<span class="c">dp[0] = 0 / 1</span> 等<br>
+      &nbsp;&nbsp;• 二维：<span class="c">dp[0][j] = j</span> 或 <span class="c">dp[i][0] = i</span> 等<br><br>
+      <strong>3. 嵌套循环</strong><br>
+      &nbsp;&nbsp;• 一维 DP：一个 <span class="c">for</span> 循环，<span class="c">i</span> 从 1 或 2 开始<br>
+      &nbsp;&nbsp;• 二维 DP：两个嵌套 <span class="c">for</span> 循环<br><br>
+      <strong>4. 递推赋值</strong><br>
+      &nbsp;&nbsp;• <span class="c">dp[i] = min/max(dp[i-1], ...) + cost[i]</span><br>
+      &nbsp;&nbsp;• <span class="c">dp[i][j] = max(dp[i-1][j], dp[i][j-1])</span><br><br>
+      <strong>5. 返回 dp[n] 或 dp[n][m]</strong><br>
+      &nbsp;&nbsp;• 最终答案通常在数组的最后一个位置
+    </p>
+  </div>
+
+  <h3 class="kp-title">2025 年阅读程序 DP 题分布</h3>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>题目</th><th>DP 模型</th><th>数组维度</th><th>核心递推</th><th>识别线索</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>2025 阅读 2</td><td>双指针分段 DP</td><td>一维 ans</td><td><span class="c">ans[i]=ans[j]+1</span></td><td>排序+去重+双指针</td></tr>
+        <tr><td>2025 阅读 3</td><td>LCS 经典 DP</td><td>二维 dp</td><td><span class="c">dp[i][j]=dp[i-1][j-1]+1</span></td><td>双层循环+A[i]==B[j]</td></tr>
+        <tr><td>2025 完善 1</td><td>杨辉三角形</td><td>二维 dp</td><td><span class="c">dp[i][j]=dp[i-1][j-1]+dp[i-1][j]</span></td><td>首尾为 1，递推求和</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">🧠 阅读程序实战技巧</div>
+    <p class="kp-text">
+      <strong>遇到疑似 DP 的代码，按以下步骤解题：</strong><br>
+      1. 找到 <span class="c">dp</span> 数组，确定其维度（一维/二维）<br>
+      2. 查看<strong>边界值</strong>初始化（通常在循环前）<br>
+      3. 找到<strong>核心递推语句</strong>，理解它的含义<br>
+      4. 如果有双指针，关注指针的移动条件<br>
+      5. <strong>用小规模数据手动模拟</strong>数组填充过程<br>
+      6. 最终确定 <span class="c">dp</span> 数组中哪个位置存放了答案
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 五、真题演练（共 8 题） -->
+  <!-- ================================================================== -->
+
+  <h2 class="section-title" id="s6"><span class="num">📝</span>真题精练（共 8 题，基于 2025 真题）</h2>
+
+  <p class="kp-text">
+    以下 8 道题目全部基于 <strong>2025 年 CSP-J 初赛真题</strong>改编，涵盖 LCS、杨辉三角形、双指针 DP、DP 识别四大考点。
+    每道题均含详细解析和表格模拟过程。
+  </p>
+
+  <!-- ============================== -->
+  <!-- 题 1：LCS 基础 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读 3</span>
+      <span>LCS 最长公共子序列（基础）</span>
+    </div>
+    <div class="exam-q">
+      给定以下 LCS 代码，输入 <span class="c">A = "abcde"</span>，<span class="c">B = "acdef"</span>，输出是（  ）。<br><br>
+      <div class="code-block" style="font-size:.76rem;">
+<span class="kw">int</span> lcs(string A, string B) {
+  <span class="kw">int</span> n = A.length(), m = B.length();
+  <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; dp(n+<span class="num">1</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;(m+<span class="num">1</span>));
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt;= n; i++)
+    <span class="kw">for</span> (<span class="kw">int</span> j = <span class="num">1</span>; j &lt;= m; j++)
+      <span class="kw">if</span> (A[i-<span class="num">1</span>] == B[j-<span class="num">1</span>])
+        dp[i][j] = dp[i-<span class="num">1</span>][j-<span class="num">1</span>] + <span class="num">1</span>;
+      <span class="kw">else</span>
+        dp[i][j] = max(dp[i-<span class="num">1</span>][j], dp[i][j-<span class="num">1</span>]);
+  <span class="kw">return</span> dp[n][m];
+}
+      </div>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 2</div>
+      <div class="opt"><span class="letter">B</span> 3</div>
+      <div class="opt"><span class="letter">C</span> 4</div>
+      <div class="opt"><span class="letter">D</span> 5</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q1')">👁 显示答案</button>
+    <div class="answer-box" id="q1">
+      <div class="ans">✅ 正确答案：C · 4</div>
+      <div class="explain">
+        <strong>手动填表模拟：</strong><br><br>
+        <div class="table-wrapper" style="margin:6px 0;">
+        <table style="font-size:.72rem;">
+          <tr><th>dp</th><th style="text-align:center;">""</th><th style="text-align:center;">a</th><th style="text-align:center;">c</th><th style="text-align:center;">d</th><th style="text-align:center;">e</th><th style="text-align:center;">f</th></tr>
+          <tr><td>""</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td></tr>
+          <tr><td>a</td><td style="text-align:center;">0</td><td style="text-align:center;"><strong>1</strong></td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td></tr>
+          <tr><td>b</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td></tr>
+          <tr><td>c</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;"><strong>2</strong></td><td style="text-align:center;">2</td><td style="text-align:center;">2</td><td style="text-align:center;">2</td></tr>
+          <tr><td>d</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;">2</td><td style="text-align:center;"><strong>3</strong></td><td style="text-align:center;">3</td><td style="text-align:center;">3</td></tr>
+          <tr><td>e</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;">2</td><td style="text-align:center;">3</td><td style="text-align:center;"><strong>4</strong></td><td style="text-align:center;">4</td></tr>
+        </table>
+        </div>
+        <strong>回溯路径：</strong><br>
+        dp[5][5] = 4，匹配字符 'e'（A[4]=e, B[4]=e）→<br>
+        dp[4][4] = 3，匹配字符 'd'（A[3]=d, B[3]=d）→<br>
+        dp[3][3] = 2，匹配字符 'c'（A[2]=c, B[2]=c）→<br>
+        dp[1][1] = 1，匹配字符 'a'（A[0]=a, B[0]=a）<br><br>
+        <strong>LCS = "acde"，长度 = <span class="b">4</span>，选 C。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 2：LCS→LIS 转化 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读 3</span>
+      <span>LCS → LIS 转化（高难度）</span>
+    </div>
+    <div class="exam-q">
+      已知 <span class="c">A = [2, 5, 3, 1, 4]</span>（<strong>非严格递增</strong>），<br>
+      用 LCS 代码求 <span class="c">A</span> 与排序后的 <span class="c">A_sorted = [1, 2, 3, 4, 5]</span> 的 LCS。<br>
+      现在如果将条件改为 <strong>A 严格递增</strong>（如 <span class="c">A = [1, 2, 3, 4, 5]</span>），<br>
+      则 LCS(A, A_sorted) 的返回值是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1</div>
+      <div class="opt"><span class="letter">B</span> 3</div>
+      <div class="opt"><span class="letter">C</span> 5</div>
+      <div class="opt"><span class="letter">D</span> 取决于 A 的具体元素</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q2')">👁 显示答案</button>
+    <div class="answer-box" id="q2">
+      <div class="ans">✅ 正确答案：C · 5</div>
+      <div class="explain">
+        <strong>关键理解：LCS → LIS 转化原理</strong><br><br>
+        当 <span class="c">A</span> 严格递增且元素互不重复时（如 [1,2,3,4,5]），已经是从小到大排好序的了。<br>
+        此时 <span class="c">A</span> 与 <span class="c">A_sorted</span> 完全相同，所以 LCS 就是 A 本身，长度为 5。<br><br>
+        <strong>更一般的情况：</strong><br>
+        对于任意严格递增的 A，假设 <span class="c">A = [a1, a2, ..., an]</span> 且 a1 &lt; a2 &lt; ... &lt; an。<br>
+        对 A 排序得到 <span class="c">A_sorted = [a1, a2, ..., an]</span>（就是 A 本身）。<br>
+        因此 LCS(A, A_sorted) = n，即 A 的长度。<br><br>
+        <strong>转化的真正应用场景：</strong><br>
+        当 A 严格递增时，LCS(A, B) 可以转化为求 B 中元素的<strong>位置序列</strong>的 LIS。<br>
+        具体地，若 A 严格递增，设 <span class="c">pos[x]</span> 为 x 在 A 中的位置，<br>
+        则 LCS(A,B) = <strong>LIS( [pos[B[0]], pos[B[1]], ..., pos[B[m-1]]] )</strong><br><br>
+        <strong>本题选 C：当 A 严格递增时，LCS(A, sorted(A)) = A 的长度 = 5。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 3：杨辉三角形 DP -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 完善 1</span>
+      <span>杨辉三角形 DP 填表</span>
+    </div>
+    <div class="exam-q">
+      完善下列杨辉三角形 DP 代码的空白处：<br><br>
+      <div class="code-block" style="font-size:.76rem;">
+<span class="kw">int</span> yangHui(<span class="kw">int</span> n, <span class="kw">int</span> k) {
+  <span class="kw">vector</span>&lt;<span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;&gt; dp(n + <span class="num">1</span>, <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt;(n + <span class="num">1</span>));
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt;= n; i++) {
+    dp[i][<span class="num">0</span>] = _____①_____;
+    dp[i][i] = _____②_____;
+    <span class="kw">for</span> (<span class="kw">int</span> j = _____③_____; j &lt; i; j++)
+      dp[i][j] = dp[i-<span class="num">1</span>][j-<span class="num">1</span>] + _____④_____;
+  }
+  <span class="kw">return</span> dp[n][k];
+}
+      </div>
+      ① 和 ② 应填入的值分别是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> ①=1, ②=1</div>
+      <div class="opt"><span class="letter">B</span> ①=0, ②=1</div>
+      <div class="opt"><span class="letter">C</span> ①=1, ②=0</div>
+      <div class="opt"><span class="letter">D</span> ①=i, ②=i</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q3')">👁 显示答案</button>
+    <div class="answer-box" id="q3">
+      <div class="ans">✅ 正确答案：A · ①=1, ②=1</div>
+      <div class="explain">
+        <strong>分析：</strong><br><br>
+        杨辉三角形的两个核心特征：<br>
+        &nbsp;&nbsp;• <strong>每行第一个元素</strong> dp[i][0] = <strong>1</strong><br>
+        &nbsp;&nbsp;• <strong>每行最后一个元素</strong> dp[i][i] = <strong>1</strong><br><br>
+        因此 ① 和 ② 都填 <span class="c">1</span>。<br><br>
+        <strong>完整的填空答案：</strong><br>
+        ① = <span class="b">1</span>（每行第一个是 1）<br>
+        ② = <span class="b">1</span>（每行最后一个也是 1）<br>
+        ③ = <span class="b">1</span>（j 从 1 开始，因为 dp[i][0] 已初始化）<br>
+        ④ = <span class="b">dp[i-1][j]</span>（正上方元素）<br><br>
+        <strong>完整递推式：</strong><span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span><br>
+        （左上角 + 正上方）
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 4：杨辉三角 C(n,k) 计算 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 完善 1</span>
+      <span>杨辉三角形求组合数</span>
+    </div>
+    <div class="exam-q">
+      使用杨辉三角形 DP 代码，计算 <span class="c">C(6, 2)</span> 的值（即杨辉三角形第 6 行第 2 列的数）是（  ）。<br>
+      <small>提示：行和列都从 0 开始计数。</small>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 10</div>
+      <div class="opt"><span class="letter">B</span> 15</div>
+      <div class="opt"><span class="letter">C</span> 20</div>
+      <div class="opt"><span class="letter">D</span> 6</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q4')">👁 显示答案</button>
+    <div class="answer-box" id="q4">
+      <div class="ans">✅ 正确答案：B · 15</div>
+      <div class="explain">
+        <strong>手动模拟杨辉三角前 6 行：</strong><br><br>
+        <div class="dp-viz">
+行 0:        [1]
+行 1:       [1] [1]
+行 2:      [1] [2] [1]
+行 3:     [1] [3] [3] [1]
+行 4:    [1] [4] [6] [4] [1]
+行 5:   [1] [5] [10][10][5] [1]
+行 6:  [1] [6] [15][20][15][6] [1]
+                   ↑
+              dp[6][2] = <span class="hl">15</span>
+        </div>
+        <strong>逐行推导：</strong><br>
+        行 0: dp[0][0]=1<br>
+        行 1: dp[1][0]=1, dp[1][1]=1<br>
+        行 2: dp[2][0]=1, dp[2][1]=dp[1][0]+dp[1][1]=2, dp[2][2]=1<br>
+        行 3: dp[3][0]=1, dp[3][1]=dp[2][0]+dp[2][1]=3, dp[3][2]=dp[2][1]+dp[2][2]=3, dp[3][3]=1<br>
+        行 4: dp[4][1]=dp[3][0]+dp[3][1]=4, dp[4][2]=dp[3][1]+dp[3][2]=6, dp[4][3]=dp[3][2]+dp[3][3]=4<br>
+        行 5: dp[5][1]=5, dp[5][2]=dp[4][1]+dp[4][2]=10, dp[5][3]=10, dp[5][4]=5<br>
+        行 6: dp[6][1]=6, <span class="c"><strong>dp[6][2]=dp[5][1]+dp[5][2]=5+10=15</strong></span><br><br>
+        <strong>验证：</strong>C(6,2) = 6!/(2!×4!) = 720/(2×24) = 720/48 = <span class="b">15</span> ✅<br>
+        <strong>选 B。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 5：双指针 DP 模拟 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2025 · 阅读 2</span>
+      <span>双指针 DP 分段模拟</span>
+    </div>
+    <div class="exam-q">
+      输入数组 <span class="c">a = [0, 3, 7, 2, 5, 8, 4, 6, 0, 1]</span>，n=10，<br>
+      运行双指针 DP 代码（排序去重 + ans[i]=ans[j]+1），输出是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 4</div>
+      <div class="opt"><span class="letter">B</span> 5</div>
+      <div class="opt"><span class="letter">C</span> 6</div>
+      <div class="opt"><span class="letter">D</span> 9</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q5')">👁 显示答案</button>
+    <div class="answer-box" id="q5">
+      <div class="ans">✅ 正确答案：D · 9</div>
+      <div class="explain">
+        <strong>手动模拟全过程：</strong><br><br>
+        <strong>Step 1：排序</strong><br>
+        <span class="c">[0, 0, 1, 2, 3, 4, 5, 6, 7, 8]</span><br><br>
+        <strong>Step 2：去重（unique）</strong><br>
+        去掉重复的 0，得到：<span class="c">[0, 1, 2, 3, 4, 5, 6, 7, 8]</span>，m=9<br><br>
+        <strong>Step 3：双指针 DP 填表</strong><br>
+        <div class="table-wrapper" style="margin:6px 0;">
+        <table style="font-size:.75rem;">
+          <tr><th>i</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr>
+          <tr><td style="font-weight:600;">a[i]</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td></tr>
+          <tr><td style="font-weight:600;">ans[i]</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+        </table>
+        </div>
+        <strong>详细过程：</strong><br>
+        ans[0] = 1（边界）<br>
+        i=1: a[1]=1, j=0, a[1]-a[0]=1 → ans[1]=ans[0]+1=2<br>
+        i=2: a[2]=2, j=0, a[2]-a[0]=2>1 → j=1, a[2]-a[1]=1 → ans[2]=ans[1]+1=3<br>
+        i=3: a[3]=3, j=1, a[3]-a[1]=2>1 → j=2, a[3]-a[2]=1 → ans[3]=ans[2]+1=4<br>
+        ... 依此类推，每个相邻元素相差 1<br>
+        i=8: a[8]=8, j=7, a[8]-a[7]=1 → ans[8]=ans[7]+1=9<br><br>
+        <strong>结果：</strong>max(ans) = ans[8] = <span class="b">9</span><br>
+        因为去重后的数组是连续递增的 0~8，所以最长连续序列长度 = 9。<br>
+        <strong>选 D。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 6：双指针 DP 非连续 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟 · 双指针 DP</span>
+      <span>存在"断层"的双指针模拟</span>
+    </div>
+    <div class="exam-q">
+      输入数组 <span class="c">a = [10, 1, 3, 2, 20, 4, 100, 5]</span>，n=8，<br>
+      运行双指针 DP 代码后，<span class="c">ans</span> 数组的最大值是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 3</div>
+      <div class="opt"><span class="letter">B</span> 4</div>
+      <div class="opt"><span class="letter">C</span> 5</div>
+      <div class="opt"><span class="letter">D</span> 8</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q6')">👁 显示答案</button>
+    <div class="answer-box" id="q6">
+      <div class="ans">✅ 正确答案：C · 5</div>
+      <div class="explain">
+        <strong>手动模拟全过程：</strong><br><br>
+        <strong>Step 1：排序</strong><br>
+        <span class="c">[1, 2, 3, 4, 5, 10, 20, 100]</span><br><br>
+        <strong>Step 2：去重（没有重复元素）</strong>，m=8<br><br>
+        <strong>Step 3：双指针 DP 填表</strong><br>
+        <div class="table-wrapper" style="margin:6px 0;">
+        <table style="font-size:.75rem;">
+          <tr><th>i</th><th style="width:32px;">0</th><th style="width:32px;">1</th><th style="width:32px;">2</th><th style="width:32px;">3</th><th style="width:32px;">4</th><th style="width:32px;">5</th><th style="width:32px;">6</th><th style="width:32px;">7</th></tr>
+          <tr><td style="font-weight:600;">a[i]</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>10</td><td>20</td><td>100</td></tr>
+          <tr><td style="font-weight:600;">ans[i]</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>1</td><td>1</td><td>1</td></tr>
+        </table>
+        </div>
+        <strong>详细过程：</strong><br>
+        ans[0]=1<br>
+        i=1: a[1]-a[0]=1 → ans[1]=ans[0]+1=2<br>
+        i=2: a[2]-a[0]=2>1→j=1, a[2]-a[1]=1 → ans[2]=ans[1]+1=3<br>
+        i=3: a[3]-a[1]=2>1→j=2, a[3]-a[2]=1 → ans[3]=ans[2]+1=4<br>
+        i=4: a[4]-a[2]=2>1→j=3, a[4]-a[3]=1 → ans[4]=ans[3]+1=<span class="b">5</span><br>
+        i=5: a[5]=10, j=3, 10-4=6>1→j=4, 10-5=5>1→j=5, 10-10=0 → ans[5]=ans[5]=1<br>
+        i=6: a[6]=20, j=5, 20-10=10>1→j=6, 20-20=0 → ans[6]=ans[6]=1<br>
+        i=7: a[7]=100, j=6, 100-20=80>1→j=7, 100-100=0 → ans[7]=ans[7]=1<br><br>
+        <strong>最长连续序列：</strong>1→2→3→4→5，长度为 <span class="b">5</span><br>
+        <strong>注意：</strong>10→20→100 虽然相邻但差值 >1，不能构成连续序列。<br>
+        <strong>选 C。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 7：LCS DP 表格模拟 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟 · LCS DP 填表</span>
+      <span>DP 表格追踪模拟</span>
+    </div>
+    <div class="exam-q">
+      执行 LCS 代码，输入 <span class="c">A = "abac"</span>，<span class="c">B = "aabc"</span>。<br>
+      在计算过程中，<span class="c">dp[2][3]</span>（对应 A[0..1]="ab" 与 B[0..2]="aab"）的值是（  ）。<br>
+      <small>提示：字符串索引从 0 开始，dp 数组从 1 开始。</small>
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 1</div>
+      <div class="opt"><span class="letter">B</span> 2</div>
+      <div class="opt"><span class="letter">C</span> 3</div>
+      <div class="opt"><span class="letter">D</span> 0</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q7')">👁 显示答案</button>
+    <div class="answer-box" id="q7">
+      <div class="ans">✅ 正确答案：B · 2</div>
+      <div class="explain">
+        <strong>手动填表模拟：</strong><br><br>
+        <div class="table-wrapper" style="margin:6px 0;">
+        <table style="font-size:.72rem;">
+          <tr><th>dp</th><th style="text-align:center;">""</th><th style="text-align:center;">a<br>(j=1)</th><th style="text-align:center;">a<br>(j=2)</th><th style="text-align:center;">b<br>(j=3)</th><th style="text-align:center;">c<br>(j=4)</th></tr>
+          <tr><td>"" (i=0)</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td><td style="text-align:center;">0</td></tr>
+          <tr><td>a (i=1)</td><td style="text-align:center;">0</td><td style="text-align:center;"><strong>1</strong></td><td style="text-align:center;">1</td><td style="text-align:center;">1</td><td style="text-align:center;">1</td></tr>
+          <tr><td style="background:var(--accent-light);">b (i=2)</td><td style="text-align:center;background:var(--accent-light);">0</td><td style="text-align:center;background:var(--accent-light);">1</td><td style="text-align:center;background:var(--accent-light);">1</td><td style="background:var(--success-light);text-align:center;"><strong>2</strong> ✅</td><td style="text-align:center;background:var(--accent-light);">2</td></tr>
+          <tr><td>a (i=3)</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;"><strong>2</strong></td><td style="text-align:center;">2</td><td style="text-align:center;">2</td></tr>
+          <tr><td>c (i=4)</td><td style="text-align:center;">0</td><td style="text-align:center;">1</td><td style="text-align:center;">2</td><td style="text-align:center;">2</td><td style="text-align:center;"><strong>3</strong></td></tr>
+        </table>
+        </div>
+        <strong>dp[2][3] 的计算过程：</strong><br>
+        A[1] = 'b'（A 的第 1 个字符，0-indexed），B[2] = 'b'（B 的第 2 个字符，0-indexed）<br>
+        A[1] == B[2]（'b' == 'b'）→ 匹配！<br>
+        dp[2][3] = dp[1][2] + 1 = 1 + 1 = <span class="b">2</span><br><br>
+        <strong>含义：</strong>"ab" 与 "aab" 的最长公共子序列长度为 2（即 "ab" 本身）。<br>
+        完整 LCS = "abc"（长度为 3），但 dp[2][3] 只计算到 A 的前 2 个字符和 B 的前 3 个字符。<br>
+        <strong>选 B。</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- 题 8：识别 DP 代码综合 -->
+  <!-- ============================== -->
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合 · 识别 DP</span>
+      <span>阅读程序中判断 DP 类型</span>
+    </div>
+    <div class="exam-q">
+      分析以下代码片段，判断它属于哪一类 DP 模型：<br><br>
+      <div class="code-block" style="font-size:.76rem;">
+<span class="kw">int</span> solve(<span class="kw">int</span> a[], <span class="kw">int</span> n) {
+  sort(a, a + n);
+  <span class="kw">int</span> m = unique(a, a + n) - a;
+  <span class="kw">vector</span>&lt;<span class="kw">int</span>&gt; f(m, <span class="num">0</span>);
+  f[<span class="num">0</span>] = <span class="num">1</span>;
+  <span class="kw">int</span> j = <span class="num">0</span>;
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i &lt; m; i++) {
+    <span class="kw">while</span> (a[i] - a[j] &gt; <span class="num">1</span>) j++;
+    <span class="kw">if</span> (a[i] - a[j] == <span class="num">1</span>) f[i] = f[j] + <span class="num">1</span>;
+    <span class="kw">else</span> f[i] = f[j];
+  }
+  <span class="kw">return</span> *max_element(f, f + m);
+}
+      </div>
+      这段代码实现的是（  ）。
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span> 最长上升子序列 LIS</div>
+      <div class="opt"><span class="letter">B</span> 最长连续序列</div>
+      <div class="opt"><span class="letter">C</span> 最长公共子序列 LCS</div>
+      <div class="opt"><span class="letter">D</span> 编辑距离</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('q8')">👁 显示答案</button>
+    <div class="answer-box" id="q8">
+      <div class="ans">✅ 正确答案：B · 最长连续序列</div>
+      <div class="explain">
+        <strong>识别线索分析：</strong><br><br>
+        <strong>1. 排序 + unique 去重</strong><br>
+        说明输入可能是无序且有重复的数组，需要对元素进行归一化。<br><br>
+        <strong>2. 双指针 while 循环</strong><br>
+        <span class="c">while (a[i] - a[j] > 1) j++;</span><br>
+        这个循环确保 j 始终指向距离 i "最近且差值不超过 1" 的元素。<br>
+        这是"连续序列"类问题的标志性写法。<br><br>
+        <strong>3. 转移方程</strong><br>
+        <span class="c">if (a[i] - a[j] == 1) f[i] = f[j] + 1;</span><br>
+        只有当相邻元素相差恰好为 1 时才能"接上"，形成更长的连续序列。<br><br>
+        <strong>4. 为什么不是其他选项？</strong><br>
+        &nbsp;&nbsp;• <strong>A (LIS)</strong>：LIS 通常不先排序，排序会破坏原始顺序<br>
+        &nbsp;&nbsp;• <strong>C (LCS)</strong>：LCS 需要两个序列，这里是单个数组<br>
+        &nbsp;&nbsp;• <strong>D (编辑距离)</strong>：编辑距离用二维 DP，有三个操作来源<br><br>
+        <strong>结论：</strong>这段代码实现的是<strong>最长连续序列</strong>（Longest Consecutive Sequence）的长度，<br>
+        也就是 LeetCode 128 题的经典解法。<br>
+        <strong>选 B。</strong>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结速查 -->
+  <!-- ================================================================== -->
+
+  <div class="summary-box" id="summary">
+    <h3>📌 经典 DP 模型 · 核心知识速查</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">
+      以下是你必须<strong>熟练掌握</strong>的考点，考前反复看：
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:120px;">模型</th><th>核心递推</th><th>维度</th><th style="width:100px;">真题</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>LCS 最长公共子序列</td><td>相同 <span class="c">dp[i-1][j-1]+1</span>；不同 <span class="c">max(上,左)</span></td><td>二维</td><td><strong class="b">2025 阅读 3</strong></td></tr>
+        <tr><td>LCS → LIS 转化</td><td>A 严格递增时，LCS(A,B) = LIS(pos[B])</td><td>一维 LIS</td><td><strong class="b">2025 阅读 3</strong></td></tr>
+        <tr><td>杨辉三角形</td><td><span class="c">dp[i][j] = dp[i-1][j-1] + dp[i-1][j]</span></td><td>二维</td><td><strong class="b">2025 完善 1</strong></td></tr>
+        <tr><td>杨辉三角形边界</td><td><span class="c">dp[i][0] = dp[i][i] = 1</span></td><td>每行首尾</td><td>固定</td></tr>
+        <tr><td>组合数 C(n,k)</td><td>杨辉三角第 n 行第 k 列的值</td><td>二维 DP</td><td>对应值</td></tr>
+        <tr><td>双指针 DP 分段</td><td><span class="c">ans[i] = ans[j] + 1</span>（差为 1 时）</td><td>一维</td><td><strong class="b">2025 阅读 2</strong></td></tr>
+        <tr><td>双指针核心操作</td><td><span class="c">while (a[i]-a[j] > 1) j++;</span></td><td>移动慢指针</td><td>关键</td></tr>
+        <tr><td>识别 DP 代码</td><td>dp 数组 + 边界初始化 + 递推循环 + 返回 dp[n]</td><td>五步法</td><td>通用</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;">
+      <div class="row">
+        <span class="pill">LCS = 相同对角+1，不同取最大</span>
+        <span class="pill green">LCS→LIS = 位置序列的 LIS</span>
+        <span class="pill amber">杨辉三角 = 左上+正上</span>
+      </div>
+      <div class="row">
+        <span class="pill red">双指针 = 排序去重 + 差 1 接续</span>
+        <span class="pill purple">组合数 = 杨辉三角查表</span>
+        <span class="pill blue">2025 阅读 3: LCS + 转化</span>
+        <span class="pill green">2025 完善 1: 杨辉三角</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">
+      本章节对应的深入学习资源：
+    </div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 LCS 详解</strong></td><td style="padding:4px 0;color:var(--text-sec);">2025 阅读 3 原题精讲 + 手动表格模拟</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 LCS→LIS 转化</strong></td><td style="padding:4px 0;color:var(--text-sec);">高难度题：当 a 严格递增时的优化技巧</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 杨辉三角形 DP</strong></td><td style="padding:4px 0;color:var(--text-sec);">2025 完善 1 原题精讲 + 组合数计算</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📘 双指针 DP 分段</strong></td><td style="padding:4px 0;color:var(--text-sec);">2025 阅读 2 原题：排序去重 + 连续序列</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2025 · 阅读 2</strong></td><td style="padding:4px 0;color:var(--text-sec);">双指针 DP + 连续序列阅读程序</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2025 · 阅读 3</strong></td><td style="padding:4px 0;color:var(--text-sec);">LCS 最长公共子序列阅读程序</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 真题 2025 · 完善 1</strong></td><td style="padding:4px 0;color:var(--text-sec);">杨辉三角形完善程序</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 经典 DP 模型 8 题</strong></td><td style="padding:4px 0;color:var(--text-sec);">含 LCS、杨辉三角、双指针 DP 等核心题目</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+function toggleAnswer(id) {
+  document.getElementById(id).classList.toggle('show');
+}
+window.addEventListener('scroll', function() {
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500);
+});
+const targets = document.querySelectorAll('h2.section-title, .objectives');
+const links = document.querySelectorAll('.nav-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.getAttribute('id');
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+  });
+}, { rootMargin: '-80px 0px -60% 0px' });
+targets.forEach(t => observer.observe(t));
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); });
+});
+</script>
+
+</body></html>

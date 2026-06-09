@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSP-J 初赛 · 1.2 计算机系统结构</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface-alt: #f0f2f5;
+    --surface-card: #f8f9fb;
+    --text: #1a1d28;
+    --text-sec: #4a5070;
+    --text-ter: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --success-dark: #059669;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --font-mono: 'SF Mono', 'Cascadia Code', 'Consolas', 'Monaco', monospace;
+    --sidebar-w: 240px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    display: flex;
+    min-height: 100vh;
+  }
+  .sidebar {
+    position: fixed;
+    top:0; left:0;
+    width:var(--sidebar-w);
+    height:100vh;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    padding:24px 0;
+    overflow-y:auto;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+  }
+  .sidebar::-webkit-scrollbar{width:4px;}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+  .sidebar-logo {
+    padding:0 20px 18px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .sidebar-logo .icon {
+    width:34px;height:34px;
+    background:linear-gradient(135deg,var(--primary),var(--purple));
+    border-radius:8px;
+    display:flex;
+    align-items:center;justify-content:center;
+    font-size:.95rem;flex-shrink:0;color:#fff;
+  }
+  .sidebar-logo .title{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.3;}
+  .sidebar-logo .sub{font-size:.66rem;color:var(--text-ter);}
+  .nav-section{padding:6px 20px 3px;font-size:.68rem;font-weight:600;color:var(--text-ter);text-transform:uppercase;letter-spacing:1.5px;}
+  .nav-link{
+    display:block;padding:6px 20px 6px 28px;font-size:.8rem;
+    color:var(--text-sec);text-decoration:none;border-left:2px solid transparent;transition:.12s;cursor:pointer;
+  }
+  .nav-link:hover{color:var(--primary);background:var(--primary-light);}
+  .nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:500;}
+  .nav-link.sub{padding-left:40px;font-size:.76rem;}
+
+  .main-content{margin-left:var(--sidebar-w);flex:1;min-width:0;}
+  .content-wrapper{max-width:920px;margin:0 auto;padding:44px 44px 80px;}
+
+  .page-header{margin-bottom:36px;padding-bottom:22px;border-bottom:2px solid var(--border-light);}
+  .breadcrumb{font-size:.76rem;color:var(--text-ter);margin-bottom:10px;}
+  .breadcrumb a{color:var(--primary);text-decoration:none;}
+  .page-header h1{font-size:1.9rem;font-weight:800;color:var(--text);letter-spacing:-.5px;}
+  .page-header .subtitle{font-size:.88rem;color:var(--text-sec);margin-top:6px;}
+  .meta-bar{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .meta-tag{font-size:.7rem;padding:2px 12px;border-radius:10px;border:1px solid var(--border);color:var(--text-ter);background:var(--surface);}
+  .meta-tag.hot{border-color:#fecaca;color:#dc2626;background:#fef2f2;}
+  .meta-tag.exam{border-color:#dbeafe;color:#2563eb;background:#eff6ff;}
+  .meta-tag.practice{border-color:#d1fae5;color:#059669;background:#ecfdf5;}
+
+  .objectives{
+    background:var(--surface);border:1px solid var(--border);border-radius:10px;
+    padding:18px 22px;margin-bottom:32px;box-shadow:0 1px 3px rgba(0,0,0,.03);
+  }
+  .objectives h3{font-size:.85rem;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .objectives .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px;}
+  .objectives .item{font-size:.8rem;color:var(--text-sec);padding:4px 12px;background:var(--primary-light);border-radius:6px;}
+
+  .res-bar{
+    display:flex;flex-wrap:wrap;gap:6px;margin:-20px 0 28px;
+    padding:8px 16px;background:var(--surface);border:1px solid var(--border-light);border-radius:8px;
+  }
+  .res-bar .r{
+    font-size:.7rem;padding:1px 10px;border-radius:6px;
+  }
+  .res-bar .r.purple{background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);}
+  .res-bar .r.amber{background:#fffbeb;border:1px solid #fde68a;color:#b45309;}
+  .res-bar .r.green{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+
+  h2.section-title{
+    font-size:1.25rem;font-weight:700;color:var(--text);
+    margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:10px;
+  }
+  h2.section-title .num{
+    font-size:.78rem;background:linear-gradient(135deg,var(--primary),var(--purple));
+    color:#fff;width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  h3.kp-title{
+    font-size:1rem;font-weight:600;color:var(--text);margin:22px 0 8px;display:flex;align-items:center;gap:8px;
+  }
+  h3.kp-title::before{content:'';width:4px;height:16px;background:var(--primary);border-radius:2px;flex-shrink:0;}
+  h4.sub-title{font-size:.9rem;font-weight:600;color:var(--text-sec);margin:14px 0 6px;}
+
+  .kp-text{font-size:.9rem;color:var(--text-sec);margin-bottom:10px;line-height:1.9;}
+  .kp-text strong{color:var(--text);font-weight:600;}
+  .kp-text .hl{color:var(--primary-dark);font-weight:600;}
+  .kp-text .tag{color:var(--primary);}
+  .kp-text .danger-tag{color:var(--danger);font-weight:600;}
+
+  .card{border-radius:8px;padding:14px 18px;margin:14px 0;border:1px solid;background:var(--surface);}
+  .card.accent{border-color:#fde68a;background:var(--accent-light);}
+  .card.accent .card-title{color:var(--accent-dark);}
+  .card.primary{border-color:#bfdbfe;background:var(--primary-light);}
+  .card.primary .card-title{color:var(--primary-dark);}
+  .card.success{border-color:#a7f3d0;background:var(--success-light);}
+  .card.success .card-title{color:var(--success-dark);}
+  .card.danger{border-color:#fecaca;background:var(--danger-light);}
+  .card.danger .card-title{color:var(--danger);}
+  .card.purple{border-color:#ddd6fe;background:var(--purple-light);}
+  .card.purple .card-title{color:var(--purple);}
+  .card-title{font-size:.82rem;font-weight:600;margin-bottom:5px;}
+  .card p,.card .kp-text{font-size:.85rem;margin:0;}
+
+  .quote-box{background:var(--accent-light);border-left:3px solid var(--accent);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7;}
+  .quote-box strong{color:var(--accent-dark);}
+  .info-box{background:var(--primary-light);border-left:3px solid var(--primary);padding:10px 16px;border-radius:0 6px 6px 0;margin:14px 0;font-size:.85rem;color:var(--text-sec);line-height:1.7;}
+
+  .table-wrapper{overflow-x:auto;margin:14px 0;border-radius:8px;border:1px solid var(--border);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;font-size:.83rem;}
+  thead th{background:var(--surface-alt);color:var(--text-sec);font-weight:600;padding:9px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;font-size:.8rem;}
+  tbody td{padding:8px 14px;border-bottom:1px solid var(--border-light);color:var(--text-sec);font-size:.82rem;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:var(--surface-alt);}
+  .mono{font-family:var(--font-mono);color:var(--primary-dark);font-size:.8rem;}
+
+  ul.dot-list{list-style:none;padding:0;margin:8px 0 12px;}
+  ul.dot-list li{font-size:.85rem;color:var(--text-sec);padding:3px 0 3px 18px;position:relative;line-height:1.7;}
+  ul.dot-list li::before{content:'•';position:absolute;left:2px;color:var(--primary);font-weight:bold;}
+  ul.dot-list li strong{color:var(--text);}
+
+  .compare-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+  .compare-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 16px;}
+  .compare-box h5{font-size:.82rem;font-weight:600;margin-bottom:4px;}
+  .compare-box p{font-size:.8rem;color:var(--text-sec);line-height:1.6;}
+  .compare-box.d1 h5{color:var(--primary-dark);}
+  .compare-box.d2 h5{color:var(--accent-dark);}
+  @media(max-width:640px){.compare-row{grid-template-columns:1fr;}}
+
+  .exam-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(0,0,0,.02);transition:box-shadow .15s;}
+  .exam-block:hover{box-shadow:0 2px 8px rgba(0,0,0,.04);}
+  .exam-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:.75rem;color:var(--text-ter);flex-wrap:wrap;}
+  .exam-badge{font-size:.68rem;padding:1px 10px;border-radius:6px;font-weight:500;}
+  .exam-badge.real{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+  .exam-badge.mock{background:#ecfdf5;border:1px solid #a7f3d0;color:#059669;}
+  .exam-q{font-size:.88rem;color:var(--text);margin-bottom:3px;line-height:1.7;}
+  .exam-options{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px;margin:5px 0;}
+  .exam-options .opt{font-size:.82rem;color:var(--text-sec);padding:2px 0;}
+  .exam-options .opt .letter{display:inline-block;width:18px;height:18px;line-height:18px;text-align:center;border-radius:3px;background:var(--surface-alt);font-size:.72rem;font-weight:600;color:var(--text-ter);margin-right:5px;}
+  .show-answer-btn{display:inline-block;padding:5px 16px;font-size:.78rem;font-weight:500;color:var(--primary);background:var(--primary-light);border:1px solid #bfdbfe;border-radius:6px;cursor:pointer;transition:.15s;margin-top:6px;user-select:none;}
+  .show-answer-btn:hover{background:#dbeafe;border-color:#93c5fd;}
+  .answer-box{display:none;margin-top:8px;padding:10px 14px;background:var(--success-light);border:1px solid #a7f3d0;border-radius:6px;}
+  .answer-box.show{display:block;animation:fadeIn .25s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-3px);}to{opacity:1;transform:translateY(0);}}
+  .answer-box .ans{font-size:.87rem;font-weight:600;color:var(--success-dark);}
+  .answer-box .explain{font-size:.8rem;color:var(--text-sec);margin-top:3px;line-height:1.7;}
+  .answer-box .explain .tag-inline{display:inline-block;padding:0 6px;background:var(--surface-alt);border-radius:3px;font-family:var(--font-mono);font-size:.78rem;color:var(--primary-dark);}
+
+  .summary-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin:36px 0 20px;box-shadow:0 1px 3px rgba(0,0,0,.03);}
+  .summary-box h3{font-size:.92rem;color:var(--primary-dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .summary-box .row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+  .summary-box .pill{font-size:.78rem;padding:3px 12px;background:var(--primary-light);border:1px solid #bfdbfe;border-radius:14px;color:var(--primary-dark);}
+  .summary-box .pill.green{background:var(--success-light);border-color:#a7f3d0;color:var(--success-dark);}
+  .summary-box .pill.amber{background:var(--accent-light);border-color:#fde68a;color:var(--accent-dark);}
+  .summary-box .pill.red{background:var(--danger-light);border-color:#fecaca;color:var(--danger);}
+
+  hr.divider{border:none;height:1px;background:var(--border);margin:28px 0;}
+  hr.divider.dashed{background:none;border-top:1px dashed var(--border);}
+
+  .back-top{
+    position:fixed;bottom:28px;right:28px;
+    width:38px;height:38px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--border);
+    color:var(--text-ter);font-size:1.1rem;
+    cursor:pointer;display:none;align-items:center;justify-content:center;
+    z-index:200;transition:.15s;box-shadow:0 2px 8px rgba(0,0,0,.06);
+  }
+  .back-top.visible{display:flex;}
+  .back-top:hover{background:var(--primary);border-color:var(--primary);color:#fff;}
+
+  .hamburger{display:none;position:fixed;top:12px;left:12px;width:34px;height:34px;border-radius:6px;background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:1rem;cursor:pointer;z-index:300;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;}
+  @media(max-width:900px){
+    .sidebar{transform:translateX(-100%);transition:transform .3s ease;}
+    .sidebar.open{transform:translateX(0);}
+    .main-content{margin-left:0;}
+    .content-wrapper{padding:40px 18px 60px;}
+    .hamburger{display:flex;}
+    .exam-options{grid-template-columns:1fr;}
+    .page-header h1{font-size:1.4rem;}
+    .objectives .grid{grid-template-columns:1fr;}
+    .overlay.show{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">⚙️</div>
+    <div>
+      <div class="title">CSP-J 初赛集训</div>
+      <div class="sub">专题一 · 计算机基础知识</div>
+    </div>
+  </div>
+  <div class="nav-section">开篇</div>
+  <a class="nav-link active" href="#obj">🎯 学习目标</a>
+  <div class="nav-section">1 · 冯·诺依曼结构</div>
+  <a class="nav-link" href="#s1">五大部件详解</a>
+  <a class="nav-link sub" href="#s1-q">📝 配套练习</a>
+  <div class="nav-section">2 · CPU 与存储器</div>
+  <a class="nav-link" href="#s2">CPU 功能 & 存储层次</a>
+  <a class="nav-link sub" href="#s2-q">📝 配套练习</a>
+  <div class="nav-section">3 · 存储单位</div>
+  <a class="nav-link" href="#s3">bit→Byte→KB→MB→GB→TB</a>
+  <a class="nav-link sub" href="#s3-q">📝 配套练习</a>
+  <div class="nav-section">4 · 输入输出设备</div>
+  <a class="nav-link" href="#s4">设备分类与辨析</a>
+  <a class="nav-link sub" href="#s4-q">📝 配套练习</a>
+  <div class="nav-section">5 · 软件系统</div>
+  <a class="nav-link" href="#s5">系统软件 vs 应用软件</a>
+  <a class="nav-link sub" href="#s5-q">📝 配套练习</a>
+  <div class="nav-section">收尾</div>
+  <a class="nav-link" href="#comprehensive">📝 综合模拟</a>
+  <a class="nav-link" href="#summary">📌 全章小结</a>
+  <a class="nav-link" href="#resources">📎 配套资源</a>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+  <div class="page-header">
+    <div class="breadcrumb"><a href="#">专题一 · 计算机基础知识</a> / 1.2</div>
+    <h1>计算机系统结构</h1>
+    <p class="subtitle">冯·诺依曼五大部件 · CPU 与存储体系 · 存储单位换算 · 输入输出与软件系统</p>
+    <div class="meta-bar">
+      <span class="meta-tag">⏱ 约 1.5 课时</span>
+      <span class="meta-tag hot">🔥 高频考点</span>
+      <span class="meta-tag exam">📖 真题 7 道</span>
+      <span class="meta-tag practice">✏️ 模拟题 7 道</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:var(--purple-light);border:1px solid #ddd6fe;color:var(--purple);">📘 C779-04</span>
+      <span style="font-size:.7rem;padding:2px 10px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;color:#b45309;">📝 模块-1/2/6</span>
+    </div>
+  </div>
+
+  <div class="objectives" id="obj">
+    <h3>🎯 学完本节课你将掌握</h3>
+    <div class="grid">
+      <span class="item">✅ 冯·诺依曼五大部件名称与功能</span>
+      <span class="item">✅ CPU = 运算器 + 控制器</span>
+      <span class="item">✅ 存储器层次：寄存器→Cache→内存→外存</span>
+      <span class="item">✅ RAM vs ROM 的区分</span>
+      <span class="item">✅ 存储单位换算（KB/MB/GB/TB）</span>
+      <span class="item">✅ 常见输入输出设备归类</span>
+      <span class="item">✅ 系统软件 vs 应用软件</span>
+      <span class="item">✅ 做对近年所有系统结构类单选</span>
+    </div>
+  </div>
+
+  <div class="res-bar">
+    <span style="font-size:.72rem;color:var(--text-ter);">📎 配套资源：</span>
+    <span class="r purple">C779-04·数据类型、存储单位、指针</span>
+    <span class="r amber">模块-1·计算机的基本构成</span>
+    <span class="r amber">模块-2·操作系统基本概念</span>
+    <span class="r amber">模块-6·字节与字</span>
+    <span class="r green">考点汇总·考点17（操作系统）</span>
+  </div>
+
+  <!-- ================================================================== -->
+  <!-- 一、冯·诺依曼结构五大部件 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s1"><span class="num">1</span>冯·诺依曼结构五大部件</h2>
+
+  <p class="kp-text">
+    冯·诺依曼计算机由 <strong>五大部件</strong> 组成，它们各司其职、协同工作。
+    只要理解了每个部件的功能和它们之间的关系，系统结构类的题目就不会丢分。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>部件</th><th>英文</th><th>功能</th><th>具体例子</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>① 运算器</strong></td>
+          <td>ALU</td>
+          <td>执行算术运算（+−×÷）和逻辑运算（与或非比较）</td>
+          <td>CPU 内部</td>
+        </tr>
+        <tr>
+          <td><strong>② 控制器</strong></td>
+          <td>CU</td>
+          <td>取指令→译码→控制各部件协调工作</td>
+          <td>CPU 内部</td>
+        </tr>
+        <tr>
+          <td><strong>③ 存储器</strong></td>
+          <td>Memory</td>
+          <td>存放程序和数据（指令+数据）</td>
+          <td>内存（RAM/ROM）</td>
+        </tr>
+        <tr>
+          <td><strong>④ 输入设备</strong></td>
+          <td>Input</td>
+          <td>将外部信息送入计算机</td>
+          <td>键盘、鼠标、扫描仪</td>
+        </tr>
+        <tr>
+          <td><strong>⑤ 输出设备</strong></td>
+          <td>Output</td>
+          <td>将计算结果输出给人或其他设备</td>
+          <td>显示器、打印机、音箱</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card primary">
+    <div class="card-title">📌 两个重要公式</div>
+    <p class="kp-text">
+      <strong>CPU = 运算器 + 控制器</strong>（中央处理器 = 算术逻辑单元 + 控制单元）<br>
+      <strong>主机 = CPU + 内存</strong>（五大部件中，运算器、控制器、存储器合称"主机"）
+    </p>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 工作流程一分钟搞懂</div>
+    <p class="kp-text">
+      ① 输入设备把程序和<strong>数据</strong>送入<strong>存储器</strong><br>
+      ② <strong>控制器</strong>从存储器取出<strong>指令</strong>，译码后告诉各部件做什么<br>
+      ③ <strong>运算器</strong>执行计算，结果存回<strong>存储器</strong><br>
+      ④ <strong>输出设备</strong>把结果呈现给用户<br>
+      整个过程反复循环——这就是计算机的<strong>工作周期</strong>（取指令→译码→执行）
+    </p>
+  </div>
+
+  <!-- 配套练习 1 -->
+  <h3 class="kp-title" id="s1-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 改编</span>
+      <span>五部件——设备归类</span>
+    </div>
+    <div class="exam-q">
+      以下关于冯·诺依曼计算机结构的描述中，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>冯·诺依曼计算机的核心部件是运算器和存储器</div>
+      <div class="opt"><span class="letter">B</span>冯·诺依曼结构包括运算器、控制器、存储器、键盘和显示器五大部件</div>
+      <div class="opt"><span class="letter">C</span>冯·诺依曼计算机采用"存储程序"和"二进制"两大基本原理</div>
+      <div class="opt"><span class="letter">D</span>冯·诺依曼计算机中，输入输出设备不属于五大部件</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a1')">👁 显示答案</button>
+    <div class="answer-box" id="a1">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        A 错——核心部件是<strong>运算器和控制器</strong>（合称 CPU），不是运算器和存储器。<br>
+        B 错——五大部件中的输入/输出设备是<strong>泛称</strong>，不是特指键盘和显示器。<br>
+        D 错——输入设备和输出设备就是五大部件中的两个。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>CPU 的组成</span>
+    </div>
+    <div class="exam-q">
+      中央处理器（CPU）由哪两部分组成？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>运算器和存储器</div>
+      <div class="opt"><span class="letter">B</span>控制器和存储器</div>
+      <div class="opt"><span class="letter">C</span>运算器和控制器</div>
+      <div class="opt"><span class="letter">D</span>运算器和输入设备</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a2')">👁 显示答案</button>
+    <div class="answer-box" id="a2">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>CPU = 运算器 + 控制器</strong>。<br>
+        · 运算器（ALU）负责<strong>计算</strong><br>
+        · 控制器（CU）负责<strong>指挥</strong><br>
+        合在一起才能"边算边指挥"，缺一不可。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>冯·诺依曼——部件功能匹配</span>
+    </div>
+    <div class="exam-q">
+      在冯·诺依曼结构中，负责"从存储器中取出指令并译码，然后控制其他部件执行"的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>运算器</div>
+      <div class="opt"><span class="letter">B</span>控制器</div>
+      <div class="opt"><span class="letter">C</span>存储器</div>
+      <div class="opt"><span class="letter">D</span>输出设备</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a3')">👁 显示答案</button>
+    <div class="answer-box" id="a3">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>控制器（CU）</strong>负责<strong>取指令→译码→控制执行</strong>，是计算机的"指挥中心"。<br>
+        运算器只负责"算"，不负责"指挥"——这是最容易混淆的点。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 二、CPU 与存储器 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s2"><span class="num">2</span>CPU 与存储器体系</h2>
+
+  <h3 class="kp-title">2.1 CPU 的功能</h3>
+  <p class="kp-text">
+    CPU（中央处理器）是计算机的<strong class="hl">"大脑"</strong>，负责解释指令和处理数据。
+    它由<strong>运算器</strong>和<strong>控制器</strong>组成。CPU 的性能主要由<strong>主频</strong>（GHz）、
+    <strong>核数</strong>、<strong>缓存大小</strong>等决定。
+  </p>
+
+  <h3 class="kp-title">2.2 存储器层次结构</h3>
+  <p class="kp-text">
+    存储器并非一种，而是一个有层次的体系。从上到下：<strong>速度越来越慢，容量越来越大，价格越来越低</strong>。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>层次</th><th>名称</th><th>速度</th><th>容量</th><th>典型大小</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="mono">L1</span></td><td>CPU 寄存器</td><td>最快（0.3ns）</td><td>最小</td><td>几十~几百字节</td></tr>
+        <tr><td><span class="mono">L2</span></td><td>Cache（高速缓存）</td><td>很快（1ns）</td><td>较小</td><td>几 MB~几十 MB</td></tr>
+        <tr><td><span class="mono">L3</span></td><td>内存（主存）</td><td>较快（10ns）</td><td>较大</td><td>8GB~64GB</td></tr>
+        <tr><td><span class="mono">L4</span></td><td>外存（硬盘/U盘）</td><td>慢（ms级）</td><td>大</td><td>256GB~数TB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote-box">
+    💡 <strong>局部性原理：</strong>CPU 访问存储单元时，往往会集中访问某一小片连续区域。
+    基于这个原理，把最常用的数据放在最快的 Cache 中，就能大幅提升整体性能。
+    这是 Cache 存在的理论基础。
+  </div>
+
+  <h3 class="kp-title">2.3 RAM vs ROM</h3>
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>🔹 RAM（随机存取存储器）</h5>
+      <p>· <strong>可读可写</strong><br>
+      · <span class="danger-tag">断电后数据丢失</span>（易失性）<br>
+      · 用来存放正在运行的程序和数据<br>
+      · 分为 DRAM（主存）和 SRAM（Cache）</p>
+    </div>
+    <div class="compare-box d2">
+      <h5>🔹 ROM（只读存储器）</h5>
+      <p>· <strong>只能读不能写</strong>（正常模式下）<br>
+      · <span class="suc-tag">断电后数据不丢失</span>（非易失性）<br>
+      · 用来存放 BIOS/固件等不变的程序<br>
+      · 包括 PROM、EPROM、EEPROM 等</p>
+    </div>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 考试经典陷阱</div>
+    <p class="kp-text">
+      <strong>"断电后数据会丢失的是_____"</strong>——答案：<strong>RAM</strong>。<br>
+      题目有时会说"内存"、"主存"，它们通常指 RAM，断电即丢。<br>
+      而 ROM、硬盘、U盘都是断电不丢的。
+    </p>
+  </div>
+
+  <!-- 配套练习 2 -->
+  <h3 class="kp-title" id="s2-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2023 · 改编</span>
+      <span>RAM 的特性</span>
+    </div>
+    <div class="exam-q">
+      关于计算机存储器，以下说法正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>RAM 断电后数据不会丢失</div>
+      <div class="opt"><span class="letter">B</span>ROM 断电后数据丢失</div>
+      <div class="opt"><span class="letter">C</span>RAM 断电后数据会丢失，ROM 断电后数据不会丢失</div>
+      <div class="opt"><span class="letter">D</span>RAM 和 ROM 断电后数据都不会丢失</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a4')">👁 显示答案</button>
+    <div class="answer-box" id="a4">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>RAM</strong>（随机存取存储器）是<strong>易失性</strong>的，断电后数据丢失。<br>
+        <strong>ROM</strong>（只读存储器）是<strong>非易失性</strong>的，断电后数据保留。<br>
+        这是计算机基础中最经典的判断题之一。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 分模块训练</span>
+      <span>Cache——引入目的</span>
+    </div>
+    <div class="exam-q">
+      主存储器的存取速度比中央处理器（CPU）的工作速度慢得多，从而使得后者的效率受到影响。
+      根据<strong>局部性原理</strong>，为了提高系统整体的执行效率，在 CPU 中引入了？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>寄存器</div>
+      <div class="opt"><span class="letter">B</span>高速缓存（Cache）</div>
+      <div class="opt"><span class="letter">C</span>外存储器</div>
+      <div class="opt"><span class="letter">D</span>虚拟存储器</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a5')">👁 显示答案</button>
+    <div class="answer-box" id="a5">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>高速缓存（Cache）</strong>位于 CPU 和主存之间，存放 CPU 近期可能用到的数据。
+        基于<strong>局部性原理</strong>——CPU 访问的数据往往集中在相邻区域，
+        把热点数据提前加载到 Cache 中，可以大幅减少 CPU 等待数据的时间。<br>
+        A 寄存器是 CPU 内部最快的存储，但不是为了解决主存慢的问题引入的。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>存储器速度排序</span>
+    </div>
+    <div class="exam-q">
+      以下存储设备按存取速度从快到慢排列，正确的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>寄存器 → Cache → 内存 → 硬盘</div>
+      <div class="opt"><span class="letter">B</span>Cache → 寄存器 → 内存 → 硬盘</div>
+      <div class="opt"><span class="letter">C</span>内存 → Cache → 寄存器 → 硬盘</div>
+      <div class="opt"><span class="letter">D</span>寄存器 → 内存 → Cache → 硬盘</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a6')">👁 显示答案</button>
+    <div class="answer-box" id="a6">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        正确顺序：<strong>寄存器</strong>（在 CPU 内部，最快）→ <strong>Cache</strong>（高速缓存）→
+        <strong>内存</strong>（主存）→ <strong>硬盘</strong>（外存，最慢）。<br>
+        规律：<span class="tag-inline">越靠近 CPU 越快</span>，但容量越小、价格越贵。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>寄存器属于哪个部件</span>
+    </div>
+    <div class="exam-q">
+      寄存器是以下哪个部件的重要组成部分？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>硬盘</div>
+      <div class="opt"><span class="letter">B</span>高速缓存</div>
+      <div class="opt"><span class="letter">C</span>内存</div>
+      <div class="opt"><span class="letter">D</span>中央处理器（CPU）</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a7')">👁 显示答案</button>
+    <div class="answer-box" id="a7">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>寄存器</strong>是 CPU 内部的存储单元，用于暂存指令、数据和地址。
+        它是计算机中<strong>速度最快的存储器</strong>，但容量极小（几十~几百字节）。<br>
+        来源：分模块知识点训练/1.计算机的基本构成 第2题。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 三、存储单位 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s3"><span class="num">3</span>存储单位与换算</h2>
+
+  <p class="kp-text">
+    计算机中最小的数据单位是 <strong class="hl">位（bit）</strong>，
+    最基本的存储单位是 <strong class="hl">字节（Byte）</strong>。
+    它们之间的换算关系是初赛常考的计算题。
+  </p>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr><th>单位</th><th>符号</th><th>换算关系</th><th>数值（字节）</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>位</td><td>bit</td><td>1 bit = 一个二进制位（0 或 1）</td><td>—</td></tr>
+        <tr><td><strong>字节</strong></td><td><strong>B</strong></td><td><strong>1 B = 8 bit</strong></td><td>—</td></tr>
+        <tr><td>千字节</td><td>KB</td><td>1 KB = 2<sup>10</sup> B = 1024 B</td><td>约 10<sup>3</sup> 字节</td></tr>
+        <tr><td>兆字节</td><td>MB</td><td>1 MB = 2<sup>20</sup> B = 1024 KB</td><td>约 10<sup>6</sup> 字节</td></tr>
+        <tr><td>吉字节</td><td>GB</td><td>1 GB = 2<sup>30</sup> B = 1024 MB</td><td>约 10<sup>9</sup> 字节</td></tr>
+        <tr><td>太字节</td><td>TB</td><td>1 TB = 2<sup>40</sup> B = 1024 GB</td><td>约 10<sup>12</sup> 字节</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card success">
+    <div class="card-title">🔢 核心换算公式</div>
+    <p class="kp-text">
+      · <strong>1 Byte = 8 bit</strong>（必记！）<br>
+      · <strong>1 KB = 1024 B</strong>（2<sup>10</sup>，不是 1000）<br>
+      · <strong>1 MB = 1024 KB</strong> = 1,048,576 B<br>
+      · <strong>1 GB = 1024 MB</strong><br>
+      · 每级进率为 <strong>2<sup>10</sup> = 1024</strong>
+    </p>
+  </div>
+
+  <!-- 配套练习 3 -->
+  <h3 class="kp-title" id="s3-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 分模块训练</span>
+      <span>字节与位的关系</span>
+    </div>
+    <div class="exam-q">
+      一个字节（Byte）由多少个二进制位（bit）组成？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>4</div>
+      <div class="opt"><span class="letter">B</span>8</div>
+      <div class="opt"><span class="letter">C</span>16</div>
+      <div class="opt"><span class="letter">D</span>1024</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a8')">👁 显示答案</button>
+    <div class="answer-box" id="a8">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>1 Byte = 8 bit</strong>，这是计算机科学中最基本的换算关系。<br>
+        来源：分模块知识点训练/6.字节与字。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2021 · 改编</span>
+      <span>MB 换算为字节</span>
+    </div>
+    <div class="exam-q">
+      一个 1 MB 的文件，理论上最多可以存储多少个字节？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>1000 × 1000</div>
+      <div class="opt"><span class="letter">B</span>1024 × 1024</div>
+      <div class="opt"><span class="letter">C</span>1000 × 1024</div>
+      <div class="opt"><span class="letter">D</span>1024 × 1000</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a9')">👁 显示答案</button>
+    <div class="answer-box" id="a9">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>1 MB = 1024 KB = 1024 × 1024 字节</strong> = 1,048,576 字节。<br>
+        注意这里用的是<strong>1024 进率</strong>（2<sup>10</sup>），不是 1000。<br>
+        硬盘厂商有时用 1000 进制（1 MB = 1,000,000 B），但考试中一律按 1024 计算。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>单位换算——综合</span>
+    </div>
+    <div class="exam-q">
+      2 GB 等于多少 MB？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>2000</div>
+      <div class="opt"><span class="letter">B</span>2048</div>
+      <div class="opt"><span class="letter">C</span>1024</div>
+      <div class="opt"><span class="letter">D</span>2 × 10<sup>9</sup></div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a10')">👁 显示答案</button>
+    <div class="answer-box" id="a10">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>1 GB = 1024 MB</strong>，所以 <strong>2 GB = 2048 MB</strong>。<br>
+        进率 1024 要记牢——A 选项 2000 是用 1000 进制算出来的，是常见干扰项。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 四、输入输出设备 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s4"><span class="num">4</span>输入设备与输出设备</h2>
+
+  <p class="kp-text">
+    输入设备负责<strong>把外部信息送进计算机</strong>，输出设备负责<strong>把结果呈现给用户</strong>。
+    注意区分"既是输入又是输出"的特殊设备。
+  </p>
+
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>📥 常见输入设备</h5>
+      <p>键盘、鼠标、扫描仪、麦克风、摄像头、触摸板、游戏手柄、条码阅读器</p>
+    </div>
+    <div class="compare-box d2">
+      <h5>📤 常见输出设备</h5>
+      <p>显示器、打印机、扬声器（音箱）、耳机、投影仪、绘图仪</p>
+    </div>
+  </div>
+
+  <div class="card accent">
+    <div class="card-title">💡 特殊设备——既是输入又是输出</div>
+    <p class="kp-text">
+      · <strong>触摸屏</strong>：既能显示（输出），又能感应触摸（输入）<br>
+      · <strong>网卡</strong>：既能接收数据（输入），又能发送数据（输出）<br>
+      · <strong>U盘/硬盘</strong>：既能读（输入），又能写（输出）
+    </p>
+  </div>
+
+  <!-- 配套练习 4 -->
+  <h3 class="kp-title" id="s4-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2023 · 改编</span>
+      <span>输入设备判断</span>
+    </div>
+    <div class="exam-q">
+      以下设备中，<strong>不属于</strong>输入设备的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>键盘</div>
+      <div class="opt"><span class="letter">B</span>鼠标</div>
+      <div class="opt"><span class="letter">C</span>显示器</div>
+      <div class="opt"><span class="letter">D</span>扫描仪</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a11')">👁 显示答案</button>
+    <div class="answer-box" id="a11">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>显示器</strong>是<strong>输出设备</strong>，用于显示图像和文字。<br>
+        键盘、鼠标、扫描仪都是典型的输入设备。<br>
+        记忆技巧：输入设备"把数据<strong>送进去</strong>"，输出设备"把结果<strong>显示/打印出来</strong>"。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>既是输入又是输出</span>
+    </div>
+    <div class="exam-q">
+      以下设备中，<strong>既是输入设备又是输出设备</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>键盘</div>
+      <div class="opt"><span class="letter">B</span>打印机</div>
+      <div class="opt"><span class="letter">C</span>触摸屏</div>
+      <div class="opt"><span class="letter">D</span>投影仪</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a12')">👁 显示答案</button>
+    <div class="answer-box" id="a12">
+      <div class="ans">✅ 正确答案：C</div>
+      <div class="explain">
+        <strong>触摸屏</strong>既可以显示内容（输出），又可以感应手指触摸输入（输入），
+        因此它<strong>既是输入设备又是输出设备</strong>。<br>
+        A 键盘是纯输入；B 打印机和 D 投影仪是纯输出。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider dashed">
+
+  <!-- ================================================================== -->
+  <!-- 五、软件系统 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="s5"><span class="num">5</span>软件系统分类</h2>
+
+  <p class="kp-text">
+    计算机软件分为<strong>系统软件</strong>和<strong>应用软件</strong>两大类。
+    考试中常让你判断某个软件属于哪一类。
+  </p>
+
+  <div class="compare-row">
+    <div class="compare-box d1">
+      <h5>⚙️ 系统软件</h5>
+      <p>管理和控制计算机硬件资源的软件。<br>
+      · <strong>操作系统</strong>：Windows、Linux、macOS、Android、iOS<br>
+      · <strong>编译/解释器</strong>：gcc、javac、Python解释器<br>
+      · <strong>数据库管理系统</strong>：MySQL、Oracle<br>
+      · <strong>驱动程序</strong>：显卡驱动、网卡驱动</p>
+    </div>
+    <div class="compare-box d2">
+      <h5>📱 应用软件</h5>
+      <p>为解决特定问题而开发的软件。<br>
+      · <strong>办公软件</strong>：Word、Excel、PowerPoint<br>
+      · <strong>开发工具</strong>：VS Code、Dev-C++、Sublime<br>
+      · <strong>浏览器</strong>：Chrome、Edge、Safari<br>
+      · <strong>游戏/娱乐</strong>：各类 App</p>
+    </div>
+  </div>
+
+  <div class="card danger">
+    <div class="card-title">⚠️ 常见混淆</div>
+    <p class="kp-text">
+      · <strong>操作系统</strong>（Windows、Linux）→ 系统软件<br>
+      · <strong>Office 套件</strong>（Word、Excel）→ 应用软件<br>
+      · <strong>编译器</strong>（gcc、javac）→ 系统软件<br>
+      · <strong>浏览器</strong>（Chrome）→ 应用软件<br>
+      考试中如果题目问"以下属于操作系统的是"，答案通常是 <strong>Windows</strong> 或 <strong>Linux</strong>。
+    </p>
+  </div>
+
+  <!-- 配套练习 5 -->
+  <h3 class="kp-title" id="s5-q" style="margin-top:28px;">📝 真题与模拟练习</h3>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge real">📝 真题 · 2022 · 改编</span>
+      <span>操作系统判断</span>
+    </div>
+    <div class="exam-q">
+      以下软件中，属于<strong>操作系统</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Microsoft Word</div>
+      <div class="opt"><span class="letter">B</span>Windows 11</div>
+      <div class="opt"><span class="letter">C</span>Google Chrome</div>
+      <div class="opt"><span class="letter">D</span>Photoshop</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a13')">👁 显示答案</button>
+    <div class="answer-box" id="a13">
+      <div class="ans">✅ 正确答案：B</div>
+      <div class="explain">
+        <strong>Windows 11</strong> 是微软开发的桌面操作系统，属于<strong>系统软件</strong>。<br>
+        A Word 是文字处理软件，C Chrome 是浏览器，D Photoshop 是图像处理软件，
+        三者都属于<strong>应用软件</strong>。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 模拟题</span>
+      <span>系统软件 vs 应用软件</span>
+    </div>
+    <div class="exam-q">
+      以下不属于系统软件的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>Linux 操作系统</div>
+      <div class="opt"><span class="letter">B</span>GCC 编译器</div>
+      <div class="opt"><span class="letter">C</span>MySQL 数据库管理系统</div>
+      <div class="opt"><span class="letter">D</span>Microsoft PowerPoint</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a14')">👁 显示答案</button>
+    <div class="answer-box" id="a14">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        <strong>PowerPoint</strong> 是演示文稿软件，属于<strong>应用软件</strong>。<br>
+        A Linux 是操作系统、B GCC 是编译器、C MySQL 是数据库管理系统，三者都属于<strong>系统软件</strong>。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 综合模拟 -->
+  <!-- ================================================================== -->
+  <h2 class="section-title" id="comprehensive"><span class="num">📝</span>综合模拟 —— 跨知识点检测</h2>
+  <p class="kp-text">以下题目综合了本节课多个知识点。</p>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>系统结构综合判断</span>
+    </div>
+    <div class="exam-q">
+      以下关于计算机系统结构的说法中，<strong>不正确</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>CPU 由运算器和控制器组成</div>
+      <div class="opt"><span class="letter">B</span>RAM 断电后数据会丢失，ROM 断电后数据不会丢失</div>
+      <div class="opt"><span class="letter">C</span>1 GB = 1024 MB，1 MB = 1024 KB</div>
+      <div class="opt"><span class="letter">D</span>操作系统属于应用软件</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a15')">👁 显示答案</button>
+    <div class="answer-box" id="a15">
+      <div class="ans">✅ 正确答案：D</div>
+      <div class="explain">
+        D 错——操作系统属于<strong>系统软件</strong>，不是应用软件。<br>
+        A、B、C 都是正确的说法。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>计算机无法启动的原因</span>
+    </div>
+    <div class="exam-q">
+      计算机如果缺少以下哪个部件，将<strong>无法正常启动</strong>？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>内存</div>
+      <div class="opt"><span class="letter">B</span>鼠标</div>
+      <div class="opt"><span class="letter">C</span>U 盘</div>
+      <div class="opt"><span class="letter">D</span>摄像头</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a16')">👁 显示答案</button>
+    <div class="answer-box" id="a16">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        计算机必须要有<strong>内存</strong>才能运行程序、存储正在处理的数据。没有内存，CPU 无法工作。<br>
+        鼠标、U盘、摄像头都是<strong>外围设备</strong>，缺少它们计算机仍能启动（只是功能受限）。<br>
+        来源：分模块知识点训练/1.计算机的基本构成 第3题。
+      </div>
+    </div>
+  </div>
+
+  <div class="exam-block">
+    <div class="exam-header">
+      <span class="exam-badge mock">✏️ 综合模拟</span>
+      <span>设备和软件分类混合</span>
+    </div>
+    <div class="exam-q">
+      以下选项中，<strong>全部属于输出设备</strong>的是？
+    </div>
+    <div class="exam-options">
+      <div class="opt"><span class="letter">A</span>显示器、打印机、音箱</div>
+      <div class="opt"><span class="letter">B</span>键盘、鼠标、扫描仪</div>
+      <div class="opt"><span class="letter">C</span>显示器、键盘、打印机</div>
+      <div class="opt"><span class="letter">D</span>触摸屏、麦克风、摄像头</div>
+    </div>
+    <button class="show-answer-btn" onclick="toggleAnswer('a17')">👁 显示答案</button>
+    <div class="answer-box" id="a17">
+      <div class="ans">✅ 正确答案：A</div>
+      <div class="explain">
+        显示器、打印机、音箱都是<strong>输出设备</strong>。<br>
+        B 全是输入设备；C 中键盘是输入；D 中触摸屏是输入+输出，麦克风和摄像头是输入。
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ================================================================== -->
+  <!-- 小结 -->
+  <!-- ================================================================== -->
+  <div class="summary-box" id="summary">
+    <h3>📌 本节课重点速查表</h3>
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text-sec);">以下是你应该背下来的核心考点：</div>
+    <div class="row">
+      <span class="pill">五大部件：运控存输入出</span>
+      <span class="pill">CPU = 运算器 + 控制器</span>
+      <span class="pill">ALU 负责算，CU 负责指挥</span>
+      <span class="pill">RAM 断电丢数据</span>
+      <span class="pill">ROM 断电不丢</span>
+    </div>
+    <div class="row">
+      <span class="pill green">1 Byte = 8 bit</span>
+      <span class="pill green">1 KB = 1024 B</span>
+      <span class="pill green">1 MB = 1024 KB</span>
+      <span class="pill green">1 GB = 1024 MB</span>
+      <span class="pill green">1 TB = 1024 GB</span>
+    </div>
+    <div class="row">
+      <span class="pill amber">输入设备：键盘/鼠标/扫描仪</span>
+      <span class="pill amber">输出设备：显示器/打印机</span>
+      <span class="pill amber">触摸屏 = 输入+输出</span>
+      <span class="pill red">Windows 是系统软件</span>
+      <span class="pill red">Word 是应用软件</span>
+    </div>
+  </div>
+
+  <!-- ===== 配套资源 ===== -->
+  <div class="summary-box" id="resources">
+    <h3>📎 配套资源推荐</h3>
+    <div style="font-size:.82rem;color:var(--text-sec);margin-bottom:6px;">本章节对应的深入学习资源：</div>
+    <table style="width:100%;font-size:.8rem;">
+      <thead>
+        <tr><th style="text-align:left;padding:6px 0;color:var(--text-ter);">资源</th><th style="text-align:left;padding:6px 0;color:var(--text-ter);">说明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:4px 0;"><strong>📘 C779-04 数据类型、存储单位、指针</strong></td><td style="padding:4px 0;color:var(--text-sec);">含存储单位详解和习题</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-1 计算机的基本构成</strong></td><td style="padding:4px 0;color:var(--text-sec);">系统结构专项单选练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-2 操作系统基本概念</strong></td><td style="padding:4px 0;color:var(--text-sec);">OS 概念与分类练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📝 模块-6 字节与字</strong></td><td style="padding:4px 0;color:var(--text-sec);">存储单位换算专项练习</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 CSP-J初赛考点汇总.md</strong></td><td style="padding:4px 0;color:var(--text-sec);">考点1（数据表示）· 考点17（操作系统）</td></tr>
+        <tr><td style="padding:4px 0;"><strong>📁 模拟卷18套</strong></td><td style="padding:4px 0;color:var(--text-sec);">每套前几题含系统结构类单选</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</main>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  function toggleAnswer(id) { document.getElementById(id).classList.toggle('show'); }
+  window.addEventListener('scroll', function() { document.getElementById('backTop').classList.toggle('visible', window.scrollY > 500); });
+  const targets = document.querySelectorAll('h2.section-title, .objectives');
+  const links = document.querySelectorAll('.nav-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const id = entry.target.getAttribute('id');
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    });
+  }, { rootMargin: '-80px 0px -60% 0px' });
+  targets.forEach(t => observer.observe(t));
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+  document.querySelectorAll('.nav-link').forEach(l => { l.addEventListener('click', () => { if (window.innerWidth <= 900) toggleSidebar(); }); });
+</script>
+</body>
+</html>
