@@ -1083,20 +1083,6 @@
       document.getElementById('app').innerHTML = '<div class="loading-msg">加载失败</div>';
     }
   }
-      content = content.replace(/\n\n/g, '</p><p>');
-      content = '<p>' + content + '</p>';
-      return `
-        <div class="page">
-          <div class="tmpl-detail-container">
-            <a class="tmpl-back" href="#/templates">← 返回模版库</a>
-            ${content}
-          </div>
-        </div>
-      `;
-    } catch {
-      return '<div class="page" style="text-align:center;padding:80px;color:var(--text-secondary);">加载失败</div>';
-    }
-  }
 
   // ========== Pages ==========
 
