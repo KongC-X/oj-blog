@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 数组</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+<nav class="sidebar">
+  <div class="sidebar-logo">GESP C++ 三级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：情境导入</a>
+    <a class="nav-link" href="#step2">第二步：概念建构</a>
+    <a class="nav-link" href="#step3">第三步：代码实战</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：陷阱警示</a>
+    <a class="nav-link" href="#step6">第六步：真题挑战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+<main class="main-content">
+<div class="content-wrapper">
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 数组</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">One-Dimensional Arrays — 连续内存中的数据序列</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(139,92,246,.2);padding:6px 16px;border-radius:20px">⚡ 8选择题+9判断题</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均2~3道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 约8%分值</span>
+  </div>
+</div>
+
+<!-- Step 1: 情境导入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：情境导入 — 直观比喻</h2>
+<div class="card accent"><div class="card-title">🎯 储物柜比喻</div>
+<p>想象学校走廊有一排 <strong>编号的储物柜</strong>，编号从 0 开始：<span class="mono">柜子[0]、柜子[1]、柜子[2]...</span></p>
+<p>每个柜子放一件物品。你可以：<strong>打开柜子看里面有什么</strong>（读取），也可以<strong>往柜子里放新东西</strong>（写入），还可以<strong>清点所有柜子</strong>（遍历）。</p>
+<p>在 C++ 中，<span class="key-point">数组</span> 就是一排编号的储物柜，每个"柜子"存放一个 <strong>相同类型</strong> 的数据。柜子编号就是<strong>下标</strong>，从 0 开始，最后一个柜子编号是 n-1。</p>
+<div class="highlight-box blue"><div class="hb-title">📦 数组 = 一排编号储物柜</div>
+<p style="margin:0"><span class="key-point">下标</span> 从 0 开始 → <span class="key-point">访问</span> arr[i] → <span class="key-point">个数</span> 固定编译时确定</p></div>
+</div>
+
+<!-- Step 2: 概念建构 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：概念建构</h2>
+<div class="card purple"><div class="card-title">🔵 数组定义方式</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>声明语句</th><th>含义</th><th>下标范围</th></tr></thead>
+<tbody>
+<tr><td class="mono">int arr[5];</td><td>声明5个int的数组</td><td>0 ~ 4</td></tr>
+<tr><td class="mono">int arr[4] = {1,2,3};</td><td>初始化部分元素，arr[3]自动为0</td><td>0 ~ 3</td></tr>
+<tr><td class="mono">int a[] = {1,2,3,4,5};</td><td>省略大小，编译器自动推断为5</td><td>0 ~ 4</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary"><div class="card-title">📐 三个核心特性</div>
+<ul>
+<li><strong>内存连续存放</strong>：数组元素在内存中地址相邻，a[0] 紧挨着 a[1]，a[1] 紧挨着 a[2]...</li>
+<li><strong>编译时确定大小</strong>：C++标准数组的大小必须在编译时就确定，不能用变量做大小（如 <code>int n; cin>>n; int a[n];</code> 在标准C++中不允许）</li>
+<li><strong>数组名是常量</strong>：数组名代表首地址，不能被赋值（不能写 <code>arr = arr2;</code>），但可以修改每个元素（<code>arr[2] = 100;</code>）</li>
+</ul>
+</div>
+
+<!-- Step 3: 代码实战 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码实战</h2>
+<div class="card success"><div class="card-title">📝 数组完整操作演示</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // 1. 定义并初始化数组 ← 高频考点！
+    int arr[6] = {1, 2, 3, 4, 5, 6};
+
+    // 2. 遍历数组（依次访问每个元素）
+    cout << "原数组: ";
+    for (int i = 0; i &lt; 6; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+
+    // 3. 交换相邻元素（加法交换法）← 高频考点！
+    for (int i = 0; i &lt; 6; i += 2) {
+        arr[i] = arr[i] + arr[i+1];      // 步骤A: a = a + b
+        arr[i+1] = arr[i] - arr[i+1];    // 步骤B: b = a - b
+        arr[i] = arr[i] - arr[i+1];      // 步骤C: a = a - b
+    }
+    cout &lt;&lt; "交换后: ";
+    for (int i = 0; i &lt; 6; i++) {
+        cout &lt;&lt; arr[i] &lt;&lt; " ";
+    }
+    // 输出: 2 1 4 3 6 5
+    cout &lt;&lt; endl;
+
+    // 4. 数组下标越界：编译不会报错！← 高频考点！
+    // arr[6] = 100;   // 越界！下标最大为5
+    // cout &lt;&lt; arr[10]; // 越界！运行时可能崩溃
+
+    return 0;
+}</code></pre></div>
+</div>
+
+<div class="card teal"><div class="card-title">🔍 代码要点逐行解读</div>
+<ul>
+<li><strong>int arr[6] = {1,2,3,4,5,6};</strong> — 定义长度为6的整型数组并初始化所有元素</li>
+<li><strong>for (int i = 0; i < 6; i++)</strong> — 遍历数组的标准写法，i从0到5（len-1）</li>
+<li><strong>交换相邻元素</strong> — 运用加法交换法：a=a+b, b=a-b, a=a-b 完成交换</li>
+<li><strong>越界访问</strong> — C++编译器不检查下标越界，运行时行为未定义</li>
+</ul>
+</div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+<div class="card flat"><div class="card-title">📐 交换相邻元素 — 手工模拟过程表</div>
+<p>初始数组：<span class="mono">{1, 2, 3, 4, 5, 6}</span>，执行相邻两两交换（i每次+2）。</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>轮次</th><th>i</th><th>操作</th><th>a[i] 变化</th><th>a[i+1] 变化</th><th>数组当前状态</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td>—</td><td>—</td><td>—</td><td>—</td><td class="mono">{1, 2, 3, 4, 5, 6}</td></tr>
+<tr><td>第1轮A</td><td>0</td><td>arr[0]=arr[0]+arr[1]</td><td class="mono">1+2=3</td><td>2</td><td class="mono">{3, 2, 3, 4, 5, 6}</td></tr>
+<tr><td>第1轮B</td><td>0</td><td>arr[1]=arr[0]-arr[1]</td><td>3</td><td class="mono">3-2=1</td><td class="mono">{3, 1, 3, 4, 5, 6}</td></tr>
+<tr><td>第1轮C</td><td>0</td><td>arr[0]=arr[0]-arr[1]</td><td class="mono">3-1=2</td><td>1</td><td class="mono">{2, 1, 3, 4, 5, 6}</td></tr>
+<tr><td>第2轮A</td><td>2</td><td>arr[2]=arr[2]+arr[3]</td><td class="mono">3+4=7</td><td>4</td><td class="mono">{2, 1, 7, 4, 5, 6}</td></tr>
+<tr><td>第2轮B</td><td>2</td><td>arr[3]=arr[2]-arr[3]</td><td>7</td><td class="mono">7-4=3</td><td class="mono">{2, 1, 7, 3, 5, 6}</td></tr>
+<tr><td>第2轮C</td><td>2</td><td>arr[2]=arr[2]-arr[3]</td><td class="mono">7-3=4</td><td>3</td><td class="mono">{2, 1, 4, 3, 5, 6}</td></tr>
+<tr><td>第3轮A</td><td>4</td><td>arr[4]=arr[4]+arr[5]</td><td class="mono">5+6=11</td><td>6</td><td class="mono">{2, 1, 4, 3, 11, 6}</td></tr>
+<tr><td>第3轮B</td><td>4</td><td>arr[5]=arr[4]-arr[5]</td><td>11</td><td class="mono">11-6=5</td><td class="mono">{2, 1, 4, 3, 11, 5}</td></tr>
+<tr><td>第3轮C</td><td>4</td><td>arr[4]=arr[4]-arr[5]</td><td class="mono">11-5=6</td><td>5</td><td class="mono">{2, 1, 4, 3, 6, 5}</td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box green"><div class="hb-title">✅ 最终结果</div>
+<p style="margin:0">数组由 <span class="mono">{1, 2, 3, 4, 5, 6}</span> 变为 <span class="mono">{2, 1, 4, 3, 6, 5}</span>，实现了三对相邻元素的交换。</p></div>
+</div>
+
+<!-- Step 5: 陷阱警示 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：陷阱警示</h2>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱1：越界访问编译不报错，运行崩溃</div>
+<p>C++编译器<strong>不会检查</strong>数组下标是否越界。程序可能"正常"运行，也可能直接崩溃，甚至产生诡异结果。这是初学者最容易犯的致命错误。</p>
+<p style="margin:0"><span class="key-point danger">错误示范</span> <code class="mono">int arr[5]; arr[5] = 100;</code> → 下标应该是 0~4，5已经越界！</p>
+</div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱2：下标从 0 开始，不是 1</div>
+<p>长度为 n 的数组，有效下标范围是 <strong>0 到 n-1</strong>。初学者经常以为最后一个元素是 <code>arr[n]</code>，实际上 <code>arr[n]</code> 是越界访问。</p>
+<p style="margin:0"><span class="key-point danger">易错点</span> <code class="mono">int arr[5];</code> 的最后一个元素是 <span class="key-point success">arr[4]</span>，<strong>不是</strong> arr[5]！</p>
+</div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱3：数组名是常量，不能赋值</div>
+<p>数组名代表数组在内存中的首地址，是<strong>常量</strong>。可以修改数组中某个元素的值，但不能对数组名赋值。</p>
+<p style="margin:0"><span class="key-point success">正确的</span> <code class="mono">arr[2] = 100;</code>（修改元素）&nbsp;&nbsp;<span class="key-point danger">错误的</span> <code class="mono">arr = {1,2,3};</code>（不能整体赋值）</p>
+</div>
+
+<!-- Step 6: 真题挑战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题挑战</h2>
+<h3>选择题（共8题，轮换色：purple→pink→teal→indigo→orange）</h3>
+
+<div class="card purple">
+<div class="card-title">第1题 · 数组基本概念（2025/09 第3题）</div>
+<p>以下关于C++数组的说法，错误的是（ ）</p>
+<p>A. 数组的下标通常从0开始 &nbsp; B. int arr[5]; 声明了一个包含5个整数的数组<br>C. 数组的大小必须在编译时确定 &nbsp; D. 可以通过 arr[5] 来访问 int arr[5]; 数组的最后一个元素</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：arr[5]有5个元素，下标0~4，arr[<strong>4</strong>]才是最后一个元素，arr[5]是越界访问。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 数组初始化和赋值（2025/09 第11题）</div>
+<p>执行以下代码后，数组 arr 的内容是（ ）</p>
+<div class="code-block"><pre><code class="language-cpp">int arr[4] = {1, 2, 3};
+arr[3] = arr[0] + arr[2];</code></pre></div>
+<p>A. {1, 2, 3, 3} &nbsp; B. {1, 2, 3, 4} &nbsp; C. {1, 2, 3, 5} &nbsp; D. {1, 2, 3, 6}</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：arr[3]=arr[0]+arr[2]=1+3=<strong>4</strong>。注意数组中未初始化的元素arr[3]初始为0，后被赋值。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 下标越界行为（2026/03 第3题）</div>
+<p>关于下列正确的程序段，说法正确的是（ ）</p>
+<p>A. 数组下标越界访问会产生编译错误<br>B. 数组下标越界访问会抛出异常<br>C. 数组下标越界访问不会产生编译错误，但运行时行为未定义<br>D. 数组下标越界访问会自动扩展数组大小</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：C++不检查数组下标越界，编译能通过，但运行时可能崩溃或产生未定义行为。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 一维数组特性（2025/12 第2题）</div>
+<p>以下关于标准C++一维数组的描述，哪一项是错误的？（ ）</p>
+<p>A. 数组的下标从0开始<br>B. 数组在内存中是连续存放的<br>C. 数组的长度只能在运行时才能确定<br>D. 可以在程序中修改数组某个元素的值</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：C错误，标准C++数组长度必须在<strong>编译时</strong>确定，不能使用运行时的变量值作为数组大小。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · 数组定义语法（2023/12 第1题）</div>
+<p>下面C++数组的定义中，会丢失数据的是（ ）</p>
+<p>A. char dict_key[] = {'p','t','o'};<br>B. int dict_value[] = {33,22,11};<br>C. char dict_name[]={'chen','wang','zhou'};<br>D. float dict_value[]={3,2,1};</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：C错误，字符数组不能用单引号括字符串（多字符常量），单引号只能括<strong>单个字符</strong>。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · 代码错误数量（2024/06 第11题）</div>
+<p>以下C++代码中存在几处错误（ ）</p>
+<div class="code-block"><pre><code class="language-cpp">const int SIZE = 5;
+int arr[SIZE];
+for (int i = 0; i &lt;= SIZE; i++) {
+    arr[i] = i * 2;
+}
+cout &lt;&lt; arr[SIZE] &lt;&lt; endl;</code></pre></div>
+<p>A. 0处 &nbsp; B. 1处 &nbsp; C. 2处 &nbsp; D. 3处</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：① <code>i&lt;=SIZE</code> 导致当i=5时越界写入；② <code>arr[SIZE]</code> 访问下标5越界。共<strong>2处</strong>错误。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · 数组元素运算（2025/12 第7题）</div>
+<p>以下代码执行后，输出的结果是（ ）</p>
+<div class="code-block"><pre><code class="language-cpp">int arr[5] = {1, 2, 3, 4, 5};
+int p = arr[1];
+cout &lt;&lt; (p + 2) &lt;&lt; endl;</code></pre></div>
+<p>A. 1 &nbsp; B. 2 &nbsp; C. 3 &nbsp; D. 4</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：arr[1]=2（下标从0开始），p=2，p+2=<strong>4</strong>。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · 相邻元素交换（2025/12 第8题）</div>
+<p>以下代码执行后，数组 arr 的内容是（ ）</p>
+<div class="code-block"><pre><code class="language-cpp">int arr[6] = {1, 2, 3, 4, 5, 6};
+for (int i = 0; i &lt; 6; i += 2) {
+    arr[i] = arr[i] + arr[i+1];
+    arr[i+1] = arr[i] - arr[i+1];
+    arr[i] = arr[i] - arr[i+1];
+}</code></pre></div>
+<p>A. {2,1,4,3,6,5} &nbsp; B. {1,2,3,4,5,6}<br>C. {3,1,4,2,5,3} &nbsp; D. {1,3,2,5,4,6}</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：加法交换法：每次循环交换相邻两个元素。{1,2}→{2,1}，{3,4}→{4,3}，{5,6}→{6,5}，最终结果为 <strong>{2,1,4,3,6,5}</strong>。
+</div></div>
+</div>
+
+<h3>判断题（共9题，轮换色：indigo→orange→purple→pink→teal→indigo→orange→purple→pink）</h3>
+
+<div class="card indigo">
+<div class="card-title">判断题第1题 · 内存存放（2025/12）</div>
+<p>数组的所有元素在内存中可以不连续存放。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>数组元素在内存中<strong>一定连续</strong>存放，这是数组最基本的特性。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">判断题第2题 · 数组整体赋值</div>
+<p>C++中可以对数组和数组的每个基础类型的元素赋值。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>数组名不能作为<strong>整体</strong>被赋值（如 arr = arr2; 是非法的），但可以修改每个独立的元素。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第3题 · 数组大小可调</div>
+<p>在C++语言中，字符数组被定义时，它的大小可以调整。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>数组大小在定义时确定，<strong>不能改变</strong>（标准数组是编译时静态大小）。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第4题 · 查找最小值</div>
+<p>对定义的数组 int a[7]={2,0,2,4,3,1,6}，可以用简单循环就找到其中最小的整数。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>遍历数组，用变量记录当前最小值，一次遍历即可找到（最小值=0）。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第5题 · 越界编译错误</div>
+<p>在C++语言中，长度为n的数组，访问下标为n的元素会引起编译错误。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>下标越界<strong>不会</strong>引起编译错误，运行行为未定义（可能崩溃、可能错误结果）。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">判断题第6题 · 下标与内存关系</div>
+<p>在C++语言中，数组下标的大小决定元素在逻辑上的先后顺序，与元素在内存中位置的先后顺序无关。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>数组下标的大小<strong>直接对应</strong>元素在内存中的位置顺序，下标0在最低地址，依次递增。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">判断题第7题 · 必须指定大小</div>
+<p>在C++语言中，定义数组时，[]中必须指定元素个数。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br><code>int a[] = {1,2,3};</code> 可以不指定大小，编译器会根据初始化列表自动推断为3。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第8题 · 数组名不可改变</div>
+<p>在C++中，数组名不能改变，数组名不能被赋值。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>数组名是<strong>常量</strong>，代表数组首地址，不能被赋值。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第9题 · 省略大小的初始化</div>
+<p>在C++中，int a[] = {1, 2, 3, 4, 5}; 可以定义一个包含5个元素的整型数组。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>编译器根据初始化列表中的5个值，自动推断数组大小为5。</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 数组速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>规则/写法</th><th>示例/说明</th></tr></thead>
+<tbody>
+<tr><td>定义数组</td><td class="mono">int arr[5];</td><td>5个int，下标0~4</td></tr>
+<tr><td>初始化</td><td class="mono">int a[4] = {1,2,3};</td><td>a[3]自动为0</td></tr>
+<tr><td>省略大小</td><td class="mono">int a[] = {1,2,3};</td><td>编译器推断大小为3</td></tr>
+<tr><td>遍历数组</td><td class="mono">for (int i=0; i&lt;n; i++)</td><td>i从0到n-1</td></tr>
+<tr><td>内存特性</td><td>连续存放</td><td>a[0]紧挨a[1]</td></tr>
+<tr><td>大小特性</td><td>编译时确定</td><td>不能用变量做大小</td></tr>
+<tr><td>越界行为</td><td>编译不报错，运行未定义</td><td>可能崩溃或错误结果</td></tr>
+<tr><td>数组名</td><td>常量，不能赋值</td><td>arr = arr2; 是非法的</td></tr>
+<tr><td>下标规则</td><td>从0开始，到n-1结束</td><td>最后一个元素是arr[n-1]</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div></main>
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

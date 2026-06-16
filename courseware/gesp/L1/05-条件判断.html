@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP一级培训 · 条件判断</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">🔀</span> GESP C++ · 一级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="04-运算符.html">← 运算符</a>
+        <a class="nav-link" href="06-循环.html">循环 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">🔀 GESP C++ 一级 · 条件判断</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Conditional Statements &amp; Logic</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 8 道选择题 + 1 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场约 1 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 8%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：条件无处不在</h2>
+
+<div class="card accent">
+<div class="card-title">📅 场景一：星期几推算</div>
+<p>今天是<strong>星期一</strong>，再过 <strong>6 天</strong>是星期几？慢慢数也能数出来，但如果用数学表达：<span class="mono">(1 + 6) % 7 = 0</span>，余数为 <strong>0</strong> 代表<strong>星期日</strong>。</p>
+<p>这就是 <span class="key-point">模运算</span> 的生活应用——用程序<strong>自动判断</strong>星期几，而不是用手指头数。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🗓️ 场景二：闰年判断</div>
+<p>为什么 2024 年 2 月有 29 天，而 2025 年只有 28 天？闰年的规则要用<strong>几个条件组合</strong>才能判断：能被 4 整除，但不能被 100 整除——除非还能被 400 整除。</p>
+<p>这就是 <span class="key-point">条件组合</span> 的趣味——if / else 加 && / ||，把复杂的逻辑变成清晰的代码。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>掌握 if-else 语法及多分支嵌套结构</li>
+    <li>理解逻辑运算符 &&、||、! 的真值表与优先级</li>
+    <li>熟练运用三目运算符简化简单二选一</li>
+    <li>能用取模 + 条件判断解决星期几 / 月份 / 模式序列问题</li>
+    <li>正确提取百位、十位、个位（高频填空！）</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📝 if-else 语法</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 基本结构</div>
+<p><span class="mono">if (条件) { ... } else if (条件) { ... } else { ... }</span>——条件为真执行对应分支，所有条件都不满足则执行 else。</p>
+</div>
+
+<div class="card purple">
+<div class="card-title">🟣 多分支嵌套</div>
+<p>可以用 <span class="mono">else if</span> 串联多个条件判断。花括号内只有一条语句时可省略，但建议始终保留花括号以提高可读性。</p>
+</div>
+
+<h3>🧮 逻辑运算真值表</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:15%">A</th><th style="width:15%">B</th><th style="width:23%">A && B（与）</th><th style="width:23%">A || B（或）</th><th style="width:24%">!A（非）</th></tr></thead>
+<tbody>
+<tr><td>true</td><td>true</td><td><span class="key-point success">true</span></td><td><span class="key-point success">true</span></td><td>false</td></tr>
+<tr><td>true</td><td>false</td><td><span class="key-point danger">false</span></td><td><span class="key-point success">true</span></td><td>false</td></tr>
+<tr><td>false</td><td>true</td><td><span class="key-point danger">false</span></td><td><span class="key-point success">true</span></td><td>true</td></tr>
+<tr><td>false</td><td>false</td><td><span class="key-point danger">false</span></td><td><span class="key-point danger">false</span></td><td>true</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 优先级口诀</div>
+<p><strong>!（非） > &&（与） > ||（或）</strong>——括号可以改变优先级，<span class="mono">a || b && c</span> 等价于 <span class="mono">a || (b && c)</span>。不确定时就加括号！</p>
+</div>
+
+<h3>🎯 三目运算符</h3>
+<div class="card teal">
+<div class="card-title">🟢 格式：条件 ? 表达式1 : 表达式2</div>
+<p>简洁的一行写法，适合简单的二选一赋值或输出。例如：<span class="mono">(a > b) ? a : b</span> 取最大值，<span class="mono">(isLeap ? "闰年" : "平年")</span> 输出闰年判断结果。</p>
+</div>
+
+<h3>📊 经典应用表</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">应用场景</th><th style="width:45%">关键代码</th><th style="width:30%">注意事项</th></tr></thead>
+<tbody>
+<tr><td><strong>星期几推算</strong></td><td><span class="mono">(nowDay + afterDays) % 7</span></td><td>0 = 星期日</td></tr>
+<tr><td><strong>闰年判断</strong></td><td><span class="mono">y%400==0 || (y%4==0 && y%100!=0)</span></td><td>两个条件缺一不可</td></tr>
+<tr><td><strong>因数判断</strong></td><td><span class="mono">n % i == 0</span></td><td>i 是 n 的因数</td></tr>
+<tr><td><strong>数位·百位</strong></td><td><span class="mono">n / 100</span></td><td>整除取商</td></tr>
+<tr><td><strong>数位·十位</strong></td><td><span class="mono">(n / 10) % 10</span></td><td>⭐ 高频填空！</td></tr>
+<tr><td><strong>数位·个位</strong></td><td><span class="mono">n % 10</span></td><td>取余数</td></tr>
+<tr><td><strong>对称数判断</strong></td><td><span class="mono">n/100 == n%10</span></td><td>百位 == 个位</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>📅 星期几推算</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔹 核心代码</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 星期几推算（核心考点！）
+int nowDay = 1;       // 0=周日, 1=周一, ..., 6=周六
+int afterDays = 6;
+int D = (nowDay + afterDays) % 7;   // 关键公式！
+
+if (D == 0)
+    cout << "星期日" << endl;
+else
+    cout << "星期" << D << endl;
+// 输入 1 + 6 = 7 → 7%7 = 0 → 输出: 星期日</code></pre>
+</div>
+
+<h3>🔢 数位提取（百位 / 十位 / 个位）</h3>
+
+<div class="highlight-box purple">
+<div class="hb-title">🟣 三位数的每一位怎么拿？</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int n = 314;
+int a = n / 100;          // 百位 = 3
+int b = (n / 10) % 10;    // 十位 = 1  ← 高频填空！
+int c = n % 10;           // 个位 = 4
+
+// 十位提取原理：n/10 去掉个位得 31，再 %10 取最后一位得 1</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 记住</div>
+<p><strong>百位 = n/100、十位 = (n/10)%10、个位 = n%10</strong>——这三行在考试中反复出现，尤其是十位提取。</p>
+</div>
+
+<h3>🏗️ 完整综合示例</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+int main() {
+    // ===== 星期几推算 =====
+    int nowDay = 1, afterDays = 6;
+    int D = (nowDay + afterDays) % 7;
+    if (D == 0) cout << "星期日" << endl;
+    else        cout << "星期" << D << endl;
+
+    // ===== 闰年判断 =====
+    int year = 2024;
+    if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+        cout << "闰年" << endl;
+    else
+        cout << "平年" << endl;
+
+    // ===== 数位提取 =====
+    int n = 314;
+    cout << "百位:" << n / 100
+         << " 十位:" << (n / 10) % 10
+         << " 个位:" << n % 10 << endl;
+    return 0;
+}</code></pre>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟：星期推算跟踪</h2>
+
+<div class="think-box">
+<div class="tb-title">🖐 模拟场景</div>
+<p>已知今天是<strong>星期一</strong>（nowDay=1），问再过 <strong>6 天</strong>（afterDays=6）是星期几？</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:8%">步骤</th><th style="width:25%">表达式</th><th style="width:20%">计算过程</th><th style="width:12%">结果</th><th style="width:35%">含义</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>①</strong></td>
+    <td><span class="mono">nowDay</span></td>
+    <td>已知</td>
+    <td><strong>1</strong></td>
+    <td>星期一</td>
+</tr>
+<tr>
+    <td><strong>②</strong></td>
+    <td><span class="mono">afterDays</span></td>
+    <td>已知</td>
+    <td><strong>6</strong></td>
+    <td>过 6 天</td>
+</tr>
+<tr>
+    <td><strong>③</strong></td>
+    <td><span class="mono">nowDay + afterDays</span></td>
+    <td>1 + 6</td>
+    <td><strong>7</strong></td>
+    <td>总共偏移天数</td>
+</tr>
+<tr>
+    <td><strong>④</strong></td>
+    <td><span class="mono">(nowDay + afterDays) % 7</span></td>
+    <td>7 % 7</td>
+    <td><strong>0</strong></td>
+    <td>余数为 0</td>
+</tr>
+<tr>
+    <td><strong>⑤</strong></td>
+    <td><span class="mono">D == 0</span></td>
+    <td>条件判断</td>
+    <td><span class="key-point success">true</span></td>
+    <td>进入 if 分支</td>
+</tr>
+<tr>
+    <td><strong>⑥</strong></td>
+    <td>输出</td>
+    <td>—</td>
+    <td><strong>"星期日"</strong></td>
+    <td>最终答案</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">✅ 关键洞察</div>
+<p>模 7 余 0 不是"没有"，而是对应<strong>星期日</strong>（循环的终点）。一周 7 天从周日(0)到周六(6)，共 7 个状态循环。</p>
+</div>
+
+<div class="formula-box">
+<strong>口诀：模七为零是星期日，其余直接输出星期几</strong>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：模 7 = 0 为星期日（不是星期零）</div>
+<p>"余数为 0 就是星期零"或"余数为 0 无意义"都是错误认知。</p>
+<p>一周从周日(0)到周六(6)共 7 天，<span class="mono">(N+M)%7 == 0</span> 对应的是<strong>星期日</strong>。如果误以为余数 1=周一、余数 7 才=周日，就会错。记忆：<span class="key-point danger">"模七为零是星期日"</span>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：判断偶数的正确方式是 N%2==0</div>
+<p><span class="mono">N % 4 == 2</span> 只能判断部分偶数（如 2, 6, 10…），漏掉了 4, 8, 12… 等能被 4 整除的偶数。</p>
+<p><strong>正确写法是 <span class="mono">N % 2 == 0</span></strong>，这才是所有偶数的充要条件。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：十位提取是 (n/10)%10，不是 n/100</div>
+<p>以 n=314 为例：<span class="mono">n/100 = 3</span> 是百位，<span class="mono">(n/10)%10 = 31%10 = 1</span> 才是十位。</p>
+<p><span class="key-point danger">常见混淆</span>：把百位公式当成十位，或写出 <span class="mono">(n%10)/10</span> 得到 0（个位再除十）。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：&& 优先级高于 ||，需加括号</div>
+<p><span class="mono">a || b && c</span> 等价于 <span class="mono">a || (b && c)</span>，因为 && 优先级高于 ||。</p>
+<p>如果不加括号，可能产生语义错误。闰年公式必须加括号：<span class="mono">y%400==0 || (y%4==0 && y%100!=0)</span>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：if 条件不一定是 bool 类型</div>
+<p>C++ 中 if 条件可以是任意表达式，非零值为 true，零值为 false。所以 <span class="mono">if(5)</span>、<span class="mono">if(-1)</span>、<span class="mono">if(x-3)</span> 都是合法的。</p>
+<p><span class="key-point danger">考试重点</span>："if 条件必须是 bool 类型"是<strong>错误的</strong>。int 会隐式转换为 bool！</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 考点一：星期计算 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：星期计算</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024/03 第8题）</div>
+<p>已知今天是星期 N（用整数 0~6 表示，0 为星期日），M 天后是星期几？</p>
+<p><strong>A.</strong> 输出 N+M<br>
+<strong>B.</strong> 计算 (N+M)%7，结果为 0 输出"星期日"<br>
+<strong>C.</strong> 计算 (M)%7，不为 0 输出星期几<br>
+<strong>D.</strong> 输出 M-N</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 核心公式 <span class="mono">D=(N+M)%7</span>，当 <span class="mono">D==0</span> 时输出星期日。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/06 第8题）</div>
+<p>今天是星期一，N 天后又是星期几？以下条件中能判断 N 天后是否回到星期一的是？</p>
+<p><strong>A.</strong> N%7==1<br>
+<strong>B.</strong> N%7==0<br>
+<strong>C.</strong> N%7==6<br>
+<strong>D.</strong> N/7==0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 当 <span class="mono">N%7==0</span> 时，经过的天数是 7 的倍数，会回到同一个星期几。</div></div>
+</div>
+
+<!-- 考点二：条件组合 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：条件组合</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025/03 第8题）</div>
+<p>下列哪个条件表达式能正确表示"能被 3 整除的偶数"？</p>
+<p><strong>A.</strong> <span class="mono">n%2==0 || n%3==0</span><br>
+<strong>B.</strong> <span class="mono">n%6==0</span><br>
+<strong>C.</strong> <span class="mono">n%2!=0 && n%3==0</span><br>
+<strong>D.</strong> <span class="mono">n%2==0 && n%3==0</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 偶数 = 能被 2 整除，且能被 3 整除 → <span class="mono">n%2==0 && n%3==0</span>。B 虽等价于能被 6 整除，但 D 是直接表达。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024/12 第8题）</div>
+<p>以下程序段中，关于 <span class="mono">if(N > M) cout << N - M; else cout << M - N;</span> 的描述正确的是？</p>
+<p><strong>A.</strong> 输出结果可能为负数<br>
+<strong>B.</strong> 输出结果一定 ≥ 0<br>
+<strong>C.</strong> 输出结果一定等于 N<br>
+<strong>D.</strong> 输出结果一定等于 M</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 无论 N>M 还是 M>N，都是大数减小数，结果为绝对值，一定 ≥ 0。</div></div>
+</div>
+
+<!-- 考点三：模式计算 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：模式计算</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2025/06 第8题）</div>
+<p>当前是 9 月，N 个月后是几月？以下表达式正确的是？</p>
+<p><strong>A.</strong> <span class="mono">9 + N</span><br>
+<strong>B.</strong> <span class="mono">(9 + N) / 12</span><br>
+<strong>C.</strong> <span class="mono">9 + N % 12</span><br>
+<strong>D.</strong> <span class="mono">(9 + N) % 12</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 12 进制循环与星期几的 7 进制同理，<span class="mono">(9+N)%12</span>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2025/09 第8题）</div>
+<p>已知一周期序列为 1, 2, 3, 2, 1, 2, 3, 2, ...（"1232" 循环），求第 N 个数字的表达式是？</p>
+<p><strong>A.</strong> <span class="mono">N % 4</span> 配合查表<br>
+<strong>B.</strong> <span class="mono">N % 3</span><br>
+<strong>C.</strong> <span class="mono">N / 4</span><br>
+<strong>D.</strong> <span class="mono">N % 2</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 周期长度为 4（1232 四个数循环），用 <span class="mono">N%4</span> 定位在周期中的位置。</div></div>
+</div>
+
+<!-- 考点四：数位拆分 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：数位拆分</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024/09 第5题）</div>
+<p>对于一个三位整数 i，下列选项中能得到其十位数字的是？</p>
+<p><strong>A.</strong> <span class="mono">i / 10</span><br>
+<strong>B.</strong> <span class="mono">(i / 10) % 10</span><br>
+<strong>C.</strong> <span class="mono">i % 10</span><br>
+<strong>D.</strong> <span class="mono">i / 100</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 十位提取 = <span class="mono">(i/10)%10</span>，先 /10 去掉个位，再 %10 取末位。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025/03 第9题）</div>
+<p>一个 6 位数，其高三位组成的数与低三位组成的数之差是 314 的倍数。下列条件表达式正确的是？</p>
+<p><strong>A.</strong> <span class="mono">(高位 + 低位) % 314 == 0</span><br>
+<strong>B.</strong> <span class="mono">(高位 - 低位) % 314 == 0</span><br>
+<strong>C.</strong> <span class="mono">高位 / 314 == 低位</span><br>
+<strong>D.</strong> <span class="mono">高位 % 314 == 低位 % 314</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 差是 314 的倍数，即 <span class="mono">(高 - 低) % 314 == 0</span>。</div></div>
+</div>
+
+<!-- 判断题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--danger)">
+<div class="card-title" style="color:#b91c1c">📌 判断题</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2026/03 判断题）</div>
+<p>if 语句的条件表达式必须是 bool 类型。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong> · C++ 中 if 条件可以是任意表达式，非零为 true，零为 false。int 等类型会隐式转换为 bool。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<h3>📊 核心公式速查</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">场景</th><th style="width:45%">公式</th><th style="width:30%">注意事项</th></tr></thead>
+<tbody>
+<tr><td><strong>星期几推算</strong></td><td><span class="mono">(start + offset) % 7</span></td><td>0 = 星期日</td></tr>
+<tr><td><strong>闰年判断</strong></td><td><span class="mono">y%400==0 || (y%4==0 && y%100!=0)</span></td><td>两个条件缺一不可</td></tr>
+<tr><td><strong>偶数判断</strong></td><td><span class="mono">n % 2 == 0</span></td><td>不要用 %4==2</td></tr>
+<tr><td><strong>百位提取</strong></td><td><span class="mono">n / 100</span></td><td>整除取商</td></tr>
+<tr><td><strong>十位提取</strong></td><td><span class="mono">(n / 10) % 10</span></td><td>⭐ 高频考点！</td></tr>
+<tr><td><strong>个位提取</strong></td><td><span class="mono">n % 10</span></td><td>取余数</td></tr>
+<tr><td><strong>对称数</strong></td><td><span class="mono">n/100 == n%10</span></td><td>百位 == 个位</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔗 逻辑运算速查</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">运算符</th><th style="width:25%">含义</th><th style="width:25%">为 true 的条件</th><th style="width:25%">优先级</th></tr></thead>
+<tbody>
+<tr><td><strong>&&</strong></td><td>逻辑与</td><td>两边都为 true</td><td>中</td></tr>
+<tr><td><strong>||</strong></td><td>逻辑或</td><td>至少一边为 true</td><td>低</td></tr>
+<tr><td><strong>!</strong></td><td>逻辑非</td><td>原值为 false</td><td><strong>最高</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"星期七天模运算，闰年四百再四判；偶数取二不取四，十位先除十再取模；与或非按优先级，if 不一定要布尔。"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 唯一分解定理与辗转相除法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="02-素数筛法.html">素数筛法 →</a>
+        <a class="nav-link" href="03-高精度运算.html">高精度运算 →</a>
+        <a class="nav-link" href="04-链表.html">链表 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">💎 GESP C++ 五级 · 唯一分解定理与辗转相除法</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Fundamental Theorem of Arithmetic &amp; Euclidean Algorithm</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 16 道选择题 + 8 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场必考，年均 2~3 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 12%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：分披萨与积木王国</h2>
+
+<div class="card accent">
+<div class="card-title">🍕 场景一：公平分披萨</div>
+<p>小明和小红一起点了披萨，长方形的披萨长 84cm、宽 60cm。他们想切成 <strong>尽可能大的正方形小块</strong>，每块大小相同，且不许有剩余。边长最大能是多少？</p>
+<p>这个问题的本质是：<strong>找一个能同时整除 84 和 60 的最大数</strong>——这就是 <span class="key-point">最大公约数 (GCD)</span>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🧱 场景二：积木王国</div>
+<p>用乐高积木搭一座塔。最小的积木是「质数砖」，比如 <span class="mono">2</span> 号砖、<span class="mono">3</span> 号砖、<span class="mono">5</span> 号砖… 任何一座塔都可以拆成质数砖的堆叠，而且 <strong>拆分方式是唯一的</strong>（不计顺序）。</p>
+<p>比如：塔 <span class="mono">30</span> 只能拆成 <span class="mono">2 × 3 × 5</span>，不能是 <span class="mono">5 × 6</span>（因为 6 不是质数砖）。这就是 <span class="key-point">唯一分解定理</span>。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>理解为何"质数是整数的基本构建块"</li>
+    <li>掌握辗转相除法求 GCD 的两种写法（循环 / 递归）</li>
+    <li>牢记 LCM = a / gcd(a,b) × b（先除后乘防溢出）</li>
+    <li>能手工模拟 gcd(84, 60) 的每一步</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📐 唯一分解定理（算术基本定理）</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 定义</div>
+<p><strong>任何一个大于 1 的正整数，要么本身是质数，要么可以唯一地分解为一系列质数的乘积（不计排列顺序）。</strong></p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 关键词解析</div>
+<p>「<strong>大于 1</strong>」——1 既不是质数也不是合数，不参与分解。<br>
+「<strong>质数的乘积</strong>」——分解出来的因子必须是质数，不能有合数因子。<br>
+「<strong>不计排列顺序</strong>」——2×3 和 3×2 视为同一种分解。</p>
+<p style="margin-top:10px"><strong>推论：质数是整数的"基本构建块"</strong>，就像化学元素构成化合物一样。</p>
+</div>
+
+<h3>🔢 辗转相除法（欧几里得算法）</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 数学原理</div>
+<p style="text-align:center;font-size:18px;margin:8px 0"><strong>gcd(a, b) = gcd(b, a mod b)</strong></p>
+<p>当 <span class="mono">b == 0</span> 时，<span class="mono">a</span> 即为最大公约数。</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>数学原理</strong></td><td><span class="mono">gcd(a, b) = gcd(b, a % b)</span></td></tr>
+<tr><td><strong>终止条件</strong></td><td>当余数为 0 时，当前除数即为 GCD</td></tr>
+<tr><td><strong>时间复杂度</strong></td><td><span class="mono">O(log(min(a, b)))</span></td></tr>
+<tr><td><strong>别名</strong></td><td>欧几里得算法</td></tr>
+<tr><td><strong>自动交换</strong></td><td>即使 <span class="mono">a < b</span>，一次迭代后自动交换</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">✨ LCM 公式（重要）</div>
+<p><strong>推荐写法</strong>：<span class="mono">lcm(a, b) = a / gcd(a, b) * b</span>（先除后乘，防止溢出）</p>
+<p>不推荐：<span class="mono">a * b / gcd(a, b)</span>——大数相乘可能溢出！</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 算法 / 代码详解</h2>
+
+<h3>质因数分解模板</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;int&gt; get_prime_factors(int n) {
+    vector&lt;int&gt; factors;
+    if (n &lt;= 1) return factors;
+    // 第一步：处理质因子 2
+    while (n % 2 == 0) {
+        factors.push_back(2);
+        n /= 2;
+    }
+    // 第二步：处理奇数质因子，只需遍历到 sqrt(n)
+    for (int i = 3; i * i &lt;= n; i += 2) {   // ← 高频考点！
+        while (n % i == 0) {
+            factors.push_back(i);
+            n /= i;
+        }
+    }
+    // 第三步：剩下的如果 &gt; 1，一定是质数
+    if (n &gt; 2) factors.push_back(n);
+    return factors;
+}</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 为什么只循环到 sqrt(n)？</div>
+<p>如果 n 有一个大于 sqrt(n) 的因子，它必然配对一个小於 sqrt(n) 的因子。所以遍历到 sqrt(n) 就已覆盖了所有可能的因式组合。</p>
+</div>
+
+<h3>辗转相除法：循环版 vs 递归版</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔁 循环版（推荐日常使用）</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;    // ← 高频填空题：return 的是 a 不是 b！
+}</code></pre>
+</div>
+
+<div class="highlight-box purple">
+<div class="hb-title">🔄 递归版（简洁优雅，但有大数时栈开销较大）</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}</code></pre>
+</div>
+
+<h3>同余概念</h3>
+<div class="card primary">
+<div class="card-title">🔵 定义</div>
+<p><span class="mono">a ≡ b (mod m)</span> 意思是 <span class="mono">a</span> 和 <span class="mono">b</span> 除以 <span class="mono">m</span> 的余数相同。</p>
+<p><strong>等价于</strong>：<span class="mono">m</span> 能整除 <span class="mono">(a - b)</span>，即 <span class="mono">(a - b) % m == 0</span>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<h3>🎬 模拟 gcd(84, 60)</h3>
+
+<div class="table-wrapper">
+<table class="compact">
+<thead><tr><th style="width:70px">步骤</th><th style="width:80px">a</th><th style="width:80px">b</th><th style="width:100px">a % b</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>第1步</strong></td>
+    <td class="mono">84</td>
+    <td class="mono">60</td>
+    <td class="mono">24</td>
+    <td>84 ÷ 60 = 1 ... 24，余数 ≠ 0，继续</td>
+</tr>
+<tr>
+    <td><strong>第2步</strong></td>
+    <td class="mono">60</td>
+    <td class="mono">24</td>
+    <td class="mono">12</td>
+    <td>60 ÷ 24 = 2 ... 12，余数 ≠ 0，继续</td>
+</tr>
+<tr>
+    <td><strong>第3步</strong></td>
+    <td class="mono">24</td>
+    <td class="mono">12</td>
+    <td class="mono">0</td>
+    <td>24 ÷ 12 = 2 ... 0，余数 = 0，<strong>停止！</strong></td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td colspan="5"><strong>✅ 答案：gcd(84, 60) = 12</strong>（第三步的除数）</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p>如果用递归版 <span class="mono">gcd(48, 18)</span>，调用序列是什么？</p>
+<p style="margin-top:8px"><span class="mono">gcd(48,18) → gcd(18,12) → gcd(12,6) → gcd(6,0) → 返回 6</span></p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：唯一分解 ≠ 分解为"不同的"质数</div>
+<p>"任何一个大于1的自然数都可以分解成若干个<strong>不同的</strong>质数的乘积，且分解方式是唯一的"——这句话是 <strong>❌ 错的</strong>。</p>
+<p>反例：12 = 2 × 2 × 3，质数 2 出现了<strong>两次</strong>，并不是"不同的"质数。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：唯一分解是"乘积"不是"和"</div>
+<p>"唯一分解定理表明任何一个大于1的整数都可以唯一地分解为<strong>素数之和</strong>"——这句话是 <strong>❌ 错的</strong>。是素数之<strong>积</strong>，不是和！</p>
+<p>（把整数分解为素数之和是<strong>哥德巴赫猜想</strong>，完全不同的东西。）</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：gcd 循环版 return 的是 a 不是 b</div>
+<p><span class="mono">while (b != 0) { ... } return <strong>a</strong>;</span>——很多人会误填为 <span class="mono">return b</span>！</p>
+<p>记住：循环结束后 b 已经变成了 0（上一轮的余数），a 才是 GCD。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：递归 GCD 比循环 GCD 效率更高？</div>
+<p>"当 a 较大时，递归版的 gcd 执行效率更高"——这句话是 <strong>❌ 错的</strong>。</p>
+<p>递归版有函数调用栈开销，效率通常 <strong>不如</strong> 循环版。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：同余——m 必须是 (a-b) 的约数</div>
+<p>如果 a ≡ b (mod m)，那么 m 必须能整除 (a - b)。</p>
+<p>例如：38 ≡ 14 (mod m)，38 - 14 = 24，m 必须是 24 的约数：1, 2, 3, 4, 6, 8, 12, 24。<br>
+<strong>9 不是 24 的约数</strong>，所以 m = 9 不可能。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 唯一分解定理 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：唯一分解定理的概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2025/03 第5题）</div>
+<p>根据唯一分解定理，下面整数的唯一分解正确的是哪一个？</p>
+<p><strong>A.</strong> 18 = 3 × 6<br>
+<strong>B.</strong> 28 = 4 × 7<br>
+<strong>C.</strong> 36 = 2 × 3 × 6<br>
+<strong>D.</strong> 30 = 2 × 3 × 5</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 唯一分解要求所有因子都是质数。A 中 6 不是质数，B 中 4 不是质数，C 中 6 不是质数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/03 第1题）</div>
+<p>唯一分解定理描述了关于正整数的什么性质？</p>
+<p><strong>A.</strong> 任何正整数都可以表示为两个素数的和<br>
+<strong>B.</strong> 任何大于1的合数都可以唯一分解为有限个质数的乘积<br>
+<strong>C.</strong> 两个正整数的最大公约数总是等于它们的最小公倍数除以它们的乘积<br>
+<strong>D.</strong> 所有素数都是奇数</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · A 是哥德巴赫猜想，C 的公式写反了（应为 lcm = a×b/gcd），D 错在 2 是偶数却是质数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024/12 第6题）</div>
+<p>下面函数将自然数的所有质因素找出来，横线上能填写的最佳代码是哪一个？</p>
+<div class="code-block"><pre><code class="language-cpp">while (n % 2 == 0) { factors.push_back(2); n /= 2; }
+________________________________ {       // 在此处填入代码
+    while (n % i == 0) {
+        factors.push_back(i);
+        n /= i;
+    }
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">for (int i = 3; i &lt;= n; i++)</span><br>
+<strong>B.</strong> <span class="mono">for (int i = 3; i * i &lt;= n; i++)</span><br>
+<strong>C.</strong> <span class="mono">for (int i = 3; i &lt;= n; i += 2)</span><br>
+<strong>D.</strong> <span class="mono">for (int i = 3; i * i &lt;= n; i += 2)</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 奇数因子只需从 3 开始每次 +2；循环到 i*i ≤ n 即可（超过 sqrt(n) 的因子必然配对更小的因子）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025/06 第8题）</div>
+<p>唯一分解定理描述的内容是哪一个？</p>
+<p><strong>A.</strong> 任意整数都可以分解为素数的乘积<br>
+<strong>B.</strong> 每个合数都可以唯一分解为一系列素数的乘积<br>
+<strong>C.</strong> 两个不同的整数可以分解为相同的素数乘积<br>
+<strong>D.</strong> 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 注意"合数"的限定——质数本身不参与分解，它本身就是"基本构建块"。A 范围过宽（包括任意整数），C 与唯一性矛盾。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2025/09 第9题）</div>
+<p>唯一分解定理描述的是哪一个？</p>
+<p><strong>A.</strong> 每个整数都能表示为任意素数的乘积<br>
+<strong>B.</strong> 每个大于 1 的整数能唯一分解为素数幂乘积（忽略顺序）<br>
+<strong>C.</strong> 合数不能分解为素数乘积<br>
+<strong>D.</strong> 素数只有两个因子：1 和自身</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · "大于 1"是限定条件，"素数幂乘积"等价于"质因数分解"，"忽略顺序"即不计排列顺序。</div></div>
+</div>
+
+<!-- 辗转相除 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：辗转相除法（GCD & LCM）</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2025/03 第4题）</div>
+<p>用以下辗转相除法求 gcd(84, 60) 的步骤中，第二步计算的数是哪一个？</p>
+<div class="code-block"><pre><code class="language-cpp">int gcd(int a, int b) {
+    int big = a &gt; b ? a : b;
+    int small = a &lt; b ? a : b;
+    if (big % small == 0) return small;
+    return gcd(small, big % small);
+}</code></pre></div>
+<p><strong>A.</strong> 84 和 60 &nbsp;&nbsp; <strong>B.</strong> 60 和 24 &nbsp;&nbsp; <strong>C.</strong> 24 和 12 &nbsp;&nbsp; <strong>D.</strong> 12 和 0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 第一步 gcd(84,60) → 84%60=24 → 递归 gcd(60,24)，所以第二步是 60 和 24。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024/12 第5题）</div>
+<p>两块长方形土地的长宽分别为 24 和 36 米，要将它们分成正方形的小块，使得正方形的尺寸尽可能大。小杨采用辗转相除函数 gcd(24, 36) 来求正方形分块的边长，则函数 gcd 调用顺序是哪一项？</p>
+<p><strong>A.</strong> gcd(24,36)、gcd(24,12)、gcd(12,0)<br>
+<strong>B.</strong> gcd(24,36)、gcd(12,24)、gcd(0,12)<br>
+<strong>C.</strong> gcd(24,36)、gcd(24,12)<br>
+<strong>D.</strong> gcd(24,36)、gcd(12,24)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · gcd(24,36) → big=36, small=24, 36%24=12≠0 → 递归 gcd(24,12)。gcd(24,12) → big=24, small=12, 24%12=0 → 返回 12，不再递归。总共 2 次调用。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2024/09 第4题）</div>
+<p>有如下函数 fun，则 fun(20, 12) 的返回值是多少？</p>
+<div class="code-block"><pre><code class="language-cpp">int fun(int a, int b) {
+    if (a % b == 0) return b;
+    else return fun(b, a % b);
+}</code></pre></div>
+<p><strong>A.</strong> 20 &nbsp;&nbsp; <strong>B.</strong> 12 &nbsp;&nbsp; <strong>C.</strong> 4 &nbsp;&nbsp; <strong>D.</strong> 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · fun(20,12) → fun(12,8) → fun(8,4) → fun(4,0) → 返回 4。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2024/06 第5题）</div>
+<p>下面是根据欧几里得算法编写的函数，它计算的是 a 与 b 的什么？</p>
+<div class="code-block"><pre><code class="language-cpp">int gcd(int a, int b) {
+    while (b != 0) { int temp = b; b = a % b; a = temp; }
+    return a;
+}</code></pre></div>
+<p><strong>A.</strong> 最小公倍数 &nbsp;&nbsp; <strong>B.</strong> 最大公共质因子 &nbsp;&nbsp; <strong>C.</strong> 最大公约数 &nbsp;&nbsp; <strong>D.</strong> 最小公共质因子</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 辗转相除法（欧几里得算法）计算的是最大公约数 (GCD)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2026/03 第4题）</div>
+<p>对如下代码实现的欧几里得算法（辗转相除法），执行 gcd(48, 18) 得到的调用序列是哪一项？</p>
+<div class="code-block"><pre><code class="language-cpp">int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}</code></pre></div>
+<p><strong>A.</strong> gcd(48,18)→gcd(18,12)→gcd(12,6)→gcd(6,0)<br>
+<strong>B.</strong> gcd(48,18)→gcd(30,18)→gcd(12,18)<br>
+<strong>C.</strong> gcd(48,18)→gcd(18,30)→gcd(30,6)<br>
+<strong>D.</strong> gcd(48,18)→gcd(12,18)→gcd(6,12)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 48%18=12 → gcd(18,12), 18%12=6 → gcd(12,6), 12%6=0 → gcd(6,0)，返回 6。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/06 第6题）</div>
+<p>欧几里得算法递归版本 <span class="mono">int gcd(int a,int b){return b==0?a:gcd(b,a%b);}</span>，下面有关说法错误的是哪一项？</p>
+<p><strong>A.</strong> 本题的 gcd() 实现为递归方式<br>
+<strong>B.</strong> 本题的 gcd() 代码量少，更容易理解其辗转相除的思想<br>
+<strong>C.</strong> 当 a 较大时，递归会多次调用自身，需要较多额外的辅助空间<br>
+<strong>D.</strong> 当 a 较大时，递归版执行效率更高</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 递归版有函数调用栈开销，效率通常不如循环版。A/B/C 说法正确。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2025/06 第6题）</div>
+<p>下列C++代码用两种方式求解最大公约数，说法错误的是哪一项？</p>
+<div class="code-block"><pre><code class="language-cpp">int gcd0(int big, int small) {  // 辗转相除
+    if (big &lt; small) swap(big, small);
+    if (big % small == 0) return small;
+    return gcd0(small, big % small);
+}
+int gcd1(int big, int small) {  // 暴力枚举
+    if (big &lt; small) swap(big, small);
+    for (int i = small; i &gt;= 1; --i)
+        if (big % i == 0 &amp;&amp; small % i == 0) return i;
+    return 1;
+}</code></pre></div>
+<p><strong>A.</strong> gcd0() 时间复杂度为 O(log n)<br>
+<strong>B.</strong> gcd1() 时间复杂度为 O(n)<br>
+<strong>C.</strong> 一般说来，gcd0() 效率高于 gcd1()<br>
+<strong>D.</strong> gcd1() 中的 for 循环应改为 for (int i = small; i &gt; 1; --i)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · D 是错误说法——如果改为 i &gt; 1，当两数最大公约数为 1 时，循环结束后不会执行 return 1，函数无返回值，会导致未定义行为。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2024/03 第5题）</div>
+<p>辗转相除法也被称为什么？</p>
+<p><strong>A.</strong> 高斯消元法 &nbsp;&nbsp; <strong>B.</strong> 费马定理 &nbsp;&nbsp; <strong>C.</strong> 欧几里德算法 &nbsp;&nbsp; <strong>D.</strong> 牛顿迭代法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 辗转相除法是欧几里得在《几何原本》中提出的，因此也称为欧几里德算法。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 14（2025/09 第5题）</div>
+<p>以下代码计算两个正整数的最大公约数(GCD)，横线上应填写什么？</p>
+<div class="code-block"><pre><code class="language-cpp">int gcd0(int a, int b) {
+    if (a &lt; b) swap(a, b);
+    while (b != 0) { int temp = a % b; a = b; b = temp; }
+    return ______;
+}</code></pre></div>
+<p><strong>A.</strong> b &nbsp;&nbsp; <strong>B.</strong> a &nbsp;&nbsp; <strong>C.</strong> temp &nbsp;&nbsp; <strong>D.</strong> a * b</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · while 结束后 b = 0，a 中存的就是最大公约数。</div></div>
+</div>
+
+<!-- 同余 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：同余概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 15（2025/12 第4题）</div>
+<p>假设有两个数 a = 38 和 b = 14，它们对模 m 同余。以下哪个值不可能是 m？</p>
+<p><strong>A.</strong> 3 &nbsp;&nbsp; <strong>B.</strong> 4 &nbsp;&nbsp; <strong>C.</strong> 6 &nbsp;&nbsp; <strong>D.</strong> 9</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · a≡b(mod m) → m 能整除 (38-14)=24。24 的约数有 1,2,3,4,6,8,12,24。9 不是 24 的约数。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table class="compact striped">
+<thead><tr><th style="width:28%">知识点</th><th style="width:22%">核心公式 / 代码</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>唯一分解定理</strong></td>
+    <td class="mono">N = p₁<sup>a₁</sup> × p₂<sup>a₂</sup> × …</td>
+    <td>质因子可以重复（不是"不同"的质数），是乘积不是和</td>
+</tr>
+<tr>
+    <td><strong>质因数分解</strong></td>
+    <td class="mono">for(i=3;i*i&lt;=n;i+=2)</td>
+    <td>先处理 2，再奇数跳过；用完 i*i≤n 而非 i≤n</td>
+</tr>
+<tr>
+    <td><strong>GCD（循环）</strong></td>
+    <td class="mono">while(b){t=b;b=a%b;a=t;} return a;</td>
+    <td><strong>return 的是 a！</strong> 循环结束后 b=0</td>
+</tr>
+<tr>
+    <td><strong>GCD（递归）</strong></td>
+    <td class="mono">return b==0?a:gcd(b,a%b)</td>
+    <td>简洁但不一定效率更高（有栈开销）</td>
+</tr>
+<tr>
+    <td><strong>LCM</strong></td>
+    <td class="mono">a / gcd(a,b) * b</td>
+    <td>先除后乘防止溢出，不是 a*b/gcd</td>
+</tr>
+<tr>
+    <td><strong>同余</strong></td>
+    <td class="mono">a≡b(mod m) ⇔ m | (a-b)</td>
+    <td>m 必须是 (a-b) 的约数</td>
+</tr>
+<tr>
+    <td><strong>复杂度</strong></td>
+    <td class="mono">O(log min(a,b))</td>
+    <td>比暴力枚举 O(n) 快非常多</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"质数搭积木，辗转除到底，先除后乘算 LCM，循环 return a 不 return b"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+// 代码高亮
+hljs.highlightAll();
+
+// 答案展开/折叠
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+// 真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+// ScrollSpy：滚动时侧边栏高亮
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+// 回到顶部按钮
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

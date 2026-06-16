@@ -945,14 +945,15 @@
         html += `<div class="cw-level-tabs">
           ${GESP_LEVELS.map(lv => `<button class="cw-level-tab ${gespLevel===lv?'active':''}" data-level="${lv}">${lv}</button>`).join('')}
         </div>`;
-        // 为简洁，GESP 数据目前只有六级。后续每级数据可放在 data.csp 同结构的 courseware.json.gesp_levels 中
-        const items = (data.gesp && data.gesp.items) ? data.gesp.items : [];
+        // 按等级查找
+        const levelData = (data.gesp && data.gesp[gespLevel]) ? data.gesp[gespLevel] : null;
+        const items = levelData ? levelData.items : [];
         html += `<div class="cw-sections">
           <div class="cw-section">
-            <h3 class="cw-section-title">GESP C++ ${gespLevel}</h3>
+            <h3 class="cw-section-title">GESP C++ ${gespLevel} (${items.length}讲)</h3>
             <div class="cw-grid">
               ${items.length ? items.map(item => `
-                <a class="cw-card" href="courseware/gesp/${item.file}" target="_blank">
+                <a class="cw-card" href="courseware/${item.file}" target="_blank">
                   <span class="cw-card-num">${item.topicNum}</span>
                   <span class="cw-card-title">${item.title}</span>
                   <svg class="cw-card-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>

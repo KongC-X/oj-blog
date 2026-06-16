@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP四级培训 · 排序算法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">📊</span> GESP C++ · 四级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="05-递推.html">← 递推</a>
+        <a class="nav-link" href="07-文件操作.html">文件操作 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">📊 GESP C++ 四级 · 排序算法</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">冒泡排序 · 选择排序 · 插入排序 · sort() 函数 · 稳定性</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 18道选择题 + 16道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 年均出题 7~9道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占总分 ≈ 22%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 第一步：生活引入</h2>
+
+<div class="card primary">
+<div class="card-title">🎯 排队与整理 — 日常生活中的排序</div>
+<p>体育课上，老师让同学们<strong>按身高从低到高排成一列</strong>。有的同学会互相比较，相邻的同学比一比然后交换位置；有的同学会先找出最矮的站第一位，再找次矮的站第二位……</p>
+<p>这些"排队策略"对应到计算机里，就是三种基本排序算法：<strong>冒泡排序、选择排序、插入排序</strong>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">📚 整理书架 — 插入排序的直觉</div>
+<p>你有一排书架，书已经按编号排好。新来了一本书，你从右往左找位置，一边找一边把右边的书往右挪——直到找到正确的位置插入。这就是<strong>插入排序</strong>的核心思想。</p>
+</div>
+
+<div class="card success">
+<div class="card-title">🃏 扑克牌理牌 — 最直观的类比</div>
+<p>打牌时抓牌的过程：第一张牌拿在手里认为已排好，每抓一张新牌，就在已排好的牌中<strong>从右往左找它该放的位置</strong>，然后插入。这正是插入排序的日常版本。</p>
+</div>
+
+<div style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>掌握三种基本排序的原理：冒泡、选择、插入</li>
+    <li>熟记各自的时间复杂度、空间复杂度和稳定性</li>
+    <li>能手工模拟排序过程，理解代码实现细节</li>
+    <li>熟练使用 C++ sort() 函数及自定义排序</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<h3>📖 排序的定义与稳定性</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 什么是排序</div>
+<p>将一组数据按照某种规则（升序或降序）重新排列的过程。排序是计算机科学中最基础、最常见的操作之一。</p>
+</div>
+
+<div class="card purple">
+<div class="card-title">🟣 稳定性 — 核心概念</div>
+<p><strong>稳定性</strong>：排序前后，<strong>值相等的元素的相对前后顺序保持不变</strong>，则称该排序算法是稳定的。</p>
+<p>例如：排序前 <code>{5<sub>A</sub>, 3<sub>B</sub>, 5<sub>C</sub>, 3<sub>D</sub>}</code>，排序后如果 <code>3<sub>B</sub></code> 仍在 <code>3<sub>D</sub></code> 之前，<code>5<sub>A</sub></code> 仍在 <code>5<sub>C</sub></code> 之前，则是稳定的。</p>
+</div>
+
+<h3>📊 三种基本排序算法对比</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:15%">算法</th><th style="width:25%">基本思想</th><th style="width:15%">平均时间</th><th style="width:12%">最好时间</th><th style="width:12%">空间</th><th style="width:21%">稳定性</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>冒泡排序</strong></td>
+    <td>相邻比较交换，每轮把最大元素"冒"到最后</td>
+    <td class="mono">O(n²)</td>
+    <td class="mono">O(n)</td>
+    <td class="mono">O(1)</td>
+    <td><span class="key-point success">✅ 稳定</span></td>
+</tr>
+<tr>
+    <td><strong>选择排序</strong></td>
+    <td>每轮选最小元素放到前面</td>
+    <td class="mono">O(n²)</td>
+    <td class="mono">O(n²)</td>
+    <td class="mono">O(1)</td>
+    <td><span class="key-point danger">❌ 不稳定</span></td>
+</tr>
+<tr>
+    <td><strong>插入排序</strong></td>
+    <td>将元素插入已排序部分的正确位置</td>
+    <td class="mono">O(n²)</td>
+    <td class="mono">O(n)</td>
+    <td class="mono">O(1)</td>
+    <td><span class="key-point success">✅ 稳定</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">💡 记忆口诀</div>
+<p>冒泡插入都<strong>稳定</strong>，选择排序<strong>不稳定</strong>。<br>
+三者都是 O(n²)，但插入排序在<strong>基本有序</strong>时可达到 O(n)。</p>
+</div>
+
+<h3>📝 C++ sort() 函数</h3>
+<div class="card indigo">
+<div class="card-title">🔷 标准库排序</div>
+<p>C++ 标准库提供了 <code>sort()</code> 函数（头文件 <code>&lt;algorithm&gt;</code>），基于快速排序实现，可对数组、vector 等容器进行排序：</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+int a[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+sort(a, a + 5);                       // 对前5个元素升序排序 → {6,7,8,9,10,5,4,3,2,1}
+sort(a, a + 10, greater&lt;int&gt;());       // 降序排序
+
+// 区间排序 [l, r]
+sort(a + l, a + r + 1);               // 对 a[l] 到 a[r] 排序</code></pre>
+</div>
+<p>支持整数、浮点数、字符等类型，支持<strong>局部排序</strong>和<strong>自定义比较规则</strong>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<h3>📌 冒泡排序（Bubble Sort）</h3>
+<div class="card primary">
+<div class="card-title">冒泡排序原理</div>
+<p>重复扫描数组，<strong>比较相邻的两个元素</strong>，如果顺序错误就交换。每一轮遍历将当前未排序部分的最大元素"冒泡"到最后（像水泡上升）。</p>
+<p>外层循环控制轮数（n-1 轮），内层循环进行相邻比较和交换。</p>
+</div>
+
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void bubbleSort(vector&lt;int&gt;& arr) {
+    int n = arr.size();
+    for (int i = n - 1; i > 0; i--) {     // 外层：每轮确定一个最大值的位置
+        bool flag = false;                  // 优化标志：本轮是否发生交换
+        for (int j = 0; j < i; j++) {      // 内层：相邻比较
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+                flag = true;
+            }
+        }
+        if (!flag) break;                   // 已有序，提前结束
+    }
+}</code></pre>
+</div>
+
+<div class="card accent">
+<div class="card-title">⚡ 冒泡排序优化</div>
+<p>引入 <strong>flag 标志位</strong>：如果某一轮冒泡过程中<strong>没有发生任何交换</strong>，说明数组已经有序，可以提前结束，减少不必要的遍历。对于接近有序的数组，优化效果显著。</p>
+</div>
+
+<h3>📌 选择排序（Selection Sort）</h3>
+<div class="card primary">
+<div class="card-title">选择排序原理</div>
+<p>每一轮在<strong>未排序部分中找到最小（或最大）元素</strong>，将其与未排序部分的第一个元素交换位置。经过 n-1 轮后完成排序。</p>
+</div>
+
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void selectionSort(vector&lt;int&gt;& nums) {
+    int n = nums.size();
+    for (int i = 0; i < n - 1; ++i) {
+        int minIndex = i;                     // 假设当前位置最小
+        for (int j = i + 1; j < n; ++j) {    // 在未排序部分找更小的
+            if (nums[j] < nums[minIndex]) {
+                minIndex = j;
+            }
+        }
+        swap(nums[i], nums[minIndex]);        // 将最小值交换到前面
+    }
+}</code></pre>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 选择排序为什么不稳定？</div>
+<p>选择排序在交换时可能<strong>跨过相等元素</strong>，导致相等元素的相对顺序发生改变。</p>
+<p>例如：<code>{5<sub>A</sub>, 3, 5<sub>B</sub>, 2}</code>，第一轮选最小值为 2，2 与 5<sub>A</sub> 交换后 → <code>{2, 3, 5<sub>B</sub>, 5<sub>A</sub>}</code>，5<sub>A</sub> 和 5<sub>B</sub> 的相对顺序被改变了。</p>
+</div>
+
+<h3>📌 插入排序（Insertion Sort）</h3>
+<div class="card primary">
+<div class="card-title">插入排序原理</div>
+<p>将数组分为<strong>已排序部分</strong>和<strong>未排序部分</strong>。每次取未排序部分的第一个元素，在已排序部分中<strong>从右往左</strong>找到其正确位置并插入。</p>
+</div>
+
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];                 // 当前要插入的元素
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {  // 从右往左找位置
+            arr[j + 1] = arr[j];          // 元素右移
+            j--;
+        }
+        arr[j + 1] = key;                 // 插入到正确位置
+    }
+}</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">✨ 插入排序的适用场景</div>
+<p>当数据<strong>基本有序</strong>时，插入排序的时间复杂度接近 O(n)，效率非常高。同时它是稳定的，且在小数据量时单元操作少，非常实用。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<h3>🎬 冒泡排序过程推演 — 数组 {5, 3, 8, 1}</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">轮次</th><th>操作</th><th style="width:25%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>初始</strong></td><td>—</td><td class="mono">{5, 3, 8, 1}</td></tr>
+<tr><td><strong>第1轮</strong></td><td>5>3→交换→{3,5,8,1}；5&lt;8→不变；8>1→交换</td><td class="mono"><strong>{3, 5, 1, 8}</strong></td></tr>
+<tr><td><strong>第2轮</strong></td><td>3&lt;5→不变；5>1→交换→{3,1,5,8}</td><td class="mono"><strong>{3, 1, 5, 8}</strong></td></tr>
+<tr><td><strong>第3轮</strong></td><td>3>1→交换→{1,3,5,8}</td><td class="mono"><strong>{1, 3, 5, 8}</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:13px;color:var(--text-secondary)">第一轮后答案为 {3, 5, 1, 8}，对应真题选项 A。</p>
+
+<h3>🎬 选择排序过程推演 — 数组 {4, 3, 1, 5, 2}</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">轮次</th><th>操作</th><th style="width:25%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>初始</strong></td><td>—</td><td class="mono">{4, 3, 1, 5, 2}</td></tr>
+<tr><td><strong>第1轮</strong></td><td>找最小值 1(位置2)，与 a[0]=4 交换</td><td class="mono"><strong>{1, 3, 4, 5, 2}</strong></td></tr>
+<tr><td><strong>第2轮</strong></td><td>在 {3,4,5,2} 中找最小值 2，与 a[1]=3 交换</td><td class="mono">{1, 2, 4, 5, 3}</td></tr>
+<tr><td><strong>第3轮</strong></td><td>在 {4,5,3} 中找最小值 3，与 a[2]=4 交换</td><td class="mono">{1, 2, 3, 5, 4}</td></tr>
+<tr><td><strong>第4轮</strong></td><td>在 {5,4} 中找最小值 4，与 a[3]=5 交换</td><td class="mono">{1, 2, 3, 4, 5}</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🎬 插入排序过程推演 — 数组 {4, 3, 1, 5, 2}</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">轮次</th><th>操作</th><th style="width:25%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>初始</strong></td><td>第1个元素 {4} 视为已排序</td><td class="mono">{4, 3, 1, 5, 2}</td></tr>
+<tr><td><strong>i=1</strong></td><td>插入 3：3&lt;4，4右移，3放最前</td><td class="mono">{3, 4, 1, 5, 2}</td></tr>
+<tr><td><strong>i=2</strong></td><td>插入 1：1&lt;4,1&lt;3，整体右移</td><td class="mono">{1, 3, 4, 5, 2}</td></tr>
+<tr><td><strong>i=3</strong></td><td>插入 5：5>4，保持位置不变</td><td class="mono">{1, 3, 4, 5, 2}</td></tr>
+<tr><td><strong>i=4</strong></td><td>插入 2：在 3 和 1 之间</td><td class="mono">{1, 2, 3, 4, 5}</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱1：混淆稳定性的记忆</div>
+<p>高频考点！记住：<strong>冒泡排序稳定、插入排序稳定、选择排序不稳定</strong>。排序稳定性的定义是"相等元素的相对顺序不变"，不是"时间复杂度不变"也不是"数据不丢失"。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱2：冒泡排序的内层循环范围</div>
+<p>正确写法是 <span class="mono">for (int j = 0; j < i; j++)</span>，不是 <span class="mono">j < arr.size() - 1</span>。内层只遍历到 <span class="mono">i-1</span>，因为 <span class="mono">i</span> 之后的元素已经排好了。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱3：选择排序的 minIndex 初始值</div>
+<p>选择排序每一轮 <span class="mono">minIndex = i</span>（当前未排序部分的第一个位置），内层从 <span class="mono">i+1</span> 开始找。如果写成 <span class="mono">minIndex = 0</span> 则错误。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱4：插入排序最好情况时间复杂度不是 O(n²)</div>
+<p>当数组<strong>已经有序</strong>时，插入排序的内层 while 循环永远不会执行（arr[j] > key 始终为假），时间复杂度为 <strong>O(n)</strong>，不是 O(n²)。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱5：冒泡排序优化 — flag 标志位</div>
+<p>flag 需要<strong>每轮初始化为 false</strong>，一旦发生交换则置为 true。如果某轮结束后 flag 仍为 false，说明没有交换发生 → 数组已有序 → 直接 break。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱6：选择排序的判断条件</div>
+<p>升序排序时，内层判断条件是 <span class="mono">if (nums[j] < nums[minIndex])</span>（找更小的），不是 <span class="mono">nums[j] > nums[minIndex]</span>。注意升序/降序的方向。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>📝 选择题（共18道）</h3>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 第1组：时间复杂度与概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q1. 冒泡排序平均时间复杂度（2023/06 第2题）</div>
+<p>对包含 n 个元素的数组进行冒泡排序，平均时间复杂度一般为（ ）。</p>
+<p><strong>A.</strong> n &nbsp;&nbsp; <strong>B.</strong> nlogn &nbsp;&nbsp; <strong>C.</strong> n² &nbsp;&nbsp; <strong>D.</strong> 以上都不正确</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 冒泡排序的平均时间复杂度为 O(n²)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q2. 稳定性的定义（2023/09 第3题）</div>
+<p>在排序算法中，稳定性指的是（ ）。</p>
+<p><strong>A.</strong> 排序后数据不会丢失 &nbsp;&nbsp; <strong>B.</strong> 排序后相同元素的相对顺序保持不变 &nbsp;&nbsp; <strong>C.</strong> 排序后数据不会被修改 &nbsp;&nbsp; <strong>D.</strong> 排序后数据的时间复杂度不变</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 稳定性指排序前后相等元素的相对前后顺序不变。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q3. 稳定性描述判断（2024/06 第10题）</div>
+<p>下面关于排序稳定性的描述，正确的是（ ）。</p>
+<p><strong>A.</strong> 稳定性指算法的时间复杂度恒定 &nbsp;&nbsp; <strong>B.</strong> 稳定排序保证相同元素的相对顺序不变 &nbsp;&nbsp; <strong>C.</strong> 选择排序是稳定排序 &nbsp;&nbsp; <strong>D.</strong> 插入排序不是稳定排序</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 稳定排序保证相等元素的相对顺序不变。选择排序不是稳定的，插入排序是稳定的。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q4. 稳定性综合判断（2024/06 第11题）</div>
+<p>关于几种排序算法的说法，下面说法错误的是（ ）。</p>
+<p><strong>A.</strong> 选择排序不是一个稳定的排序算法 &nbsp;&nbsp; <strong>B.</strong> 冒泡排序算法不是一种稳定的排序算法 &nbsp;&nbsp; <strong>C.</strong> 插入排序是一种稳定的排序算法 &nbsp;&nbsp; <strong>D.</strong> 如果排序前2个相等的数在序列中的前后位置顺序和排序后它们的位置顺序相同，则称为一种稳定的排序算法</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · B 错误，冒泡排序是稳定的。选择排序不稳定，插入排序稳定。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q5. 稳定性判断（2024/09 第10题）</div>
+<p>关于排序算法的稳定性，以下说法错误的是（ ）。</p>
+<p><strong>A.</strong> 稳定的排序算法不改变相等元素的相对位置 &nbsp;&nbsp; <strong>B.</strong> 冒泡排序是稳定的排序算法 &nbsp;&nbsp; <strong>C.</strong> 选择排序是稳定的排序算法 &nbsp;&nbsp; <strong>D.</strong> 插入排序是稳定的排序算法</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · C 错误，选择排序是不稳定的排序算法。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 第2组：冒泡排序实操</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q6. 冒泡排序第一轮（2024/09 第11题）</div>
+<p>数组 {45, 66, 23, 1, 10, 97, 52, 88, 5, 33} 进行从小到大冒泡排序过程中，第一遍冒泡过后的序列是（ ）。</p>
+<p><strong>A.</strong> {45, 23, 1, 10, 66, 52, 88, 5, 33, 97} &nbsp;&nbsp; <strong>B.</strong> {45, 66, 1, 23, 10, 97, 52, 88, 5, 33} &nbsp;&nbsp; <strong>C.</strong> {45, 66, 23, 1, 10, 52, 88, 5, 33, 97} &nbsp;&nbsp; <strong>D.</strong> {45, 66, 23, 1, 10, 97, 52, 88, 33, 5}</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 第一轮将最大值 97 冒泡到最后，中间经过多次相邻交换。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q7. 冒泡第一轮分析（2024/09 第12题）</div>
+<p>数组 arr[] = {4, 1, 3, 1, 5, 2}，执行第一轮冒泡排序后数组 arr 中的内容为（ ）。</p>
+<p><strong>A.</strong> 1, 4, 3, 1, 5, 2 &nbsp;&nbsp; <strong>B.</strong> 1, 3, 1, 4, 2, 5 &nbsp;&nbsp; <strong>C.</strong> 1, 4, 3, 1, 2, 5 &nbsp;&nbsp; <strong>D.</strong> 4, 1, 3, 1, 5, 2</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 第一轮将最大值 5 冒到最后，结果 {1, 3, 1, 4, 2, 5}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q8. 冒泡排序第一轮（2024/09 第13题）</div>
+<p>对数组 arr[] = {5, 3, 8, 1} 进行升序排序，执行第一轮冒泡排序后数组 arr 中的内容为（ ）。</p>
+<p><strong>A.</strong> 3, 5, 1, 8 &nbsp;&nbsp; <strong>B.</strong> 3, 1, 5, 8 &nbsp;&nbsp; <strong>C.</strong> 3, 5, 8, 1 &nbsp;&nbsp; <strong>D.</strong> 5, 3, 8, 1</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 第一轮将 8 冒到最后：5>3→交换，5&lt;8→不变，8>1→交换，结果 {3, 5, 1, 8}。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 第3组：代码填空 — 冒泡排序</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q9. 冒泡排序内层循环（2024/12 第10题）</div>
+<p>下面代码实现了冒泡排序函数，则横线上应填写（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int bubble_sort(vector&lt;int&gt; &arr) {
+    for (int i = arr.size() - 1; i > 0; i--) {
+        bool flag = false;
+        ________________________________ { // 在此处填入代码
+        if (arr[j] > arr[j + 1]) {
+            swap(arr[i], arr[j]);
+            flag = true;
+        }
+        }
+        if (!flag) break;
+    }
+}</code></pre>
+</div>
+<p><strong>A.</strong> for (int j = 0; j < arr.size() - 1; j++) &nbsp;&nbsp; <strong>B.</strong> for (int j = arr.size() - 1; j > 0; j--) &nbsp;&nbsp; <strong>C.</strong> for (int j = 0; j < i; j++) &nbsp;&nbsp; <strong>D.</strong> for (int j = i-1; j <= 0; j--)</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 内层循环范围是 j 从 0 到 i-1（即 j < i），只遍历未排序部分。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q10. 冒泡排序 flag 优化（2024/12 第11题）</div>
+<p>为了提高冒泡排序的效率，如果某轮"冒泡"中没有执行任何交换操作，说明数组已经完成排序，可直接返回结果，则两条横线上分别应该填写（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void bubbleSortWithFlag(vector&lt;int&gt; &nums) {
+    for (int i = nums.size() - 1; i > 0; i--) {
+        bool flag;
+        ________________ // 在此处填入代码
+        for (int j = 0; j < i; j++) {
+            if (nums[j] > nums[j + 1]) {
+                swap(nums[j], nums[j + 1]);
+                ___________________________ // 在此处填入代码
+            }
+        }
+        if (!flag) break;
+    }
+}</code></pre>
+</div>
+<p style="font-size:13px;color:var(--text-secondary)">选项详见真题原图</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 第一处：flag = false（初始化标志为未交换）；第二处：flag = true（发生交换时标记）。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--orange)">
+<div class="card-title" style="color:var(--orange-dark)">📌 第4组：选择排序与插入排序</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q11. 选择排序代码填空（2024/12 第12题）</div>
+<p>下面代码试图实现选择排序，使其能对数组 nums 排序为升序，则横线上应分别填写（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void selectionSort(vector&lt;int&gt;& nums) {
+    int n = nums.size();
+    for (int i = 0; i < n - 1; ++i) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; ++j) {
+            if ( __________ ) { // 在此处填入代码
+                minIndex = j;
+            }
+        }
+        ____________________; // 在此处填入代码
+    }
+}</code></pre>
+</div>
+<p style="font-size:13px;color:var(--text-secondary)">选项详见真题原图</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 第一处：nums[j] < nums[minIndex]（找更小的）；第二处：swap(nums[i], nums[minIndex])（交换到前面）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q12. 插入排序代码填空（2025/03 第12题）</div>
+<p>下面程序实现插入排序（升序排序），则横线上应分别填写（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while ( j >= 0 && ____________________ ) { // 在此处填入代码
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        ____________________; // 在此处填入代码
+    }
+}</code></pre>
+</div>
+<p style="font-size:13px;color:var(--text-secondary)">选项详见真题原图</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 第一处：arr[j] > key（找到比 key 大的右移）；第二处：arr[j + 1] = key（插入）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q13. 插入排序判断（2025/03 第13题）</div>
+<p>下面代码实现了插入排序函数，则横线上应填写（ ）。</p>
+<p style="font-size:13px;color:var(--text-secondary)">（代码详见真题原图）</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 插入排序的 while 条件为 arr[j] > key 且 j >= 0，然后将 key 放到 arr[j+1]。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q14. 扑克牌理牌对应算法（2025/06 第8题）</div>
+<p>小杨在整理一副扑克牌的所有红心扑克牌，使其从小到大排列。他的做法是：最开始抓到第1张扑克牌被认为已经排好序；然后抓第2张扑克牌，将其插入至有序部分的正确位置；不断循环步骤。小杨这种整理扑克牌的方式与（ ）排序的方式最接近。</p>
+<p><strong>A.</strong> 冒泡排序 &nbsp;&nbsp; <strong>B.</strong> 插入排序 &nbsp;&nbsp; <strong>C.</strong> 选择排序 &nbsp;&nbsp; <strong>D.</strong> 直接排序</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 抓牌→插入有序部分的思路正是插入排序。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q15. 插入排序适用场景（2025/06 第9题）</div>
+<p>以下哪种情况是使用插入排序的合适场景？（ ）</p>
+<p><strong>A.</strong> 数据量非常大，且乱序严重 &nbsp;&nbsp; <strong>B.</strong> 希望获得稳定排序，但不要求实时性 &nbsp;&nbsp; <strong>C.</strong> 数据几乎有序，只需少量调整 &nbsp;&nbsp; <strong>D.</strong> 想在交换次数最少的前提下排好大数组</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 插入排序在数据基本有序时效率非常高，接近 O(n)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q16. 插入排序时间复杂度（2025/06 第15题）</div>
+<p>关于插入排序的时间复杂度，下列说法正确的是（ ）。</p>
+<p style="font-size:13px;color:var(--text-secondary)">选项详见真题原图</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 插入排序最好情况 O(n)，最坏情况 O(n²)，平均 O(n²)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q17. 排序稳定性分析（扑克牌）（2025/09 第9题）</div>
+<p>对如下4个扑克牌按 value 排序后，结果为: {3,'D'}, {3,'B'}, {5,'A'}, {5,'C'}，则这个排序算法是稳定的吗？（ ）</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">struct Card { int value; char suit; };
+Card cards[4] = {{5,'A'}, {3,'B'}, {5,'C'}, {3,'D'}};</code></pre>
+</div>
+<p><strong>A.</strong> 稳定，因为相同 value 的元素相对顺序保持不变 &nbsp;&nbsp; <strong>B.</strong> 不稳定，因为 {3,'D'} 出现在 {3,'B'} 之前 &nbsp;&nbsp; <strong>C.</strong> 无法判断 &nbsp;&nbsp; <strong>D.</strong> 稳定，因为结果是有序的</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 原始顺序中 3<sub>B</sub> 在 3<sub>D</sub> 之前，排序后 3<sub>D</sub> 出现在 3<sub>B</sub> 之前，相对顺序改变，说明不稳定。这对应选择排序的特征。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q18. 选择排序代码填空（2025/09 第10题）</div>
+<p>下列程序横线处，应该输入的是（ ）。</p>
+<p style="font-size:13px;color:var(--text-secondary)">（代码详见真题原图，涉及选择排序代码填空）</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong></div></div>
+</div>
+
+<h3 style="margin-top:32px">✅ 判断题（共16道）</h3>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--pink)">
+<div class="card-title" style="color:var(--pink-dark)">📌 sort() 函数 & 基础概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">T1. sort() 局部排序（2025/09 第11题）</div>
+<p>C++的内置函数 sort() 支持数组的局部排序。例如 int a={10,9,8,7,6,5,4,3,2,1}，可以用 sort(a, a+5)，排序成 {6,7,8,9,10,5,4,3,2,1}。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · sort(a, a+5) 只对前5个元素排序，结果升序为 {6,7,8,9,10,5,4,3,2,1}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T2. sort() 通用性（2025/12 第10题）</div>
+<p>C++内置函数 sort() 可以对整数、浮点数、字符数组进行从大到小，从小到大，局部排序。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · sort() 支持多种数据类型和排序方向，通过自定义比较器实现。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T3. 外排序（2026/03 第10题）</div>
+<p>如果待排序数据不能都装进内存，需要使用外排序算法。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 无法全部装入内存时需要使用外排序（外部排序）。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--indigo)">
+<div class="card-title" style="color:var(--indigo-dark)">📌 稳定性相关</div>
+</div>
+
+<div class="card success">
+<div class="card-title">T4. 选择排序稳定性（2026/03 第11题）</div>
+<p>选择排序是稳定的排序算法。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 选择排序是不稳定的。交换时可能跨过相等元素，改变相对顺序。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T5. 时间复杂度比较（2026/03 第15题）</div>
+<p>插入排序的时间复杂度总是比冒泡排序低。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 两者平均时间复杂度都是 O(n²)，不能说总是更低。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T6. 冒泡插入稳定（2024/12 第8题）</div>
+<p>冒泡排序和插入排序都是稳定的排序算法。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 冒泡排序和插入排序都是稳定的，选择排序不稳定。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T7. 选择排序稳定性（2024/09 第6题）</div>
+<p>选择排序是稳定的排序算法。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 选择排序是不稳定的。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T8. 插入排序最好时间复杂度（2025/03 第8题）</div>
+<p>插入排序在最好情况（已有序）下的时间复杂度是 O(n²)。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 最好情况（已有序）下插入排序的时间复杂度是 O(n)，因为内层 while 永远不会执行。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 排序过程模拟</div>
+</div>
+
+<div class="card success">
+<div class="card-title">T9. 选择排序第一趟（2024/03 第1题）</div>
+<p>对 int a[]={2,0,2,4,3,1,6}，执行第一趟选择排序处理后 a 中数据变为 {0,2,2,4,3,1,6}。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 第一趟找最小值 0(position 1)，与 a[0]=2 交换，结果 {0,2,2,4,3,1,6}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T10. 选择排序第一轮（2025/03 第9题）</div>
+<p>对数组 arr[]={4, 3, 1, 5, 2} 进行升序排序，执行第一轮选择排序后数组arr中的内容是 {1, 4, 3, 5, 2}。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 第一轮找最小值 1(position 2)，与 a[0]=4 交换，结果应为 {1, 3, 4, 5, 2}，不是 {1, 4, 3, 5, 2}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T11. 选择排序比较次数（2025/06 第7题）</div>
+<p>无论初始数组是否有序，选择排序都执行 O(n²) 次比较。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 选择排序的比较次数固定为 n(n-1)/2，不受初始顺序影响。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T12. 插入排序小数据优势（2025/09 第7题）</div>
+<p>插入排序的时间复杂度为 O(n²)，但由于单元操作相对较少，因此在小数据量的排序任务中非常受欢迎。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 插入排序在小数据量时很实用。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T13. 冒泡排序一轮（2025/09 第8题）</div>
+<p>对整数数组 {4, 1, 3, 1, 5, 2} 进行冒泡排序（将最大元素放到最后），执行一轮之后是 {4, 1, 3, 1, 2, 5}。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 第一轮将最大值 5 冒到最后，结果为 {1, 3, 1, 4, 2, 5}，不是 {4, 1, 3, 1, 2, 5}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T14. 冒泡插入稳定（2025/12 第7题）</div>
+<p>冒泡排序和插入排序都是稳定排序算法。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 两者都是稳定的排序算法。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T15. 识别排序算法（2025/06 第8题）</div>
+<p>下面这段代码实现了选择排序算法。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void sort(int a[], int n) {
+    for (int i = 1; i < n; i++) {
+        int x = a[i];
+        int j = i - 1;
+        while (j >= 0 && a[j] > x) {
+            a[j + 1] = a[j];
+            j--;
+        }
+        a[j + 1] = x;
+    }
+}</code></pre>
+</div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · 这是插入排序的实现（取key → 右移 → 插入），不是选择排序。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T16. 插入vs选择时间复杂度（2026/03 第9题）</div>
+<p>插入排序在最好情况（已有序）下的时间复杂度是 O(n)，选择排序在任何情况下的比较次数都是 O(n²) 的。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 插入最好 O(n)，选择比较次数固定 O(n²)。</div></div>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<h3>📊 排序算法速查表</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:15%">属性</th><th style="width:28%">冒泡排序</th><th style="width:28%">选择排序</th><th style="width:29%">插入排序</th></tr></thead>
+<tbody>
+<tr><td><strong>基本思想</strong></td><td>相邻比较交换</td><td>找最小放到前面</td><td>插入到有序位置</td></tr>
+<tr><td><strong>时间复杂度(平均)</strong></td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(n²)</td></tr>
+<tr><td><strong>时间复杂度(最好)</strong></td><td class="mono">O(n) 优化后</td><td class="mono">O(n²)</td><td class="mono">O(n)</td></tr>
+<tr><td><strong>时间复杂度(最坏)</strong></td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(n²)</td></tr>
+<tr><td><strong>空间复杂度</strong></td><td class="mono">O(1)</td><td class="mono">O(1)</td><td class="mono">O(1)</td></tr>
+<tr><td><strong>稳定性</strong></td><td><span class="key-point success">✅ 稳定</span></td><td><span class="key-point danger">❌ 不稳定</span></td><td><span class="key-point success">✅ 稳定</span></td></tr>
+<tr><td><strong>比较次数</strong></td><td>n(n-1)/2</td><td>n(n-1)/2 固定</td><td>O(n) ~ O(n²)</td></tr>
+<tr><td><strong>适用场景</strong></td><td>小数据量教学</td><td>交换次数最少</td><td>基本有序/小数据</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔤 C++ sort() 速查</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:40%">用法</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td class="mono">sort(a, a+n)</td><td>对数组前 n 个元素升序排序</td></tr>
+<tr><td class="mono">sort(a, a+k)</td><td>局部排序（只排前 k 个）</td></tr>
+<tr><td class="mono">sort(a, a+n, greater&lt;int&gt;())</td><td>降序排序</td></tr>
+<tr><td class="mono">#include &lt;algorithm&gt;</td><td>头文件</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>💡 高频考点汇总</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:40%">考点</th><th>答案</th></tr></thead>
+<tbody>
+<tr><td>冒泡排序稳定性</td><td>稳定</td></tr>
+<tr><td>选择排序稳定性</td><td><span style="color:var(--danger);font-weight:600">不稳定（必考！）</span></td></tr>
+<tr><td>插入排序稳定性</td><td>稳定</td></tr>
+<tr><td>插入排序最好时间复杂度</td><td>O(n)，不是 O(n²)</td></tr>
+<tr><td>冒泡排序优化标志</td><td class="mono">flag</td>，初始 false</td></tr>
+<tr><td>选择排序判断条件（升序）</td><td class="mono">nums[j] < nums[minIndex]</td></tr>
+<tr><td>插入排序 while 条件</td><td class="mono">j >= 0 && arr[j] > key</td></tr>
+<tr><td>扑克牌理牌 →</td><td>插入排序</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"冒泡插入都稳定，选择排序不稳定；三者都是 O(n²)，插入有序变 O(n)；冒泡加 flag 可优化，选择比较数固定。"</strong></p>
+</div>
+
+<div class="tip-box" style="margin-top:24px">
+<div class="tip-title">🎯 备考建议</div>
+<p>排序占 GESP 四级约 22% 的分值，三种基本排序的原理、代码、稳定性必须熟练掌握。尤其是<strong>选择排序不稳定</strong>这一结论，几乎每次考试都会涉及。</p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+document.querySelectorAll('.answer-toggle').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const c=this.nextElementSibling;
+    if(c.classList.contains('open')){c.classList.remove('open');this.classList.remove('open');this.innerHTML='▶ 显示答案';}
+    else{c.classList.add('open');this.classList.add('open');this.innerHTML='▼ 隐藏答案';}
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+const sections=document.querySelectorAll('h2.section-num'),links=document.querySelectorAll('.nav-link');
+window.addEventListener('scroll',()=>{
+  let cur='';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+  document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+});
+
+document.querySelector('.menu-toggle').addEventListener('click',()=>{document.querySelector('.sidebar').classList.toggle('open')});
+</script>
+
+</body>
+</html>

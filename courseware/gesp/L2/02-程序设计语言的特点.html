@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 程序设计语言的特点</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++二级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="../课件/01-计算机存储与网络.html">01 · 计算机存储与网络</a>
+    <a class="nav-link active" href="#hero-section">02 · 程序设计语言的特点</a>
+    <a class="nav-link" href="../课件/03-数据类型转换.html">03 · 数据类型转换</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">本课目录</div>
+    <a class="nav-link" href="#step1">1. 生活引入</a>
+    <a class="nav-link" href="#step2">2. 核心概念</a>
+    <a class="nav-link" href="#step3">3. 代码详解</a>
+    <a class="nav-link" href="#step4">4. 手工模拟</a>
+    <a class="nav-link" href="#step5">5. 常见陷阱</a>
+    <a class="nav-link" href="#step6">6. 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;border:none;background:none;padding:0;margin-bottom:8px">GESP C++二级 · 程序设计语言的特点</h1>
+  <p style="color:#94a3b8;font-size:16px;margin-bottom:20px">Programming Language Features — 流程图、关键字、编译与执行</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⚡ 1道选择题 + 5道判断题</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">📊 年均出题1~2道</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⭐ 占总分约5%</span>
+  </div>
+</div>
+
+<!-- 第一步：生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 直观比喻</h2>
+
+<div class="card accent">
+<div class="card-title">🎯 场景比喻：编程语言就像「方言」</div>
+<p>全国各地的人说不同的方言，但最终目的都是<strong>沟通</strong>。编程语言也是如此：C++、Python、Java 虽然语法不同，但最终都要翻译成机器能懂的<strong>机器指令</strong>来执行。C++是<strong>高级语言</strong>（接近人类思维），而机器指令是<strong>低级语言</strong>（接近硬件）。编译器就像一个<strong>翻译官</strong>，把高级语言翻成机器语言。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">📐 流程图比喻：做菜的步骤图</div>
+<p>流程图就像菜谱上的步骤图：<strong>椭圆形框</strong> = 开始/结束（「开始做菜」「出锅」）；<strong>平行四边形框</strong> = 输入/输出（「放入食材」「盛出成品」）；<strong>菱形框</strong> = 判断（「熟了吗？」）；<strong>矩形框</strong> = 处理步骤（「翻炒3分钟」）。考试常考<strong>输出语句放在哪种图形框中</strong>→ 平！行！四！边！形！</p>
+</div>
+
+<!-- 第二步：核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<div class="card primary">
+<div class="card-title">🔵 程序设计语言分类</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>分类</th><th>特点</th><th>例子</th></tr></thead>
+<tbody>
+<tr><td><span class="key-point">机器语言</span></td><td>0/1二进制代码，CPU直接执行</td><td>10110000 01100001</td></tr>
+<tr><td><span class="key-point">汇编语言</span></td><td>用助记符代替二进制，需汇编器翻译</td><td>MOV AL, 61h</td></tr>
+<tr><td><span class="key-point">高级语言</span></td><td>接近人类语言和数学表达式</td><td>C++、Python、Java</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>关键认识：</strong>C++是<strong>高级语言</strong>，也是<strong>面向对象</strong>的编程语言。高级语言需要通过<strong>编译</strong>（或解释）转换为机器指令才能运行。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 流程图基本符号</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>符号</th><th>形状</th><th>用途</th><th>记忆口诀</th></tr></thead>
+<tbody>
+<tr><td>起止框</td><td>椭圆形/圆角矩形</td><td>程序的开始和结束</td><td>圆圆的开始和结束</td></tr>
+<tr><td><span class="key-point">输入/输出框</span></td><td>平行四边形</td><td>数据的输入和输出</td><td>斜斜的平行四边形</td></tr>
+<tr><td>处理框</td><td>矩形</td><td>计算、赋值等操作</td><td>方方的矩形做处理</td></tr>
+<tr><td>判断框</td><td>菱形</td><td>条件判断（是/否）</td><td>尖尖的菱形做判断</td></tr>
+<tr><td>流程线</td><td>箭头</td><td>表示执行方向</td><td>箭头指向下一步</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>考试重点：</strong>输出语句（如 <code class="mono">cout</code>、<code class="mono">printf</code>）属于<strong>输出操作</strong>，应放在<strong>平行四边形框</strong>中！</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 C++ 关键字（Keyword）</div>
+<p>C++关键字是语言<strong>预留的、有特殊含义的单词</strong>，不能用作变量名。常见关键字包括：</p>
+<div class="formula-box">
+int &nbsp; float &nbsp; double &nbsp; char &nbsp; bool &nbsp; if &nbsp; else &nbsp; for &nbsp; while &nbsp; break &nbsp; continue &nbsp; return &nbsp; void &nbsp; struct &nbsp; class
+</div>
+<p style="margin-top:8px"><strong>重要误区：</strong><code class="mono">scanf</code>、<code class="mono">printf</code>、<code class="mono">cin</code>、<code class="mono">cout</code>、<code class="mono">main</code> <strong>都不是</strong> C++ 关键字！它们是<strong>标准库函数</strong>或<strong>预定义标识符</strong>，理论上可以作为变量名（虽然不推荐）。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 main 函数的特殊性</div>
+<p>在C++中，每个程序必须有且仅有一个 <code class="mono">main</code> 函数——这是程序的<strong>入口点</strong>。程序从 <code class="mono">main</code> 的第一条语句开始执行，到 <code class="mono">main</code> 的最后一条语句结束。不能有多个 <code class="mono">main</code> 函数，否则编译器不知道从哪里开始执行。</p>
+</div>
+
+<!-- 第三步：代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<div class="card success">
+<div class="card-title">📝 C++ 程序基本结构</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {           // 程序入口，只能有一个！
+    int score = 85;    // 定义变量
+    
+    if (score >= 60)   // 条件判断
+        cout &lt;&lt; "及格";  // 输出语句 → 对应流程图中的平行四边形框
+    
+    return 0;          // 程序正常结束
+}</code></pre></div>
+<p><strong>结构拆解：</strong><code class="mono">#include</code> = 引入头文件（工具箱），<code class="mono">main()</code> = 唯一入口（大门），<code class="mono">cout</code> = 输出（显示结果），<code class="mono">return 0</code> = 正常结束（关门）。</p>
+</div>
+
+<!-- 第四步：手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<div class="card flat">
+<div class="card-title">🔍 画流程图：判断一个数能否同时被3和5整除</div>
+<p>题目：对整型变量N，如果同时被3和5整除，输出「N是含有至少两个质因数」。请画出流程图。</p>
+<div class="highlight-box blue">
+<div class="hb-title">💡 流程图步骤拆解</div>
+<ol>
+  <li><strong>开始</strong>（椭圆形框）</li>
+  <li><strong>输入N</strong>（平行四边形框 — 输入也是平行四边形！）</li>
+  <li><strong>判断 N % 3 == 0 且 N % 5 == 0</strong>（菱形框）</li>
+  <li>如果成立 → <strong>输出结果</strong>（平行四边形框）</li>
+  <li><strong>结束</strong>（椭圆形框）</li>
+</ol>
+</div>
+<p style="margin-top:8px"><strong>核心考点：输出语句在平行四边形框中！</strong>GESP考试反复考查这一知识点。记住：不管输入还是输出，都用平行四边形。</p>
+</div>
+
+<!-- 第五步：常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱1：scanf 不是关键字！</div>
+<p><code class="mono">scanf</code> 是C语言标准库的<strong>输入函数</strong>，不是C++关键字。你可以把变量命名为 <code class="mono">scanf</code>（虽然不推荐），编译器不会报错。C++真正的关键字是 <code class="mono">int</code>、<code class="mono">if</code>、<code class="mono">for</code>、<code class="mono">return</code> 等。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱2：GESP等级与编程语言无关</div>
+<p>GESP测试认证的是<strong>编程能力等级</strong>，同一级别的能力要求基本与所选编程语言无关。无论你考C++、Python还是Scratch，同一级别要求的计算思维和编程能力是一致的。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱3：main函数只能有一个</div>
+<p>一个C++程序中<strong>不能有多个main函数</strong>。main函数是程序的唯一入口点，如果存在多个main，链接器会报错「multiple definition of main」。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱4：流程图符号不混淆</div>
+<p><strong>平行四边形</strong> = 输入/输出，<strong>菱形</strong> = 判断，<strong>矩形</strong> = 处理，<strong>椭圆形</strong> = 开始/结束。不要记混！输出语句（cout/printf）在平行四边形框中。</p>
+</div>
+
+<!-- 第六步：真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>📝 选择题</h3>
+
+<!-- 选择题第1题 purple -->
+<div class="card purple">
+<div class="card-title">第1题 · 流程图的输出框（2024/09 第1题）</div>
+<p>对整型变量N，如果它能够同时被3和5整除，则输出「N是含有至少两个质因数」。如果用流程图来描述处理过程，则输出语句应该在哪种图形框中( )。</p>
+<p>A. 圆形框 &nbsp;&nbsp; B. 椭圆形框 &nbsp;&nbsp; C. 平行四边形框 &nbsp;&nbsp; D. 菱形框</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（平行四边形框）</strong><br>
+流程图中<strong>输出语句</strong>属于输入/输出操作，应放在<strong>平行四边形框</strong>中。圆形框一般不用于标准流程图；椭圆形框表示开始/结束；菱形框表示条件判断。
+</div></div>
+</div>
+
+<h3>📝 判断题</h3>
+
+<!-- 判断题第1题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第1题 · 高级语言与机器指令（2023/12 第1题）</div>
+<p>C++、Python都是高级编程语言，它们的每条语句最终都要通过机器指令来完成。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+高级语言编写的程序最终都要经过<strong>编译/解释</strong>转化为机器指令（0/1二进制代码），CPU才能执行。无论C++、Python还是Java，本质都是如此。
+</div></div>
+</div>
+
+<!-- 判断题第2题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第2题 · scanf 不是关键字（2024/06 第2题）</div>
+<p>在C++代码中，不可以将变量命名为scanf，因为scanf是C++语言的关键字。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<code class="mono">scanf</code> 是C语言标准库的<strong>输入函数</strong>，不是C++<strong>关键字</strong>。实际上可以把变量命名为 <code class="mono">scanf</code>，编译器不会报错（虽然这会遮蔽标准库函数，是非常不好的编程习惯）。真正的关键字如 <code class="mono">int</code>、<code class="mono">if</code> 才不能用作变量名。
+</div></div>
+</div>
+
+<!-- 判断题第3题 teal -->
+<div class="card teal">
+<div class="card-title">判断题第3题 · GESP与编程语言无关（2024/12 第3题）</div>
+<p>GESP测试是对认证者的编程能力进行等级认证，同一级别的能力基本上与编程语言无关。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+GESP认证的是<strong>计算思维和编程能力</strong>，同一等级的核心能力要求与具体编程语言无关。无论选择C++、Python还是Scratch，所需掌握的逻辑思维和编程概念是相通的。
+</div></div>
+</div>
+
+<!-- 判断题第4题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第4题 · main 函数唯一性（2023/09 第4题）</div>
+<p>在 C++语言中，一个程序不能有多个 main 函数。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+每个C++程序有且仅有一个 <code class="mono">main</code> 函数作为<strong>程序入口点</strong>。如果存在多个 <code class="mono">main</code> 函数，编译器/链接器会报错。这是C++语言的基本规则。
+</div></div>
+</div>
+
+<!-- 判断题第5题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第5题 · C++是面向对象的高级语言（2025/03 第5题）</div>
+<p>小杨最近开始学习C++编程，老师说C++是一门面向对象的编程语言，也是一门高级语言。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+C++同时具备两个特性：它是<strong>高级语言</strong>（接近人类思维，远离机器码），也是<strong>面向对象</strong>的编程语言（支持类、对象、继承、多态等OOP特性）。这两个描述都是正确的。
+</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 程序设计语言的特点 · 速查表</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>考点</th><th>核心要点</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr><td><strong>流程图输入/输出框</strong></td><td>平行四边形</td><td>不是菱形！菱形是判断</td></tr>
+<tr><td><strong>流程图判断框</strong></td><td>菱形</td><td>不是平行四边形</td></tr>
+<tr><td><strong>C++语言类型</strong></td><td>高级语言 + 面向对象</td><td>两个属性都正确</td></tr>
+<tr><td><strong>高级→机器</strong></td><td>编译/解释 → 机器指令</td><td>所有高级语言最终都靠机器指令</td></tr>
+<tr><td><strong>scanf 是关键字？</strong></td><td>不是！是库函数</td><td>可以当作变量名(不推荐)</td></tr>
+<tr><td><strong>main 函数个数</strong></td><td>有且仅有 1 个</td><td>不能有多个main</td></tr>
+<tr><td><strong>GESP与语言</strong></td><td>同级别能力与语言无关</td><td>考的是计算思维</td></tr>
+<tr><td><strong>关键字</strong></td><td>int/if/for/return 等</td><td>库函数不是关键字</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="回到顶部">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+
+document.querySelector('.back-to-top').addEventListener('click', () => {
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+</script>
+</body>
+</html>

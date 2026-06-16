@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 数据编码</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+<nav class="sidebar">
+  <div class="sidebar-logo">GESP C++ 三级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：代码详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+<main class="main-content">
+<div class="content-wrapper">
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 数据编码</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">Data Encoding — 原码、反码、补码的奥秘</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 14道选择题 + 8道判断题</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均出题 3~5道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 占总分约 15%</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 直观比喻</h2>
+<div class="card accent"><div class="card-title">🎯 场景比喻</div>
+<p>想象你有一个数字手表，显示范围是 -999 到 999。你怎么表示负数呢？最简单的方法是在前面加个负号。计算机也是这样——它用 <strong>最高位</strong> 作为符号位：0表示正数，1表示负数。这就是 <span class="key-point">原码</span> 的思路。</p>
+<p>但原码有个问题：用原码算 1+(-1)，结果是 -2！这显然不对。于是数学家们发明了 <span class="key-point">补码</span>，让减法变成加法，用同样的电路就能完成所有计算。</p>
+</div>
+
+<!-- Step 2: 核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+<div class="card primary"><div class="card-title">🔵 三种编码对比</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>编码方式</th><th>正数</th><th>负数</th><th>示例(-5)</th></tr></thead>
+<tbody>
+<tr><td><strong>原码</strong></td><td>符号位0 + 数值</td><td>符号位1 + 数值</td><td class="mono">1000 0101</td></tr>
+<tr><td><strong>反码</strong></td><td>等于原码</td><td>符号位不变，其余取反</td><td class="mono">1111 1010</td></tr>
+<tr><td><strong>补码</strong></td><td>等于原码</td><td>反码 + 1</td><td class="mono">1111 1011</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card success"><div class="card-title">✅ 核心规则（必背）</div>
+<div class="formula-box">正数：原码 = 反码 = 补码<br>负数：补码 = 反码 + 1（反码 = 原码符号位不变，其余取反）</div>
+<p><span class="key-point success">补码意义</span>：将减法转化为加法，简化计算机硬件设计。</p>
+<p><span class="key-point">8位有符号范围</span>：补码 -128 ~ 127，原码 -127 ~ 127。</p>
+<p><span class="key-point warn">反码零</span>：有两种表示（+0: 0000 0000，-0: 1111 1111）。</p>
+</div>
+
+<!-- Step 3: 代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+<div class="card success"><div class="card-title">📝 验证补码的C++代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a = -5;
+    // 在计算机中，-5 以补码存储
+    // -5 的 16 位补码：FFFB（十六进制）
+    // 推导：
+    // 原码: 1000 0000 0000 0101
+    // 反码: 1111 1111 1111 1010  （符号位不变，其余取反）
+    // 补码: 1111 1111 1111 1011  （反码 + 1）
+    
+    // 验证：补码转真值
+    // 符号位为1 → 先求补码（取反+1）→ 得正数值 → 加负号
+    
+    cout << "计算机用补码存储整数" << endl;
+    return 0;
+}</code></pre></div>
+</div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+<div class="card flat"><div class="card-title">📐 手算补码练习</div>
+<p>以 <strong>-5 的 16 位补码</strong> 为例：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>① 原码</td><td>符号位1 + 数值5=0101</td><td class="mono">1000 0000 0000 0101</td></tr>
+<tr><td>② 反码</td><td>符号位不变，其余取反</td><td class="mono">1111 1111 1111 1010</td></tr>
+<tr><td>③ 补码</td><td>反码 + 1</td><td class="mono">1111 1111 1111 1011</td></tr>
+<tr><td>④ 十六进制</td><td>每4位转1个十六进制</td><td class="mono">FFFB</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point">补码转真值</span>：符号位为1 → 取反+1 → 得正数 → 加负号；符号位为0 → 直接等于真值。</p>
+</div>
+
+<!-- Step 5: 常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱1：正数的反码和补码</div>
+<p>正数的原码=反码=补码，完全相同！所以"任意整数的反码与补码都至少有一位不同"是 <strong>错误</strong> 的。</p>
+</div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱2：原码 vs 补码的范围</div>
+<p>8位原码范围：-127~127（因为±0各占一个编码），8位补码范围：-128~127（只有一种0）。问"8位二进制原码最小整数"答案是 <strong>-127</strong> 不是-128！</p>
+</div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱3：负数的反码是所有位取反</div>
+<p>负数的反码是 <strong>符号位不变</strong>，其余位取反！不是所有位都取反。如果所有位取反，符号位也变了。</p>
+</div>
+
+<!-- Step 6: 真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card purple">
+<div class="card-title">第1题 · 补码表示（2024/03 第1题）</div>
+<p>整数-5的16位补码表示是（ ）</p>
+<p>A. 1005 &nbsp; B. 1006 &nbsp; C. FFFA &nbsp; D. FFFB</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：-5的原码=1000 0000 0000 0101，反码=1111 1111 1111 1010，补码=1111 1111 1111 1011=FFFB。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 原码与补码转换（2024/12 第1题）</div>
+<p>下列二进制表示的十进制数值分别是：[10000011]原=（ ），[10000011]补=（ ）</p>
+<p>A. -125，-3 &nbsp; B. -3, -125 &nbsp; C. -3，-3 &nbsp; D. -125，-125</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：[10000011]原 = -(1×2¹+1×2⁰) = -3；[10000011]补 → 取反=01111100，+1=01111101=125 → 真值=-125。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 编码概念（2024/09 第2题）</div>
+<p>关于计算机中的编码，下列说法中正确的是（ ）</p>
+<p>A. 机器数的形式值和真值是一致的<br>B. 原码就是符号位加上真值<br>C. 机器数是带符号的<br>D. [-1]=[1000 0001]原=[1111 1111]反</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：A错，机器数可能是补码形式；B错，负数原码的真值不含符号位；C正确；D错，[-1]反=[1111 1110]。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 编码错误说法（2024/12 第2题）</div>
+<p>关于计算机中的编码，下列说法中错误的是（ ）</p>
+<p>A. 对于无符号数，原码就是真值<br>B. 正数的反码是其本身<br>C. 负数的反码和补码是不一样的<br>D. 负数的反码，在其原码的基础上，各个位取反</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：D错误，负数的反码是<strong>符号位不变</strong>，其余位取反，而非所有位都取反。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · 补码作用（2025/03 第5题）</div>
+<p>在C++中，补码的主要作用是（ ）</p>
+<p>A. 提高浮点数的精度 &nbsp; B. 简化整数的加减法运算<br>C. 增加整数的表示范围 &nbsp; D. 优化内存分配</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：补码的核心作用是将减法转化为加法，从而简化计算机硬件电路设计。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · 8位原码范围（2025/06 第1题）</div>
+<p>8位二进制原码能表示的最小整数是（ ）</p>
+<p>A. -127 &nbsp; B. -128 &nbsp; C. -255 &nbsp; D. -256</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：8位原码：1位符号位+7位数值位，范围 -127 到 127。补码范围才是 -128 到 127。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · 反码的零（2025/06 第2题）</div>
+<p>反码表示中，零的表示形式有（ ）</p>
+<p>A. 1种 &nbsp; B. 2种 &nbsp; C. 8种 &nbsp; D. 16种</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：反码中 +0 = 0000 0000，-0 = 1111 1111，共两种表示。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · 补码转真值（2025/06 第3题）</div>
+<p>补码 1011 1011 对应的真值是（ ）</p>
+<p>A. -69 &nbsp; B. -59 &nbsp; C. -68 &nbsp; D. -58</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：符号位为1，先求补码：取反=0100 0100，+1=0100 0101=69，真值=-69。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第9题 · 补码右移（2025/06 第4题）</div>
+<p>若X的8位补码为 0000 1010，则 X/2 的补码是（ ）</p>
+<p>A. 0000 0101 &nbsp; B. 1000 0101<br>C. 0000 0101 或 1000 0101 &nbsp; D. 算术右移后结果取决于符号位</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：X=10，X/2=5，5的补码=0000 0101。正数右移一位等价于除以2。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第10题 · Base64（2025/03 第1题）</div>
+<p>Base64编码将每3字节输入编码为4字节输出，输入10字节时输出长度是（ ）</p>
+<p>A. 12字节 &nbsp; B. 13字节 &nbsp; C. 14字节 &nbsp; D. 16字节</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：10÷3=3组余1字节。3组→12字节输出，余1字节→填充2字节凑3→再输出4字节。共12+4=16字节。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第11题 · 八进制原码（2025/03 第3题）</div>
+<p>在8位二进制原码表示中，八进制数-5的二进制形式是（ ）</p>
+<p>A. 10000101 &nbsp; B. 11111010 &nbsp; C. 11111011 &nbsp; D. 00000101</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：八进制5=二进制101，原码-5=1 0000101=10000101。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第12题 · 十六进制补码（2024/03 第2题）</div>
+<p>如果16位短整数-2的二进制是"FFFE"，则短整数-4的十六进制是（ ）</p>
+<p>A. FF04 &nbsp; B. FFFA &nbsp; C. FFFC &nbsp; D. FFFH</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：-2补码=FFFE，-4补码 = FFFE - 2 = FFFC。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第13题 · 32位int范围（2024/06 第3题）</div>
+<p>一般默认64位计算机系统中整型变量（int）还是32位，则整数能够表示的数据范围是（ ）</p>
+<p>A. -32768 ~ 32767 &nbsp; B. 0 ~ 4294967295<br>C. -2147483648 ~ 2147483647 &nbsp; D. -9223372036854775808 ~ 9223372036854775807</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：32位int范围是 -2³¹ ~ 2³¹-1 = -2147483648 ~ 2147483647。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第14题 · 补码计算（2026/03 第5题）</div>
+<p>8位二进制下，十进制数-15的补码是（ ）</p>
+<p>A. 1111 0000 &nbsp; B. 0000 1111<br>C. 1111 1111 &nbsp; D. 1111 0001</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：15=0000 1111，取反=1111 0000，+1=1111 0001，即-15的补码。
+</div></div>
+</div>
+
+<h3>判断题</h3>
+
+<div class="card success">
+<div class="card-title">判断题第1题 · 反码补码差异（2024/03）</div>
+<p>任意整数 a 的二进制反码与补码都有1位不同。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误</strong><br>正数的反码=补码，完全相同，不存在差异。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第2题 · -6的补码（2024/03）</div>
+<p>整数-6的16位补码可用十六进制表示为FFFA。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>6=0006H，取反=FFF9，+1=FFFA。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第3题 · 原码计算（2024/03）</div>
+<p>+1和-1的原码进行1+（-1）计算的结果是-2。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>(+1)原=0000 0001，(-1)原=1000 0001，相加=1000 0010=-2。这正是需要补码的原因。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第4题 · 补码的作用（2025/03）</div>
+<p>补码的优点是可以将减法运算转化为加法运算，从而简化计算机的硬件设计。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第5题 · 补码计算技巧（2025/03）</div>
+<p>给定正整数a，计算-a的补码技巧：将a的二进制从右往左扫描，遇到第一个1之后，将找到的第一个1左边的所有位都取反。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第6题 · 原码计算（2024/03）</div>
+<p>使用原码进行的计算，2+(-1)的结果是-3。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>2原=0000 0010，(-1)原=1000 0001，相加=1000 0011=-3。原码直接相加得不到正确结果。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第7题 · 反码加减法（2024/03）</div>
+<p>反码计算加减法：加法与减法结果都是正确的，只是解决不了-0的问题。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong></div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第8题 · 补码溢出（2025/06）</div>
+<p>补码加法中，若符号位无进位而次高位有进位，则说明发生上溢。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>符号位无进位而次高位有进位=溢出标志，说明发生上溢。</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 数据编码速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>公式/规则</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td>正数规则</td><td>原码 = 反码 = 补码</td><td class="mono">+5: 0000 0101</td></tr>
+<tr><td>负数补码</td><td>补码 = 反码 + 1</td><td class="mono">-5: 1111 1011</td></tr>
+<tr><td>8位原码范围</td><td>-127 ~ 127</td><td>±0各占一个编码</td></tr>
+<tr><td>8位补码范围</td><td>-128 ~ 127</td><td>只有一种0</td></tr>
+<tr><td>补码转真值</td><td>符号位1→取反+1→加负号</td><td>详见手工模拟</td></tr>
+<tr><td>Base64</td><td>3字节→4字节，不足补=</td><td>10字节→16字节</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div></main>
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

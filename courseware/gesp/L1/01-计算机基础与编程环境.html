@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GESP C++ 一级 · 计算机基础与编程环境</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💻</span> GESP C++ · 一级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="02-变量与标识符.html">变量与标识符 →</a>
+        <a class="nav-link" href="06-循环.html">循环 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero -->
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">💻 GESP C++ 一级 · 计算机基础与编程环境</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Computer Basics & Programming Environment</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 12 道选择题 + 10 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场约 1~2 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 16%</span>
+</div></div></div>
+
+<!-- Step 1 -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入</h2>
+
+<p>你有没有想过：<strong>手机为什么能同时播放音乐、回复消息、导航路线？</strong>或者，<strong>你在键盘上按下「A」，屏幕上的文字区域就出现「A」——这一瞬间到底发生了什么？</strong></p>
+
+<div class="card accent">
+<div class="card-title">📱 场景：用电脑写作业</div>
+<p>假设你打开电脑写一篇作文。你<strong>敲击键盘</strong>输入文字 → 文字显示在<strong>屏幕上</strong> → 写完点<strong>保存</strong> → 文件<strong>存到硬盘</strong>。</p>
+<p>这短短几秒里，你的电脑内部发生了：<span class="key-point">键盘（输入设备）</span> → <span class="key-point">CPU 处理</span> → <span class="key-point">显示器（输出设备）</span> → <span class="key-point">硬盘（存储器）</span>。这就是计算机最基本的工作模型。</p>
+</div>
+
+<blockquote style="background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)">
+<strong>💡 一句话总结：</strong>计算机 = 输入设备（感知） + 处理器（思考） + 输出设备（行动） + 存储器（记忆）。就像人的眼睛→大脑→嘴巴→记忆一样。
+</blockquote>
+</section>
+
+<!-- Step 2 -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>2.1 计算机硬件五大组成部分</h3>
+<p>冯·诺依曼体系结构是现代计算机的基石，由<strong>五大部分</strong>组成：</p>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>组成部分</th><th>功能</th><th>常见例子</th></tr></thead>
+<tbody>
+<tr><td><strong>输入设备</strong></td><td>接收外界信息，送入计算机</td><td>键盘、鼠标、<span class="key-point">传感器</span>、摄像头、麦克风</td></tr>
+<tr><td><strong>输出设备</strong></td><td>将计算结果呈现给用户</td><td>显示器、打印机、扬声器</td></tr>
+<tr><td><strong>运算器 + 控制器 = CPU</strong></td><td>执行计算和逻辑判断，控制各部件协调工作</td><td>Intel Core i7、Apple M2</td></tr>
+<tr><td><strong>存储器（内存）</strong></td><td>临时存放正在运行的程序和数据（断电丢失）</td><td>DDR4 8GB 内存条</td></tr>
+<tr><td><strong>存储器（外存）</strong></td><td>永久存放文件和程序（断电不丢）</td><td>硬盘、SSD、U盘、SD卡</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔑 易混淆对比</div>
+<p><strong>输入 vs 输出：</strong>方向是关键。数据从<strong>外界→计算机</strong>就是输入；从<strong>计算机→外界</strong>就是输出。比如摄像头拍照是输入设备，打印机打印是输出设备。</p>
+<p><strong>内存 vs 外存：</strong>内存快但断电丢失（正在编辑的文档），外存慢但永久保存（已保存的文件）。考试常考这个区别。</p>
+</div>
+
+<h3>2.2 软件层次：操作系统 · 编程语言 · IDE</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>是什么</th><th>GESP 考试中的考点</th></tr></thead>
+<tbody>
+<tr><td><strong>操作系统 (OS)</strong></td><td>管理硬件和软件资源的系统级软件</td><td>Windows、macOS、Linux、<span class="key-point">鸿蒙 OS</span>；它不是编译器</td></tr>
+<tr><td><strong>编程语言</strong></td><td>人与计算机沟通的工具</td><td>C++、Python、Scratch；C++ 是<strong>高级语言</strong></td></tr>
+<tr><td><strong>IDE（集成开发环境）</strong></td><td>集编辑、编译、运行、调试于一体的软件</td><td>Dev C++、VS Code；可设<strong>断点</strong>调试</td></tr>
+<tr><td><strong>编译器</strong></td><td>将高级语言翻译为机器指令的工具</td><td>g++、clang++；<strong>高级语言 → 机器指令</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>2.3 程序的完整生命周期</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔄 从代码到运行的五步流程</div>
+<p><strong>编辑</strong>（写代码）→ <strong>编译</strong>（翻译成机器语言）→ <strong>链接</strong>（组装各模块）→ <strong>运行</strong>（执行程序）→ <strong>调试</strong>（找问题、修错误）</p>
+</div>
+
+<div class="card flat">
+<div class="card-title">🧠 考试常考</div>
+<p>Dev C++ 中的<strong>编译</strong>功能负责将 C++ 源文件变为可运行程序。调试时可以设置<strong>断点</strong>让程序暂停在某一行检查变量的值。GESP 考级目前支持 <strong>Scratch、Python、C++</strong> 三种语言。</p>
+</div>
+</section>
+
+<!-- Step 3 -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<p>来看看你的<strong>第一个 C++ 程序</strong>长什么样，以及它是怎么跑起来的。</p>
+
+<h3>3.1 最简单的 C++ 程序</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;        // 引入输入输出库
+using namespace std;       // 使用标准命名空间
+
+int main() {               // 主函数——程序的入口
+    cout &lt;&lt; "Hello, GESP!"; // 向屏幕输出一句话
+    return 0;              // 告诉系统：运行成功
+}</code></pre>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">📝 逐行解读</div>
+<p><strong>第1行 #include：</strong>相当于跟计算机说"我要用到输入输出的功能，请帮我加载这个工具箱"。<br>
+<strong>第2行 using namespace std：</strong>告诉编译器"用标准库的名字，不用每次加前缀"。<br>
+<strong>第4行 int main()：</strong>每个 C++ 程序必须有一个 main 函数，程序从这里开始执行。<br>
+<strong>第5行 cout：</strong>C++ 中在屏幕上显示内容的方式，<span class="mono">&lt;&lt;</span> 是输出运算符。<br>
+<strong>第6行 return 0：</strong>向操作系统报告"程序正常结束"。</p>
+</div>
+
+<h3>3.2 从源代码到运行</h3>
+<div class="card flat">
+<div class="card-title" style="color:var(--primary)">⚙️ 程序的变身过程</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>1. 编写</td><td>在 IDE 中写 .cpp 文件</td><td>源代码（人可以看懂）</td></tr>
+<tr><td>2. 编译</td><td>编译器将 C++ 翻译为机器码</td><td>目标文件 .o/.obj</td></tr>
+<tr><td>3. 链接</td><td>将库文件与目标文件合并</td><td>可执行文件 .exe/.out</td></tr>
+<tr><td>4. 运行</td><td>双击或命令行执行</td><td>屏幕上显示结果</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p>为什么不能直接用中文或英文写程序让计算机执行？因为计算机只认识 <strong>0 和 1</strong>（二进制机器指令），所以需要编译器做"翻译官"。</p>
+</div>
+</section>
+
+<!-- Step 4 -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<p>我们一起来<strong>手工模拟</strong>计算机处理一条加法指令的完整过程，加深对五大部件协作的理解。</p>
+
+<h3>场景：计算 3 + 5</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>参与部件</th><th>数据流向</th></tr></thead>
+<tbody>
+<tr><td>①</td><td>用户在键盘输入 <code>3 + 5</code></td><td><strong>输入设备（键盘）</strong></td><td>键盘 → 内存</td></tr>
+<tr><td>②</td><td>CPU 从内存读取指令"做加法"</td><td><strong>处理器（CPU）</strong></td><td>内存 → CPU</td></tr>
+<tr><td>③</td><td>CPU 中的运算器执行 3+5</td><td><strong>处理器（运算器）</strong></td><td>CPU 内部</td></tr>
+<tr><td>④</td><td>结果 8 暂存内存</td><td><strong>存储器（内存）</strong></td><td>CPU → 内存</td></tr>
+<tr><td>⑤</td><td>显示器显示结果 "8"</td><td><strong>输出设备（显示器）</strong></td><td>内存 → 显示器</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🧠 深度思考</div>
+<p>注意：整个过程由<strong>控制器</strong>协调。它像一个指挥家，按节拍（时钟周期）调度每个部件在正确的时间做正确的事。而<strong>内存</strong>就像一张草稿纸 — CPU 计算时把数据暂存在上面，断电后草稿纸上的内容就没了。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🥪 类比：做三明治</div>
+<p><strong>输入设备</strong> = 冰箱（取出面包、火腿）<br>
+<strong>处理器</strong> = 你的大脑 + 手（决定怎么组合、实际动手）<br>
+<strong>输出设备</strong> = 盘子（呈现成品）<br>
+<strong>内存</strong> = 砧板（操作过程中的临时工作台，做完就收走）<br>
+<strong>外存</strong> = 食谱书（做法永久记录，但需要翻看）</p>
+</div>
+</section>
+
+<!-- Step 5 -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱1：把操作系统当编译器</div>
+<p><strong>错误认知：</strong>鸿蒙 OS、Windows、iOS 是编译器。<br>
+<strong>正确认知：</strong>操作系统是<strong>管理硬件和软件的平台</strong>，不是编译器。编译器是 g++、clang 这类工具。考试中看到"XX OS 是编译器"直接判错。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱2：混淆输入设备和输出设备</div>
+<p><strong>易错点：</strong>传感器、摄像头、扫描仪 → 都是<strong>输入</strong>（数据从外向内）。打印机、投影仪、扬声器 → 都是<strong>输出</strong>（数据从内向外）。触摸屏既是输入又是输出，但 GESP 一级目前不深入考这个。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱3：认为 AI 算法程序是硬件设备</div>
+<p><strong>错误认知：</strong>"AI 算法程序"可以作为输入设备。<br>
+<strong>正确认知：</strong>AI 算法程序是<strong>软件</strong>，不是硬件设备。输入设备必须是物理硬件（如键盘、传感器）。软件不能作为输入/输出/存储<strong>设备</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱4：文件名大小写与重命名</div>
+<p>在 IDE 中修改文件名应使用"右键 → 重命名"。直接修改代码中的注释<strong>不会</strong>改变实际文件名。Windows 中文件名不区分大小写，但 C++ 代码中引用文件可能区分。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱5：认为大模型等于大语言模型</div>
+<p><strong>易错点：</strong>大语言模型（LLM）是大模型的一个子类。大模型还包括视觉模型、多模态模型等。考试中看到"大模型就是大语言模型"这个表述是<strong>错误的</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱6：注释会影响运行速度</div>
+<p><strong>错误认知：</strong>多写注释会让程序运行变慢。<br>
+<strong>正确认知：</strong>注释在编译阶段会被完全<strong>忽略</strong>，不会进入最终的可执行文件，因此对运行速度没有任何影响。注释仅供人阅读。</p>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 答题技巧</div>
+<p>遇到"设备分类"的选择题，先判断关键词：<strong>有没有"器"字？</strong> 传感器、扫描仪 → 输入；打印机、扬声器 → 输出。遇到"是否物理硬件"，软件类选项（如算法、程序）要高度怀疑。</p>
+</div>
+</section>
+
+<!-- Step 6 -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<p>以下 22 道真题按考点分类，每题均可点击「显示答案」查看解析。建议先自己做，再看答案。</p>
+
+<!-- 考点一分类标签 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：计算机组成与设备分类（3 道选择 + 3 道判断）</div>
+</div>
+
+<!-- 选择题 1 -->
+<div class="card success">
+<div class="card-title">题1 （2025/09 第1题）</div>
+<p>汽车倒车时用的雷达传感器，在计算机的分类中相当于：<br>
+A. 输出设备<br>
+B. 输入设备<br>
+C. 存储设备<br>
+D. 处理设备</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：B</strong><br>
+<strong>解析：</strong>传感器采集外界信息（距离、温度、光线等）送入计算机处理，数据方向是<strong>外→内</strong>，因此属于输入设备。考试中「传感器」是输入设备的经典考点，出现频率很高。
+</div></div>
+</div>
+
+<!-- 选择题 2 -->
+<div class="card success">
+<div class="card-title">题2 （2025/12 第1题）</div>
+<p>无人机在飞行时发现前方有障碍物后会自动避开，完成这个「发现→判断→避开」过程的部件是：<br>
+A. 传感器<br>
+B. 处理器<br>
+C. 电机<br>
+D. 电池</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：B</strong><br>
+<strong>解析：</strong>传感器负责"发现"，电机负责"避开"，但中间的"判断"（要不要避、往哪边避）由处理器（CPU）完成。CPU 的核心职责就是<strong>执行计算和逻辑判断</strong>。
+</div></div>
+</div>
+
+<!-- 选择题 3 -->
+<div class="card success">
+<div class="card-title">题3 （2026/03 第1题）</div>
+<p>下列不能作为输入设备的是：<br>
+A. 鼠标<br>
+B. AI 算法程序<br>
+C. 扫描仪<br>
+D. 触摸板</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：B</strong><br>
+<strong>解析：</strong>AI 算法程序是<strong>软件</strong>，不是硬件设备。输入设备必须是物理硬件。A、C、D 都是物理输入设备。
+</div></div>
+</div>
+
+<!-- 判断题：考点一 -->
+<div class="card success">
+<div class="card-title">判断题 1 （GESP 认证语言）</div>
+<p>GESP 认证目前支持 Scratch、Python 和 C++ 三种编程语言。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>GESP 认定 Scratch、Python、C++ 为三种可选认证语言，考生可根据自身情况选择其中一种参加。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 2 （C++ 语言级别）</div>
+<p>C++ 属于高级编程语言，编写好的 C++ 程序需要通过编译器翻译成机器指令，计算机才能执行。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>C++ 是高级语言（接近人类思维），计算机只能执行机器指令（0/1），因此必须由编译器将高级语言翻译为机器指令。这也是为什么 IDE 流程中有「编译」这一步。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 3 （输入设备）</div>
+<p>键盘、鼠标和传感器都属于计算机的输入设备。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>三者都负责将外界信息送入计算机，数据方向为外→内，都是输入设备。传感器是本考点高频关键词。
+</div></div>
+</div>
+
+<!-- 考点二分类标签 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：操作系统与 IDE（4 道选择 + 3 道判断）</div>
+</div>
+
+<!-- 选择题 4 -->
+<div class="card success">
+<div class="card-title">题4 （2024/09 第1题）</div>
+<p>下列软件中，属于操作系统的是：<br>
+A. Dev C++<br>
+B. Microsoft Word<br>
+C. 纯血鸿蒙 HarmonyOS<br>
+D. Google Chrome</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：C</strong><br>
+<strong>解析：</strong>鸿蒙 HarmonyOS 是华为开发的操作系统（OS）。A 是 IDE，B 是办公软件，D 是浏览器。操作系统的核心特征是<strong>管理硬件资源</strong>和提供软件运行平台。
+</div></div>
+</div>
+
+<!-- 选择题 5 -->
+<div class="card success">
+<div class="card-title">题5 （2024/06 第1题）</div>
+<p>小明在 Dev C++ 中编写了一个程序，他想运行这个程序。以下哪个操作是正确的？<br>
+A. 直接点「运行」按钮即可<br>
+B. 先保存文件，再点「运行」按钮<br>
+C. 先点「编译」按钮，再点「运行」按钮<br>
+D. 先点「运行」按钮，再点「编译」按钮</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：C</strong><br>
+<strong>解析：</strong>正确的流程是先编译（将代码翻译为机器语言），再运行。如果直接点运行，IDE 通常会提示需要先编译。顺序不能反，也不能跳过编译。
+</div></div>
+</div>
+
+<!-- 选择题 6 -->
+<div class="card success">
+<div class="card-title">题6 （2024/03 第1题）</div>
+<p>关于 IDE（集成开发环境），下列说法错误的是：<br>
+A. IDE 只能用来写代码，不能调试程序<br>
+B. IDE 可以帮助程序员提高开发效率<br>
+C. Dev C++ 是一种常用的 C++ IDE<br>
+D. IDE 中可以同时拥有编辑、编译、运行、调试的功能</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong>IDE 的"集成"含义就是集成<strong>编辑 + 编译 + 运行 + 调试</strong>等多项功能。A 说"不能调试程序"是错的，IDE 支持设置断点、单步执行等调试功能。
+</div></div>
+</div>
+
+<!-- 选择题 7 -->
+<div class="card success">
+<div class="card-title">题7 （2025/03 第2题）</div>
+<p>在 IDE 集成开发环境中，以下哪一项功能是无法直接完成的？<br>
+A. 编写代码<br>
+B. 编译程序<br>
+C. 运行程序<br>
+D. 插入截图</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>IDE 的核心功能是写代码、编译、运行和调试。<strong>插入截图</strong>不是 IDE 的功能范畴，截图属于画图工具或截图工具的事情。考试中要注意区分 IDE 的功能边界。
+</div></div>
+</div>
+
+<!-- 判断题：考点二 -->
+<div class="card success">
+<div class="card-title">判断题 4 （鸿蒙 OS）</div>
+<p>鸿蒙 HarmonyOS 是一种 C++ 编译器。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<strong>解析：</strong>鸿蒙 OS 是<strong>操作系统</strong>，不是编译器。编译器是用来翻译代码的工具（如 g++），两者的角色完全不同。考试中 OS 和编译器的混淆是高频陷阱。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 5 （调试阶段）</div>
+<p>在程序调试的过程中，如果发现代码有错，可以直接修改代码并立即看到修改后的运行结果，不需要重新编译。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<strong>解析：</strong>修改代码后必须<strong>重新编译</strong>才能生成新的可执行程序。C++ 不是解释型语言，不能修改后直接看到效果。调试过程中修改代码 → 重新编译 → 重新运行，这个流程不能省略。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 6 （智能设备操作系统）</div>
+<p>电话手表和智能手机一样，内部也运行着操作系统。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>现代智能设备（电话手表、智能电视、车载系统等）内部都运行着操作系统，用于管理硬件资源、运行应用程序。电话手表通常运行精简版的 Android 或 RTOS（实时操作系统）。
+</div></div>
+</div>
+
+<!-- 考点三分类标签 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：AI 与前沿科技（3 道选择 + 1 道判断）</div>
+</div>
+
+<!-- 选择题 8 -->
+<div class="card success">
+<div class="card-title">题8 （2025/03 第1题）</div>
+<p>小明想用 DeepSeek 来帮他写一个故事脚本，以下做法最合适的是：<br>
+A. 直接复制搜索结果<br>
+B. 不告诉 DeepSeek 任何要求<br>
+C. 只输入一个标题<br>
+D. 给出具体的故事大纲、角色设定和目标长度</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>使用 AI 工具时，输入的提示（Prompt）越具体、越详细，生成的结果质量越高。就像你跟一个人交代任务，说得越清楚，对方越能做好。A 涉及抄袭，B 和 C 信息不足。
+</div></div>
+</div>
+
+<!-- 选择题 9 -->
+<div class="card success">
+<div class="card-title">题9 （2024/12 第1题）</div>
+<p>2024 年诺贝尔物理学奖授予了在以下哪个领域做出贡献的科学家？<br>
+A. 新型电池技术<br>
+B. 5G 通讯技术<br>
+C. 人工智能（AI）和机器学习<br>
+D. 量子计算机</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：C</strong><br>
+<strong>解析：</strong>2024 年诺贝尔物理学奖授予 John Hopfield 和 Geoffrey Hinton，表彰他们在<strong>人工神经网络和机器学习</strong>领域的基础性发现和发明。GESP 会考当年科技热点，提醒学员关注 AI 领域的重大新闻。
+</div></div>
+</div>
+
+<!-- 选择题 10 -->
+<div class="card success">
+<div class="card-title">题10 （2024/03 第2题）</div>
+<p>关于大模型，以下说法正确的是：<br>
+A. 大模型只能处理文本<br>
+B. 大模型就是大语言模型，两者完全等同<br>
+C. 大模型不需要训练就能使用<br>
+D. 大模型包含大语言模型，但不仅限于文本处理</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>大语言模型（LLM）是大模型的一个<strong>子类</strong>。大模型还包括视觉模型（理解图像）、多模态模型（同时处理文本+图像+语音）等。A 和 B 都把范围缩小了，C 明显错误（大模型需要大量数据训练）。
+</div></div>
+</div>
+
+<!-- 判断题：考点三 -->
+<div class="card success">
+<div class="card-title">判断题 7 （GESP 与语言）</div>
+<p>GESP 认证与编程语言无关，任何编程语言都可以参加 GESP 认证。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<strong>解析：</strong>GESP 认证<strong>限定了可选语言</strong>（Scratch、Python、C++），并非任意编程语言都可参加。比如 Java、JavaScript 目前不在 GESP 认证语言之列。
+</div></div>
+</div>
+
+<!-- 考点四分类标签 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：编程常识（2 道选择 + 3 道判断）</div>
+</div>
+
+<!-- 选择题 11 -->
+<div class="card success">
+<div class="card-title">题11 （2024/03 第4题）</div>
+<p>在操作系统中，如果想改变某个文件名，以下哪种方式是正确的？<br>
+A. 右键点击文件，选择「重命名」，输入新名称<br>
+B. 打开文件，修改文件内容后保存<br>
+C. 删除文件，新建一个不同名称的文件<br>
+D. 用截图工具截取文件名后修改</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong>右键 → 重命名是操作系统中最标准的文件重命名方式。B 修改的是文件内容≠文件名。C 虽然可以达到目的，但不是"重命名"操作（且原文件被删除了）。D 完全不相关。
+</div></div>
+</div>
+
+<!-- 选择题 12 -->
+<div class="card success">
+<div class="card-title">题12 （2024/06 第2题）</div>
+<p>以下哪种说法是<strong>错误</strong>的？<br>
+A. C++ 程序从 main 函数开始执行<br>
+B. 一个 C++ 程序中可以有多个函数<br>
+C. C++ 程序只能按从上到下的顺序执行，不能改变执行顺序<br>
+D. C++ 支持循环语句和条件分支语句</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：C</strong><br>
+<strong>解析：</strong>C++ 不仅有顺序结构，还支持<strong>选择结构</strong>（if/else）和<strong>循环结构</strong>（for/while），可以改变执行顺序。C 说"只能按从上到下"完全抹杀了条件分支和循环，这是严重错误的理解。
+</div></div>
+</div>
+
+<!-- 判断题：考点四 -->
+<div class="card success">
+<div class="card-title">判断题 8 （文件操作）</div>
+<p>在 Windows 中，可以使用 Ctrl+C 复制文件，再用 Ctrl+V 将其粘贴到另一个文件夹中。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>Ctrl+C 复制、Ctrl+V 粘贴是 Windows 中最基本的文件操作快捷键，适用于文件、文件夹、文本等内容。实际考试中也可能会变着问 Ctrl+X（剪切）。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 9 （注释的作用）</div>
+<p>C++ 程序中注释写得越多，程序运行的速度就越慢。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<strong>解析：</strong>注释在编译阶段会被编译器<strong>完全忽略</strong>，不会进入最终的可执行文件。因此注释的多少对程序运行速度没有任何影响。注释的目的只是帮助程序员阅读和理解代码。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题 10 （智能设备）</div>
+<p>智能手表是一种内嵌计算机系统、具备独立计算能力的可穿戴设备。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content">
+<div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>解析：</strong>智能手表内部有处理器、内存、操作系统，是一个完整的微型计算机系统，属于可穿戴计算设备。考试中常考"XX 是不是计算机/有没有操作系统"这类判断。
+</div></div>
+</div>
+
+</section>
+
+<!-- Cheat Sheet -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>要点</th></tr></thead>
+<tbody>
+<tr><td><strong>输入设备</strong></td><td>键盘、鼠标、传感器、摄像头、麦克风</td></tr>
+<tr><td><strong>输出设备</strong></td><td>显示器、打印机、扬声器</td></tr>
+<tr><td><strong>处理器 (CPU)</strong></td><td>执行计算和逻辑判断</td></tr>
+<tr><td><strong>存储器</strong></td><td>内存（临时）、硬盘（永久）</td></tr>
+<tr><td><strong>IDE 流程</strong></td><td>编辑 → 编译 → 运行 → 调试</td></tr>
+<tr><td><strong>GESP 语言</strong></td><td>Scratch / Python / C++</td></tr>
+<tr><td><strong>操作系统</strong></td><td>Windows、macOS、Linux、鸿蒙 OS；管理硬件资源</td></tr>
+<tr><td><strong>编译器</strong></td><td>g++；高级语言 → 机器指令</td></tr>
+<tr><td><strong>C++ 程序入口</strong></td><td>main 函数</td></tr>
+<tr><td><strong>三大程序结构</strong></td><td>顺序、选择（if/else）、循环（for/while）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:20px">
+<div class="hb-title">📌 考前必看</div>
+<p><strong>传感器 = 输入设备</strong>，这是 GESP 一级出现频率最高的一条。只要题面出现"传感器"，90% 以上考的是输入设备。另外，<strong>操作系统 ≠ 编译器</strong>，这也是出题人最爱挖的坑。</p>
+</div>
+
+</section>
+
+</div></main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+hljs.highlightAll();
+
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

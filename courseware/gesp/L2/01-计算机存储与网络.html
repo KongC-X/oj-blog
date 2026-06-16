@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 计算机存储与网络</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+/* 侧边栏 — 浅色背景 */
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+/* 标题 */
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+/* 卡片系统 */
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+/* 高亮提示盒 */
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+/* 特殊盒 */
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+/* 代码块 */
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+/* 表格 */
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+/* 内联标记 */
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+/* 引用块 */
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+/* 答案折叠 */
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+/* 分隔线 + 返回顶部 */
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+/* 侧边栏滚动条 */
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* 响应式 */
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++二级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link active" href="#hero-section">01 · 计算机存储与网络</a>
+    <a class="nav-link" href="../课件/02-程序设计语言的特点.html">02 · 程序设计语言的特点</a>
+    <a class="nav-link" href="../课件/03-数据类型转换.html">03 · 数据类型转换</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">本课目录</div>
+    <a class="nav-link" href="#step1">1. 生活引入</a>
+    <a class="nav-link" href="#step2">2. 核心概念</a>
+    <a class="nav-link" href="#step3">3. 代码详解</a>
+    <a class="nav-link" href="#step4">4. 手工模拟</a>
+    <a class="nav-link" href="#step5">5. 常见陷阱</a>
+    <a class="nav-link" href="#step6">6. 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;border:none;background:none;padding:0;margin-bottom:8px">GESP C++二级 · 计算机存储与网络</h1>
+  <p style="color:#94a3b8;font-size:16px;margin-bottom:20px">Computer Storage & Network — 计算机硬件基础与网络常识</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⚡ 10道选择题 + 4道判断题</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">📊 年均出题3~4道</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⭐ 占总分约10%</span>
+  </div>
+</div>
+
+<!-- 第一步：生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 直观比喻</h2>
+
+<div class="card accent">
+<div class="card-title">🎯 场景比喻：你的电脑就像一个办公桌</div>
+<p>想象你坐在办公桌前工作：<strong>处理器(CPU)</strong> 就是你自己——负责思考、计算和决策；<strong>内存(RAM)</strong> 就是桌面——临时摆放正在处理的文件，速度快但空间有限，关灯(关机)后东西就没了；<strong>硬盘(磁盘)</strong> 就是抽屉柜——永久存放文件，但存取速度慢；<strong>输入设备</strong> 就像眼睛和耳朵——获取外界信息；<strong>输出设备</strong> 就像嘴巴和手——向外界表达结果。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🌐 网络比喻：教学楼就是一个小世界</div>
+<p>你所在的教学楼内的计算机网络，能覆盖整栋楼但不会大到整个城市。这就是 <strong>LAN（局域网）</strong>——像一栋楼里的所有教室都能互相通信。而连接全世界的互联网就是 <strong>WAN（广域网）</strong>。TCP协议建立连接时的<strong>三次握手</strong>，就像你打电话：「喂，听得到吗？」→「听得到，你呢？」→「我也听得到，开始聊吧！」</p>
+</div>
+
+<!-- 第二步：核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<div class="card primary">
+<div class="card-title">🔵 计算机五大部件（冯·诺依曼体系）</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>部件</th><th>英文</th><th>功能</th><th>例子</th></tr></thead>
+<tbody>
+<tr><td><strong>运算器</strong></td><td>ALU</td><td>算术运算与逻辑运算</td><td>加减乘除、比较大小</td></tr>
+<tr><td><strong>控制器</strong></td><td>CU</td><td>指挥各部件协调工作</td><td>取指令、译码、执行</td></tr>
+<tr><td><strong>存储器</strong></td><td>Memory</td><td>存放程序和数据</td><td>RAM、ROM、硬盘</td></tr>
+<tr><td><strong>输入设备</strong></td><td>Input</td><td>向计算机送入数据</td><td>键盘、鼠标、传感器</td></tr>
+<tr><td><strong>输出设备</strong></td><td>Output</td><td>将计算结果送出</td><td>显示器、打印机</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 存储体系：从快到慢、从贵到便宜</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>存储类型</th><th>速度</th><th>容量</th><th>断电后</th><th>典型用途</th></tr></thead>
+<tbody>
+<tr><td><span class="key-point">CACHE</span></td><td>极快</td><td>KB~MB</td><td>丢失</td><td>CPU内部高速缓冲</td></tr>
+<tr><td><span class="key-point">RAM（内存）</span></td><td>快</td><td>GB级</td><td>丢失</td><td>运行程序、临时数据</td></tr>
+<tr><td>ROM</td><td>中</td><td>MB级</td><td>保留</td><td>固件、BIOS</td></tr>
+<tr><td>磁盘/SSD</td><td>慢</td><td>GB~TB</td><td>保留</td><td>长期存储文件</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>关键区分：</strong>RAM是「运行内存」，内存条就是RAM；ROM是「只读存储器」，出厂烧录不可随意改；CACHE是CPU内部的「超高速暂存区」。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 存储单位：从Bit到TB</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>单位</th><th>全称</th><th>换算关系</th></tr></thead>
+<tbody>
+<tr><td><span class="key-point">Bit（位）</span></td><td>Binary Digit</td><td>最小单位，存0或1</td></tr>
+<tr><td><span class="key-point">Byte（字节）</span></td><td>Byte</td><td><strong>1 Byte = 8 Bit</strong></td></tr>
+<tr><td>KB</td><td>Kilobyte</td><td>1 KB = 1024 Byte</td></tr>
+<tr><td>MB</td><td>Megabyte</td><td>1 MB = 1024 KB</td></tr>
+<tr><td>GB</td><td>Gigabyte</td><td>1 GB = 1024 MB</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>考试重点：</strong>B 代表 <span class="key-point">Byte（字节）</span>，不是Bit（位）！如 3MB 表示 3 兆字节。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 网络分类：从个人到全球</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类型</th><th>全称</th><th>覆盖范围</th><th>举例</th></tr></thead>
+<tbody>
+<tr><td><span class="key-point">PAN</span></td><td>Personal Area Network</td><td>几米内</td><td>蓝牙耳机连手机</td></tr>
+<tr><td><span class="key-point">LAN</span></td><td>Local Area Network</td><td>一栋楼/校园</td><td>教学楼网络、机房</td></tr>
+<tr><td>MAN</td><td>Metropolitan Area Network</td><td>一个城市</td><td>城域网</td></tr>
+<tr><td>WAN</td><td>Wide Area Network</td><td>跨城市/国家</td><td>互联网</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 TCP 三次握手</div>
+<p>TCP（传输控制协议）在建立连接时需要经过<strong>三次握手</strong>：</p>
+<ol>
+  <li>客户端 → 服务器：SYN（我要连接你）</li>
+  <li>服务器 → 客户端：SYN + ACK（收到，我也要连接你）</li>
+  <li>客户端 → 服务器：ACK（收到，开始传数据）</li>
+</ol>
+<p>这保证了双方都有发送和接收能力后才开始通信。</p>
+</div>
+
+<!-- 第三步：代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<div class="card success">
+<div class="card-title">📝 本知识点为概念型，无直接代码模板</div>
+<p>计算机存储与网络主要考查概念理解，不涉及C++代码编写。但以下知识点会在后续编程中间接体现：</p>
+<ul>
+  <li><strong>变量存储</strong>：声明的变量存储在<strong>内存(RAM)</strong>中</li>
+  <li><strong>数据类型大小</strong>：<code class="mono">int</code> 占 4 字节(Byte)，<code class="mono">char</code> 占 1 字节 —— 这里用的就是存储单位</li>
+  <li><strong>输入输出</strong>：<code class="mono">cin</code> 从输入设备读数据，<code class="mono">cout</code> 向输出设备写数据</li>
+</ul>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// sizeof 查看数据类型占用的内存字节数
+cout &lt;&lt; sizeof(int) &lt;&lt; endl;    // 输出 4（4字节=32位）
+cout &lt;&lt; sizeof(char) &lt;&lt; endl;   // 输出 1（1字节=8位）
+cout &lt;&lt; sizeof(double) &lt;&lt; endl; // 输出 8（8字节=64位）</code></pre></div>
+</div>
+
+<!-- 第四步：手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<div class="card flat">
+<div class="card-title">🔍 判断设备类型：从功能出发</div>
+<p>给你一个设备，判断它属于五大部件中的哪一个？核心法则：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>判断标准</th><th>属于</th><th>例子</th></tr></thead>
+<tbody>
+<tr><td>向计算机<strong>送入</strong>数据/信号</td><td><span class="key-point">输入设备</span></td><td>传感器、键盘、鼠标、麦克风</td></tr>
+<tr><td>从计算机<strong>送出</strong>结果/信号</td><td><span class="key-point">输出设备</span></td><td>显示器、打印机、音箱</td></tr>
+<tr><td><strong>执行计算/判断</strong></td><td><span class="key-point">处理器(CPU)</span></td><td>判断逻辑、算术运算</td></tr>
+<tr><td><strong>存储</strong>数据/程序</td><td><span class="key-point">存储器</span></td><td>RAM、ROM、硬盘、U盘</td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box blue">
+<div class="hb-title">💡 巧记</div>
+<p>机器人身上的<strong>传感器</strong>→ 感知环境 → 把信息「输入」给计算机 → <strong>输入设备</strong>。飞行控制系统中「执行判断」的部件 → 核心计算部件 → <strong>处理器</strong>。</p>
+</div>
+</div>
+
+<!-- 第五步：常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱1：Bit ≠ Byte</div>
+<p>B 代表 <strong>Byte（字节）</strong>，不是 Bit（位）。1 Byte = 8 Bit。考试常把二者混在一起考，要看清题目说的是 B 还是 b。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱2：RAM vs ROM vs CACHE</div>
+<p>买内存条买的是 <strong>RAM</strong>（随机存取存储器，可读写、断电丢失）。ROM 是只读存储器（出厂固化）。CACHE 是CPU内部高速缓存（比RAM还快、更小、更贵）。不要混淆！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱3：网络类型覆盖范围</div>
+<p><strong>教学楼 = LAN</strong>（局域网），不是 MAN 也不是 WAN。PAN 是个人设备间的（如蓝牙）。记住覆盖范围从小到大的顺序：PAN → LAN → MAN → WAN。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱4：操作系统 ≠ 编译器</div>
+<p>操作系统（如 Windows、鸿蒙）负责管理硬件资源和提供用户界面。<strong>编译器</strong>才是把源程序翻译成目标程序的工具。鸿蒙是操作系统，不能把源程序翻译成目标程序并运行！</p>
+</div>
+
+<!-- 第六步：真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>📝 选择题</h3>
+
+<!-- 第1题 purple -->
+<div class="card purple">
+<div class="card-title">第1题 · 传感器与输入设备（2025/06 第1题）</div>
+<p>2025年4月19日在北京举行了一场颇为瞩目的人形机器人半程马拉松赛。比赛期间，跑动着的机器人会利用身上安装的多个传感器所反馈的数据来调整姿态、保持平衡等，那么这类传感器类似于计算机的( )。</p>
+<p>A. 处理器 &nbsp;&nbsp; B. 存储器 &nbsp;&nbsp; C. 输入设备 &nbsp;&nbsp; D. 输出设备</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（输入设备）</strong><br>
+传感器负责采集环境数据并送入计算机系统，相当于<strong>输入设备</strong>。处理器是计算核心，存储器存放数据，输出设备向外传送结果——都与「采集外界信息」的功能不符。
+</div></div>
+</div>
+
+<!-- 第2题 pink -->
+<div class="card pink">
+<div class="card-title">第2题 · 内存条是RAM（2024/09 第2题）</div>
+<p>小明购置的计算机使用一年后觉得内存不够用了，想购置一个容量更大的内存条，这时他需要的内存条是( )。</p>
+<p>A. RAM &nbsp;&nbsp; B. ROM &nbsp;&nbsp; C. CACHE &nbsp;&nbsp; D. EPROM</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A（RAM）</strong><br>
+内存条就是 <strong>RAM（随机存取存储器）</strong>。ROM是只读存储器不可随意更换，CACHE集成在CPU内部无法单独购买，EPROM是可擦除可编程只读存储器。日常说的「内存条」「运行内存」都指RAM。
+</div></div>
+</div>
+
+<!-- 第3题 teal -->
+<div class="card teal">
+<div class="card-title">第3题 · DeepSeek与AI应用（2025/03 第3题）</div>
+<p>2025年春节有两件轰动全球的事件，一个是DeepSeek横空出世，另一个是贺岁片《哪吒2》票房惊人，入了全球票房榜。下面关于DeepSeek与《哪吒2》的描述成立的是( )。</p>
+<p>A. 《哪吒2》是一款新型操作系统<br>
+B. DeepSeek是深海钻探软件<br>
+C. 《哪吒2》可以生成新的软件<br>
+D. DeepSeek可以根据《哪吒2》的场景生成剧情脚本</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+DeepSeek是一个<strong>大语言模型（AI）</strong>，可以根据给定的场景生成文本内容（如剧情脚本）。A错：《哪吒2》是电影不是操作系统。B错：DeepSeek是AI模型，不是深海钻探软件。C错：电影不能生成软件。
+</div></div>
+</div>
+
+<!-- 第4题 indigo -->
+<div class="card indigo">
+<div class="card-title">第4题 · 诺贝尔物理学奖与AI（2024/12 第4题）</div>
+<p>2024年10月8日，诺贝尔物理学奖「意外地」颁给了两位计算机科学家约翰·霍普菲尔德（John J. Hopfield）和杰弗里·辛顿（Geoffrey E. Hinton）。这两位科学家的主要研究方向是( )。</p>
+<p>A. 天体物理 &nbsp;&nbsp; B. 流体力学 &nbsp;&nbsp; C. 人工智能 &nbsp;&nbsp; D. 量子理论</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（人工智能）</strong><br>
+霍普菲尔德以<strong>霍普菲尔德网络</strong>闻名，辛顿被誉为「<strong>深度学习之父</strong>」，两人都因在人工神经网络和机器学习领域的奠基性贡献获诺奖。这道题体现了GESP对AI前沿的关注。
+</div></div>
+</div>
+
+<!-- 第5题 orange -->
+<div class="card orange">
+<div class="card-title">第5题 · 存储单位 Byte（2023/12 第5题）</div>
+<p>计算机系统中存储的基本单位用B来表示，它代表的是( )，比如某个照片大小为3MB。</p>
+<p>A. Byte &nbsp;&nbsp; B. Block &nbsp;&nbsp; C. Bulk &nbsp;&nbsp; D. Bit</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A（Byte）</strong><br>
+<strong>B = Byte（字节）</strong>，1 Byte = 8 Bit。3MB = 3兆字节。Bit是更小的单位（位），Block和Bulk不是计算机存储单位。这是高频考点，务必记牢 B=Byte！
+</div></div>
+</div>
+
+<!-- 第6题 purple -->
+<div class="card purple">
+<div class="card-title">第6题 · 磁心存储 = 内存（2023/09 第6题）</div>
+<p>据有关资料，山东大学于1972年研制成功DJL-1计算机，并于1973年投入运行，其综合性能居当时全国第三位。DJL-1计算机运算控制部分所使用的磁心存储元件由磁心颗粒组成，设计存贮周期为2μs（微秒）。那么该磁心存储元件相当于现代计算机的( )。</p>
+<p>A. 内存 &nbsp;&nbsp; B. 磁盘 &nbsp;&nbsp; C. CPU &nbsp;&nbsp; D. 显示器</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A（内存）</strong><br>
+磁心存储器是早期计算机的<strong>主存储器（内存）</strong>，存取速度快（微秒级），用于临时存放运算控制数据。它相当于现代计算机的RAM。磁盘用于长期存储，CPU是处理器，显示器是输出设备。
+</div></div>
+</div>
+
+<!-- 第7题 pink -->
+<div class="card pink">
+<div class="card-title">第7题 · 大模型 = 大语言模型（2024/09 第7题）</div>
+<p>人工智能现在非常火，小杨就想多了解一下，其中就经常听人提到「大模型」。那么请问这里说的「大模型」最贴切是指( )。</p>
+<p>A. 大电脑模型 &nbsp;&nbsp; B. 大规模智能 &nbsp;&nbsp; C. 智能的单位 &nbsp;&nbsp; D. 大语言模型</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D（大语言模型）</strong><br>
+AI领域说的「大模型」通常指 <strong>Large Language Model (LLM)</strong>，即大语言模型，如 ChatGPT、DeepSeek 等。它通过海量数据训练，能理解和生成自然语言。
+</div></div>
+</div>
+
+<!-- 第8题 teal -->
+<div class="card teal">
+<div class="card-title">第8题 · TCP三次握手（2023/06 第8题）</div>
+<p>在TCP协议中，完成连接建立需要通过( )握手。</p>
+<p>A. 一次 &nbsp;&nbsp; B. 二次 &nbsp;&nbsp; C. 三次 &nbsp;&nbsp; D. 四次</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（三次）</strong><br>
+TCP建立连接需要<strong>三次握手</strong>（SYN → SYN+ACK → ACK）。断开连接需要四次挥手。这个数字是固定的，直接记忆即可。
+</div></div>
+</div>
+
+<!-- 第9题 indigo -->
+<div class="card indigo">
+<div class="card-title">第9题 · 飞行控制系统的处理器（2024/12 第9题）</div>
+<p>近日，空中客车公司表示，约6000架空客A320系列飞机需要紧急更换一种易受太阳辐射影响的飞行控制软件。空客表示，在对一起飞行事故分析后的结果显示，强烈的太阳辐射可能会损坏飞行控制系统所需的关键数据，导致判断失误，进而引发飞行异常。那这里的飞行控制系统执行判断的部件最可能是下面的( )。</p>
+<p>A. 辐射传感器 &nbsp;&nbsp; B. 处理器 &nbsp;&nbsp; C. 内存单元 &nbsp;&nbsp; D. 输出设备</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B（处理器）</strong><br>
+「执行判断」是<strong>处理器(CPU)</strong>的核心功能。传感器负责感知（输入），内存负责存储，输出设备负责显示结果——只有处理器具备逻辑判断和决策能力。
+</div></div>
+</div>
+
+<!-- 第10题 orange -->
+<div class="card orange">
+<div class="card-title">第10题 · 教学楼网络 = LAN（2023/03 第10题）</div>
+<p>小明最近为了备考GESP，开始看B站上关于网络知识的视频。其中提到计算机网络系统有不同的划分标准，那他平时上学所在的教学楼内的网络是一个( )。</p>
+<p>A. PAN &nbsp;&nbsp; B. LAN &nbsp;&nbsp; C. MAN &nbsp;&nbsp; D. WAN</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B（LAN）</strong><br>
+教学楼内的网络范围是一栋楼，属于<strong>局域网(LAN)</strong>。PAN覆盖个人周围几米（蓝牙等），MAN覆盖一个城市，WAN覆盖跨城市/国家（互联网）。记住：教学楼=LAN，城市=MAN，全球=WAN。
+</div></div>
+</div>
+
+<h3>📝 判断题</h3>
+
+<!-- 判断题第1题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第1题 · 智能设备与考试（2024/09 第1题）</div>
+<p>人们现在参加很多闭卷考试时通常都不允许带智能手机、平板电脑等，此外很多种智能手表同样因为具有嵌入操作系统及通信等功能，所以也不允许随身携带。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+智能手表因内嵌<strong>操作系统</strong>并具备通信功能，本质上等同于微型计算机，可被用于作弊，因此闭卷考试不允许携带。这个判断正确。
+</div></div>
+</div>
+
+<!-- 判断题第2题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第2题 · 文件复制操作（2023/12 第2题）</div>
+<p>在Windows的资源管理器中为已有文件A建立副本的操作是Ctrl+C，然后Ctrl+V。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<strong>Ctrl+C</strong> = 复制（Copy），<strong>Ctrl+V</strong> = 粘贴（Paste），这是Windows中复制文件的标准快捷键操作。这考查的是计算机基本操作常识。
+</div></div>
+</div>
+
+<!-- 判断题第3题 teal -->
+<div class="card teal">
+<div class="card-title">判断题第3题 · IDE调试与源程序修改（2024/06 第3题）</div>
+<p>在集成开发环境里调试程序时，要注意不能修改源程序，因为如果修改，就要终止调试、关闭该文件并重新打开，才能再次开始调试。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+现代IDE（如VS Code、Dev-C++）支持<strong>调试过程中修改源代码</strong>，修改后可以继续调试或重新编译，不需要「终止调试、关闭文件、重新打开」。这个说法过于绝对，是错误的。
+</div></div>
+</div>
+
+<!-- 判断题第4题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第4题 · 鸿蒙不是编译器（2025/03 第4题）</div>
+<p>鸿蒙是华为公司开发的一款操作系统，那么它能够将正确的源程序翻译成目标程序，并运行。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+鸿蒙是<strong>操作系统</strong>，不是编译器。将源程序翻译成目标程序是<strong>编译器</strong>（如g++）的工作。操作系统负责管理硬件资源和程序运行环境，但不负责编译翻译。这是概念混淆类陷阱。
+</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 计算机存储与网络 · 速查表</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>考点</th><th>核心要点</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr><td><strong>五大部件</strong></td><td>运算器+控制器+存储器+输入+输出</td><td>传感器=输入设备，判断=处理器</td></tr>
+<tr><td><strong>内存条</strong></td><td>RAM（随机存取，断电丢失）</td><td>不是ROM、不是CACHE</td></tr>
+<tr><td><strong>Byte vs Bit</strong></td><td>B=Byte，1 Byte=8 Bit</td><td>3MB=3兆字节，B不是Bit</td></tr>
+<tr><td><strong>大模型</strong></td><td>LLM=大语言模型（如DeepSeek）</td><td>不是「大电脑模型」</td></tr>
+<tr><td><strong>TCP</strong></td><td>三次握手建立连接</td><td>记数字「3」即可</td></tr>
+<tr><td><strong>网络类型</strong></td><td>PAN→LAN→MAN→WAN（范围递增）</td><td>教学楼=LAN，城市=MAN</td></tr>
+<tr><td><strong>操作系统</strong></td><td>管理硬件、提供界面</td><td>操作系统≠编译器，不负责翻译代码</td></tr>
+<tr><td><strong>CACHE vs RAM</strong></td><td>CACHE更快更小更贵，CPU内部</td><td>买不到CACHE内存条</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="回到顶部">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+
+// 答案折叠
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+
+// ScrollSpy 侧边栏高亮
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+// 移动端菜单
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+
+// 回到顶部
+document.querySelector('.back-to-top').addEventListener('click', () => {
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+</script>
+</body>
+</html>

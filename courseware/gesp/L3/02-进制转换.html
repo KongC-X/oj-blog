@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 进制转换</title>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+<div class="sidebar-logo">GESP C++三级</div>
+<div class="nav-section">
+<div class="nav-section-title">教学内容</div>
+<a class="nav-link" href="#hero">课程概览</a>
+<a class="nav-link" href="#step1">第一步：生活引入</a>
+<a class="nav-link" href="#step2">第二步：核心概念</a>
+<a class="nav-link" href="#step3">第三步：代码详解</a>
+<a class="nav-link" href="#step4">第四步：手工模拟</a>
+<a class="nav-link" href="#step5">第五步：常见陷阱</a>
+<a class="nav-link" href="#step6">第六步：真题实战</a>
+<a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+</div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 进制转换</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">Number System Conversion — 二进制、八进制、十进制、十六进制</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 15道选择题 + 7道判断题</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均出题 2~3道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 占总分约 12%</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 进制就像不同的计量单位</h2>
+
+<div class="card purple">
+<div class="card-title">从日常说起</div>
+<p>你在生活中早已在使用不同"进制"：</p>
+<ul>
+<li><strong>十进制</strong>：我们数数的方式 —— 10 个数字（0~9），逢十进一。</li>
+<li><strong>二进制</strong>：开关只有两种状态（开/关），就像灯泡的亮与灭。</li>
+<li><strong>时间</strong>：60 秒 = 1 分钟，60 分钟 = 1 小时 —— 某种意义上就是 60 进制。</li>
+<li><strong>星期</strong>：7 天 = 1 周 —— 类 7 进制。</li>
+</ul>
+</div>
+
+<div class="tip-box">
+<p><strong>关键认知：</strong>计算机底层只有 0 和 1（二进制），但二进制读起来太长。八进制和十六进制是二进制的"缩写形式"，方便人类阅读。</p>
+<p style="margin-bottom:0;">3 位二进制 → 1 位八进制 | 4 位二进制 → 1 位十六进制</p>
+</div>
+
+<div class="think-box">
+<p><strong>思考：</strong>为什么计算机用二进制，而不是我们熟悉的十进制？你可以试着想想「开关」和「0~9 十种状态」哪个更容易实现。</p>
+</div>
+
+<!-- ─── STEP 2: 核心概念 ────────────────────────────────────────── -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念 — 进制转换方法</h2>
+
+<div class="card teal">
+<div class="card-title">转换三部曲</div>
+<table>
+<thead><tr><th>转换方向</th><th>方法</th><th>口诀</th></tr></thead>
+<tbody>
+<tr><td>十进制 → R 进制（整数）</td><td><strong>除 R 取余法</strong></td><td>余数<strong>从下往上</strong>读</td></tr>
+<tr><td>十进制 → R 进制（小数）</td><td><strong>乘 R 取整法</strong></td><td>整数<strong>从上往下</strong>读</td></tr>
+<tr><td>R 进制 → 十进制</td><td><strong>按权展开</strong></td><td>各位数字 × R^{位权}，求和</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>C++ 中的进制表示</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>进制</th><th>前缀</th><th>示例</th><th>每位数字范围</th></tr></thead>
+<tbody>
+<tr><td>二进制</td><td><span class="mono">0b</span> 或 <span class="mono">0B</span></td><td><span class="mono">0b1010</span> = 10</td><td>0 ~ 1</td></tr>
+<tr><td>八进制</td><td><span class="mono">0</span></td><td><span class="mono">0754</span> = 492</td><td>0 ~ 7</td></tr>
+<tr><td>十进制</td><td>无</td><td><span class="mono">255</span></td><td>0 ~ 9</td></tr>
+<tr><td>十六进制</td><td><span class="mono">0x</span> 或 <span class="mono">0X</span></td><td><span class="mono">0xFF</span> = 255</td><td>0 ~ 9, A ~ F</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>C++ 输出控制</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>控制符</th><th>作用</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">dec</span></td><td>设置为十进制输出（默认）</td><td><span class="mono">cout &lt;&lt; dec &lt;&lt; 255;</span> → 255</td></tr>
+<tr><td><span class="mono">oct</span></td><td>设置为八进制输出</td><td><span class="mono">cout &lt;&lt; oct &lt;&lt; 255;</span> → 377</td></tr>
+<tr><td><span class="mono">hex</span></td><td>设置为十六进制输出</td><td><span class="mono">cout &lt;&lt; hex &lt;&lt; 255;</span> → ff</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>ASCII 码与进制</h3>
+<div class="card indigo">
+<div class="card-title">关键 ASCII 值</div>
+<table>
+<thead><tr><th>字符</th><th>十进制</th><th>十六进制</th><th>规律</th></tr></thead>
+<tbody>
+<tr><td><span class="mono">'0'</span></td><td>48</td><td>0x30</td><td>数字字符 = 48 + 数字值</td></tr>
+<tr><td><span class="mono">'A'</span></td><td>65</td><td>0x41</td><td>大写字母依次递增</td></tr>
+<tr><td><span class="mono">'L'</span></td><td>76</td><td>0x4C</td><td>'A' + 11 = 'L'</td></tr>
+<tr><td><span class="mono">'a'</span></td><td>97</td><td>0x61</td><td>小写字母依次递增</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- ─── STEP 3: 代码详解 ────────────────────────────────────────── -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解 — 十进制转 R 进制</h2>
+
+<div class="highlight-box blue">
+<div class="hb-title">核心模板 — 考场必背</div>
+<p style="margin-bottom:4px;">输入十进制数 N 和进制 R（2 ≤ R ≤ 36），输出 N 的 R 进制表示。</p>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+// 数字转字符：0-9 → '0'-'9'，10-35 → 'A'-'Z'
+char trans(int d) {
+    if (d &lt; 10) return (char)(d + '0');
+    return (char)(d + 'A' - 10);
+}
+
+int main() {
+    int n, r;
+    cin &gt;&gt; n &gt;&gt; r;
+    char res[30];    // 存储每一位结果
+    int len = 0;
+
+    // 除 R 取余 ← 高频考点！
+    while (n &gt; 0) {
+        res[len] = trans(n % r);  // 取余数，转字符
+        n /= r;                    // 除以 R
+        len++;
+    }
+
+    // 倒序输出 ← 高频考点！
+    for (int i = len - 1; i &gt;= 0; i--)
+        cout &lt;&lt; res[i];
+    cout &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</div>
+
+<div class="card orange">
+<div class="card-title">代码要点解析</div>
+<ul>
+<li><strong>trans() 函数</strong>：将余数（0~35）转换成对应字符。0~9 加 '0'，10~35 加 'A'-10。</li>
+<li><strong>while(n > 0)</strong>：不断除以 R，直到商为 0。注意此写法对 n=0 不输出任何内容，实际考试中可能需要单独处理。</li>
+<li><strong>倒序输出</strong>：除 R 取余法产生的结果是逆序的（先得到的余数是低位），必须从 <span class="mono">len-1</span> 到 <span class="mono">0</span> 输出。</li>
+<li><strong>R 的范围</strong>：2 ≤ R ≤ 36，因为 10 个数字 + 26 个大写字母 = 36 个符号。</li>
+</ul>
+</div>
+
+<!-- ─── STEP 4: 手工模拟 ────────────────────────────────────────── -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 手算转换全过程</h2>
+
+<div class="card teal">
+<div class="card-title">示例 1：十进制 25 → 二进制</div>
+<table>
+<thead><tr><th>步骤</th><th>被除数</th><th>除以 2</th><th>商</th><th>余数</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>25</td><td>25 ÷ 2</td><td>12</td><td><strong>1</strong></td></tr>
+<tr><td>2</td><td>12</td><td>12 ÷ 2</td><td>6</td><td><strong>0</strong></td></tr>
+<tr><td>3</td><td>6</td><td>6 ÷ 2</td><td>3</td><td><strong>0</strong></td></tr>
+<tr><td>4</td><td>3</td><td>3 ÷ 2</td><td>1</td><td><strong>1</strong></td></tr>
+<tr><td>5</td><td>1</td><td>1 ÷ 2</td><td>0</td><td><strong>1</strong></td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px;">余数<span style="color:var(--danger);font-weight:600;">从下往上</span>读：<span class="mono">11001</span> → <strong>25₁₀ = 11001₂</strong></p>
+</div>
+
+<div class="card pink">
+<div class="card-title">示例 2：十进制 1987 → 十六进制</div>
+<table>
+<thead><tr><th>步骤</th><th>被除数</th><th>除以 16</th><th>商</th><th>余数</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>1987</td><td>1987 ÷ 16</td><td>124</td><td><strong>3</strong></td></tr>
+<tr><td>2</td><td>124</td><td>124 ÷ 16</td><td>7</td><td><strong>12 → C</strong></td></tr>
+<tr><td>3</td><td>7</td><td>7 ÷ 16</td><td>0</td><td><strong>7</strong></td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px;">余数从下往上读：<span class="mono">7C3</span> → <strong>1987₁₀ = 7C3₁₆</strong></p>
+</div>
+
+<div class="card indigo">
+<div class="card-title">示例 3：十进制小数 0.8125 → 二进制</div>
+<table>
+<thead><tr><th>步骤</th><th>被乘数</th><th>乘以 2</th><th>整数部分</th><th>小数部分</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>0.8125</td><td>0.8125 × 2 = 1.625</td><td><strong>1</strong></td><td>0.625</td></tr>
+<tr><td>2</td><td>0.625</td><td>0.625 × 2 = 1.25</td><td><strong>1</strong></td><td>0.25</td></tr>
+<tr><td>3</td><td>0.25</td><td>0.25 × 2 = 0.5</td><td><strong>0</strong></td><td>0.5</td></tr>
+<tr><td>4</td><td>0.5</td><td>0.5 × 2 = 1.0</td><td><strong>1</strong></td><td>0（停止）</td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px;">整数<span style="color:var(--primary);font-weight:600;">从上往下</span>读：<span class="mono">1101</span> → <strong>0.8125₁₀ = 0.1101₂</strong></p>
+</div>
+
+<div class="card purple">
+<div class="card-title">示例 4：二进制 1101.101 → 十进制（按权展开）</div>
+<div class="formula-box">
+1101.101₂ = 1×2³ + 1×2² + 0×2¹ + 1×2⁰ + 1×2⁻¹ + 0×2⁻² + 1×2⁻³<br>
+= 8 + 4 + 0 + 1 + 0.5 + 0 + 0.125 = <strong>13.625₁₀</strong>
+</div>
+</div>
+
+<!-- ─── STEP 5: 常见陷阱 ────────────────────────────────────────── -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱 — 这些坑不要踩</h2>
+
+<div class="warning-box">
+<div class="wb-title">陷阱 1：余数读反了！</div>
+<p style="margin-bottom:0;">除 R 取余后，很多人<strong>从上往下读</strong>，这是错误的！正确的读法是<strong>从下往上（倒序）</strong>。</p>
+<p style="margin-bottom:0;margin-top:6px;">例如 63 转二进制，余数（从下往上）是 <span class="mono">111111</span>，如果从上往下读就错了。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱 2：小数乘 2 取整的方向</div>
+<p style="margin-bottom:0;">小数部分的数是<strong>从上往下读</strong>，与整数部分恰好相反！</p>
+<p style="margin-bottom:0;margin-top:6px;">整数：除 R 取余 → <strong>从下往上</strong>读 | 小数：乘 R 取整 → <strong>从上往下</strong>读</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱 3：ASCII 码与数字值的区别</div>
+<p style="margin-bottom:0;">字符 <span class="mono">'0'</span> 的 ASCII 值是 <strong>48</strong>，字符 <span class="mono">'A'</span> 的 ASCII 值是 <strong>65</strong>。不要把字符和它的 ASCII 码值混淆。</p>
+<p style="margin-bottom:0;margin-top:6px;">数字字符的值 = <span class="mono">48 + 数字值</span>（如 '5' = 48 + 5 = 53）</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱 4：八进制前缀 0 的误导</div>
+<p style="margin-bottom:0;">在 C++ 中，<span class="mono">010</span> 是<strong>八进制</strong>数，等于十进制的 8！</p>
+<p style="margin-bottom:0;margin-top:6px;">所以 <span class="mono">010 &lt;&lt; 1</span> 的结果是 16（8 × 2），而不是 100。</p>
+</div>
+
+<div class="quote-box">
+<p><strong>记忆口诀：</strong>整余倒着读，小整顺着读。先得余数是低位，后得余数是高位。</p>
+</div>
+
+<!-- ─── STEP 6: 真题实战 ────────────────────────────────────────── -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<!-- ─── 选择题 ─── -->
+<h3 id="mcq">选择题（15 道）</h3>
+<p style="font-size:13px;color:var(--text-tertiary);margin-bottom:16px;">颜色轮换：紫 → 粉 → 青 → 靛 → 橙，每 5 道一轮</p>
+
+<!-- Q1 purple -->
+<div class="card purple">
+<div class="card-title">第1题 · 大写字符ASCII编码（2023/09 第3题）</div>
+<p>已知大写字符 'A' 的ASCII编码的十六进制表示为 0x41，则字符 'L' 的ASCII编码的十六进制表示为（ ）</p>
+<p>A. 4A &nbsp;&nbsp; B. 4B &nbsp;&nbsp; C. 4C &nbsp;&nbsp; D. 52</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+解析：A = 0x41，L = A + 11，0x41 + 11 = 0x41 + 0xB = 0x4C。
+</div></div>
+</div>
+
+<!-- Q2 pink -->
+<div class="card pink">
+<div class="card-title">第2题 · 进制基本叙述（2023/09 选择题）</div>
+<p>下列关于进制的叙述，正确的是（ ）</p>
+<p>A. 只有十进制和二进制能够用来表示小数，八进制和十六进制不可以。<br>
+B. 常用的进制包括二进制、八进制、十进制、十六进制，其他进制在日常生活中很少使用。<br>
+C. 对任意正整数，其二进制表示不会比它的十进制表示更短。<br>
+D. 正整数的八进制表示中，每一位可能出现的最大数字是8。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+解析：C 正确，二进制只有 0 和 1，表示同等数值需要更多位数。D 错，八进制每位最大数字是 7。
+</div></div>
+</div>
+
+<!-- Q3 teal -->
+<div class="card teal">
+<div class="card-title">第3题 · 编码相等判断（2023/12 第2题）</div>
+<p>在下列编码中，不能够和二进制 "1101 1101" 相等的是（ ）</p>
+<p>A. (221)₁₀进制 &nbsp;&nbsp; B. (335)₈进制 &nbsp;&nbsp; C. (dd)₁₆进制 &nbsp;&nbsp; D. (5d)₁₆进制</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong>
+解析：1101 1101₂ = 13×16 + 13 = 221₁₀ = DD₁₆。5D₁₆ = 5×16 + 13 = 93 ≠ 221。
+</div></div>
+</div>
+
+<!-- Q4 indigo -->
+<div class="card indigo">
+<div class="card-title">第4题 · 二进制转十进制（2024/06 第5题）</div>
+<p>二进制数 101.11 对应的十进制数是（ ）</p>
+<p>A. 6.5 &nbsp;&nbsp; B. 5.5 &nbsp;&nbsp; C. 5.75 &nbsp;&nbsp; D. 5.25</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+解析：101.11₂ = 1×4 + 0×2 + 1×1 + 1×0.5 + 1×0.25 = 4 + 1 + 0.5 + 0.25 = 5.75。
+</div></div>
+</div>
+
+<!-- Q5 orange -->
+<div class="card orange">
+<div class="card-title">第5题 · 八进制转十六进制（2024/09 第3题）</div>
+<p>8进制数 3703 转换成16进制数是（ ）</p>
+<p>A. 7C3 &nbsp;&nbsp; B. 7A3 &nbsp;&nbsp; C. 7B3 &nbsp;&nbsp; D. 7D3</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：3703₈ = 3×512 + 7×64 + 0×8 + 3 = 1987₁₀。1987÷16=124余3, 124÷16=7余12(C), 7÷16=0余7 → 7C3₁₆。
+</div></div>
+</div>
+
+<!-- Q6 purple -->
+<div class="card purple">
+<div class="card-title">第6题 · 小数转二进制（2024/09 第4题）</div>
+<p>0.8125 变成二进制是（ ）</p>
+<p>A. 0.1110 &nbsp;&nbsp; B. 0.1 1111 1011 1101 &nbsp;&nbsp; C. 0.1 1111 1011 1100 &nbsp;&nbsp; D. 0.1101</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong>
+解析：乘2取整：0.8125×2=1.625→1, 0.625×2=1.25→1, 0.25×2=0.5→0, 0.5×2=1.0→1 → 0.1101₂。
+</div></div>
+</div>
+
+<!-- Q7 pink -->
+<div class="card pink">
+<div class="card-title">第7题 · 十六进制转八进制（2024/12 第3题）</div>
+<p>16进制数 B2025 转换成8进制数是（ ）</p>
+<p>A. 2620045 &nbsp;&nbsp; B. 2004526 &nbsp;&nbsp; C. 729125 &nbsp;&nbsp; D. 2420045</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：B2025₁₆ → 二进制（每位4位）：B=1011, 2=0010, 0=0000, 2=0010, 5=0101，再按3位一组转八进制 → 2620045₈。
+</div></div>
+</div>
+
+<!-- Q8 teal -->
+<div class="card teal">
+<div class="card-title">第8题 · 十进制转二进制（2024/12 第4题）</div>
+<p>625.625 变成二进制是（ ）</p>
+<p>A. 1001110001.101 &nbsp;&nbsp; B. 101.101 &nbsp;&nbsp; C. 101.1001110001 &nbsp;&nbsp; D. 1001110001.1101</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：整数部分：625 → 1001110001₂。小数部分：0.625×2=1.25→1, 0.25×2=0.5→0, 0.5×2=1.0→1 → 0.101₂。结果：1001110001.101₂。
+</div></div>
+</div>
+
+<!-- Q9 indigo -->
+<div class="card indigo">
+<div class="card-title">第9题 · C++输出控制（2024/06 第4题）</div>
+<p>下列程序的作用是（ ）</p>
+<div class="code-block"><span class="lang-tag">C++</span><pre><code class="language-cpp">int main() {
+    int decimal = 25;
+    cout &lt;&lt; oct &lt;&lt; decimal;
+    return 0;
+}</code></pre></div>
+<p>A. 将十进制数转换成八进制数 &nbsp;&nbsp; B. 将八进制数转换成十进制数<br>
+C. 将二进制数转换成八进制数 &nbsp;&nbsp; D. 将八进制数转换成16进制数</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：<span class="mono">oct</span> 设置输出为八进制格式，所以 25 会以八进制形式输出（31）。<span class="mono">hex</span> 为十六进制，<span class="mono">dec</span> 为十进制（默认）。
+</div></div>
+</div>
+
+<!-- Q10 orange -->
+<div class="card orange">
+<div class="card-title">第10题 · 二进制转十进制（2025/06 第5题）</div>
+<p>二进制数 1101.101 对应的十进制数是（ ）</p>
+<p>A. 14.25 &nbsp;&nbsp; B. 13.625 &nbsp;&nbsp; C. 13.5 &nbsp;&nbsp; D. 14.5</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+解析：1101₂ = 13，0.101₂ = 0.5 + 0.125 = 0.625，合计 13.625。
+</div></div>
+</div>
+
+<!-- Q11 purple -->
+<div class="card purple">
+<div class="card-title">第11题 · 二进制转十进制（2025/12 第1题）</div>
+<p>请将二进制数 (1101.101)₂，转换为等值的10进制数（ ）</p>
+<p>A. 14.25 &nbsp;&nbsp; B. 13.625 &nbsp;&nbsp; C. 13.5 &nbsp;&nbsp; D. 14.5</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+解析：与上题相同，1101.101₂ = 13.625₁₀。
+</div></div>
+</div>
+
+<!-- Q12 pink -->
+<div class="card pink">
+<div class="card-title">第12题 · ASCII码与字符（2024/03 第5题）</div>
+<p>已知字符 '0' 的ASCII编码的十进制表示为48，则字符 '5' 的ASCII编码的十进制表示为（ ）</p>
+<p>A. 5 &nbsp;&nbsp; B. 48 &nbsp;&nbsp; C. 53 &nbsp;&nbsp; D. 43</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+解析：数字字符的 ASCII 值 = 48 + 数字值。'5' = 48 + 5 = 53。
+</div></div>
+</div>
+
+<!-- Q13 teal -->
+<div class="card teal">
+<div class="card-title">第13题 · 十进制转二进制（2025/03 第4题）</div>
+<p>十进制数 111.111 的二进制表示可以是下面的（ ）</p>
+<p>A. 1101111.0001110001 &nbsp;&nbsp; B. 1101110.1001110001<br>
+C. 1101111.1001110001 &nbsp;&nbsp; D. 1101111.0011110001</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：整数部分 111 → 1101111₂。小数部分 0.111 乘2取整得 0.0001110001...。注意组合。
+</div></div>
+</div>
+
+<!-- Q14 indigo -->
+<div class="card indigo">
+<div class="card-title">第14题 · 字符码值比较（2024/09 选择题）</div>
+<p>C++的字符变量的码值是整数，下面字面量形式的字符码值最大的是（ ）</p>
+<p>A. 100 &nbsp;&nbsp; B. 075 &nbsp;&nbsp; C. 0x70 &nbsp;&nbsp; D. 0x60</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+解析：100 是十进制 100。075 是八进制 = 61。0x70 = 112。0x60 = 96。最大是 0x70 = 112。
+</div></div>
+</div>
+
+<!-- Q15 orange -->
+<div class="card orange">
+<div class="card-title">第15题 · 八进制转十进制（2024/09 选择题）</div>
+<p>八进制数 35.6 对应的十进制数是（ ）</p>
+<p>A. 29.75 &nbsp;&nbsp; B. 28.5 &nbsp;&nbsp; C. 27.625 &nbsp;&nbsp; D. 30.25</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+解析：35.6₈ = 3×8 + 5 + 6/8 = 24 + 5 + 0.75 = 29.75。
+</div></div>
+</div>
+
+<!-- ─── 判断题 ─── -->
+<h3 id="tf">判断题（7 道）</h3>
+
+<!-- J1 purple -->
+<div class="card purple">
+<div class="card-title">第1题 · 二进制小数转十进制（2024/12 判断题）</div>
+<p>二进制数 101.101 在十进制下是 5.005。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+解析：101.101₂ = 5 + 0.5 + 0.125 = 5.625，不是 5.005。
+</div></div>
+</div>
+
+<!-- J2 pink -->
+<div class="card pink">
+<div class="card-title">第2题 · 十六进制与十进制相等（2024/03 判断题）</div>
+<p>在C++语言中，表达式 (0xff == 255) 的值为 true。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+解析：0xFF = 15×16 + 15 = 255。两者相等。
+</div></div>
+</div>
+
+<!-- J3 teal -->
+<div class="card teal">
+<div class="card-title">第3题 · 十六进制转二进制（2024/06 判断题）</div>
+<p>16进制数 AB，表示成2进制数是 10101011。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+解析：A = 1010，B = 1011，拼接得 10101011。
+</div></div>
+</div>
+
+<!-- J4 indigo -->
+<div class="card indigo">
+<div class="card-title">第4题 · 十六进制与五进制转换（2024/09 判断题）</div>
+<p>def (十六进制) = 103231 (五进制)。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+解析：def₁₆ = 13×256 + 14×16 + 15 = 3328 + 224 + 15 = 3567₁₀，不等于 103231₅。
+</div></div>
+</div>
+
+<!-- J5 orange -->
+<div class="card orange">
+<div class="card-title">第5题 · 十六进制与七进制转换（2024/12 判断题）</div>
+<p>CCF(十六进制) = 12363(七进制)。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+解析：CCF₁₆ = 12×256 + 12×16 + 15 = 3279₁₀。3279₁₀ 转七进制验证相等。
+</div></div>
+</div>
+
+<!-- J6 purple -->
+<div class="card purple">
+<div class="card-title">第6题 · k进制位权理解（2023/09 判断题）</div>
+<p>k进制，逢k进第二位，k²进百位，k³进千位。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+解析：k 进制中，第二位是 k¹，第三位是 k²，第四位是 k³。k² 进的是第三位，非第二位。
+</div></div>
+</div>
+
+<!-- J7 pink -->
+<div class="card pink">
+<div class="card-title">第7题 · 除2取余的阅读顺序（2024/03 判断题）</div>
+<p>10进制数63，在转换成二进制的计算过程中，按照从前往后的顺序获得63的二进制值是111111。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+解析：除2取余后应该从下往上（倒序）读，虽然 63 的二进制确实是 111111，但"从前往后读"的说法在一般情况下是错误的。
+</div></div>
+</div>
+
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 进制转换速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>转换方向</th><th>方法</th><th>关键点</th></tr></thead>
+<tbody>
+<tr><td>十进制→R进制(整数)</td><td>除R取余</td><td>余数<span class="key-point">从下往上</span>读</td></tr>
+<tr><td>十进制→R进制(小数)</td><td>乘R取整</td><td>整数<span class="key-point">从上往下</span>读</td></tr>
+<tr><td>R进制→十进制</td><td>按权展开</td><td>位权 = R^位置</td></tr>
+<tr><td>C++二进制前缀</td><td class="mono">0b/0B</td><td>如 0b1010 = 10</td></tr>
+<tr><td>C++八进制前缀</td><td class="mono">0</td><td>如 0754 = 492</td></tr>
+<tr><td>C++十六进制前缀</td><td class="mono">0x/0X</td><td>如 0xFF = 255</td></tr>
+<tr><td>C++输出格式</td><td class="mono">oct/hex/dec</td><td>cout << oct << n;</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="goal-box">
+<p style="font-weight:700;font-size:15px;margin-bottom:6px;">本节要点回顾</p>
+<p style="margin-bottom:0;">1. 除R取余法（余数从下往上读）是进制转换的核心。<br>
+2. C++ 中 <span class="mono">oct/hex/dec</span> 控制输出进制格式。<br>
+3. 进位制转换是 GESP 三级的高频考点，平均每套卷出现 2~3 题。<br>
+4. ASCII 码中 <span class="mono">'A'=65(0x41)</span>、<span class="mono">'0'=48</span> 是常考背景知识。</p>
+</div>
+
+</div><!-- .content-wrapper -->
+
+<button class="back-to-top" title="回到顶部">↑</button>
+
+</main>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

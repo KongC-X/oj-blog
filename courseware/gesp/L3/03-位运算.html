@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++ 三级 · 位运算</title>
+<style>
+:root{--bg:#fafbfc;--surface:#ffffff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:'SF Mono','Cascadia Code','Consolas','Monaco',monospace;--font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--gray-50:#f8fafc;--gray-100:#f1f5f9;--gray-200:#e2e8f0;--gray-700:#334155;--gray-800:#1e293b;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+@media(max-width:900px){nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}h1{font-size:1.7rem}}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>📘</span> GESP C++ 三级
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：代码详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+  <div class="content-wrapper">
+
+    <!-- Hero Banner -->
+    <div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+      <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 位运算</h1>
+      <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">Bitwise Operations — &amp; | ^ ~ &lt;&lt; &gt;&gt;</p>
+      <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+        <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 16道选择题 + 13道判断题</span>
+        <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均出题 4~6道</span>
+        <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 占总分约 18%</span>
+      </div>
+    </div>
+
+    <!-- Step 1: 生活引入 -->
+    <h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 灯泡开关比喻</h2>
+
+    <div class="card purple">
+      <div class="card-title">理解二进制位</div>
+      <p>把<strong>二进制位（bit）</strong>想象成一个灯泡开关：</p>
+      <table>
+        <thead><tr><th>灯泡状态</th><th>意义</th><th>二进制值</th></tr></thead>
+        <tbody>
+          <tr><td>🔴 亮（On）</td><td>开关打开、通电</td><td><span class="mono">1</span></td></tr>
+          <tr><td>⚫ 灭（Off）</td><td>开关关闭、断电</td><td><span class="mono">0</span></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:12px;">一个字节有 8 个灯泡（8 位），可以表示 256 种状态。C++ 的 <span class="mono">int</span> 类型通常是 32 个灯泡（32 位）。</p>
+    </div>
+
+    <div class="card pink">
+      <div class="card-title">位运算 = 同时控制多盏灯</div>
+      <p><strong>按位与 &amp;</strong> → 两盏灯都亮才亮（串联开关）</p>
+      <p><strong>按位或 |</strong> → 至少一盏灯亮就亮（并联开关）</p>
+      <p><strong>按位异或 ^</strong> → 两盏灯状态不同才亮（"矛盾检测器"）</p>
+      <p><strong>按位取反 ~</strong> → 把所有灯的状态翻转（亮变灭，灭变亮）</p>
+      <p><strong>左移 &lt;&lt;</strong> → 把所有灯向左挪位，右边空位填 0</p>
+      <p><strong>右移 &gt;&gt;</strong> → 把所有灯向右挪位，正数左边补 0，负数左边补 1</p>
+    </div>
+
+    <!-- Step 2: 按位运算符表 -->
+    <h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念 — 按位运算符表</h2>
+
+    <div class="card teal">
+      <div class="card-title">C++ 位运算符全景</div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>运算符</th><th>名称</th><th>运算规则</th><th>示例</th><th>结果</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">&amp;</td><td>按位与</td><td>两个位都为1时结果为1</td><td class="mono">5 &amp; 3</td><td class="mono">1</td></tr>
+            <tr><td class="mono">|</td><td>按位或</td><td>两个位都为0时结果为0</td><td class="mono">5 | 3</td><td class="mono">7</td></tr>
+            <tr><td class="mono">^</td><td>按位异或</td><td>两不同为1，相同为0</td><td class="mono">5 ^ 3</td><td class="mono">6</td></tr>
+            <tr><td class="mono">~</td><td>按位取反</td><td>0变1，1变0；<span class="mono">~x = -(x+1)</span></td><td class="mono">~5</td><td class="mono">-6</td></tr>
+            <tr><td class="mono">&lt;&lt;</td><td>左移</td><td>低位补0，左移n位 = 乘 2<sup>n</sup></td><td class="mono">3 &lt;&lt; 2</td><td class="mono">12</td></tr>
+            <tr><td class="mono">&gt;&gt;</td><td>右移</td><td>正数高位补0，负数高位补1；右移n位 ≈ 除 2<sup>n</sup></td><td class="mono">12 &gt;&gt; 2</td><td class="mono">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <div class="wb-title">⚠ 关键规则</div>
+      <p>位运算以<strong>补码</strong>形式进行计算。有负数参与时先用补码运算，结果符号位为 1 则需再求一次补码才能得到真值。</p>
+    </div>
+
+    <!-- Step 3: 异或交换完整代码 -->
+    <h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解 — 异或交换两数</h2>
+
+    <div class="card orange">
+      <div class="card-title">核心考点 · 三次异或交换</div>
+      <p>异或运算满足<strong>交换律、结合律</strong>，且 <span class="mono">x ^ x = 0</span>、<span class="mono">x ^ 0 = x</span>。利用这两个性质，可以用三次异或实现无临时变量的交换。</p>
+    </div>
+
+    <div class="code-block">
+      <span class="lang-tag">C++</span>
+      <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // 异或交换两数（无需临时变量）
+    int a = 5, b = 10;
+    
+    a = a ^ b;   // Step 1: a = 5 ^ 10
+    b = a ^ b;   // Step 2: b = (5 ^ 10) ^ 10 = 5 ^ 0 = 5
+    a = a ^ b;   // Step 3: a = (5 ^ 10) ^ 5 = 0 ^ 10 = 10
+    
+    cout &lt;&lt; "a = " &lt;&lt; a &lt;&lt; ", b = " &lt;&lt; b &lt;&lt; endl;
+    // 输出: a = 10, b = 5   ← 成功交换！
+    return 0;
+}</code></pre>
+    </div>
+
+    <div class="card purple">
+      <div class="card-title">异或交换的注意事项</div>
+      <p>如果 <span class="mono">a</span> 和 <span class="mono">b</span> 是<strong>同一个变量</strong>（如通过引用传入），异或交换会将值清零：</p>
+    </div>
+
+    <div class="code-block">
+      <span class="lang-tag">C++</span>
+      <pre><code class="language-cpp">void Swap(int &amp;a, int &amp;b) {
+    if (a != b) {      // ← 必须判断 a != b！
+        a ^= b;
+        b ^= a;
+        a ^= b;
+    }
+}</code></pre>
+    </div>
+
+    <!-- Step 4: 手算推演 &|^~ -->
+    <h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 手算推演 &amp; | ^ ~</h2>
+
+    <div class="card indigo">
+      <div class="card-title">速查卡 · 位运算手算对照表</div>
+      <p>以 8 位为例，逐位推演 <span class="mono">a = 60（0011 1100）</span> 和 <span class="mono">b = 13（0000 1101）</span>：</p>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr><th>运算</th><th>二进制推演</th><th>十进制结果</th><th>记忆口诀</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">a &amp; b</td>
+            <td class="mono">0011 1100 &amp;<br>0000 1101<br>= 0000 1100</td>
+            <td class="mono">12</td>
+            <td>两位皆1才得1</td>
+          </tr>
+          <tr>
+            <td class="mono">a | b</td>
+            <td class="mono">0011 1100 |<br>0000 1101<br>= 0011 1101</td>
+            <td class="mono">61</td>
+            <td>有1即为1</td>
+          </tr>
+          <tr>
+            <td class="mono">a ^ b</td>
+            <td class="mono">0011 1100 ^<br>0000 1101<br>= 0011 0001</td>
+            <td class="mono">49</td>
+            <td>不同为1，同为0</td>
+          </tr>
+          <tr>
+            <td class="mono">~a</td>
+            <td class="mono">~0011 1100<br>= 1100 0011</td>
+            <td class="mono">-61</td>
+            <td>~x = -(x+1)</td>
+          </tr>
+          <tr>
+            <td class="mono">~b</td>
+            <td class="mono">~0000 1101<br>= 1111 0010</td>
+            <td class="mono">-14</td>
+            <td>~x = -(x+1)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card success">
+      <div class="card-title">取反公式 ~x = -(x+1) 验证</div>
+      <div class="formula-box">~5 = -(5 + 1) = -6（已验证：5→0101，取反→1010(补)=-6）<br>~0 = -(0 + 1) = -1<br>~(-1) = -(-1 + 1) = 0</div>
+    </div>
+
+    <!-- Step 5: 陷阱 -->
+    <h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱 — 这些坑不要踩</h2>
+
+    <div class="card orange">
+      <div class="card-title">陷阱 1：负数位移用补码表示</div>
+      <p>负数在计算机中以<strong>补码</strong>存储。对负数进行位移时，必须先将其转换为补码再操作：</p>
+      <ul style="margin:8px 0 8px 20px;color:var(--text-secondary);">
+        <li><strong>负数左移</strong>：补码整体左移，低位补 0，移动后结果仍为补码</li>
+        <li><strong>负数右移</strong>：补码整体右移，高位补 <strong>1</strong>（算术右移，保持符号）</li>
+      </ul>
+      <p>示例：<span class="mono">int x = -5; x &lt;&lt; 1</span> → -10，<span class="mono">-10 &gt;&gt; 1</span> → -5（恢复！）</p>
+    </div>
+
+    <div class="card danger">
+      <div class="card-title">陷阱 2：位运算符优先级低于算术和关系运算符</div>
+      <p>位运算符 <span class="mono">&amp;</span>、<span class="mono">|</span>、<span class="mono">^</span>、<span class="mono">&lt;&lt;</span>、<span class="mono">&gt;&gt;</span> 的优先级<strong>低于</strong>算术运算符（<span class="mono">+ - * / %</span>），也低于关系运算符（<span class="mono">== != &lt; &gt;</span>）。</p>
+    </div>
+
+    <div class="warning-box" style="margin-bottom:8px;">
+      <div class="wb-title">⚠ 优先级陷阱示例</div>
+      <p><span class="mono">a == b &amp; c</span> 会被解析为 <span class="mono">(a == b) &amp; c</span>，而非 <span class="mono">a == (b &amp; c)</span></p>
+      <p><span class="mono">a + b &lt;&lt; 1</span> 会被解析为 <span class="mono">(a + b) &lt;&lt; 1</span></p>
+    </div>
+
+    <div class="quote-box">
+      <strong>最佳实践：</strong>位运算与算术运算混合使用时，<strong>一律加括号</strong>明确运算顺序，避免优先级导致的隐蔽 bug。
+    </div>
+
+    <!-- Step 6: 选择题 16道 -->
+    <h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战 — 选择题（16道真题）</h2>
+
+    <!-- Q1 -->
+    <div class="card purple">
+      <div class="card-title">GESP 2024/03 第3题</div>
+      <p>下面C++代码执行后的输出是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">cout &lt;&lt; (3 | 16) &lt;&lt; endl;</code></pre>
+      </div>
+      <p>A. 3 &emsp; B. 16 &emsp; C. 19 &emsp; D. 48</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        3 = 0011, 16 = 10000, 3|16 = 10011 = 19。
+</div></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card pink">
+      <div class="card-title">GESP 2024/03 第4题</div>
+      <p>定义整数 <span class="mono">int x = -5</span>，则执行C++代码 <span class="mono">cout &lt;&lt; (x == (x &lt;&lt; 1 &gt;&gt; 1))</span> 输出是（ ）</p>
+      <p>A. 0 &emsp; B. 1 &emsp; C. -5 &emsp; D. 5</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        x=-5, x&lt;&lt;1=-10, -10&gt;&gt;1=-5=x（负数右移高位补1），结果为true(1)。
+</div></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card teal">
+      <div class="card-title">GESP 2024/03 第6题</div>
+      <p>定义整型变量 <span class="mono">int a=3, b=16</span>，则 <span class="mono">a|b</span> 的值和 <span class="mono">a+b</span> 的关系是（ ）</p>
+      <p>A. 大于 &emsp; B. 等于 &emsp; C. 小于 &emsp; D. 等于或小于</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        3|16=19，3+16=19，相等。因为3(0011)和16(10000)没有重叠的二进制位。
+</div></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card indigo">
+      <div class="card-title">GESP 2024/03 第7题</div>
+      <p>下列代码的输出结果是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">int a = 12;
+int result = a &gt;&gt; 2;
+cout &lt;&lt; result &lt;&lt; endl;</code></pre>
+      </div>
+      <p>A. 12 &emsp; B. 6 &emsp; C. 3 &emsp; D. 1</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        12 &gt;&gt; 2 = 12 ÷ 4 = 3。
+</div></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="card orange">
+      <div class="card-title">GESP 2024/03 第8题</div>
+      <p>下列代码的输出结果是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">int a = 5;
+int b = 10;
+a = a ^ b;
+b = a ^ b;
+a = a ^ b;
+cout &lt;&lt; "a = " &lt;&lt; a &lt;&lt; ", b = " &lt;&lt; b &lt;&lt; endl;</code></pre>
+      </div>
+      <p>A. a=5,b=10 &emsp; B. a=5,b=5 &emsp; C. a=10,b=5 &emsp; D. a=10,b=10</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        三次异或实现交换：a=5^10, b=(5^10)^10=5, a=(5^10)^5=10。最终a=10,b=5。
+</div></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="card purple">
+      <div class="card-title">GESP 2024/09 第5题</div>
+      <p>下面说法正确的是（ ）</p>
+      <p>A. (22&amp;01) == (22&amp;&amp;01) 成立</p>
+      <p>B. (23|11) == 30</p>
+      <p>C. (23|10) == 31</p>
+      <p>D. (23|01) == 31</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        23=10111, 10=01010, 23|10=11111=31。其他都不成立。A中22&01=0≠22&&01(=1)。
+</div></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="card pink">
+      <div class="card-title">GESP 2024/09 第6题</div>
+      <p>下列说法正确的是（ ）</p>
+      <p>A. 2&gt;&gt;1 和 1&gt;&gt;1 的值是一样的</p>
+      <p>B. (2&gt;&gt;2) 和 (1&gt;&gt;1) 的值是一样的</p>
+      <p>C. (11^00) 和 (1^0) 的值是一样的</p>
+      <p>D. ~0 的输出值是 1</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        2&gt;&gt;2=0, 1&gt;&gt;1=0，相等。A：2&gt;&gt;1=1, 1&gt;&gt;1=0，不等。D：~0=-1。
+</div></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="card teal">
+      <div class="card-title">GESP 2024/12 第5题</div>
+      <p>下面逻辑运算中，正确的是（ D ）</p>
+      <p>关于位运算 &amp; 与逻辑运算 &amp;&amp; 的区别，以及位运算符的优先级：</p>
+      <p>A. 位运算 &amp; 的优先级高于 == &emsp; B. &amp; 和 &amp;&amp; 效果相同</p>
+      <p>C. &amp;&amp; 是按位与 &emsp; D. 位运算优先级低于关系运算符</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong>
+        位运算 &amp; 优先级低于关系运算符 ==，因此 a==b&amp;c 等价于 (a==b)&amp;c。&& 是逻辑与，& 才是按位与。
+</div></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="card indigo">
+      <div class="card-title">GESP 2024/03 第9题</div>
+      <p>下列代码实现的是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">void Swap(int &amp;a, int &amp;b) {
+    if (a != b) {
+        a ^= b;
+        b ^= a;
+        a ^= b;
+    }
+}</code></pre>
+      </div>
+      <p>A. a和b的异或 &emsp; B. a和b的同或 &emsp; C. a和b的值交换 &emsp; D. a和b的高低位互换</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        三次异或实现无额外变量的值交换，if(a!=b)避免同一变量自交换清零。
+</div></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="card orange">
+      <div class="card-title">GESP 2024/12 第6题</div>
+      <p><span class="mono">a &amp; ~1</span> 运算实现的是（ ）</p>
+      <p>A. 使a的最低位为1 &emsp; B. 使a的最高位为1</p>
+      <p>C. 使a的最低位为0 &emsp; D. 使a的最高位为0</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong>
+        ~1 = ...11111110，a&amp;~1 将最低位清零（无论原本是0还是1），其余位不变。
+</div></div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="card purple">
+      <div class="card-title">GESP 2025/09 第9题</div>
+      <p>a = 1010 1110, a &lt;&lt; 2，下面关于这个说法正确的是（ ）</p>
+      <p>A. a的值变为1011 1000 &emsp; B. a的值变为1011 1010</p>
+      <p>C. a的值变为0101 1101 &emsp; D. a的值变为0101 1100</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+        左移2位，低位补2个0：1010 1110 → 1011 1000。（注意a<<2是表达式值，不改变a本身）
+</div></div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="card pink">
+      <div class="card-title">GESP 2025/09 第10题</div>
+      <p>a|10（a与10都是10进制，且二进制表示最高位为1）运算的结果是（ ）</p>
+      <p>A. 使a从右往左第二位为1 &emsp; B. 使a从右往左第一位为0</p>
+      <p>C. 使a从右往左第二位为0 &emsp; D. 使a最高位为0</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong>
+        10 = 1010(二进制)，第二位（从右往左）是1。a|10 保证a的第二位为1。
+</div></div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="card teal">
+      <div class="card-title">GESP 2025/12 第4题</div>
+      <p>执行以下程序段，输出值是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">int x = 5;
+if (x == 3 &gt;&gt; 2) x = 8 &gt;&gt; 3;
+cout &lt;&lt; x &lt;&lt; endl;</code></pre>
+      </div>
+      <p>A. 0 &emsp; B. 5 &emsp; C. 120 &emsp; D. 1</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        3&gt;&gt;2=0，x=5≠0，条件不成立不走分支，x保持5。
+</div></div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="card indigo">
+      <div class="card-title">GESP 2025/12 第5题</div>
+      <p>已知字符串 s = "C++ Programming"，下列程序运行的结果是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">cout &lt;&lt; (int)(s.length() | 3) &lt;&lt; endl;</code></pre>
+      </div>
+      <p>A. 14 &emsp; B. 15 &emsp; C. 16 &emsp; D. 17</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        s.length()=15（含空格），15|3=15（1111|0011=1111=15）。
+</div></div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="card orange">
+      <div class="card-title">GESP 2025/12 第3题</div>
+      <p>下列代码段执行后，变量 sum 的值是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">int sum = 0;
+for (int i = 1; i &lt;= 10; i++) {
+    if (i % 3 == 8 &gt;&gt; 2)
+        continue;
+    sum += i;
+}</code></pre>
+      </div>
+      <p>A. 12 &emsp; B. 17 &emsp; C. 33 &emsp; D. 40</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong>
+        8&gt;&gt;2=2，i%3==2时跳过(i=2,5,8)。sum=(1+3+4+6+7+9+10)=40。
+</div></div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="card purple">
+      <div class="card-title">GESP 2025/06 第9题</div>
+      <p>以下代码运行后，sum 的结果是（ ）</p>
+      <div class="code-block">
+        <span class="lang-tag">C++</span>
+        <pre><code class="language-cpp">int arr[5] = {2, 4, 6, 8, 10};
+int sum = 0;
+for (int i = 0; i &lt; 5; i++) {
+    switch (arr[i] % (1 | 2)) {
+        case 0: sum += 1; break;
+        case 1: sum += 2; break;
+        case 2: sum += 3; break;
+    }
+}</code></pre>
+      </div>
+      <p>A. 10 &emsp; B. 11 &emsp; C. 14 &emsp; D. 15</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong>
+        1|2=3。2%3=2→sum=3; 4%3=1→sum=5; 6%3=0→sum=6; 8%3=2→sum=9; 10%3=1→sum=11。
+</div></div>
+    </div>
+
+    <!-- Step 7: 判断题 13道 -->
+    <h3>判断题（13道真题）</h3>
+
+    <!-- TF-Q1 -->
+    <div class="card pink">
+      <div class="card-title">判断题 1（高频考点）</div>
+      <p>在C++语言中，位运算符也有类似"先乘除、后加减"的优先级规则。因此，使用时应注意合理使用括号。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        位运算符之间确实有优先级顺序，但与算术运算符混用时容易混淆，应养成加括号的习惯。
+</div></div>
+    </div>
+
+    <!-- TF-Q2 -->
+    <div class="card teal">
+      <div class="card-title">判断题 2（高频考点）</div>
+      <p>在C++语言中，所有 int 类型的值，经过若干次左移操作（&lt;&lt;）后，它们的值总会变为 0。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        持续左移会把有效位数全部移出，最终变为0。
+</div></div>
+    </div>
+
+    <!-- TF-Q3 -->
+    <div class="card indigo">
+      <div class="card-title">判断题 3（高频考点）</div>
+      <p>如果 a 为 int 类型的变量，且表达式 <span class="mono">((a &amp; 1) == 0)</span> 的值为 true，则说明 a 是偶数。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        a&amp;1 检查最低位，最低位为0表示偶数，为1表示奇数。
+</div></div>
+    </div>
+
+    <!-- TF-Q4 -->
+    <div class="card orange">
+      <div class="card-title">判断题 4（高频考点）</div>
+      <p>执行C++代码 <span class="mono">cout &lt;&lt; (5 &amp;&amp; 2) &lt;&lt; endl;</span> 后将输出 1。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        &amp;&amp; 是逻辑与，5和2都非零，结果为true(1)。注意这是逻辑与，不是按位与。
+</div></div>
+    </div>
+
+    <!-- TF-Q5 -->
+    <div class="card purple">
+      <div class="card-title">判断题 5（高频考点）</div>
+      <p>执行C++代码 <span class="mono">cout &lt;&lt; (5 || 2);</span> 后将输出 1。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        || 是逻辑或，5非零，短路求值直接返回true(1)。
+</div></div>
+    </div>
+
+    <!-- TF-Q6 -->
+    <div class="card pink">
+      <div class="card-title">判断题 6（高频考点）</div>
+      <p>对整型变量 <span class="mono">int a = 3</span>，执行C++代码 <span class="mono">a &lt;&lt; 2</span> 将把 2 输出到 a 中。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+        a&lt;&lt;2 是表达式，值为12，但不改变 a 本身。a 仍然是3。
+</div></div>
+    </div>
+
+    <!-- TF-Q7 -->
+    <div class="card teal">
+      <div class="card-title">判断题 7（高频考点）</div>
+      <p>一个 int 类型变量 a，执行操作 <span class="mono">(a &lt;&lt; 2 &gt;&gt; 2)</span> 后的值一定是 a。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+        如果a的高位有值，左移时高位可能丢失（溢出），右移时补的是符号位或0，不一定恢复原值。
+</div></div>
+    </div>
+
+    <!-- TF-Q8 -->
+    <div class="card indigo">
+      <div class="card-title">判断题 8（高频考点）</div>
+      <p>在C++语言中，<span class="mono">(010 &lt;&lt; 1)</span> 执行结果是 100。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+        010 是八进制数 = 8（十进制），8&lt;&lt;1=16，不是100。
+</div></div>
+    </div>
+
+    <!-- TF-Q9 -->
+    <div class="card orange">
+      <div class="card-title">判断题 9（高频考点）</div>
+      <p><span class="mono">~1</span> 的输出值是 -2。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        ~x = -(x+1)，~1 = -(1+1) = -2。
+</div></div>
+    </div>
+
+    <!-- TF-Q10 -->
+    <div class="card purple">
+      <div class="card-title">判断题 10（高频考点）</div>
+      <p><span class="mono">~1 = 1111 1110</span>（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        1 = 0000 0001（8位），取反得 1111 1110。
+</div></div>
+    </div>
+
+    <!-- TF-Q11 -->
+    <div class="card pink">
+      <div class="card-title">判断题 11（高频考点）</div>
+      <p>取 X 的低四位，可以用 <span class="mono">Y = 0000 1111</span>，用 <span class="mono">X &amp; Y</span> 获取 X 的低四位。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        掩码 0000 1111 使高四位清零，低四位保留。这是位运算中常用的掩码技巧。
+</div></div>
+    </div>
+
+    <!-- TF-Q12 -->
+    <div class="card teal">
+      <div class="card-title">判断题 12（高频考点）</div>
+      <p><span class="mono">(x &amp; 1) == 0</span> 可以判断整数 x 是否为偶数。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：对</strong>
+        x&amp;1 取最低位，0表示偶数，1表示奇数。比 x%2==0 执行更快。
+</div></div>
+    </div>
+
+    <!-- TF-Q13 -->
+    <div class="card indigo">
+      <div class="card-title">判断题 13（高频考点）</div>
+      <p>位运算符 &amp;、|、^、~ 的优先级高于算术运算符 +、-、*、/。（  ）</p>
+      <button class="answer-toggle">▶ 显示答案</button>
+      <div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong>
+        位运算符优先级<strong>低于</strong>算术运算符。例如 a+b&gt;&gt;1 等价于 (a+b)&gt;&gt;1。
+</div></div>
+    </div>
+
+    <!-- 知识速查卡 -->
+    <h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+    <div class="card indigo" style="margin-top:0">
+      <div class="card-title">📋 位运算速查卡</div>
+      <div class="table-wrapper">
+      <table>
+      <thead><tr><th>运算符</th><th>名称</th><th>规则</th><th>速记公式</th></tr></thead>
+      <tbody>
+      <tr><td class="mono">&amp;</td><td>按位与</td><td>全1才1</td><td class="mono">a &amp; 1 == 0 → a是偶数</td></tr>
+      <tr><td class="mono">|</td><td>按位或</td><td>有1即1</td><td class="mono">a | 0 = a</td></tr>
+      <tr><td class="mono">^</td><td>异或</td><td>相同为0/不同为1</td><td class="mono">a ^ a = 0, a ^ 0 = a</td></tr>
+      <tr><td class="mono">~</td><td>取反</td><td>0变1/1变0</td><td class="mono">~x = -(x+1)</td></tr>
+      <tr><td class="mono">&lt;&lt;</td><td>左移</td><td>低位补0</td><td class="mono">a &lt;&lt; n = a × 2^n</td></tr>
+      <tr><td class="mono">&gt;&gt;</td><td>右移</td><td>正补0/负补1</td><td class="mono">a &gt;&gt; n = a ÷ 2^n</td></tr>
+      <tr><td colspan="4"><span class="key-point warn">优先级</span>：算术 &gt; 移位 &gt; 关系 &gt; 位与 &gt; 位异或 &gt; 位或</td></tr>
+      <tr><td colspan="4"><span class="key-point danger">负数</span>：负数位运算以补码进行，结果符号位为1需再求补码</td></tr>
+      </tbody>
+      </table>
+      </div>
+    </div>
+
+    <!-- 总结卡片 -->
+    <div class="card accent" style="margin-top:40px;">
+      <div class="card-title">考试重点总结</div>
+      <p><span class="key-point">必考 1</span> 按位或 | 的运算规则与手算（出现频率极高）</p>
+      <p><span class="key-point">必考 2</span> 异或 ^ 交换两数的三步法（a^=b; b^=a; a^=b;）</p>
+      <p><span class="key-point">必考 3</span> ~x = -(x+1) 取反公式（&amp; 取反结合掩码使用）</p>
+      <p><span class="key-point">必考 4</span> 位运算优先级低于算术和关系运算符，务必加括号</p>
+      <p><span class="key-point">必考 5</span> 负数位移以补码形式操作，结果符号位为1需再求补码</p>
+    </div>
+
+  </div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" title="回到顶部">↑</button>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn=>{btn.addEventListener('click',function(){const c=this.nextElementSibling;if(c.classList.contains('open')){c.classList.remove('open');this.classList.remove('open');this.innerHTML='▶ 显示答案'}else{c.classList.add('open');this.classList.add('open');this.innerHTML='▼ 隐藏答案'}})});
+window.addEventListener('scroll',()=>{let cur='';document.querySelectorAll('h2.section-num').forEach(el=>{if(window.scrollY>=el.offsetTop-100)cur=el.id});document.querySelectorAll('.nav-link').forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+cur)});document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400)});
+document.querySelector('.menu-toggle').addEventListener('click',()=>{document.querySelector('.sidebar').classList.toggle('open')});
+</script>
+
+</body>
+</html>

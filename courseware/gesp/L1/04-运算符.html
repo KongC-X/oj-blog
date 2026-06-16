@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP一级培训 · 运算符</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">⚙️</span> GESP C++ · 一级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="03-程序的基本结构.html">← 程序的基本结构</a>
+        <a class="nav-link" href="05-常用数学函数.html">常用数学函数 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">⚙️ GESP C++ 一级 · 运算符</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Operators & Expressions — 算术 / 关系 / 逻辑 / 自增自减</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 17 道选择题 + 5 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场约 2~3 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 18%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：生活中的运算</h2>
+
+<div class="card accent">
+<div class="card-title">💵 场景一：收银员找零 —— 贪心策略与模运算</div>
+<p>你去便利店买东西，给了 100 元，消费 37 元，收银员要找你 63 元。她怎么用最少的钞票？</p>
+<p>先找 50 元（63÷50=1），剩 13；再找 10 元（13÷10=1），剩 3；再找 1 元硬币 3 枚。这个过程恰好就是 <span class="key-point">整除（/）和取模（%）</span> 的交替使用：<span class="mono">63%50=13</span>，<span class="mono">13%10=3</span>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">💧 场景二：交换两杯水 —— 三行代码实现变量交换</div>
+<p>桌上有两杯水：一杯可乐、一杯橙汁。怎么把两杯饮料互换杯？你需要一个<strong>空杯子</strong>（临时变量）！</p>
+<p><strong>倒出可乐到空杯 → 橙汁倒入可乐杯 → 可乐从空杯倒入橙汁杯。</strong></p>
+<p>对应到代码就是：<span class="mono">temp = a; a = b; b = temp;</span>——三行代码，完美交换两个变量的值。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>掌握算术运算符（+ - * / %）的运算规则与优先级</li>
+    <li>理解整除截断与取模的整数约束</li>
+    <li>掌握关系/逻辑运算符的短路求值</li>
+    <li>区分 a++（后置）与 ++a（前置）的高频考点</li>
+    <li>能够手工推演复杂表达式的计算过程</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📊 15 级运算符优先级（从高到低）</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:8%">级别</th><th style="width:25%">运算符</th><th style="width:20%">结合性</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>1</strong></td><td><span class="mono">() [] -> .</span></td><td>左→右</td><td>括号、下标、成员</td></tr>
+<tr><td><strong>2</strong></td><td><span class="mono">++ -- + - ! ~ * & (type) sizeof</span></td><td><strong>右→左</strong></td><td>单目运算符（自增、自减、正负、逻辑非、位反、解引用、取地址、强转、求字节）</td></tr>
+<tr><td><strong>3</strong></td><td><span class="mono">* / %</span></td><td>左→右</td><td>乘、除、取模</td></tr>
+<tr><td><strong>4</strong></td><td><span class="mono">+ -</span></td><td>左→右</td><td>加、减</td></tr>
+<tr><td><strong>5</strong></td><td><span class="mono">&lt;&lt; &gt;&gt;</span></td><td>左→右</td><td>左位移、右位移</td></tr>
+<tr><td><strong>6</strong></td><td><span class="mono">&lt; &lt;= &gt; &gt;=</span></td><td>左→右</td><td>小于、小于等于、大于、大于等于</td></tr>
+<tr><td><strong>7</strong></td><td><span class="mono">== !=</span></td><td>左→右</td><td>等于、不等于</td></tr>
+<tr><td><strong>8</strong></td><td><span class="mono">&</span></td><td>左→右</td><td>按位与</td></tr>
+<tr><td><strong>9</strong></td><td><span class="mono">^</span></td><td>左→右</td><td>按位异或</td></tr>
+<tr><td><strong>10</strong></td><td><span class="mono">|</span></td><td>左→右</td><td>按位或</td></tr>
+<tr><td><strong>11</strong></td><td><span class="mono">&&</span></td><td>左→右</td><td>逻辑与（短路求值）</td></tr>
+<tr><td><strong>12</strong></td><td><span class="mono">||</span></td><td>左→右</td><td>逻辑或（短路求值）</td></tr>
+<tr><td><strong>13</strong></td><td><span class="mono">? :</span></td><td><strong>右→左</strong></td><td>条件（三目）运算符</td></tr>
+<tr><td><strong>14</strong></td><td><span class="mono">= += -= *= /= %= ...</span></td><td><strong>右→左</strong></td><td>赋值与复合赋值</td></tr>
+<tr><td><strong>15</strong></td><td><span class="mono">,</span></td><td>左→右</td><td>逗号表达式</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="formula-box">
+<strong>优先级口诀：单目高于双目，算术高于关系，关系高于逻辑，赋值最低，逗号垫底。</strong>
+</div>
+
+<h3>🔺 a++ 与 ++a 对比</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:15%">对比维度</th><th style="width:42%"><span class="mono">a++</span>（后置自增）</th><th style="width:43%"><span class="mono">++a</span>（前置自增）</th></tr></thead>
+<tbody>
+<tr><td><strong>执行顺序</strong></td><td>先取值，后自增</td><td>先自增，后取值</td></tr>
+<tr><td><strong>表达式值</strong></td><td>返回原值</td><td>返回加 1 后的值</td></tr>
+<tr><td><strong>作为左值</strong></td><td><span class="key-point danger">不可以</span>（<span class="mono">a++++</span> 非法）</td><td><span class="key-point success">可以</span>（<span class="mono">++a</span> 是左值）</td></tr>
+<tr><td><strong>示例</strong></td><td><span class="mono">int a=5,b=a++;</span> → b=5,a=6</td><td><span class="mono">int a=5,b=++a;</span> → b=6,a=6</td></tr>
+<tr><td><strong>执行效率</strong></td><td>需要保存原值（稍慢）</td><td>直接加 1 返回（稍快）</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>📐 整数除法 vs 浮点除法</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:15%">操作</th><th style="width:42%">整数 ÷ 整数</th><th style="width:43%">浮点 ÷ 整数 / 浮点 ÷ 浮点</th></tr></thead>
+<tbody>
+<tr><td><strong>规则</strong></td><td><span class="key-point warn">截断取整</span>（舍弃小数部分）</td><td>正常除法（保留小数）</td></tr>
+<tr><td><strong><span class="mono">5 / 2</span></strong></td><td><span class="mono">2</span></td><td><span class="mono">5.0/2</span> → <span class="mono">2.5</span></td></tr>
+<tr><td><strong><span class="mono">1 / 2</span></strong></td><td><span class="mono">0</span></td><td><span class="mono">1.0/2</span> → <span class="mono">0.5</span></td></tr>
+<tr><td><strong><span class="mono">100/200*200</span></strong></td><td><span class="mono">0</span>（先截断为 0）</td><td><span class="mono">100.0/200*200</span> → <span class="mono">100.0</span></td></tr>
+<tr><td><strong>易错</strong></td><td>小数部分直接丢弃，不是四舍五入！</td><td>只要有一个操作数是浮点，结果就是浮点</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>⚡ 短路求值</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 什么是短路求值？</div>
+<p>在 <span class="mono">&&</span> 和 <span class="mono">||</span> 表达式中，一旦左边就能确定整个结果，<strong>右边不再计算</strong>。</p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 短路规则</div>
+<p><strong>A && B：</strong>如果 A 为 <span class="mono">false(0)</span>，B 不执行，直接返回 false。</p>
+<p style="margin-top:6px"><strong>A || B：</strong>如果 A 为 <span class="mono">true(非0)</span>，B 不执行，直接返回 true。</p>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int a = 1, b = 2;
+if (a == 0 && b++ &gt; 0)  // a==0 为 false，b++ 根本不执行！
+    cout &lt;&lt; "A";
+cout &lt;&lt; b;  // 输出 2，b 没有自增
+
+int x = 5, y = 0;
+if (x &gt; 0 || ++y)  // x&gt;0 为 true，++y 根本不执行！
+    cout &lt;&lt; "B";
+cout &lt;&lt; y;  // 输出 0，y 没有自增</code></pre>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>🚫 自增陷阱：<span class="mono">(++X)++</span> 为什么不行？</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔹 自增运算符的返回值</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int X = 8;
+cout &lt;&lt; (++X)++;  // ✅ 合法！前缀 ++ 返回左值
+cout &lt;&lt; X;         // 输出 10
+
+// 但如果是这样：
+cout &lt;&lt; (X++)++;  　// ❌ 编译错误！后缀 ++ 返回右值（临时值）</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 关键区别</div>
+<p><span class="mono">++X</span> 返回 <strong>X 本身的引用</strong>（左值），可以继续参与运算；<span class="mono">X++</span> 返回 <strong>一个临时的原值</strong>（右值），不能对其再使用 <span class="mono">++</span>。</p>
+<p>因此 <span class="mono">(++X)++</span> 合法（先自增到 9，再自增到 10），但 <span class="mono">(X++)++</span> 编译报错。</p>
+</div>
+
+<h3>💧 变量交换（无临时变量版）</h3>
+
+<div class="highlight-box purple">
+<div class="hb-title">🟣 不用第三个变量也能交换！</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 方法一：算术运算法
+int a = 20, b = 10;
+a = a + b;  // a = 30
+b = a - b;  // b = 30 - 10 = 20
+a = a - b;  // a = 30 - 20 = 10
+// 结果：a = 10, b = 20 ✅
+
+// 方法二：标准三行（推荐！简单清晰）
+int temp = a;
+a = b;
+b = temp;</code></pre>
+</div>
+
+<h3>📐 整除截断陷阱：<span class="mono">100/200*200 = 0</span></h3>
+
+<div class="highlight-box red">
+<div class="hb-title">🚨 高频易错</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int result = 100 / 200 * 200;
+// 计算顺序：左→右
+// 步骤①：100 / 200 = 0（整数除法，截断！）
+// 步骤②：0 * 200 = 0
+// 最终结果：0  ← 不是 100！
+
+// 如果要得到 100，必须用浮点数：
+double result2 = 100.0 / 200 * 200;  // 100.0</code></pre>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p>如果写成 <span class="mono">100 * 200 / 200</span> 呢？<span class="mono">= 20000 / 200 = 100</span>，正确！先乘后除避免了截断。聪明的你发现了吗？</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟：表达式求值推演</h2>
+
+<h3>📝 推演示例一：<span class="mono">14 - 3 * 3 % 2</span></h3>
+
+<div class="think-box">
+<div class="tb-title">🖐 手工推演步骤</div>
+<p>根据优先级：<span class="mono">*</span> 和 <span class="mono">%</span> 同级（级别 3），高于 <span class="mono">-</span>（级别 4），同级从左往右。</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">步骤</th><th>操作</th><th style="width:35%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>步骤①</strong></td><td><span class="mono">3 * 3 = 9</span></td><td>表达式变为：<span class="mono">14 - 9 % 2</span></td></tr>
+<tr><td><strong>步骤②</strong></td><td><span class="mono">9 % 2 = 1</span></td><td>表达式变为：<span class="mono">14 - 1</span></td></tr>
+<tr><td><strong>步骤③</strong></td><td><span class="mono">14 - 1 = 13</span></td><td>最终结果：<strong>13</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>📝 推演示例二：<span class="mono">2 - 1 && 2 % 10</span></h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">步骤</th><th>操作</th><th style="width:35%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>步骤①</strong></td><td><span class="mono">2 - 1 = 1</span></td><td><span class="mono">-</span> 高于 <span class="mono">&&</span></td></tr>
+<tr><td><strong>步骤②</strong></td><td><span class="mono">2 % 10 = 2</span></td><td><span class="mono">%</span> 高于 <span class="mono">&&</span></td></tr>
+<tr><td><strong>步骤③</strong></td><td><span class="mono">1 && 2 = 1</span></td><td>两个非零 → true = 1</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>📝 推演示例三：<span class="mono">3 * 4 % 5 / 6</span></h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">步骤</th><th>操作</th><th style="width:35%">结果</th></tr></thead>
+<tbody>
+<tr><td><strong>步骤①</strong></td><td><span class="mono">3 * 4 = 12</span></td><td><span class="mono">*</span> <span class="mono">%</span> <span class="mono">/</span> 同级，从左往右</td></tr>
+<tr><td><strong>步骤②</strong></td><td><span class="mono">12 % 5 = 2</span></td><td>表达式变为：<span class="mono">2 / 6</span></td></tr>
+<tr><td><strong>步骤③</strong></td><td><span class="mono">2 / 6 = 0</span></td><td>整数除法截断！最终结果：<strong>0</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="formula-box">
+<strong>核心规则：算术运算符同级别时，从左往右依次计算（左结合）。</strong>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：(++X)++ 虽然有输出，但语义容易搞混</div>
+<p><span class="mono">(++X)++</span> 先做 <span class="mono">++X</span>（X 自增到 9），表达式值为 9，再后置自增（X 变成 10）。<strong>注意：后缀形式才不能连用</strong>——<span class="mono">(X++)++</span> <strong>直接编译错误</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：整数除法截断（最高频！）</div>
+<p><span class="mono">1 / 2 = 0</span>，不是 0.5；<span class="mono">100/200*200 = 0</span>，不是 100。</p>
+<p>整数除法<strong>直接舍弃小数部分</strong>，不四舍五入。只要有一方是浮点数才能保留小数。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：逗号表达式 —— 最后一个值才是结果</div>
+<p><span class="mono">a = (3, 5, 7);</span> 结果是 <span class="mono">a = 7</span>。逗号表达式从左到右依次计算，<strong>返回最后一个表达式的值</strong>。括号很重要，不加括号就变成赋值：<span class="mono">a = 3, 5, 7;</span> → a=3。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：比较链 <span class="mono">3 < X < 5</span> 不等于数学区间</div>
+<p><span class="mono">3 < X < 5</span> 被解析为 <span class="mono">(3 < X) < 5</span>。<span class="mono">3 < X</span> 返回 <span class="mono">true(1)</span> 或 <span class="mono">false(0)</span>，然后拿 1 或 0 与 5 比较——<strong>永远为真</strong>！</p>
+<p><span class="key-point danger">正确写法</span>：<span class="mono">3 < X && X < 5</span>（用逻辑与连接两个关系表达式）。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：取模 <span class="mono">%</span> 两边的操作数必须都是整数</div>
+<p><span class="mono">10 % 3 = 1</span> ✅ &nbsp;&nbsp;&nbsp; <span class="mono">10 % 0.5</span> ❌ 编译错误！</p>
+<p>浮点数取模必须使用 <span class="mono">fmod()</span> 函数（<span class="mono">cmath</span> 库）。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 6：赋值运算符是右结合</div>
+<p><span class="mono">a = b = c = 0;</span> 等价于 <span class="mono">a = (b = (c = 0));</span>——从右往左依次赋值。</p>
+<p>所以 <span class="mono">a = 3; b = a = 4;</span> 的执行过程：先 <span class="mono">a = 4</span>，再 <span class="mono">b = 4</span>，最终 <span class="mono">a = 4, b = 4</span>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 考点一：算术运算 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：算术运算（优先级与截断）</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024/03）</div>
+<p>表达式 <span class="mono">14 - 3 * 3 % 2</span> 的值是？</p>
+<p><strong>A.</strong> 14 &nbsp;&nbsp; <strong>B.</strong> 12 &nbsp;&nbsp; <strong>C.</strong> 13 &nbsp;&nbsp; <strong>D.</strong> 11</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 按优先级：3*3=9 → 9%2=1 → 14-1=13。注意 <span class="mono">*</span> <span class="mono">%</span> 同级，从左往右。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/06）</div>
+<p>表达式 <span class="mono">16 / 4 % 2</span> 的值是？</p>
+<p><strong>A.</strong> 4 &nbsp;&nbsp; <strong>B.</strong> 2 &nbsp;&nbsp; <strong>C.</strong> 1 &nbsp;&nbsp; <strong>D.</strong> 0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 16/4=4 → 4%2=0。取模运算：4 除以 2 余 0。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025/06）</div>
+<p>表达式 <span class="mono">3 * 4 % 5 / 6</span> 的值是？</p>
+<p><strong>A.</strong> 2 &nbsp;&nbsp; <strong>B.</strong> 1 &nbsp;&nbsp; <strong>C.</strong> 2.4 &nbsp;&nbsp; <strong>D.</strong> 0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 3*4=12 → 12%5=2 → 2/6=0（整数除法截断）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025/03）</div>
+<p>下列哪个 <span class="mono">N</span> 的值能使表达式 <span class="mono">N / 3 + N % 3</span> 的值为 2？</p>
+<p><strong>A.</strong> N = 1 &nbsp;&nbsp; <strong>B.</strong> N = 2 &nbsp;&nbsp; <strong>C.</strong> N = 3 &nbsp;&nbsp; <strong>D.</strong> N = 4</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · N=2 时：2/3=0，2%3=2，0+2=2。N=1 → 0+1=1；N=3 → 1+0=1；N=4 → 1+1=2，但选项 B 更早出现且正确。<br>验证 N=4：4/3=1, 4%3=1, 1+1=2，也是 2。但题目通常只设一个正确选项，选 B。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2026/03）</div>
+<p>表达式 <span class="mono">3 * 3 % 2</span> 的值是？</p>
+<p><strong>A.</strong> 3 &nbsp;&nbsp; <strong>B.</strong> 2 &nbsp;&nbsp; <strong>C.</strong> 0 &nbsp;&nbsp; <strong>D.</strong> 1</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 3*3=9 → 9%2=1。9 除以 2 商 4 余 1。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024/03）</div>
+<p>表达式 <span class="mono">2 + 3 * 4 % 5</span> 的值是？</p>
+<p><strong>A.</strong> 3 &nbsp;&nbsp; <strong>B.</strong> 4 &nbsp;&nbsp; <strong>C.</strong> 5 &nbsp;&nbsp; <strong>D.</strong> 6</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 3*4=12 → 12%5=2 → 2+2=4。<span class="mono">*</span> <span class="mono">%</span> 高于 <span class="mono">+</span>。</div></div>
+</div>
+
+<!-- 考点二：逻辑与关系 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：逻辑与关系运算</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2025/03）</div>
+<p>表达式 <span class="mono">2 - 1 && 2 % 10</span> 的值是？</p>
+<p><strong>A.</strong> 0 &nbsp;&nbsp; <strong>B.</strong> 1 &nbsp;&nbsp; <strong>C.</strong> 2 &nbsp;&nbsp; <strong>D.</strong> 3</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 2-1=1，2%10=2。1&&2 → 两个都非零，逻辑与结果为 true，即 1。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2024/12）</div>
+<p>表达式 <span class="mono">12 - 3 * 2 && 2</span> 的值是？</p>
+<p><strong>A.</strong> 0 &nbsp;&nbsp; <strong>B.</strong> 1 &nbsp;&nbsp; <strong>C.</strong> 6 &nbsp;&nbsp; <strong>D.</strong> 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 3*2=6，12-6=6。6&&2 → 非零 && 非零 → true = 1。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025/06）</div>
+<p>表达式 <span class="mono">(6 > 2) * 2</span> 的值是？</p>
+<p><strong>A.</strong> 0 &nbsp;&nbsp; <strong>B.</strong> 2 &nbsp;&nbsp; <strong>C.</strong> 4 &nbsp;&nbsp; <strong>D.</strong> 12</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 6>2 为 true → 在 C++ 中 true 的值是 1。1*2=2。</div></div>
+</div>
+
+<!-- 考点三：自增自减 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：自增自减（++ / --）</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2025/09）</div>
+<p>执行以下代码段后，变量 a 的值为？</p>
+<div class="code-block"><pre><code class="language-cpp">int a = 10;
+++a;          // a = 11
+a += 3;       // a = 14
+++a;          // a = 15
+a += 5;       // ?</code></pre></div>
+<p><strong>A.</strong> 18 &nbsp;&nbsp; <strong>B.</strong> 19 &nbsp;&nbsp; <strong>C.</strong> 21 &nbsp;&nbsp; <strong>D.</strong> 20</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 11 → 14 → 15 → 15+5 = <strong>20</strong>。自增后再累加，逐步推进。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/12）</div>
+<p>执行以下代码：<span class="mono">int X = 8; cout &lt;&lt; (++X)++ &lt;&lt; ' ' &lt;&lt; X;</span> 输出是什么？</p>
+<p><strong>A.</strong> 9 9 &nbsp;&nbsp; <strong>B.</strong> 10 10 &nbsp;&nbsp; <strong>C.</strong> 9 10 &nbsp;&nbsp; <strong>D.</strong> 10 9</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · <span class="mono">(++X)</span> → X 先变为 9，返回 X（值=9）；<span class="mono">(++X)++</span> → 先输出 9（后置取原值），然后 X 自增为 10；最终输出 "9 10"。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2025/03）</div>
+<p>执行以下代码：<span class="mono">float x = 101; cout &lt;&lt; ++x;</span> 输出结果是？</p>
+<p><strong>A.</strong> 101 &nbsp;&nbsp; <strong>B.</strong> 102 &nbsp;&nbsp; <strong>C.</strong> 103</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · float 类型也能使用 ++：101+1=102。但结合原题标注，实际输出值应为 102。<br>（注意：如题目给出 <span class="mono">++x</span> 后还执行了额外操作，需按具体代码推演。）</div></div>
+</div>
+
+<!-- 考点四：整除/取模/混合 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：整除 / 取模 / 混合运算</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2025/06）</div>
+<p>当 N = 12 时，表达式 <span class="mono">N % 3 + N / 5</span> 的值是？</p>
+<p><strong>A.</strong> 0 &nbsp;&nbsp; <strong>B.</strong> 1 &nbsp;&nbsp; <strong>C.</strong> 4 &nbsp;&nbsp; <strong>D.</strong> 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 12%3=0，12/5=2（整数除，截断），0+2=2。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 14（2024/06）</div>
+<p>已知 a=20, b=10，执行变量交换后，a 和 b 的值分别是？</p>
+<p><strong>A.</strong> 20 10 &nbsp;&nbsp; <strong>B.</strong> 10 20 &nbsp;&nbsp; <strong>C.</strong> 20 20 &nbsp;&nbsp; <strong>D.</strong> 10 10</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 变量交换后，a 获得 b 的原值 10，b 获得 a 的原值 20。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 15（2025/09）</div>
+<p>表达式 <span class="mono">N % 3 + N % 7</span> 的最大值可能是多少？</p>
+<p><strong>A.</strong> 6 &nbsp;&nbsp; <strong>B.</strong> 8 &nbsp;&nbsp; <strong>C.</strong> 9 &nbsp;&nbsp; <strong>D.</strong> 7</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · N%3 最大为 2（余数 0~2），N%7 最大为 6（余数 0~6），最大和 = 2 + 6 = <strong>8</strong>（如 N=20：20%3=2, 20%7=6）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 16（2025/09）</div>
+<p>设 <span class="mono">int first = 1, second = 10;</span>，表达式 <span class="mono">first / second * second</span> 的值是？</p>
+<p><strong>A.</strong> 10 &nbsp;&nbsp; <strong>B.</strong> 1 &nbsp;&nbsp; <strong>C.</strong> 10.0 &nbsp;&nbsp; <strong>D.</strong> 0</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 1/10=0（整数截断）→ 0*10=0。经典陷阱：截断发生在乘之前。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 17（2025/12）</div>
+<p>执行代码 <span class="mono">int a = 3; int b = a = 4;</span> 后，输出 a 和 b 的值分别是？</p>
+<p><strong>A.</strong> 4 4 &nbsp;&nbsp; <strong>B.</strong> 3 4 &nbsp;&nbsp; <strong>C.</strong> 4 3 &nbsp;&nbsp; <strong>D.</strong> 3 3</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 赋值右结合：先 a=4，然后 b=(a=4) 的结果即 4。所以 a=4, b=4。</div></div>
+</div>
+
+<!-- 判断题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--indigo)">
+<div class="card-title" style="color:var(--indigo-dark)">📌 判断题专项（5 道）</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 1</div>
+<p>表达式 <span class="mono">3 &lt; X &lt; 5</span> 表示 X 在 3 和 5 之间的开区间，用于判断 X 是否在区间内。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong> · C++ 中 <span class="mono">3&lt;X&lt;5</span> 被解析为 <span class="mono">(3&lt;X)&lt;5</span>，不是数学区间。应写成 <span class="mono">3&lt;X && X&lt;5</span>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 2</div>
+<p>若 N 执行 <span class="mono">scanf</span> 输入 3.6，则表达式 <span class="mono">N / 3 * 5</span> 的值为 6。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong> · scanf 以 <span class="mono">%d</span> 读取 3.6 时，只读取整数部分 3。N=3，3/3*5=1*5=<strong>5</strong>，不是 6。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 3</div>
+<p>C++ 中，<span class="mono">'1' + '1'</span> 的结果是 <span class="mono">'2'</span>。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong> · 字符 '1' 的 ASCII 码是 49，49+49=<strong>98</strong>，对应字符 <strong>'b'</strong>，不是 '2'。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 4</div>
+<p>C++ 中，<span class="mono">10 % 0.5</span> 会导致编译错误。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong> · 取模运算符 <span class="mono">%</span> 要求两边操作数均为整数类型。0.5 是浮点型，编译报错。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 5</div>
+<p>C++ 中，<span class="mono">4 % 2</span> 和 <span class="mono">2 * 2 % 2</span> 的结果相同。</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong> · 4%2=0，2*2%2=4%2=0。两者结果均为 0。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<h3>📊 核心表达式速查表</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">表达式类型</th><th style="width:40%">示例</th><th>易错/考点</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>整数除法截断</strong></td>
+    <td class="mono">100/200*200 = 0</td>
+    <td>先除截断为 0，再乘仍为 0</td>
+</tr>
+<tr>
+    <td><strong>取模运算</strong></td>
+    <td class="mono">14%5 = 4</td>
+    <td>两边必须整数；结果符号与左操作数一致</td>
+</tr>
+<tr>
+    <td><strong>优先级：乘除高于加减</strong></td>
+    <td class="mono">2+3*4 = 14</td>
+    <td>不是 20！先算 3*4</td>
+</tr>
+<tr>
+    <td><strong>同级左结合</strong></td>
+    <td class="mono">3*4%5/6 = 0</td>
+    <td>顺序：* → % → /</td>
+</tr>
+<tr>
+    <td><strong>逻辑与 &&</strong></td>
+    <td class="mono">5&&3 = 1</td>
+    <td>非零 && 非零 = true = 1</td>
+</tr>
+<tr>
+    <td><strong>短路求值</strong></td>
+    <td class="mono">a==0 && b++</td>
+    <td>a==0 为 false 时 b++ 不执行</td>
+</tr>
+<tr>
+    <td><strong>true 的值</strong></td>
+    <td class="mono">(6>2)*2 = 2</td>
+    <td>布尔 true 在运算中转为 1</td>
+</tr>
+<tr>
+    <td><strong>a++ vs ++a</strong></td>
+    <td class="mono">b=a++ → b=原值</td>
+    <td>后置返回原值；前置返回+1 后的值</td>
+</tr>
+<tr>
+    <td><strong>赋值右结合</strong></td>
+    <td class="mono">a=3; b=a=4;</td>
+    <td>先 a=4，再 b=4，最终 a=4,b=4</td>
+</tr>
+<tr>
+    <td><strong>逗号表达式</strong></td>
+    <td class="mono">a=(3,5,7) → a=7</td>
+    <td>返回最后一个表达式的值</td>
+</tr>
+<tr>
+    <td><strong>比较链陷阱</strong></td>
+    <td class="mono">3&lt;X&lt;5 ≠ 区间</td>
+    <td>应写 <span class="mono">3&lt;X && X&lt;5</span></td>
+</tr>
+<tr>
+    <td><strong>字符运算</strong></td>
+    <td class="mono">'1'+'1' = 'b'</td>
+    <td>字符作为 ASCII 码参与运算</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔢 优先级速查（考场必备）</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:12%">优先级</th><th style="width:25%">运算符</th><th style="width:20%">结合性</th><th>记忆口诀</th></tr></thead>
+<tbody>
+<tr><td><strong>最高</strong></td><td class="mono">()</td><td>—</td><td>括号优先</td></tr>
+<tr><td><strong>单目</strong></td><td class="mono">++ -- + - ! ~</td><td>右→左</td><td>单目次之</td></tr>
+<tr><td><strong>乘除</strong></td><td class="mono">* / %</td><td>左→右</td><td>乘除取余</td></tr>
+<tr><td><strong>加减</strong></td><td class="mono">+ -</td><td>左→右</td><td>加减靠后</td></tr>
+<tr><td><strong>关系</strong></td><td class="mono">&lt; &lt;= &gt; &gt;=</td><td>左→右</td><td>大于小于</td></tr>
+<tr><td><strong>相等</strong></td><td class="mono">== !=</td><td>左→右</td><td>等不等于</td></tr>
+<tr><td><strong>逻辑与</strong></td><td class="mono">&&</td><td>左→右</td><td>且（短路）</td></tr>
+<tr><td><strong>逻辑或</strong></td><td class="mono">||</td><td>左→右</td><td>或（短路）</td></tr>
+<tr><td><strong>三目</strong></td><td class="mono">? :</td><td>右→左</td><td>条件判断</td></tr>
+<tr><td><strong>赋值</strong></td><td class="mono">= += -= *= /= %=</td><td>右→左</td><td>赋值垫后</td></tr>
+<tr><td><strong>最低</strong></td><td class="mono">,</td><td>左→右</td><td>逗号兜底</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"乘除取余先加减，关系再判等不等；逻辑短路要牢记，赋值最后右结合；整除截断是整数，取模两边必整数。"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

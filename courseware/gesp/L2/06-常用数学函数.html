@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 常用数学函数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++ 二级课件</div>
+  <div class="nav-section">
+    <div class="nav-section-title">全部课件</div>
+    <a class="nav-link" href="#hero-section">🏠 课程首页</a>
+    <a class="nav-link" href="#step1">1️⃣ 生活引入</a>
+    <a class="nav-link" href="#step2">2️⃣ 核心概念</a>
+    <a class="nav-link" href="#step3">3️⃣ 代码详解</a>
+    <a class="nav-link" href="#step4">4️⃣ 手工模拟</a>
+    <a class="nav-link" href="#step5">5️⃣ 常见陷阱</a>
+    <a class="nav-link" href="#step6">6️⃣ 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="01-计算机存储与网络.html">01 · 计算机存储与网络</a>
+    <a class="nav-link" href="02-程序设计语言的特点.html">02 · 程序设计语言的特点</a>
+    <a class="nav-link" href="03-数据类型转换.html">03 · 数据类型转换</a>
+    <a class="nav-link" href="04-运算符.html">04 · 运算符</a>
+    <a class="nav-link" href="05-多层分支循环结构.html">05 · 多层分支/循环结构</a>
+    <a class="nav-link active" href="06-常用数学函数.html">06 · 常用数学函数 ⬅ 当前</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;margin-bottom:10px">GESP C++ 二级 · 常用数学函数</h1>
+  <p style="color:#94a3b8;font-size:1.1rem;margin-bottom:24px">Math Functions — abs/sqrt/max/min/rand 函数详解</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(139,92,246,.25);color:#c4b5fd;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⚡ 4道选择题 + 7道判断题</span>
+    <span style="background:rgba(99,102,241,.25);color:#a5b4fc;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">📊 年均出题2~3道</span>
+    <span style="background:rgba(245,158,11,.25);color:#fcd34d;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⭐ 占总分约10%</span>
+  </div>
+</div>
+
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 生活中的「数学工具箱」</h2>
+
+<div class="card accent"><div class="card-title">🎯 场景比喻：教室里的数学工具</div>
+<p>想象你在教室里做数学题：用<strong>绝对值 abs</strong> 量两个人的距离（不管谁在左谁在右），用<strong>平方根 sqrt</strong> 算正方形对角线的长度，用<strong>最大最小值 max/min</strong> 从一叠试卷中挑出最高分和最低分，用<strong>随机数 rand</strong> 来摇号抽人回答问题。C++ 的数学函数就是这套「数学工具箱」，它们都住在 <code>&lt;cmath&gt;</code> 头文件里，用之前要先 <span class="key-point">#include &lt;cmath&gt;</span> 才能借出来。</p></div>
+
+<div class="card primary"><div class="card-title">🔍 为什么要考数学函数？</div>
+<p>GESP 二级考纲明确要求掌握 5 个数学函数：<strong>abs()、sqrt()、max()、min()、rand()</strong>。这部分虽然出题量不大（每年 2~3 道），但<strong>送分性质明显</strong>——只要记住函数名、头文件、参数类型和返回值类型，就能稳稳拿分。</p></div>
+
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念 — 五大数学函数</h2>
+
+<div class="highlight-box blue"><div class="hb-title">📐 GESP 二级考查的五个数学函数</div>
+<p>均需 <code>#include &lt;cmath&gt;</code> 或 <code>#include &lt;math.h&gt;</code>（rand 需要 <code>#include &lt;cstdlib&gt;</code>）</p></div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>功能</th><th>参数类型</th><th>返回类型</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td class="mono">abs(x)</td><td>绝对值 |x|</td><td>int → int<br>double → double</td><td>与参数同</td><td class="mono">abs(-5) = 5</td></tr>
+<tr><td class="mono">sqrt(x)</td><td>平方根 √x</td><td>double</td><td>double</td><td class="mono">sqrt(9.0) = 3.0</td></tr>
+<tr><td class="mono">max(a,b)</td><td>取较大值</td><td>相同类型</td><td>与参数同</td><td class="mono">max(10,20) = 20</td></tr>
+<tr><td class="mono">min(a,b)</td><td>取较小值</td><td>相同类型</td><td>与参数同</td><td class="mono">min(10,20) = 10</td></tr>
+<tr><td class="mono">rand()</td><td>随机整数 [0,RAND_MAX]</td><td>无参数</td><td>int</td><td class="mono">rand()%10+1 → 1~10</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card primary"><div class="card-title">🔵 abs() — 绝对值函数</div>
+<ul>
+  <li><strong>功能：</strong>返回参数的绝对值，<span class="key-point">abs(-5) → 5</span>，<span class="key-point">abs(5) → 5</span></li>
+  <li><strong>浮点数判断相等：</strong><span class="key-point success">abs(b - a) &lt;= 0.000001</span> 判断两个浮点数是否"近似相等"</li>
+  <li><strong>注意：</strong>整数版本在 <code>&lt;cstdlib&gt;</code>，浮点版本 <code>fabs()</code> 在 <code>&lt;cmath&gt;</code>（但 C++ 中 <code>abs()</code> 通常已重载支持浮点）</li>
+</ul></div>
+
+<div class="card success"><div class="card-title">🟢 sqrt() — 平方根函数</div>
+<ul>
+  <li><strong>功能：</strong>返回参数的平方根，<span class="key-point">sqrt(9.0) → 3.0</span></li>
+  <li><strong>返回值类型：</strong><span class="key-point warn">double</span>（不是 int！）</li>
+  <li><strong>判断完全平方数：</strong><span class="key-point">int(sqrt(N)) * int(sqrt(N)) == N</span></li>
+  <li><strong>浮点误差：</strong><span class="key-point danger">sqrt(N) * sqrt(N) == N</span> 可能因浮点精度为 false</li>
+</ul></div>
+
+<div class="card purple"><div class="card-title">🟣 max() / min() — 最大最小值函数</div>
+<ul>
+  <li><strong>功能：</strong>返回两个值中的较大/较小者</li>
+  <li><strong>经典用法：</strong><span class="key-point">max(max(a, b), c)</span> 求三个数的最大值</li>
+  <li><strong>判断相等技巧：</strong><span class="key-point">max(a, b) == min(a, b)</span> → a 等于 b</li>
+  <li><strong>等价替代：</strong>max(a,b) 等价于 <code>(a&gt;b?a:b)</code></li>
+</ul></div>
+
+<div class="card indigo"><div class="card-title">🔷 rand() — 随机数函数</div>
+<ul>
+  <li><strong>功能：</strong>返回 [0, RAND_MAX] 范围内的伪随机整数</li>
+  <li><strong>生成 [a, b] 范围：</strong><span class="key-point">rand() % (b-a+1) + a</span></li>
+  <li><strong>1 到 10：</strong><span class="key-point success">rand() % 10 + 1</span></li>
+  <li><strong>1 到 100：</strong><span class="key-point">rand() % 100 + 1</span></li>
+  <li><span class="key-point warn">每次运行结果相同</span>（需要 srand() 设置种子才能不同）</li>
+</ul></div>
+
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解 — 函数实战模板</h2>
+
+<div class="card success"><div class="card-title">📝 模板一：abs 判断浮点数相等</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include <cmath>
+#include <iostream>
+using namespace std;
+
+float a = 2.2345676, b = 2.2345677;
+// ❌ 错误：直接比较浮点数
+if (a == b) cout << "相等";  // 几乎总是 false！
+
+// ✅ 正确：用 abs 判断差值是否足够小
+if (abs(b - a) <= 0.000001)
+    cout << "视作相等";      // 输出这一行
+</code></pre></div></div>
+
+<div class="card purple"><div class="card-title">📝 模板二：sqrt 判断完全平方数</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include <cmath>
+#include <iostream>
+using namespace std;
+
+int N = 25;
+int root = int(sqrt(N));    // root = 5
+if (root * root == N)
+    cout << N << "是完全平方数";  // 25是完全平方数
+
+// ❌ 错误写法：
+if (sqrt(N) * sqrt(N) == N)  // 浮点误差可能导致 false
+    cout << "可能不输出";
+
+// ✅ 正确写法：先转 int 再平方比较
+if (int(sqrt(N)) * int(sqrt(N)) == N)
+    cout << "可靠判断";
+</code></pre></div></div>
+
+<div class="card teal"><div class="card-title">📝 模板三：max/min 应用</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include <algorithm>  // max/min 需要这个头文件
+#include <iostream>
+using namespace std;
+
+int a = 10, b = 20, c = 30;
+
+// 三个数的最大值
+cout << max(max(a, b), c);   // 30
+
+// 三个数的最小值
+cout << min(min(a, b), c);   // 10
+
+// 判断 a 和 b 是否相等
+if (max(a, b) == min(a, b))
+    cout << "a 等于 b";
+else
+    cout << "a 不等于 b";
+</code></pre></div></div>
+
+<div class="card indigo"><div class="card-title">📝 模板四：rand 生成指定范围随机数</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include <cstdlib>
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+// 设置随机种子（让每次运行结果不同）
+srand(time(0));
+
+// 生成 [1, 10] 范围内的随机数
+for (int i = 0; i < 5; i++)
+    cout << rand() % 10 + 1 << ' ';
+// 输出示例：7 3 9 1 5
+
+// 注意：rand()%10 生成 [0, 9]，rand()%10+1 才是 [1, 10]
+//       rand()%11  生成 [0, 10]
+</code></pre></div></div>
+
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 函数调用追踪</h2>
+
+<div class="card accent"><div class="card-title">🧮 模拟一：欧几里得算法（辗转相除法）</div>
+<p>以下代码实现求 a 和 b 的最大公约数：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cin >> a >> b;
+while (b != 0){
+    remainder = a % b;
+    a = b;
+    b = remainder;
+}
+cout << a;</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>轮次</th><th>a</th><th>b</th><th>a%b</th><th>操作</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td class="mono">48</td><td class="mono">18</td><td>—</td><td>输入</td></tr>
+<tr><td>1</td><td class="mono">18</td><td class="mono">12</td><td class="mono">48%18=12</td><td>a=b=18, b=12</td></tr>
+<tr><td>2</td><td class="mono">12</td><td class="mono">6</td><td class="mono">18%12=6</td><td>a=b=12, b=6</td></tr>
+<tr><td>3</td><td class="mono">6</td><td class="mono">0</td><td class="mono">12%6=0</td><td>b=0→退出循环</td></tr>
+<tr><td colspan="5">最终输出 a = <strong>6</strong>（48和18的最大公约数）</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary"><div class="card-title">🧮 模拟二：sqrt 精度验证</div>
+<p>分析 int(sqrt(8)) * int(sqrt(8)) == 8 的结果：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>表达式</th><th>结果</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">sqrt(8)</td><td class="mono">≈ 2.828427...</td><td>double 类型</td></tr>
+<tr><td>2</td><td class="mono">int(sqrt(8))</td><td class="mono">2</td><td>转为 int，截断小数</td></tr>
+<tr><td>3</td><td class="mono">2 * 2</td><td class="mono">4</td><td>整数乘法</td></tr>
+<tr><td>4</td><td class="mono">4 == 8</td><td class="mono"><strong>false (0)</strong></td><td>8 不是完全平方数</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point success">结论：正确的判断方法</span> — int(sqrt(N))*int(sqrt(N))==N 可判断完全平方数。</p></div>
+
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱一：sqrt 返回的是 double，不是 int</div>
+<p><code>sqrt(9.0)</code> 的计算结果为 <strong>3.0（double）</strong>，不是 int 类型的 3。需要 int(sqrt(9.0)) 才能得到 int 类型的 3。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱二：浮点误差导致 sqrt(N)*sqrt(N)≠N</div>
+<p>由于浮点数精度问题，<code>sqrt(N) * sqrt(N) == N</code> 即使是完全平方数也可能返回 false。判断完全平方数时必须先 int 转换：<code>int(sqrt(N)) * int(sqrt(N)) == N</code>。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱三：rand() 每次运行结果相同</div>
+<p>没有调用 <code>srand(time(0))</code> 设置种子的话，rand() 每次程序运行都生成相同的"随机"序列。这在考试中一般不作为考点。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱四：abs 参数为负时 sign 判断</div>
+<p><code>sqrt(a) == abs(a)</code> 不仅 a=0 时成立，a=1 时也成立：sqrt(1)=1, abs(1)=1，等式为 true。所以「a 的值必须为 0」的说法是错的。</p></div>
+
+<div class="tip-box">
+<strong>💡 记口诀：</strong> abs 取绝对值，sqrt 得浮点数，max/min 比较选，rand 取余加一得范围。用前记得 #include &lt;cmath&gt;，判断相等用差值比较。
+</div>
+
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>选择题</h3>
+<!-- 选择题: purple → pink → teal → indigo -->
+
+<div class="card purple">
+<div class="card-title">第1题 · rand 随机数范围（2023/06 第25题）</div>
+<p>在C++中，下列最适合填入横线处连续5次正确生成1到10之间的随机整数？</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for(int i=0; i<5; i++)
+    __________________;</code></pre></div>
+<p>A. rand() % 11 &nbsp;&nbsp; B. rand() % 10 &nbsp;&nbsp; C. rand() % 10 + 1 &nbsp;&nbsp; D. rand() % 9 + 1</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>rand()%10 生成 [0,9]，+1 后为 [1,10]。A 生成 [0,10]，B 生成 [0,9]，D 生成 [1,9]。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · abs 判断浮点数相等（2023/12 第27题）</div>
+<p>在C++中，如果 a 和 b 均为 float 类型的变量，如果二者相差足够小（比如0.000001）就可以视作相等。下列哪个表达式能用来正确判断"a等于b"？</p>
+<p>A. ((b-a) < 0.000001) &nbsp;&nbsp; B. ((b-a) <= 0.000001) &nbsp;&nbsp; C. (abs(b-a) <= 0.000001) &nbsp;&nbsp; D. (sqrt(b-a) <= 0.000001)</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>需要绝对值处理正负偏差。A/B 如果 b-a 是负数（b&lt;a），条件也会成立但语义不对。D 中 sqrt 对负数无效。所以 C 最正确。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 欧几里得算法分析（2024/06 第29题）</div>
+<p>阅读下面的C++代码，其中变量都是整型，则说法正确的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cin >> a >> b;
+while (b != 0){
+    remainder = a % b;
+    a = b;
+    b = remainder;
+}
+cout << a;</code></pre></div>
+<p>A. b不能为0，因为a%b将导致错误 &nbsp;&nbsp; B. a必须小于b &nbsp;&nbsp; C. a和b都必须为正 &nbsp;&nbsp; D. 如果a输入为0，则不管b的输入值是什么，输出值的绝对值都是abs(b)</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>这是欧几里得算法（辗转相除法）求最大公约数。a=0 时 gcd(0,b)=|b|，一轮循环后 a=b, b=0, 输出 a=原b。A 错误：b 初始可以为0（循环不执行，输出 a）。B/C 错误：不要求大小或正负。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 函数组合选择（2025/03 第31题）</div>
+<p>下面C++代码执行后的输出是30，则横线处<strong>不能</strong>填入：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=10, b=20, c=30;
+cout << _____________________ << endl;</code></pre></div>
+<p>A. max(max(a,b),c) &nbsp;&nbsp; B. min(a+b, c) &nbsp;&nbsp; C. sqrt(a+b+c) &nbsp;&nbsp; D. (a+b+c)/2</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>A: max(20,30)=30。B: min(30,30)=30。D: 60/2=30。C: sqrt(60)≈7.746≠30，所以 C 不能填入。</div></div>
+</div>
+
+<h3>判断题</h3>
+
+<div class="card purple">
+<div class="card-title">判断题第1题（2023/09 第20题）</div>
+<p>a 和 b 分别是C++的整型变量，如果表达式 max(a, b) == min(a, b) 的值为真，则说明 a 和 b 相等。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>若 max==min 则说明较大值=较小值，两个数必然相等。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第2题（2024/03 第33题）</div>
+<p>C++表达式 (sqrt(N) * sqrt(N)) == N 中的N如果为正整数，则表达式的值为true，相当于开平方后平方是本身。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>因浮点数精度问题，即使 N 是完全平方数，sqrt(N)*sqrt(N) 也可能不等于 N。例如 sqrt(25) 可能返回 4.999999，乘法得 24.999998 ≠ 25。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第3题（2024/09 第36题）</div>
+<p>如果C++表达式 int(sqrt(N))*int(sqrt(N)) == N 的值为True，则说明N为完全平方数，如4、9、25等。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>先 int(sqrt(N)) 截断小数得到整数根，再平方与 N 比较。若相等则 N 确实是完全平方数。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第4题（2024/12 第37题）</div>
+<p>如果变量 a 的值使得C++表达式 sqrt(a)==abs(a)，则 a 的值为0。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>a=1 时：sqrt(1)=1，abs(1)=1，等式也成立。a=0 时：sqrt(0)=0，abs(0)=0，也成立。所以 a 可能为 0 或 1。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第5题（2025/03 第38题）</div>
+<p>表达式 sqrt(9.0) 的计算结果为 3，且结果类型为 int。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>sqrt(9.0) 返回的是 double 类型 3.0，不是 int 类型 3。sqrt 的返回类型始终是 double/float。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第6题（2025/06 第39题）</div>
+<p>在使用 C++语言编写程序时，不能使用 sqrt、abs 等数学函数，包含 &lt;cmath&gt; 或 &lt;math.h&gt; 头文件后就能够使用了。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>数学函数在 <code>&lt;cmath&gt;</code> 或 <code>&lt;math.h&gt;</code> 头文件中声明，包含后即可使用。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第7题（2025/09 第40题）</div>
+<p>C++语句 cout &lt;&lt; rand() &lt;&lt; ' ' &lt;&lt; rand(); 的第二个输出值较大。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>rand() 每次调用返回不同的随机数，第二个不一定比第一个大。两者是独立的随机值，大小关系不确定。</div></div>
+</div>
+
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 常用数学函数速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>公式/用法</th><th>关键陷阱</th></tr></thead>
+<tbody>
+<tr><td class="mono">abs(x)</td><td>返回 |x|</td><td>浮点用 fabs，但 C++ 中 abs 常已重载</td></tr>
+<tr><td class="mono">sqrt(x)</td><td>返回 √x（double 类型）</td><td>返回 double 不是 int！</td></tr>
+<tr><td class="mono">max(a,b)</td><td>返回较大值</td><td>参数类型要相同；可嵌套 max(max(a,b),c)</td></tr>
+<tr><td class="mono">min(a,b)</td><td>返回较小值</td><td>max(a,b)==min(a,b) → a==b</td></tr>
+<tr><td class="mono">rand()</td><td>返回 [0,RAND_MAX] 随机整数</td><td>[1,N] 范围：rand()%N+1</td></tr>
+<tr><td>头文件</td><td>cmath / math.h（rand 需 cstdlib）</td><td>使用前必须 include！</td></tr>
+<tr><td>浮点相等判断</td><td class="mono">abs(b-a) <= 1e-6</td><td>不要直接用 == 比较浮点数</td></tr>
+<tr><td>完全平方判断</td><td class="mono">int(sqrt(N))*int(sqrt(N))==N</td><td>不要用 sqrt(N)*sqrt(N)==N</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="返回顶部">↑</button>
+
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

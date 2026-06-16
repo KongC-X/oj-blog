@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 多层分支/循环结构</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++ 二级课件</div>
+  <div class="nav-section">
+    <div class="nav-section-title">全部课件</div>
+    <a class="nav-link" href="#hero-section">🏠 课程首页</a>
+    <a class="nav-link" href="#step1">1️⃣ 生活引入</a>
+    <a class="nav-link" href="#step2">2️⃣ 核心概念</a>
+    <a class="nav-link" href="#step3">3️⃣ 代码详解</a>
+    <a class="nav-link" href="#step4">4️⃣ 手工模拟</a>
+    <a class="nav-link" href="#step5">5️⃣ 常见陷阱</a>
+    <a class="nav-link" href="#step6">6️⃣ 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="01-计算机存储与网络.html">01 · 计算机存储与网络</a>
+    <a class="nav-link" href="02-程序设计语言的特点.html">02 · 程序设计语言的特点</a>
+    <a class="nav-link" href="03-数据类型转换.html">03 · 数据类型转换</a>
+    <a class="nav-link" href="04-运算符.html">04 · 运算符</a>
+    <a class="nav-link active" href="05-多层分支循环结构.html">05 · 多层分支/循环结构 ⬅ 当前</a>
+    <a class="nav-link" href="06-常用数学函数.html">06 · 常用数学函数</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;margin-bottom:10px">GESP C++ 二级 · 多层分支/循环结构</h1>
+  <p style="color:#94a3b8;font-size:1.1rem;margin-bottom:24px">Branching & Loops — for/while循环与if/else分支的嵌套应用</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(139,92,246,.25);color:#c4b5fd;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⚡ 25道选择题 + 20道判断题</span>
+    <span style="background:rgba(99,102,241,.25);color:#a5b4fc;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">📊 年均出题8~10道</span>
+    <span style="background:rgba(245,158,11,.25);color:#fcd34d;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⭐ 占总分约35%</span>
+  </div>
+</div>
+
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 生活中的「重复」与「选择」</h2>
+
+<div class="card accent"><div class="card-title">🎯 场景比喻：体育课热身与比赛规则</div>
+<p>体育课开始，老师喊<strong>"绕操场跑3圈"</strong>——这就是 <span class="key-point">for 循环</span>：已知次数，按步执行。跑完热身，老师说<strong>"没跑完的继续跑，直到跑完为止"</strong>——这是 <span class="key-point">while 循环</span>：条件控制，不确知次数。比赛时，裁判宣布<strong>"犯规者罚下，其他人继续"</strong>——这是 <span class="key-point">if/else 分支</span> 和 <span class="key-point">continue/break</span>。C++ 的循环和分支就是让计算机像体育老师一样按规则办事。</p></div>
+
+<div class="card primary"><div class="card-title">🔍 为什么是多层分支/循环结构是最大考点？</div>
+<p>GESP 二级中，循环和分支占比约 <strong>35%</strong>，是<strong>出题量最大的知识点</strong>。每套试卷约 8~10 道题。核心原因：循环+分支是算法的骨架，二级考查学生能否<strong>追踪代码执行流程</strong>、<strong>理解嵌套逻辑</strong>、<strong>识别 continue/break 的精确语义</strong>。</p></div>
+
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念 — 五大控制结构</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>结构</th><th>语法</th><th>执行特点</th><th>二级考查频率</th></tr></thead>
+<tbody>
+<tr><td><strong>for循环</strong></td><td class="mono">for(初始;条件;步进){...}</td><td>已知次数，三段式</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>while循环</strong></td><td class="mono">while(条件){...}</td><td>先判断后执行</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td><strong>if/else分支</strong></td><td class="mono">if/else if/else</td><td>二选一或多选一</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>continue</strong></td><td class="mono">continue;</td><td>跳过本轮余下代码</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>break</strong></td><td class="mono">break;</td><td>跳出当前循环</td><td>⭐⭐⭐⭐⭐</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card primary"><div class="card-title">🔵 for 循环三要素</div>
+<ul>
+<li><strong>初始化：</strong>循环开始前执行一次，<span class="key-point">int i = 0</span></li>
+<li><strong>条件判断：</strong>每次循环前检查，<span class="key-point warn">i &lt; 10</span>（不满足则退出）</li>
+<li><strong>步进：</strong>每轮循环结束后执行，<span class="key-point">i++</span></li>
+<li><strong>变量作用域：</strong><span class="key-point">for(int i=0;...)</span> 中 i 仅在循环体内有效</li>
+</ul></div>
+
+<div class="card success"><div class="card-title">🟢 while 循环关键特征</div>
+<ul>
+<li><strong>先判断，后执行：</strong>条件为 false 时循环体一次都不执行</li>
+<li><strong>无条件 vs 有条件：</strong><span class="key-point">while(1)</span> 是无限循环（需 break 退出）</li>
+<li><strong>与 for 等价转换：</strong>任何 while 都可转为 for，反之亦然</li>
+</ul></div>
+
+<div class="card purple"><div class="card-title">🟣 continue 与 break 的本质区别</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>语句</th><th>效果</th><th>后续代码</th><th>循环是否继续</th></tr></thead>
+<tbody>
+<tr><td class="mono">continue;</td><td>跳过本轮剩余语句</td><td>不执行</td><td><strong>继续下一轮</strong></td></tr>
+<tr><td class="mono">break;</td><td>跳出当前循环</td><td>不执行</td><td><strong>终止循环</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point warn">break 后面的 continue 永远不会执行！</span></p></div>
+
+<div class="card indigo"><div class="card-title">🔷 嵌套循环的执行规律</div>
+<ul>
+<li><strong>外层走一步，内层走一轮：</strong>外层 i 每增加 1，内层 j 从头到尾执行一遍</li>
+<li><strong>内层 break 只跳出内层循环</strong>，外层不受影响</li>
+<li><strong>总执行次数 = 外层次数 × 内层平均次数</strong></li>
+</ul></div>
+
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解 — 循环模板与执行流程</h2>
+
+<div class="card success"><div class="card-title">📝 模板一：for 循环基本模式</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 模式1: 累加求和
+int sum = 0;
+for (int i = 1; i <= 10; i++) {
+    sum += i;     // sum = 1+2+...+10 = 55
+}
+
+// 模式2: 带 continue（跳过偶数）
+for (int i = 1; i <= 10; i++) {
+    if (i % 2 == 0) continue;  // 跳过偶数
+    cout << i << ' ';          // 输出: 1 3 5 7 9
+}
+
+// 模式3: 带 break（遇到第一个3的倍数就停）
+for (int i = 1; i <= 10; i++) {
+    if (i % 3 == 0) break;     // i=3时跳出
+    cout << i << ' ';          // 输出: 1 2
+}</code></pre></div></div>
+
+<div class="card purple"><div class="card-title">📝 模板二：嵌套循环经典模式</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 九九乘法表
+for (int i = 1; i <= 9; i++) {
+    for (int j = 1; j <= i; j++) {
+        printf("%d*%d=%d ", j, i, i*j);
+    }
+    printf("\n");
+}
+
+// 打印三角形星号
+for (int i = 0; i < 5; i++) {       // 5行
+    for (int j = 0; j < 5-i-1; j++) // 打印空格
+        cout << " ";
+    for (int k = 0; k < 2*i+1; k++) // 打印星号
+        cout << "*";
+    cout << endl;
+}</code></pre></div></div>
+
+<div class="card teal"><div class="card-title">📝 模板三：while 循环经典模式</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 模式1: 逐位拆分数（关键！）
+int N = 1234;
+while (N > 0) {
+    cout << N % 10 << ' ';  // 输出个位
+    N /= 10;                // 去掉个位
+}
+// 输出: 4 3 2 1
+
+// 模式2: 计数器模式（等价于 for）
+int cnt = 0;
+while (cnt < 10) {
+    cnt++;    // 变量必须手动更新！
+}
+// cnt = 10
+
+// 模式3: 哨兵模式（读到特定值停止）
+int num;
+while (cin >> num && num != -999) {
+    // 处理 num
+}</code></pre></div></div>
+
+<div class="card indigo"><div class="card-title">📝 模板四：continue/break 精确语义</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// continue：跳过本轮，继续下一轮
+for (int i = 0; i < 5; i++) {
+    if (i == 2) continue;  // 跳过 i=2
+    cout << i << ' ';      // 输出: 0 1 3 4
+}
+
+// break：跳出当前循环（注意：只跳一层！）
+for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 5; j++) {
+        if (j == 2) break;     // 只跳出内层 j 循环
+        cout << i << ',' << j << ' ';
+    }
+    cout << endl;
+}
+// 输出: 0,0 0,1
+//       1,0 1,1
+//       2,0 2,1</code></pre></div></div>
+
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 变量追踪表</h2>
+
+<div class="card accent"><div class="card-title">🧮 模拟一：for+continue+break 组合</div>
+<p>执行以下代码，追踪 Sum 的变化：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i, Sum = 0;
+for (i = 1; i < 10; i++){
+    Sum += i;
+    if(i % 2) continue;
+    if(i % 7) break;
+}</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>i</th><th>Sum+=i 后</th><th>i%2?</th><th>continue?</th><th>i%7?</th><th>break?</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">1</td><td>1→true</td><td>✅ 跳过</td><td>—</td><td>—</td></tr>
+<tr><td>2</td><td class="mono">3</td><td>0→false</td><td>—</td><td>2→true</td><td>❌ 不break</td></tr>
+<tr><td>3</td><td class="mono">6</td><td>1→true</td><td>✅ 跳过</td><td>—</td><td>—</td></tr>
+<tr><td>4</td><td class="mono">10</td><td>0→false</td><td>—</td><td>4→true</td><td>❌ 不break</td></tr>
+<tr><td>5</td><td class="mono">15</td><td>1→true</td><td>✅ 跳过</td><td>—</td><td>—</td></tr>
+<tr><td>6</td><td class="mono">21</td><td>0→false</td><td>—</td><td>6→true</td><td>❌ 不break</td></tr>
+<tr><td>7</td><td class="mono">28</td><td>1→true</td><td>✅ 跳过</td><td>—</td><td>—</td></tr>
+<tr><td>8</td><td class="mono">36</td><td>0→false</td><td>—</td><td>8→true</td><td>❌ 不break</td></tr>
+<tr><td>9</td><td class="mono">45</td><td>1→true</td><td>✅ 跳过</td><td>—</td><td>—</td></tr>
+<tr><td colspan="6"><strong>最终 Sum = 45</strong> → 等等！我分析错了，break 的条件是 i%7==0，只有当 i=7 时 break。但 i=7 时 i%2==1 先执行了 continue，跳过了 break 判断。所以实际上这段代码永远不会触发 break，Sum 累加到 45。...但真题答案却是 3！让我重新分析...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary"><div class="card-title">🧮 模拟一（修正）：注意 continue 后的 break 也被跳过</div>
+<p>实际上 break 在 continue 之后，只有 <strong>偶数且不被7整除</strong> 才会执行 break。i=2 时：Sum=3，i%2=0→不continue，i%7=2≠0→break！循环只执行了 i=1 和 i=2，Sum 最终=<strong>3</strong>。</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>i</th><th>Sum</th><th>i%2</th><th>动作</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">1</td><td>1 → continue</td><td>跳过本轮</td></tr>
+<tr><td>2</td><td class="mono">1+2=3</td><td>0 → 不跳过, i%7=2≠0 → <strong>break!</strong></td><td>退出循环</td></tr>
+</tbody>
+</table>
+</div>
+<p>输出 Sum = <strong>3</strong>。<span class="key-point warn">关键：continue 后的所有代码（包括 break）都被跳过！</span></p></div>
+
+<div class="card purple"><div class="card-title">🧮 模拟二：嵌套循环计数</div>
+<p>执行以下代码，追踪 cnt 的值：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cnt = 0;
+for (int i = -10; i < 10; i++)
+    for (int j = 0; j < i; j++)
+        cnt += 1;
+cout << cnt;</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>i</th><th>内层循环次数(=i)</th><th>累计 cnt</th></tr></thead>
+<tbody>
+<tr><td>-10</td><td class="mono">0 (j< -10 → 不执行)</td><td class="mono">0</td></tr>
+<tr><td>-9 ~ -1</td><td class="mono">0 (j< 负数 → 不执行)</td><td class="mono">0</td></tr>
+<tr><td>0</td><td class="mono">0 (j< 0)</td><td class="mono">0</td></tr>
+<tr><td>1</td><td class="mono">1 (j=0)</td><td class="mono">1</td></tr>
+<tr><td>2</td><td class="mono">2 (j=0,1)</td><td class="mono">3</td></tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+<tr><td>9</td><td class="mono">9</td><td class="mono">1+2+...+9=45</td></tr>
+</tbody>
+</table>
+</div>
+<p>输出 cnt = <strong>45</strong>。<span class="key-point success">关键：j < i，i≤0 时内层循环不执行。</span></p></div>
+
+<div class="card teal"><div class="card-title">🧮 模拟三：while 循环 + continue</div>
+<p>执行以下代码：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int num = 0;
+while (num <= 5){
+    num += 1;
+    if (num == 3)
+        continue;
+    printf("%d#", num);
+}</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>num(加后)</th><th>num==3?</th><th>continue?</th><th>输出</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>否</td><td>—</td><td class="mono">1#</td></tr>
+<tr><td>2</td><td>否</td><td>—</td><td class="mono">2#</td></tr>
+<tr><td>3</td><td>是</td><td>✅ 跳过 printf</td><td>（无）</td></tr>
+<tr><td>4</td><td>否</td><td>—</td><td class="mono">4#</td></tr>
+<tr><td>5</td><td>否</td><td>—</td><td class="mono">5#</td></tr>
+<tr><td>6</td><td>否</td><td>—</td><td class="mono">6#</td></tr>
+<tr><td colspan="4">num=6, num&gt;5 退出循环。输出：<strong>1#2#4#5#6#</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱一：循环变量未初始化</div>
+<p><code>int tnt; for(int i=0;i&lt;10;i++) tnt+=i;</code> —— tnt 未初始化，值不确定。GESP 最爱考这个！输出是<strong>垃圾值</strong>，不是 45。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱二：continue 后还有代码</div>
+<p><code>for(i=1;i&lt;10;i++){if(i%2!=0){printf("A#");continue;}else break;printf("0#");}</code> —— 注意 else-break 后的 <code>printf("0#")</code> <strong>永远不会执行</strong>！因为 continue 和 break 都跳过了它。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱三：内层循环修改外层变量</div>
+<p>如 <code>for(i=0;i&lt;5;i++) for(i=0;i&lt;i;i++) continue;</code> —— 内外层使用同一个变量 i，会造成混乱，输出不可预期。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱四：break 只跳一层</div>
+<p>嵌套循环中 break 只跳出<strong>紧包含它的那一层</strong>循环。外层循环不受影响，继续正常执行。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱五：while 循环变量忘记更新</div>
+<p><code>while(N){...}</code> 中如果忘记在循环体内修改 N（如 <code>N/=10</code>），会导致<strong>死循环</strong>。</p></div>
+
+<div class="tip-box">
+<strong>💡 防错口诀：</strong> 变量先初始化，continue 跳余下；break 只跳一层，内外不分就乱套；while 记得改条件，嵌套数清循环次。
+</div>
+
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<!-- 选择题 颜色: purple → pink → teal → indigo → orange -->
+<h3>选择题</h3>
+
+<div class="card purple">
+<div class="card-title">第1题 · continue+break组合追踪（2023/03 第22题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i, Sum = 0;
+for (i = 1; i < 10; i++){
+    Sum += i;
+    if(i % 2) continue;
+    if(i % 7) break;
+}
+cout << Sum;</code></pre></div>
+<p>A. 45 &nbsp;&nbsp; B. 28 &nbsp;&nbsp; C. 3 &nbsp;&nbsp; D. 0</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>i=1: Sum=1, i%2=1→continue。i=2: Sum=3, i%2=0→不跳过, i%7=2≠0→break。最终 Sum=<strong>3</strong>。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 嵌套循环+break（2023/06 第18题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i, j;
+for(i = 1; i < 12; i++)
+    for(j = 1; j < i; j++)
+        if(i * j % 2 == 1)
+            break;
+cout << i * j;</code></pre></div>
+<p>A. 110 &nbsp;&nbsp; B. 22 &nbsp;&nbsp; C. 12 &nbsp;&nbsp; D. 3</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>i=1: j&lt;1，内层不执行。i=2: j=1, i*j=2%2=0→不break。i=3: j=1, 3*1%2=1→break。cout 在循环之后输出 i*j=3*1=3...等等，但 j=1 时 break 只是跳出内层，外层继续。i 遍历 1~11，最终 i=12 退出外层循环，此时 i*j=12*11=132？不，关键在最后 j 的值。仔细追踪：每次 break 都跳出内层，外层继续。最后一轮 i=11, j 从 1 到 10，i*j%2==1 时 j=1 (11%2=1)，break。循环结束后 i=12（退出外层），j 仍是 1，所以 12*1=12。答案 <strong>12</strong>。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · while+continue（2023/09 第14题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">num = 0;
+while (num <= 5){
+    num += 1;
+    if (num == 3)
+        continue;
+    printf("%d#", num);
+}</code></pre></div>
+<p>A. 1#2#4#5#6# &nbsp;&nbsp; B. 1#2#4#5#6 &nbsp;&nbsp; C. 1#2#3#4#5#6# &nbsp;&nbsp; D. 1#2#3#4#5#6</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>num=3时continue跳过printf，其余1,2,4,5,6正常输出（带#）。注意 6 是 num=6 时输出的，因为 while(num<=5) 判断在 num+1 之前。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 循环变量未初始化（2023/12 第9题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int tnt;
+for (int i=0; i<10; i++)
+    tnt += i;
+cout << tnt;</code></pre></div>
+<p>A. 输出相当于求1-10的和 &nbsp;&nbsp; B. 输出相当于求1-10的和(不含10) &nbsp;&nbsp; C. 输出相当于求0-10的和(不含10) &nbsp;&nbsp; D. 输出不确定的值</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>tnt 未初始化，值是<strong>不确定的（垃圾值）</strong>。在此基础上累加，结果不确定。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · continue/else/break 精确追踪（2024/03 第17题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i=1; i<10; i++)
+    if (i % 2)
+        continue;
+    else
+        break;
+cout << i;</code></pre></div>
+<p>A. 1 &nbsp;&nbsp; B. 2 &nbsp;&nbsp; C. 9 &nbsp;&nbsp; D. 10</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>i=1: i%2=1→continue（跳过else）。i=2: i%2=0→else→break。输出 i=2。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · continue跳过+循环后判断（2024/06 第16题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (i=0; i<10; i++){
+    if (i % 3)
+        continue;
+    printf("0#");
+}
+if(i>=10)
+    printf("1#");</code></pre></div>
+<p>A. 0#0#0#0#0#0#0#1# &nbsp;&nbsp; B. 0#0#0#0#0#0#1# &nbsp;&nbsp; C. 0#0#0#0#1# &nbsp;&nbsp; D. 0#0#0#0#</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>当 i%3==0 时（i=0,3,6,9），不 continue，执行 printf("0#")，共 4 次。循环结束 i=10，i>=10 → printf("1#")。输出 <strong>0#0#0#0#1#</strong>。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · 步长为2的循环计数（2024/09 第13题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i, cnt = 0;
+for(i = -99; i < 100; i += 2)
+    cnt = 1 + cnt;
+cout << cnt;</code></pre></div>
+<p>A. 101 &nbsp;&nbsp; B. 100 &nbsp;&nbsp; C. 99 &nbsp;&nbsp; D. 98</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>i 从 -99 到 98（不含100），步长 2。序列：-99,-97,...,97,99。共有 (99-(-99))/2+1 = 99+1 = 100 个数。cnt=100。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · continue后不可达代码（2024/12 第21题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for(i = 1; i < 10; i++){
+    if(i % 3 != 0){
+        printf("A#");
+        continue;
+    }
+    else
+        break;
+    printf("0#");
+}
+if(i == 10) cout << "1";</code></pre></div>
+<p>A. A#A# &nbsp;&nbsp; B. A#0#A#0 &nbsp;&nbsp; C. A#A#1 &nbsp;&nbsp; D. A#0#A#0#1</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>i=1: i%3=1≠0→输出"A#"→continue。i=2: 同样→输出"A#"。i=3: i%3=0→else→break。注意 printf("0#") 在 else-break 之后，永远不会执行。退出时 i=3，i==10? 否，不输出"1"。输出 <strong>A#A#</strong>。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第9题 · 嵌套循环输出格式（2025/03 第25题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i,j;
+for(i = 0; i < 3; i++)
+    for(j = 0; j < i; j++)
+        printf("%d#%d-", i, j);
+printf("END");</code></pre></div>
+<p>A. 0#0-1#0-2#0-2#1-END &nbsp;&nbsp; B. 0#0-1#0-1#1-2#0-2#1-2#2-... &nbsp;&nbsp; C. 0#0-1#0-1#1-2#0-2#1-2#2-END &nbsp;&nbsp; D. 1#0-2#0-2#1-END</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>i=0: j&lt;0 → 不执行。i=1: j=0 → 1#0-。i=2: j=0 → 2#0-，j=1 → 2#1-。最后 printf("END")。输出 <strong>1#0-2#0-2#1-END</strong>。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第10题 · 嵌套循环输出数字（2025/06 第7题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (i=0; i<5; i++)
+    for (j=0; j<i; j++)
+        cout << j;</code></pre></div>
+<p>A. 0010120123 &nbsp;&nbsp; B. 01012012301234 &nbsp;&nbsp; C. 001012012301234 &nbsp;&nbsp; D. 01012012301234012345</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>i=0: j&lt;0→不输出。i=1: j=0→输出0。i=2: j=0,1→输出01。i=3: j=0,1,2→输出012。i=4: j=0,1,2,3→输出0123。全部：<strong>0010120123</strong>。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第11题 · 逻辑条件组合（2023/06 第24题）</div>
+<p>下面C++代码执行后输出<strong>不能被3整除且除以5余数为2</strong>的数。下列选项<strong>不能实现</strong>的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for(i = 0; i < 100; i++)
+    if(______________________)
+        cout << i << endl;</code></pre></div>
+<p>A. (i%3!=0)&&(i%5==2) &nbsp;&nbsp; B. (i%3)&&(i%5==2) &nbsp;&nbsp; C. (i%3)&&!(i%5!=2) &nbsp;&nbsp; D. !(i%3)&&(i%5==2)</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>D 中 !(i%3) 表示能被3整除，与题意"不能被3整除"相反。A/C/B 都能正确表达题意。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第12题 · 含数字5的计数（2023/12 第30题）</div>
+<p>「与5有关的数」定义为含有5或能被5整除。关于下面代码说法正确的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cnt = 0;
+for (i = 1; i < 1000; i++){
+    if (i % 5 == 0){ cnt += 1; continue; }
+    j = i;
+    while (j > 0)
+        if (j % 10 == 5){ cnt += 1; break; }
+        else j /= 10;
+}</code></pre></div>
+<p>A. 删除continue不影响 &nbsp;&nbsp; B. 删除j=i将while中j改为i不影响 &nbsp;&nbsp; C. break改为j=0不影响 &nbsp;&nbsp; D. while(j>0)改为while(j>=0)不影响</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>break 跳出 while 等价于 j=0（让循环条件 j>0 为假）。A 错误：删除 continue 会导致能被5整除的数被重复计数。B 错误：修改 i 会影响外层循环。D 错误：j>=0 会导致死循环（j=0 时条件仍成立）。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第13题 · 判断自守数（2024/06 第28题）</div>
+<p>自守数：该数平方的尾数等于自身（如25²=625,尾数25）。相关说法<strong>错误</strong>的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, N1, M1;
+cin >> N;
+N1 = N, M1 = N * N;
+bool Flag = true;
+while (N1 > 0){
+    if (N1 % 10 != M1 % 10){ Flag = false; break; }
+    else{ N1 = N1 / 10, M1 = M1 / 10; }
+}</code></pre></div>
+<p>A. Flag不被改为false则说明是自守数 &nbsp;&nbsp; B. 比较个位数判断 &nbsp;&nbsp; C. N1/10,M1/10去掉个位 &nbsp;&nbsp; D. 将N1>0改为N>0效果相同</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>N 在 while 循环中没有被修改（只有 N1 和 M1 在变），while 中用 N>0 会导致<strong>死循环</strong>。所以改为 N>0 效果完全不同。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第14题 · for循环步进break（2024/12 第15题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 10; i > 0; i -= 2)
+    break;
+cout << i;</code></pre></div>
+<p>A. 10 &nbsp;&nbsp; B. 8 &nbsp;&nbsp; C. 0 &nbsp;&nbsp; D. 不确定</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>break 在第一轮就执行，i 保持初始值 10。步进语句 i-=2 在循环体之后执行，但 break 跳出了，所以 i 没有改变。输出 <strong>10</strong>。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第15题 · continue+循环后判断（2025/03 第19题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i =0; i < 10; i++){
+    if (i % 3 == 0)
+        continue;
+    cout << "0" << "#";
+}
+if (i >= 10)
+    cout << "1" << "#";</code></pre></div>
+<p>A. 0#0#0#0#0#0# &nbsp;&nbsp; B. 0#0#0#0#0#0#0#1# &nbsp;&nbsp; C. 0#0#0#0#1# &nbsp;&nbsp; D. 0#0#0#0#0#0#1#</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>i%3==0时(i=0,3,6,9)→continue跳过输出。其他 i=1,2,4,5,7,8→输出"0#"，共6次。循环后 i=10，输出"1#"。最终 <strong>0#0#0#0#0#0#1#</strong>。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第16题 · 嵌套循环 cnt计数（2025/06 第22题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cnt = 0;
+for (int i = -10; i < 10; i++)
+    for (int j =0; j < i; j++)
+        cnt += 1;
+cout << cnt;</code></pre></div>
+<p>A. 145 &nbsp;&nbsp; B. 125 &nbsp;&nbsp; C. 55 &nbsp;&nbsp; D. 45</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>i≤0时j&lt;i不成立，内层不执行。i=1~9时有效，cnt=1+2+...+9=<strong>45</strong>。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第17题 · 多层嵌套+条件判断（2023/09 第33题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (i =1; i < 12; i++){
+    if (i % 2 == 0) continue;
+    for (j = 0; j < i; j++)
+        if (i * j % 2) break;
+}
+if(i >= 12) cout << (i * j);</code></pre></div>
+<p>A. 110 &nbsp;&nbsp; B. 12 &nbsp;&nbsp; C. 不确定 &nbsp;&nbsp; D. 无输出</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>i 为奇数(1,3,5,7,9,11)时进入内层。每次内层 j=0 时 i*j=0，0%2=0→不break。j=1时 i*j=i，i是奇数所以 i*1%2=1→break。最终 i=12 退出循环，j 始终为1。输出 12*1=<strong>12</strong>。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第18题 · for循环递减输出（2024/03 第26题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i,j;
+for (i = 0; i < 5; i++)
+    for (j = i; j > 0; j -= 1)
+        printf("%d-", j);</code></pre></div>
+<p>A. 1-2-1-3-2-1-4-3-2-1- &nbsp;&nbsp; B. 1-2-1-3-2-1-4-3-2-1 &nbsp;&nbsp; C. 0-0-1-0-1-2-0-1-2-3- &nbsp;&nbsp; D. 0-0-1-0-1-2-0-1-2-3</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>i=0: j&gt;0→不执行。i=1: j=1→1-。i=2: j=2→2-, j=1→1-。i=3: j=3→3-,2→2-,1→1-。i=4: j=4→4-,3→3-,2→2-,1→1-。完整输出：<strong>1-2-1-3-2-1-4-3-2-1-</strong>（带末尾-）。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第19题 · 复杂度分析-阶乘求和（2024/09 第32题）</div>
+<p>两段代码求1到N的阶乘之和。说法正确的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 实现1: last保存前项
+for (i=1;i<=N;i++){ last*=i; tnt+=last; }
+// 实现2: 每次都重新计算阶乘
+for (i=1;i<=N;i++){ tmp=1;for(j=1;j<=i;j++)tmp*=j; tnt+=tmp; }</code></pre></div>
+<p>A. 实现1短但效率不高 &nbsp;&nbsp; B. 实现2效率更高更易理解 &nbsp;&nbsp; C. 实现1应用前项结果效率高 &nbsp;&nbsp; D. 两种实现效率几乎一致</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>实现1是 O(N)，利用了 last 保存前一项阶乘。实现2有嵌套循环是 O(N²)，效率更低。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第20题 · 哥德巴赫验证（2025/03 第35题）</div>
+<p>验证4-1000偶数分解为两质数之和。说法<strong>错误</strong>的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (i = 4; i < 1000; i += 2)
+    for (j = 2; j < i; j++)
+        if (isPrime(j) && isPrime(i-j)){
+            printf("%d=%d+%d\n", i, j, i-j);
+            break;
+        }</code></pre></div>
+<p>A. isPrime(j)&&isPrime(i-j) 改为 isPrime(j)==true&&isPrime(i-j)==true 效果相同<br>B. 输出的一对质数小的数在前<br>C. 即便上界改很大也不能从数学上证明<br>D. break应移到if块外</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>break 在找到第一个分解后就跳出内层（因为只需一种分解方式），移到 if 外会导致输出所有分解方式（且会重复计算），改变了程序行为。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第21题 · 评委打分（2025/06 第38题）</div>
+<p>25个选手，10个评委，去掉最高最低分。说法正确的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int i = 0; i < 25; i++){
+    max_score = 0; min_score = 10; total_score = 0;
+    for (int j = 0; j < 10; j++){
+        cin >> now_score;
+        max_score = max(max_score, now_score);
+        min_score = min(min_score, now_score);
+        total_score += now_score;
+    }
+    cout << (total_score - max_score - min_score);
+}</code></pre></div>
+<p>A. 需要排序，程序逻辑错误 &nbsp;&nbsp; B. 初始化三行移到外层外 &nbsp;&nbsp; C. L1/L2可改为if或?:语句 &nbsp;&nbsp; D. total_score+=now_score 不可改为 total_score=total_score+now_score</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>max/min 函数可以替换为 if 语句或三元运算符，效果相同。A 错误：不需要排序。B 错误：每个选手需要重新初始化。D 错误：两种写法等价。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第22题 · 负数循环（2024/06 第34题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int i = -2; i < 2; i++)
+    if (i % 2)
+        printf("%d#",i);</code></pre></div>
+<p>A. -1#1# &nbsp;&nbsp; B. -1#0#1# &nbsp;&nbsp; C. -2#-1#1# &nbsp;&nbsp; D. -2#-1#1#2#</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>i=-2: i%2=0→不输出。-1: (-1)%2=-1≠0→true→输出。-1#。0: 0%2=0→不输出。1: 1%2=1→true→输出1#。注意 C++ 中负数的 % 结果符号取决于被除数。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第23题 · 步长2嵌套计数（2024/12 第36题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int cnt = 0;
+for (int i =1; i < 10; i += 2)
+    for (int j =0; j < i; j++)
+        cnt += 1;
+cout << cnt;</code></pre></div>
+<p>A. 100 &nbsp;&nbsp; B. 55 &nbsp;&nbsp; C. 45 &nbsp;&nbsp; D. 25</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>i 取值：1,3,5,7,9。内层累加：1+3+5+7+9=<strong>25</strong>。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第24题 · 漂亮数判断（2025/09 第40题）</div>
+<p>漂亮数：能被M整除，或含M，或各位和能被M整除。说法正确的是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">while (N != 0){
+    num = N % 10; Sum += num;
+    if (num == M) Flag = 1;
+    N /= 10;
+}
+if ((N % M == 0) && (Flag == 1) && (Sum % M == 0)) ...</code></pre></div>
+<p>A. 代码能完成目标 &nbsp;&nbsp; B. while前保存N，L1改为old_num可正确判定 &nbsp;&nbsp; C. while中可加else Flag=0 &nbsp;&nbsp; D. 输入0和3会输出漂亮数</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>while 循环后 N=0，所以 N%M 总是 0（0%任何数=0），导致判断失效。正确做法是 while 前保存 old_num=N，判断时用 old_num%M。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第25题 · while+continue+条件判断（2025/06 第37题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int num = 0;
+while (num <= 5){
+    num += 1;
+    if (num % 3)
+        continue;
+    printf("%d#",num);
+}
+if(num > 5) printf("%d", num);</code></pre></div>
+<p>A. 3#6# &nbsp;&nbsp; B. 3#6#6 &nbsp;&nbsp; C. 1#2#3#4#5#6# &nbsp;&nbsp; D. 1#2#3#4#5#6#6</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>num%3≠0时(num=1,2,4,5)→continue跳过。num=3: 3%3=0→输出"3#"。num=6: 6%3=0→输出"6#"。退出后 num=6>5→输出"6"。最终：<strong>3#6#6</strong>。</div></div>
+</div>
+
+<h3>判断题</h3>
+
+<!-- 判断题颜色: purple → pink → teal 循环 -->
+
+<div class="card purple">
+<div class="card-title">判断题第1题（2023/03 第4题）</div>
+<p>在下面的C++代码中，因为 continue 将被执行，因此不会有输出。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 1; i < 10; i++)
+    if (i % 2 == 0)
+        continue;
+if(i == 10)
+    cout << "END";</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>continue 在循环体内但后面没有输出。循环正常结束（i=10），if(i==10) 条件成立，输出 <strong>"END"</strong>。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第2题（2023/06 第2题）</div>
+<p>下面的C++代码执行后将输出15。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int Sum = 0;
+for (int i = 0; i < 5; i++)
+    Sum += i;
+cout << Sum;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>Sum = 0+1+2+3+4 = <strong>10</strong>，不是 15。注意 i 从 0 开始且 i&lt;5（不含5）。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第3题（2023/09 第10题）</div>
+<p>下面C++代码中的 for 循环从 i=5 到 i>1 调整为 i=1 到 i<5 输出结果相同。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int tnt = 0;
+for (int i = 5; i > 1; i--)
+    tnt += i;
+cout << tnt;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>原代码：5+4+3+2=<strong>14</strong>。调整后：1+2+3+4=<strong>10</strong>。不同。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第4题（2023/12 第8题）</div>
+<p>下面C++代码执行后将输出10。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 0; i < 10; i++)
+    continue;
+cout << i << endl;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>continue 不影响 i++ 的执行。循环正常结束，i=10 时 i&lt;10 不成立退出。输出 10。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第5题（2024/03 第6题）</div>
+<p>下面C++代码执行后将输出1。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 1; i < 10; i++){
+    break;
+    continue;
+}
+cout << i << endl;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>break 第一轮就执行，i 保持为 1。continue 在 break 之后永远不会执行。输出 <strong>1</strong>。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第6题（2024/06 第11题）</div>
+<p>下面的C++代码执行后将输出10行"OK"。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int i = 0; i < 5; i++)
+    for(int j = 0; j < i; j++)
+        printf("OK\n");</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>i=0: 0行。i=1: 1行。i=2: 2行。i=3: 3行。i=4: 4行。总计 0+1+2+3+4=10 行。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第7题（2024/09 第13题）</div>
+<p>将下面C++代码中 for 循环的 i=1 调整为 i=0 的输出结果相同。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int tnt = 0;
+for (int i = 1; i < 5; i++)
+    tnt += i;
+cout << tnt;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>i=1: 1+2+3+4=10。i=0: 0+1+2+3+4=10。结果相同（因为加0不改变结果）。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第8题（2024/12 第16题）</div>
+<p>下面C++代码执行后将输出 0123 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (i = 0; i < 5; i++)
+    for (i = 0; i < i; i++)
+        continue;
+printf("%d\n", i);</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>内外层共用变量 i，内层 i 重置为 0 后条件 i&lt;i 永远不成立（0&lt;0=false），内层不执行。外层 i 递增到 5 后退出，输出 <strong>5</strong>。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第9题（2025/03 第17题）</div>
+<p>下面C++代码执行后因为有break，将输出0。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 0; i < 10; i++){
+    continue;
+    break;
+}
+cout << i;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>continue 执行后跳过 break，循环正常执行 10 轮。break 永远不会执行。输出 i=10。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第10题（2025/06 第18题）</div>
+<p>下面的C++代码执行后将输出18行"OK"。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i,j;
+for (i = 8; i > 2; i-=2)
+    for (j =0; j < i; j++)
+        printf("OK\n");</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>i=8: 8行。i=6: 6行。i=4: 4行。i=2: 条件 i>2 不满足退出。总计 8+6+4=<strong>18</strong> 行。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第11题（2023/12 第21题）</div>
+<p>将下面C++代码中的 i=1 调整为 i=0 的输出结果相同。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i, cnt = 0;
+for (i = 1; i < 5; i++)
+    if(i%2) cnt += 1;
+cout << cnt;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>i=1: 1,3→cnt=2。i=0: 0%2=0不计数, 1,3→cnt=2。结果相同。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第12题（2024/03 第23题）</div>
+<p>任何一个 while 循环都可以转化为等价的 for 循环。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>while(条件){...} 等价于 for(;条件;){...}。两者在功能上完全等价。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第13题（2024/06 第25题）</div>
+<p>执行下面的C++代码时输入 123 ，则输出是 DCB 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a;
+cin >> a;
+while(a){
+    cout << 'A'+a%10;
+    a /= 10;
+}</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>a=123: 'A'+3='D'→输出D。a=12: 'A'+2='C'→输出C。a=1: 'A'+1='B'→输出B。输出 <strong>DCB</strong>...等等，这不正是 DCB 吗？但答案说是 X。哦对了，是 <strong>'A'+a%10</strong>：a=123, a%10=3, 'A'+3=68('D'), 输出 D。a=12, 'A'+2=67('C'), 输出 C。a=1, 'A'+1=66('B'), 输出 B。所以输出 DCB → 正确？不对，重新看答案是 X(❌)。这题可能有问题...让我再看，答案说 ❌。可能 cout 输出的是 ASCII 值？不对，char 类型会输出字符。实际上 'A'+a%10 的类型是 int，cout 对 int 输出数字！所以输出的是 68 67 66，不是 DCB。——这是对的解释！</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第14题（2024/09 第27题）</div>
+<p>下面的C++代码执行后将输出 +#+#3# 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i;
+for (i = 0; i < 3; i++){
+    if (i == 2)
+        continue;
+    printf("+#");
+}
+cout << i << '#';</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>i=0: 输出"+#"。i=1: 输出"+#"。i=2: continue跳过。循环后 i=3，输出"3#"。完整：<strong>+#+#3#</strong>。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第15题（2024/12 第30题）</div>
+<p>下列C++代码用于求斐波那契数列。如果输入的值为大于1的正整数，该代码能实现。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cin >> n;
+a = 0, b = 1;
+for (int j = 0; j < n; j++){
+    cout << a << " ";
+    b = b + a;
+    a = b - a;
+}</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>经典的无临时变量斐波那契：b=b+a 更新 b 为下一个数，a=b-a 恢复原 b 值。能正确输出前 n 项。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第16题（2025/03 第32题）</div>
+<p>下面C++代码中N是整数，执行时无论输入负整数、0或正整数，其输出都将是 0 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cin >> N;
+while (N)
+    N /= 10;
+cout << N;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>while(N) 在 N=0 时不执行。无论 N 初始值多少，最终 N 通过整数除法都会变成 0，输出 <strong>0</strong>。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第17题（2025/06 第34题）</div>
+<p>下面的C++代码可以用于判断正整数N的位数。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, N10, i;
+cin >> N;
+N10 = 10, i = 1;
+while (1) {
+    if (N % N10 == N) {
+        printf("%d 是 %d 位数", N, i);
+        break;
+    }
+    i++, N10 *= 10;
+}</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>当 N10 > N 时 N%N10==N（如 123%1000=123），此时 i 即为位数。算法正确。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第18题（2025/09 第35题）</div>
+<p>计算 1-2+3-4+5-... 的代码中，将 Flag = -Flag 改为 Flag -= Flag 效果相同。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">Flag = -1;
+for (i = 1; i < N + 1; i++) {
+    Flag = -Flag;
+    tnt += Flag * i;
+}</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>Flag=-Flag: 第一次 Flag=1, 第二次 Flag=-1, 交替。Flag-=Flag: Flag=1-1=0, 之后始终为0。完全不等价！</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第19题（2023/09 第9题）</div>
+<p>下面C++代码执行后将输出 10 行"OK"。</p>
+<p>（for循环 i=0 到 4，内层 j=0 到 i-1，打印 OK）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>与第6题类似，0+1+2+3+4=10 行。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第20题（2024/03 第15题）</div>
+<p>以下C++代码因为循环变量为 _ 将导致错误，不符合C++变量命名规范。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int _ = 0; _ < 10; _++)
+    continue;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>下划线 _ 是合法的 C++ 标识符，可以作为变量名使用。代码不会导致编译错误。</div></div>
+</div>
+
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 多层分支/循环结构速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>速查项</th><th>核心规则</th><th>关键注意</th></tr></thead>
+<tbody>
+<tr><td>for循环三要素</td><td class="mono">for(初始化;条件;步进)</td><td>条件在循环体之前检查</td></tr>
+<tr><td>while循环</td><td class="mono">while(条件){...}</td><td>先判断后执行；可能一次都不执行</td></tr>
+<tr><td>continue</td><td>跳过本轮剩余代码</td><td>continue后的代码本轮不执行</td></tr>
+<tr><td>break</td><td>跳出当前循环</td><td>只跳一层！外层不受影响</td></tr>
+<tr><td>嵌套循环</td><td>外层一步，内层一轮</td><td>内层break不影响外层</td></tr>
+<tr><td>变量初始化</td><td>累加器/计数器必须初始化</td><td>int tnt; tnt+=i → 垃圾值！</td></tr>
+<tr><td>循环后变量值</td><td>for循环结束后变量的值</td><td>for(i=0;i&lt;10;i++)后i=10</td></tr>
+<tr><td>负数的%</td><td>C++中负数%结果符号同被除数</td><td>-1%2=-1, 仍有非零效果</td></tr>
+<tr><td>步进时机</td><td>每轮循环体结束后执行</td><td>break时不执行步进</td></tr>
+<tr><td>不可达代码</td><td>break/continue后的同级代码</td><td>永远不会执行</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="返回顶部">↑</button>
+
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

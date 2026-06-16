@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 数据类型转换</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++二级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="../课件/01-计算机存储与网络.html">01 · 计算机存储与网络</a>
+    <a class="nav-link" href="../课件/02-程序设计语言的特点.html">02 · 程序设计语言的特点</a>
+    <a class="nav-link active" href="#hero-section">03 · 数据类型转换</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">本课目录</div>
+    <a class="nav-link" href="#step1">1. 生活引入</a>
+    <a class="nav-link" href="#step2">2. 核心概念</a>
+    <a class="nav-link" href="#step3">3. 代码详解</a>
+    <a class="nav-link" href="#step4">4. 手工模拟</a>
+    <a class="nav-link" href="#step5">5. 常见陷阱</a>
+    <a class="nav-link" href="#step6">6. 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;border:none;background:none;padding:0;margin-bottom:8px">GESP C++二级 · 数据类型转换</h1>
+  <p style="color:#94a3b8;font-size:16px;margin-bottom:20px">Type Conversion & ASCII — 数据类型转换与字符编码</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⚡ 4道选择题 + 12道判断题</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">📊 年均出题4~5道</span>
+    <span style="background:rgba(255,255,255,.08);padding:6px 16px;border-radius:20px;font-size:13px">⭐ 占总分约15%</span>
+  </div>
+</div>
+
+<!-- 第一步：生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 直观比喻</h2>
+
+<div class="card accent">
+<div class="card-title">🎯 场景比喻：自动挡 vs 手动挡的「自动适应」</div>
+<p>C++中的<strong>类型转换</strong>就像汽车的变速箱。你把 <span class="key-point">int</span>（整数）和 <span class="key-point">float</span>（浮点数）放在一起运算时，C++会自动把整数「升档」为浮点数再算——这是<strong>隐式类型转换</strong>。你也可以手动「挂挡」——用 <code class="mono">int()</code>、<code class="mono">float()</code>、<code class="mono">char()</code> 做<strong>强制类型转换</strong>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🔤 ASCII编码比喻：每个字符都有「身份证号」</div>
+<p>计算机只能存数字，那字母怎么办？答案是给每个字符分配一个<strong>唯一的数字编号</strong>——这就是 <strong>ASCII码</strong>。比如 <code class="mono">'A' = 65</code>，<code class="mono">'a' = 97</code>，<code class="mono">'0' = 48</code>。当你在C++中写 <code class="mono">'A' + 1</code>，实际计算的是 <code class="mono">65 + 1 = 66</code>（即字符 'B' 的ASCII码）。</p>
+</div>
+
+<!-- 第二步：核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<div class="card primary">
+<div class="card-title">🔵 C++ 基本数据类型</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类型</th><th>关键字</th><th>大小</th><th>范围</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td>整型</td><td><span class="key-point">int</span></td><td>4字节</td><td>约±21亿</td><td><code class="mono">int a = 10;</code></td></tr>
+<tr><td>单精度浮点</td><td><span class="key-point">float</span></td><td>4字节</td><td>约±3.4×10³⁸</td><td><code class="mono">float b = 3.5;</code></td></tr>
+<tr><td>双精度浮点</td><td><span class="key-point">double</span></td><td>8字节</td><td>约±1.7×10³⁰⁸</td><td><code class="mono">double c = 3.14;</code></td></tr>
+<tr><td>字符型</td><td><span class="key-point">char</span></td><td>1字节</td><td>-128~127</td><td><code class="mono">char ch = 'A';</code></td></tr>
+<tr><td>布尔型</td><td><span class="key-point">bool</span></td><td>1字节</td><td>true/false</td><td><code class="mono">bool flag = true;</code></td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>注意：</strong>C++中 <code class="mono">7.8 / 2</code> 的结果类型是 <code class="mono">double</code> 而非 <code class="mono">float</code>！小数默认字面量是 <code class="mono">double</code> 类型。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 类型转换的两种方式</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>转换方式</th><th>谁来做</th><th>特点</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><span class="key-point">隐式转换</span></td><td>编译器自动</td><td>安全、自动发生</td><td><code class="mono">int a=3; float b=3.5; a*b</code> → int转float</td></tr>
+<tr><td><span class="key-point">强制转换</span></td><td>程序员手动</td><td>可能丢失数据</td><td><code class="mono">int(3.14)</code> → 3（截断小数）</td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><strong>重要规则：</strong>不同类型运算时，C++会将「窄」类型自动向「宽」类型转换。int + float → float + float → float结果。但 <code class="mono">int = float</code> 赋值时，浮点会被<strong>截断</strong>（不是四舍五入！）。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 关键 ASCII 码速记</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>字符</th><th>ASCII值</th><th>记忆技巧</th></tr></thead>
+<tbody>
+<tr><td><code class="mono">'0'</code></td><td><span class="key-point">48</span></td><td>数字起点</td></tr>
+<tr><td><code class="mono">'A'</code></td><td><span class="key-point">65</span></td><td>大写字母起点</td></tr>
+<tr><td><code class="mono">'a'</code></td><td><span class="key-point">97</span></td><td>小写字母起点（比大写+32）</td></tr>
+<tr><td><code class="mono">' '</code></td><td>32</td><td>空格</td></tr>
+</tbody>
+</table>
+</div>
+<div class="formula-box">
+'a' - 'A' = 97 - 65 = 32 &nbsp;&nbsp;|&nbsp;&nbsp; 'Z' - 'A' = 90 - 65 = 25 &nbsp;&nbsp;|&nbsp;&nbsp; 'z' - 'A' = 122 - 65 = 57<br>
+int('9') = 57 （不是9！） &nbsp;&nbsp;|&nbsp;&nbsp; int('1') = 49 &nbsp;&nbsp;|&nbsp;&nbsp; char(65) = 'A'
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">🔵 布尔类型转换规则</div>
+<div class="formula-box">
+bool(0) = false &nbsp;&nbsp;|&nbsp;&nbsp; bool(非0) = true &nbsp;&nbsp;|&nbsp;&nbsp; <strong>bool(-1) = true</strong>（不是false！）<br>
+int(true) = 1 &nbsp;&nbsp;|&nbsp;&nbsp; int(false) = 0 &nbsp;&nbsp;|&nbsp;&nbsp; char 赋值浮点 → 截断为整数再转为字符
+</div>
+<p style="margin-top:8px"><strong>重点：</strong><code class="mono">bool()</code> 只认「零」和「非零」，<code class="mono">bool(-1)</code> 返回 <strong>true</strong>，不是 false！这是高频易错点。</p>
+</div>
+
+<!-- 第三步：代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<div class="card success">
+<div class="card-title">📝 隐式类型转换示例</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // 1. int 与 float 运算 → int 先转 float
+    int a = 3;
+    float b = 3.5;
+    a *= b;              // a = a * b → 3 * 3.5 = 10.5, 但a是int,截断为10
+    cout &lt;&lt; a &lt;&lt; endl;   // 输出: 10  ← 高频考点！
+
+    // 2. char 参与算术运算 → 转为ASCII值
+    cout &lt;&lt; ('5' + 4) &lt;&lt; endl;  // 输出: 57 (不是9!)
+    // '5'的ASCII=53, 53+4=57
+
+    // 3. 赋值时的转换
+    char ch = '1';
+    ch = 45.6;           // 浮点→char: 截断为45, '1'→45→'-'(?)
+    // 注意：不会编译报错！只是隐式转换
+
+    return 0;
+}</code></pre></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 强制类型转换示例</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 强制转换：类型(表达式)
+cout &lt;&lt; int(3.14) &lt;&lt; endl;       // 输出: 3 (截断小数)
+cout &lt;&lt; float(2022) &lt;&lt; endl;     // 输出: 2022
+cout &lt;&lt; float('2022') &lt;&lt; endl;   // 输出: 2022? 错!
+// float('2022') — '2022'是多字符常量，结果不是2022！
+
+// char与ASCII
+cout &lt;&lt; int('9') &lt;&lt; endl;        // 输出: 57 (不是9!)
+cout &lt;&lt; char(65) &lt;&lt; endl;        // 输出: A
+
+// bool转换
+cout &lt;&lt; bool(-1) &lt;&lt; endl;        // 输出: 1 (true)
+cout &lt;&lt; bool(0) &lt;&lt; endl;         // 输出: 0 (false)</code></pre></div>
+</div>
+
+<!-- 第四步：手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<div class="card flat">
+<div class="card-title">🔍 手算ASCII运算：'a' + 'b' 和 'a' - 'b'</div>
+<p>题目代码：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=9, b=27;
+a = 'a' + 'b';   // a = 97 + 98 = 195
+b = 'a' - 'b';   // b = 97 - 98 = -1
+a = a - b;       // a = 195 - (-1) = 196
+cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; endl;  // 输出: 196 -1</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>计算过程</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td><code class="mono">a=9, b=27</code></td><td>—</td><td>a=9, b=27</td></tr>
+<tr><td>第1行</td><td><code class="mono">a = 'a' + 'b'</code></td><td>97 + 98</td><td><strong>a=195</strong></td></tr>
+<tr><td>第2行</td><td><code class="mono">b = 'a' - 'b'</code></td><td>97 - 98</td><td><strong>b=-1</strong></td></tr>
+<tr><td>第3行</td><td><code class="mono">a = a - b</code></td><td>195 - (-1)</td><td><strong>a=196</strong></td></tr>
+<tr><td>输出</td><td><code class="mono">cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b</code></td><td>—</td><td><strong>196 -1</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card flat">
+<div class="card-title">🔍 手算布尔赋值：a=4, b = a==5</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a, b;
+a = 4;            // a = 4
+b = a == 5;       // a == 5 为 false → b = 0
+cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b;  // 输出: 4 0</code></pre></div>
+<p><strong>关键理解：</strong><code class="mono">b = a == 5</code> 中，先计算 <code class="mono">a == 5</code>（比较运算），结果是 <code class="mono">false</code>，然后 <code class="mono">false</code> 赋值给 int 类型 b → <strong>b = 0</strong>。a 本身不变，还是 4。</p>
+</div>
+
+<!-- 第五步：常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱1：int('9') ≠ 9！</div>
+<p><code class="mono">int('9')</code> 是把字符 '9' 转为其 ASCII 码值 <strong>57</strong>，而不是把字符串转为整数 9！<code class="mono">2 * int('9') * 2 = 2 * 57 * 2 = 228</code>，不是 <strong>36</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱2：bool(-1) = true，不是 false！</div>
+<p><code class="mono">bool()</code> 转换规则是：<strong>零 → false，非零 → true</strong>。-1 非零，所以 <code class="mono">bool(-1) = true</code>。不要被「负数 = 假」的直觉误导！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱3：int ch = '1'; cout &lt;&lt; int(ch) 输出 49，不是 1！</div>
+<p>变量 ch 是 int 类型，赋值 '1' 时发生隐式转换 → ch = 49（'1'的ASCII码）。然后 <code class="mono">int(ch)</code> 还是 49。输出 49，不是 1！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱4：7.8/2 的类型是 double，不是 float！</div>
+<p>C++中小数字面量（如 7.8）默认是 <strong>double</strong> 类型。7.8 / 2 → double / int → <strong>double</strong>。如果题目说「类型为 float」就是错的！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱5：运算符可以处理不同类型！</div>
+<p>C++中不同类型的数据可以通过<strong>隐式类型转换</strong>一起运算。例如 <code class="mono">int + float</code>，编译器会自动将 int 转为 float 再计算。说「运算符只能处理相同类型」是错的！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">⚠️ 陷阱6：float(2022) ≠ float('2022')</div>
+<p><code class="mono">float(2022)</code> = 2022.0（整数转浮点）。但 <code class="mono">float('2022')</code> 中的 <code class="mono">'2022'</code> 是多字符常量，其值由实现定义，结果<strong>不是 2022</strong>！</p>
+</div>
+
+<!-- 第六步：真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>📝 选择题</h3>
+
+<!-- 第1题 purple -->
+<div class="card purple">
+<div class="card-title">第1题 · int与float的*=运算（2024/06 第1题）</div>
+<p>下面C++代码执行后的输出是( )。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=3;
+float b = 3.5;
+cout &lt;&lt; (a *= b);</code></pre></div>
+<p>A. 3 &nbsp;&nbsp; B. 3.5 &nbsp;&nbsp; C. 10 &nbsp;&nbsp; D. 11</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（10）</strong><br>
+<code class="mono">a *= b</code> 等价于 <code class="mono">a = a * b</code>。a是int，先转为float计算：3 × 3.5 = 10.5。结果赋回int类型的a，小数被<strong>截断</strong>（不是四舍五入）→ a = 10。输出 10。
+</div></div>
+</div>
+
+<!-- 第2题 pink -->
+<div class="card pink">
+<div class="card-title">第2题 · 变量命名规则（2023/12 第2题）</div>
+<p>下面的C++代码用于输入姓名，然后输出姓名，正确的说法是( )。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">string XingMing;
+cout &lt;&lt; "请输入您的姓名：";
+cin &gt;&gt; XingMing;
+cout &lt;&lt; XingMing;</code></pre></div>
+<p>A. XingMing 是汉语拼音，不能作为变量名称<br>
+B. 可以将 XingMing 改为 Xing Ming<br>
+C. 可以将 XingMing 改为 xingming<br>
+D. 可以将 XingMing 改为 Xing-Ming</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C（改为 xingming）</strong><br>
+A错：拼音可以作为变量名，C++允许字母和下划线。B错：变量名中不能有空格。C对：<code class="mono">xingming</code>（全小写）是合法的变量名。D错：变量名中不能用连字符 <code class="mono">-</code>（会被解读为减号）。
+</div></div>
+</div>
+
+<!-- 第3题 teal -->
+<div class="card teal">
+<div class="card-title">第3题 · char参与算术运算（2024/12 第3题）</div>
+<p>下面C++代码执行，其输出是( )。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=9, b=27;
+a = 'a' + 'b';
+b = 'a' - 'b';
+a = a - b;
+cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b &lt;&lt; endl;</code></pre></div>
+<p>A. 196 -1 &nbsp;&nbsp; B. 27 9 &nbsp;&nbsp; C. 98 97 &nbsp;&nbsp; D. 不确定</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A（196 -1）</strong><br>
+'a'=97, 'b'=98。a = 97+98 = <strong>195</strong>；b = 97-98 = <strong>-1</strong>；a = 195-(-1) = <strong>196</strong>。输出 196 -1。
+</div></div>
+</div>
+
+<!-- 第4题 indigo -->
+<div class="card indigo">
+<div class="card-title">第4题 · printf格式化输出（2025/03 第4题）</div>
+<p>某同学执行C++代码时 <code class="mono">printf("%g\n", (3 + 3.1415926535));</code> 输出 6.14159，其原因最可能是( )。</p>
+<p>A. C++中整数和浮点数相加时，整数会被转换为浮点数，而某些十进制小数无法精确表示为二进制小数，从而产生某些舍入误差。<br>
+B. C++的 printf 函数在输出浮点数时根据格式有默认小数点位数，因此输出了较少的位数。<br>
+C. 3.1415926535 是一个无限循环小数，在计算机中无法精确表示。<br>
+D. 由于计算机CPU的运算错误导致。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+<code class="mono">printf("%g")</code> 格式会根据数值大小自动选择 <code class="mono">%f</code> 或 <code class="mono">%e</code> 格式，并有<strong>默认的有效数字位数</strong>（通常是6位）。所以 6.1415926535 被显示为 6.14159（6位有效数字）。这不是精度误差，而是<strong>格式控制的默认行为</strong>。
+</div></div>
+</div>
+
+<h3>📝 判断题</h3>
+
+<!-- 判断题第1题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第1题 · char赋值浮点不报错（2024/09 第1题）</div>
+<p>下面C++代码编译时将报错，因为字符变量 a 被赋值了浮点值。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">char a = '1';
+a = 45.6;
+cout &lt;&lt; a;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<strong>不会编译报错！</strong>C++会进行<strong>隐式类型转换</strong>：45.6 先截断为整数 45，然后赋给 char 变量 a（对应ASCII 45 的字符 '-'）。只有窄化转换在某些编译器中产生 warning，但不是 error。
+</div></div>
+</div>
+
+<!-- 判断题第2题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第2题 · 链式比较（2024/06 第2题）</div>
+<p>C++语句 <code class="mono">cout &lt;&lt; ((10 &lt;= N &lt;= 12)? "true":"false")</code> 中，假设整型变量N为12，则其输出为 true。原因是执行 10 &lt;= N 后其值为 true，true 与 12 相比仍然是 true。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+C++中 <code class="mono">10 &lt;= N &lt;= 12</code> 不是数学意义上的「N在10到12之间」。它从左到右计算：(10 &lt;= 12) → true → true 转为整数 1 → (1 &lt;= 12) → true。所以输出 "true"。这个解释完全正确！
+</div></div>
+</div>
+
+<!-- 判断题第3题 teal -->
+<div class="card teal">
+<div class="card-title">判断题第3题 · bool(-1) 返回 false？（2023/12 第3题）</div>
+<p>bool() 函数用于将给定参数或表达式转换为布尔类型。语句 bool(-1) 返回的是 false 值。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+bool() 转换规则是：<strong>零 → false，非零 → true</strong>。-1 是非零，所以 <code class="mono">bool(-1) = true</code>。只有 <code class="mono">bool(0)</code> 才返回 false。
+</div></div>
+</div>
+
+<!-- 判断题第4题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第4题 · 运算符必须同类型？（2023/09 第4题）</div>
+<p>在C++代码中，运算符只能处理相同的数据类型，不同类型之间必须转换为相同的数据类型。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+C++支持<strong>隐式类型转换</strong>，不同类型可以一起运算。例如 <code class="mono">int + float</code>，编译器会自动将 int 提升为 float 再计算。不需要程序员手动转换。说「只能处理相同类型」是错误的。
+</div></div>
+</div>
+
+<!-- 判断题第5题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第5题 · float(2022) 与 float('2022')（2024/12 第5题）</div>
+<p>C++中 <code class="mono">cout &lt;&lt; float(2022)</code> 与 <code class="mono">cout &lt;&lt; float('2022')</code> 运行后的输出结果均为2022。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<code class="mono">float(2022)</code> = 2022.0 ✓。但 <code class="mono">float('2022')</code> 中 <code class="mono">'2022'</code> 是<strong>多字符字面量</strong>（由4个字符组成），它的整数值由实现定义，并非2022。转换为float后也不是2022。
+</div></div>
+</div>
+
+<!-- 判断题第6题 teal -->
+<div class="card teal">
+<div class="card-title">判断题第6题 · 2*int('9')*2 = 36？（2023/06 第6题）</div>
+<p>C++表达式 <code class="mono">2*int('9')*2</code> 的值为36。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<code class="mono">int('9')</code> = 57（'9'的ASCII码），不是 9！所以 <code class="mono">2 * 57 * 2 = 228</code>，不是 36。这是最高频的陷阱之一：char转int得到的是ASCII码值而非数字值。
+</div></div>
+</div>
+
+<!-- 判断题第7题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第7题 · 7.8/2 的类型（2024/09 第7题）</div>
+<p>C++表达式 <code class="mono">7.8 / 2</code> 的值为 3.9，类型为 float。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+值是 3.9 没错，但类型是 <strong>double</strong>，不是 float！C++中小数字面量（如 7.8）默认是 double 类型。7.8(double) / 2(int) → double / double → double。float 类型需要显式标注：<code class="mono">7.8f</code>。
+</div></div>
+</div>
+
+<!-- 判断题第8题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第8题 · int ch='1'; cout &lt;&lt; int(ch)（2023/03 第8题）</div>
+<p>定义C++的 int 类型的变量 ch，而且值为 '1'，则语句 <code class="mono">cout &lt;&lt; int(ch);</code> 的输出为 1。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+<code class="mono">int ch = '1'</code> → ch = 49（'1'的ASCII码）。<code class="mono">int(ch)</code> = 49。输出 <strong>49</strong>，不是 1！将字符数字转为对应整数值的公式是 <code class="mono">ch - '0'</code>（49 - 48 = 1）。
+</div></div>
+</div>
+
+<!-- 判断题第9题 teal -->
+<div class="card teal">
+<div class="card-title">判断题第9题 · N/100 截断（2024/12 第9题）</div>
+<p>在C++代码中，假设N为正整数且大于100，则 <code class="mono">N / 100</code> 将舍弃个位和十位，如N为1234则 <code class="mono">cout &lt;&lt; (N / 100)</code> 将输出 12。如果N小于100，则其值为 0。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+C++中整数除法 <strong>截断小数部分</strong>。1234 / 100 = 12（截断34）。N &lt; 100时，例如 99 / 100 = 0。这个规律可以推广：N / 10 舍弃个位，N / 100 舍弃个位和十位，以此类推。
+</div></div>
+</div>
+
+<!-- 判断题第10题 purple -->
+<div class="card purple">
+<div class="card-title">判断题第10题 · 比较结果赋给int（2025/03 第10题）</div>
+<p>下面的C++代码执行后，其输出是 4 0。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a,b;
+a = 4;
+b = a == 5;
+cout &lt;&lt; a &lt;&lt; ' ' &lt;&lt; b;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：✅ 正确</strong><br>
+<code class="mono">a == 5</code> 是 false → 赋给 int 类型 b → b = 0。a 仍为 4。输出 <strong>4 0</strong>。注意：<code class="mono">b = a == 5</code> 不会改变 a 的值，== 是比较运算符不是赋值运算符。
+</div></div>
+</div>
+
+<!-- 判断题第11题 pink -->
+<div class="card pink">
+<div class="card-title">判断题第11题 · ASCII比较 ('Z'-'A') < ('z'-'A')（2024/06 第11题）</div>
+<p>C++代码中对表达式 <code class="mono">('Z' - 'A') &lt; ('z' - 'A')</code> 的结果输出为 0。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：❌ 错误</strong><br>
+'Z'-'A' = 90 - 65 = <strong>25</strong>；'z'-'A' = 122 - 65 = <strong>57</strong>。25 &lt; 57 = <strong>true</strong>，输出 <strong>1</strong>（不是 0）。注意 'z' 和 'Z' 是不同的字符，ASCII码差 32！
+</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 数据类型转换 · 速查表</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>考点</th><th>核心要点</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr><td><strong>隐式转换</strong></td><td>窄→宽自动转换（int→float）</td><td>赋值时可能截断（10.5→10）</td></tr>
+<tr><td><strong>强制转换</strong></td><td><code class="mono">int(3.14)</code>→3（截断非四舍五入）</td><td><code class="mono">int('9')=57</code> 不是9！</td></tr>
+<tr><td><strong>ASCII '0'</strong></td><td>48</td><td>和数字0不一样</td></tr>
+<tr><td><strong>ASCII 'A'</strong></td><td>65</td><td>'Z'=90, 'Z'-'A'=25</td></tr>
+<tr><td><strong>ASCII 'a'</strong></td><td>97</td><td>'z'=122, 'z'-'A'=57</td></tr>
+<tr><td><strong>bool转换</strong></td><td>0→false，非0→true</td><td>bool(-1)=true 不是false！</td></tr>
+<tr><td><strong>int÷int</strong></td><td>结果=int（截断）</td><td>99/100=0, N/10舍弃个位</td></tr>
+<tr><td><strong>小数类型</strong></td><td>默认double</td><td>7.8/2是double不是float</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="回到顶部">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+
+document.querySelector('.back-to-top').addEventListener('click', () => {
+  window.scrollTo({top: 0, behavior: 'smooth'});
+});
+</script>
+</body>
+</html>

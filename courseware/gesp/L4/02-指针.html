@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++四级 · 指针</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05); --shadow-md: 0 4px 12px rgba(0,0,0,.08); --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+  nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+  nav.sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  main.main-content{margin-left:0;padding-top:10px}
+  .content-wrapper{padding:24px 20px 60px}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.warning-box p:last-child{margin-bottom:0}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span class="icon">📘</span>
+    <span>GESP C++四级 · 第2章</span>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">教学内容</div>
+    <a class="nav-link active" href="#hero-section">章节概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：语法详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,var(--primary) 0%,transparent 70%);
+  opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;
+  background:radial-gradient(circle,var(--accent) 0%,transparent 70%);
+  opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:2.2rem;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">GESP C++ 四级 · 指针</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 24px">Pointers / C++最强大的武器</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(79,110,247,.3)">12道选择题 + 7道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(245,158,11,.25)">年均出题 10~14道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(16,185,129,.25)">占总分约 30%</span>
+</div></div>
+
+<!-- ===== 第一步：生活引入 ===== -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 指针是什么？</h2>
+
+<div class="card accent">
+<div class="card-title">快递柜与取件码</div>
+<p>你想把一份文件交给朋友，有两个办法：</p>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>复印一份给他（值传递）</strong>—— 他改的是复印件，你的原件不受影响</li>
+  <li><strong>告诉他文件在哪个快递柜、取件码是多少（指针）</strong>—— 他可以直接去开柜、修改原件</li>
+</ul>
+<p style="margin-top:8px"><strong>指针就是「存放地址的变量」</strong>—— 它不存数据本身，而是存数据放在哪里。</p>
+</div>
+
+<div class="highlight-box yellow">
+<strong>核心直觉：</strong>指针 = 一个变量，存的是另一个变量的「门牌号」。<br>
+<span class="key-point">int* p = &amp;a;</span> → p 里面存的是 a 的地址，通过 *p 可以开门进去访问/修改 a。
+</div>
+
+<div class="card danger">
+<div class="card-title">指针是四级考试中出题量最大的章节</div>
+<p>选择题约<strong>12道</strong> + 判断题约<strong>7道</strong>，占总分约<strong>30%</strong>。</p>
+<p style="margin-top:6px">必须掌握：指针定义/初始化、&amp;取地址/*解引用、指针与数组、指针运算、nullptr/NULL、指针与二维数组地址、引用传递、指针接力。</p>
+</div>
+
+<div class="card primary">
+<div class="card-title">本课内容总览</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>指针定义与初始化</strong>：int* p = &amp;a;</li>
+  <li><strong>取地址 &amp; 与解引用 *</strong>：一对互逆操作</li>
+  <li><strong>指针与数组</strong>：数组名 = 首地址，p = arr</li>
+  <li><strong>指针运算</strong>：p++ 不是+1而是+sizeof(类型)</li>
+  <li><strong>指针接力</strong>：p1 = p2，指向同一块内存</li>
+  <li><strong>指针与二维数组地址</strong>：行主序地址计算</li>
+</ul>
+</div>
+
+<!-- ===== 第二步：核心概念 ===== -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<div class="card primary">
+<div class="card-title">指针的定义与初始化</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 10;       // 普通变量 a，值为 10
+int* p = &amp;a;      // 指针 p，存的是 a 的地址
+
+cout &lt;&lt; a;       // 输出 10
+cout &lt;&lt; &amp;a;      // 输出 a 的地址（如 0x7ffee5820）
+cout &lt;&lt; p;       // 输出 p 中存的地址（同上）
+cout &lt;&lt; *p;      // 解引用：输出 a 的值 → 10</code></pre>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">&amp; 和 * 互逆关系</div>
+<table>
+<thead><tr><th>操作符</th><th>名称</th><th>作用</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><strong>&amp;</strong></td><td>取地址</td><td>获取变量的内存地址</td><td><code>p = &amp;a;</code> → p 指向 a</td></tr>
+<tr><td><strong>*</strong></td><td>解引用</td><td>通过地址访问该处的值</td><td><code>*p = 20;</code> → 等同于 a = 20</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card success">
+<div class="card-title">指针与数组的特殊关系</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>数组名</strong>在大多数情况下会被转换为<strong>首元素地址</strong></li>
+  <li><span class="key-point">int arr[3] = {1,2,3}; int* p = arr;</span> → p 指向 arr[0]</li>
+  <li><span class="key-point">*(p + i)</span> 等价于 <span class="key-point">p[i]</span>，也等价于 <span class="key-point">arr[i]</span></li>
+  <li><strong>但数组名不是真指针！</strong>它不能做 arr++ 操作（是常量）</li>
+</ul>
+</div>
+
+<div class="card indigo">
+<div class="card-title">指针运算规则</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><span class="key-point">p++</span> / <span class="key-point">p + 1</span>：地址<strong>不是加 1</strong>，而是加 <code>sizeof(类型)</code> 字节</li>
+  <li>int* p: p + 1 → 地址 + 4 字节</li>
+  <li>double* p: p + 1 → 地址 + 8 字节</li>
+  <li>char* p: p + 1 → 地址 + 1 字节</li>
+  <li><strong>指针差值</strong>：<span class="key-point">p2 - p1</span> 返回的是<strong>元素个数</strong>，不是字节数</li>
+</ul>
+</div>
+
+<div class="card purple">
+<div class="card-title">指针接力（指针赋值）</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 5;
+int* p1 = &amp;a;    // p1 指向 a
+int* p2 = p1;     // p2 也指向 a（拷贝的是地址）
+*p2 = 10;         // 通过 p2 修改 a
+
+// 此时 a = 10, *p1 = 10, *p2 = 10</code></pre>
+</div>
+<p style="font-size:14px;color:var(--text-secondary);margin-top:6px">指针赋值 p2 = p1 不是创建新的指向关系，而是让 p2 指向 p1 所指向的<strong>同一块内存</strong>。</p>
+</div>
+
+<div class="card teal">
+<div class="card-title">二维数组的地址计算</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li>二维数组<strong>按行优先</strong>连续存储</li>
+  <li><span class="key-point">int arr[2][3];</span>：6个int连续存储（24字节）</li>
+  <li><span class="key-point">arr</span> 指向第0行（首地址），<span class="key-point">arr+1</span> 指向第1行</li>
+  <li><span class="key-point">arr+1</span> 的地址增量 = 3 × sizeof(int) = 12 字节</li>
+  <li><span class="key-point">&amp;arr[1][1]</span> = 首地址 + (1×3 + 1)×4 = 首地址 + 16 字节</li>
+</ul>
+</div>
+
+<div class="card orange">
+<div class="card-title">nullptr 与 NULL</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><span class="key-point">NULL</span>：宏定义，通常为 0</li>
+  <li><span class="key-point">nullptr</span>：C++11 引入的空指针字面量</li>
+  <li><span class="key-point">cout &lt;&lt; (int*)NULL;</span> 通常输出 0</li>
+  <li><strong>未初始化的指针</strong>是野指针，解引用会导致未定义行为</li>
+  <li>指针变量本身也是变量，在内存中<strong>占用空间</strong>（通常8字节/64位系统）</li>
+</ul>
+</div>
+
+<!-- ===== 第三步：语法详解 ===== -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：语法详解</h2>
+
+<div class="card primary">
+<div class="card-title">通过指针修改变量</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 10;
+int* p = &amp;a;
+*p = 20;       // 等价于 a = 20
+
+int x = 5;
+int* px = &amp;x;
+*px = *px + 3; // x 变成 8</code></pre>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">指针与一维数组</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[3] = {1, 2, 3};
+int* p = arr;    // p 指向 arr[0]
+p++;             // p 指向 arr[1]（地址+4字节）
+cout &lt;&lt; *p;     // 输出 2
+
+// 指针偏移访问
+int* p2 = &amp;arr[2];     // p2 指向 arr[2]
+*p2 = arr[1];          // arr[2] = arr[1] = 2
+// 数组变为 {1, 2, 2}</code></pre>
+</div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">指针作为函数参数（指针传递）</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 值传递：不修改实参
+void increaseA(int x) { x++; }
+
+// 指针传递：修改实参
+void increaseB(int* p) { (*p)++; }
+
+int a = 5;
+increaseA(a);      // a 仍是 5
+increaseB(&amp;a);     // a 变成 6</code></pre>
+</div>
+</div>
+
+<div class="card purple">
+<div class="card-title">引用传递 vs 指针传递调用对比</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int f(int &amp;x) { x += 3; return x; }
+
+int a = 3;
+f(a);     // 正确：引用传递，a 变为 6
+// f(&amp;a);  错误：不能传地址给引用参数
+// f(*a);   错误：*a 对 int 类型无意义</code></pre>
+</div>
+</div>
+
+<div class="card teal">
+<div class="card-title">指针与二维数组地址计算</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// int 占4字节，int[2][3] 排列为：
+// [0][0] [0][1] [0][2] [1][0] [1][1] [1][2]
+// 地址递增：+0, +4, +8, +12, +16, +20
+
+int arr[2][3] = {{0,1,2}, {3,4,5}};
+// arr = 首地址 = &amp;arr[0][0]
+// arr + 1 = 首地址 + 12字节（一行）
+// &amp;arr[1][1] = 首地址 + (1×3+1)×4 = 首地址 + 16</code></pre>
+</div>
+</div>
+
+<!-- ===== 第四步：手工模拟 ===== -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<div class="card primary">
+<div class="card-title">模拟1：指针解引用修改变量</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 20;
+int* p = &amp;x;
+*p = *p + 2;
+
+// 推演：
+// 初始: x=20, p=&amp;x (p指向x)
+// *p = *p + 2 → 取x的值(20) + 2 = 22
+// x = 22, *p = 22
+// 结果：x = 22, *p = 22</code></pre>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">模拟2：指针偏移与数组</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[3] = {24, 9, 7};
+int* p = arr;    // p → arr[0] = 24
+p++;             // p → arr[1] = 9
+cout &lt;&lt; *p;     // 输出 9</code></pre>
+</div>
+</div>
+
+<div class="card purple">
+<div class="card-title">模拟3：指针接力</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 5;
+int* p1 = &amp;a;    // p1 → a (5)
+int* p2 = p1;     // p2 → a (5)（复制地址）
+*p2 = 10;         // a = 10
+
+// 结果：a = 10, *p1 = 10, *p2 = 10</code></pre>
+</div>
+</div>
+
+<div class="card teal">
+<div class="card-title">模拟4：二维数组地址推演</div>
+<table>
+<thead><tr><th>元素</th><th>偏移量</th><th>地址(假设base=0x1000)</th></tr></thead>
+<tbody>
+<tr><td>arr[0][0]</td><td>0 字节</td><td>0x1000</td></tr>
+<tr><td>arr[0][1]</td><td>4 字节</td><td>0x1004</td></tr>
+<tr><td>arr[0][2]</td><td>8 字节</td><td>0x1008</td></tr>
+<tr><td>arr[1][0]</td><td>12 字节</td><td>0x100C</td></tr>
+<tr><td>arr[1][1]</td><td>16 字节</td><td>0x1010</td></tr>
+<tr><td>arr[1][2]</td><td>20 字节</td><td>0x1014</td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px;font-size:13px;color:var(--text-secondary)">int arr[2][3]：每行3个int(12字节)，arr+1 地址增量12字节。</p>
+</div>
+
+<div class="card orange">
+<div class="card-title">模拟5：三种传递方式效果对比</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void byValue(int x)     { x = 100; }     // 值传递
+void byRef(int&amp; x)      { x = 200; }     // 引用传递
+void byPointer(int* x)  { *x = 300; }    // 指针传递
+
+int a = 1, b = 2, c = 3;
+byValue(a);          // a 仍是 1（修改副本）
+byRef(b);            // b 变成 200（直接修改）
+byPointer(&amp;c);       // c 变成 300（通过地址修改）
+
+// 结果：a=1, b=200, c=300</code></pre>
+</div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">模拟6：指针差值（不是字节差！）</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[5] = {1, 2, 3, 4, 5};
+int* p1 = arr;        // p1 → arr[0]
+int* p2 = arr + 2;    // p2 → arr[2]
+cout &lt;&lt; p2 - p1;     // 输出 2（相差 2 个元素）
+
+// 注意：不是 8 字节！是指针差 = 元素个数
+// (p2地址 - p1地址) / sizeof(int) = 8/4 = 2</code></pre>
+</div>
+</div>
+
+<!-- ===== 第五步：常见陷阱 ===== -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">陷阱1：未初始化的指针不能解引用</div>
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int* ptr;      // 野指针，指向随机地址
+*ptr = 10;     // 未定义行为！可能崩溃</code></pre>
+</div>
+必须先用 &amp; 获取合法地址再使用。
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱2：不能把整数直接赋给指针</div>
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 5;
+int* p = a;    // 错误！a 是整数不是地址
+int* p = &amp;a;   // 正确：&amp;a 才是地址</code></pre>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱3：指针运算的步长是 sizeof(类型)</div>
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 2;
+int* p = &amp;x;
+p++;  // 地址 + 4（int 占 4 字节），不是 +1！
+
+// 如果 &amp;x = 0x6ffe14，则 p++ 后 = 0x6ffe18</code></pre>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱4：数组名不是可修改的指针</div>
+数组名是一个<strong>指针常量</strong>，不能做自增操作。<br>
+<span class="key-point">int arr[5]; arr = arr + 1;</span> 编译错误！<br>
+但可以 <span class="key-point">int* p = arr; p++;</span> 正确。
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱5：指针变量本身也占内存</div>
+指针变量存储的是地址值，它本身是一个变量，<strong>占用内存空间</strong>（64位系统通常8字节）。<br>
+指针大小是<strong>固定的</strong>（取决于系统位数），与其指向的数据类型大小<strong>无关</strong>。
+</div>
+
+<!-- ===== 第六步：真题实战 ===== -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>选择题（共12题）</h3>
+
+<!-- Q1 -->
+<div class="card purple">
+<div class="card-title">第1题 · 指针声明语法（2023/06 第3题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">声明一个指向整型变量的指针的正确语法是？</p>
+<p style="font-size:13px">
+A. <code>int* ptr;</code> &nbsp;&nbsp; B. <code>*int ptr;</code> &nbsp;&nbsp; C. <code>int ptr*;</code> &nbsp;&nbsp; D. <code>ptr int;</code>
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>
+<strong>解析：</strong>星号紧跟在类型名后：<code>int* ptr;</code> 声明 ptr 是指向 int 的指针。</div></div>
+</div>
+
+<!-- Q2 -->
+<div class="card pink">
+<div class="card-title">第2题 · 指针与地址（2023/09 第4题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">如果 n 为 int 类型变量，<code>int *p = &amp;n;</code>，则下列说法正确的是？</p>
+<p style="font-size:13px">
+A. 指针变量 p 的值与变量 n 相同<br>
+B. 指针变量 p 的值与变量 n 的地址相同<br>
+C. 指针变量 p 指向的值为 'n'<br>
+D. 指针变量 p 指向的值与变量 n 的地址相同
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>
+<strong>解析：</strong>p 存储的是 &amp;n（即 n 的地址），所以 p 的值和 n 的地址相同。</div></div>
+</div>
+
+<!-- Q3 -->
+<div class="card teal">
+<div class="card-title">第3题 · 指针修改数组（2023/09 第9题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">数组 <code>int a[5] = {1,2,3,4,5};</code>，<code>int *p = &amp;a[2];</code>，执行 <code>*p = a[1];</code> 后数组变为？</p>
+<p style="font-size:13px">
+A. {1, 2, 2, 4, 5} &nbsp;&nbsp; B. {1, 3, 3, 4, 5} &nbsp;&nbsp; C. {1, 2, 3, 3, 5} &nbsp;&nbsp; D. {1, 2, 4, 4, 5}
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>
+<strong>解析：</strong>p 指向 a[2]=3，*p = a[1] 即 a[2]=2。数组变为 {1,2,2,4,5}。</div></div>
+</div>
+
+<!-- Q4 -->
+<div class="card indigo">
+<div class="card-title">第4题 · 指针偏移访问数组（2023/09 第12题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">下面C++代码执行后输出是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[3]={1,2,3}; int *p=NULL; p=arr; p++; cout&lt;&lt;*p&lt;&lt;endl;</code></pre>
+</div>
+<p style="font-size:13px">A. 1,2,3 &nbsp;&nbsp; B. 1 &nbsp;&nbsp; C. 2 &nbsp;&nbsp; D. 3</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>
+<strong>解析：</strong>p 指向 arr[0]，p++ 后指向 arr[1]=2。</div></div>
+</div>
+
+<!-- Q5 -->
+<div class="card orange">
+<div class="card-title">第5题 · 指针++后地址（2023/12 第6题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">如果变量x的地址是0x6ffe14，下面代码输出的是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int *p=NULL; int x=2; p=&amp;x; p++; cout&lt;&lt;p&lt;&lt;endl;</code></pre>
+</div>
+<p style="font-size:13px">A. 0x6ffe11 &nbsp;&nbsp; B. 0x6ffe14 &nbsp;&nbsp; C. 0x6ffe18 &nbsp;&nbsp; D. 0x6ffe15</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>
+<strong>解析：</strong>int 占 4 字节，p++ 地址 +4。0x6ffe14 + 4 = 0x6ffe18。</div></div>
+</div>
+
+<!-- Q6 -->
+<div class="card purple">
+<div class="card-title">第6题 · 二维数组指针解引用（2024/03 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">下面代码中，<code>*(*(arr + 1) + 2)</code> 的值是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[2][3] = {{1, 2, 3}, {4, 5, 6}};</code></pre>
+</div>
+<p style="font-size:13px">A. 2 &nbsp;&nbsp; B. 5 &nbsp;&nbsp; C. 4 &nbsp;&nbsp; D. 6</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>
+<strong>解析：</strong>arr+1 指向第二行，*(arr+1)+2 指向第二行第三个元素 = arr[1][2] = 6。</div></div>
+</div>
+
+<!-- Q7 -->
+<div class="card pink">
+<div class="card-title">第7题 · 混合传递方式（2024/03 第6题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">执行下述代码，将输出？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void swap(int a, int &amp;b) { int temp = a; a = b; b = temp; }
+int main() { int x = 1, y = 2; swap(x, y); cout &lt;&lt; x &lt;&lt; y; }</code></pre>
+</div>
+<p style="font-size:13px">A. 12 &nbsp;&nbsp; B. 21 &nbsp;&nbsp; C. 22 &nbsp;&nbsp; D. 11</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>
+<strong>解析：</strong>a 值传递（x不变），b 引用传递（y被修改为temp=1）。结果 x=1, y=1 → 输出11。</div></div>
+</div>
+
+<!-- Q8 -->
+<div class="card teal">
+<div class="card-title">第8题 · 值传递vs指针传递（2024/06 第4题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">下面程序运行的结果是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void increaseA(int x) { x++; }
+void increaseB(int* p) { (*p)++; }
+int main() { int a = 5; increaseA(a); cout &lt;&lt; a &lt;&lt; " "; increaseB(&amp;a); cout &lt;&lt; a; }</code></pre>
+</div>
+<p style="font-size:13px">A. 6 7 &nbsp;&nbsp; B. 6 6 &nbsp;&nbsp; C. 5 6 &nbsp;&nbsp; D. 5 5</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>
+<strong>解析：</strong>increaseA值传递不修改a(5)，increaseB指针传递修改a→6。输出 5 6。</div></div>
+</div>
+
+<!-- Q9 -->
+<div class="card indigo">
+<div class="card-title">第9题 · 指针赋值（2024/06 第5题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">运行下面代码片段的结果是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 20; int y = 24; int* p = &amp;x; int* q = &amp;y; p = q;</code></pre>
+</div>
+<p style="font-size:13px">A. 将x赋值为24 &nbsp;&nbsp; B. 将y赋值为20 &nbsp;&nbsp; C. 将q指向x的地址 &nbsp;&nbsp; D. 将p指向y的地址</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>
+<strong>解析：</strong>p = q 是指针赋值，让 p 也指向 y。x 和 y 的值都不变。</div></div>
+</div>
+
+<!-- Q10 -->
+<div class="card orange">
+<div class="card-title">第10题 · 指针接力（2024/06 第15题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">小杨的指针接力程序执行完后，a、*p1 和 *p2 的值分别是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 5; int* p1 = &amp;a; int* p2 = p1; *p2 = 10;</code></pre>
+</div>
+<p style="font-size:13px">A. 5 10 10 &nbsp;&nbsp; B. 5 10 15 &nbsp;&nbsp; C. 10 10 10 &nbsp;&nbsp; D. 5 5 10</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br>
+<strong>解析：</strong>p1和p2都指向a，*p2=10 即 a=10。a=10, *p1=10, *p2=10。</div></div>
+</div>
+
+<!-- Q11 -->
+<div class="card purple">
+<div class="card-title">第11题 · 指针差值（2024/09 第5题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)"><code>p2 - p1</code> 输出结果是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[5]; int *p1 = arr; int *p2 = arr + 3;
+cout &lt;&lt; p2 - p1;</code></pre>
+</div>
+<p style="font-size:13px">A. 12 &nbsp;&nbsp; B. 3 &nbsp;&nbsp; C. 字节数 &nbsp;&nbsp; D. 随机值</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B（输出 3）</strong><br>
+<strong>解析：</strong>指针相减返回的是<strong>元素个数</strong>，不是字节数。p2=arr+3, p1=arr，p2-p1=3 个元素。</div></div>
+</div>
+
+<!-- Q12 -->
+<div class="card pink">
+<div class="card-title">第12题 · 二维数组元素地址（2024/12 第7题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">给定 <code>int array[2][3]</code>，第一个元素地址为 0x7ffee4065820，则 <code>&amp;array[1][1]</code> 为？（int 32位）</p>
+<p style="font-size:13px">A. 0x7ffee4065824 &nbsp;&nbsp; B. 0x7ffee4065828 &nbsp;&nbsp; C. 0x7ffee406582c &nbsp;&nbsp; D. 0x7ffee4065830</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>
+<strong>解析：</strong>array[1][1] 是第 1×3+1 = 4 个元素（从0开始），偏移 = 4×4 = 16 字节 = 0x10。0x7ffee4065820+0x10=0x7ffee4065830。</div></div>
+</div>
+
+<!-- 判断题 -->
+<h3>判断题（共7题）</h3>
+
+<!-- T1 -->
+<div class="card purple">
+<div class="card-title">判断题第1题（2025/03 第3题）</div>
+<p style="font-size:14px">指针变量本身不占内存。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>指针变量本身也是变量，存储地址值，占用内存空间（64位系统通常8字节）。</div></div>
+</div>
+
+<!-- T2 -->
+<div class="card pink">
+<div class="card-title">判断题第2题（2025/06 第1题）</div>
+<p style="font-size:14px">指针的大小与其所指向的变量的数据类型的大小相同。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>所有指针在同一平台上大小相同，与指向类型无关（64位系统都是8字节）。</div></div>
+</div>
+
+<!-- T3 -->
+<div class="card teal">
+<div class="card-title">判断题第3题（2025/09 第1题）</div>
+<p style="font-size:14px">数组名是一个指针常量。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确（√）</strong><br>
+<strong>解析：</strong>数组名是常量指针，指向首元素地址，但不能做 arr++ 自增操作。</div></div>
+</div>
+
+<!-- T4 -->
+<div class="card indigo">
+<div class="card-title">判断题第4题（2025/09 第2题）</div>
+<p style="font-size:14px">数组可以像指针一样进行自增操作。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>数组名是指针常量，不能 arr++。只有指针变量可以 p++。</div></div>
+</div>
+
+<!-- T5 -->
+<div class="card orange">
+<div class="card-title">判断题第5题（2025/09 第3题）</div>
+<p style="font-size:14px"><code>int* ptr; *ptr = 10;</code> 可以正确定义和初始化指针。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>ptr 未初始化（野指针），*ptr=10 向随机地址写入，未定义行为。</div></div>
+</div>
+
+<!-- T6 -->
+<div class="card purple">
+<div class="card-title">判断题第6题（2025/09 第4题）</div>
+<p style="font-size:14px"><code>int a = 5; int *p = a;</code> 能正确初始化指针。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>类型不匹配，a 是 int 不是地址。正确写法：<code>int *p = &amp;a;</code></div></div>
+</div>
+
+<!-- T7 -->
+<div class="card pink">
+<div class="card-title">判断题第7题（2025/12 第1题）</div>
+<p style="font-size:14px"><code>p2 - p1</code> 输出结果是两个指针相差的字节数。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br>
+<strong>解析：</strong>指针相减返回的是<strong>元素个数</strong>，不是字节数。</div></div>
+</div>
+
+<!-- ===== 知识速查卡 ===== -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">★</span> 知识速查卡</h2>
+
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 指针知识速查卡</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>核心结论</th><th>记忆口诀</th></tr></thead>
+<tbody>
+<tr>
+  <td>指针定义</td>
+  <td><code>int* p = &amp;a;</code> 指针存放地址，类型必须匹配</td>
+  <td>指针 = 门牌号</td>
+</tr>
+<tr>
+  <td>&amp; 和 *</td>
+  <td>&amp; = 取地址（看门牌号）<br>* = 解引用（开门取东西）</td>
+  <td>&amp;看地址，*开门</td>
+</tr>
+<tr>
+  <td>指针+1</td>
+  <td>地址不是+1，而是<strong>+sizeof(类型)</strong><br>int*: +4字节, double*: +8字节</td>
+  <td>+1 = 跳一个元素</td>
+</tr>
+<tr>
+  <td>指针-指针</td>
+  <td>p2-p1 = <strong>元素个数</strong>，不是字节差<br>= (地址差) / sizeof(类型)</td>
+  <td>差的是元素数</td>
+</tr>
+<tr>
+  <td>数组与指针</td>
+  <td>数组名→首地址；但数组名是<strong>常量</strong><br>arr 不能 arr++，但指针 p 可以 p++</td>
+  <td>数组名 = 固定门牌</td>
+</tr>
+<tr>
+  <td>指针接力</td>
+  <td>p2=p1 → 指向<strong>同一块内存</strong><br>*p2修改会同时影响 *p1 和原变量</td>
+  <td>复制地址，共享数据</td>
+</tr>
+<tr>
+  <td>二维数组地址</td>
+  <td>行优先存储；arr+1偏移=行大小<br>&amp;arr[i][j] = base + (i×cols+j)×sizeof</td>
+  <td>先算行再算列</td>
+</tr>
+<tr>
+  <td>空指针</td>
+  <td>NULL=0, nullptr(C++11)<br>cout&lt;&lt;NULL 输出 0<br>指针本身占内存</td>
+  <td>空指针值=0</td>
+</tr>
+<tr>
+  <td>野指针</td>
+  <td>未初始化的指针不能解引用<br><code>int* p; *p=10;</code> → 未定义行为</td>
+  <td>先指方向再用</td>
+</tr>
+<tr>
+  <td>指针传递</td>
+  <td><code>void f(int* p)</code> 传入 &amp;a，通过 *p 修改<br>区别于值传递和引用传递</td>
+  <td>传入地址，解引用改</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="card danger" style="margin-top:24px">
+<div class="card-title">本章得分策略（占30%！）</div>
+</div>
+</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>必得分点(60%)：</strong>指针定义/初始化语法、*p 解引用修改、p++ 步长(sizeof)、数组与指针关系</li>
+  <li><strong>拿分点(25%)：</strong>指针接力、三种传递方式对比、二维数组地址计算</li>
+  <li><strong>拔高点(15%)：</strong>指针差值含义、三维数组地址偏移、字符串指针操作</li>
+</ul>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top">↑</button>
+
+<script>
+// 答案折叠
+document.querySelectorAll('.answer-toggle').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const content=this.nextElementSibling;
+    if(content.classList.contains('open')){
+      content.classList.remove('open');this.classList.remove('open');
+      this.innerHTML='▶ 显示答案';
+    }else{
+      content.classList.add('open');this.classList.add('open');
+      this.innerHTML='▼ 隐藏答案';
+    }
+  });
+});
+
+// ScrollSpy
+const sections=document.querySelectorAll('h2.section-num');
+const links=document.querySelectorAll('.nav-link');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+current));
+  document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+});
+
+// 移动端菜单
+hljs.highlightAll();
+document.querySelector('.menu-toggle').addEventListener('click',()=>{
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 素数筛法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="01-唯一分解定理与辗转相除法.html">← 唯一分解定理</a>
+        <a class="nav-link" href="03-高精度运算.html">高精度运算 →</a>
+        <a class="nav-link" href="04-链表.html">链表 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">🔢 GESP C++ 五级 · 素数筛法</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Sieve of Eratosthenes &amp; Linear Sieve</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 12 道选择题 + 8 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场必考，年均 2~3 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 12%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：图书馆找书</h2>
+
+<div class="card accent">
+<div class="card-title">📚 场景：在图书馆找非小说类书籍</div>
+<p>假设你要整理图书馆的书架。图书管理员告诉你：<strong>第 2 排第 3 列</strong>是非小说类书籍。那你立马就知道，<strong>所有第 2 排的书都是非小说</strong>——因为第 2 排的所有列（2×1, 2×2, 2×3, ...）都是 2 的倍数。</p>
+<p>类似地，如果第 3 排第 2 列是非小说，那第 3 排所有的列也都是非小说。</p>
+<p>这样，你只需要知道 <strong>第 2 排</strong>和<strong>第 3 排</strong>是非小说，就能把整个图书馆的非小说区域全部标记出来——这就是<span class="key-point">"筛"的思想</span>。</p>
+<p>在数学中，"书架"是 1 到 n 的整数，"非小说"是合数，"没有被标记为合数的"就是<strong>质数（素数）</strong>。这就是<strong>埃拉托斯特尼筛法</strong>的灵感来源。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>理解埃氏筛的核心思想：从 i×i 开始标记 i 的倍数</li>
+    <li>掌握线性筛的 break 条件：<span class="mono">if (i % primes[j] == 0) break;</span></li>
+    <li>牢记两种筛法的时间复杂度区别</li>
+    <li>能手工模拟 n=20 的筛法过程</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>🔢 埃氏筛（埃拉托斯特尼筛法）</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 基本思想</div>
+<p>从小到大遍历，若当前数是质数，将其所有倍数标记为合数。</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>基本思想</strong></td><td>从小到大，若当前数是质数，将其所有倍数标记为合数</td></tr>
+<tr><td><strong>优化</strong></td><td>从 <span class="mono">i * i</span> 开始标记（更小的倍数已被之前的质数标记）</td></tr>
+<tr><td><strong>外层循环范围</strong></td><td><span class="mono">i * i &lt;= n</span> 或 <span class="mono">i &lt;= sqrt(n)</span></td></tr>
+<tr><td><strong>时间复杂度</strong></td><td><span class="mono">O(n log log n)</span></td></tr>
+<tr><td><strong>空间复杂度</strong></td><td><span class="mono">O(n)</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 为什么从 i×i 开始？</div>
+<p><strong>比 i×i 更小的 i 的倍数</strong>（如 2i, 3i, ...）已经被更小的质数标记过了。</p>
+<p>例如当 i=5 时，10、15、20 已经被 2 和 3 标记过，所以直接从 25 开始标记。</p>
+</div>
+
+<h3>🔢 线性筛（欧拉筛）</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 基本思想</div>
+<p><strong>每个合数只被其最小质因数筛选一次</strong>，从而实现 O(n) 的线性时间复杂度。</p>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>要点</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>基本思想</strong></td><td>每个合数只被其最小质因数筛选一次</td></tr>
+<tr><td><strong>关键机制</strong></td><td><span class="mono">if (i % primes[j] == 0) break;</span> 保证最小质因数筛选</td></tr>
+<tr><td><strong>时间复杂度</strong></td><td><span class="mono">O(n)</span></td></tr>
+<tr><td><strong>空间复杂度</strong></td><td><span class="mono">O(n)</span>，需额外质数列表</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>📊 两种筛法对比</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>特性</th><th>埃氏筛</th><th>线性筛</th></tr></thead>
+<tbody>
+<tr><td><strong>时间复杂度</strong></td><td>O(n log log n)</td><td>O(n)</td></tr>
+<tr><td><strong>重复标记</strong></td><td>有（如 12 被 2 和 3 都标记）</td><td>无（每个合数只筛一次）</td></tr>
+<tr><td><strong>实现难度</strong></td><td>简单</td><td>稍复杂</td></tr>
+<tr><td><strong>实际速度(n≤10⁷)</strong></td><td>常数小，往往<strong>更快</strong></td><td>理论更优</td></tr>
+<tr><td><strong>推荐场景</strong></td><td>日常使用、小范围</td><td>极大范围(n≥10⁷)、需频繁查询</td></tr>
+</tbody>
+</table>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 算法 / 代码详解</h2>
+
+<h3>埃氏筛模板</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;int&gt; sieve_Eratosthenes(int n) {
+    vector&lt;bool&gt; is_prime(n + 1, true);
+    vector&lt;int&gt; primes;
+    is_prime[0] = is_prime[1] = false;
+    for (int i = 2; i * i &lt;= n; i++) {       // ← 外层循环到 sqrt(n)
+        if (is_prime[i]) {
+            primes.push_back(i);
+            for (int j = i * i; j &lt;= n; j += i)   // ← 从 i*i 开始！
+                is_prime[j] = false;
+        }
+    }
+    for (int i = sqrt(n) + 1; i &lt;= n; i++) {
+        if (is_prime[i]) primes.push_back(i);
+    }
+    return primes;
+}</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 关键标注</div>
+<p><strong>外层循环</strong>：<span class="mono">i * i &lt;= n</span>（不是 i &lt;= n）—— 高频填空题！<br>
+<strong>内层循环</strong>：<span class="mono">j = i * i</span>（不是 j = 2*i 或 j = i）—— 高频选择题！<br>
+<strong>步长</strong>：<span class="mono">j += i</span>（不是 j++）</p>
+</div>
+
+<h3>线性筛（欧拉筛）模板</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">vector&lt;int&gt; linear_sieve(int n) {
+    vector&lt;bool&gt; is_prime(n + 1, true);
+    vector&lt;int&gt; primes;
+    is_prime[0] = is_prime[1] = false;
+    for (int i = 2; i &lt;= n; i++) {           // ← 注意：循环到 n！
+        if (is_prime[i]) primes.push_back(i);
+        for (int j = 0; j &lt; primes.size() &amp;&amp; i * primes[j] &lt;= n; j++) {
+            is_prime[i * primes[j]] = false;
+            if (i % primes[j] == 0) break;  // ← 核心！保证最小质因子
+        }
+    }
+    return primes;
+}</code></pre>
+</div>
+
+<div class="highlight-box yellow">
+<div class="hb-title">⚡ 理解 break 条件</div>
+<p>当 <span class="mono">i % primes[j] == 0</span> 时，说明 <span class="mono">primes[j]</span> 是 <span class="mono">i</span> 的最小质因数。此时如果继续循环，下一个质数 <span class="mono">primes[j+1]</span> 筛掉的 <span class="mono">i * primes[j+1]</span>，其最小质因数仍然是 <span class="mono">primes[j]</span>（因为 <span class="mono">primes[j]</span> 能整除 i），就不再满足"只被最小质因数筛"的条件了。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<h3>🎬 埃氏筛模拟 n = 20</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>当前 i</th><th>is_prime[i]?</th><th>标记的合数</th><th>剩余质数列表</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>初始化</strong></td>
+    <td>—</td>
+    <td>—</td>
+    <td>—</td>
+    <td>2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20（待筛）</td>
+</tr>
+<tr>
+    <td><strong>i=2</strong></td>
+    <td class="mono">2</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>4, 6, 8, 10, 12, 14, 16, 18, 20</td>
+    <td>质数表：{2}</td>
+</tr>
+<tr>
+    <td><strong>i=3</strong></td>
+    <td class="mono">3</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>9, 12, 15, 18</td>
+    <td>质数表：{2, 3}</td>
+</tr>
+<tr>
+    <td><strong>i=4</strong></td>
+    <td class="mono">4</td>
+    <td style="color:#ef4444;font-weight:700">合数 ❌</td>
+    <td>（跳过，4 已被标记）</td>
+    <td>质数表：{2, 3}</td>
+</tr>
+<tr>
+    <td><strong>i=5</strong></td>
+    <td class="mono">5</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>（5×5=25>20 停止）</td>
+    <td>质数表：{2, 3, 5} + {7,11,13,17,19}</td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td colspan="5"><strong>✅ 结果：1~20 之间的质数：2, 3, 5, 7, 11, 13, 17, 19（共 8 个）</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>🎬 线性筛模拟 n = 20</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:70px">i</th><th>is_prime[i]?</th><th>primes 列表</th><th>本轮筛掉的数</th><th>break?</th></tr></thead>
+<tbody>
+<tr>
+    <td class="mono">2</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>{2}</td>
+    <td>2×2=4</td>
+    <td>2%2=0 → <strong>break</strong></td>
+</tr>
+<tr>
+    <td class="mono">3</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>{2, 3}</td>
+    <td>3×2=6, 3×3=9</td>
+    <td>3%3=0 → <strong>break</strong></td>
+</tr>
+<tr>
+    <td class="mono">4</td>
+    <td style="color:#ef4444;font-weight:700">合数 ❌</td>
+    <td>{2, 3}</td>
+    <td>4×2=8</td>
+    <td>4%2=0 → <strong>break</strong></td>
+</tr>
+<tr>
+    <td class="mono">5</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>{2, 3, 5}</td>
+    <td>5×2=10, 5×3=15, 5×5=25(>20 停止)</td>
+    <td>—</td>
+</tr>
+<tr>
+    <td class="mono">6</td>
+    <td style="color:#ef4444;font-weight:700">合数 ❌</td>
+    <td>{2, 3, 5}</td>
+    <td>6×2=12</td>
+    <td>6%2=0 → <strong>break</strong></td>
+</tr>
+<tr>
+    <td class="mono">7</td>
+    <td style="color:#10b981;font-weight:700">质数 ✅</td>
+    <td>{2, 3, 5, 7}</td>
+    <td>14</td>
+    <td>7%2≠0, 7%3≠0, 7%5≠0, 7%7=0 → <strong>break</strong></td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td colspan="5"><strong>每个合数恰被标记一次：4(by2), 6(by2), 8(by2), 9(by3), 10(by2), 12(by2), 14(by2), 15(by3), 16(by2), 18(by2), 20(by2)</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p>在线性筛中，合数 <span class="mono">12</span> 是在 i=6 时被 primes[0]=2 筛掉的。为什么不在 i=4 时被 primes[1]=3 筛掉呢？</p>
+<p style="margin-top:8px">因为 i=4 时，<strong>4%2=0 触发 break</strong>，不会继续到 primes[1]=3。而 12 的最小质因子是 2，恰好由 i=6 时的 6×2 筛掉。</p>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：埃氏筛外层循环是 i*i ≤ n，不是 i ≤ n</div>
+<p>埃氏筛外层循环写 <span class="mono">for (int i = 2; i &lt;= n; ++i)</span> 是<strong>多余的计算</strong>。正确写法是 <span class="mono">i * i &lt;= n</span> 或 <span class="mono">i &lt;= sqrt(n)</span>。</p>
+<p>因为当 i > sqrt(n) 时，i×i > n，内层循环不会再执行任何标记操作。GESP 2024/03 第 10 题就考了这一点。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：线性筛 break 条件是 if (i % primes[j] == 0) 而非 if (p % i == 0)</div>
+<p>线性筛的核心代码中，break 判断的是 <span class="mono">i % primes[j] == 0</span>，<strong>不是</strong> <span class="mono">primes[j] % i == 0</span>。</p>
+<p>许多同学会混淆，写成 <span class="mono">if (p % i == 0)</span> 或 <span class="mono">if (primes[j] % i == 0)</span>——这是错的！因为我们要判断 i 是否能被 primes[j] 整除。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：n ≤ 10⁷ 时埃氏筛因常数小反而更快</div>
+<p>"线性筛的速度往往优于埃氏筛"——这个说法是<strong>❌ 错的</strong>（2025/09 第8题考过）。</p>
+<p>虽然线性筛理论复杂度 O(n) 优于埃氏筛 O(n log log n)，但在 n ≤ 10⁷ 时，埃氏筛因常数较小（代码更简单、内存访问更连续），<strong>速度往往更快</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：素数表的埃氏筛和线性筛时间复杂度不是都是 O(n log log n)</div>
+<p>"素数表的埃氏筛法和线性筛法的时间复杂度都是 O(n log log n)"——这句话是<strong>❌ 错的</strong>（2024/03 判断第7题考过）。</p>
+<p>线性筛时间复杂度是 <strong>O(n)</strong>，不是 O(n log log n)。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：线性筛不是被"最大质因子"筛去</div>
+<p>"线性筛相比埃氏筛的核心改进在于：每个合数只被其最大质因子筛去"——这是<strong>❌ 错的</strong>（2026/03 判断第9题考过）。</p>
+<p>正确的是：每个合数只被其<strong>最小质因子</strong>筛去。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 埃氏筛 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：埃氏筛</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024/09 第5题）</div>
+<p>埃氏筛内层循环横线上应填什么？</p>
+<div class="code-block"><pre><code class="language-cpp">if (is_prime[i]) {
+    ________________________________ {
+        is_prime[j] = false;
+    }
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">for (int j = i; j &lt;= n; j++)</span><br>
+<strong>B.</strong> <span class="mono">for (int j = i * i; j &lt;= n; j++)</span><br>
+<strong>C.</strong> <span class="mono">for (int j = i * i; j &lt;= n; j += i)</span><br>
+<strong>D.</strong> <span class="mono">for (int j = i; j &lt;= n; j += i)</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 内层循环需要 A）从 i*i 开始（避免重复标记）、B）步长为 i（标记 i 的倍数）。只有 C 同时满足两个条件。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/12 第7题）</div>
+<p>关于埃氏筛代码，说法正确的是哪一个？</p>
+<p><strong>A.</strong> 时间复杂度是 O(n√n)<br>
+<strong>B.</strong> 标记非素数时从 i × i 开始，可以减少重复标记<br>
+<strong>C.</strong> 代码会输出所有小于等于 n 的奇数<br>
+<strong>D.</strong> sieve_Eratosthenes(10) 返回 {2, 3, 5, 7, 9}</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · A 错在时间复杂度是 O(n log log n)；C 错在输出的是质数不是奇数；D 错在 9 不是质数，正确返回 {2, 3, 5, 7}。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2026/03 第6题）</div>
+<p>埃氏筛中将内层循环从 j = i×i 开始而不是 j = 2×i 的主要原因是？</p>
+<p><strong>A.</strong> 因为 2×i 一定不是合数<br>
+<strong>B.</strong> i×i 一定是质数<br>
+<strong>C.</strong> 小于 i×i 的 i 的倍数已被更小质因子筛过<br>
+<strong>D.</strong> 这样可以把时间复杂度降为 O(n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 比 i×i 更小的 i 的倍数（如 2i, 3i, ...）已经被更小的质数标记过了，无需重复标记。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025/09 第6题）</div>
+<p>埃氏筛内层循环起始值应填什么？</p>
+<div class="code-block"><pre><code class="language-cpp">for (int j = ______; j &lt;= n; j += i) { is_prime[j] = false; }</code></pre></div>
+<p><strong>A.</strong> i &nbsp;&nbsp; <strong>B.</strong> i+1 &nbsp;&nbsp; <strong>C.</strong> i×2 &nbsp;&nbsp; <strong>D.</strong> i×i</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 内层循环从 i×i 开始，避免重复标记已被更小质数筛过的合数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024/03 第10题）</div>
+<p>埃氏筛最外层循环应遍历什么范围？</p>
+<p><strong>A.</strong> for (int i = 2; i &lt;= n; ++i)<br>
+<strong>B.</strong> for (int i = 1; i &lt; n; ++i)<br>
+<strong>C.</strong> for (int i = 2; i &lt;= sqrt(n); ++i)<br>
+<strong>D.</strong> for (int i = 1; i &lt;= sqrt(n); ++i)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 外层循环只需遍历到 sqrt(n)，因为内层从 i×i 开始，i>sqrt(n) 时 i×i>n 不会有任何标记。</div></div>
+</div>
+
+<!-- 线性筛 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：线性筛</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024/06 第7题）</div>
+<p>线性筛代码横线上应填什么？</p>
+<div class="code-block"><pre><code class="language-cpp">for (int j = 0; ________________________________ ; j++) {
+    is_prime[i * primes[j]] = false;
+    if (i % primes[j] == 0) break;
+}</code></pre></div>
+<p><strong>A.</strong> j &lt; primes.size()<br>
+<strong>B.</strong> i * primes[j] &lt;= n<br>
+<strong>C.</strong> j &lt; primes.size() &amp;&amp; i * primes[j] &lt;= n<br>
+<strong>D.</strong> j &lt;= n</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 两个条件缺一不可：不越界（j < primes.size()）且不超范围（i*primes[j] <= n）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2026/03 第5题）</div>
+<p>线性筛横线上应填什么？</p>
+<div class="code-block"><pre><code class="language-cpp">________________________________ { // 在此处填入代码
+    is_prime[i * primes[j]] = 0;
+    if (i % primes[j] == 0) break;
+}</code></pre></div>
+<p><strong>A.</strong> for (int j = 0; j &lt; primes.size() &amp;&amp; i * primes[j] &lt;= n; j++)<br>
+<strong>B.</strong> for (int j = 1; j &lt; primes.size() &amp;&amp; i * j &lt;= n; j++)<br>
+<strong>C.</strong> for (int j = 2; j &lt; primes.size() &amp;&amp; i * primes[j] &lt;= n; j++)<br>
+<strong>D.</strong> 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · j 从 0 开始（第一个质数是 primes[0]=2），两个条件：不越界且不超范围。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025/09 第7题）</div>
+<p>线性筛 break 条件应填什么？</p>
+<div class="code-block"><pre><code class="language-cpp">for (int p : primes) {
+    if (p * i > n) break;
+    is_prime[p * i] = false;
+    if (________) break;
+}</code></pre></div>
+<p><strong>A.</strong> i % p == 0 &nbsp;&nbsp; <strong>B.</strong> p % i == 0 &nbsp;&nbsp; <strong>C.</strong> i == p &nbsp;&nbsp; <strong>D.</strong> i * p == n</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 当 i 能被 p 整除时，p 是 i 的最小质因子，后续质数不应再筛选。B 是错误的常见选项（p%i==0 判断的是反过来的关系）。</div></div>
+</div>
+
+<!-- 两种筛法对比 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：两种筛法对比</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025/03 第8题）</div>
+<p>关于埃氏筛和线性筛的比较，错误的是哪一项？</p>
+<p><strong>A.</strong> 埃氏筛可能对同一个合数多次标记<br>
+<strong>B.</strong> 线性筛的理论时间复杂度更优，所以线性筛速度往往优于埃氏筛<br>
+<strong>C.</strong> 线性筛保证每个合数只被其最小质因子筛到一次<br>
+<strong>D.</strong> 对于 n ≤ 10⁷，埃氏筛因常数较小，速度往往优于线性筛</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · B 是错误的说法，虽然线性筛理论更优，但在 n≤10⁷ 时埃氏筛因常数小反而更快。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2024/12 第8题）</div>
+<p>关于线性筛，说法正确的是？</p>
+<p><strong>A.</strong> 线性筛的时间复杂度是 O(n)<br>
+<strong>B.</strong> 每个合数会被其所有的质因子标记一次<br>
+<strong>C.</strong> 线性筛和埃氏筛的实现思路完全相同<br>
+<strong>D.</strong> 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 线性筛时间复杂度 O(n)。B 错在"被最小质因子筛一次"而非"所有质因子"；C 错在两种筛法思路完全不同。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/03 第11题）</div>
+<p>素数的线性筛法时间复杂度为？</p>
+<p><strong>A.</strong> O(n) &nbsp;&nbsp; <strong>B.</strong> O(n log log n) &nbsp;&nbsp; <strong>C.</strong> O(n log n) &nbsp;&nbsp; <strong>D.</strong> O(n²)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 线性筛（欧拉筛）的时间复杂度是 O(n)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2024/03 第9题）</div>
+<p>关于判断质数代码的说法，错误的是哪一项？</p>
+<p><strong>A.</strong> 埃氏筛比逐个判断每个数效率更高<br>
+<strong>B.</strong> 线性筛比逐个判断每个数效率更高<br>
+<strong>C.</strong> 代码有重复计算，筛选连续数中质数效率不高<br>
+<strong>D.</strong> 埃氏筛比上面的代码以及线性筛效率都高</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 埃氏筛比逐个判断效率高，线性筛也比逐个判断效率高，但埃氏筛并不比线性筛效率都高——在极大范围下线性筛 O(n) 优于埃氏筛 O(n log log n)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2025/09 第8题）</div>
+<p>关于埃氏筛和线性筛的比较，错误的是哪一项？</p>
+<p><strong>A.</strong> 埃氏筛可能对同一个合数多次标记<br>
+<strong>B.</strong> 线性筛的理论时间复杂度更优，所以线性筛速度往往优于埃氏筛<br>
+<strong>C.</strong> 线性筛保证每个合数只被其最小质因子筛到一次<br>
+<strong>D.</strong> 对于 n ≤ 10⁷，埃氏筛因常数较小，速度往往优于线性筛</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 虽然线性筛理论复杂度更优，但在 n≤10⁷ 时埃氏筛因常数较小、内存访问更连续，速度往往更快。所以不能简单地说线性筛速度往往优于埃氏筛。</div></div>
+</div>
+
+<!-- 质数判断 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：质数判断</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2025/06 第5题）</div>
+<p>关于判断质数（6k±1 优化）代码，说法正确的是？</p>
+<div class="code-block"><pre><code class="language-cpp">bool is_prime(int n) {
+    if (n &lt;= 1) return false;
+    if (n == 2 || n == 3 || n == 5) return true;
+    if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0) return false;
+    int i = 7, step = 4;
+    while (i * i &lt;= n) {
+        if (n % i == 0) return false;
+        i += step; step = 6 - step;  // 交替 i+=4 和 i+=2 → 即 6k±1
+    }
+    return true;
+}</code></pre></div>
+<p><strong>A.</strong> 5 是质数但因为 5%5==0 返回 false<br>
+<strong>B.</strong> finish_number 应该是 n/2<br>
+<strong>C.</strong> 正确前提是所有大于 3 的质数都符合 6k±1 形式<br>
+<strong>D.</strong> 改为 for 循环效果相同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 该优化的前提是所有大于 3 的质数都能写成 6k±1 的形式。A 错在 5 在第 3 行就返回 true 了。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:20%">知识点</th><th style="width:40%">核心代码 / 公式</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>埃氏筛</strong></td>
+    <td class="mono">for(j=i*i; j&lt;=n; j+=i)</td>
+    <td>从 i*i 开始（不是 2*i 或 i），外层循环 i*i≤n</td>
+</tr>
+<tr>
+    <td><strong>线性筛</strong></td>
+    <td class="mono">if(i % primes[j] == 0) break;</td>
+    <td>break 条件是 i%primes[j]==0（不是 primes[j]%i==0）</td>
+</tr>
+<tr>
+    <td><strong>埃氏筛复杂度</strong></td>
+    <td class="mono">O(n log log n)</td>
+    <td>不是 O(n log n)，有重复标记（如 12 被 2 和 3 都标记）</td>
+</tr>
+<tr>
+    <td><strong>线性筛复杂度</strong></td>
+    <td class="mono">O(n)</td>
+    <td>每个合数只被最小质因子筛一次</td>
+</tr>
+<tr>
+    <td><strong>实际速度(n≤10⁷)</strong></td>
+    <td>埃氏筛常数小 → <strong>更快</strong></td>
+    <td>不要盲目选线性筛！小范围埃氏筛更快</td>
+</tr>
+<tr>
+    <td><strong>质数判断(6k±1)</strong></td>
+    <td class="mono">i=7; step=4; i+=step; step=6-step;</td>
+    <td>前提：所有大于 3 的质数都符合 6k±1 形式</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"埃氏从 i² 开始标记，线性遇 i%p==0 就 break，小范围埃氏更快"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+// 代码高亮
+hljs.highlightAll();
+
+// 答案展开/折叠
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+// 真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+// ScrollSpy：滚动时侧边栏高亮
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+// 回到顶部按钮
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

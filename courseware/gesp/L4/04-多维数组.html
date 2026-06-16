@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP四级培训 · 多维数组</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">📐</span> GESP C++ · 四级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 语法详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="03-结构体.html">← 结构体</a>
+        <a class="nav-link" href="05-递推.html">递推 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28,#2a2d3a,#1e293b);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:2.2rem;color:#fff;margin-bottom:8px;position:relative;z-index:1">📐 GESP C++ 四级 · 多维数组</h1>
+<p style="color:#94a3b8;margin-bottom:18px;position:relative;z-index:1">Multi-dimensional Array · 从矩阵到体数据的抽象</p>
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 17道选择题 + 10道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 年均出题 5~7道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占总分 ≈ 20%</span>
+</div>
+</div></div>
+
+<!-- STEP 1 -->
+<h2 id="step1" class="section-num"><span class="num-badge">1</span> 第一步：生活引入</h2>
+
+<div class="card primary">
+<div class="card-title">📊 生活中的「维」</div>
+<ul>
+    <li><strong>一维 → 成绩单：</strong>语文 90, 数学 85, 英语 92 → <code>score[3]</code></li>
+    <li><strong>二维 → 课程表：</strong>星期一行第3节 = 数学 → <code>timetable[0][2]</code></li>
+    <li><strong>三维 → 楼层教室：</strong>3楼第2间教室第5排 → <code>building[2][1][4]</code></li>
+</ul>
+<div class="tip-box"><div class="tip-title">💡 核心理念</div>多维数组就是将一维数组的「格子」再扩展一层（或多层），就像在纸上画行和列一样简单。</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">🎯 核心类比：Excel 表格</div>
+<p>一个 Excel 工作表就是典型的<strong>二维数组</strong>：行号 + 列号 → 确定唯一单元格。</p>
+<p>如果你有多个工作表（Sheet1, Sheet2, Sheet3），每个都是一个二维表，合在一起就是<strong>三维数组</strong>。</p>
+<p>四维数组？虽然「世界是三维的」，但在编程中四维数组有其实际用途（如时空数据、多维统计），并非「没有意义」。</p>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 2 -->
+<h2 id="step2" class="section-num"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<h3>📐 内存布局：行优先（Row-Major）</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 行优先存储</div>
+<p>C++ 中，多维数组在内存中是<strong>按行优先</strong>连续存放的。对于 <code>int arr[2][3]</code>：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>逻辑布局</th><th>内存地址（连续）</th></tr></thead>
+<tbody>
+<tr><td>arr[0][0], arr[0][1], arr[0][2]</td><td>第1行3个元素连续存放</td></tr>
+<tr><td>arr[1][0], arr[1][1], arr[1][2]</td><td>紧接着第2行3个元素连续存放</td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box blue">
+<div class="hb-title">📌 地址公式</div>
+<p><code>&amp;arr[i][j] = 基地址 + (i × 列数 + j) × sizeof(元素类型)</code></p>
+</div>
+</div>
+
+<h3>📐 核心概念对比</h3>
+
+<div class="card purple">
+<div class="card-title">🟣 关键属性一览</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>说明</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td>定义语法</td><td><code>类型 数组名[行][列]</code></td><td class="mono">int arr[3][4];</td></tr>
+<tr><td>一行的地址</td><td><code>arr[i]</code> 等价于 <code>&amp;arr[i][0]</code></td><td>arr[1] = 第2行首地址</td></tr>
+<tr><td>一行的大小</td><td>列数 × sizeof(元素类型)</td><td class="mono">sizeof(arr[0])</td></tr>
+<tr><td>总大小</td><td>行数 × 列数 × sizeof(元素类型)</td><td class="mono">sizeof(arr)</td></tr>
+<tr><td>部分初始化</td><td>未显式指定的元素自动初始化为 0</td><td><code>int a[2][3]={{1,2},{3}};</code></td></tr>
+<tr><td>数组名</td><td>是指针常量，不可自增</td><td class="mono">arr++</td> ❌</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>📐 sizeof 速查</h3>
+
+<div class="card accent">
+<div class="card-title">📝 int arr[3][4] 的 sizeof</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>表达式</th><th>含义</th><th>值</th></tr></thead>
+<tbody>
+<tr><td class="mono">sizeof(arr)</td><td>整个数组占用字节</td><td>3×4×4 = 48</td></tr>
+<tr><td class="mono">sizeof(arr[0])</td><td>第0行占用字节</td><td>4×4 = 16</td></tr>
+<tr><td class="mono">sizeof(arr[0][0])</td><td>单个元素占用字节</td><td>4</td></tr>
+<tr><td>行数 = sizeof(arr)/sizeof(arr[0])</td><td>—</td><td>48/16 = 3</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 3 -->
+<h2 id="step3" class="section-num"><span class="num-badge">3</span> 第三步：语法详解</h2>
+
+<h3>📌 二维数组定义</h3>
+<div class="card accent">
+<div class="card-title">📝 四种定义方式</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">// 方式1：完全定义
+int arr[3][4];                      // 3行4列，未初始化
+
+// 方式2：初始化 + 隐式推导行数
+int arr[][4] = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}};
+// 列数必须指定，行数可以推导
+
+// 方式3：部分初始化（其余为0）
+int arr[2][3] = {{1, 2}, {3}};     // 合法！
+// 结果: {{1,2,0}, {3,0,0}}
+
+// 方式4：使用列表初始化（题目中常见）
+int a[][2] = {{1,2},{1,2},{3,4}};  // ✅ 正确</code></pre></div>
+</div>
+
+<h3>📌 三维数组定义</h3>
+<div class="card purple">
+<div class="card-title">📝 三维数组: [深度][行][列]</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[2][3][2] = {
+    {{1,2}, {3,4}, {5,6}},     // 第0层
+    {{7,8}, {9,10}, {11,12}}   // 第1层
+};
+
+cout &lt;&lt; arr[0][1][0];  // 第0层 第1行 第0列 = 3
+cout &lt;&lt; arr[1][2][1];  // 第1层 第2行 第1列 = 12</code></pre></div>
+</div>
+
+<h3>📌 二维数组传参</h3>
+<div class="card teal">
+<div class="card-title">📝 传参方式对比</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">// ✅ 正确方式1：指定列数
+void f(int arr[3][4]) { cout &lt;&lt; arr[1][2]; }
+
+// ✅ 正确方式2：只指定列数（行数可省略第一维）
+void f(int arr[][4], int rows) { cout &lt;&lt; arr[i][j]; }
+
+// ✅ 正确方式3：数组指针
+void f(int (*arr)[4]) { cout &lt;&lt; arr[1][2]; }
+
+// ❌ 错误：二级指针不能替代二维数组
+void f(int** arr) { /* 不适用于栈上的二维数组 */ }
+
+// ❌ 错误：二维都省略
+void f(int arr[][]) { /* 编译错误 */ }</code></pre></div>
+</div>
+
+<h3>📌 动态分配（堆上）</h3>
+<div class="card pink">
+<div class="card-title">📝 用一维数组模拟二维</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">// 用一维数组模拟 3×4 二维数组
+int* arr = new int[12];     // 在堆上分配 12个int = 48字节
+
+// 访问 arr[i][j] → 手动计算偏移
+arr[i * 4 + j] = value;     // 行优先转换
+
+// ⚠️ 必须手动释放！
+delete[] arr;               // 不会自动释放</code></pre></div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 4 -->
+<h2 id="step4" class="section-num"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<h3>🎬 示例1：三维数组地址偏移</h3>
+<div class="card teal">
+<div class="card-title">📝 long long array[6][6][6] 地址计算</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">long long array[6][6][6];  // long long = 8字节
+// array[1][2][3] 和 array[3][2][1] 的地址差</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>元素</th><th>线性索引</th><th>地址偏移（字节）</th></tr></thead>
+<tbody>
+<tr><td>array[1][2][3]</td><td>1×36 + 2×6 + 3 = 51</td><td>51 × 8 = 408</td></tr>
+<tr><td>array[3][2][1]</td><td>3×36 + 2×6 + 1 = 121</td><td>121 × 8 = 968</td></tr>
+<tr><td><strong>差值</strong></td><td>121 - 51 = 70</td><td><strong>70 × 8 = 560 字节</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>🎬 示例2：指针偏移与二维数组</h3>
+<div class="card orange">
+<div class="card-title">📝 int arr[3][4] 指针操作</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[3][4] = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}};
+int* p = &amp;arr[0][0];
+// arr 地址 = 0x28cbc0，int=4字节
+// arr[1] 的值 = arr + 1行 = 0x28cbc0 + 16*4 = 0x28cc00</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>表达式</th><th>等价于</th><th>值</th></tr></thead>
+<tbody>
+<tr><td class="mono">p + 5</td><td>&amp;arr[0][0] + 5</td><td>指向arr[1][1] = 6</td></tr>
+<tr><td class="mono">arr[1][1]</td><td>第1行第1列</td><td>6</td></tr>
+<tr><td class="mono">*(p + 5)</td><td>等价于 arr[1][1]</td><td><strong>6</strong></td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box blue"><div class="hb-title">📌 关键结论</div><code>*(p + 5)</code> 和 <code>arr[1][1]</code> 访问的是同一块内存，值都是 <strong>6</strong>。</div>
+</div>
+
+<h3>🎬 示例3：三维数组条件累加</h3>
+<div class="card teal">
+<div class="card-title">📝 遍历累加（i+j+k为偶数）</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[2][3][2] = { {{1,2},{3,4},{5,6}}, {{7,8},{9,10},{11,12}} };
+int sum = 0;
+for(int i=0;i&lt;2;i++) for(int j=0;j&lt;3;j++) for(int k=0;k&lt;2;k++)
+    if((i+j+k)%2==0) sum += arr[i][j][k];</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>i,j,k</th><th>i+j+k</th><th>偶?</th><th>值</th></tr></thead>
+<tbody>
+<tr><td>0,0,0</td><td>0</td><td>✅</td><td>1</td></tr>
+<tr><td>0,1,1</td><td>2</td><td>✅</td><td>4</td></tr>
+<tr><td>0,2,0</td><td>2</td><td>✅</td><td>5</td></tr>
+<tr><td>1,0,1</td><td>2</td><td>✅</td><td>8</td></tr>
+<tr><td>1,1,0</td><td>2</td><td>✅</td><td>9</td></tr>
+<tr><td>1,2,1</td><td>4</td><td>✅</td><td>12</td></tr>
+<tr><td colspan="3"><strong>总和</strong></td><td><strong>39</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 5 -->
+<h2 id="step5" class="section-num"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱1：数组名不能自增</div>
+<p>数组名是一个<strong>指针常量</strong>，不能像指针变量一样进行自增（++）操作。这是 GESP 四级高频考点。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[5] = {1,2,3,4,5};
+int* p = arr;
+p++;        // ✅ 指针变量可以
+arr++;      // ❌ 数组名是常量，不能自增！</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱2：二维数组传参必须指定列数</div>
+<p>传递二维数组时，<strong>列的大小必须在编译时确定</strong>，否则编译器无法计算偏移。不能使用 <code>int** arr</code> 替代。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">void f(int arr[][4]) { }  // ✅ 正确：列数为4
+void f(int arr[3][4]) { } // ✅ 正确
+void f(int arr[][]) { }   // ❌ 错误：二维都省略
+void f(int** arr) { }     // ❌ 不能代替二维数组</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱3：二维数组定义时列大小不能省略</div>
+<p>定义二维数组时，列的大小必须在声明时确定，行的大小在有初始化列表时可以推导。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[3][4];     // ✅ 完全指定
+int arr[][4];      // ❌ 不能同时省略行数和初始化列表
+int arr[3][];      // ❌ 列大小不能省略
+int arr[][4] = {{1,2,3,4}}; // ✅ 行数可推导</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱4：部分初始化不会报错</div>
+<p>以下代码<strong>完全合法</strong>，未显式初始化的元素会自动设为 0。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[2][3] = {{1, 2}, {3}};
+// 结果: {{1, 2, 0}, {3, 0, 0}} ← 合法！
+// 并非每一行都必须显式初始化全部元素</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱5：new分配的内存不会自动释放</div>
+<p>在堆上用 <code>new</code> 分配的数组，必须手动用 <code>delete[]</code> 释放。而栈上的 <code>int arr[3][4]</code> 会在作用域结束时自动释放。这是两者关键区别。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int* arr = new int[12];   // 堆 → 需手动 delete[]
+int arr2[3][4];            // 栈 → 自动释放
+// delete[] arr;           // 必须做，否则内存泄漏</code></pre></div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 6 -->
+<h2 id="step6" class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<!-- 选择题 -->
+<div class="card success">
+<div class="card-title">📝 第 1 题 · 数组概念（2023/06 第4题）</div>
+<p>下列关于C++语言中数组的叙述，不正确的是（ ）。</p>
+<p>A. 一维数组可以用来表示数列<br>B. 二维数组可以用来表示矩阵<br>C. 三维数组可以用来表示空间中物体的形状<br>D. 世界是三维的，所以定义四维数组没有意义</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：四维数组在编程中有其用途（如时空建模、多维统计数据），「没有意义」的说法是错误的。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 2 题 · sizeof 二维数组（2023/09 第8题）</div>
+<p>一个二维数组定义为 <code>char array[3][10];</code>，则这个二维数组占用内存的大小为（ ）。</p>
+<p>A. 10 &nbsp;&nbsp; B. 30 &nbsp;&nbsp; C. 32 &nbsp;&nbsp; D. 48</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：char = 1字节，3×10×1 = <strong>30字节</strong>。不要乘上4（那是int的大小）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 3 题 · 二维数组元素访问（2023/09 第10题）</div>
+<p>假设 <code>int arr[2][3] = {{1,2,3},{4,5,6}};</code>，则 <code>arr[1][2]</code> 的值是（ ）。</p>
+<p>A. 2 &nbsp;&nbsp; B. 3 &nbsp;&nbsp; C. 5 &nbsp;&nbsp; D. 6</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：arr[1][2] = 第1行（索引从0开始，即第2行）第2列 = 6。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 4 题 · 三维数组地址偏移（2024/03 第4题）</div>
+<p>一个三维数组定义为 <code>long long array[6][6][6];</code>，则 <code>array[1][2][3]</code> 和 <code>array[3][2][1]</code> 在内存中的位置相差多少字节？（ ）</p>
+<p>A. 70字节 &nbsp;&nbsp; B. 198字节 &nbsp;&nbsp; C. 560字节 &nbsp;&nbsp; D. 无法确定</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：C<br><strong>解析</strong>：线性索引差 = (3×36+2×6+1) - (1×36+2×6+3) = 121 - 51 = 70；字节差 = 70 × 8 = <strong>560字节</strong>。</div></div>
+</div>
+
+<!-- 第5~7题 图片题 -->
+<div class="card success">
+<div class="card-title">📝 第 5~7 题 · 图片题说明（2024/03 第5题）</div>
+<p>第5~7题原题含图片，属二维数组遍历与访问相关内容。根据答案记录：第5题选 <strong>B</strong>，第6题选 <strong>C</strong>，第7题选 <strong>C</strong>。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示详细说明</button>
+<div class="answer-content"><div class="quote-box"><strong>第5题（B）</strong>：涉及二维数组定义与初始化。<br><strong>第6题（C）</strong>：涉及二维数组元素的遍历与访问。<br><strong>第7题（C）</strong>：涉及二维数组指针与地址计算。<br>建议参考原题图片进行完整练习。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 8 题 · arr[1] 占用内存（2024/09 第7题）</div>
+<p>对二维数组 <code>int arr[3][16];</code>，则 arr[1] 占用内存的大小为（ ）字节。</p>
+<p>A. 4 &nbsp;&nbsp; B. 16 &nbsp;&nbsp; C. 48 &nbsp;&nbsp; D. 64</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：arr[1] 是第1行，共16个int，每个int占4字节，16×4 = <strong>64字节</strong>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 9 题 · arr[1] 的地址值（2024/09 第8题）</div>
+<p>对二维数组 <code>int arr[3][16];</code>，若 arr 的地址是 0x28cbc0，则 arr[1] 的值是（ ）。</p>
+<p>A. 0x28cbc4 &nbsp;&nbsp; B. 0x28cbd0 &nbsp;&nbsp; C. 0x28cc00 &nbsp;&nbsp; D. 不确定</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：C<br><strong>解析</strong>：一行16个int = 64字节 = 0x40。arr[1] = 0x28cbc0 + 0x40 = 0x28cc00。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 10 题 · 字符串指针数组（2024/12 第8题）</div>
+<p>执行下列C++代码时输出中的第2行是（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int main() {
+    char *s[]={(char*)"2024",(char*)"3.16",(char*)"GESP"};
+    for (int i=0; i&lt; 2; i++){
+        cout &lt;&lt; *s+i &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre></div>
+<p>A. 2024 &nbsp;&nbsp; B. 3.16 &nbsp;&nbsp; C. 024 &nbsp;&nbsp; D. 3</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：C<br><strong>解析</strong>：i=0时 <code>*s+0 = "2024"</code>；i=1时 <code>*s+1 = "2024" + 1 = "024"</code>（注意*s始终指向s[0]即"2024"）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 11 题 · 二维数组声明（2024/12 第9题）</div>
+<p>在 C++ 中，哪个选项正确声明了一个 3 行 4 列的二维数组？（ ）</p>
+<p>A. <code>int arr[3, 4];</code> &nbsp;&nbsp; B. <code>int arr[3][4];</code> &nbsp;&nbsp; C. <code>int arr[4][3];</code> &nbsp;&nbsp; D. <code>int arr(3, 4);</code></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：C++中多维数组使用连续的方括号 <code>[3][4]</code>，不能用逗号或圆括号。C语法正确但是4行3列。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 12 题 · arr[0] 占用内存（2025/03 第8题）</div>
+<p>一个二维数组定义为 <code>int arr[3][4];</code>（假设一个int变量占4个字节），则 int arr[0] 占用（ ）个字节的内存。</p>
+<p>A. 3 &nbsp;&nbsp; B. 4 &nbsp;&nbsp; C. 12 &nbsp;&nbsp; D. 16</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：arr[0]是第0行，4个int，4×4 = <strong>16字节</strong>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 13 题 · 正确的二维数组定义（2025/03 第9题）</div>
+<p>下面哪个选项正确定义了二维数组？（ ）</p>
+<p>A. <code>int a[3][];</code><br>B. <code>int a[][];</code><br>C. <code>int a[][4];</code><br>D. <code>int a[][2] = {{1,2},{1,2},{3,4}};</code></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：只有 D 有初始化列表且列大小确定。A列不能省略，B两个都省略且无初始化列表，C行和列都省略且无初始化列表。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 14 题 · 二维数组传参（2025/06 第2题）</div>
+<p>下面的函数接收一个 3行4列的二维数组并输出其中元素，则横线上不能填写（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">void printArray(________) {
+    for (int i = 0; i &lt; 3; ++i)
+        for (int j = 0; j &lt; 4; ++j)
+            std::cout &lt;&lt; arr[i][j] &lt;&lt; " ";
+}</code></pre></div>
+<p>A. <code>int arr[3][4]</code> &nbsp;&nbsp; B. <code>int arr[][4]</code> &nbsp;&nbsp; C. <code>int (*arr)[4]</code> &nbsp;&nbsp; D. <code>int** arr</code></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：int** 是二级指针，不能直接替代栈上二维数组。其余三种形式均可传递二维数组。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 15 题 · 栈 vs 堆（2025/06 第3题）</div>
+<p>在C++中，<code>int arr[3][4]</code>和<code>int* arr = new int[12]</code>均可模拟一个3行4列的二维数组。下面说法错误的是（ ）。</p>
+<p>A. 前者在栈上分配空间，适合数组较小的情况<br>B. 后者在堆上分配空间，数组较大时也适用<br>C. 这两种方式申请的内存空间都是连续的<br>D. 这两种方式申请的内存都能自动释放</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：new 分配的内存需要手动 <code>delete[]</code> 释放，不能自动释放。栈上的数组才会在作用域结束时自动释放。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 16 题 · 指针偏移与二维数组（2025/12 第3题）</div>
+<p>执行完下面的代码后，*(p + 5) 和 <code>arr[1][1]</code> 的值分别是（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[3][4] = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}};
+int* p = &amp;arr[0][0];</code></pre></div>
+<p>A. 5 6 &nbsp;&nbsp; B. 6 5 &nbsp;&nbsp; C. 5 5 &nbsp;&nbsp; D. 6 6</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：p指向arr[0][0]=1，p+5指向第6个元素即arr[1][1]=6。两者都是<strong>6</strong>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 第 17 题 · 三维数组条件求和（2025/12 第4题）</div>
+<p>执行完下面的代码后，sum 的值是（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[2][3][2] = {
+    {{1,2}, {3,4}, {5,6}},
+    {{7,8}, {9,10}, {11,12}}
+};
+int sum = 0;
+for(int i=0;i&lt;2;i++) for(int j=0;j&lt;3;j++) for(int k=0;k&lt;2;k++)
+    if((i+j+k)%2==0) sum += arr[i][j][k];</code></pre></div>
+<p>A. 36 &nbsp;&nbsp; B. 39 &nbsp;&nbsp; C. 78 &nbsp;&nbsp; D. 30</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：遍历所有元素，i+j+k 为偶数的位置有：(0,0,0)=1、(0,1,1)=4、(0,2,0)=5、(1,0,1)=8、(1,1,0)=9、(1,2,1)=12，total = <strong>39</strong>。</div></div>
+</div>
+
+<!-- 判断题分隔 -->
+<div class="think-box"><div class="tb-title">🤔 判断题专项</div><p>以下是 10 道判断题，请逐一判断正误。</p></div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 1（2025/12 第5题）</div>
+<p>如果希望记录10个最长为99字节的字符串，可以将字符串数组定义为 <code>char s[10][100];</code>。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：正确<br><strong>解析</strong>：10个字符串，每个最长99字符+1个'\0'=100字节，<code>char s[10][100]</code> 正好满足。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 2（2025/12 第6题）</div>
+<p>定义数组 <code>int a[2024][3][16]={2,0,2,4,3,1,6}</code>，则 <code>cout &lt;&lt; a[2023][2][15]</code> 的结果不确定。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：部分初始化时未指定的元素全部自动初始化为0，a[2023][2][15]确定的值为<strong>0</strong>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 3（2024/06 第9题）</div>
+<p>一个一维数组，至少含有一个自然数N，是一个合法的数列。可以在一维数组末尾加入一个自然数M，M不能超过一维数组末尾元素的一半，形成一个新的合法的一维数组，如果N=6，那么可以有6个不同的合法数组。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：正确<br><strong>解析</strong>：以6开头：{6}、{6,1}、{6,2}、{6,3}、{6,2,1}、{6,3,1} 共6种合法的生成序列。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 4（2024/09 第4题）</div>
+<p>二维数组的行的大小的必须在定义时确定，列的大小可以动态变化。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：恰好相反。C++中定义二维数组时<strong>列的大小必须在编译时确定</strong>，行的大小在有初始化列表时反而可以省略。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 5（2024/12 第4题）</div>
+<p><code>int arr[3][]</code> 是一个正确的二维数组的声明。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：列大小不能省略，<code>int arr[3][]</code> 会导致编译错误。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 6（2025/03 第5题）</div>
+<p>二维数组作为函数参数时，必须显式指定所有维度的大小。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：只需指定列的大小，行的大小可以省略：<code>void f(int arr[][4], int rows)</code> 是合法的传参方式。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 7（2025/06 第5题）</div>
+<p>下面这段代码不合法，因为每一行都必须显式初始化 3 个元素。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int arr[2][3] = {{1, 2}, {3}};</code></pre></div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：此代码<strong>完全合法</strong>。未显式指定的元素自动初始化为0，结果为 <code>{{1,2,0}, {3,0,0}}</code>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 8（2025/09 第5题）</div>
+<p>下面代码将二维数组 arr 传递给函数 f，函数内部用 <code>arr[i][j]</code> 访问元素，函数参数声明为 <code>int arr[][4]</code> 是错误的。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：<code>int arr[][4]</code> 是<strong>正确</strong>的二维数组传参方式，只需指明列数。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 9（2025/12 第3题）</div>
+<p>在 C++ 中，定义如下二维数组：<code>int a[3][4];</code>，数组 a 在内存中是按行优先连续存放的，即 <code>a[0][0]、a[0][1]、a[0][2]、a[0][3]</code> 在内存中是连续的。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：正确<br><strong>解析</strong>：C++ 采用<strong>行优先（Row-Major）</strong>存储方式，同一行的元素在内存中完全连续。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 判断题 10（2025/06 第4题）</div>
+<p>以下关于数组的描述中，哪个选项是错误的？数组名是一个指针常量；随机访问数组的元素方便快捷；数组可以像指针一样进行自增操作；sizeof(arr) 返回的是整个数组 arr 占用的字节数。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：「数组可以像指针一样进行自增操作」是错误的<br><strong>解析</strong>：数组名是指针常量，不能自增。其余三条均正确。</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- CHEATSHEET -->
+<h2 id="cheatsheet" class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="card indigo">
+<div class="card-title">📋 多维数组知识速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>关键要点</th></tr></thead>
+<tbody>
+<tr><td>声明语法</td><td><code>类型 数组名[行][列]</code>；三维：<code>[层][行][列]</code></td></tr>
+<tr><td>内存布局</td><td><strong>行优先（Row-Major）</strong>，同一行连续</td></tr>
+<tr><td>sizeof(一行)</td><td class="mono">sizeof(arr[0])</td> = 列数 × sizeof(元素)</td></tr>
+<tr><td>sizeof(全部)</td><td class="mono">sizeof(arr)</td> = 行数 × 列数 × sizeof(元素)</td></tr>
+<tr><td>地址计算</td><td><code>&amp;arr[i][j] = 基址 + (i×列数+j)×sizeof(元素)</code></td></tr>
+<tr><td>传参</td><td>必须指定<span class="key-point danger">列数</span>，行数可省略。不能用 <code>int**</code></td></tr>
+<tr><td>部分初始化</td><td>未指定元素自动为0，<span class="key-point success">合法</span></td></tr>
+<tr><td>数组名</td><td>指针常量，不可自增（<code>arr++</code> ❌）</td></tr>
+<tr><td>动态分配</td><td class="mono">new</td> 在堆上分配，需手动 <code>delete[]</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"行优先存储，列必须指定；arr[0]是一行，sizeof算总长；数组名不能自增，new须手动释放。"</strong></p>
+</div>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+// 答案折叠
+document.querySelectorAll('.answer-toggle').forEach(b=>{
+  b.addEventListener('click',function(){
+    const c=this.nextElementSibling;
+    if(c.classList.contains('open')){c.classList.remove('open');this.classList.remove('open');this.innerHTML='<span class="arrow">\u25b6</span> 显示答案'}
+    else{c.classList.add('open');this.classList.add('open');this.innerHTML='<span class="arrow">\u25bc</span> 隐藏答案'}
+  });
+});
+
+// ScrollSpy
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('h2.section-num');
+  const navLinks = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id});
+    navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+    document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+  });
+
+  // 颜色多样化
+  const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+  document.querySelectorAll('#step6 .card.success').forEach((c, i) => {
+    c.classList.remove('success');
+    c.classList.add(colors[i % colors.length]);
+  });
+});
+
+// 移动端菜单
+document.querySelector('.menu-toggle').addEventListener('click',()=>document.querySelector('.sidebar').classList.toggle('open'));
+</script>
+
+</body>
+</html>

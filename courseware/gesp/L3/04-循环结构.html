@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 循环结构</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+<nav class="sidebar">
+  <div class="sidebar-logo">GESP C++ 三级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：代码详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+<main class="main-content">
+<div class="content-wrapper">
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 循环结构</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">Loop Structures — 重复执行的艺术</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 4道选择题 + 3道判断题</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均1~2道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 约4%分值</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 循环就像打卡</h2>
+<div class="card accent"><div class="card-title">🎯 场景比喻：每天打卡</div>
+<p>想象你参加一个"百日打卡"活动——<strong>每天</strong>重复做同一件事（读书30分钟），直到满100天为止。这就是<strong>循环</strong>的本质：</p>
+<ul>
+  <li><strong>初始状态</strong>：天数 = 1</li>
+  <li><strong>循环条件</strong>：天数 ≤ 100</li>
+  <li><strong>循环体</strong>：读书30分钟</li>
+  <li><strong>迭代更新</strong>：天数 + 1</li>
+</ul>
+<p>在C++中，循环有三种写法：<span class="key-point">for</span>、<span class="key-point">while</span>、<span class="key-point">do-while</span>。它们都能实现"重复执行直到条件不满足"，但在语法和适用场景上各有特点。</p>
+</div>
+
+<div class="card primary"><div class="card-title">🔵 三种循环的生活类比</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>循环类型</th><th>生活类比</th><th>特点</th></tr></thead>
+<tbody>
+<tr><td><strong>for</strong></td><td>打卡活动：已知要执行100天</td><td>已知次数、写在同一行、紧凑</td></tr>
+<tr><td><strong>while</strong></td><td>减肥：体重&gt;目标就继续运动</td><td>未知次数、先判断再执行</td></tr>
+<tr><td><strong>do-while</strong></td><td>吃药：先吃一次，看效果再决定是否继续</td><td>至少执行一次、后判断条件</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 2: 核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+<div class="card primary"><div class="card-title">🔵 for / while / do-while 对比</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>特性</th><th>for</th><th>while</th><th>do-while</th></tr></thead>
+<tbody>
+<tr><td><strong>语法</strong></td><td class="mono">for(初始化;条件;更新){ }</td><td class="mono">while(条件){ }</td><td class="mono">do{ }while(条件);</td></tr>
+<tr><td><strong>最少执行次数</strong></td><td>0次</td><td>0次</td><td><strong>1次</strong></td></tr>
+<tr><td><strong>条件检查时机</strong></td><td>每次迭代前</td><td>每次迭代前</td><td>每次迭代后</td></tr>
+<tr><td><strong>适用场景</strong></td><td>已知循环次数</td><td>未知次数、条件驱动</td><td>至少需要执行一次</td></tr>
+<tr><td><strong>循环变量作用域</strong></td><td>声明的变量仅在循环内有效</td><td>使用外部变量</td><td>使用外部变量</td></tr>
+<tr><td><strong>等价性</strong></td><td colspan="3"><strong>任何for可转为while，任何while可转为for</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card success"><div class="card-title">✅ continue vs break</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>关键字</th><th>作用</th><th>影响范围</th><th>后续代码</th></tr></thead>
+<tbody>
+<tr><td><strong>continue</strong></td><td>跳过本次循环剩余语句，进入下一次迭代</td><td>仅当前本次迭代</td><td>continue <strong>之后</strong>的语句不执行</td></tr>
+<tr><td><strong>break</strong></td><td>立即退出整个循环</td><td>整个循环</td><td>循环体不再执行</td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box yellow"><div class="hb-title">💡 记忆口诀</div>
+<p><span class="key-point warn">continue = 跳过本次</span>（"继续"下一次循环）、<span class="key-point danger">break = 直接退出</span>（"打破"整个循环）。continue 后面的代码就像一条"死胡同"，永远不会被执行到。</p>
+</div>
+</div>
+
+<div class="card flat"><div class="card-title">📋 嵌套循环</div>
+<p>外层循环每执行一次，内层循环执行<strong>完整一轮</strong>。就像时钟：时针走1格（外层），分针走完整60格（内层）。</p>
+<div class="formula-box">总执行次数 = 外层循环次数 × 内层循环次数<br>例如：外层 4 次 × 内层随 i 变化的次数</div>
+</div>
+
+<!-- Step 3: 代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+<div class="card success"><div class="card-title">📝 代码模板：三种循环全覆盖</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    // === for循环：计算1~100的和 ===
+    int sum = 0;
+    for (int i = 1; i &lt;= 100; i++) {
+        sum += i;
+    }
+    cout &lt;&lt; "Sum: " &lt;&lt; sum &lt;&lt; endl;  // 5050
+
+    // === while循环：数字反转 ★高频考点★ ===
+    int x = 12345, reversed = 0;
+    while (x != 0) {
+        int digit = x % 10;           // 取最后一位
+        reversed = reversed * 10 + digit; // 拼接到结果末尾
+        x /= 10;                       // 去掉最后一位
+    }
+    cout &lt;&lt; "Reversed: " &lt;&lt; reversed &lt;&lt; endl; // 54321
+
+    // === 嵌套循环：打印三角形 ★高频考点★ ===
+    for (int i = 0; i &lt; 4; i++) {
+        for (int j = 0; j &lt;= i; j++) {
+            cout &lt;&lt; j;               // 输出 0,1,2,...
+        }
+        cout &lt;&lt; "#";                  // 每行末尾加 #
+    }
+    // 输出: 0#01#012#0123#
+
+    // === do-while：至少执行一次 ===
+    int n = 10;
+    do {
+        cout &lt;&lt; n &lt;&lt; " ";
+        n--;
+    } while (n &gt; 0);
+    // 输出: 10 9 8 7 6 5 4 3 2 1
+
+    return 0;
+}</code></pre></div>
+</div>
+
+<div class="highlight-box green"><div class="hb-title">🔑 数字反转算法详解</div>
+<p>以上面的 <span class="mono">x = 12345</span> 为例，跟踪每一步：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>x的值</th><th>digit = x % 10</th><th>reversed = reversed * 10 + digit</th><th>x /= 10</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td class="mono">12345</td><td>—</td><td class="mono">0</td><td>—</td></tr>
+<tr><td>第1轮</td><td class="mono">12345</td><td class="mono">5</td><td class="mono">0*10+5 = 5</td><td class="mono">1234</td></tr>
+<tr><td>第2轮</td><td class="mono">1234</td><td class="mono">4</td><td class="mono">5*10+4 = 54</td><td class="mono">123</td></tr>
+<tr><td>第3轮</td><td class="mono">123</td><td class="mono">3</td><td class="mono">54*10+3 = 543</td><td class="mono">12</td></tr>
+<tr><td>第4轮</td><td class="mono">12</td><td class="mono">2</td><td class="mono">543*10+2 = 5432</td><td class="mono">1</td></tr>
+<tr><td>第5轮</td><td class="mono">1</td><td class="mono">1</td><td class="mono">5432*10+1 = 54321</td><td class="mono">0</td></tr>
+<tr><td>结束</td><td class="mono">0</td><td colspan="3">x==0，退出循环，reversed = 54321</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 追踪循环执行过程</h2>
+<div class="card flat"><div class="card-title">📐 手工模拟：嵌套循环打印三角形</div>
+<p>以下代码会输出什么？跟着表格一步步走：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int i = 0; i &lt; 4; i++) {
+    for (int j = 0; j &lt;= i; j++) {
+        cout &lt;&lt; j;
+    }
+    cout &lt;&lt; "#";
+}</code></pre></div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>外层 i</th><th>内层 j</th><th>j ≤ i ?</th><th>输出 j</th><th>内层结束?</th><th>输出 #</th><th>本轮输出</th></tr></thead>
+<tbody>
+<tr><td class="mono">0</td><td class="mono">0</td><td>是</td><td>0</td><td>j++=1, 1≤0? 否→退出</td><td>#</td><td>0#</td></tr>
+<tr><td class="mono">1</td><td class="mono">0→1</td><td>是→是</td><td>0, 1</td><td>j++=2, 2≤1? 否→退出</td><td>#</td><td>01#</td></tr>
+<tr><td class="mono">2</td><td class="mono">0→1→2</td><td>是→是→是</td><td>0, 1, 2</td><td>j++=3, 3≤2? 否→退出</td><td>#</td><td>012#</td></tr>
+<tr><td class="mono">3</td><td class="mono">0→1→2→3</td><td>是→是→是→是</td><td>0, 1, 2, 3</td><td>j++=4, 4≤3? 否→退出</td><td>#</td><td>0123#</td></tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-box blue"><div class="hb-title">📊 最终输出</div>
+<div class="formula-box">0#01#012#0123#</div>
+<p>每轮内层循环输出 j 从 0 到 i，外层循环结束时输出一个 # 号。</p>
+</div>
+</div>
+
+<div class="card flat" style="margin-top:20px"><div class="card-title">📐 手工模拟：for循环中变量遮蔽</div>
+<p>以下代码 sum 的值是多少？注意循环体内部还有一个 <span class="mono">int sum = 0</span>！</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int sum = 0;
+for (int i = 1; i &lt;= 5; i += 2) {
+    sum += i;       // 使用的是外部 sum
+    int sum = 0;    // 这个 sum 屏蔽了外部的，但仅限当前花括号
+}</code></pre></div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>迭代</th><th>i</th><th>外部 sum += i</th><th>内部 int sum=0</th><th>外部 sum 最终</th></tr></thead>
+<tbody>
+<tr><td>第1轮</td><td class="mono">1</td><td class="mono">0+1=1</td><td>定义局部sum=0（不影响外部）</td><td class="mono">1</td></tr>
+<tr><td>第2轮</td><td class="mono">3</td><td class="mono">1+3=4</td><td>同上</td><td class="mono">4</td></tr>
+<tr><td>第3轮</td><td class="mono">5</td><td class="mono">4+5=9</td><td>同上</td><td class="mono">9</td></tr>
+<tr><td>退出</td><td class="mono">7</td><td>7 &gt; 5，不满足条件</td><td>—</td><td>循环结束，<strong>sum = 9</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 5: 常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱1：continue 后面的代码永远不会执行</div>
+<p>continue 语句会<strong>跳过</strong>循环体中它之后的所有语句，直接进入下一次迭代的条件判断。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i = 10, count = 0;
+while (i &gt; 0) {
+    i -= 3;
+    continue;      // ← 跳过后面的 count++
+    count++;       // ← 这行永远不会执行！❌
+}
+// 结果：count++ 执行 0 次！</code></pre></div>
+<p><span class="key-point danger">常见误区</span>：以为 continue 只是"跳到循环末尾"，但它实际上是"跳到下一次迭代的条件判断"。continue 之后的代码 = 死代码。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱2：循环变量的作用域</div>
+<p><span class="key-point">for 循环内声明的变量</span>其作用域仅限于该循环体。但如果在循环体内部（花括号内）再次声明同名变量，会<strong>遮蔽</strong>外部变量。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int sum = 0;
+for (int i = 1; i &lt;= 5; i += 2) {
+    sum += i;        // 外部 sum
+    int sum = 0;     // 内部 sum（局部变量，遮蔽外部）
+}
+// 循环结束后，外部 sum = 1+3+5 = 9
+// 花括号内的 int sum=0 不影响外部 sum</code></pre></div>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱3：死循环</div>
+<p>如果循环条件永远为真，或者更新语句没有正确修改循环变量的值，就会造成死循环。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 错误示例1：忘记更新循环变量
+int i = 0;
+while (i &lt; 5) {
+    cout &lt;&lt; i;  // 死循环！i 永远不会变
+}
+
+// 错误示例2：条件写错
+for (int i = 10; i &gt; 0; i++) {  // i++ 应该是 i--
+    cout &lt;&lt; i;  // 死循环！i 永远 &gt; 0
+}</code></pre></div>
+<p><span class="key-point danger">防死循环技巧</span>：每次写循环时检查三点——①条件能否变为false ②变量是否在逼近退出条件 ③边界条件是否正确。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱4：数字反转可能溢出</div>
+<p>反转一个很大的整数时，反转后的值可能超出 int 的范围（-2147483648 ~ 2147483647）。</p>
+<p>例如：2147483647 反转后 ≈ 7463847412，已超出 int 最大范围。能安全反转的最大位数正整数约为 1463847412。</p>
+</div>
+
+<!-- Step 6: 真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card purple">
+<div class="card-title">第1题 · for循环中变量遮蔽（2025/09 第4题）</div>
+<p>执行以下C++代码后，变量 sum 的值是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int sum = 0;
+for (int i = 1; i &lt;= 5; i += 2) {
+    sum += i;
+    int sum = 0;
+}</code></pre></div>
+<p>A. 6 &nbsp; B. 9 &nbsp; C. 15 &nbsp; D. 死循环</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：i=1→外部sum=0+1=1（内部int sum=0屏蔽外部但不影响外部值）；i=3→外部sum=1+3=4；i=5→外部sum=4+5=9。注意花括号内定义的sum屏蔽了外层的sum。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · continue 后的死代码（2025/09 第6题）</div>
+<p>以下C++代码 count++ 执行的次数是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int i = 10;
+int count = 0;
+while (i &gt; 0) {
+    i -= 3;
+    continue;
+    count++;
+}</code></pre></div>
+<p>A. 2 &nbsp; B. 3 &nbsp; C. 4 &nbsp; D. 0</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：continue 后面的 count++ 永远不会执行！每次循环遇到 continue 就直接跳到下一次迭代的条件判断，所以 count++ 执行 0 次。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 嵌套循环输出（2025/09 第7题）</div>
+<p>以下C++代码段的输出是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">for (int i = 0; i &lt; 4; i++) {
+    for (int j = 0; j &lt;= i; j++) {
+        cout &lt;&lt; j;
+    }
+    cout &lt;&lt; "#";
+}</code></pre></div>
+<p>A. 0#01#012#0123# &nbsp; B. 1#12#123#1234# &nbsp; C. 0#1#2#3# &nbsp; D. 0#01#012#01243#</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+解析：i=0: j=0 → "0"+"#"；i=1: j=0,1 → "01"+"#"；i=2: "012"+"#"；i=3: "0123"+"#"。输出 0#01#012#0123#。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 数字反转溢出（2025/09 第8题）</div>
+<p>关于以下代码的说法正确的是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int reversed = 0;
+while (x != 0) {
+    int digit = x % 10;
+    x /= 10;
+    reversed = reversed * 10 + digit;
+}</code></pre></div>
+<p>A. 能够反转任何位数的整数<br>B. 能够反转的最大位数正整数是 2147483647<br>C. 能够反转的最大位数正整数是 2147483648<br>D. 能够反转的最大位数正整数是 1463847412</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：反转可能导致溢出。int最大值2147483647反转后超出范围。能安全反转的最大正整数其反转不溢出，1463847412反转后约为2147483641在int范围内。
+</div></div>
+</div>
+
+<h3>判断题</h3>
+
+<div class="card success">
+<div class="card-title">判断题第1题 · while 转 for</div>
+<p>任何一个while循环都可以转化为等价的for循环。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：正确</strong><br>
+解析：任何 while(条件){...} 都可以写成 for(;条件;){...} 的形式，两者完全等价。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第2题 · for 转 while</div>
+<p>任何一个for循环都可以转化为等价的while循环。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：正确</strong><br>
+解析：任何 for(初始化;条件;更新){循环体} 都可以改写为：初始化; while(条件){循环体; 更新;}。
+</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">判断题第3题 · do-while 最少执行一次</div>
+<p>do { ... } while (false); 循环体内的语句至少会被执行一次。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：正确</strong><br>
+解析：do-while 的特性就是先执行一次循环体，再判断条件。即使条件是 false，循环体也已经执行过一次了。
+</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 循环结构速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>关键内容</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td><strong>for循环</strong></td><td class="mono">for(初始化;条件;更新){ }</td><td>已知次数时首选</td></tr>
+<tr><td><strong>while循环</strong></td><td class="mono">while(条件){ }</td><td>未知次数、条件驱动</td></tr>
+<tr><td><strong>do-while</strong></td><td class="mono">do{ }while(条件);</td><td>至少执行一次</td></tr>
+<tr><td><strong>continue</strong></td><td>跳过本次剩余语句</td><td>continue后的代码不会执行</td></tr>
+<tr><td><strong>break</strong></td><td>立即退出循环</td><td>整个循环结束</td></tr>
+<tr><td><strong>嵌套循环</strong></td><td>外层1次→内层完整一轮</td><td>总执行次数=外层×内层</td></tr>
+<tr><td><strong>循环等价性</strong></td><td>for ⇔ while 可互转</td><td>do-while无法等价转换为for/while</td></tr>
+<tr><td><strong>变量作用域</strong></td><td>for内声明的变量仅循环内有效</td><td>花括号内可遮蔽外部同名变量</td></tr>
+<tr><td><strong>数字反转</strong></td><td class="mono">reversed=r*10+x%10; x/=10</td><td>★高频考点，注意溢出</td></tr>
+<tr><td><strong>死循环</strong></td><td>条件永远为真 或 变量不逼近退出条件</td><td>三要素检查法</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div></main>
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

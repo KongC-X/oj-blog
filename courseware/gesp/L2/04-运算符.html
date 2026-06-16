@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++二级 · 运算符</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+/* 侧边栏 — 浅色背景 */
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+/* 标题 */
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+/* 卡片系统 — 必须包含全部10种颜色定义 */
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+
+/* 高亮提示盒 */
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+/* 特殊盒 */
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+
+/* 代码块 */
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+/* 表格 */
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+/* 内联标记 */
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+/* 引用块 */
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+/* 答案折叠 */
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+
+/* 分隔线 + 返回顶部 */
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+/* 侧边栏滚动条 */
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* 响应式 */
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">📘 GESP C++ 二级课件</div>
+  <div class="nav-section">
+    <div class="nav-section-title">全部课件</div>
+    <a class="nav-link" href="#hero-section">🏠 课程首页</a>
+    <a class="nav-link" href="#step1">1️⃣ 生活引入</a>
+    <a class="nav-link" href="#step2">2️⃣ 核心概念</a>
+    <a class="nav-link" href="#step3">3️⃣ 代码详解</a>
+    <a class="nav-link" href="#step4">4️⃣ 手工模拟</a>
+    <a class="nav-link" href="#step5">5️⃣ 常见陷阱</a>
+    <a class="nav-link" href="#step6">6️⃣ 真题实战</a>
+    <a class="nav-link" href="#quick-ref">📋 知识速查卡</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="01-计算机存储与网络.html">01 · 计算机存储与网络</a>
+    <a class="nav-link" href="02-程序设计语言的特点.html">02 · 程序设计语言的特点</a>
+    <a class="nav-link" href="03-数据类型转换.html">03 · 数据类型转换</a>
+    <a class="nav-link active" href="04-运算符.html">04 · 运算符 ⬅ 当前</a>
+    <a class="nav-link" href="05-多层分支循环结构.html">05 · 多层分支/循环结构</a>
+    <a class="nav-link" href="06-常用数学函数.html">06 · 常用数学函数</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#ffffff;margin-bottom:10px">GESP C++ 二级 · 运算符</h1>
+  <p style="color:#94a3b8;font-size:1.1rem;margin-bottom:24px">Operators & Expressions — 算术、关系、逻辑与位运算符</p>
+  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+    <span style="background:rgba(139,92,246,.25);color:#c4b5fd;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⚡ 9道选择题 + 15道判断题</span>
+    <span style="background:rgba(99,102,241,.25);color:#a5b4fc;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">📊 年均出题6~7道</span>
+    <span style="background:rgba(245,158,11,.25);color:#fcd34d;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600">⭐ 占总分约20%</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 生活中的「规则运算」</h2>
+
+<div class="card accent"><div class="card-title">🎯 场景比喻：小学生排队分组</div>
+<p>想象一下操场上有<strong>120个小朋友</strong>，老师喊"每10人一排"，这就是 <span class="key-point">N / 10</span>——<strong>多少个整排</strong>。老师再问"最后一排剩几个？"，这就是 <span class="key-point">N % 10</span>——<strong>余数</strong>。C++ 的运算符就是帮你快速算出这些答案的「数学工具集」，只是比小学数学多了几个新朋友：<strong>关系运算符</strong>（比大小）、<strong>逻辑运算符</strong>（并且/或者）、<strong>位运算符</strong>（二进制层面操作）。</p></div>
+
+<div class="card primary"><div class="card-title">🔍 为什么运算符是C++二级高频考点？</div>
+<p>GESP 二级考试中，运算符占比约 <strong>20%</strong>，几乎每套试卷都有 6~7 道题直接考查运算符。核心原因：<strong>运算符是程序逻辑的基石</strong>——条件判断、循环控制、数据提取（取位、取余）全部依赖运算符。二级特别侧重 <span class="key-point">% / 的组合使用</span>和 <span class="key-point">== 与 = 的区分</span>。</p></div>
+
+<!-- Step 2: 核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念 — 五大运算符家族</h2>
+
+<div class="highlight-box blue"><div class="hb-title">📐 二级考的运算符全貌</div>
+<p>GESP C++ 二级主要考查以下五类运算符，按出题频率从高到低排列：</p></div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类别</th><th>运算符</th><th>含义</th><th>举例</th><th>出题频率</th></tr></thead>
+<tbody>
+<tr><td><strong>算术运算符</strong></td><td class="mono">+ - * / %</td><td>加减乘除、取余</td><td class="mono">N % 1000 / 100</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>关系运算符</strong></td><td class="mono">== != > < >= <=</td><td>大小比较（结果为 bool）</td><td class="mono">a == b → 0</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td><strong>逻辑运算符</strong></td><td class="mono">&& || !</td><td>与、或、非</td><td class="mono">(a>5) && (a<10)</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td><strong>赋值运算符</strong></td><td class="mono">= += -= *= /= %=</td><td>赋值与复合赋值</td><td class="mono">a *= b</td><td>⭐⭐⭐</td></tr>
+<tr><td><strong>逗号运算符</strong></td><td class="mono">,</td><td>顺序求值，返回最右值</td><td class="mono">b = (6, 28)</td><td>⭐⭐⭐</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔥 核心考点速记</h3>
+
+<div class="card primary"><div class="card-title">🔵 考点一：整数除法 / 与取余 %</div>
+<ul>
+  <li><strong>/ 整数除法：</strong> 舍弃小数部分（向零取整），<span class="key-point">N / 10</span> 舍弃个位</li>
+  <li><strong>% 取余：</strong> 返回除法余数，<span class="key-point">N % 10</span> 获取个位</li>
+  <li><strong>经典组合：</strong> <span class="key-point">N / 100 % 10</span> 获取百位数</li>
+</ul></div>
+
+<div class="card success"><div class="card-title">🟢 考点二：== vs =（最容易错！）</div>
+<ul>
+  <li><strong>=</strong> 是赋值运算符，将右边值赋给左边变量</li>
+  <li><strong>==</strong> 是关系运算符，比较两边是否相等，返回 bool 值</li>
+  <li><span class="key-point warn">a == b;</span> 单独出现不会改变 a、b 的值！</li>
+</ul></div>
+
+<div class="card purple"><div class="card-title">🟣 考点三：逻辑表达式与短路求值</div>
+<ul>
+  <li><strong>&& 与：</strong> 两边都为 true 才为 true，左边为 false 时右边不执行</li>
+  <li><strong>|| 或：</strong> 任意一边为 true 即为 true，左边为 true 时右边不执行</li>
+  <li><strong>! 非：</strong> 取反，<span class="key-point">!0 → 1</span>，<span class="key-point">!非零 → 0</span></li>
+  <li><strong>注意：</strong> <span class="key-point danger">5 &lt;= a &lt;= 10</span> 在 C++ 中不是"a在5到10之间"！</li>
+</ul></div>
+
+<div class="card indigo"><div class="card-title">🔷 考点四：逗号表达式</div>
+<ul>
+  <li>逗号运算符从左到右依次求值，<strong>返回最右边的值</strong></li>
+  <li><span class="key-point">b = (6, 28);</span> → b 的值为 28</li>
+  <li><span class="key-point">a, b = 3, 4;</span> → 只有 b=4，a 未初始化（编译错误/不确定）</li>
+</ul></div>
+
+<div class="card orange"><div class="card-title">🟠 考点五：运算符优先级</div>
+<ul>
+  <li><strong>优先级口诀：</strong> 算术 > 关系 > 逻辑 > 赋值</li>
+  <li><strong>% 和 * / 同级</strong>，从左到右结合</li>
+  <li>混淆时加括号：<span class="key-point">N % 1000 / 100</span> 等价 <span class="key-point">(N % 1000) / 100</span></li>
+</ul></div>
+
+<!-- Step 3: 代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解 — 运算符实战模板</h2>
+
+<div class="card success"><div class="card-title">📝 代码模板一：取位操作（二级必考）</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 获取正整数N的任意位数
+int N = 1234567;
+
+int ge    = N % 10;         // 个位：7
+int shi   = N / 10 % 10;    // 十位：6
+int bai   = N / 100 % 10;   // 百位：5
+int qian  = N / 1000 % 10;  // 千位：4
+
+// 通用公式：第 M 位（从右数）= N / (10^(M-1)) % 10
+</code></pre></div></div>
+
+<div class="card purple"><div class="card-title">📝 代码模板二：== 与 = 的陷阱演示</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 3, b = 4;
+
+a == b;   // 比较 a 和 b 是否相等（返回 false / 0）
+          // ❗ 但 a、b 的值不变，仍是 3 和 4
+
+a = b;    // 赋值：a 变成 4
+          // 此时 a=4, b=4
+
+cout << a << ' ' << b;  // 输出 4 4
+</code></pre></div></div>
+
+<div class="card teal"><div class="card-title">📝 代码模板三：逻辑运算符链式比较陷阱</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N = 12;
+
+// ❌ 错误写法：会被解析为 (10 <= N) <= 12
+// (10 <= 12) → true(1), 然后 1 <= 12 → true(1)
+cout << (10 <= N <= 12);     // 输出 1 (true)
+
+// ✅ 正确写法：
+cout << (10 <= N && N <= 12); // 输出 1 (true)
+
+// 但当 N=0 时：
+// ❌ 错误：10 <= 0 → 0, 0 <= 12 → 1 → 输出 1（错误！）
+// ✅ 正确：10 <= 0 → false, 短路求值 → 输出 0（正确）
+</code></pre></div></div>
+
+<div class="card indigo"><div class="card-title">📝 代码模板四：逗号表达式</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 逗号运算符：从左到右依次求值，返回最右边的值
+int a, b;
+b = (6, 28);    // b = 28（6被求值后丢弃）
+// 此时 b=28, a 未初始化
+
+// 不是逗号运算符！
+int c = 3, d = 4; // 这是变量声明中的逗号分隔符
+// c=3, d=4
+
+// 注意区别：
+// a, b = 3, 4; → 等价于 (a), (b=3), (4)
+// 只有 b=3, a 未初始化（编译错误/不确定）
+</code></pre></div></div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟 — 变量追踪表</h2>
+
+<div class="card accent"><div class="card-title">🧮 模拟题一：运算符优先级追踪</div>
+<p>表达式：<strong>3 + 3 % 3 * 2 - 1</strong></p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>中间结果</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="mono">3 % 3</td><td class="mono">0</td><td>% 和 * 同级，从左到右</td></tr>
+<tr><td>2</td><td class="mono">0 * 2</td><td class="mono">0</td><td>乘除取余运算</td></tr>
+<tr><td>3</td><td class="mono">3 + 0</td><td class="mono">3</td><td>加法</td></tr>
+<tr><td>4</td><td class="mono">3 - 1</td><td class="mono"><strong>2</strong></td><td>最终结果 = 2</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card primary"><div class="card-title">🧮 模拟题二：char 类型运算</div>
+<p>已知 'C' 的 ASCII 码为 67，求 <strong>cout &lt;&lt; (a + 2);</strong> 的输出</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>变量</th><th>值</th><th>类型</th><th>运算</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>a</td><td class="mono">'C'</td><td>char</td><td>ASCII 码 = 67</td><td class="mono">—</td></tr>
+<tr><td>a + 2</td><td class="mono">67 + 2</td><td>int</td><td>整数加法</td><td class="mono"><strong>69</strong></td></tr>
+<tr><td colspan="5"><em>char 参与算术运算时自动转换为 int（ASCII码），a+2 结果为 int 类型 69，而非字符 'E'</em></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card purple"><div class="card-title">🧮 模拟题三：逗号表达式赋值过程</div>
+<p>执行 <strong>int a, b = (6, 28);</strong> 后 a 和 b 的值</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>a 的值</th><th>b 的值</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td>声明变量</td><td class="mono">垃圾值</td><td class="mono">垃圾值</td><td>未初始化</td></tr>
+<tr><td>逗号表达式</td><td class="mono">(6, 28)</td><td class="mono">垃圾值</td><td class="mono">—</td><td>先求 6（丢弃），再求 28</td></tr>
+<tr><td>赋值</td><td class="mono">b = 28</td><td class="mono">垃圾值</td><td class="mono"><strong>28</strong></td><td>a 仍是垃圾值（不确定）</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 5: 常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱 — 二级最易失分点</h2>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱一：== 写成 =（最高频错误！）</div>
+<p>以下代码中 <code>a == b;</code> <strong>不会改变 a、b 的值</strong>。这是 GESP 二级出题人最爱挖的坑——在代码中插入看似有意义的比较语句，实际是"空操作"。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 3, b = 4;
+a == b;   // 比较但不赋值，a 和 b 不变
+b == a;   // 同样无效果
+cout << a << ' ' << b;  // 输出 3 4（不是4 3！）
+</code></pre></div>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱二：链式比较不成立</div>
+<p><code>5 &lt;= a &lt;= 10</code> 在 Python 中正确，但在 C++ 中被解析为 <code>(5 &lt;= a) &lt;= 10</code>：先计算 <code>5 &lt;= a</code>（得 0 或 1），再和 10 比较，<strong>几乎总是 true</strong>。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱三：% 操作符的操作数必须是整数</div>
+<p><code>7.8 % 2</code> 是<strong>编译错误</strong>——% 只能用于整型操作数。此外，<code>a % 0</code> 会导致运行时错误（除零）。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱四：逗号表达式作为参数</div>
+<p><code>cout &lt;&lt; (a, b);</code> 输出的是 <strong>b</strong> 而非 a——逗号在括号内作为逗号运算符返回最右值。而 <code>cout &lt;&lt; a, b;</code>（无括号）则先输出 a，b 被求值但丢弃。</p></div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱五：逻辑表达式的结果可以参与算术</div>
+<p>在 C++ 中，<code>true</code> 等价 <code>1</code>，<code>false</code> 等价 <code>0</code>。所以 <code>b = (a == 5);</code> 可以将比较结果存入 int 变量。这在选择题中经常出现。</p></div>
+
+<div class="tip-box">
+<strong>💡 防错口诀：</strong> 赋值看一个等号(=)，比较看两个等号(==)；取位先除再取余，链式比较用 &&；逗号只看最右边，逻辑真假即 0/1。
+</div>
+
+<!-- Step 6: 真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战 — 运算符选择题</h2>
+
+<!-- 选择题 颜色轮换: purple → pink → teal → indigo → orange -->
+
+<div class="card purple">
+<div class="card-title">第1题 · 取位操作（2023/03 第5题）</div>
+<p>下面C++代码用于获得正整数的第3位数，如1234则输出2。如果是一位数或两位数，则输出0。横线处应填入的代码是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, remainder;
+cout << "请输入正整数:";
+cin >> N;
+cout << _________________;</code></pre></div>
+<p>A. N % 1000 / 100 &nbsp;&nbsp; B. N / 1000 % 100 &nbsp;&nbsp; C. N / 1000 / 100 &nbsp;&nbsp; D. N % 100 / 100</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong>取第3位数（百位）：<code>N % 1000</code> 保留低三位，再 <code>/ 100</code> 取出百位。B/C 逻辑错误，D 中 <code>N % 100</code> 只保留个位和十位。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 逗号表达式（2023/06 第10题）</div>
+<p>下面C++代码执行，其输出是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a, b = (6, 28);
+b == a;
+a = b;
+cout << a << ' ' << b;</code></pre></div>
+<p>A. 6 28 &nbsp;&nbsp; B. 6 6 &nbsp;&nbsp; C. 28 6 &nbsp;&nbsp; D. 28 28</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong><code>b = (6, 28)</code> 中逗号表达式返回 28，所以 b=28。<code>b == a</code> 是比较，a 不变（垃圾值）。<code>a = b</code> 后 a 也变成 28。输出 28 28。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 取余应用（2023/09 第15题）</div>
+<p>今天星期六，其后第N天星期几？下面的C++代码中，横线处应填上的代码是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, remainder;
+cin >> N;
+remainder = _____________;
+if(remainder == 0)
+    printf("星期六后第%d天是星期天\n", N);
+else
+    printf("星期六后第%d天是星期%d\n", N, remainder);</code></pre></div>
+<p>A. (N + 6) / 7 &nbsp;&nbsp; B. (N + 6) // 7 &nbsp;&nbsp; C. N % 7 &nbsp;&nbsp; D. (N + 6) % 7</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>星期六后 N 天：(星期六 + N) 对应星期几。星期六=6（假设星期日=0），则 <code>(6 + N) % 7</code>，余数 0 为星期天。C 只算 N%7 没有偏移。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 运算符优先级（2023/12 第8题）</div>
+<p>C++语句 <code>cout &lt;&lt; (3 + 3 % 3 * 2 - 1)</code> 执行后输出的值是：</p>
+<p>A. -1 &nbsp;&nbsp; B. 4 &nbsp;&nbsp; C. 56 &nbsp;&nbsp; D. 2</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>按优先级：<code>3%3=0</code> → <code>0*2=0</code> → <code>3+0=3</code> → <code>3-1=2</code>。% 与 * 同级从左到右。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · ==与=的区别（2024/03 第6题）</div>
+<p>下面C++代码执行，其输出是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=3, b = 4;
+a == b;
+b == a;
+cout << a << ' ' << b << endl;</code></pre></div>
+<p>A. 3 4 &nbsp;&nbsp; B. 3 3 &nbsp;&nbsp; C. 4 4 &nbsp;&nbsp; D. 4 3</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong><code>a == b</code> 和 <code>b == a</code> 都只是比较操作，不改变任何变量的值。a 仍是 3，b 仍是 4。输出 <strong>3 4</strong>。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · char类型算术运算（2024/06 第12题）</div>
+<p>如果 a 为 char 类型的变量，且 a 的值为'C'（已知'C'的 ASCII 码为 67），则执行 <code>cout &lt;&lt; (a + 2);</code> 会输出：</p>
+<p>A. E &nbsp;&nbsp; B. C+2 &nbsp;&nbsp; C. C2 &nbsp;&nbsp; D. 69</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>char 参与算术运算自动转为 int（ASCII码 67）。67+2=69，cout 输出整数 69，不是字符。若要输出字符'E'，需写 <code>cout &lt;&lt; char(a + 2);</code>。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · 通用取位公式（2024/09 第18题）</div>
+<p>下面C++代码用于获得正整数N的第M位数，如N等于1234，M等于2，则输出3。横线处应填入：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, M, div=1;
+cin >> N >> M;
+for (int i =0; i < (M - 1); i++) div *= 10;
+cout << (______________);</code></pre></div>
+<p>A. N % div / 10 &nbsp;&nbsp; B. N / div / 10 &nbsp;&nbsp; C. N % div % 10 &nbsp;&nbsp; D. N / div % 10</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>div = 10^(M-1)。<code>N / div</code> 将目标位移到个位，再 <code>% 10</code> 取出。通用公式：第M位 = N/(10^(M-1))%10。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · 逗号表达式声明陷阱（2024/12 第4题）</div>
+<p>下面C++代码执行，其输出是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">a, b = 3, 4;
+c = a == b;
+cout << a << ' ' << b << ' ' << c;</code></pre></div>
+<p>A. 3 4 0 &nbsp;&nbsp; B. 3 3 3 &nbsp;&nbsp; C. 4 4 4 &nbsp;&nbsp; D. 以上都不对</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+<strong>解析：</strong>变量 a 和 c 未声明类型，C++ 中会<strong>编译错误</strong>。即使假设声明了，<code>a, b = 3, 4</code> 等价于 <code>a; b=3; 4;</code>，a 是未初始化值。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第9题 · 余数优化判断（2025/03 第20题）</div>
+<p>求三色彩球的颜色。每组5红3绿2蓝。输入编号求该球颜色。下面是C++代码，正确说法是：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int N, remainder;
+cin >> N;
+remainder = N % 10;
+if((1 <= remainder) && (remainder<= 5))
+    cout << "Red";
+else if ((6 <= remainder) && (remainder <= 8))
+    cout << "Green";
+else if ((remainder == 9) || (remainder == 0))
+    cout << "Blue";</code></pre></div>
+<p>A. 将 <code>else if ((remainder == 9) || (remainder == 0))</code> 修改为 <code>else</code> 效果相同<br>
+B. 将 <code>((1 <= remainder) && (remainder<= 5))</code> 修改为 <code>(remainder <= 5)</code> 效果相同<br>
+C. <code>else if ((6 <= remainder) && (remainder <= 8))</code> 写法错误<br>
+D. remainder = N % 10 应修改为 remainder = N / 10</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong>余数 0~9 中去掉 1~5 和 6~8 后只剩 0 和 9，所以直接 else 效果相同。B 错在 remainder=0 时也会进入（但0应该是Blue）。C 写法合法。D 逻辑全错。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第10题 · 编号循环取余（2025/06 第11题）</div>
+<p>某种编号规则是"XX-Y"，XX从00到11（12个值），Y从0到9（10个值）。生成第N个编号，横线处应填：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cout << "请输入编号位置：";
+cin >> N;
+part1 = N % _____;
+part2 = N % _____;</code></pre></div>
+<p>A. 12 10 &nbsp;&nbsp; B. 10 10 &nbsp;&nbsp; C. 11 9 &nbsp;&nbsp; D. 9 9</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：A</strong><br>
+<strong>解析：</strong>XX 从 00 到 11 共 12 个值，用 <code>N % 12</code> 循环。Y 从 0 到 9 共 10 个值，用 <code>N % 10</code> 循环。两者同时递增形成组合编号。
+</div></div>
+</div>
+
+<!-- 判断题部分 -->
+<h3>判断题</h3>
+
+<!-- 判断题颜色: purple → pink → teal 循环 -->
+
+<div class="card purple">
+<div class="card-title">判断题第1题（2023/03 第1题）</div>
+<p>在C++代码中，假设N为正整数，则 N / 10 舍弃个位数。如果 N 小于10，则其值为0，大于10则是舍弃个位数的数。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>整数除法自动舍弃小数部分。N/10 实现个位数舍弃，N&lt;10 时结果为 0。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第2题（2023/03 第5题）</div>
+<p>下列C++代码执行后，其输出为 10 20 ，即 a == b 和 b == a 对 a 和 b 的值没有任何影响。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 10, b = 20;
+a == b;
+b == a;
+cout << (a, b);</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>输出不是 10 20！<code>cout &lt;&lt; (a, b)</code> 中逗号是运算符，返回 b=20 只输出 20。a==b 和 b==a 确实不影响变量值，但这个说法本身描述输出不准确。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第3题（2023/06 第3题）</div>
+<p>下面C++代码执行时如输入59.99，将输出「及格」两个汉字。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int score;
+cout << "请输入学生成绩: ";
+cin >> score;
+if (score < 60)
+    cout << "不及格";
+else
+    cout << "及格";</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>score 是 int 类型，cin 读入 59.99 时只取整数部分 59，遇到小数点停止。59&lt;60，输出「不及格」，不是「及格」。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第4题（2023/09 第7题）</div>
+<p>在C++代码中，假设N为正整数，则 N - N / 10 * 10 与 N % 10 都将获得N的个位数。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br><code>N - N/10*10</code> 是取余的等价写法。N/10 去掉个位，乘以10后面补0，减去原数就得个位。与 N%10 等效。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第5题（2023/12 第12题）</div>
+<p>下面C++执行后将输出 3*2=6 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a=2, b = 3;
+a=a-b;
+b=a+b;
+a=b-a;
+printf("%d*%d=%d\n", a, b, a*b);</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>这是一个无临时变量的交换算法：a=a-b=-1, b=a+b=2, a=b-a=3。交换后 a=3, b=2，输出 3*2=6。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第6题（2024/03 第2题）</div>
+<p>在C++语句 <code>cout &lt;&lt; (10 &lt;= N &lt;= 12)</code> 中，假设N为12，则其输出为1。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br><code>10&lt;=12</code> → true(1)，<code>1&lt;=12</code> → true(1)，输出 1。但注意这个表达式不能正确判断 N 是否在 10~12 之间——当 N=0 时也会输出 1！（0&lt;=10→true(1)→1&lt;=12→true）</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第7题（2024/06 第8题）</div>
+<p>下面C++代码执行后将输出2*3=6。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 2, b = 3;
+printf("%%a*%%b=%d",a*b);</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br><code>%%</code> 在 printf 格式字符串中输出一个字面 % 符号，所以实际输出是 <strong>%a*%b=6</strong>，不是 2*3=6。%a 和 %b 不是有效的格式说明符。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第8题（2024/09 第4题）</div>
+<p>如果 a 为 int 类型的变量，则表达式 <code>(a &gt;= 5 && a &lt;= 10)</code> 与 <code>(5 &lt;= a &lt;= 10)</code> 的值总是相同的。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>当 a=0 时：<code>(0&gt;=5&&0&lt;=10)</code> → false(0)；<code>(5&lt;=0&lt;=10)</code> → <code>(0&lt;=10)</code> → true(1)。结果不同。链式比较在 C++ 中有语义差异。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第9题（2024/12 第9题）</div>
+<p>下列C++代码执行后将输出 1 ，因为 a 确实小于 20 和 10。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">a = 5;
+cout << (a < 10 and 20);</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br><code>a &lt; 10 and 20</code> 被解析为 <code>(a &lt; 10) and 20</code>。and (即 &&) 两边非零即 true。5&lt;10 → true(1)，1 && 20 → true(1)。输出是 1 没错，但<strong>说法不准确</strong>：不是因为"小于20和10"，而是因为逻辑与两边都非零。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第10题（2025/03 第6题）</div>
+<p>下面的C++代码中变量都是整型，则执行后将输出 1 。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">x, y, z = 5, 10, 15;
+result = x < y < z;
+cout << result;</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>虽然 x、y 未初始化（垃圾值），但 <code>x&lt;y</code> 结果是 0 或 1。0&lt;15 → 1，1&lt;15 → 1，无论如何都输出 1。但注意这实际上是"无论 x,y 是什么值都输出 1"——链式比较的陷阱。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第11题（2025/03 第14题）</div>
+<p>下面C++代码执行时如输入 99.99 ，将输出「及格」两个汉字。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int score;
+cout << "请输入学生成绩：";
+cin >> score;
+if (score >= 60)
+    printf("及格");
+else
+    printf("不及格");</code></pre></div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br>score 是 int 类型，cin 读入 99.99 时只取整数部分 99。99 &gt;= 60，输出「及格」。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第12题（2025/06 第3题）</div>
+<p>C++代码 <code>cout &lt;&lt; ('5'+4);</code> 执行后的输出为 9 。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>'5' 的 ASCII 码是 53，53+4=57，输出 57 而不是 9。字符参与算术运算时使用其 ASCII 码值。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第13题（2025/06 第16题）</div>
+<p>C++表达式 <code>5 &lt; 10 && 20</code> 对应的逻辑值为 true 。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：✅ 正确</strong><br><code>5&lt;10</code> → true(1)，<code>1 && 20</code> → 两边非零 → true(1)。逻辑与只要两边都非零就为 true。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第14题（2025/09 第11题）</div>
+<p>C++表达式 <code>10 / 0.333333 == 10 / (1 / 3)</code> 的值为 true 。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br><code>1/3</code> 是整数除法，结果为 0。所以右边是 <code>10/0</code> 导致<strong>除零错误</strong>。左边 <code>10/0.333333</code> ≈ 30.00003。两者不可能相等。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第15题（2025/09 第19题）</div>
+<p>在C++代码中，运算符只能处理相同的数据类型，不同类型之间必须转换为相同的数据类型。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：❌ 错误</strong><br>C++ 支持隐式类型转换（如 int+float 会自动将 int 转为 float）。不要求显式转换，不同类型可以混合运算。</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 运算符知识点速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>速查项</th><th>核心公式/规则</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td>取个位</td><td class="mono">N % 10</td><td class="mono">1234 % 10 = 4</td></tr>
+<tr><td>去个位</td><td class="mono">N / 10</td><td class="mono">1234 / 10 = 123</td></tr>
+<tr><td>取第M位(从右)</td><td class="mono">N / (10^(M-1)) % 10</td><td class="mono">1234/100%10 = 2（百位）</td></tr>
+<tr><td>== 与 =</td><td>== 比较，= 赋值；== 不改变变量值</td><td class="mono">a==b; // a,b 都不变</td></tr>
+<tr><td>逗号表达式</td><td>从左到右求值，返回最右值</td><td class="mono">b=(6,28); // b=28</td></tr>
+<tr><td>链式比较</td><td>❌ 不可用 5&lt;=a&lt;=10；✅ 用 5&lt;=a && a&lt;=10</td><td class="mono">a=0时 5&lt;=0&lt;=10 → 1</td></tr>
+<tr><td>char算术</td><td>char 参与算术自动转 ASCII 整数值</td><td class="mono">'C'+2 = 69</td></tr>
+<tr><td>优先级</td><td>算术 > 关系 > 逻辑 > 赋值</td><td class="mono">3+3%3*2-1 = 2</td></tr>
+<tr><td>% 限制</td><td>只能用于整数，不能用于浮点数</td><td class="mono">7.8%2 → 编译错误</td></tr>
+<tr><td>逻辑运算短路</td><td>&& 左假不右；|| 左真不右</td><td class="mono">false&&(a=5); // a 不变</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top" title="返回顶部">↑</button>
+
+<script>
+hljs.highlightAll();
+
+// 答案折叠 — button 后紧接着 answer-content
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+
+// ScrollSpy 侧边栏高亮
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+
+// 移动端菜单
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

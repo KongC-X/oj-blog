@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP四级培训 · 文件操作</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">📁</span> GESP C++ · 四级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="06-排序.html">← 排序</a>
+        <a class="nav-link" href="08-指针.html">指针 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--teal) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">📁 GESP C++ 四级 · 文件操作</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">fstream · ofstream · ifstream · open / close · getline · 输出重定向</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 10道选择题 + 5道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 年均出题 2~3道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占总分 ≈ 8%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 第一步：生活引入</h2>
+
+<div class="card primary">
+<div class="card-title">📁 文件柜里的文档</div>
+<p>想象你有一个文件柜。你想要<strong>记录一些信息</strong>（比如今天的日记），你需要打开柜子、取出笔记本、写上内容、然后放回去并关上柜门。这就是"写文件"的过程。</p>
+<p>如果你想<strong>回顾之前的记录</strong>，你需要打开柜子、找到笔记本、阅读内容、然后关上柜门。这就是"读文件"的过程。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">📝 电脑里的文件操作</div>
+<p>C++ 程序也可以像使用文件柜一样操作电脑上的文件：</p>
+<p><strong>打开 → 读/写 → 关闭</strong>，这三个步骤是文件操作的基本流程。对应到 C++ 中就是 <span class="mono">open()</span>、<span class="mono"><<</span>/<span class="mono">>></span>/<span class="mono">getline()</span>、<span class="mono">close()</span>。</p>
+</div>
+
+<div class="card success">
+<div class="card-title">🔧 为什么要用文件操作？</div>
+<p>程序运行时产生的数据默认存在<strong>内存</strong>中，程序结束后就消失了。如果将数据<strong>写入文件</strong>（存在硬盘上），下次运行程序时还能<strong>读取</strong>回来——实现数据的持久化存储。</p>
+</div>
+
+<div style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>掌握 fstream 头文件及三个核心类（ofstream / ifstream / fstream）</li>
+    <li>熟练使用 open() 和 close() 函数打开/关闭文件</li>
+    <li>理解 <code>>></code> 与 getline() 的读取行为差异</li>
+    <li>熟记文件打开模式：in / out / app / trunc</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<h3>📖 头文件：fstream</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 必须包含的头文件</div>
+<p>C++ 文件操作需要包含 <span class="key-point">#include &lt;fstream&gt;</span>（不是 iostream、cstdio 或 string）。这是 GESP 四级选择题必考点！</p>
+</div>
+
+<h3>🔑 三个核心类</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:20%">类</th><th style="width:25%">用途</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td class="mono">ofstream</td>
+    <td>写文件</td>
+    <td>Output File Stream，向文件写入数据</td>
+</tr>
+<tr>
+    <td class="mono">ifstream</td>
+    <td>读文件</td>
+    <td>Input File Stream，从文件读取数据</td>
+</tr>
+<tr>
+    <td class="mono">fstream</td>
+    <td>读写文件</td>
+    <td>同时支持读和写</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>📂 文件打开模式</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">模式</th><th style="width:35%">含义</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td class="mono">ios::in</td><td>以读取方式打开文件</td><td>ifstream 默认</td></tr>
+<tr><td class="mono">ios::out</td><td>以写入方式打开文件（覆盖原内容）</td><td>ofstream 默认</td></tr>
+<tr><td class="mono">ios::app</td><td>追加模式，写入内容添加到文件末尾</td><td>日志记录</td></tr>
+<tr><td class="mono">ios::trunc</td><td>打开时清空文件内容</td><td>out 模式隐含行为</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">📌 关键记忆</div>
+<p><span class="mono">open()</span> 用于打开文件，<span class="mono">close()</span> 用于关闭文件（不是 create、write、colse 等其他拼写）。追加模式是 <span class="mono">ios::app</span>，表示 <strong>append</strong>（追加到末尾）。</p>
+</div>
+
+<h3>📁 文件路径</h3>
+<div class="card orange">
+<div class="card-title">🟠 路径写法</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:30%">路径写法</th><th>含义</th></tr></thead>
+<tbody>
+<tr><td class="mono">"GESP.txt"</td><td>相对路径：当前工作目录下的文件</td></tr>
+<tr><td class="mono">"./data/GESP.txt"</td><td>相对路径：当前目录下的 data 文件夹中</td></tr>
+<tr><td class="mono">"../data/GESP.txt"</td><td>相对路径：上级目录下的 data 文件夹中</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>注意：</strong><span class="mono">"GESP.txt"</span> 是相对路径，不是绝对路径。绝对路径是从根目录（如 C:\ 或 /home/）开始的完整路径。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<h3>📌 文件写入</h3>
+<div class="card primary">
+<div class="card-title">写入文件基本模板</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+using namespace std;
+
+int main() {
+    ofstream fout;                  // 创建输出文件流对象
+    fout.open("output.txt");        // 打开文件（默认 out + trunc）
+    fout &lt;&lt; "Hello World" &lt;&lt; endl;  // 写入内容
+    fout.close();                   // 关闭文件
+    return 0;
+}</code></pre>
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">简化写法：构造时直接打开</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream fout("output.txt");   // 构造同时打开文件
+fout &lt;&lt; "Hello World" &lt;&lt; endl;
+fout.close();</code></pre>
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">追加模式写入</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream fout;
+fout.open("log.txt", ios::app);  // 追加模式，不会覆盖原有内容
+fout &lt;&lt; "New log entry" &lt;&lt; endl;
+fout.close();</code></pre>
+</div>
+</div>
+
+<h3>📌 文件读取</h3>
+<div class="card primary">
+<div class="card-title">读取文件基本模板</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    ifstream fin("data.txt");       // 构造时打开文件
+    if (!fin) {
+        cout &lt;&lt; "文件打开失败" &lt;&lt; endl;
+        return -1;
+    }
+    string line;
+    while (getline(fin, line)) {    // 逐行读取
+        cout &lt;&lt; line &lt;&lt; endl;
+    }
+    fin.close();
+    return 0;
+}</code></pre>
+</div>
+</div>
+
+<h3>📌 <code>>></code> 与 <code>getline()</code> 的区别</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">方式</th><th>行为</th></tr></thead>
+<tbody>
+<tr>
+    <td class="mono">fin >> str</td>
+    <td>按<strong>空白字符</strong>（空格、换行、Tab）分割读取，每次读一个"词"</td>
+</tr>
+<tr>
+    <td class="mono">getline(fin, str)</td>
+    <td>按<strong>换行符</strong>分割读取，每次读一整行（含空格）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p style="font-size:13px;color:var(--text-secondary)"><strong>注意：</strong><span class="mono">fin >> str</span> 读取后会<strong>跳过空白</strong>，而 <span class="mono">getline()</span> 会读取<strong>包括空格在内的整行</strong>。</p>
+
+<h3>📝 输出重定向</h3>
+<div class="card indigo">
+<div class="card-title">🔷 命令行重定向</div>
+<p>可以通过文件重定向将 <span class="mono">cout</span> 的输出内容写到文件中，常用于记录程序运行日志。在命令行中使用：</p>
+<div class="formula-box">./program > log.txt</div>
+<p>这会将程序的标准输出重定向到 log.txt 文件中。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<h3>🎬 写入模拟：字节数计算</h3>
+<div class="card teal">
+<div class="card-title">🟢 以下代码生成的文件字节数为多少？</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream fout;
+fout.open("1.txt");
+for(int i = 1; i <= 10; i++) {
+    if(i % 5 == 0) {
+        int x = 6;
+        fout &lt;&lt; x;       // i=5 和 i=10 时写入 '6'
+    } else {
+        char ch = 'A';
+        fout &lt;&lt; ch;      // 其他 8 次写入 'A'
+    }
+}</code></pre>
+</div>
+<div class="highlight-box yellow" style="margin-top:12px">
+<div class="hb-title">💛 推演</div>
+<p>循环 10 次，i=5 和 i=10 时各写入 1 个字符 '6'（通过 <span class="mono"><<</span> 操作符，数字 6 以<strong>字符形式</strong>写入，占 1 字节）；其他 8 次各写入 1 个字符 'A'。<strong>共 10 个字符 = 10 字节。</strong></p>
+</div>
+</div>
+
+<h3>🎬 读取模拟：fin >> 和 getline 行为</h3>
+<div class="card teal">
+<div class="card-title">🟢 理解读取行为差异</div>
+<p>文件 test.txt 内容（由下面代码写入）：</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream fout("test.txt");
+fout &lt;&lt; "Happy" &lt;&lt; endl;   // 写入 "Happy\n"
+fout &lt;&lt; "New Year";          // 写入 "New Year"（无换行）
+fout.close();</code></pre>
+</div>
+<p>文件实际内容：</p>
+<div class="formula-box">Happy<br>New Year</div>
+<p>读取代码：</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream fin("test.txt");
+string s1, s2;
+fin >> s1;            // 读取 "Happy"（遇到换行停止）
+getline(fin, s2);     // 读取剩余部分，读到换行符后的空串
+cout &lt;&lt; s1 &lt;&lt; "|" &lt;&lt; s2;   // 输出: Happy|</code></pre>
+</div>
+<div class="highlight-box yellow" style="margin-top:12px">
+<div class="hb-title">💛 关键理解</div>
+<p><span class="mono">fin >></span> 读取 "Happy" 后，光标停在换行符 \n 处。<span class="mono">getline()</span> 从当前位置读到下一个换行符，读到的是空字符串。<strong>输出结果为 Happy|。</strong></p>
+</div>
+</div>
+
+<h3>🎬 读取模拟：fin >> 读取数字（截断行为）</h3>
+<div class="card teal">
+<div class="card-title">🟢 数字截断模拟</div>
+<p>文件 1.txt 内容：</p>
+<div class="formula-box">50 2024 3.16 I</div>
+<p>读取代码：</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream fin("1.txt", ios::in);
+string line;
+int x;
+for (int i = 0; i < 2; i++) {
+    fin >> line;                // 第一次读 "50"，第二次读 "2024"
+}
+fin >> x;                       // 读 "3.16" 中的整数部分 → x = 3
+cout &lt;&lt; x &lt;&lt; endl;</code></pre>
+</div>
+<div class="highlight-box yellow" style="margin-top:12px">
+<div class="hb-title">💛 推演</div>
+<p>前两次 <span class="mono">fin >> line</span> 分别读到 "50" 和 "2024"；第三次 <span class="mono">fin >> x</span> 读 "3.16"，x 是 int 类型，只能读到 <strong>3</strong>（遇到 . 停止）。<strong>输出 x = 3。</strong></p>
+</div>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱1：头文件混淆</div>
+<p>文件操作需要 <span class="key-point danger">#include &lt;fstream&gt;</span>，不是 <span class="mono">iostream</span>、<span class="mono">cstdio</span> 或 <span class="mono">string</span>。GESP 四级选择题必考！</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱2：关闭函数拼写错误</div>
+<p>关闭文件的函数是 <span class="mono">close()</span>，常见干扰选项有 <span class="mono">colse</span>、<span class="mono">csloe</span>、<span class="mono">clsoe</span> 等拼写变体。记住：c-l-o-s-e。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱3：追加模式是 app</div>
+<p>追加到文件末尾的模式是 <span class="mono">ios::app</span>（append），不是 <span class="mono">in</span>（读取）、<span class="mono">out</span>（写入/覆盖）或 <span class="mono">trunc</span>（清空）。记法：app ≈ append。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱4：文件路径是相对路径</div>
+<p><span class="mono">"GESP.txt"</span> 是<strong>相对路径</strong>，不是绝对路径。绝对路径是包含完整盘符或根目录的路径（如 <span class="mono">C:\test\GESP.txt</span> 或 <span class="mono">/home/user/GESP.txt</span>）。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱5：ofstream 未 open 不能写入</div>
+<p>如果创建 ofstream 对象但没有调用 <span class="mono">open("文件名")</span>，则<strong>实际没有打开任何文件</strong>，写入操作不会产生效果。必须显式打开文件才能写入。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱6：fin >> 读取数字时的截断行为</div>
+<p>用 <span class="mono">fin >></span> 读取到 int 变量时，遇到非数字字符会停止。例如从 "3.16" 读到 int 类型，只会读到 3（遇到小数点 . 停止）。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>📝 选择题（共10道）</h3>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 第1组：基础概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q1. 文件操作的头文件（2024/06 第6题）</div>
+<p>以下哪个头文件是用于文件输入输出的？（ ）</p>
+<p><strong>A.</strong> iostream &nbsp;&nbsp; <strong>B.</strong> fstream &nbsp;&nbsp; <strong>C.</strong> cstdio &nbsp;&nbsp; <strong>D.</strong> string</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 文件操作使用 <code>&lt;fstream&gt;</code> 头文件。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q2. 打开文件的函数（2024/09 第14题）</div>
+<p>使用 ofstream 时，以下哪个函数用于打开一个文件？（ ）</p>
+<p><strong>A.</strong> open &nbsp;&nbsp; <strong>B.</strong> create &nbsp;&nbsp; <strong>C.</strong> write &nbsp;&nbsp; <strong>D.</strong> close</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 用 <code>open()</code> 函数打开文件。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q3. 关闭文件的正确拼写（2024/12 第14题）</div>
+<p>如何关闭一个打开的文件？（ ）</p>
+<p><strong>A.</strong> colse &nbsp;&nbsp; <strong>B.</strong> csloe &nbsp;&nbsp; <strong>C.</strong> clsoe &nbsp;&nbsp; <strong>D.</strong> close</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 正确拼写是 <code>close()</code>。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q4. 追加模式（2025/03 第15题）</div>
+<p>如果要将数据追加到文件末尾，应该使用哪个打开模式？（ ）</p>
+<p><strong>A.</strong> ios::in &nbsp;&nbsp; <strong>B.</strong> ios::out &nbsp;&nbsp; <strong>C.</strong> ios::app &nbsp;&nbsp; <strong>D.</strong> ios::trunc</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · <code>app</code>（append）模式将数据追加到文件末尾。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 第2组：文件路径与程序理解</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q5. 文件路径判断（2025/06 第13题）</div>
+<p>C++中，关于文件路径说法错误的是（ ）。</p>
+<p><strong>A.</strong> "GESP.txt"：指定与当前工作目录中的程序文件相同目录中的 GESP.txt 文件<br><strong>B.</strong> "../data/GESP.txt"：指定上级目录下的 data 目录中的 GESP.txt 文件<br><strong>C.</strong> "./data/GESP.txt"：指定同级目录下的 data 目录中的 GESP.txt 文件<br><strong>D.</strong> "GESP.txt"是绝对路径</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · "GESP.txt" 是相对路径，不是绝对路径。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q6. getline 程序理解（2025/12 第14题）</div>
+<p>关于下面 C++ 程序的描述，（ ）最准确。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream in("data.txt");
+string line;
+while (getline(in, line)) {
+    cout &lt;&lt; line &lt;&lt; endl;
+}</code></pre>
+</div>
+<p><strong>A.</strong> 将从标准输入读取每行，并输出到屏幕 &nbsp;&nbsp; <strong>B.</strong> 程序无法运行，因为 getline 只能读取 cin<br><strong>C.</strong> 将 data.txt 中的每一行读取并输出到屏幕 &nbsp;&nbsp; <strong>D.</strong> 程序将创建 data.txt 并写入默认文本</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · <code>getline(in, line)</code> 从文件流逐行读取并输出到屏幕。</div></div>
+</div>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 第3组：代码执行结果推断</div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q7. 文件字节数计算（2026/03 第13题）</div>
+<p>下面C++代码执行后生成的文件其字节数为（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream fout;
+fout.open("1.txt");
+for(int i = 1; i <= 10; i++) {
+    if(i % 5 == 0) {
+        int x = 6;
+        fout &lt;&lt; x;
+    } else {
+        char ch = 'A';
+        fout &lt;&lt; ch;
+    }
+}</code></pre>
+</div>
+<p><strong>A.</strong> 10 &nbsp;&nbsp; <strong>B.</strong> 16 &nbsp;&nbsp; <strong>C.</strong> 40 &nbsp;&nbsp; <strong>D.</strong> 24</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 循环 10 次，每次写入 1 个字符（8个'A' + 2个'6'），共 10 字节。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q8. fin >> 读取数字截断（2026/03 第14题）</div>
+<p>如果文件 1.txt 内容如下，执行C++代码时注释了 #### 那行所输出的 x 的值为（ ）。</p>
+<div class="formula-box">50 2024 3.16 I</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream fin;
+string line;
+int x;
+fin.open("1.txt", ios::in);
+for (int i = 0; i < 2; i++) {
+    fin >> line;
+    cout << line << endl;
+}
+fin >> x;
+cout << x << endl; //####</code></pre>
+</div>
+<p><strong>A.</strong> 5 &nbsp;&nbsp; <strong>B.</strong> 2024 &nbsp;&nbsp; <strong>C.</strong> 3 &nbsp;&nbsp; <strong>D.</strong> 0</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 前两次读 "50" 和 "2024"，第三次读 int x 从 "3.16" 读到 3。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q9. fin >> 与 getline 混合</div>
+<p>执行下面 C++ 程序，会输出（ ）。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int main() {
+    ofstream fout("test.txt");
+    fout &lt;&lt; "Happy" &lt;&lt; endl;
+    fout &lt;&lt; "New Year";
+    fout.close();
+    ifstream fin("test.txt");
+    string s1, s2;
+    fin >> s1;
+    getline(fin, s2);
+    fin.close();
+    cout &lt;&lt; s1 &lt;&lt; "|" &lt;&lt; s2;
+    return 0;
+}</code></pre>
+</div>
+<p><strong>A.</strong> Happy|New Year &nbsp;&nbsp; <strong>B.</strong> Happy| New Year &nbsp;&nbsp; <strong>C.</strong> HappyNew Year| &nbsp;&nbsp; <strong>D.</strong> Happy|</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · <code>fin >></code> 读 "Happy" 后停在换行符；<code>getline</code> 读到空串，输出 Happy|。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">Q10. 输出重定向</div>
+<p>下面哪种方式不能实现将字符串 "Happy Spring!" 输出重定向到文件 log.txt？（ ）</p>
+<p style="font-size:13px;color:var(--text-secondary)">选项详见真题原图（涉及使用 ofstream、freopen 等方式）</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 详见真题原图分析。</div></div>
+</div>
+
+<h3 style="margin-top:32px">✅ 判断题（共5道）</h3>
+
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--pink)">
+<div class="card-title" style="color:var(--pink-dark)">📌 文件操作判断题</div>
+</div>
+
+<div class="card success">
+<div class="card-title">T1. 输出重定向</div>
+<p>通过使用文件重定向操作，可以将程序中输出到 cout 的内容输出到文件中，这是常用的记录程序运行日志的方法之一。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 输出重定向可将 cout 内容重定向到文件。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T2. ofstream 未 open 写入</div>
+<p>在下面的C++代码中，将对1.txt文件写入 hello 。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream filein;
+ofstream fileout;
+filein.open("1.txt");
+fileout &lt;&lt; "hello";</code></pre>
+</div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · fileout 没有调用 <code>open()</code> 指定文件名，因此没有打开任何文件，写入无效。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T3. fin >> 读取数字</div>
+<p>文本文件 1.txt 第1行由 01234 共5个字符组成其间没有空格，当用C++代码正常打开文件成功并执行如下代码后，第1行长度为5。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ifstream filein;
+int buff;
+filein.open("1.txt");
+filein >> buff;
+cout &lt;&lt; buff &lt;&lt; endl;</code></pre>
+</div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>错误</strong> · <code>fin >></code> 读取 int 会读出整个数字 1234，不是按字符读取。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T4. ofstream 构造写入</div>
+<p>下面C++代码实现将 Hello 写入 data.txt 。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">ofstream out("data.txt");
+out &lt;&lt; "Hello";
+out.close();</code></pre>
+</div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 通过 ofstream 构造时打开文件，写入 "Hello"，然后关闭，操作完整正确。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">T5. 文件读写求和</div>
+<p>执行下面代码会输出 100 。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int main() {
+    ofstream fout("data.txt");
+    fout &lt;&lt; 10 &lt;&lt; " " &lt;&lt; 20 &lt;&lt; endl;
+    fout &lt;&lt; 30 &lt;&lt; " " &lt;&lt; 40;
+    fout.close();
+    ifstream fin("data.txt");
+    int a, b, c, d;
+    fin >> a >> b >> c >> d;
+    fin.close();
+    cout &lt;&lt; a + b + c + d;
+    return 0;
+}</code></pre>
+</div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>正确</strong> · 写入 10, 20, 30, 40 后读出求和：10+20+30+40 = 100。</div></div>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<h3>📊 文件操作速查表</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:18%">类别</th><th style="width:35%">内容</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>头文件</strong></td><td class="mono">#include &lt;fstream&gt;</td><td>不是 iostream/cstdio/string</td></tr>
+<tr><td><strong>写文件类</strong></td><td class="mono">ofstream</td><td>Output File Stream</td></tr>
+<tr><td><strong>读文件类</strong></td><td class="mono">ifstream</td><td>Input File Stream</td></tr>
+<tr><td><strong>打开文件</strong></td><td class="mono">obj.open("文件名")</td><td>或构造时传参</td></tr>
+<tr><td><strong>关闭文件</strong></td><td class="mono">obj.close()</td><td>不是 colse/csloe/clsoe</td></tr>
+<tr><td><strong>写入数据</strong></td><td class="mono">fout << data</td><td>与 cout 语法相同</td></tr>
+<tr><td><strong>按词读取</strong></td><td class="mono">fin >> var</td><td>按空白分割</td></tr>
+<tr><td><strong>按行读取</strong></td><td class="mono">getline(fin, str)</td><td>读一整行（含空格）</td></tr>
+<tr><td><strong>追加模式</strong></td><td class="mono">ios::app</td><td>数据追加到文件末尾</td></tr>
+<tr><td><strong>输出重定向</strong></td><td class="mono">./program > log.txt</td><td>命令行方式</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔤 打开模式速查</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">模式常量</th><th style="width:35%">含义</th><th>使用场景</th></tr></thead>
+<tbody>
+<tr><td class="mono">ios::in</td><td>以读方式打开</td><td>ifstream 默认</td></tr>
+<tr><td class="mono">ios::out</td><td>以写方式打开（覆盖）</td><td>ofstream 默认</td></tr>
+<tr><td class="mono">ios::app</td><td>追加到末尾</td><td>日志记录</td></tr>
+<tr><td class="mono">ios::trunc</td><td>打开时清空文件</td><td>out 模式隐含行为</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>💡 高频考点汇总</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:40%">考点</th><th>答案</th></tr></thead>
+<tbody>
+<tr><td>文件操作头文件</td><td class="mono">fstream</td></tr>
+<tr><td>打开文件函数</td><td class="mono">open()</td></tr>
+<tr><td>关闭文件函数</td><td class="mono">close()</td></tr>
+<tr><td>追加模式</td><td class="mono">ios::app</td></tr>
+<tr><td>"GESP.txt" 是什么路径</td><td>相对路径，不是绝对路径</td></tr>
+<tr><td>fin >> 读取数字到 int</td><td>遇到非数字字符停止</td></tr>
+<tr><td>ofstream 未 open 能否写入</td><td><span style="color:var(--danger);font-weight:600">不能</span>，必须显式打开</td></tr>
+<tr><td>getline 读取的单位</td><td>按行读取（到换行符）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"fstream 是头文件，open 打开 close 关；app 追加不覆盖，>> 读词 getline 读行；未 open 不能写，相对路径非绝对。"</strong></p>
+</div>
+
+<div class="tip-box" style="margin-top:24px">
+<div class="tip-title">🎯 备考建议</div>
+<p>文件操作占 GESP 四级约 8% 分值，题量不大但考点集中。务必记牢：<strong>fstream 头文件、open/close 函数拼写、app 追加模式、相对路径与绝对路径的区别</strong>，以及 <code>>></code> 与 <code>getline()</code> 的读取行为差异。</p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+document.querySelectorAll('.answer-toggle').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const c=this.nextElementSibling;
+    if(c.classList.contains('open')){c.classList.remove('open');this.classList.remove('open');this.innerHTML='▶ 显示答案';}
+    else{c.classList.add('open');this.classList.add('open');this.innerHTML='▼ 隐藏答案';}
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+const sections=document.querySelectorAll('h2.section-num'),links=document.querySelectorAll('.nav-link');
+window.addEventListener('scroll',()=>{
+  let cur='';sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+  document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+});
+
+document.querySelector('.menu-toggle').addEventListener('click',()=>{document.querySelector('.sidebar').classList.toggle('open')});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 分治算法与排序</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="06-贪心算法.html">贪心算法 →</a>
+        <a class="nav-link" href="08-递归.html">递归 →</a>
+        <a class="nav-link" href="01-唯一分解定理与辗转相除法.html">唯一分解定理 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--teal) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">⚡ GESP C++ 五级 · 分治算法与排序</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Divide-and-Conquer · Merge Sort &amp; Quick Sort</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 21 道选择题 + 16 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场必考，年均 3~4 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 18%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：分牌与整理卡片</h2>
+
+<div class="card accent">
+<div class="card-title">🃏 场景一：整理一堆扑克牌（归并排序）</div>
+<p>桌上有 8 张散乱的扑克牌。你不想一次性排好，而是：先把牌 <strong>分成两堆</strong>（每堆 4 张），把每堆再分成两堆（每堆 2 张），直到每堆只剩 1 张（自然有序）。然后 <strong>两两合并</strong>——每次取两堆牌中较小的那张，最终合成一整副有序的牌。</p>
+<p>这就是 <span class="key-point">归并排序（Merge Sort）</span>：<strong>先分解到底，再两两合并</strong>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">📏 场景二：排排队（快速排序）</div>
+<p>体育课上老师让大家按身高排队。老师挑了中间一个同学做"基准"，说："比他矮的站左边，比他高的站右边"。然后对左右两组重复这个操作，直到每个人都站对了位置。</p>
+<p>这就是 <span class="key-point">快速排序（Quick Sort）</span>：<strong>选基准（pivot），小的放左边，大的放右边</strong>。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>理解分治算法三步走：分解 → 求解 → 合并</li>
+    <li>掌握归并排序的 merge 函数和 mergeSort 递归结构</li>
+    <li>掌握快速排序的 Lomuto 分区和 Hoare 分区</li>
+    <li>牢记五种排序的复杂度、稳定性对比（高频考点）</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📐 分治算法三步走</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 定义</div>
+<p><strong>分治算法（Divide and Conquer）：将一个大问题分解为若干个规模较小的同类子问题，分别求解这些子问题，然后将子问题的解合并为原问题的解。</strong></p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 三步走</div>
+<ol style="margin:8px 0">
+<li><strong>分解（Divide）</strong>：将原问题分解为若干规模较小的子问题</li>
+<li><strong>求解（Conquer）</strong>：递归求解每个子问题</li>
+<li><strong>合并（Combine）</strong>：将子问题的解合并为原问题的解</li>
+</ol>
+</div>
+
+<div class="highlight-box yellow">
+<div class="hb-title">⚠️ 分治 vs 贪心的区别</div>
+<p><strong>分治</strong>需要将子问题的解"合并"才能得到原问题的解；<strong>贪心</strong>每步只做局部最优选择，不回溯也不合并。</p>
+<p>归并排序、快速排序、二分查找都使用了分治思想。冒泡排序 ❌ 不是分治。</p>
+</div>
+
+<h3>📊 五种排序复杂度对比（核心考点！）</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>排序算法</th><th>平均时间</th><th>最坏时间</th><th>最好时间</th><th>空间</th><th>稳定性</th></tr></thead>
+<tbody>
+<tr style="background:var(--danger-light)"><td><strong>冒泡排序</strong></td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(n)</td><td class="mono">O(1)</td><td>✅ 稳定</td></tr>
+<tr style="background:var(--danger-light)"><td><strong>选择排序</strong></td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(1)</td><td>❌ 不稳定</td></tr>
+<tr style="background:var(--accent-light)"><td><strong>插入排序</strong></td><td class="mono">O(n²)</td><td class="mono">O(n²)</td><td class="mono">O(n)</td><td class="mono">O(1)</td><td>✅ 稳定</td></tr>
+<tr style="background:var(--success-light)"><td><strong>归并排序</strong></td><td class="mono">O(n log n)</td><td class="mono">O(n log n)</td><td class="mono">O(n log n)</td><td class="mono">O(n)</td><td>✅ 稳定</td></tr>
+<tr style="background:var(--warning-light)"><td><strong>快速排序</strong></td><td class="mono">O(n log n)</td><td class="mono">O(n²)</td><td class="mono">O(n log n)</td><td class="mono">O(log n)</td><td>❌ 不稳定</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">✨ 稳定性速记口诀</div>
+<p><strong>「不稳定选择快，稳定冒插归」</strong>——不稳定的只有<strong>选择排序</strong>和<strong>快速排序</strong>；<strong>冒泡、插入、归并</strong>都是稳定的。</p>
+<p>时间复杂度与输入无关的：<strong>选择排序</strong>和<strong>归并排序</strong>（无论输入如何，复杂度不变）。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>🔄 归并排序</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心：两阶段——分解到单个元素 + 合并两个有序数组</div>
+</div>
+
+<h4>merge 函数：合并两个有序子数组</h4>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void merge(int arr[], int left, int mid, int right) {
+    int i = left, j = mid + 1, k = 0;
+    int temp[right - left + 1];  // 临时数组
+    
+    while (i &lt;= mid &amp;&amp; j &lt;= right) {
+        if (arr[i] &lt;= arr[j])
+            temp[k++] = arr[i++];  // ≤ 保证稳定性
+        else
+            temp[k++] = arr[j++];
+    }
+    while (i &lt;= mid) temp[k++] = arr[i++];      // 左边剩余
+    while (j &lt;= right) temp[k++] = arr[j++];    // ← 高频填空点！
+    
+    for (i = left, k = 0; i &lt;= right; i++, k++)
+        arr[i] = temp[k];
+}</code></pre>
+</div>
+
+<h4>mergeSort 递归</h4>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void mergeSort(int arr[], int left, int right) {
+    if (left &lt; right) {
+        int mid = left + (right - left) / 2;  // 防溢出
+        mergeSort(arr, left, mid);      // 递归左半
+        mergeSort(arr, mid + 1, right); // 递归右半
+        merge(arr, left, mid, right);   // 合并
+    }
+}</code></pre>
+</div>
+
+<h3>⚡ 快速排序</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心：partition（分区）——选基准，小的放左，大的放右</div>
+</div>
+
+<h4>Lomuto 分区（单方向扫描）</h4>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int partition(vector&lt;int&gt;&amp; arr, int left, int right) {
+    int pivot = arr[right];          // 选最右为基准
+    int i = left - 1;                // i 指向小于 pivot 的最后一个
+    for (int j = left; j &lt; right; j++) {
+        if (arr[j] &lt; pivot) {        // ← 高频填空点！
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[right]);    // pivot 归位
+    return i + 1;
+}</code></pre>
+</div>
+
+<h4>Hoare 分区（双指针交换）</h4>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int partition(int arr[], int left, int right) {
+    int pivot = arr[left];
+    int i = left, j = right;
+    while (i &lt; j) {
+        while (i &lt; j &amp;&amp; arr[j] &gt;= pivot) j--;
+        while (i &lt; j &amp;&amp; arr[i] &lt;= pivot) i++;
+        if (i &lt; j) swap(arr[i], arr[j]);
+    }
+    swap(arr[left], arr[i]);
+    return i;
+}</code></pre>
+</div>
+
+<div class="highlight-box purple">
+<div class="hb-title">🔄 快速排序主函数</div>
+<div class="code-block" style="margin:8px 0 0"><pre><code class="language-cpp">void quickSort(int arr[], int left, int right) {
+    if (left &lt; right) {
+        int pi = partition(arr, left, right);
+        quickSort(arr, left, pi - 1);
+        quickSort(arr, pi + 1, right);
+    }
+}</code></pre></div>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 sort 函数的时间复杂度</div>
+<p>C++ STL 的 <span class="mono">sort()</span> 平均 O(n log n)，内部混合了快速排序、堆排序和插入排序（内省排序），是<strong>不稳定排序</strong>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<h3>🔄 归并排序模拟：对 [38, 27, 43, 3, 9, 82, 10] 排序</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>阶段</th><th>操作</th><th>当前状态</th></tr></thead>
+<tbody>
+<tr><td><strong>分解①</strong></td><td>[38,27,43,3,9,82,10] → 从中间分</td><td>[38,27,43,3] 和 [9,82,10]</td></tr>
+<tr><td><strong>分解②</strong></td><td>[38,27,43,3] → 分两半</td><td>[38,27] 和 [43,3]</td></tr>
+<tr><td><strong>分解③</strong></td><td>[38,27] → 分两半</td><td>[38] 和 [27]（单元素，开始合并）</td></tr>
+<tr style="background:var(--primary-light)"><td><strong>合并①</strong></td><td>[38] + [27]</td><td><strong>[27, 38]</strong></td></tr>
+<tr><td><strong>分解④</strong></td><td>[43,3] → 分两半</td><td>[43] 和 [3]</td></tr>
+<tr style="background:var(--primary-light)"><td><strong>合并②</strong></td><td>[43] + [3]</td><td><strong>[3, 43]</strong></td></tr>
+<tr style="background:var(--success-light)"><td><strong>合并③</strong></td><td>[27,38] + [3,43]</td><td><strong>[3, 27, 38, 43]</strong></td></tr>
+<tr><td><strong>分解⑤</strong></td><td>[9,82,10] → 分</td><td>[9] 和 [82,10]</td></tr>
+<tr><td><strong>分解⑥</strong></td><td>[82,10] → 分两半</td><td>[82] 和 [10]</td></tr>
+<tr style="background:var(--primary-light)"><td><strong>合并④</strong></td><td>[82] + [10]</td><td><strong>[10, 82]</strong></td></tr>
+<tr style="background:var(--primary-light)"><td><strong>合并⑤</strong></td><td>[9] + [10,82]</td><td><strong>[9, 10, 82]</strong></td></tr>
+<tr style="background:var(--accent-light)"><td colspan="3"><strong>✅ 最终合并：[3,27,38,43] + [9,10,82] = [3, 9, 10, 27, 38, 43, 82]</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>⚡ 快速排序 partition 模拟：数组 [6, 1, 2, 7, 9, 3]</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>i</th><th>j</th><th>数组状态</th></tr></thead>
+<tbody>
+<tr><td><strong>初始</strong></td><td>pivot=6, i=0, j=5</td><td>0</td><td>5</td><td>[<strong>6</strong>, 1, 2, 7, 9, 3]</td></tr>
+<tr><td><strong>1</strong></td><td>j-- 找到 ≤6 的：arr[5]=3</td><td>0</td><td>5</td><td>[<strong>6</strong>, 1, 2, 7, 9, <u>3</u>]</td></tr>
+<tr><td><strong>2</strong></td><td>i++ 找到 ≥6 的：arr[3]=7</td><td>3</td><td>5</td><td>[<strong>6</strong>, 1, 2, <u>7</u>, 9, <u>3</u>]</td></tr>
+<tr><td><strong>3</strong></td><td>i=3&lt;j=5，交换 arr[3]↔arr[5]</td><td>3</td><td>5</td><td>[<strong>6</strong>, 1, 2, <span style="color:#10b981">3</span>, 9, <span style="color:#f59e0b">7</span>]</td></tr>
+<tr><td><strong>4</strong></td><td>j-- 找到 ≤6：arr[3]=3</td><td>3</td><td>3</td><td>[<strong>6</strong>, 1, 2, <u>3</u>, 9, 7]</td></tr>
+<tr><td><strong>5</strong></td><td>i++：arr[3]=3 ≤ 6</td><td>4</td><td>3</td><td>i &gt; j，退出循环</td></tr>
+<tr style="background:var(--success-light)"><td><strong>归位</strong></td><td colspan="4">swap(arr[0], arr[3]) → pivot=6 归位到位置 3</td></tr>
+<tr style="background:var(--accent-light)"><td colspan="5"><strong>✅ 结果：[3, 1, 2, 6, 9, 7]，6 左边都 ≤6，右边都 ≥6</strong></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：不稳定排序有哪些？</div>
+<p><strong>选择排序</strong>和<strong>快速排序</strong>是不稳定的。冒泡排序、插入排序、归并排序是稳定的。</p>
+<p>常考判断题："快速排序和归并排序都是不稳定的排序算法"→ <strong>❌ 错</strong>（归并是稳定的）。<br>
+"归并排序和快速排序都采用递归实现，也都是不稳定排序"→ <strong>❌ 错</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：快排最坏情况 O(n²)</div>
+<p>当数组已排序 + 选首/尾元素为 pivot 时，快速排序退化到 <strong>O(n²)</strong>。</p>
+<p>例：数组 [1, 2, 3, 4, 5]，以首元素 1 为 pivot，每次只减小 1 个元素 → O(n²)。<br>
+优化：随机选 pivot、三数取中法。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：归并排序需要 O(n) 额外空间</div>
+<p>"归并排序需要 O(1) 的额外空间"→ <strong>❌ 错</strong>。归并排序需要临时数组存放合并结果，空间复杂度 <strong>O(n)</strong>，不是 O(1)。</p>
+<p>而快速排序的空间复杂度是 O(log n)（递归栈），也不需要 O(n) 额外空间。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：冒泡排序采用了分治思想？</div>
+<p>"冒泡排序采用了分治思想"→ <strong>❌ 错</strong>。分治的典型应用是归并排序和快速排序。冒泡排序是通过两两比较交换，不是分治。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：插入排序 vs 快速排序</div>
+<p>"插入排序的时间复杂度总是比快速排序低"→ <strong>❌ 错</strong>。<br>
+但在数据量小或近乎有序时，插入排序 O(n) 确实优于快排 O(n log n)。</p>
+<p>常考判断题："插入排序有时比快速排序时间复杂度更低"→ <strong>✅ 对</strong>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 分治概念 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：分治算法概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2024/12 第14题）</div>
+<p>关于分治算法，不正确的是哪一个？</p>
+<p><strong>A.</strong> 分治算法将问题分成子问题，分别解决后合并<br>
+<strong>B.</strong> 归并排序采用了分治思想<br>
+<strong>C.</strong> 快速排序采用了分治思想<br>
+<strong>D.</strong> 冒泡排序采用了分治思想</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 冒泡排序是通过相邻元素两两比较交换，不是分治思想。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/06 第10题）</div>
+<p>关于分治算法，正确的说法是哪一个？</p>
+<p><strong>A.</strong> 分治算法将问题分成子问题，分别解决后合并<br>
+<strong>B.</strong> 归并排序不是分治的应用<br>
+<strong>C.</strong> 分治通常用于解决小规模问题<br>
+<strong>D.</strong> 分治的时间复杂度总是优于 O(n log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · A 是分治的标准定义。B 错（归并是分治应用），C 错（分治常用于大规模），D 错（不总是）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025/03 第14题）</div>
+<p>以下哪个代码正确实现了分治求最大值？</p>
+<p><strong>A.</strong> 贪心遍历求最大值<br>
+<strong>B.</strong> 暴力枚举两两比较<br>
+<strong>C.</strong> 排序后取最后一个<br>
+<strong>D.</strong> 递归将数组分成两半，分别求左右最大值后比较</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · D 是典型的分治求最大值：if(low==high) return arr[low]; mid=...; leftMax=findMax(arr,low,mid); rightMax=findMax(arr,mid+1,high); return max(leftMax,rightMax)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2025/06 第9题）</div>
+<p>关于递归求最大值代码，说法错误的是哪一个？</p>
+<p><strong>A.</strong> 采用分治算法<br>
+<strong>B.</strong> 是递归实现<br>
+<strong>C.</strong> 采用贪心算法<br>
+<strong>D.</strong> 不是递推算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 递归将数组分成两半分别求最大值（分治），不是贪心算法。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2025/06 第10题）</div>
+<p>迭代求最大值 vs 递归求最大值，说法错误的是哪一个？</p>
+<p><strong>A.</strong> 迭代版本采用的是迭代算法<br>
+<strong>B.</strong> 迭代版本时间复杂度 O(n)<br>
+<strong>C.</strong> 迭代版本因为没有递归，没有栈开销<br>
+<strong>D.</strong> 迭代版本和递归版本的空间复杂度相同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 递归版本有额外的栈空间开销 O(log n)，而迭代版本空间复杂度为 O(1)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2026/03 第11题）</div>
+<p>下面代码用分治求"最大连续子段和"，其时间复杂度为哪一个？</p>
+<div class="code-block"><pre><code class="language-cpp">int solve(vector&lt;int&gt;&amp; a, int l, int r) {
+    if (l == r) return a[l];
+    int mid = l + (r - l) / 2;
+    int left = solve(a, l, mid), right = solve(a, mid + 1, r);
+    int sum = 0, lmax = INT_MIN;
+    for (int i = mid; i >= l; i--) { sum += a[i]; lmax = max(lmax, sum); }
+    sum = 0; int rmax = INT_MIN;
+    for (int i = mid + 1; i <= r; i++) { sum += a[i]; rmax = max(rmax, sum); }
+    return max({left, right, lmax + rmax});
+}</code></pre></div>
+<p><strong>A.</strong> O(n) &nbsp;&nbsp; <strong>B.</strong> O(n²) &nbsp;&nbsp; <strong>C.</strong> O(n log n) &nbsp;&nbsp; <strong>D.</strong> O(log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 分治递归 T(n)=2T(n/2)+O(n)，根据主定理得 O(n log n)。</div></div>
+</div>
+
+<!-- 归并排序 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：归并排序</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024/12 第10题）</div>
+<p>关于归并排序，描述正确的是哪一个？</p>
+<p><strong>A.</strong> 归并排序是不稳定的<br>
+<strong>B.</strong> 归并排序的时间复杂度在最优、最差和平均情况下都是 O(n log n)<br>
+<strong>C.</strong> 归并排序需要 O(1) 的额外空间<br>
+<strong>D.</strong> 输入 {12,11,13,5,6,7} 输出结果为 7 6 5 13 12 11</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · A 错（归并是稳定的），C 错（归并需要 O(n) 额外空间，不是 O(1)），D 是降序但归并默认升序。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2025/09 第12题）</div>
+<p>归并排序中补全剩余元素，横线上应填写什么？</p>
+<div class="code-block"><pre><code class="language-cpp">while (________) { tmp[k++] = nums[j++]; }</code></pre></div>
+<p><strong>A.</strong> <span class="mono">i &lt; mid</span><br>
+<strong>B.</strong> <span class="mono">j &lt; right</span><br>
+<strong>C.</strong> <span class="mono">i &lt;= mid</span><br>
+<strong>D.</strong> <span class="mono">j &lt;= right</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 归并的两个 while 循环负责把左/右剩余元素补入临时数组。后半段用 j 遍历，条件是 j <= right。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2026/03 第12题）</div>
+<p>两组选手按得分从小到大排好队合并，核心循环中横线处应填入什么？</p>
+<div class="code-block"><pre><code class="language-cpp">while (i &lt; A.size() && j &lt; B.size()) {
+    if (___________________) {
+        result.push_back(A[i++]);
+    } else {
+        result.push_back(B[j++]);
+    }
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">A[i] &gt;= B[j]</span><br>
+<strong>B.</strong> <span class="mono">A[i] &lt;= B[j]</span><br>
+<strong>C.</strong> <span class="mono">i &gt;= j</span><br>
+<strong>D.</strong> <span class="mono">i &lt;= j</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 升序合并，谁小谁先进。A[i] <= B[j] 时取 A 元素，保证稳定性。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2024/03 第12题）</div>
+<p>归并排序的基本思想是什么？</p>
+<p><strong>A.</strong> 动态规划<br>
+<strong>B.</strong> 分治<br>
+<strong>C.</strong> 贪心算法<br>
+<strong>D.</strong> 回溯算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 归并排序是分治策略的典型应用——分解 + 分别排序 + 合并。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/09 第10题）</div>
+<p>归并排序中 merge 函数的递归调用次数大约是多少？</p>
+<p><strong>A.</strong> O(1) &nbsp;&nbsp; <strong>B.</strong> O(n) &nbsp;&nbsp; <strong>C.</strong> O(log n) &nbsp;&nbsp; <strong>D.</strong> O(n log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · merge 调用次数 ≈ n-1 次（每次合并两个子数组），与 n 线性相关。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2024/06 第13题）</div>
+<p>两个长度为 n 的有序数组合并（归并），最坏情况下的比较次数是多少？</p>
+<p><strong>A.</strong> n &nbsp;&nbsp; <strong>B.</strong> n+1 &nbsp;&nbsp; <strong>C.</strong> 2n-1 &nbsp;&nbsp; <strong>D.</strong> n²</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 最坏情况是元素交替排列，每次只比完一个就取一个，最后剩一个不用比较。总共 2n-1 次。</div></div>
+</div>
+
+<!-- 快速排序 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：快速排序</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 13（2025/03 第10题）</div>
+<p>快速排序 partition 中横线上应填写什么？</p>
+<div class="code-block"><pre><code class="language-cpp">for (int j = low; j &lt; high; j++) {
+    ________________________________ // 在此处填入代码
+}
+swap(arr[i + 1], arr[high]);</code></pre></div>
+<p><strong>A.</strong> <span class="mono">if (arr[j] &gt; pivot) { i++; swap(arr[i], arr[j]); }</span><br>
+<strong>B.</strong> <span class="mono">if (arr[j] &lt; pivot) { i++; swap(arr[i], arr[j]); }</span><br>
+<strong>C.</strong> <span class="mono">if (arr[j] &lt; pivot) { swap(arr[i], arr[j]); i++; }</span><br>
+<strong>D.</strong> <span class="mono">if (arr[j] == pivot) { i++; swap(arr[i], arr[j]); }</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · Lomuto 分区：小于 pivot 的元素移到前面（i 指向小于区域的边界）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 14（2026/03 第13题）</div>
+<p>已排序数组 + 选第一个元素为基准，快速排序的时间复杂度是多少？</p>
+<p><strong>A.</strong> O(n)<br>
+<strong>B.</strong> O(n log n)<br>
+<strong>C.</strong> O(n²)<br>
+<strong>D.</strong> 无法排序</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 这是快排最坏情况，每次 partition 只减少 1 个元素，退化为 O(n²)。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 15（2024/12 第9题）</div>
+<p>关于快速排序，说法正确的是哪一个？</p>
+<p><strong>A.</strong> 快速排序通过递归对子问题进行求解<br>
+<strong>B.</strong> 快速排序最坏时间复杂度是 O(n log n)<br>
+<strong>C.</strong> 快速排序是稳定的排序算法<br>
+<strong>D.</strong> 最优情况下时间复杂度是 O(n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · B 错（最坏 O(n²)），C 错（快排不稳定），D 错（最优 O(n log n)）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 16（2024/06 第9题）</div>
+<p>快速排序 do-while 条件应为哪一个？</p>
+<div class="code-block"><pre><code class="language-cpp">do {
+    while (arr[i] &lt; pivot) i++;
+    while (arr[j] &gt; pivot) j--;
+    if (i &lt;= j) { swap(arr[i], arr[j]); i++; j--; }
+} ________________________________; // 在此处填入代码</code></pre></div>
+<p><strong>A.</strong> <span class="mono">while (i &lt;= mid)</span> &nbsp;&nbsp; <strong>B.</strong> <span class="mono">while (i &lt; mid)</span><br>
+<strong>C.</strong> <span class="mono">while (i &lt; j)</span> &nbsp;&nbsp; <strong>D.</strong> <span class="mono">while (i &lt;= j)</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · Hoare 分区双指针相遇的条件是用 while(i<=j) 来保证 i 和 j 交错后才停止。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 17（2025/06 第14题）</div>
+<p>关于随机快速排序，说法错误的是哪一个？</p>
+<p><strong>A.</strong> 随机选择基准可避免最坏情况 O(n²)<br>
+<strong>B.</strong> 平均时间复杂度 O(n log n)<br>
+<strong>C.</strong> 用随机化方法降低 worst-case 概率<br>
+<strong>D.</strong> 快速排序是稳定排序算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 快速排序是不稳定排序，无论是否随机选 pivot。A/B/C 说法正确。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 18（2024/03 第13题）</div>
+<p>快速排序中 pivot 的选择会影响算法的什么？</p>
+<p><strong>A.</strong> 不影响<br>
+<strong>B.</strong> 时间复杂度<br>
+<strong>C.</strong> 空间复杂度<br>
+<strong>D.</strong> 两者都影响</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · pivot 选择影响 partition 的平衡性，从而影响时间复杂度。好的 pivot 使两边差不多大→O(n log n)，坏的→O(n²)。</div></div>
+</div>
+
+<!-- 排序稳定性对比 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：排序稳定性对比</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 19（2026/03 第14题）</div>
+<p>下面关于排序算法的描述中，不正确的是哪一个？</p>
+<p><strong>A.</strong> 冒泡排序和插入排序都是稳定的排序算法<br>
+<strong>B.</strong> 快速排序和归并排序都是不稳定的排序算法<br>
+<strong>C.</strong> 冒泡排序和插入排序最好时间复杂度均为 O(n)<br>
+<strong>D.</strong> 归并排序在最好、最坏和平均三种情况的时间复杂度均为 O(n log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 归并排序是稳定的，所以 B 的说法错误。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 20（2025/03 第9题）</div>
+<p>以下哪个是不稳定的排序？</p>
+<p><strong>A.</strong> 选择排序<br>
+<strong>B.</strong> 插入排序<br>
+<strong>C.</strong> 归并排序<br>
+<strong>D.</strong> 冒泡排序</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 选择排序是不稳定的（因为交换可能破坏顺序），B/C/D 都是稳定的。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 21（2025/12 第8题）</div>
+<p>下列关于排序的说法，正确的是哪一个？</p>
+<p><strong>A.</strong> 快速排序是稳定排序<br>
+<strong>B.</strong> 归并排序通常是稳定的<br>
+<strong>C.</strong> 插入排序是不稳定排序<br>
+<strong>D.</strong> 冒泡排序不是原地排序</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 归并排序的稳定性取决于合并时等值元素的处理（<= 取左边则稳定）。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:18%">排序算法</th><th style="width:18%">时间复杂度</th><th style="width:13%">稳定性</th><th style="width:13%">空间</th><th>关键点</th></tr></thead>
+<tbody>
+<tr><td><strong>冒泡排序</strong></td><td class="mono">O(n²) / O(n) 最好</td><td>✅ 稳定</td><td class="mono">O(1)</td><td>相邻交换，优化后最好 O(n)</td></tr>
+<tr><td><strong>选择排序</strong></td><td class="mono">O(n²) 固定</td><td>❌ 不稳定</td><td class="mono">O(1)</td><td>与输入无关，固定 O(n²)</td></tr>
+<tr><td><strong>插入排序</strong></td><td class="mono">O(n²) / O(n) 最好</td><td>✅ 稳定</td><td class="mono">O(1)</td><td>小数据量时非常快</td></tr>
+<tr><td><strong>归并排序</strong></td><td class="mono">O(n log n) 固定</td><td>✅ 稳定</td><td class="mono">O(n)</td><td>分治，与输入无关，需辅助数组</td></tr>
+<tr><td><strong>快速排序</strong></td><td class="mono">O(n log n) 平均</td><td>❌ 不稳定</td><td class="mono">O(log n)</td><td>已排序+选首尾 pivot → O(n²)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="table-wrapper" style="margin-top:24px">
+<table>
+<thead><tr><th style="width:50%">关键知识点</th><th>结论</th></tr></thead>
+<tbody>
+<tr><td><strong>分治三步走</strong></td><td>分解 → 求解 → 合并</td></tr>
+<tr><td><strong>不稳定排序</strong></td><td>选择排序、快速排序</td></tr>
+<tr><td><strong>稳定排序</strong></td><td>冒泡排序、插入排序、归并排序</td></tr>
+<tr><td><strong>快排最坏情况</strong></td><td>已排序 + 选首/尾 pivot → O(n²)</td></tr>
+<tr><td><strong>归并空间</strong></td><td>O(n)，需要临时数组</td></tr>
+<tr><td><strong>冒泡是分治？</strong></td><td>❌ 不是！冒泡是两两比较交换</td></tr>
+<tr><td><strong>插入排序有时比快排低？</strong></td><td>✅ 数据量小或近乎有序时 O(n) &lt; O(n log n)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"选择快排不稳定，冒插归并都稳定；归并分治先分后合，快排分区小左大右；已排序选首位 pivot，快排退化成 n²"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+// 代码高亮
+hljs.highlightAll();
+
+// 答案展开/折叠
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+// 真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+// ScrollSpy：滚动时侧边栏高亮
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+// 回到顶部按钮
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

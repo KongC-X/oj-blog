@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 贪心算法</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="01-唯一分解定理与辗转相除法.html">唯一分解定理 →</a>
+        <a class="nav-link" href="07-分治算法与排序.html">分治算法与排序 →</a>
+        <a class="nav-link" href="08-递归.html">递归 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">🎯 GESP C++ 五级 · 贪心算法</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Greedy Algorithm</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 7 道选择题 + 8 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场约 1 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 6%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：找零钱的智慧</h2>
+
+<div class="card accent">
+<div class="card-title">💰 场景一：收银员找零</div>
+<p>你掏出 <strong>100 元</strong> 买了一个 <strong>36 元</strong> 的东西，收银员需要找你 <strong>64 元</strong>。他手上有 50 元、20 元、10 元、5 元、1 元面额的钞票，怎么找最省事？</p>
+<p>收银员的做法是：<strong>先用 50 元（最大面额）</strong>，剩 14 元；再用 10 元，剩 4 元；再用 4 张 1 元。全程 <strong>每次都拿能用的最大面额</strong>，这就是 <span class="key-point">贪心算法</span>！</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">📺 场景二：安排电视频道</div>
+<p>周末有 5 部电影想录下来：9:00-11:00、10:00-12:00、11:30-13:00、14:00-16:00、15:30-17:00。只有一台录像机，怎么安排才能录最多部？</p>
+<p>策略：<strong>每次选结束时间最早且不冲突的电影</strong>——这就是 <span class="key-point">区间调度</span>，贪心算法的经典应用。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>理解贪心算法"每步选当前最优"的核心思想</li>
+    <li>掌握区间调度、硬币找零、饼干分配、过河问题的贪心策略</li>
+    <li>牢记贪心算法不一定保证全局最优（高频判断题考点）</li>
+    <li>能区分贪心、分治、动态规划的适用场景</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📐 什么是贪心算法？</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 定义</div>
+<p><strong>贪心算法（Greedy Algorithm）：在每一步选择中都采取当前状态下最优（最有利）的选择，从而希望导致结果是全局最优的算法。</strong></p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 关键词解析</div>
+<p>「<strong>当前最优</strong>」——不回溯，不重新考虑之前的选择。<br>
+「<strong>局部最优</strong>」——只看眼前，不考虑长远影响。<br>
+「<strong>希望全局最优</strong>」——不保证！贪心算法<strong>不一定</strong>得到全局最优解。</p>
+</div>
+
+<div class="highlight-box yellow">
+<div class="hb-title">⚠️ 最重要的结论</div>
+<p><strong>"贪心算法通过每一步选择当前最优解，从而一定能获得全局最优解"——这句话是 ❌ 错的！</strong></p>
+<p>贪心只保证局部最优，全局最优需要额外条件（贪心选择性质 + 最优子结构）。</p>
+</div>
+
+<h3>📊 贪心 vs 分治 vs 动态规划</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>算法</th><th>核心思想</th><th>是否回溯</th><th>典型应用</th></tr></thead>
+<tbody>
+<tr><td><strong>贪心</strong></td><td>每步选最优，不回头</td><td>❌ 不回溯</td><td>硬币找零、区间调度</td></tr>
+<tr><td><strong>分治</strong></td><td>分解子问题，分别求解后合并</td><td>—</td><td>归并排序、快速排序</td></tr>
+<tr><td><strong>动态规划</strong></td><td>记录子问题解，利用最优子结构</td><td>—</td><td>背包问题、最长公共子序列</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🎯 贪心经典题型表</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>题型</th><th>贪心策略</th><th>常考模式</th></tr></thead>
+<tbody>
+<tr><td><strong>硬币找零</strong></td><td>每次用最大面额尽量多找</td><td>代码填空 / 判断题</td></tr>
+<tr><td><strong>区间调度</strong></td><td>按结束时间升序，选最早结束的不冲突区间</td><td>选择题 / 排序填空</td></tr>
+<tr><td><strong>饼干分配</strong></td><td>排序后大饼干满足大胃口（双指针）</td><td>填空题</td></tr>
+<tr><td><strong>过河问题</strong></td><td>最重 + 最轻配对</td><td>思想判断题</td></tr>
+<tr><td><strong>Dijkstra</strong></td><td>每次选距离起点最近的节点</td><td>判断题（常考"是贪心"）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 Dijkstra 是贪心算法吗？</div>
+<p><strong>是的！</strong> Dijkstra 算法每次选择距离起点最近的未访问节点作为当前节点，体现的正是贪心策略——这是一个高频判断题考点。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>📺 区间调度（安排最多不冲突活动）</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心策略：按结束时间升序排序</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 区间调度：安排最多不重叠的活动
+// movies[i] = {开始时间, 结束时间}
+int maxMovies(vector&lt;vector&lt;int&gt;&gt;&amp; movies) {
+    // 关键：按结束时间升序排序
+    sort(movies.begin(), movies.end(), [](const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b) {
+        return a[1] &lt; b[1];    // ← 按结束时间排序！
+    });
+    int count = 1;  // 至少可以选第一场
+    int lastEnd = movies[0][1];
+    for (int i = 1; i &lt; movies.size(); i++) {
+        if (movies[i][0] &gt;= lastEnd) {  // 开始时间 ≥ 上一场结束时间
+            count++;
+            lastEnd = movies[i][1];     // 更新结束时间
+        }
+    }
+    return count;
+}</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 为什么按结束时间排序，而不是按开始时间？</div>
+<p>选结束最早的活动，能为后面的活动留出最多时间。如果按开始时间排序，可能选了一个很长但开始早的活动，反而挤掉了更多可以安排的活动。</p>
+</div>
+
+<h3>💰 硬币找零</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心策略：从大到小贪心</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 硬币找零：给定面额数组和总金额，求最少硬币数
+int coinChange(vector&lt;int&gt;&amp; coins, int amount) {
+    // 面额从大到小排序
+    sort(coins.begin(), coins.end(), greater&lt;int&gt;());
+    int count = 0;
+    for (int coin : coins) {
+        if (amount == 0) break;
+        count += amount / coin;    // 尽量用当前最大面额
+        amount %= coin;            // 剩余金额
+    }
+    return count;
+}
+// 注意：贪心是否得到最优解取决于硬币面额设计！
+// 人民币 {1,2,5,10,20,50,100} 的贪心解 = 最优解
+// 但面额为 {1,3,4} 找 6 元时，贪心得 {4,1,1}=3枚，最优是 {3,3}=2枚</code></pre>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 硬币找零的陷阱</div>
+<p>贪心算法求解硬币找零<strong>不一定能得到最优解</strong>！只有在硬币面额满足特定条件（如人民币的 1,2,5 体系）时，贪心才 = 最优解。</p>
+<p>反例：面额 {1, 3, 4}，找 6 元。贪心：4+1+1 = 3 枚；最优：3+3 = 2 枚。</p>
+</div>
+
+<h3>🍪 饼干分配</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心策略：排序 + 双指针（大饼干满足大胃口）</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 饼干分配：每个孩子最多一块饼干，求最多满足多少人
+// g[] 是孩子的胃口，s[] 是饼干尺寸
+int findContentChildren(vector&lt;int&gt;&amp; g, vector&lt;int&gt;&amp; s) {
+    sort(g.begin(), g.end());
+    sort(s.begin(), s.end());
+    int index = s.size() - 1;      // 从最大饼干开始
+    int result = 0;
+    for (int i = g.size() - 1; i &gt;= 0; i--) {  // 从最大胃口开始
+        if (index &gt;= 0 &amp;&amp; s[index] &gt;= g[i]) {
+            result++;                // ← 经常填空：result++
+            index--;                 // ← 经常填空：index--
+        }
+    }
+    return result;
+}</code></pre>
+</div>
+
+<h3>🚣 过河问题</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔑 核心策略：最轻 + 最重配对</div>
+</div>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 过河问题：船最多载2人、承重100，求最少船数
+int minBoats(vector&lt;int&gt;&amp; weight) {
+    sort(weight.begin(), weight.end());
+    int i = 0, j = weight.size() - 1;
+    int count = 0;
+    while (i &lt;= j) {
+        if (weight[i] + weight[j] &lt;= 100) {
+            i++;  // 最轻的上船
+        }
+        j--;      // 最重的肯定上船
+        count++;  // 一艘船
+    }
+    return count;
+}</code></pre>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<h3>🎬 模拟区间调度：贪心选电影</h3>
+
+<p>给定 5 场电影的起止时间：</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0">
+<span style="background:var(--primary-light);padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:14px">A: [1, 3]</span>
+<span style="background:var(--accent-light);padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:14px">B: [2, 5]</span>
+<span style="background:var(--success-light);padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:14px">C: [4, 6]</span>
+<span style="background:var(--purple-light);padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:14px">D: [3, 8]</span>
+<span style="background:var(--pink-light);padding:6px 14px;border-radius:6px;font-family:var(--font-mono);font-size:14px">E: [7, 9]</span>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>已选</th><th>lastEnd</th><th>说明</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>排序</strong></td>
+    <td>按结束时间升序</td>
+    <td>—</td>
+    <td>—</td>
+    <td>A[1,3] B[2,5] C[4,6] D[3,8] E[7,9]</td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td><strong>第1步</strong></td>
+    <td>选 A [1,3]</td>
+    <td>{A}</td>
+    <td class="mono">3</td>
+    <td>A 结束最早，必选！</td>
+</tr>
+<tr>
+    <td><strong>检查</strong></td>
+    <td>B [2,5]</td>
+    <td>{A}</td>
+    <td class="mono">3</td>
+    <td>2 &lt; 3 → 冲突，跳过</td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td><strong>第2步</strong></td>
+    <td>选 C [4,6]</td>
+    <td>{A, C}</td>
+    <td class="mono">6</td>
+    <td>4 ≥ 3 → 不冲突，选！</td>
+</tr>
+<tr>
+    <td><strong>检查</strong></td>
+    <td>D [3,8]</td>
+    <td>{A, C}</td>
+    <td class="mono">6</td>
+    <td>3 &lt; 6 → 冲突，跳过</td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td><strong>第3步</strong></td>
+    <td>选 E [7,9]</td>
+    <td>{A, C, E}</td>
+    <td class="mono">9</td>
+    <td>7 ≥ 6 → 不冲突，选！</td>
+</tr>
+<tr style="background:var(--accent-light)">
+    <td colspan="5"><strong>✅ 结果：最多可选 3 场电影 → A[1,3]、C[4,6]、E[7,9]</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p><strong>如果按开始时间排序</strong>会怎样？顺序为 A[1,3] → B[2,5] → D[3,8] → C[4,6] → E[7,9]。</p>
+<p>先选 A，然后 B 冲突跳过，D（3≥3→不冲突）选上，但 D 很长覆盖到 8，导致 C 和 E 都被排除。结果只选了 2 场（A+D），<strong>比贪心策略少选 1 场</strong>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：贪心算法总能得到全局最优解？</div>
+<p>"贪心算法通过每一步选择当前最优解，从而一定能获得全局最优解"——这句话是 <strong>❌ 错的</strong>。</p>
+<p>贪心算法<strong>不一定</strong>得到全局最优解，它只保证每一步是局部最优。这是 GESP 五级最常考的判断题之一。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：最优子结构 = 贪心算法的充分条件？</div>
+<p>"若一个问题满足最优子结构性质，则一定可以用贪心算法得到最优解"——这句话是 <strong>❌ 错的</strong>。</p>
+<p><strong>最优子结构是动态规划的条件</strong>，不是贪心算法的充分条件。贪心还需要额外的"贪心选择性质"。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：贪心 vs 分治——概念混淆</div>
+<p>"小杨有100元去买东西，目标是买最多数量的商品，策略是每次挑最便宜的买，这体现了分治思想"——<strong>❌ 错的</strong>。</p>
+<p>每次挑最便宜的买 = <strong>贪心策略</strong>（每步局部最优），不是分治（分治需要分解+合并）。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：Dijkstra 是贪心算法</div>
+<p>Dijkstra 最短路径算法每次选择距离起点最近的节点，体现了贪心策略。这是一道 <strong>✅ 判断题考点</strong>，但很多人会误判为 ❌。</p>
+<p>记住：<strong>Dijkstra = 贪心算法</strong>。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 贪心概念 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：贪心算法概念</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2025/03 第13题）</div>
+<p>贪心算法的核心特征是什么？</p>
+<p><strong>A.</strong> 总是选择当前最优解<br>
+<strong>B.</strong> 回溯尝试所有可能<br>
+<strong>C.</strong> 分阶段解决子问题<br>
+<strong>D.</strong> 总能找到最优解</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 贪心算法的核心是在每一步选择中都做当前状态下的最优选择。B 是回溯，C 是分治/DP，D 是错的（贪心不一定得全局最优）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/03 第2题）</div>
+<p>贪心算法的核心思想是什么？</p>
+<p><strong>A.</strong> 在每一步选择中都做当前状态下的最优选择<br>
+<strong>B.</strong> 在每一步选择中都选择局部最优解<br>
+<strong>C.</strong> 每一步选择全局最优解<br>
+<strong>D.</strong> 以上都对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · A 的表述最准确——"当前状态下"体现了贪心的本质（只看眼前，不保证全局）。</div></div>
+</div>
+
+<!-- 区间调度 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：区间调度（安排最多电影）</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2025/09 第13题）</div>
+<p>安排最多不重叠电影（区间调度），排序应填入什么？</p>
+<div class="code-block"><pre><code class="language-cpp">sort(movies.begin(), movies.end(), [](const vector&lt;int&gt;&amp; a, const vector&lt;int&gt;&amp; b) {
+    return ______;  // 按结束时间升序
+});
+// ...
+if (movies[i][0] &gt;= lastEnd) {
+    count++;
+    ______ = movies[i][1];  // 更新 lastEnd
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">a[0] < b[0]</span> 和 <span class="mono">lastEnd</span><br>
+<strong>B.</strong> <span class="mono">a[1] < b[1]</span> 和 <span class="mono">lastEnd</span><br>
+<strong>C.</strong> <span class="mono">a[0] < b[0]</span> 和 <span class="mono">movies[i][0]</span><br>
+<strong>D.</strong> <span class="mono">a[1] < b[1]</span> 和 <span class="mono">movies[i][0]</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 区间调度按结束时间升序排序 → a[1] < b[1]；lastEnd 记录上一场结束时间需更新为当前选择的结束时间。</div></div>
+</div>
+
+<!-- 饼干分配 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：饼干分配</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024/12 第13题）</div>
+<p>饼干分配问题，横线上应填入什么？</p>
+<div class="code-block"><pre><code class="language-cpp">int cooki4children(vector&lt;int&gt;&amp; g, vector&lt;int&gt;&amp; s) {
+    sort(g.begin(), g.end()); sort(s.begin(), s.end());
+    int index = s.size() - 1;
+    int result = 0;
+    for (int i = g.size() - 1; i >= 0; i--) {
+        if (index >= 0 && s[index] >= g[i]) {
+            ________________________________
+        }
+    }
+    return result;
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">result++; index--;</span><br>
+<strong>B.</strong> <span class="mono">result--; index--;</span><br>
+<strong>C.</strong> <span class="mono">result--; index++;</span><br>
+<strong>D.</strong> <span class="mono">result++; index++;</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 用大饼干满足大胃口，满足一个孩子就 result++，饼干指针 index--。</div></div>
+</div>
+
+<!-- 硬币找零 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：硬币找零</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024/06 第2题）</div>
+<p>硬币找零问题（面额 100, 50, 20, 10, 5, 2, 1）的实现算法是什么？</p>
+<p><strong>A.</strong> 枚举算法<br>
+<strong>B.</strong> 贪心算法<br>
+<strong>C.</strong> 迭代算法<br>
+<strong>D.</strong> 递归算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 人民币面额设计满足贪心选择性质，贪心能得到最优解。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2025/06 第13题）</div>
+<p>找零问题代码（面额都小于 10 角且有 1 角），下列说法正确的是哪一个？</p>
+<p><strong>A.</strong> 上述代码采用贪心算法实现<br>
+<strong>B.</strong> 针对本题要求，上述代码总能找到最优解<br>
+<strong>C.</strong> 采用枚举算法<br>
+<strong>D.</strong> 采用分治算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 找零从大到小选面额是典型的贪心算法思想。</div></div>
+</div>
+
+<!-- 过河问题 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--pink)">
+<div class="card-title" style="color:var(--pink-dark)">📌 考点五：过河问题</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024/09 第11题）</div>
+<p>过河问题（船最多载 2 人、承重 100kg），采用的思想是什么？</p>
+<div class="code-block"><pre><code class="language-cpp">for (i = 0, j = n - 1; i &lt; j; j--) {
+    if (weight[i] + weight[j] &lt;= 100) i++;
+    count++;
+}</code></pre></div>
+<p><strong>A.</strong> 枚举算法<br>
+<strong>B.</strong> 贪心算法<br>
+<strong>C.</strong> 迭代算法<br>
+<strong>D.</strong> 递归算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 最重+最轻双指针配对是贪心思想——每次用最重的去匹配，尽量让更多人过河。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:20%">题型</th><th style="width:28%">贪心策略</th><th style="width:25%">关键排序</th><th>易错提醒</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>区间调度</strong></td>
+    <td class="mono">按结束时间排序，选最早结束不冲突的</td>
+    <td>按 <span class="mono">a[1]</span> 升序</td>
+    <td>不是按开始时间排序！</td>
+</tr>
+<tr>
+    <td><strong>硬币找零</strong></td>
+    <td class="mono">从最大面额开始尽量用</td>
+    <td>从大到小</td>
+    <td>贪心不一定得最优解（取决于面额）</td>
+</tr>
+<tr>
+    <td><strong>饼干分配</strong></td>
+    <td class="mono">大饼干满足大胃口</td>
+    <td>都升序</td>
+    <td><span class="mono">result++; index--;</span></td>
+</tr>
+<tr>
+    <td><strong>过河问题</strong></td>
+    <td class="mono">最重 + 最轻配对</td>
+    <td>体重升序</td>
+    <td>i=0, j=n-1 双指针</td>
+</tr>
+<tr>
+    <td><strong>Dijkstra</strong></td>
+    <td class="mono">每次选距离起点最近的节点</td>
+    <td>优先队列</td>
+    <td>Dijkstra 是贪心算法！</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"贪心不保证全局最优，区间按结束排序，找零从大到小，Dijkstra 是贪心"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+// 代码高亮
+hljs.highlightAll();
+
+// 答案展开/折叠
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+// 真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+// ScrollSpy：滚动时侧边栏高亮
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+// 回到顶部按钮
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

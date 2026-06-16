@@ -1,0 +1,112 @@
+```c++
+// 思路：用一个二维数组(队列)存储广搜遍历的每个点，将 head 四个方向的可访问的点(没有出矩阵，且点没有访问过)遍历标记并将这些点存入队列，一个点四个方向都尝试访问结束后，head++, 尝试新的点，直到head>tail,表示对列中每个点四个方向的点都标记结束了。
+
+#include<iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+// a存储矩阵，q存储队列（遍历过的点）
+int a[110][110],q[10100][3];
+int n,m,i,j,tx,ty;
+
+int k = 1; // 每次自增的值
+int head = 1,tail = 1; // head：头指针，tail：尾指针
+
+// 四个方向,右下左上
+int fx[5] = {0,0,1,0,-1};
+int fy[5] = {0,1,0,-1,0};
+
+int main() {
+    cin >> n >> m;
+    // 起点
+    a[1][1] = k;
+    k++;
+    // 1,1点存入队列，以1，1为head访问四个方向
+    q[1][1] = 1;
+    q[1][2] = 1;
+    // 当head <= tail时，说明队列还有点没有尝试标记过四个方向
+    while(head <= tail) {
+        // 尝试访问head的四个方向
+        for(i = 1;i <= 4;i++) {
+            // 从head对应的点加上四个方向的变化量得到新的点
+            tx = q[head][1] + fx[i];
+            ty = q[head][2] + fy[i];
+            // 如果新的点在矩阵范围内，且没有被标记过，则标记
+            if(tx >= 1 && tx <= n && ty >= 1 && ty <= m && a[tx][ty] == 0) {
+                // 新的点存入队列，以新点为head访问四个方向
+                tail++;
+                q[tail][1] = tx;
+                q[tail][2] = ty;
+                a[tx][ty] = k;
+                k++;
+            }
+        }
+        head++; // head指向队列头的下一个点
+    }
+    // 输出矩阵
+    for(i = 1;i <= n;i++) {
+        for(j = 1;j <= m;j++) {
+            cout << a[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+
+
+#include<bits/stdc++.h>
+using namespace std;
+//a存储矩阵
+int a[110][110];
+int n,m,i,j;
+//方向数组 
+int fx[5]={0,0,1,0,-1};
+int fy[5]={0,1,0,-1,0};
+queue<int> x, y; //坐标队列 
+int s=1;
+void bfs()
+{
+	x.push(1);
+	y.push(1);
+	a[1][1]=s;
+	
+	while(!x.empty())	
+	{
+		int tx=x.front(), ty=y.front();
+		//以这一点为基础 找周边的点
+		for(i=1; i<=4; i++)
+		{
+			int nx = tx + fx[i];
+			int ny = ty + fy[i];
+			if(nx>=1 && nx<=n && ny>=1 && ny<=m && a[nx][ny]==0)
+			{
+				s++;
+				a[nx][ny]=s;
+				x.push(nx);
+				y.push(ny);
+			}
+		} 
+		//基础点周边的点找完了 基础点出队列
+		x.pop();
+		y.pop(); 
+	} 
+}
+
+
+int main()
+{
+	cin>>n>>m;
+	bfs(); //广搜 
+	
+	for(int i = 1; i <= n; i++)
+	{
+		for( j = 1; j <= m; j++)
+		{
+			cout<< a[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+```
+

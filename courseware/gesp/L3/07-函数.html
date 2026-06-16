@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 函数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">☰</button>
+<nav class="sidebar">
+  <div class="sidebar-logo">GESP C++ 三级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：代码详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+<main class="main-content">
+<div class="content-wrapper">
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 · 函数</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">Functions Basics — 输入参数 → 处理 → 返回结果</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 5选择题 + 1判断题</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均1~2道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 约5%分值</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 直观比喻</h2>
+<div class="card accent"><div class="card-title">🎯 场景比喻：函数就像一台自动售货机</div>
+<p>想象你去买饮料：<strong>投币（输入参数）</strong> → 售货机内部机械运转（<strong>函数体处理</strong>） → 一瓶饮料掉出来（<strong>返回结果</strong>）。</p>
+<p>函数也是一样：你给函数<strong>输入数据</strong>，它按照既定的逻辑<strong>处理数据</strong>，最终<strong>输出一个结果</strong>给你。你不需要关心售货机内部齿轮怎么转——函数把复杂的细节<strong>封装</strong>起来，只暴露简洁的接口。</p>
+<p>再比如<strong>计算器</strong>：你按下 <span class="mono">max(3, 5)</span> 就像按下计算器上的"取最大值"按钮，输入3和5，它返回5——简单、高效、可复用。</p>
+</div>
+
+<!-- Step 2: 核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+<div class="card primary"><div class="card-title">🔵 函数定义语法</div>
+<div class="formula-box">返回类型 函数名(参数列表) { 函数体 }</div>
+<p>一个函数由四个部分组成：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>组成部分</th><th>说明</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><strong>返回类型</strong></td><td>函数返回值的类型，无返回值写 <span class="mono">void</span></td><td class="mono">int、void、double</td></tr>
+<tr><td><strong>函数名</strong></td><td>标识符，遵循命名规范</td><td class="mono">max、findMax</td></tr>
+<tr><td><strong>参数列表</strong></td><td>接收输入数据，可以没有参数</td><td class="mono">(int a, int b)</td></tr>
+<tr><td><strong>函数体</strong></td><td>{ } 内的代码，实现具体逻辑</td><td class="mono">{ return a > b ? a : b; }</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card success"><div class="card-title">✅ 关键规则（必背）</div>
+<ul>
+  <li><span class="key-point success">返回类型</span>：C++11起<strong>必须显式声明</strong>返回类型，不允许默认返回 int。</li>
+  <li><span class="key-point">参数</span>：函数<strong>可以没有参数</strong>，如 <span class="mono">int getValue()</span>。</li>
+  <li><span class="key-point">return</span>：只能返回<strong>一个值</strong>，但可通过引用参数间接返回多个值。</li>
+  <li><span class="key-point warn">变量作用域</span>：for循环内声明的变量仅在该循环体有效；函数内局部变量仅在函数内有效。</li>
+  <li><span class="key-point danger">禁止嵌套定义</span>：C++ <strong>不允许</strong>在函数内部定义另一个函数。</li>
+</ul>
+</div>
+
+<div class="card purple"><div class="card-title">🟣 参数传递与作用域</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>形参（Parameter）</strong></td><td>函数定义时括号内的变量，在函数调用结束后<strong>释放内存</strong></td></tr>
+<tr><td><strong>实参（Argument）</strong></td><td>调用函数时传入的具体值</td></tr>
+<tr><td><strong>局部变量</strong></td><td>在函数内部声明，仅在该函数内有效</td></tr>
+<tr><td><strong>全局变量</strong></td><td>在所有函数外部声明，整个程序有效</td></tr>
+<tr><td><strong>同名变量</strong></td><td>不同函数中的局部变量可以同名，代表<strong>不同内存单元</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 3: 代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+<div class="card success"><div class="card-title">📝 max 函数 — 返回两个整数中较大值</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 返回两个整数中较大值
+int max(int a, int b) {
+    if (a > b) return a;
+    else return b;
+}
+
+int main() {
+    cout << max(3, 5) << endl;   // 输出: 5
+    cout << max(10, 7) << endl;  // 输出: 10
+    return 0;
+}</code></pre></div>
+<p>函数 <span class="mono">max</span> 接收两个 int 参数，用 if-else 比较大小后 return 较大值。<span class="key-point success">高频考点</span>：返回类型必须是 <span class="mono">int</span> 而非 <span class="mono">void</span>，因为需要 return 一个值。</p>
+</div>
+
+<div class="card pink"><div class="card-title">📝 findMax 函数 — 查找数组中的最大值</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 查找数组最大值
+int findMax(int arr[], int size) {
+    int maxVal = arr[0];  // 初始化为第一个元素！
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+int main() {
+    int arr[] = {1, 3, 5, 2, 4};
+    cout << findMax(arr, 5) << endl;  // 输出: 5
+    return 0;
+}</code></pre></div>
+<p><span class="key-point warn">易错点</span>：<span class="mono">maxVal</span> 必须初始化为 <span class="mono">arr[0]</span>，不能初始化为 0！如果数组元素全为负数，初始化 0 会导致错误结果。</p>
+</div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+<div class="card flat"><div class="card-title">📐 手工模拟函数调用栈</div>
+<p>以调用 <strong>max(5, 3)</strong> 为例，模拟函数调用的完整过程：</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>内存状态</th></tr></thead>
+<tbody>
+<tr><td>① 调用前</td><td>main() 执行到 max(5, 3)</td><td>main 栈帧活跃</td></tr>
+<tr><td>② 传参</td><td>实参 5 和 3 拷贝给形参 a 和 b</td><td>a = 5, b = 3（max 栈帧内）</td></tr>
+<tr><td>③ 执行函数体</td><td>执行 if (a > b)：5 > 3 为 true</td><td>进入 if 分支</td></tr>
+<tr><td>④ return</td><td>return a; 返回 5</td><td>返回值 5 传回调用处</td></tr>
+<tr><td>⑤ 清理</td><td>max 函数结束，形参 a、b 释放</td><td>回到 main 栈帧，拿到结果 5</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point">关键理解</span>：函数调用时，系统为函数创建一个独立的<strong>栈帧</strong>存放局部变量和形参；函数返回后，该栈帧被销毁，所有局部变量<strong>释放内存</strong>。这就是为什么函数间的变量互不影响。</p>
+</div>
+
+<!-- Step 5: 常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱1：void 函数不能 return 值</div>
+<p><span class="mono">void max(int a, int b) { return a > b ? a : b; }</span> — <strong>编译错误！</strong></p>
+<p>void 表示"无返回值"，return 后面<strong>不能跟表达式</strong>。void 函数可以写 <span class="mono">return;</span>（空返回），但不能 <span class="mono">return 值;</span>。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱2：C++ 不允许函数嵌套定义</div>
+<p>你不能在一个函数内部<strong>定义</strong>另一个函数：</p>
+<p class="mono">void outer() { void inner() { ... } }  // 编译错误！</p>
+<p>但可以在一个函数内部<strong>调用</strong>另一个函数（这是正常的函数调用）。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱3：main 函数不能被其他函数调用</div>
+<p><span class="mono">main</span> 是程序的入口点，由操作系统调用。<strong>你不能在代码中显式调用 main 函数</strong>。任何尝试 <span class="mono">main()</span> 这样的调用都是错误的设计。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱4：C++11 前默认返回 int（历史遗留）</div>
+<p>在旧标准中，不写返回类型的函数默认返回 <span class="mono">int</span>。但 <span class="key-point danger">C++11 及之后</span> 要求必须<strong>显式声明返回类型</strong>。GESP 考试以此为准！</p>
+<p>写法 <span class="mono">max(a, b) { ... }</span>（无返回类型）在 C++11 后是<strong>错误的</strong>，必须写成 <span class="mono">int max(int a, int b) { ... }</span>。</p>
+</div>
+
+<!-- Step 6: 真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card purple">
+<div class="card-title">第1题 · 函数定义语法（2025/09 第5题）</div>
+<p>要正确定义一个返回两个整数中较大值的函数 max，应该使用（ ）</p>
+<p>A. void max(int a, int b) { return a > b ? a : b; }<br>B. int max(int a, int b) { if (a > b) return a; else return b; }<br>C. int max(a, b) { if (a > b) return a; else return b; }<br>D. void max(a, b) { cout << (a > b ? a : b); }</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：A错误，void函数不能用return返回值；B正确，返回类型和参数类型都声明完整；C缺少参数类型声明；D同样缺类型声明且void不应return值。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 函数综合描述（2025/09 第12题）</div>
+<p>以下关于C++函数的描述，正确的是（ ）</p>
+<p>A. 函数必须要有参数。<br>B. 函数通过 return 语句只能返回一个值。但是可以通过很多间接的方式返回多个值。<br>C. main 函数可以被其他函数调用。<br>D. 函数的定义可以直接嵌套，即一个函数内部可以真正定义另一个函数。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：A错，函数可以无参数（如 int foo()）；B正确；C错，main不能被其他函数调用；D错，C++不允许函数嵌套定义。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 变量作用域（2025/09 第13题）</div>
+<p>以下关于C++变量作用域的说法，错误的是（ ）</p>
+<p>A. 在 for 循环语句中声明的变量，其作用域仅限于该循环体内。<br>B. 在函数内部声明的变量（局部变量），仅在函数内部有效。<br>C. 在所有函数外部声明的变量，在整个程序中都有效。<br>D. 不同函数中的局部变量可以同名，它们代表不同的内存单元。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：C不严谨，static修饰的全局变量只在当前文件有效，不能说"在整个程序中"都有效。A、B、D均正确。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 返回类型与参数（2025/09 第14题）</div>
+<p>以下关于C++函数的说法，正确的是（ ）</p>
+<p>A. 函数参数传递只有值传递一种方式。<br>B. 函数的形参在函数调用结束后依然占用内存空间。<br>C. 没有返回值的函数必须声明为 void 类型，且不能包含 return 语句。<br>D. C++11 及之后标准要求函数必须显式声明返回类型，不允许默认返回 int。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：A错，还有引用传递等方式；B错，形参在调用结束后释放；C错，void函数可以有 return;（空返回）；D正确，这是C++11的重要规定。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · findMax 初始化（2026/03 第6题）</div>
+<p>以下C++代码试图查找数组中的最大值，划线处应填入（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int findMax(int arr[], int size) {
+    int maxVal = ________; // 划线处
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}</code></pre></div>
+<p>A. 0 &nbsp; B. arr[-1] &nbsp; C. arr[0] &nbsp; D. size</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：maxVal应初始化为第一个元素 arr[0]。若初始化为0，当数组元素全为负数时会得到错误结果0；arr[-1]越界；size不是数组元素。从 i=1 开始循环也印证了要用 arr[0] 作为初始值。
+</div></div>
+</div>
+
+<h3>判断题</h3>
+
+<div class="card success">
+<div class="card-title">判断题第1题 · 返回类型转换</div>
+<p>函数声明 double f(); 返回 int 时，会自动转换为 double。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确</strong><br>如果函数的返回类型声明为 double，而实际 return 了一个 int 值，C++ 会自动将 int 隐式转换为 double 返回。</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0;background:#f0f4ff;">
+<div class="card-title">📋 函数速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>要点</th><th>规则</th><th>注意事项</th></tr></thead>
+<tbody>
+<tr><td>定义语法</td><td class="mono">返回类型 函数名(参数) { 函数体 }</td><td>C++11起必须显式声明返回类型</td></tr>
+<tr><td>无返回值</td><td>声明为 <span class="mono">void</span></td><td>void 函数不能用 return 返回值</td></tr>
+<tr><td>无参数</td><td>参数列表留空 <span class="mono">()</span></td><td>函数可以没有参数</td></tr>
+<tr><td>嵌套定义</td><td><strong>禁止！</strong></td><td>一个函数内部不能定义另一个函数</td></tr>
+<tr><td>main 函数</td><td><strong>不能被调用</strong></td><td>由操作系统调用，是程序入口</td></tr>
+<tr><td>作用域</td><td>for 内变量仅限循环体</td><td>局部变量仅在函数内有效</td></tr>
+<tr><td>形参生命周期</td><td>调用结束即释放</td><td>不占用持久内存</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div></main>
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '▶ 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '▼ 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++四级 · 函数</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05); --shadow-md: 0 4px 12px rgba(0,0,0,.08); --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+  nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+  nav.sidebar.open{transform:translateX(0)}
+  .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+  main.main-content{margin-left:0;padding-top:10px}
+  .content-wrapper{padding:24px 20px 60px}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.warning-box p:last-child{margin-bottom:0}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span class="icon">📘</span>
+    <span>GESP C++四级 · 第1章</span>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">教学内容</div>
+    <a class="nav-link active" href="#hero-section">章节概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：语法详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;
+  background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);
+  border-radius:16px;margin-bottom:32px;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+  background:radial-gradient(circle,var(--primary) 0%,transparent 70%);
+  opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;
+  background:radial-gradient(circle,var(--accent) 0%,transparent 70%);
+  opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:2.2rem;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">GESP C++ 四级 · 函数</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 24px">Functions / 代码复用的基石</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(79,110,247,.3)">10道选择题 + 7道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(245,158,11,.25)">年均出题 5~7道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;
+  border-radius:20px;font-size:13px;font-weight:600;
+  border:1px solid rgba(16,185,129,.25)">占总分约 18%</span>
+</div></div>
+
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — 函数是什么？</h2>
+
+<div class="card accent">
+<div class="card-title">厨房里的「菜谱」</div>
+<p>想象你在厨房做菜。<strong>菜谱</strong>告诉你：输入「食材」，经过「烹饪步骤」，输出「成品菜」。</p>
+<p>一个好的菜谱可以被<strong>反复使用</strong> —— 今天做宫保鸡丁调用一次菜谱，明天又来一遍。</p>
+<p>函数就是编程世界的「菜谱」：<strong>输入参数 → 处理逻辑 → 返回结果</strong>。</p>
+</div>
+
+<div class="highlight-box yellow">
+<strong>核心直觉：</strong>函数 = 命名代码块 = 封装 + 复用。<br>
+你把一段「炒菜」的代码写成一个函数，以后只需要喊一句「炒菜(食材)」就行了，不用每次都重写步骤。
+</div>
+
+<div class="card primary">
+<div class="card-title">本课内容总览</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>函数声明与定义</strong>：先「挂招牌」再「上菜」</li>
+  <li><strong>参数传递</strong>：值传递 vs 引用传递 vs 指针传递</li>
+  <li><strong>作用域</strong>：谁看得见谁？</li>
+  <li><strong>默认参数</strong>：不想每次都说「少盐」？预设它！</li>
+  <li><strong>函数重载</strong>：同名不同参，自动匹配</li>
+  <li><strong>时间复杂度</strong>：评估函数效率</li>
+</ul>
+</div>
+
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<div class="card primary">
+<div class="card-title">函数的基本结构</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 1. 函数声明（函数原型）
+返回类型 函数名(参数列表);
+
+// 2. 函数定义
+返回类型 函数名(参数列表) {
+    // 函数体
+    return 返回值;
+}
+
+// 3. 函数调用
+函数名(实参列表);</code></pre>
+</div>
+</div>
+
+<div class="card primary">
+<div class="card-title">形参 vs 实参</div>
+<table>
+<thead><tr><th>概念</th><th>位置</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>形参</strong><br>(parameter)</td><td>函数<strong>定义</strong>中声明</td><td>占位变量，接收调用时传入的值</td></tr>
+<tr><td><strong>实参</strong><br>(argument)</td><td>函数<strong>调用</strong>时传入</td><td>具体的值，传递给形参</td></tr>
+</tbody>
+</table>
+<p style="margin-top:8px;font-size:14px">例：<span class="key-point">int add(int a, int b)</span> 中 a、b 是<strong>形参</strong>；调用 <span class="key-point">add(3, 5)</span> 中的 3、5 是<strong>实参</strong>。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">三种参数传递方式对比</div>
+<table>
+<thead><tr><th>传递方式</th><th>语法</th><th>是否拷贝数据</th><th>能否修改实参</th></tr></thead>
+<tbody>
+<tr><td><strong>值传递</strong></td><td><code>void f(int x)</code></td><td>拷贝一份</td><td style="color:var(--danger)">否</td></tr>
+<tr><td><strong>引用传递</strong></td><td><code>void f(int &amp; x)</code></td><td>不拷贝（别名）</td><td style="color:var(--success)">能</td></tr>
+<tr><td><strong>指针传递</strong></td><td><code>void f(int* x)</code></td><td>传地址（8字节）</td><td style="color:var(--success)">能（用 *x）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card success">
+<div class="card-title">默认参数规则</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li>默认值在<strong>函数声明</strong>中指定，定义处不重复</li>
+  <li>带默认值的参数必须从右向左连续排列</li>
+  <li><span class="key-point">int add(int a, int b = 1);</span> — b 有默认值，调用时可省略</li>
+</ul>
+</div>
+
+<div class="card indigo">
+<div class="card-title">函数重载 (Overloading)</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li>同一作用域内，<strong>函数名相同</strong>，<strong>参数列表不同</strong></li>
+  <li>编译器根据实参自动匹配最合适的版本</li>
+  <li>返回值类型不同<strong>不能</strong>构成重载</li>
+</ul>
+</div>
+
+<div class="card purple">
+<div class="card-title">作用域规则</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>全局变量</strong>：在所有函数外定义，整个程序可见</li>
+  <li><strong>局部变量</strong>：在函数或代码块内定义，仅内部可见</li>
+  <li><strong>同名屏蔽</strong>：局部变量会隐藏同名的全局变量</li>
+  <li><strong>作用域解析符 ::</strong>：在局部作用域内访问被屏蔽的全局变量</li>
+</ul>
+</div>
+
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：语法详解</h2>
+
+<div class="card primary">
+<div class="card-title">函数声明与定义分离</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 声明放在 main 之前（函数原型）
+int multiply(int x, int y);
+
+int main() {
+    int result = multiply(4, 5);  // 可以调用
+    std::cout &lt;&lt; result;
+    return 0;
+}
+
+// 定义可以放在 main 之后
+int multiply(int x, int y) {
+    return x * y;
+}</code></pre>
+</div>
+<div class="tip-box" style="margin-top:8px">
+<div class="tip-title">关键</div>
+只要在调用前<strong>声明</strong>了函数原型，定义可以放在任何位置。编译器只需要知道「有这个函数」即可。
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">值传递示例（不修改实参）</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void foo(int x) {
+    x += 5;  // 修改的是副本，不影响实参
+}
+int main() {
+    int a = 10;
+    foo(a);
+    cout &lt;&lt; a;  // 输出 10，a 没有变
+}</code></pre>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">引用传递示例（修改实参）</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void add(int &amp;x) {
+    x += 10;  // 通过引用直接修改实参
+}
+int a = 5;
+add(a);
+// 此时 a == 15</code></pre>
+</div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">函数重载示例</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int add(int a, int b)       { return a + b; }
+double add(double a, double b) { return a + b; }
+int add(int a, int b, int c)   { return a + b + c; }
+
+cout &lt;&lt; add(2, 3) &lt;&lt; endl;       // 调用版本1: 5
+cout &lt;&lt; add(2.5, 3.5) &lt;&lt; endl;   // 调用版本2: 6.0
+cout &lt;&lt; add(1, 2, 3) &lt;&lt; endl;    // 调用版本3: 6</code></pre>
+</div>
+</div>
+
+<div class="card purple">
+<div class="card-title">作用域与 :: 操作符</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int value = 100;  // 全局变量
+
+void print1() {
+    int value = 50;  // 局部变量，屏蔽全局 value
+    cout &lt;&lt; value &lt;&lt; " ";   // 输出 50（局部）
+    cout &lt;&lt; ::value &lt;&lt; " "; // 输出 100（全局，用 :: 访问）
+}
+
+void print2() {
+    cout &lt;&lt; value &lt;&lt; " ";   // 输出 100
+}</code></pre>
+</div>
+</div>
+
+<div class="card teal">
+<div class="card-title">嵌套作用域</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 1;  // 全局
+void test() {
+    int a = 2;  // 函数内局部
+    {
+        int a = 3;  // 内部代码块局部
+        a++;        // 内层 a → 4
+    }               // 内层 a 被销毁
+    a++;            // 函数内 a → 3
+    cout &lt;&lt; a &lt;&lt; " "; // 输出 3
+}
+int main() {
+    test();
+    cout &lt;&lt; a;      // 输出 1（全局）
+}
+// 输出：3 1</code></pre>
+</div>
+</div>
+
+<div class="card orange">
+<div class="card-title">时间复杂度分析示例</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// 枚举子集：外层 2^n 次，内层 n 次
+bool f(int arr[], int n, int target) {
+    for (int i = 0; i &lt; (1 &lt;&lt; n); i++) {  // O(2^n)
+        int sum = 0;
+        for (int j = 0; j &lt; n; j++)         // O(n)
+            if (i &amp; (1 &lt;&lt; j)) sum += arr[j];
+        if (sum == target) return true;
+    }
+    return false;
+}
+// 总时间复杂度：O(n × 2^n)</code></pre>
+</div>
+</div>
+
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<div class="card primary">
+<div class="card-title">模拟1：值传递与作用域</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 5;              // 全局 x = 5
+void foo() {
+    int x = 10;         // 局部 x = 10
+    cout &lt;&lt; x &lt;&lt; " ";  // 输出 10
+}
+void bar() {
+    cout &lt;&lt; x &lt;&lt; " ";  // 输出全局 5
+}
+int main() {
+    foo();   // → 10
+    bar();   // → 5
+}
+// 输出：10 5</code></pre>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">模拟2：默认参数调用</div>
+<table>
+<thead><tr><th>语句</th><th>实参</th><th>b的值</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td><code>add(2)</code></td><td>a=2</td><td>b=1（默认）</td><td>3</td></tr>
+<tr><td><code>add(2, 3)</code></td><td>a=2, b=3</td><td>b=3</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card purple">
+<div class="card-title">模拟3：引用传递修改实参</div>
+<table>
+<thead><tr><th>步骤</th><th>变量状态</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>初始</td><td>a = 5</td><td>全局变量</td></tr>
+<tr><td>调用 add(a)</td><td>x 是 a 的引用</td><td>引用绑定</td></tr>
+<tr><td>x += 10</td><td>a = 15</td><td>通过引用修改</td></tr>
+<tr><td>返回后</td><td>a = 15</td><td>修改生效</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="card teal">
+<div class="card-title">模拟4：嵌套作用域追踪</div>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 1;              // [全局] a=1
+void test() {
+    int a = 2;          // [test] a=2
+    {   int a = 3;      // [内层] a=3
+        a++;            // [内层] a=4
+    }                   // [内层] 销毁
+    a++;                // [test] a=3
+    cout &lt;&lt; a &lt;&lt; " ";  // 输出 3
+}
+int main() {
+    test();
+    cout &lt;&lt; a;         // [全局] a=1 → 输出 1
+}
+// 最终输出：3 1</code></pre>
+</div>
+</div>
+
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">陷阱1：函数使用前必须有声明</div>
+把函数定义放在 main 之后<strong>可以</strong>，但<strong>必须在调用前做前置声明</strong>：
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int main() {
+    greet();  // 编译错误：找不到函数 greet()
+    return 0;
+}
+void greet() { cout &lt;&lt; "Hello!" &lt;&lt; endl; }</code></pre>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱2：值传递不修改实参</div>
+值传递时，函数内修改的是参数的<strong>副本</strong>，不影响原变量。只有引用传递(&amp;)和指针传递(*)才能修改实参。
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void foo(int x) { x += 5; }
+int a = 10; foo(a);  // a 仍是 10</code></pre>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱3：函数重载不能与默认参数冲突</div>
+当调用产生<strong>二义性</strong>时，编译器无法判断：
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int calculate(int x, int y = 10);  // 版本1
+int calculate(int x);              // 版本2
+calculate(5);  // 二义性！</code></pre>
+</div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱4：局部变量与全局变量同名屏蔽</div>
+函数内定义的局部变量会<strong>隐藏</strong>同名的全局变量。需要访问全局变量时用 <span class="key-point">::变量名</span>。
+</div>
+
+<div class="warning-box">
+<div class="wb-title">陷阱5：局部变量未初始化即使用</div>
+<span class="key-point">int x = x + 1;</span> 中右侧的 x 是<strong>未初始化的局部变量</strong>，值是未定义的！
+<div class="code-block" style="margin:8px 0">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 10;
+void f() {
+    int x = x + 1;  // 未定义行为！局部 x 未初始化
+    cout &lt;&lt; x;     // 输出不确定
+}</code></pre>
+</div>
+</div>
+
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<h3>选择题（共10题）</h3>
+
+<div class="card purple">
+<div class="card-title">第1题 · 函数声明与定义（2023/12 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">关于下述代码，说法<strong>错误</strong>的是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int multiply(int x, int y);
+int main() { int a=4,b=5; cout &lt;&lt; multiply(a,b); return 0; }
+int multiply(int x, int y) { return x * y; }</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. 函数 multiply 的定义应该放到函数 main 之前<br>
+B. 函数声明中明确指定了返回值为整数类型<br>
+C. multiply(a,b) 中 a 和 b 作为实参传递给了形参 x 和 y<br>
+D. 运行上述代码，将输出 20
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br><strong>解析：</strong>有函数声明在前，定义可以放在 main 之后。B/C/D 都是正确描述。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第2题 · 作用域（2023/09 第6题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">执行下述代码将输出？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 10;
+void func() { int x = 20; cout &lt;&lt; x; }
+int main() { func(); cout &lt;&lt; x; return 0; }</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. 2020 &nbsp;&nbsp; B. 2010 &nbsp;&nbsp; C. 1010 &nbsp;&nbsp; D. 编译错误
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br><strong>解析：</strong>func() 内局部 x=20，输出 20；main() 内全局 x=10，输出 10。合起来 2010。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第3题 · 参数传递方式（2023/09 第7题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">以下哪种参数传递方式可以避免拷贝大型对象？</p>
+<p style="font-size:13px;margin:6px 0">
+A. 只能用值传递 &nbsp;&nbsp; B. 只能用引用传递 &nbsp;&nbsp; C. 只能用指针传递 &nbsp;&nbsp; D. 引用传递和指针传递均可
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br><strong>解析：</strong>引用传递（别名）和指针传递（传地址）都不拷贝整个对象。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第4题 · 值传递特性（2024/12 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">下面有关函数参数的说法，正确的是？</p>
+<p style="font-size:13px;margin:6px 0">
+A. 值传递方式下，子函数改变参数值，主函数的参数值不变<br>
+B. 值传递方式下，子函数改变参数值，主函数的参数值随之改变<br>
+C. 传递地址方式下，子函数改变参数值，主函数的参数值不改变<br>
+D. 函数参数传递可以不满足子函数的参数个数要求
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br><strong>解析：</strong>值传递复制的是副本，函数内修改不影响原变量。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第5题 · 时间复杂度（2024/03 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">给定如下算法，其时间复杂度为？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">bool f(int arr[], int n, int target) {
+    for (int i = 0; i &lt; (1 &lt;&lt; n); i++) {
+        int sum = 0;
+        for (int j = 0; j &lt; n; j++)
+            if (i &amp; (1 &lt;&lt; j)) sum += arr[j];
+        if (sum == target) return true;
+    }
+    return false;
+}</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. O(n²) &nbsp;&nbsp; B. O(n·2ⁿ) &nbsp;&nbsp; C. O(1) &nbsp;&nbsp; D. O(n³)
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br><strong>解析：</strong>外层 2^n 次，内层 n 次，相乘得 O(n × 2^n)。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · 作用域与 ::（2024/09 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">运行如下代码会输出？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int value = 100;
+void print1() { int value = 50; cout &lt;&lt; value &lt;&lt; " "; cout &lt;&lt; ::value &lt;&lt; " "; }
+void print2() { cout &lt;&lt; value &lt;&lt; " "; }
+int main() { print1(); print2(); }</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. 100 100 100 &nbsp;&nbsp; B. 50 50 50 &nbsp;&nbsp; C. 50 100 100 &nbsp;&nbsp; D. 50 50 100
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br><strong>解析：</strong>print1() 输出局部 50 和 ::value=100；print2() 输出全局 100。合起来 "50 100 100"。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · 嵌套作用域（2024/09 第2题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">执行完下面的代码后，输出是？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int a = 1;
+void test() { int a = 2; { int a = 3; a++; } a++; cout &lt;&lt; a &lt;&lt; " "; }
+int main() { test(); cout &lt;&lt; a; }</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. 3 1 &nbsp;&nbsp; B. 4 1 &nbsp;&nbsp; C. 3 2 &nbsp;&nbsp; D. 4 2
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br><strong>解析：</strong>内层块 a=3→4 后销毁。test() 局部 a=2→3。全局 a=1 不变。输出 3 1。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · 默认参数（2025/03 第1题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">下面这段代码会输出？</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int add(int a, int b = 1);
+int main() { cout &lt;&lt; add(2) &lt;&lt; " " &lt;&lt; add(2, 3); return 0; }
+int add(int a, int b) { return a + b; }</code></pre>
+</div>
+<p style="font-size:13px;margin:6px 0">
+A. 3 5 &nbsp;&nbsp; B. 编译失败 &nbsp;&nbsp; C. 运行错误 &nbsp;&nbsp; D. 链接失败
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br><strong>解析：</strong>add(2) → b用默认值1 → 3；add(2,3) → 5。输出 3 5。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第9题 · 修改结构体参数（2025/03 第4题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">关于函数参数传递，以下哪种方式可以修改传入的结构体对象？</p>
+<p style="font-size:13px;margin:6px 0">
+A. 值传递或引用传递 &nbsp;&nbsp; B. 值传递或指针传递 &nbsp;&nbsp; C. 引用传递或指针传递 &nbsp;&nbsp; D. 仅指针传递
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong><br><strong>解析：</strong>要修改实参必须用引用传递或指针传递。值传递修改的是副本。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第10题 · 形参与实参（2025/03 第5题）</div>
+<p style="margin:0 0 8px;font-size:13px;color:var(--text-secondary)">以下哪个选项正确描述了C++中形参和实参的区别？</p>
+<p style="font-size:13px;margin:6px 0">
+A. 形参是函数调用时传递的具体值，实参是函数定义中声明的变量<br>
+B. 形参是函数定义中声明的变量，实参是函数调用时传递的具体值<br>
+C. 形参和实参在函数调用时是完全相同的<br>
+D. 形参只在函数内部可见，实参在函数外部可见
+</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br><strong>解析：</strong>形参(parameter)出现在函数定义中，实参(argument)出现在函数调用中。A 说反了。</div></div>
+</div>
+
+<h3>判断题（共7题）</h3>
+
+<div class="card purple">
+<div class="card-title">判断题第1题（2025/06 第5题）</div>
+<p style="font-size:14px">函数参数可以通过值传递、引用传递和指针传递，这样函数内对参数的修改可以直接修改传入变量的值。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br><strong>解析：</strong>值传递不能修改原变量，只有引用传递和指针传递才能修改。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第2题（2025/06 第6题）</div>
+<p style="font-size:14px">在C++中，函数的返回类型可以省略，默认为 int。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br><strong>解析：</strong>标准 C++ 中函数必须显式指定返回类型，不能省略。</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">判断题第3题（2025/06 第7题）</div>
+<p style="font-size:14px">下面C++代码的输出是 15。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void foo(int x) { x += 5; }
+int main() { int a = 10; foo(a); cout &lt;&lt; a &lt;&lt; endl; }</code></pre>
+</div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br><strong>解析：</strong>foo 使用值传递，x 是 a 的副本，x+=5 不影响 a。输出是 10。</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">判断题第4题（2025/09 第5题）</div>
+<p style="font-size:14px">在C++中，相比于值传递，使用引用传递可以直接操作和修改原始变量，避免数据拷贝，提高效率。</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确（√）</strong><br><strong>解析：</strong>引用传递不产生副本，直接操作原变量。</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">判断题第5题（2025/09 第6题）</div>
+<p style="font-size:14px">执行下面C++代码将输出 11。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int x = 10; void f() { int x = x + 1; cout &lt;&lt; x &lt;&lt; endl; }</code></pre>
+</div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br><strong>解析：</strong><code>int x = x + 1;</code> 中右侧的 x 是局部变量自身（未初始化），值是未定义的。</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">判断题第6题（2025/12 第6题）</div>
+<p style="font-size:14px">执行下面程序后，变量 a 的值会变成 15。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">void add(int &amp;x) { x += 10; }  int a = 5; add(a);</code></pre>
+</div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确（√）</strong><br><strong>解析：</strong>add 使用引用传递，x 是 a 的引用，x+=10 修改 a → 15。</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">判断题第7题（2025/12 第7题）</div>
+<p style="font-size:14px">下面代码可以正常编译并输出 10。</p>
+<div class="code-block">
+<div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int calculate(int x, int y = 10);
+int main() { cout &lt;&lt; calculate(5); }
+int calculate(int x, int y) { return x * y; }
+int calculate(int x) { return x * 2; }</code></pre>
+</div>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误（X）</strong><br><strong>解析：</strong>调用 calculate(5) 时两个候选函数产生二义性编译错误。</div></div>
+</div>
+
+<h2 class="section-num" id="quick-ref"><span class="num-badge">★</span> 知识速查卡</h2>
+
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 函数知识速查卡</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>核心结论</th><th>记忆口诀</th></tr></thead>
+<tbody>
+<tr>
+  <td>函数声明</td>
+  <td>调用前必须声明或定义<br><code>int f(int);</code> 可写在调用后</td>
+  <td>先告诉编译器有这函数</td>
+</tr>
+<tr>
+  <td>值传递</td>
+  <td>拷贝实参，函数内修改不影响原变量<br><code>void f(int x)</code></td>
+  <td>拷贝一份，互不干扰</td>
+</tr>
+<tr>
+  <td>引用传递</td>
+  <td>别名机制，直接操作原变量<br><code>void f(int&amp; x)</code></td>
+  <td>起个别名，直通本体</td>
+</tr>
+<tr>
+  <td>指针传递</td>
+  <td>传地址(8字节)，通过 *p 修改原变量<br><code>void f(int* p)</code></td>
+  <td>告诉地址，自己去改</td>
+</tr>
+<tr>
+  <td>作用域</td>
+  <td>内层同名变量屏蔽外层；:: 访问全局<br>局部变量离开作用域即销毁</td>
+  <td>就近原则 + ::破壁</td>
+</tr>
+<tr>
+  <td>默认参数</td>
+  <td>只在声明中给定默认值；从右向左设<br><code>int f(int a, int b=1);</code></td>
+  <td>声明给默认，右向左排</td>
+</tr>
+<tr>
+  <td>函数重载</td>
+  <td>同名不同参；不能仅返回值不同<br>调用不能有二义性</td>
+  <td>同名不同参，自动匹配</td>
+</tr>
+<tr>
+  <td>形参 vs 实参</td>
+  <td>形参 = 定义时声明的变量<br>实参 = 调用时传递的值</td>
+  <td>形参是坑，实参是萝卜</td>
+</tr>
+<tr>
+  <td>时间复杂度</td>
+  <td>嵌套循环：各层循环次数相乘<br>枚举子集 O(n×2ⁿ)</td>
+  <td>乘起来就是答案</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="card teal" style="margin-top:24px">
+<div class="card-title">本章得分策略</div>
+</div>
+</div>
+<ul style="margin:8px 0 0 18px;line-height:2">
+  <li><strong>必得分点(70%)：</strong>作用域判断、值传递不修改实参、形参/实参辨析</li>
+  <li><strong>拿分点(20%)：</strong>默认参数规则、引用传递修改实参、:: 访问全局</li>
+  <li><strong>拔高点(10%)：</strong>时间复杂度分析、函数重载二义性</li>
+</ul>
+</div>
+
+</div>
+</main>
+
+<button class="back-to-top">↑</button>
+
+<script>
+document.querySelectorAll('.answer-toggle').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    const content=this.nextElementSibling;
+    if(content.classList.contains('open')){
+      content.classList.remove('open');this.classList.remove('open');
+      this.innerHTML='▶ 显示答案';
+    }else{
+      content.classList.add('open');this.classList.add('open');
+      this.innerHTML='▼ 隐藏答案';
+    }
+  });
+});
+
+const sections=document.querySelectorAll('h2.section-num');
+const links=document.querySelectorAll('.nav-link');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)current=s.id});
+  links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+current));
+  document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+});
+
+hljs.highlightAll();
+document.querySelector('.menu-toggle').addEventListener('click',()=>{
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+
+</body>
+</html>

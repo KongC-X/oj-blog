@@ -1,0 +1,161 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>GESP四级培训 · 递推</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root{--bg:#fafbfc;--surface:#fff;--surface-alt:#f8f9fb;--text:#1a1d28;--text-secondary:#5a6072;--text-tertiary:#8b8fa3;--border:#e4e7ed;--border-light:#eef0f4;--primary:#4f6ef7;--primary-light:#eef2ff;--primary-dark:#3b54d4;--accent:#f59e0b;--accent-light:#fffbeb;--accent-dark:#d97706;--success:#10b981;--success-light:#ecfdf5;--danger:#ef4444;--danger-light:#fef2f2;--font-mono:"SF Mono","Cascadia Code",Consolas,Monaco,monospace;--font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;--purple:#8b5cf6;--purple-light:#f5f3ff;--purple-dark:#6d28d9;--pink:#ec4899;--pink-light:#fdf2f8;--pink-dark:#be185d;--teal:#14b8a6;--teal-light:#f0fdfa;--teal-dark:#0d9488;--orange:#f97316;--orange-light:#fff7ed;--orange-dark:#c2410c;--indigo:#6366f1;--indigo-light:#eef2ff;--indigo-dark:#4338ca;--shadow-sm:0 1px 2px rgba(0,0,0,.05);--shadow-md:0 4px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}.sidebar-logo .icon{font-size:22px}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}.card.success .card-title{color:#047857}.card.danger{background:var(--danger-light);border-color:var(--danger)}.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}.back-to-top.visible{display:flex}
+@media(max-width:900px){nav.sidebar{transform:translateX(-100%);transition:transform .3s}nav.sidebar.open{transform:translateX(0)}.menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}main.main-content{margin-left:0;padding-top:10px}.content-wrapper{padding:24px 20px 60px}}@media(min-width:901px){.menu-toggle{display:none}}
+
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.warning-box p:last-child{margin-bottom:0}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style></head><body><button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button><nav class="sidebar"><div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 四级</div><div class="nav-section"><div class="nav-section-title">教学步骤</div><a class="nav-link active" href="#hero">🏠 课程概览</a><a class="nav-link" href="#step1">第一步 生活引入</a><a class="nav-link" href="#step2">第二步 核心概念</a><a class="nav-link" href="#step3">第三步 语法详解</a><a class="nav-link" href="#step4">第四步 手工模拟</a><a class="nav-link" href="#step5">第五步 常见陷阱</a><a class="nav-link" href="#step6">第六步 真题实战</a><a class="nav-link" href="#cheatsheet">📋 知识速查卡</a></div><div class="nav-section"><div class="nav-section-title">更多课件</div><a class="nav-link" href="04-多维数组.html">← 多维数组</a><a class="nav-link" href="06-排序.html">排序 →</a></div></nav><main class="main-content"><div class="content-wrapper">
+<div id="hero"><div style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden"><div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div><div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div><h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">GESP C++ 四级 · 递推</h1><p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Recurrence — 从已知推未知，步步为营</p><div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center"><span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 7道选择题 + 6道判断题</span><span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 年均出题 3~4道</span><span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占总分 ≈ 12%</span></div></div></div>
+
+<h2 id="step1" class="section-num"><span class="num-badge">1</span> 第一步：生活引入</h2>
+<div class="card accent"><div class="card-title">💰 存钱比喻</div><p>第一天存1元，每天比前一天多存2元。第7天存了多少钱？第1天1元→第2天3元→第3天5元→...顺着往下推即可。</p><p>这就是<strong>递推</strong>——<strong>已知前面的结果，推出后面的结果</strong>。</p></div>
+<div class="highlight-box purple" style="background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple);border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid"><p style="margin:0"><strong>对比递归</strong>：递归是"我调用我自己"；递推是"按顺序算"，从第1天算到第n天。</p></div>
+
+<h2 id="step2" class="section-num"><span class="num-badge">2</span> 第二步：核心概念</h2>
+<div class="card primary"><div class="card-title">递推三要素</div><ol><li><strong>初始条件（基点）</strong>：f(1) = 已知值</li><li><strong>递推公式（关系）</strong>：f(n) = g(f(n-1), f(n-2), ...)</li><li><strong>目标</strong>：求 f(N)</li></ol></div>
+<table><thead><tr><th>维度</th><th>递推（迭代）</th><th>递归</th></tr></thead><tbody><tr><td>方向</td><td>自底向上</td><td>自顶向下</td></tr><tr><td>实现</td><td>循环</td><td>函数自调用</td></tr><tr><td>斐波那契时间</td><td><strong>O(n)</strong></td><td>朴素递归 O(2ⁿ)</td></tr><tr><td>空间</td><td>O(1)或O(n)</td><td>O(n)调用栈</td></tr></tbody></table>
+
+<h2 id="step3" class="section-num"><span class="num-badge">3</span> 第三步：语法详解</h2>
+<div class="card success"><div class="card-title">斐波那契递推（O(n)时间，O(1)空间）</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int fib(int n) {
+    if (n &lt;= 1) return n;
+    int a = 0, b = 1;
+    for (int i = 2; i &lt;= n; i++) {
+        int temp = a + b;
+        a = b; b = temp;
+    }
+    return b;
+}</code></pre></div></div>
+<div class="card success"><div class="card-title">爬楼梯递推</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int climbStairs(int n) {
+    if (n &lt;= 2) return n;
+    int prev2 = 1, prev1 = 2, current = 0;
+    for (int i = 3; i &lt;= n; i++) {
+        current = prev2 + prev1;
+        prev2 = prev1; prev1 = current;
+    }
+    return current;
+}</code></pre></div></div>
+
+<h2 id="step4" class="section-num"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+<div class="card primary"><div class="card-title">递推计算 climbStairs(5)</div>
+<table style="margin-top:12px"><thead><tr><th>i</th><th>prev2</th><th>prev1</th><th>current</th><th>说明</th></tr></thead><tbody><tr><td>初始</td><td>1</td><td>2</td><td>—</td><td>f(1)=1, f(2)=2</td></tr><tr><td>3</td><td>1</td><td>2</td><td><strong>3</strong></td><td>f(3)=f(1)+f(2)=3</td></tr><tr><td>4</td><td>2</td><td>3</td><td><strong>5</strong></td><td>f(4)=f(2)+f(3)=5</td></tr><tr><td>5</td><td>3</td><td>5</td><td><strong>8</strong></td><td>f(5)=f(3)+f(4)=8</td></tr></tbody></table><p style="margin-top:8px"><strong>climbStairs(5) = 8</strong>（5阶台阶有8种爬法）</p></div>
+
+<h2 id="step5" class="section-num"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱1：递推不是"自己调用自己"</div><p>"自己调用自己"是<strong>递归</strong>的特征。递推是用 <code>for</code> 循环从前往后算。</p></div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱2：朴素递归是 O(2ⁿ) —— 指数级！</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int fib(int n) {
+    if (n &lt;= 1) return n;
+    return fib(n-1) + fib(n-2);  // O(2^n)！
+}</code></pre></div><p style="margin:0">每次调用分裂出两个子调用，大量重复计算。递推只需 O(n)。</p></div>
+<div class="warning-box"><div class="wb-title">⚠️ 陷阱3：滚动变量更新顺序</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">// ❌ 错误：覆盖顺序错误
+a = b; b = a + b;  // a 已被覆盖！
+
+// ✅ 正确：用临时变量
+int temp = a + b; a = b; b = temp;</code></pre></div></div>
+
+<h2 id="step6" class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+<h3>递推概念</h3>
+<div class="card purple"><div class="card-title">真题 1：关于递推，说法不正确的是？（2024/06 第9题）</div><p>A. 递推表现为自己调用自己<br>B. 递推是从简单问题出发，正向的<br>C. 递推中问题的n要求在计算中确定<br>D. 斐波那契可以用递推实现</p><button class="answer-toggle">▶ 显示答案</button>  <div class="answer-content"><div class="quote-box"><strong>答案：A</strong><br>"自己调用自己"是递归的特征。</div></div></div>
+<div class="card pink"><div class="card-title">真题 2：关于递推算法基本思想的描述，正确的是？（2024/09 第9题）</div><p>A. 将问题分解为独立子问题<br>B. 从已知基础出发，逐步推导更大问题的解<br>C. 用于穷举所有方案<br>D. 每步做局部最优选择</p><button class="answer-toggle">▶ 显示答案</button>  <div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>A是分治，C是枚举，D是贪心。</div></div></div>
+
+<h3>斐波那契与爬楼梯</h3>
+<div class="card teal"><div class="card-title">真题 3：朴素递归斐波那契的时间复杂度是？（2025/03 第10题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int fibonacci(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}</code></pre></div><p>A. O(n) B. O(n²) C. O(n log n) D. O(2ⁿ)</p><button class="answer-toggle">▶ 显示答案</button>  <div class="answer-content"><div class="quote-box"><strong>答案：D</strong><br>朴素递归O(2ⁿ)，高频考点！</div></div></div>
+
+<div class="card indigo"><div class="card-title">真题 4：climbStairs(5) 的返回值是？（2025/06 第10题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int climbStairs(int n) {
+    if(n &lt;= 2) return n;
+    int a = 1, b = 2;
+    for(int i=3;i&lt;=n;i++){int t=a+b;a=b;b=t;}
+    return b;
+}</code></pre></div><p>A. 5 B. 8 C. 13 D. 10</p><button class="answer-toggle">▶ 显示答案</button>  <div class="answer-content"><div class="quote-box"><strong>答案：B</strong><br>f(1)=1,f(2)=2,f(3)=3,f(4)=5,f(5)=8。</div></div></div>
+
+<div class="card orange"><div class="card-title">真题 5：爬楼梯横线处应填写？（2025/06 第12题）（2025/09 第13题）（2025/12 第9题）（2026/03 第8题）</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int climbStairs(int n) {
+    if (n &lt;= 2) return n;
+    int prev2 = 1, prev1 = 2, current = 0;
+    for (int i = 3; i &lt;= n; ++i) {
+        ______________ // 此处填入代码
+    }
+    return current;
+}</code></pre></div><button class="answer-toggle">▶ 显示答案</button>  <div class="answer-content"><div class="quote-box"><strong>答案：</strong><code>current = prev2 + prev1; prev2 = prev1; prev1 = current;</code></div></div></div>
+
+<h3>判断题</h3>
+<div class="card purple"><div class="card-title">判断题第1题（2024/12 第5题）</div><p style="font-size:14px">递推是一种通过已知初始值和递推公式，逐步求解目标值的算法。</p><button class="answer-toggle">▶ 显示答案</button><div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div></div>
+<div class="card pink"><div class="card-title">判断题第2题（2025/09 第6题）</div><p style="font-size:14px">递推是在给定初始条件下，已知前一项（或前几项）求后一项的过程。</p><button class="answer-toggle">▶ 显示答案</button><div class="answer-content"><div class="quote-box"><strong>答案：✅</strong></div></div></div>
+<div class="card teal"><div class="card-title">判断题第3题（2025/12 第6题）</div><p style="font-size:14px">下面递推方式计算斐波那契的时间复杂度是 O(n)。</p><div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">int f[20]; f[0]=0; f[1]=1;
+for(int i=2;i&lt;=10;i++) f[i]=f[i-1]+f[i-2];</code></pre></div><button class="answer-toggle">▶ 显示答案</button><div class="answer-content"><div class="quote-box"><strong>答案：✅</strong><br>递推（循环）每次迭代 O(1)，共 n 次，总 O(n)。</div></div></div>
+
+<h2 id="cheatsheet" class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">📋 递推知识速查卡</div>
+<div class="table-wrapper">
+<table><thead><tr><th>概念</th><th>核心要点</th></tr></thead><tbody><tr><td>递推本质</td><td>从已知推未知，正向自底向上</td></tr><tr><td>三要素</td><td>初始条件 + 递推公式 + 目标值</td></tr><tr><td>递推 vs 递归</td><td>递推用循环 O(n)，递归用自调用 O(2ⁿ)</td></tr><tr><td>斐波那契递推</td><td>O(n)时间，O(1)空间</td></tr><tr><td>朴素递归</td><td>O(2ⁿ)时间，极低效</td></tr><tr><td>爬楼梯</td><td>f(n)=f(n-1)+f(n-2)</td></tr><tr><td>滚动变量</td><td>用temp保存中间值</td></tr></tbody></table>
+</div>
+</div>
+
+</div></main><button class="back-to-top">↑</button><script>document.querySelectorAll(".answer-toggle").forEach(b=>{b.addEventListener("click",function(){const c=this.nextElementSibling;if(c.classList.contains("open")){c.classList.remove("open");this.classList.remove("open");this.innerHTML="▶ 显示答案"}else{c.classList.add("open");this.classList.add("open");this.innerHTML="▼ 隐藏答案"}})});const s=document.querySelectorAll("h2.section-num"),l=document.querySelectorAll(".nav-link");window.addEventListener("scroll",()=>{let c="";s.forEach(e=>{if(window.scrollY>=e.offsetTop-100)c=e.id});l.forEach(e=>e.classList.toggle("active",e.getAttribute("href")==="#"+c));document.querySelector(".back-to-top").classList.toggle("visible",window.scrollY>400)});hljs.highlightAll();
+document.querySelector(".menu-toggle").addEventListener("click",()=>document.querySelector(".sidebar").classList.toggle("open"));</script></body></html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP四级培训 · 结构体</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.goal-box h3{color:var(--primary-dark);margin-top:0;font-size:15px}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+.card{transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+@media(max-width:900px){h1{font-size:1.7rem}}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 四级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 语法详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="02-指针.html">← 指针</a>
+        <a class="nav-link" href="04-多维数组.html">多维数组 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28,#2a2d3a,#1e293b);border-radius:16px;margin-bottom:28px;border:1px solid #334155">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:2.2rem;color:#fff;margin-bottom:8px">💎 GESP C++ 四级 · 结构体（Struct）</h1>
+<p style="color:#94a3b8;margin-bottom:18px">Struct · 自定义复合数据类型的利器</p>
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 7道选择题 + 3道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 年均出题 2~3道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占总分 ≈ 8%</span>
+</div>
+</div></div>
+
+<!-- STEP 1 -->
+<h2 id="step1" class="section-num"><span class="num-badge">1</span> 第一步：生活引入</h2>
+
+<div class="card accent">
+<div class="card-title">📋 一张学生信息表</div>
+<p>假设你要管理全班 50 名学生的信息，每个学生都有：<strong>姓名</strong>（字符串）、<strong>年龄</strong>（整数）、<strong>成绩</strong>（浮点数）。</p>
+<p>如果不用结构体，你可能会这样写：</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">string names[50];
+int ages[50];
+float scores[50];
+// 学生3的名字：names[2]，年龄：ages[2]，成绩：scores[2]
+// 三个数组"各管各的"，容易乱套</code></pre></div>
+<div class="tip-box">
+<div class="tip-title">💡 更好的做法</div>
+<p>把每个学生的信息"打包"在一起，就像填一张表格——一行就是一个学生，所有信息都在同一行里。这就是<strong>结构体（struct）</strong>的核心思想。</p>
+</div>
+</div>
+
+<div class="card accent">
+<div class="card-title">🎯 生活中的"结构体"</div>
+<ul>
+    <li><strong>身份证：</strong>姓名 + 性别 + 出生日期 + 地址 → 一个人的"信息包"</li>
+    <li><strong>商品标签：</strong>商品名 + 价格 + 库存量 → 一个商品的"信息包"</li>
+    <li><strong>游戏角色：</strong>昵称 + 等级 + 生命值 + 攻击力 → 一个角色的"信息包"</li>
+</ul>
+<p style="margin-top:8px">结构体就是 C++ 中用来「自定义一个信息包类型」的语法。</p>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 2 -->
+<h2 id="step2" class="section-num"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<h3>📐 什么是结构体？</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 结构体定义</div>
+<p><strong>结构体（struct）</strong>是 C++ 中一种用户自定义的复合数据类型，可以将多个<strong>不同类型</strong>的变量组合成一个整体。</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>特性</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>定义关键词</td><td class="mono">struct</td></tr>
+<tr><td>成员类型</td><td>可以是任意类型（int, string, 甚至另一个结构体）</td></tr>
+<tr><td>默认访问权限</td><td class="mono">public</td><td>（成员可直接访问）</td></tr>
+<tr><td>内存分配</td><td>成员按声明顺序连续存放（可能有对齐填充）</td></tr>
+<tr><td>初始化方式</td><td>花括号列表初始化 <code>{val1, val2, ...}</code></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card purple">
+<div class="card-title">🟣 结构体 vs 数组 vs 类</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>对比维度</th><th>数组（array）</th><th>结构体（struct）</th><th>类（class）</th></tr></thead>
+<tbody>
+<tr><td>元素类型</td><td>必须相同</td><td>可以不同</td><td>可以不同</td></tr>
+<tr><td>访问方式</td><td class="mono">arr[i]</td><td class="mono">s.name</td><td>成员名 + 访问控制</td></tr>
+<tr><td>默认权限</td><td>N/A</td><td class="key-point">public</td><td class="key-point danger">private</td></tr>
+<tr><td>用途定位</td><td>批量同质数据</td><td>打包异质数据</td><td>面向对象编程</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 核心公式</div>
+<p><code>struct 类型名 { 成员列表 };</code> — 先定义类型，再创建变量。</p>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 3 -->
+<h2 id="step3" class="section-num"><span class="num-badge">3</span> 第三步：语法详解</h2>
+
+<h3>📌 基本定义与初始化</h3>
+<div class="card accent">
+<div class="card-title">📝 定义、创建、访问</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">// 1. 定义结构体类型
+struct Student {
+    string name;
+    int age;
+    float score;
+};
+
+// 2. 创建变量（三种方式）
+Student s1;                        // 默认初始化（成员值不确定）
+Student s2 = {"小明", 14, 95.5};   // 花括号列表初始化 ⭐ 最常用
+Student s3{"小红", 13, 88.0};     // C++11 统一初始化
+
+// 3. 访问成员
+s2.age = 15;                       // 点号运算符访问
+cout &lt;&lt; s2.name &lt;&lt; " " &lt;&lt; s2.score;</code></pre></div>
+</div>
+
+<h3>📌 嵌套结构体</h3>
+<div class="card purple">
+<div class="card-title">📝 结构体嵌套结构体</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Point {
+    int x, y;
+};
+
+struct Rectangle {
+    Point topLeft;      // 结构体嵌套结构体
+    Point bottomRight;
+};
+
+// 嵌套初始化
+Rectangle rect = {{10, 10}, {20, 20}};
+
+// 嵌套成员访问
+rect.topLeft.x = 5;           // 逐层点号访问
+cout &lt;&lt; rect.bottomRight.y;   // 输出 20</code></pre></div>
+</div>
+
+<h3>📌 结构体与指针/引用</h3>
+<div class="card pink">
+<div class="card-title">📝 传递与修改</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Cat {
+    string name;
+    int age;
+};
+
+Cat kitty{"Mimi", 2};
+
+// 通过引用修改（不拷贝，直接操作原对象）
+void birthday(Cat&amp; c) {
+    c.age++;  // 修改原始对象
+}
+
+// 通过指针访问成员
+Cat* p = &amp;kitty;
+p-&gt;age = 5;          // 指针用 -&gt; 运算符
+cout &lt;&lt; p-&gt;name;     // 输出 Mimi</code></pre></div>
+</div>
+
+<h3>📌 结构体数组 — 动态分配</h3>
+<div class="card teal">
+<div class="card-title">📝 堆上分配</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Student {
+    string name;
+    int age;
+    float score;
+};
+
+// 在堆上分配 20 个 Student
+Student* students = new Student[20];
+
+// 使用成员
+students[0].name = "小华";
+students[0].score = 92.5;
+
+// 释放内存
+delete[] students;</code></pre></div>
+<div class="tip-box"><div class="tip-title">💡 提示</div>此代码合法，结构体数组可以用 <code>new</code> 动态分配。</div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 4 -->
+<h2 id="step4" class="section-num"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+
+<h3>🎬 示例1：引用传递修改结构体</h3>
+<div class="card teal">
+<div class="card-title">📝 代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Cat { string name; int age; };
+void birthday(Cat&amp; c) { c.age++; }
+
+int main() {
+    Cat kitty{"Mimi", 2};
+    birthday(kitty);
+    cout &lt;&lt; kitty.name &lt;&lt; " " &lt;&lt; kitty.age;
+}</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>kitty.name</th><th>kitty.age</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Cat kitty{"Mimi", 2}</td><td>Mimi</td><td>2</td><td>初始化</td></tr>
+<tr><td>2</td><td>birthday(kitty) 调用</td><td>Mimi</td><td>2</td><td>c 绑定到 kitty（引用）</td></tr>
+<tr><td>3</td><td>c.age++ 执行</td><td>Mimi</td><td><strong>3</strong></td><td>直接修改原对象</td></tr>
+<tr><td>4</td><td>cout 输出</td><td colspan="3"><strong>Mimi 3</strong>（不是 Mimi 2）</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>🎬 示例2：嵌套结构体 + 指针混合</h3>
+<div class="card orange">
+<div class="card-title">📝 代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Point { int x, y; };
+struct Rectangle { Point topLeft; Point bottomRight; };
+
+int main() {
+    Rectangle rect = {{10, 10}, {20, 20}};
+    rect.topLeft.x = 5;
+    Point* p = &amp;rect.bottomRight;
+    p-&gt;y = 5;
+    cout &lt;&lt; rect.topLeft.x + rect.bottomRight.y;
+}</code></pre></div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>topLeft</th><th>bottomRight</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>初始化 rect</td><td>{10, 10}</td><td>{20, 20}</td></tr>
+<tr><td>2</td><td>rect.topLeft.x = 5</td><td><strong>{5, 10}</strong></td><td>{20, 20}</td></tr>
+<tr><td>3</td><td>p = &rect.bottomRight</td><td>{5, 10}</td><td>{20, 20}</td></tr>
+<tr><td>4</td><td>p-&gt;y = 5</td><td>{5, 10}</td><td><strong>{20, 5}</strong></td></tr>
+<tr><td>5</td><td>cout 输出</td><td colspan="2"><strong>5 + 5 = 10</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 5 -->
+<h2 id="step5" class="section-num"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱1：混淆结构体初始化语法</div>
+<p>结构体初始化必须用花括号 <code>{}</code>，不能用圆括号 <code>()</code>、<code>new{}</code> 或尖括号 <code>&lt;&gt;</code>。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Point { int x, y; };
+Point p = {1, 2};   // ✅ 正确
+// Point p = (1,2);  // ❌ 错误！这是逗号表达式，等于 Point p = 2;</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱2：结构体嵌套层次过深</div>
+<p>虽然结构体可以嵌套，但嵌套层次过多会导致代码难以理解和维护。不能无限制嵌套。访问深层成员时需要逐层点号，可读性会急剧下降。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱3：值传递 vs 引用传递修改结构体</div>
+<p>如果函数参数是值传递，对结构体的修改不会影响原对象。要修改原结构体，必须用 <strong>引用传递</strong> 或 <strong>指针传递</strong>。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">void bad(Cat c) { c.age++; }      // ❌ 修改的是副本，原对象不变
+void good(Cat&amp; c) { c.age++; }    // ✅ 引用传递，修改原对象
+void alsoGood(Cat* c) { c-&gt;age++; } // ✅ 指针传递，也能修改原对象</code></pre></div>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱4：忘记结构体成员默认 public</div>
+<p>在 C++ 的 <code>struct</code> 中，所有成员默认是 <code>public</code>，可以直接通过 <code>.</code> 或 <code>-&gt;</code> 访问。这与 <code>class</code> 不同（class 默认 <code>private</code>）。GESP 四级常考这个区别。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱5：指针访问结构体成员用错运算符</div>
+<p>通过指针访问结构体成员要用 <code>-&gt;</code>，不是 <code>.</code>。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">Cat* p = &amp;kitty;
+p-&gt;age = 3;   // ✅ 正确：指针用 -&gt;
+// p.age = 3; // ❌ 错误：p 是指针，不能用 .</code></pre></div>
+</div>
+
+<hr class="divider">
+
+<!-- STEP 6 -->
+<h2 id="step6" class="section-num"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<!-- 选择题1 -->
+<div class="card success">
+<div class="card-title">📝 第 1 题 · 结构体定义与初始化（2024/12 第6题）</div>
+<p>下面的描述中，哪个选项正确定义了一个名为 Person 的结构体并正确初始化了一个 Person 结构体的变量 p ？</p>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>选项</th><th>代码</th></tr></thead>
+<tbody>
+<tr><td>A</td><td><code>struct Person { string name; int age; } p = {"Tom", 20};</code> — 但 p 不含初始化列表 ❌</td></tr>
+<tr><td>B</td><td><code>struct Person { string name; int age; }; Person p = {};</code></td></tr>
+<tr><td>C</td><td><code>struct Person { string name; int age; }; Person p = {name:"Tom", age:20};</code></td></tr>
+<tr><td>D</td><td><code>struct Person { string name; int age; }; Person p = new Person{"Tom", 20};</code></td></tr>
+</tbody>
+</table>
+</div>
+<p style="margin-top:8px"><em>（原题含图片，此处为描述性展示，选项 C 为正确初始化方式）</em></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：C<br><strong>解析</strong>：结构体初始化用花括号 <code>{}</code>，不能用 <code>new</code> 或指定成员名的语法（那是 C 语言的指定初始化器）。正确的 C++ 列表初始化方式为 <code>Person p = {"Tom", 20};</code>。</div></div>
+</div>
+
+<!-- 选择题2 -->
+<div class="card success">
+<div class="card-title">📝 第 2 题 · 嵌套结构体（2025/03 第6题）</div>
+<p>给定如下代码，下面描述错误的是（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Person {
+    std::string name;
+    int age;
+    struct Address {
+        std::string street;
+        std::string city;
+    };
+    Address address;
+};</code></pre></div>
+<p>A. 结构 Person 内嵌套结构 Address<br>
+B. Person 有一个 Address 类型的 address 成员<br>
+C. 一个 Person 类型的变量 p 的 address 的初始化可以写成：<code>p.address.street = "123 Main St"; p.address.city = "Anytown";</code><br>
+D. 结构的嵌套可以减少命名冲突，因此可以不必控制嵌套层次</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：D<br><strong>解析</strong>：虽然嵌套可以减少命名冲突，但仍需控制嵌套层次。过深的嵌套会导致代码复杂性急剧增加，可读性和维护性下降。A、B、C 均正确描述了代码的含义。</div></div>
+</div>
+
+<!-- 选择题3 -->
+<div class="card success">
+<div class="card-title">📝 第 3 题 · 结构体初始化语法（2025/03 第7题）</div>
+<p>关于结构体初始化，以下哪个选项中正确的是（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Point {int x,y;};</code></pre></div>
+<p>A. <code>Point p = (1,2);</code><br>
+B. <code>Point p = {1,2};</code><br>
+C. <code>Point p = new {1,2};</code><br>
+D. <code>Point p = &lt;1,2&gt;;</code></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：只有 <code>Point p = {1,2};</code> 是正确的 C++ 结构体列表初始化语法。A 是逗号表达式，等价于 p = 2；C 中的 new 用于动态分配且不合法；D 使用了错误的尖括号语法。</div></div>
+</div>
+
+<!-- 选择题4 -->
+<div class="card success">
+<div class="card-title">📝 第 4 题 · 结构体引用传递（2025/09 第7题）</div>
+<p>运行如下代码会输出（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Cat {
+    string name;
+    int age;
+};
+void birthday(Cat&amp; c) {
+    c.age++;
+}
+int main() {
+    Cat kitty{"Mimi", 2};
+    birthday(kitty);
+    cout &lt;&lt; kitty.name &lt;&lt; " " &lt;&lt; kitty.age;
+}</code></pre></div>
+<p>A. Mimi 2 &nbsp;&nbsp; B. Mimi 3 &nbsp;&nbsp; C. kitty 3 &nbsp;&nbsp; D. kitty 2</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：<code>birthday</code> 的参数是 <code>Cat&amp; c</code>（引用传递），所以 <code>c.age++</code> 直接修改了 kitty 的 age，输出 <strong>Mimi 3</strong>。如果是值传递，则输出 Mimi 2。</div></div>
+</div>
+
+<!-- 选择题5 -->
+<div class="card success">
+<div class="card-title">📝 第 5 题 · 嵌套结构体与指针（2025/09 第8题）</div>
+<p>运行如下代码会输出（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Point { int x, y; };
+struct Rectangle { Point topLeft; Point bottomRight; };
+int main() {
+    Rectangle rect = {{10, 10}, {20, 20}};
+    rect.topLeft.x = 5;
+    Point* p = &amp;rect.bottomRight;
+    p-&gt;y = 5;
+    cout &lt;&lt; rect.topLeft.x + rect.bottomRight.y;
+    return 0;
+}</code></pre></div>
+<p>A. 10 &nbsp;&nbsp; B. 30 &nbsp;&nbsp; C. 15 &nbsp;&nbsp; D. 20</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：A<br><strong>解析</strong>：rect.topLeft.x 先改为 5，p-&gt;y 将 bottomRight.y 改为 5，所以 5 + 5 = <strong>10</strong>。</div></div>
+</div>
+
+<!-- 选择题6 -->
+<div class="card success">
+<div class="card-title">📝 第 6 题 · 选择前 k 名（2025/12 第8题）</div>
+<p>下面的函数 selectTopK() 实现从 n 个学生中选出前 k 名成绩最好的学生颁发奖学金（不需要对所有学生完全排序，只需要找出前 k 名），则横线上应填写（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Student {
+    string name;
+    int score;
+};
+void selectTopK(Student students[], int n, int k) {
+    for (int i = 0; i &lt; k; i++) {
+        int maxIdx = i;
+        for (____________________) {
+            if (students[j].score &gt; students[maxIdx].score) {
+                maxIdx = j;
+            }
+        }
+        if (maxIdx != i) {
+            Student temp = students[i];
+            students[i] = students[maxIdx];
+            students[maxIdx] = temp;
+        }
+    }
+}</code></pre></div>
+<p>A. int j = 0; j &lt; n; j++<br>
+B. int j = i + 1; j &lt; n; j++<br>
+C. int j = i; j &lt; n; j++<br>
+D. int j = 1; j &lt;= n; j++</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：B<br><strong>解析</strong>：这是选择排序的前 k 趟变体。内循环应从 <code>i+1</code> 开始到 <code>n-1</code>，在未排序部分找最大值。</div></div>
+</div>
+
+<!-- 选择题7 -->
+<div class="card success">
+<div class="card-title">📝 第 7 题 · 排行榜更新（2025/12 第11题）</div>
+<p>某游戏的排行榜系统需要实时更新玩家分数。每次只有一个玩家的分数发生变化，排行榜已经是按分数降序排列的。现在需要将更新后的玩家调整到正确位置。下面的函数 updateRanking() 要实现上述功能，则两处横线上应分别填写（ ）。</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Player {
+    string name;
+    int score;
+};
+void updateRanking(Player players[], int size, int playerIdx) {
+    Player updatedPlayer = players[playerIdx];
+    if (playerIdx &gt; 0 &amp;&amp; updatedPlayer.score &gt; players[playerIdx - 1].score) {
+        int i = playerIdx;
+        while (____________________) { // ① 分数上升
+            players[i] = players[i - 1];
+            i--;
+        }
+        players[i] = updatedPlayer;
+    }
+    else if (playerIdx &lt; size - 1 &amp;&amp; updatedPlayer.score &lt; players[playerIdx + 1].score) {
+        int i = playerIdx;
+        while (____________________) { // ② 分数下降
+            players[i] = players[i + 1];
+            i++;
+        }
+        players[i] = updatedPlayer;
+    }
+}</code></pre></div>
+<p><em>（原题含图片选项，答案选 A）</em></p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：A<br><strong>解析</strong>：分数上升时，需要向前移动（while 条件应为 <code>i > 0 &amp;&amp; updatedPlayer.score > players[i-1].score</code>）；分数下降时，需要向后移动（while 条件应为 <code>i < size-1 &amp;&amp; updatedPlayer.score < players[i+1].score</code>）。相当于插入排序的一次调整。</div></div>
+</div>
+
+<!-- 判断题1 -->
+<div class="card success">
+<div class="card-title">📝 判断题 1 · 访问权限（2026/03 第6题）</div>
+<p>结构体的成员默认是 public 访问权限。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：正确<br><strong>解析</strong>：在 C++ 中，<code>struct</code> 的成员默认是 <code>public</code>，而 <code>class</code> 的成员默认是 <code>private</code>。这是 struct 和 class 在 C++ 中的主要区别之一。</div></div>
+</div>
+
+<!-- 判断题2 -->
+<div class="card success">
+<div class="card-title">📝 判断题 2 · 动态分配结构体数组（2026/03 第7题）</div>
+<p>以下 C++ 代码是否合法？</p>
+<div class="code-block"><div class="lang-tag">cpp</div><pre><code class="language-cpp">struct Student {
+    string name;
+    int age;
+    float score;
+};
+Student* students = new Student[20];</code></pre></div>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：合法<br><strong>解析</strong>：可以使用 <code>new</code> 在堆上动态分配结构体数组，这完全合法。每个元素会调用默认构造函数初始化。记得使用完后 <code>delete[] students;</code> 释放内存。</div></div>
+</div>
+
+<!-- 判断题3 -->
+<div class="card success">
+<div class="card-title">📝 判断题 3 · 结构体嵌套（2025/12 第2题）</div>
+<p>一个结构体不能包含另一个结构体。</p>
+<button class="answer-toggle"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案</strong>：错误<br><strong>解析</strong>：结构体完全可以包含另一个结构体作为成员（嵌套结构体），如 <code>struct Rectangle { Point topLeft; Point bottomRight; };</code>。这是合法的且在实际编程中非常常见。</div></div>
+</div>
+
+<hr class="divider">
+
+<!-- CHEATSHEET -->
+<h2 id="cheatsheet" class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="card indigo">
+<div class="card-title">📋 结构体知识速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识点</th><th>关键要点</th></tr></thead>
+<tbody>
+<tr><td>定义语法</td><td class="mono">struct 类型名 { 成员列表 };</td></tr>
+<tr><td>初始化</td><td class="mono">类型名 变量 = {值1, 值2, ...};</td><td>（花括号！）</td></tr>
+<tr><td>成员访问</td><td class="mono">变量.成员名</td>；指针用 <code>p-&gt;成员名</code></td></tr>
+<tr><td>默认权限</td><td class="key-point success">public</td></tr>
+<tr><td>嵌套支持</td><td>✅ 支持，但注意控制层次</td></tr>
+<tr><td>修改传递</td><td>引用传递或指针传递才能修改原对象</td></tr>
+<tr><td>动态分配</td><td class="mono">new 类型名[n]</td> 合法</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"结构体把多个不同类型的数据打包在一起，用花括号初始化，用点号（或-&gt;）访问，默认public，要修改原对象必须传引用。"</strong></p>
+</div>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+// 答案折叠
+document.querySelectorAll('.answer-toggle').forEach(b=>{
+  b.addEventListener('click',function(){
+    const c=this.nextElementSibling;
+    if(c.classList.contains('open')){c.classList.remove('open');this.classList.remove('open');this.innerHTML='<span class="arrow">\u25b6</span> 显示答案'}
+    else{c.classList.add('open');this.classList.add('open');this.innerHTML='<span class="arrow">\u25bc</span> 隐藏答案'}
+  });
+});
+
+// ScrollSpy
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('h2.section-num');
+  const navLinks = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll',()=>{
+    let cur='';
+    sections.forEach(s=>{if(window.scrollY>=s.offsetTop-100)cur=s.id});
+    navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+cur));
+    document.querySelector('.back-to-top').classList.toggle('visible',window.scrollY>400);
+  });
+
+  // 颜色多样化
+  const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+  document.querySelectorAll('#step6 .card.success').forEach((c, i) => {
+    c.classList.remove('success');
+    c.classList.add(colors[i % colors.length]);
+  });
+});
+
+// 移动端菜单
+document.querySelector('.menu-toggle').addEventListener('click',()=>document.querySelector('.sidebar').classList.toggle('open'));
+</script>
+
+</body>
+</html>

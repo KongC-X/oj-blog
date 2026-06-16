@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 递归</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">💎</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="01-唯一分解定理与辗转相除法.html">唯一分解定理 →</a>
+        <a class="nav-link" href="06-贪心算法.html">贪心算法 →</a>
+        <a class="nav-link" href="07-分治算法与排序.html">分治算法与排序 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--purple) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--indigo) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">🔄 GESP C++ 五级 · 递归</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Recursion</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 13 道选择题 + 11 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每年 2~3 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 12%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：俄罗斯套娃</h2>
+
+<div class="card accent">
+<div class="card-title">🪆 场景一：俄罗斯套娃</div>
+<p>打开一个俄罗斯套娃，里面还有一个更小的娃娃；再打开，还有一个更小的......一直开到<strong>最小的那个娃娃</strong>（它打不开了——这就是 <span class="key-point">终止条件</span>！）。</p>
+<p>这个"<strong>自己包含自己</strong>"的过程，就是 <strong>递归（Recursion）</strong> 的直觉理解。递归函数就是函数内部调用自己，总有一个 base case 让它可以停下来。</p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🔢 场景二：计算阶乘</div>
+<p>想算 5! = 5 × 4 × 3 × 2 × 1，但计算机不会直接算。我们可以说：</p>
+<p style="text-align:center;font-size:16px;margin:8px 0"><strong>5! = 5 × 4!，而 4! = 4 × 3!，...，直到 1! = 1</strong></p>
+<p>这就是递归定义的阶乘：<span class="mono">factorial(n) = n × factorial(n-1)</span>，终止条件：<span class="mono">n ≤ 1</span> 时返回 1。</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>理解递归三要素：终止条件 + 问题分解 + 子问题合并</li>
+    <li>掌握递归版 Fibonacci 的时间复杂度分析（O(2ⁿ)）</li>
+    <li>能手工追踪 fun(n) 的递归调用输出序列</li>
+    <li>牢记递归必须有终止条件，否则栈溢出</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📐 递归三要素</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 定义</div>
+<p><strong>递归（Recursion）：一个函数直接或间接调用自身的过程。每一次递归调用都缩小问题的规模，直到达到某个终止条件（base case）后逐层返回。</strong></p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 递归三要素</div>
+<ol style="margin:8px 0">
+<li><strong>终止条件（Base Case）</strong>：递归必须有一个可停下来的条件，防止无限递归</li>
+<li><strong>问题分解</strong>：将原问题分解为规模更小的同类子问题</li>
+<li><strong>子问题合并</strong>：利用子问题的解构造原问题的解</li>
+</ol>
+</div>
+
+<h3>📊 递归 vs 迭代对比</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>对比维度</th><th>递归</th><th>迭代</th></tr></thead>
+<tbody>
+<tr><td><strong>实现方式</strong></td><td>函数调用自身</td><td>循环（for/while）</td></tr>
+<tr><td><strong>代码风格</strong></td><td>简洁直观，接近数学定义</td><td>需要手动管理循环变量</td></tr>
+<tr><td><strong>栈空间</strong></td><td>每次调用分配栈帧，有开销</td><td>通常 O(1)</td></tr>
+<tr><td><strong>风险</strong></td><td>层数过多 → 栈溢出</td><td>无明显风险</td></tr>
+<tr><td><strong>可读性</strong></td><td>对分治问题更直观</td><td>对简单重复问题更直观</td></tr>
+<tr><td><strong>可转换</strong></td><td colspan="2" style="text-align:center">所有递归都可以转换为迭代（反之亦然）</td></tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔤 递归栈空间</h3>
+
+<div class="highlight-box green">
+<div class="hb-title">✨ 栈是递归的底层机制</div>
+<p>每次递归调用，系统都会在新分配的<strong>栈帧</strong>中存储：局部变量、返回地址、参数等。递归层数过深时，栈空间被耗尽 → <strong>栈溢出（Stack Overflow）</strong>。</p>
+<p>C++ 默认栈大小通常约 1-8MB，如果每层递归 100 字节，大约可支持 1 万~ 8 万层（但实际往往更少）。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>🔢 阶乘：递归 vs 迭代</h3>
+
+<div class="highlight-box blue">
+<div class="hb-title">🔁 递归版（简洁直观）</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int factorialA(int n) {
+    if (n &lt;= 1) return 1;          // 终止条件
+    return n * factorialA(n - 1);  // 问题分解
+}
+// 调用：factorialA(5) → 5*f(4) → 4*f(3) → 3*f(2) → 2*f(1) → 返回 120</code></pre>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">🔄 迭代版（高效无栈开销）</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int factorialB(int n) {
+    if (n &lt;= 1) return 1;
+    int res = 1;
+    for (int i = 2; i &lt;= n; i++) res *= i;
+    return res;
+}</code></pre>
+</div>
+
+<h3>🐰 斐波那契：递归 vs 迭代</h3>
+
+<div class="highlight-box red">
+<div class="hb-title">⚠️ 递归版 — O(2ⁿ)，非常慢！</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int fibB(int n) {
+    if (n &lt;= 1) return n;
+    return fibB(n - 1) + fibB(n - 2);  // 大量重复计算！
+}
+// fibB(5) 会计算 fibB(3) 两次、fibB(2) 三次...</code></pre>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">🔄 迭代版 — O(n)</div>
+</div>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int fibA(int n) {
+    if (n &lt;= 1) return n;
+    int f1 = 0, f2 = 1;
+    for (int i = 2; i &lt;= n; ++i) {
+        int temp = f2;
+        f2 = f1 + f2;
+        f1 = temp;
+    }
+    return f2;
+}</code></pre>
+</div>
+
+<h3>⚡ 快速幂递归版</h3>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">double quickPow(double x, unsigned n) {
+    if (n == 0) return 1;                    // 终止条件
+    if (n == 1) return x;
+    double half = quickPow(x, n / 2);        // 只算一次！
+    return half * half * ((n &amp; 1) ? x : 1);  // 合并
+}
+// 时间复杂度 O(log n)
+// 注意：如果写成 quickPow(x,n/2)*quickPow(x,n/2) 就退化成 O(n)！</code></pre>
+</div>
+
+<h3>🔄 辗转相除法递归版</h3>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}</code></pre>
+</div>
+
+<h3>🗼 汉诺塔（经典递归）</h3>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        cout &lt;&lt; "盘" &lt;&lt; n &lt;&lt; "：" &lt;&lt; from &lt;&lt; "→" &lt;&lt; to &lt;&lt; endl;
+        return;
+    }
+    hanoi(n - 1, from, aux, to);     // 把 n-1 个从 from 移到 aux
+    cout &lt;&lt; "盘" &lt;&lt; n &lt;&lt; "：" &lt;&lt; from &lt;&lt; "→" &lt;&lt; to &lt;&lt; endl;
+    hanoi(n - 1, aux, to, from);     // 把 n-1 个从 aux 移到 to
+}</code></pre>
+</div>
+
+<h3>🔄 递归反序求和</h3>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 递归求和：sumB(n) = n + sumB(n-1)
+int sumA(int n) { int res=0; for(int i=1;i&lt;=n;i++) res+=i; return res; }
+int sumB(int n) { if (n==1) return 1; return n + sumB(n-1); }</code></pre>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟</h2>
+
+<h3>🎬 模拟 fun(4) 递归输出序列</h3>
+
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">void fun(int n) {
+    cout &lt;&lt; n &lt;&lt; " ";
+    if (n &lt;= 2) return;
+    fun(n - 2);
+    cout &lt;&lt; n &lt;&lt; " ";
+    fun(n - 1);
+}</code></pre>
+</div>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>当前 n</th><th>操作</th><th>输出</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>1</strong></td><td>4</td><td>输出 4</td><td><span class="mono">4</span></td><td>n=4 &gt; 2，继续</td></tr>
+<tr><td><strong>2</strong></td><td>4</td><td>调用 fun(2)</td><td>—</td><td>递归进入 fun(2)</td></tr>
+<tr><td><strong>3</strong></td><td>2</td><td>输出 2，n≤2 直接返回</td><td><span class="mono">2</span></td><td>返回到 fun(4)</td></tr>
+<tr><td><strong>4</strong></td><td>4</td><td>输出 4</td><td><span class="mono">4</span></td><td>fun(4) 继续执行</td></tr>
+<tr><td><strong>5</strong></td><td>4</td><td>调用 fun(3)</td><td>—</td><td>递归进入 fun(3)</td></tr>
+<tr><td><strong>6</strong></td><td>3</td><td>输出 3</td><td><span class="mono">3</span></td><td>n=3 &gt; 2，继续</td></tr>
+<tr><td><strong>7</strong></td><td>3</td><td>调用 fun(1)</td><td>—</td><td>进入 fun(1)</td></tr>
+<tr><td><strong>8</strong></td><td>1</td><td>输出 1，n≤2 返回</td><td><span class="mono">1</span></td><td>返回到 fun(3)</td></tr>
+<tr><td><strong>9</strong></td><td>3</td><td>输出 3</td><td><span class="mono">3</span></td><td>fun(3) 继续</td></tr>
+<tr><td><strong>10</strong></td><td>3</td><td>调用 fun(2)</td><td>—</td><td>进入 fun(2)</td></tr>
+<tr><td><strong>11</strong></td><td>2</td><td>输出 2，返回</td><td><span class="mono">2</span></td><td>全部结束</td></tr>
+<tr style="background:var(--accent-light)">
+<td colspan="5"><strong>✅ 最终输出序列：4 → 2 → 4 → 3 → 1 → 3 → 2</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想：fun(7) 的计算链</div>
+<p><span class="mono">fun(7) = 7 × fun(5) = 7 × 5 × fun(3) = 7 × 5 × 3 × fun(2) = 7 × 5 × 3 × 2 × fun(1) = 210</span></p>
+</div>
+
+<h3>🐰 递归 fib(5) 的计算树</h3>
+
+<div style="background:var(--surface-alt);border-radius:12px;padding:20px;margin:16px 0;font-family:var(--font-mono);font-size:13px;text-align:center;line-height:2;border:1px solid var(--border)">
+<span style="color:var(--primary)">fib(5)</span><br>
+├── <span style="color:var(--accent-dark)">fib(4)</span><br>
+│   ├── <span style="color:#10b981">fib(3)</span><br>
+│   │   ├── fib(2)<br>
+│   │   │   ├── fib(1) = <span style="font-weight:700">1</span><br>
+│   │   │   └── fib(0) = <span style="font-weight:700">0</span><br>
+│   │   └── fib(1) = <span style="font-weight:700">1</span><br>
+│   └── fib(2)<br>
+│       ├── fib(1) = <span style="font-weight:700">1</span><br>
+│       └── fib(0) = <span style="font-weight:700">0</span><br>
+└── <span style="color:#8b5cf6">fib(3)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── fib(2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;│   ├── fib(1) = <span style="font-weight:700">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;│   └── fib(0) = <span style="font-weight:700">0</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── fib(1) = <span style="font-weight:700">1</span>
+</div>
+
+<div class="highlight-box yellow">
+<div class="hb-title">⚠️ 注意 fib(3) 被计算了 2 次，fib(2) 被计算了 3 次！</div>
+<p>这就是递归版 Fibonacci 时间复杂度 O(2ⁿ) 的原因——大量重复计算。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：递归必须有终止条件</div>
+<p>"递归函数必须具有一个终止条件，以防止无限递归"——这句话是 <strong>✅ 对的</strong>。没有终止条件的递归函数会无限调用自身，最终导致 <strong>栈溢出（Stack Overflow）</strong>。</p>
+<p>GESP 高频判断题第 1 名。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：递归版 fib 时间复杂度是 O(2ⁿ)</div>
+<p>"fibB 采用递归方式，时间复杂度为 O(n)"→ <strong>❌ 错</strong>。</p>
+<p>递归版斐波那契 fib(n) = fib(n-1) + fib(n-2)，每一次调用都产生两个子调用，总调用次数 ≈ 2ⁿ，时间复杂度为 <strong>O(2ⁿ)</strong>，不是 O(n)。</p>
+<p>迭代版才是 O(n)。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：递归版 GCD 效率不一定更高</div>
+<p>"当 a 较大时，递归版 gcd 的执行效率更高"→ <strong>❌ 错</strong>。递归版有函数调用栈开销，效率通常<strong>不如</strong>循环版。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：sin(sin(x)) 不是递归调用</div>
+<p>"语句 y = sin(sin(x)) 是一种递归调用"→ <strong>❌ 错</strong>。sin() 是 C++ 标准库函数，不是自己调用自己，所以不是递归。递归必须是<strong>函数自己调用自己</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：不是所有递归改写都需要显式栈</div>
+<p>"所有递归程序改写为非递归都需要显式栈"→ <strong>❌ 错</strong>。尾递归和简单递归（如阶乘、斐波那契）可以直接用循环改写，无需显式栈。只有需要保存多层调用状态的递归（如 DFS 遍历树）才需要显式栈。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 递归概念 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：递归概念与终止条件</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2026/03 第9题）</div>
+<p>递归调用的层数过多，会因为什么引发错误？</p>
+<p><strong>A.</strong> 系统分配的栈空间溢出<br>
+<strong>B.</strong> 堆空间溢出<br>
+<strong>C.</strong> 队列空间溢出<br>
+<strong>D.</strong> 链表空间溢出</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 每次递归调用分配栈帧，层数过多会导致栈空间耗尽（Stack Overflow）。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2024/03 第14题）</div>
+<p>递归函数必须满足什么条件以避免无限递归？</p>
+<p><strong>A.</strong> 有终止条件<br>
+<strong>B.</strong> 函数参数递减<br>
+<strong>C.</strong> 函数返回值固定<br>
+<strong>D.</strong> 以上都对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 递归必须有一个 base case（终止条件），参数不一定递减（如辗转相除时参数可能会变化方向）。</div></div>
+</div>
+
+<!-- 阶乘递归 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--accent)">
+<div class="card-title" style="color:var(--accent-dark)">📌 考点二：阶乘与求和递归</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024/03 第3题）</div>
+<p>计算阶乘的递归代码，横线应填入什么？</p>
+<div class="code-block"><pre><code class="language-cpp">int factorial(int n) {
+    if (n == 0 || n == 1) return 1;
+    else { _________________________________ }
+}</code></pre></div>
+<p><strong>A.</strong> <span class="mono">return n * factorial(n - 1);</span><br>
+<strong>B.</strong> <span class="mono">return factorial(n - 1) / n;</span><br>
+<strong>C.</strong> <span class="mono">return n * factorial(n);</span><br>
+<strong>D.</strong> <span class="mono">return factorial(n / 2) * factorial(n / 2);</span></p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 阶乘递归定义：n! = n × (n-1)!，终止条件为 n==0 或 n==1 时返回 1。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024/09 第3题）</div>
+<p>求和的两种实现，说法错误的是哪一个？</p>
+<div class="code-block"><pre><code class="language-cpp">int sumA(int n) { int res=0; for(int i=1;i&lt;=n;i++) res+=i; return res; }
+int sumB(int n) { if (n==1) return 1; return n + sumB(n-1); }</code></pre></div>
+<p><strong>A.</strong> sumA 体现了迭代思想<br>
+<strong>B.</strong> sumB 采用递归<br>
+<strong>C.</strong> sumB 比 sumA 时间效率更高<br>
+<strong>D.</strong> 功能相同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · sumB 是递归实现，有函数调用栈开销，时间效率通常不如迭代版 sumA。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4a（2025/12 第13题）</div>
+<p>阶乘的两种实现，说法错误的是哪一项？</p>
+<pre style="background:var(--surface-alt);padding:12px;border-radius:6px;font-size:13px">factorialA(n): if (n&lt;=1) return 1; return n * factorialA(n-1);
+factorialB(n): if (n&lt;=1) return 1; int res=1; for(i=2..n) res*=i; return res;</pre>
+<p><strong>A.</strong> 两个函数功能相同<br>
+<strong>B.</strong> 时间复杂度均为 O(n)<br>
+<strong>C.</strong> factorialA 采用递归<br>
+<strong>D.</strong> factorialB 采用递归方式</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · factorialB 使用 for 循环，是迭代（递推）方式，不是递归方式。factorialA 才是递归方式。</div></div>
+</div>
+
+<!-- 斐波那契递归 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：斐波那契递归</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2024/12 第4题）</div>
+<p>斐波那契的两种实现，说法错误的是哪一个？</p>
+<pre style="background:var(--surface-alt);padding:12px;border-radius:6px;font-size:13px">fibA(n) 迭代版: O(n)
+fibB(n) 递归版: fib(n)=fib(n-1)+fib(n-2)</pre>
+<p><strong>A.</strong> 两个函数功能相同<br>
+<strong>B.</strong> fibA 采用递推方式<br>
+<strong>C.</strong> fibB 采用递归方式<br>
+<strong>D.</strong> fibA O(n), fibB O(n²)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · fibB 的时间复杂度是 O(2ⁿ)，不是 O(n²)。递归版每个调用都产生两个子调用。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2024/03 第6题）</div>
+<p>递归斐波那契的时间复杂度是多少？</p>
+<p><strong>A.</strong> O(1)<br>
+<strong>B.</strong> O(n)<br>
+<strong>C.</strong> O(2ⁿ)<br>
+<strong>D.</strong> O(log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 递归版 Fibonacci 的时间复杂度是指数级 O(2ⁿ)，因为大量重复计算。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6a（2024/06 第1题）</div>
+<p>斐波那契迭代版函数 fibo() 属于哪种算法？</p>
+<pre style="background:var(--surface-alt);padding:12px;border-radius:6px;font-size:13px">迭代版 fibo(n): if(n&lt;=1) return n; f1=0,f2=1; for(i=2..n){temp=f2; f2=f1+f2; f1=temp;} return f2;</pre>
+<p><strong>A.</strong> 递归算法<br>
+<strong>B.</strong> 分治算法<br>
+<strong>C.</strong> 迭代算法<br>
+<strong>D.</strong> 贪心算法</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · fibo() 使用 for 循环从底向上计算，不涉及自身调用，属于迭代算法（递推算法）。</div></div>
+</div>
+
+<!-- fun 函数追踪 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点四：fun 递归函数追踪</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2024/09 第15题）</div>
+<p>fun(7) 的返回值是多少？</p>
+<div class="code-block"><pre><code class="language-cpp">int fun(int n) {
+    if (n == 1) return 1;
+    else if (n &gt;= 5) return n * fun(n - 2);
+    else return n * fun(n - 1);
+}</code></pre></div>
+<p><strong>A.</strong> 105<br>
+<strong>B.</strong> 840<br>
+<strong>C.</strong> 210<br>
+<strong>D.</strong> 420</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · fun(7)=7×fun(5)=7×5×fun(3)=7×5×3×fun(2)=7×5×3×2×fun(1)=7×5×3×2×1=210。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2024/06 第14题）</div>
+<p>fun(7) 的返回值是多少？</p>
+<div class="code-block"><pre><code class="language-cpp">int fun(int n) {
+    if (n == 1) return 1;
+    if (n == 2) return 2;
+    return fun(n - 2) - fun(n - 1);
+}</code></pre></div>
+<p><strong>A.</strong> 0<br>
+<strong>B.</strong> 1<br>
+<strong>C.</strong> 21<br>
+<strong>D.</strong> -11</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · fun(1)=1, fun(2)=2, fun(3)=1-2=-1, fun(4)=2-(-1)=3, fun(5)=(-1)-3=-4, fun(6)=3-(-4)=7, fun(7)=(-4)-7=-11。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2024/06 第15题）</div>
+<p>调用 fun(4) 时，屏幕输出序列是什么？</p>
+<div class="code-block"><pre><code class="language-cpp">void fun(int n) {
+    cout &lt;&lt; n &lt;&lt; " ";
+    if (n &lt;= 2) return;
+    fun(n - 2);
+    cout &lt;&lt; n &lt;&lt; " ";
+    fun(n - 1);
+}</code></pre></div>
+<p><strong>A.</strong> 4 3 2 1<br>
+<strong>B.</strong> 1 2 3 4<br>
+<strong>C.</strong> 4 2 3 1 2<br>
+<strong>D.</strong> 4 2 3 2 1</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 详见步骤四的手工模拟表。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9a（2024/09 第4题）</div>
+<p>有如下函数 fun，则 fun(20, 12) 的返回值为多少？</p>
+<div class="code-block"><pre><code class="language-cpp">int fun(int a, int b) {
+    if (a % b == 0) return b;
+    else return fun(b, a % b);
+}</code></pre></div>
+<p><strong>A.</strong> 20 &nbsp;&nbsp; <strong>B.</strong> 12 &nbsp;&nbsp; <strong>C.</strong> 4 &nbsp;&nbsp; <strong>D.</strong> 2</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · fun(20,12) → fun(12,8) → fun(8,4) → 4%8=0 → 返回 4。这是辗转相除法（欧几里得算法）求最大公约数的递归版本，gcd(20,12)=4。</div></div>
+</div>
+
+<!-- 快速幂和综合 真题 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--pink)">
+<div class="card-title" style="color:var(--pink-dark)">📌 考点五：综合题型</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2025/03 判断第5题）</div>
+<p><strong>判断题：</strong>递归函数必须具有一个终止条件，以防止无限递归。</p>
+<p><strong>A.</strong> 正确<br>
+<strong>B.</strong> 错误</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：正确 ✅</strong> · 这是递归最基本的要求，没有终止条件会导致无限递归和栈溢出。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/09 第8题）</div>
+<p>以下快速幂代码的时间复杂度是多少？</p>
+<div class="code-block"><pre><code class="language-cpp">double quick_power(double x, unsigned n) {
+    if (n == 0) return 1; if (n == 1) return x;
+    return quick_power(x, n/2) * quick_power(x, n/2) * ((n & 1) ? x : 1);
+}</code></pre></div>
+<p><strong>A.</strong> O(n)<br>
+<strong>B.</strong> O(n²)<br>
+<strong>C.</strong> O(log n)<br>
+<strong>D.</strong> O(n log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 调用了两次 quick_power(x, n/2)，没有缓存子结果，每次递归规模不变，退化为 O(n)。正确写法应该先存 half = quick_power(x, n/2)，再用 half*half。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 12（2024/09 判断第10题）</div>
+<p><strong>判断题：</strong>对于已经定义好的标准数学函数 sin(x)，应用程序中的语句 <span class="mono">y = sin(sin(x))</span> 是一种递归调用。</p>
+<p><strong>A.</strong> 正确<br>
+<strong>B.</strong> 错误</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：错误 ❌</strong> · sin() 是库函数，不是自己调用自己。递归必须是函数自身调用自身。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th>知识模块</th><th>核心内容</th><th>关键点</th></tr></thead>
+<tbody>
+<tr><td><strong>递归三要素</strong></td><td>终止条件 + 问题分解 + 子问题合并</td><td>缺终止条件 → 栈溢出</td></tr>
+<tr><td><strong>阶乘递归</strong></td><td class="mono">n*factorial(n-1)</td><td>O(n)，终止 n≤1</td></tr>
+<tr><td><strong>斐波那契递归</strong></td><td class="mono">fib(n-1)+fib(n-2)</td><td><strong>O(2ⁿ) 不是 O(n)</strong></td></tr>
+<tr><td><strong>递归 GCD</strong></td><td class="mono">b==0?a:gcd(b,a%b)</td><td>递归版不一定效率更高！</td></tr>
+<tr><td><strong>快速幂（正确）</strong></td><td class="mono">half=quickPow(x,n/2);half*half</td><td>O(log n)—只算一次 half</td></tr>
+<tr><td><strong>快速幂（错误）</strong></td><td class="mono">quickPow(x,n/2)*quickPow(x,n/2)</td><td>O(n)—调用了两次</td></tr>
+<tr><td><strong>sin(sin(x))</strong></td><td>不是递归调用</td><td>是库函数调用，不是自身调用</td></tr>
+<tr><td><strong>递归 → 迭代</strong></td><td>所有递归都可改写</td><td>不一定需要显式栈（尾递归/简单递归可用循环）</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"递归三要素别忘记，终止条件排第一；fib 递归是 O(2ⁿ)，快速幂只算一半；栈溢出因层数多，所有递归可改写"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+// 代码高亮
+hljs.highlightAll();
+
+// 答案展开/折叠
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+// 真题卡片颜色多样化
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+// ScrollSpy：滚动时侧边栏高亮
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+// 回到顶部按钮
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>

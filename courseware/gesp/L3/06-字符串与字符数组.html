@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GESP C++三级 · 字符串与字符数组</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc; --surface: #ffffff; --surface-alt: #f8f9fb;
+    --text: #1a1d28; --text-secondary: #5a6072; --text-tertiary: #8b8fa3;
+    --border: #e4e7ed; --border-light: #eef0f4;
+    --primary: #4f6ef7; --primary-light: #eef2ff; --primary-dark: #3b54d4;
+    --accent: #f59e0b; --accent-light: #fffbeb; --accent-dark: #d97706;
+    --success: #10b981; --success-light: #ecfdf5;
+    --danger: #ef4444; --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6; --purple-light: #f5f3ff; --purple-dark: #6d28d9;
+    --pink: #ec4899; --pink-light: #fdf2f8; --pink-dark: #be185d;
+    --teal: #14b8a6; --teal-light: #f0fdfa; --teal-dark: #0d9488;
+    --orange: #f97316; --orange-light: #fff7ed; --orange-dark: #c2410c;
+    --indigo: #6366f1; --indigo-light: #eef2ff; --indigo-dark: #4338ca;
+    --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+    --gray-700: #334155; --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover,.nav-link.active{color:var(--primary);background:var(--primary-light)}
+.nav-link.active{border-left-color:var(--primary);font-weight:600}
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid;transition:transform .15s,box-shadow .15s}
+.card:not(.flat):hover{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.card.accent{background:var(--accent-light);border-color:var(--accent)} .card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)} .card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)} .card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)} .card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)} .card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)} .card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)} .card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)} .card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)} .card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)} .card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.goal-box{background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0}
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center}
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+</style>
+</head>
+<body>
+<button class="menu-toggle">&#9776;</button>
+<nav class="sidebar">
+  <div class="sidebar-logo">GESP C++ 三级</div>
+  <div class="nav-section">
+    <div class="nav-section-title">课件导航</div>
+    <a class="nav-link" href="#hero-section">课程概览</a>
+    <a class="nav-link" href="#step1">第一步：生活引入</a>
+    <a class="nav-link" href="#step2">第二步：核心概念</a>
+    <a class="nav-link" href="#step3">第三步：代码详解</a>
+    <a class="nav-link" href="#step4">第四步：手工模拟</a>
+    <a class="nav-link" href="#step5">第五步：常见陷阱</a>
+    <a class="nav-link" href="#step6">第六步：真题实战</a>
+    <a class="nav-link" href="#quick-ref">知识速查卡</a>
+  </div>
+</nav>
+<main class="main-content">
+<div class="content-wrapper">
+<!-- Hero Banner -->
+<div id="hero-section" style="text-align:center;padding:52px 24px 36px;background:linear-gradient(135deg,#1a1d28 0%,#22263a 60%,#1e293b 100%);border-radius:16px;margin-bottom:32px;color:#e2e8f0">
+  <h1 style="color:#fff;margin-bottom:8px">GESP C++三级 &#183; 字符串与字符数组</h1>
+  <p style="color:#94a3b8;font-size:15px;margin-bottom:20px">String &amp; C-String &#8212; string&#31867;&#19982;char[]&#30340;&#29702;&#35299;&#19982;&#24212;&#29992;</p>
+  <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px">
+    <span style="background:rgba(79,110,247,.2);padding:6px 16px;border-radius:20px">⚡ 11道真题覆盖</span>
+    <span style="background:rgba(16,185,129,.2);padding:6px 16px;border-radius:20px">📊 年均2~3道</span>
+    <span style="background:rgba(245,158,11,.2);padding:6px 16px;border-radius:20px">⭐ 约5%分值</span>
+  </div>
+</div>
+
+<!-- Step 1: 生活引入 -->
+<h2 class="section-num" id="step1"><span class="num-badge">1</span> 第一步：生活引入 — string vs char[]</h2>
+<div class="card accent"><div class="card-title">&#127757; 场景比喻</div>
+<p>想象你出门旅行，带了两种行李箱：</p>
+<ul>
+  <li><span class="key-point">string</span> 像 <strong>智能行李箱</strong>，能自动调节大小。你往里塞再多东西，它都能自动扩容。而且它有各种智能功能：找东西(find)、剪掉某段(erase)、插入新物品(insert)。</li>
+  <li><span class="key-point">char[]</span> 像 <strong>固定尺寸的鞋盒</strong>，空间是预先定好的。超过容量就会溢出，就像鞋盒撑破。操作也需要手动：复制要strcpy、拼接要strcat、比较要strcmp。</li>
+</ul>
+<p>string是C++的现代字符串工具，char[]是C语言时代的遗产。考试中两者都会考，重点是<strong>了解各自的操作方式和陷阱</strong>。</p>
+</div>
+
+<div class="card success"><div class="card-title">&#127757; ASCII码回顾（来源：进制转换章节）</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>字符类型</th><th>范围</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td><strong>数字字符 '0'~'9'</strong></td><td>ASCII 48~57 (0x30~0x39)</td><td>'0'=48, '5'=53</td></tr>
+<tr><td><strong>大写字母 'A'~'Z'</strong></td><td>ASCII 65~90 (0x41~0x5A)</td><td>'A'=0x41=65, 'L'=0x4C=76</td></tr>
+<tr><td><strong>小写字母 'a'~'z'</strong></td><td>ASCII 97~122 (0x61~0x7A)</td><td>'a'=97, 'z'=122</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point warn">关键规律</span>：'A'=0x41=65，依次递增；'a'='A'+32=97；数字字符=48+数字值；大小写差=32；字符常量'3'(&#20540;51) &#8800; 整数常量3。</p>
+</div>
+
+<!-- Step 2: 核心概念 -->
+<h2 class="section-num" id="step2"><span class="num-badge">2</span> 第二步：核心概念</h2>
+
+<h3>2.1 string类函数表</h3>
+<div class="card purple"><div class="card-title">&#128218; string类常用函数（#include &lt;string&gt;）</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>类别</th><th>函数</th><th>说明</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td rowspan="3"><strong>查找</strong></td><td class="mono">find(substr)</td><td>查找子串首次出现下标</td><td class="mono">s.find("Pro") &#8594; 4</td></tr>
+<tr><td class="mono">find(substr, x)</td><td>从下标x之后开始查找</td><td class="mono">s.find("o", 5)</td></tr>
+<tr><td class="mono">rfind(substr)</td><td>查找最后一次出现下标</td><td class="mono">s.rfind("m")</td></tr>
+<tr><td rowspan="2"><strong>截取</strong></td><td class="mono">substr(i, len)</td><td>从i开始截取len个字符</td><td class="mono">s.substr(0,3) &#8594; "C++"</td></tr>
+<tr><td class="mono">substr(i)</td><td>从i开始截取到末尾</td><td class="mono">s.substr(4)</td></tr>
+<tr><td rowspan="2"><strong>删除</strong></td><td class="mono">erase(i, len)</td><td>从i开始删除len个字符</td><td class="mono">s.erase(0,3)</td></tr>
+<tr><td class="mono">erase(i)</td><td>从i开始删除到末尾</td><td class="mono">s.erase(4)</td></tr>
+<tr><td><strong>插入</strong></td><td class="mono">insert(i, s2)</td><td>在位置i插入字符串s2</td><td class="mono">s.insert(3,"XX")</td></tr>
+<tr><td><strong>替换</strong></td><td class="mono">replace(i, len, str)</td><td>从i开始替换len个字符为str</td><td class="mono">s.replace(4,3,"ABC")</td></tr>
+<tr><td><strong>长度</strong></td><td class="mono">length() / size()</td><td>返回字符串长度</td><td class="mono">"C++ Pro".length() &#8594; 7</td></tr>
+<tr><td><strong>赋值</strong></td><td class="mono">= 运算符</td><td>string可用=直接赋值</td><td class="mono">s1 = s2; // 深拷贝</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point">未找到</span>：find()返回 <span class="mono">string::npos</span>（等于 -1）。<span class="key-point">下标从0开始</span>：第一个字符下标为0。</p>
+</div>
+
+<h3>2.2 cstring字符数组函数表</h3>
+<div class="card pink"><div class="card-title">&#128218; 字符数组函数（#include &lt;cstring&gt;）</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>定义</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td class="mono">strlen(s)</td><td>求字符串长度</td><td>不含'\0'，'&#92;0'是结束标志</td></tr>
+<tr><td class="mono">strcmp(s1, s2)</td><td>字符串比较（字典序）</td><td>s1大&#8594;正数；相等&#8594;0；s2大&#8594;负数</td></tr>
+<tr><td class="mono">strcat(s1, s2)</td><td>将s2连接到s1后面</td><td><strong>s1要有足够空间！</strong>否则溢出</td></tr>
+<tr><td class="mono">strcpy(s1, s2)</td><td>将s2拷贝到s1</td><td>覆盖s1原有内容，s1空间需足够</td></tr>
+<tr><td class="mono">strncmp(s1,s2,n)</td><td>比较前n个字符</td><td>安全版本，只比n个</td></tr>
+<tr><td class="mono">strncat(s1,s2,n)</td><td>连接s2前n个字符</td><td>安全版本</td></tr>
+<tr><td class="mono">strncpy(s1,s2,n)</td><td>拷贝s2前n个字符</td><td>安全版本</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h3>2.3 字符判断/转换函数表</h3>
+<div class="card teal"><div class="card-title">&#128218; 字符判断与转换（#include &lt;cctype&gt;）</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>功能</th><th>示例</th></tr></thead>
+<tbody>
+<tr><td class="mono">isalpha(c)</td><td>是否为字母（A-Z或a-z）</td><td class="mono">isalpha('a') &#8594; true</td></tr>
+<tr><td class="mono">isdigit(c)</td><td>是否为数字（0-9）</td><td class="mono">isdigit('5') &#8594; true</td></tr>
+<tr><td class="mono">islower(c)</td><td>是否为小写字母</td><td class="mono">islower('g') &#8594; true</td></tr>
+<tr><td class="mono">isupper(c)</td><td>是否为大写字母</td><td class="mono">isupper('G') &#8594; true</td></tr>
+<tr><td class="mono">isalnum(c)</td><td>是否为字母或数字</td><td class="mono">isalnum('3') &#8594; true</td></tr>
+<tr><td class="mono">isspace(c)</td><td>是否为空白字符</td><td class="mono">isspace(' ') &#8594; true</td></tr>
+<tr><td class="mono">toupper(c)</td><td>转换为大写</td><td class="mono">(char)toupper('a') &#8594; 'A'</td></tr>
+<tr><td class="mono">tolower(c)</td><td>转换为小写</td><td class="mono">(char)tolower('Z') &#8594; 'z'</td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point">注意</span>：toupper/tolower返回int，需要(char)转换后再输出字符。</p>
+</div>
+
+<h3>2.4 string vs char[] 对比</h3>
+<div class="card orange"><div class="card-title">&#128218; string类 vs 字符数组 char[] 全面对比</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>特性</th><th>string</th><th>char[]</th></tr></thead>
+<tbody>
+<tr><td><strong>头文件</strong></td><td class="mono">#include &lt;string&gt;</td><td>无需额外头文件（或cstring）</td></tr>
+<tr><td><strong>内存管理</strong></td><td>动态分配，自动扩容</td><td>固定大小，编译时确定</td></tr>
+<tr><td><strong>赋值</strong></td><td class="mono">s = "hello"; // &#10003;</td><td>需strcpy(s, "hello");</td></tr>
+<tr><td><strong>比较内容</strong></td><td class="mono">s1 == s2 // &#10003; &#27604;&#36739;&#20869;&#23481;</td><td>s1==s2 // &#10007; &#27604;&#36739;&#30340;&#26159;&#22320;&#22336;!</td></tr>
+<tr><td><strong>拼接</strong></td><td class="mono">s1 + s2 // &#10003;</td><td>需strcat(s1, s2);</td></tr>
+<tr><td><strong>获取长度</strong></td><td class="mono">s.length()</td><td class="mono">strlen(s)</td></tr>
+<tr><td><strong>结尾标志</strong></td><td>内部管理，无需手动处理</td><td>'\0'作为结束标志</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Step 3: 代码详解 -->
+<h2 class="section-num" id="step3"><span class="num-badge">3</span> 第三步：代码详解</h2>
+
+<h3>3.1 string类完整操作</h3>
+<div class="card primary"><div class="card-title">&#128187; string类操作完整代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    string s = "C++ Programming";
+    
+    // 1. 长度
+    cout &lt;&lt; s.length() &lt;&lt; endl;        // 15（含空格）
+    
+    // 2. 查找：find返回首次出现下标
+    cout &lt;&lt; s.find("Pro") &lt;&lt; endl;     // 4
+    cout &lt;&lt; s.find("++") &lt;&lt; endl;      // 1
+    // 未找到返回 string::npos（等于 -1）
+    cout &lt;&lt; (int)s.find("XYZ") &lt;&lt; endl; // -1
+    
+    // 3. 截取：substr(起始位置, 长度)
+    cout &lt;&lt; s.substr(0, 3) &lt;&lt; endl;    // "C++"
+    cout &lt;&lt; s.substr(4) &lt;&lt; endl;       // "Programming"
+    
+    // 4. 删除：erase(起始位置, 长度)
+    string t = s;
+    t.erase(0, 4);                       // 删除"C++ "
+    cout &lt;&lt; t &lt;&lt; endl;                  // "Programming"
+    
+    // 5. 插入：insert(位置, 字符串)
+    t.insert(0, "Hello ");
+    cout &lt;&lt; t &lt;&lt; endl;                  // "Hello Programming"
+    
+    // 6. 替换：replace(起始, 长度, 新串)
+    s.replace(4, 11, "World");
+    cout &lt;&lt; s &lt;&lt; endl;                  // "C++ World"
+    
+    // 7. 赋值和拼接
+    string a = "Hello", b = "World";
+    string c = a + " " + b;              // 拼接
+    cout &lt;&lt; c &lt;&lt; endl;                  // "Hello World"
+    
+    // 8. 比较（比较的是内容！）
+    if (a == b) cout &lt;&lt; "equal" &lt;&lt; endl;
+    else cout &lt;&lt; "not equal" &lt;&lt; endl;
+    
+    return 0;
+}</code></pre></div>
+</div>
+
+<h3>3.2 字符数组操作代码</h3>
+<div class="card success"><div class="card-title">&#128187; 字符数组操作代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+int main() {
+    // 字符数组定义与初始化
+    char s1[100] = "Hello";  // 预留足够空间！
+    char s2[] = "World";
+    
+    // 1. 长度（不含'\0'）
+    cout &lt;&lt; strlen(s1) &lt;&lt; endl;        // 5
+    cout &lt;&lt; strlen("Hello") &lt;&lt; endl;    // 5
+    
+    // 2. 比较（字典序）
+    cout &lt;&lt; strcmp("abc", "abd") &lt;&lt; endl;  // 负数（abc&lt;abd）
+    cout &lt;&lt; strcmp("abc", "abc") &lt;&lt; endl;  // 0（相等）
+    cout &lt;&lt; strcmp("abd", "abc") &lt;&lt; endl;  // 正数（abd&gt;abc）
+    
+    // 3. 拼接：strcat(s1, s2)
+    strcat(s1, s2);    // s1 = "HelloWorld"
+    cout &lt;&lt; s1 &lt;&lt; endl;
+    // ⚠️ s1必须有足够空间容纳s1+s2+'\0'！
+    
+    // 4. 拷贝：strcpy(s1, s2)
+    strcpy(s1, "C++");
+    cout &lt;&lt; s1 &lt;&lt; endl;    // "C++"
+    
+    // 5. ⚠️ 错误示例：不能用==比较内容！
+    char a[] = "hello", b[] = "hello";
+    if (a == b)  // 比较的是地址！不是内容！
+        cout &lt;&lt; "same addr" &lt;&lt; endl;
+    else
+        cout &lt;&lt; "diff addr" &lt;&lt; endl;  // 输出这个！
+    
+    // 正确比较：
+    if (strcmp(a, b) == 0)
+        cout &lt;&lt; "same content" &lt;&lt; endl;
+    
+    return 0;
+}</code></pre></div>
+</div>
+
+<h3>3.3 字符判断与转换代码</h3>
+<div class="card purple"><div class="card-title">&#128187; 字符判断与转换完整代码</div>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cctype&gt;
+using namespace std;
+
+int main() {
+    char c = 'a', d = '5', e = 'G';
+    
+    // 字符判断（返回非0为真，0为假）
+    cout &lt;&lt; isalpha(c) &lt;&lt; endl;   // 是字母？&#8594; 非0（真）
+    cout &lt;&lt; isdigit(d) &lt;&lt; endl;   // 是数字？&#8594; 非0（真）
+    cout &lt;&lt; islower(c) &lt;&lt; endl;   // 是小写？&#8594; 非0（真）
+    cout &lt;&lt; isupper(e) &lt;&lt; endl;   // 是大写？&#8594; 非0（真）
+    
+    // 字符转换（返回int，需(char)转换）
+    cout &lt;&lt; (char)toupper(c) &lt;&lt; endl;  // 'A'
+    cout &lt;&lt; (char)tolower(e) &lt;&lt; endl;  // 'g'
+    
+    // 实用技巧：大小写互转
+    // 大写 &#8594; 小写：+32
+    // 小写 &#8594; 大写：-32
+    char x = 'A' + 32;  // x = 'a'
+    char y = 'z' - 32;  // y = 'Z'
+    
+    // 遍历字符串中的字符判断
+    string s = "Hello123";
+    for (char ch : s) {
+        if (isalpha(ch)) cout &lt;&lt; ch &lt;&lt; "是字母 ";
+        if (isdigit(ch)) cout &lt;&lt; ch &lt;&lt; "是数字 ";
+    }
+    
+    return 0;
+}</code></pre></div>
+</div>
+
+<!-- Step 4: 手工模拟 -->
+<h2 class="section-num" id="step4"><span class="num-badge">4</span> 第四步：手工模拟</h2>
+<div class="card flat"><div class="card-title">&#128208; 手工模拟 find() 和 substr() 操作过程</div>
+<p>以字符串 <strong>"C++ Programming"</strong> 为例，手工模拟常见操作：</p>
+<div class="formula-box">
+索引: 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4<br>
+字符: C + + &nbsp; P r o g r a m m i n g
+</div>
+
+<h4>&#128269; find("Pro") 模拟</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>匹配情况</th></tr></thead>
+<tbody>
+<tr><td>① 从下标0开始</td><td>'C' vs 'P'</td><td>不匹配 &#10007;</td></tr>
+<tr><td>② 移到下标1</td><td>'+' vs 'P'</td><td>不匹配 &#10007;</td></tr>
+<tr><td>③ 移到下标2</td><td>'+' vs 'P'</td><td>不匹配 &#10007;</td></tr>
+<tr><td>④ 移到下标3</td><td>' ' vs 'P'</td><td>不匹配 &#10007;</td></tr>
+<tr><td>⑤ 移到下标4</td><td>'P' vs 'P', 'r' vs 'r', 'o' vs 'o'</td><td>全部匹配 &#10003; &#8594; <strong>返回 4</strong></td></tr>
+</tbody>
+</table>
+</div>
+<p><span class="key-point">总结</span>：find() 从下标0开始逐位比较，一旦找到完全匹配的子串就返回起始下标；遍历完仍未找到则返回 <span class="mono">string::npos</span>。</p>
+
+<h4>&#9988;&#65039; substr(0, 3) 模拟</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>结果</th></tr></thead>
+<tbody>
+<tr><td>① 确定起始位置</td><td>i = 0</td><td>从 'C' 开始</td></tr>
+<tr><td>② 确定长度</td><td>len = 3</td><td>取3个字符</td></tr>
+<tr><td>③ 截取</td><td>取s[0], s[1], s[2]</td><td>'C', '+', '+'</td></tr>
+<tr><td>④ 返回</td><td>拼接为字符串</td><td><strong>"C++"</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<h4>&#9988;&#65039; erase(4, 11) 模拟</h4>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>步骤</th><th>操作</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>① 原字符串</td><td>"C++ Programming"</td><td>15个字符</td></tr>
+<tr><td>② 删除位置</td><td>从下标4开始</td><td>即从空格' '开始</td></tr>
+<tr><td>③ 删除长度</td><td>11个字符</td><td>" Programming"（含前空格）</td></tr>
+<tr><td>④ 结果</td><td>保留前4个：s[0]~s[3]</td><td><strong>"C++"</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<h4>&#128269; rfind() 模拟</h4>
+<div class="think-box">
+<p><strong>rfind("g")</strong> 与 find 相反，从右往左搜索：</p>
+<p>"C++ Programming" 中有两个 'g'：一个在下标8，一个在下标7的 "Pro<strong>g</strong>ramming" 中的 "Pro<strong>g</strong>"。实际上 "Programming" 中 'g' 在下标11（计算：P=4, r=5, o=6, g=7... 不，让我重新数：空格=3, P=4, r=5, o=6, g=7, r=8, a=9, m=10, m=11, i=12, n=13, g=14）。rfind("g") 从右往左找，返回 <strong>14</strong>。</p>
+</div>
+
+<!-- Step 5: 常见陷阱 -->
+<h2 class="section-num" id="step5"><span class="num-badge">5</span> 第五步：常见陷阱</h2>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱1：char[]用==比较的是地址！</div>
+<p><strong>这是最高频的坑！</strong></p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">char a[] = "hello";
+char b[] = "hello";
+if (a == b)   // ❌ 比较的是两个数组的首地址！
+    // a和b是不同的数组，地址不同
+    // 即使内容相同，== 也返回 false！
+    
+// ✅ 正确做法：
+if (strcmp(a, b) == 0)  // 比较内容</code></pre></div>
+<p><span class="key-point danger">注意</span>：string对象用==比较的是内容，char[]用==比较的是地址！<strong>字符数组比较内容必须用strcmp</strong>。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱2：strcat需要足够空间！</div>
+<p>strcat(s1, s2) 将s2拼接到s1末尾，但s1必须有足够空间容纳拼接后的完整字符串+'\0'。</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">// ❌ 危险：s1空间不够
+char s1[6] = "Hello";  // 只能存5个字符+'\0'
+strcat(s1, "World");   // 溢出！需要6+5+1=12字节
+
+// ✅ 正确：预留足够空间
+char s1[100] = "Hello";
+strcat(s1, "World");   // 安全</code></pre></div>
+<p><span class="key-point danger">后果</span>：空间不足会导致内存越界，程序可能崩溃或产生奇怪结果。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱3：string::npos等于-1</div>
+<p>find()找不到时返回 <span class="mono">string::npos</span>，这是一个常量：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">string s = "hello";
+cout &lt;&lt; (int)s.find('x') &lt;&lt; endl; // 输出 -1
+// string::npos 实际上就是 -1
+
+// 判断是否找到：
+if (s.find('x') == string::npos)
+    cout &lt;&lt; "not found" &lt;&lt; endl;
+
+// ⚠️ 常见错误：用 >=0 判断
+if (s.find('x') &gt;= 0)  // ❌ -1 >= 0 为false，逻辑反了！
+    cout &lt;&lt; "found" &lt;&lt; endl;</code></pre></div>
+<p><span class="key-point warn">正确判断</span>：<span class="mono">if (s.find(x) != string::npos)</span> 表示找到了。</p>
+</div>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱4：toupper/tolower返回int</div>
+<p>这两个函数返回的是int类型，直接输出会打印ASCII值而不是字符：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cout &lt;&lt; toupper('a') &lt;&lt; endl;       // 输出 65（不是'A'！）
+cout &lt;&lt; (char)toupper('a') &lt;&lt; endl; // 输出 'A' ✓</code></pre></div>
+</div>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱5：字符常量 vs 整数常量</div>
+<p>'3'的ASCII值是51，不等于整数3：</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cout &lt;&lt; ('3' == 3) &lt;&lt; endl;  // 0（false），'3'=51≠3
+cout &lt;&lt; ('3' - '0') &lt;&lt; endl;  // 3，字符转数字的技巧</code></pre></div>
+</div>
+
+<div class="warning-box"><div class="wb-title">&#9888;&#65039; 陷阱6：strlen不含'\0'</div>
+<p><span class="mono">strlen("Hello")</span> 返回 5（不是6），不包含结尾的'\0'。同理 <span class="mono">string.length()</span> 也不含'\0'。</p>
+<p>但定义char数组时，<span class="mono">char s[6] = "Hello"</span> 需要6字节（5字符+1个'\0'）。</p>
+</div>
+
+<!-- Step 6: 真题实战 -->
+<h2 class="section-num" id="step6"><span class="num-badge">6</span> 第六步：真题实战</h2>
+
+<div class="card purple">
+<div class="card-title">&#128218; 来源：2024/12 第11题 &#183; string vs char[] 对比题</div>
+<p>以下关于C++中 string 类和字符数组（char[]）的说法，<strong>错误</strong>的是（ ）</p>
+<p>A. string 对象可以使用 = 进行赋值，而字符数组需要使用 strcpy。<br>
+B. string 对象的长度可以使用 length() 成员函数获取，而字符数组需要使用 strlen() 函数。<br>
+C. string 对象在内存中是动态分配空间的，因此可以自动处理字符串长度的变化。<br>
+D. string 对象和字符数组都可以使用 == 运算符来直接比较两个字符串的内容是否相同。</p>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：D</strong><br>
+解析：D错误，字符数组用==比较的是<strong>地址</strong>，不是内容！string可以用==比较内容，但char[]必须用strcmp比较内容。这是考试中的高频陷阱。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">&#128218; 来源：2025/12 第5题 &#183; length()题目</div>
+<p>已知字符串 s = "C++ Programming"，下列程序运行的结果是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">cout &lt;&lt; (int)(s.length() | 3) &lt;&lt; endl;</code></pre></div>
+<p>A. 14 &nbsp; B. 15 &nbsp; C. 16 &nbsp; D. 17</p>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：s.length() = 15（含空格），15的二进制=1111，3的二进制=0011，15|3 = 1111|0011 = 1111 = 15。注意空格也算一个字符！
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">&#128218; 来源：2025/06 第9题 &#183; 字符串字符判断综合</div>
+<p>以下代码运行后，sum 的结果是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">int arr[5] = {2, 4, 6, 8, 10};
+int sum = 0;
+for (int i = 0; i &lt; 5; i++) {
+    switch (arr[i] % (1|2)) {
+        case 0: sum += 1; break;
+        case 1: sum += 2; break;
+        case 2: sum += 3; break;
+    }
+}</code></pre></div>
+<p>A. 10 &nbsp; B. 11 &nbsp; C. 14 &nbsp; D. 15</p>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：B</strong><br>
+解析：1|2=3。arr[0]=2, 2%3=2, sum=3。arr[1]=4, 4%3=1, sum=5。arr[2]=6, 6%3=0, sum=6。arr[3]=8, 8%3=2, sum=9。arr[4]=10, 10%3=1, sum=11。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">&#128218; 来源：2024/09 &#183; 字符码值比较</div>
+<p>C++的字符变量的码值是整数，下面字面量形式的字符码值最大的是（ ）</p>
+<p>A. 100 &nbsp; B. 075 &nbsp; C. 0x70 &nbsp; D. 0x60</p>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：A=100（十进制），B=075（八进制=61），C=0x70（十六进制=112），D=0x60（十六进制=96）。最大为0x70=112。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">&#128218; 来源：2023/09 第3题 &#183; ASCII编码</div>
+<p>已知大写字符 'A' 的ASCII编码的十六进制表示为 0x41，则字符 'L' 的ASCII编码的十六进制表示为（ ）</p>
+<p>A. 4A &nbsp; B. 4B &nbsp; C. 4C &nbsp; D. 52</p>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：A=0x41，L是第12个字母（A=1, B=2, ..., L=12），L的ASCII = 0x41 + (12-1) = 0x41 + 11 = 0x4C。<strong>大写字母的ASCII码按字母顺序递增</strong>。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第6题 · 字符变量强转int（2026/03 第1题）</div>
+<p>如果字符变量 ch 的值是字符 '1'，那么 (int)ch 的值是（ ）</p>
+<p>A. 1 &nbsp; B. -1 &nbsp; C. 49 &nbsp; D. +1 或者 -1</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：字符'1'的ASCII码是49，(int)强转得到的是ASCII码值，不是数字1。要得到数字1需要用 ch - '0'。
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">第7题 · char数组定义陷阱（2023/12 第1题）</div>
+<p>下面C++数组的定义中，会丢失数据的是（ ）</p>
+<p>A. char dict_key[] = {'p','t','o'};<br>
+B. int dict_value[] = {33,22,11};<br>
+C. char dict_name[]={'chen','wang','zhou'};<br>
+D. float dict_value[]={3,2,1};</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：单引号只能括单个字符。'chen'是多字符常量，在不同编译器中行为不同，实际上只有最后一个字符被保留，前面的字符丢失。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">第8题 · 字符常量 vs 整数常量（综合判断题）</div>
+<p>字符常量 '3' 的值和 int 类型常量 3 的值是相同的，只是占用的字节数不同。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong><br>
+解析：'3'的ASCII码值是51，不等于整数3。它们是完全不同的值，不仅仅是字节数不同。
+</div></div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">第9题 · strlen与sizeof（综合判断题）</div>
+<p>表达式 sizeof('a') 的结果总是 1，因为 'a' 是一个字符。（ ）</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：错</strong><br>
+解析：在C++中，字符常量'a'的类型是char，sizeof('a')确实是1。但在C语言中，字符常量的类型是int，sizeof('a')通常是4。题目说"总是1"不严谨。但C++标准中确实是1。
+</div></div>
+</div>
+
+<div class="card orange">
+<div class="card-title">第10题 · ASCII编码偏移（2024/03 第5题）</div>
+<p>已知字符'0'的ASCII编码的十进制表示为48，执行下面C++代码后输出是（ ）</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">char c = '0' + 5;
+cout &lt;&lt; c &lt;&lt; endl;</code></pre></div>
+<p>A. 53 &nbsp; B. 5 &nbsp; C. '5' &nbsp; D. 0</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：输出字符'5'</strong><br>
+解析：'0'+5 = 48+5 = 53 = '5'的ASCII码。输出的是字符'5'，不是数字53。
+</div></div>
+</div>
+
+<div class="card purple">
+<div class="card-title">第11题 · strcmp字典序比较（综合判断题）</div>
+<p>执行 strcmp("abc", "abd") 返回的值是（ ）</p>
+<p>A. 0 &nbsp; B. 正数 &nbsp; C. 负数 &nbsp; D. 不确定</p>
+<button class="answer-toggle">▶ 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：C</strong><br>
+解析：逐字符比较ASCII码。a=a, b=b, 'c'(99) &lt; 'd'(100)，所以"abc" &lt; "abd"，strcmp返回负数。注意：比较的是字符的ASCII值，不是长度。
+</div></div>
+</div>
+
+<h3>📌 更多引申练习</h3>
+
+<div class="card purple">
+<div class="card-title">&#128218; 练习：find()返回值判断</div>
+<p>下面代码输出什么？</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">string s = "abcabc";
+cout &lt;&lt; s.find("bc") &lt;&lt; endl;   // ?
+cout &lt;&lt; s.rfind("bc") &lt;&lt; endl;  // ?
+cout &lt;&lt; s.find("a", 1) &lt;&lt; endl; // ?</code></pre></div>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>输出结果：</strong><br>
+1（"bc"首次出现在下标1）<br>
+4（"bc"最后出现在下标4）<br>
+3（从下标1开始找"a"，在下标3找到）<br>
+注意：索引从0开始计数！
+</div></div>
+</div>
+
+<div class="card pink">
+<div class="card-title">&#128218; 练习：strcmp返回值</div>
+<p>下列表达式的结果是什么？</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">strcmp("abc", "abd");  // ?
+strcmp("123", "012");  // ?
+strcmp("ABC", "abc");  // ?</code></pre></div>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：</strong><br>
+1. 负数（'c' < 'd'，所以"abc" < "abd"）<br>
+2. 正数（'1' > '0'，所以"123" > "012"，首字符就分出大小）<br>
+3. 负数（'A'=65 < 'a'=97，所以"ABC" < "abc"）<br>
+<strong>规则</strong>：逐字符比较ASCII码值，遇不同则返回差值；完全相同返回0。
+</div></div>
+</div>
+
+<div class="card teal">
+<div class="card-title">&#128218; 练习：substr和erase组合</div>
+<p>下面的代码执行后，s的值是什么？</p>
+<div class="code-block"><div class="lang-tag">cpp</div>
+<pre><code class="language-cpp">string s = "Hello World";
+s.erase(5, 1);         // 删除空格
+s.insert(5, ", ");     // 插入逗号空格
+s.replace(0, 5, "Hi"); // 替换前5个字符
+cout &lt;&lt; s &lt;&lt; endl;   // ?</code></pre></div>
+<button class="answer-toggle">&#9654; 显示答案</button>
+<div class="answer-content"><div class="quote-box">
+<strong>答案：</strong>"Hi, World"<br>
+步骤：1）"Hello World" → erase(5,1)删除空格 → "HelloWorld"<br>
+2）insert(5,", ") → "Hello, World"<br>
+3）replace(0,5,"Hi") → "Hi, World"<br>
+注意：索引全部从0开始，熟记常用操作的位置与长度语义。
+</div></div>
+</div>
+
+<!-- 知识速查卡 -->
+<h2 class="section-num" id="quick-ref"><span class="num-badge">&#128203;</span> 知识速查卡</h2>
+
+<div class="card indigo" style="margin-top:0">
+<div class="card-title">&#128203; 来源：三级知识点总结 · 字符串与字符数组速查卡</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>概念</th><th>速记</th><th>易错点</th></tr></thead>
+<tbody>
+<tr><td><strong>string赋值</strong></td><td class="mono">s = "hi";</td><td>char[]不能用=，需strcpy</td></tr>
+<tr><td><strong>string比较</strong></td><td class="mono">s1 == s2</td><td>char[]用==比较的是地址！</td></tr>
+<tr><td><strong>string长度</strong></td><td class="mono">s.length() / s.size()</td><td>不含'\0'，空格也算1个字符</td></tr>
+<tr><td><strong>char[]长度</strong></td><td class="mono">strlen(s)</td><td>不含'\0'，但数组需\0空间</td></tr>
+<tr><td><strong>查找未找到</strong></td><td class="mono">string::npos</td><td>等于-1，判断用 != npos</td></tr>
+<tr><td><strong>字符判断</strong></td><td class="mono">isalpha/isdigit/islower/isupper</td><td>需 #include &lt;cctype&gt;</td></tr>
+<tr><td><strong>大小写转换</strong></td><td class="mono">toupper/tolower</td><td>返回int，需(char)转换</td></tr>
+<tr><td><strong>ASCII关键值</strong></td><td>'A'=65, 'a'=97, '0'=48</td><td>'3'(51) ≠ 3，大小写差32</td></tr>
+<tr><td><strong>strcmp规则</strong></td><td>正=s1大，0=相等，负=s2大</td><td>按字典序逐字符比较ASCII</td></tr>
+<tr><td><strong>strcat安全</strong></td><td>s1空间需足够</td><td>溢出导致未定义行为</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="card indigo">
+<div class="card-title">&#128203; 来源：三级知识点总结 · 常用函数签名速查</div>
+<div class="table-wrapper">
+<table>
+<thead><tr><th>函数</th><th>签名</th><th>头文件</th></tr></thead>
+<tbody>
+<tr><td class="mono">find</td><td>size_t find(const string&amp; str, size_t pos=0)</td><td>&lt;string&gt;</td></tr>
+<tr><td class="mono">substr</td><td>string substr(size_t pos=0, size_t len=npos)</td><td>&lt;string&gt;</td></tr>
+<tr><td class="mono">erase</td><td>string&amp; erase(size_t pos=0, size_t len=npos)</td><td>&lt;string&gt;</td></tr>
+<tr><td class="mono">insert</td><td>string&amp; insert(size_t pos, const string&amp; str)</td><td>&lt;string&gt;</td></tr>
+<tr><td class="mono">replace</td><td>string&amp; replace(size_t pos, size_t len, const string&amp; str)</td><td>&lt;string&gt;</td></tr>
+<tr><td class="mono">strlen</td><td>size_t strlen(const char* s)</td><td>&lt;cstring&gt;</td></tr>
+<tr><td class="mono">strcmp</td><td>int strcmp(const char* s1, const char* s2)</td><td>&lt;cstring&gt;</td></tr>
+<tr><td class="mono">strcat</td><td>char* strcat(char* dest, const char* src)</td><td>&lt;cstring&gt;</td></tr>
+<tr><td class="mono">strcpy</td><td>char* strcpy(char* dest, const char* src)</td><td>&lt;cstring&gt;</td></tr>
+<tr><td class="mono">isalpha</td><td>int isalpha(int c)</td><td>&lt;cctype&gt;</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div></main>
+<button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+hljs.highlightAll();
+document.querySelectorAll('.answer-toggle').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const content = this.nextElementSibling;
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      this.classList.remove('open');
+      this.innerHTML = '&#9654; 显示答案';
+    } else {
+      content.classList.add('open');
+      this.classList.add('open');
+      this.innerHTML = '&#9660; 隐藏答案';
+    }
+  });
+});
+window.addEventListener('scroll', () => {
+  let current = '';
+  document.querySelectorAll('h2.section-num').forEach(el => {
+    if (window.scrollY >= el.offsetTop - 100) current = el.id;
+  });
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  document.querySelector('.back-to-top').classList.toggle('visible', window.scrollY > 400);
+});
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.sidebar').classList.toggle('open');
+});
+</script>
+</body>
+</html>

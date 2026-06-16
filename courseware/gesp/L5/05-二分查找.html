@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GESP五级培训 · 二分查找</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<style>
+:root {
+    --bg: #fafbfc;
+    --surface: #ffffff;
+    --surface-alt: #f8f9fb;
+    --text: #1a1d28;
+    --text-secondary: #5a6072;
+    --text-tertiary: #8b8fa3;
+    --border: #e4e7ed;
+    --border-light: #eef0f4;
+    --primary: #4f6ef7;
+    --primary-light: #eef2ff;
+    --primary-dark: #3b54d4;
+    --accent: #f59e0b;
+    --accent-light: #fffbeb;
+    --accent-dark: #d97706;
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --font-mono: 'SF Mono','Cascadia Code','Consolas','Monaco',monospace;
+    --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+    --purple: #8b5cf6;
+    --purple-light: #f5f3ff;
+    --purple-dark: #6d28d9;
+    --pink: #ec4899;
+    --pink-light: #fdf2f8;
+    --pink-dark: #be185d;
+    --teal: #14b8a6;
+    --teal-light: #f0fdfa;
+    --teal-dark: #0d9488;
+    --orange: #f97316;
+    --orange-light: #fff7ed;
+    --orange-dark: #c2410c;
+    --indigo: #6366f1;
+    --indigo-light: #eef2ff;
+    --indigo-dark: #4338ca;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.7;display:flex;flex-direction:row;min-height:100vh}
+
+nav.sidebar{position:fixed;top:0;left:0;width:236px;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);padding:20px 0;z-index:100;flex-shrink:0}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;font-weight:700;font-size:15px;color:var(--primary)}
+.sidebar-logo .icon{font-size:22px}
+.nav-section{margin-bottom:8px}
+.nav-section-title{padding:6px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);font-weight:600}
+.nav-link{display:block;padding:7px 20px 7px 24px;font-size:13.5px;color:var(--text-secondary);text-decoration:none;border-left:3px solid transparent;transition:all .15s;cursor:pointer}
+.nav-link:hover{color:var(--primary);background:var(--surface-alt)}
+.nav-link.active{color:var(--primary);border-left-color:var(--primary);background:var(--primary-light);font-weight:600}
+
+main.main-content{margin-left:236px;flex:1;min-width:0}
+.content-wrapper{max-width:880px;margin:0 auto;padding:40px 48px 80px}
+
+h1{font-size:2.2rem;font-weight:800;line-height:1.3;margin-bottom:4px;color:var(--text)}
+h2.section-num{font-size:1.35rem;font-weight:700;margin:44px 0 16px;padding:12px 0 10px 16px;color:var(--text);display:flex;align-items:center;gap:10px;position:relative;background:linear-gradient(to right,var(--primary-light),transparent);border-left:4px solid var(--primary);border-bottom:none;border-radius:0 8px 8px 0}
+h2 .num-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:var(--primary);color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+h3{font-size:1.1rem;font-weight:600;margin:28px 0 10px;color:var(--text)}
+h4{font-size:1rem;font-weight:600;margin:20px 0 8px;color:var(--text-secondary)}
+p{margin-bottom:14px;color:var(--text-secondary)}
+strong{color:var(--text);font-weight:600}
+ul,ol{margin:8px 0 16px;padding-left:24px;color:var(--text-secondary)}
+li{margin-bottom:6px}
+
+.card{border-radius:12px;padding:18px 22px;margin:20px 0;border:1.5px solid}
+.card.accent{background:var(--accent-light);border-color:var(--accent)}
+.card.accent .card-title{color:var(--accent-dark)}
+.card.primary{background:var(--primary-light);border-color:var(--primary)}
+.card.primary .card-title{color:var(--primary-dark)}
+.card.success{background:var(--success-light);border-color:var(--success)}
+.card.success .card-title{color:#047857}
+.card.danger{background:var(--danger-light);border-color:var(--danger)}
+.card.danger .card-title{color:#b91c1c}
+.card.purple{background:var(--purple-light);border-color:var(--purple)}
+.card.purple .card-title{color:var(--purple-dark)}
+.card.pink{background:var(--pink-light);border-color:var(--pink)}
+.card.pink .card-title{color:var(--pink-dark)}
+.card.teal{background:var(--teal-light);border-color:var(--teal)}
+.card.teal .card-title{color:var(--teal-dark)}
+.card.indigo{background:var(--indigo-light);border-color:var(--indigo)}
+.card.indigo .card-title{color:var(--indigo-dark)}
+.card.orange{background:var(--orange-light);border-color:var(--orange)}
+.card.orange .card-title{color:var(--orange-dark)}
+.card.flat{background:var(--surface);border-color:var(--border);box-shadow:var(--shadow-sm)}
+.card.flat .card-title{color:var(--text-secondary)}
+.card-title{font-weight:700;font-size:14px;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.3px}
+.card p:last-child{margin-bottom:0}
+
+.quote-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:0 8px 8px 0;font-size:14.5px;color:var(--text-secondary)}
+
+.highlight-box{border-radius:10px;padding:16px 20px;margin:18px 0;border-left:4px solid;font-size:14.5px}
+.highlight-box.blue{background:linear-gradient(135deg,var(--primary-light),#fff);border-color:var(--primary)}
+.highlight-box.green{background:linear-gradient(135deg,var(--success-light),#fff);border-color:var(--success)}
+.highlight-box.yellow{background:linear-gradient(135deg,var(--accent-light),#fff);border-color:var(--accent)}
+.highlight-box.purple{background:linear-gradient(135deg,var(--purple-light),#fff);border-color:var(--purple)}
+.highlight-box.red{background:linear-gradient(135deg,var(--danger-light),#fff);border-color:var(--danger)}
+.highlight-box .hb-title{font-weight:700;font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.highlight-box p:last-child{margin-bottom:0}
+
+.think-box{background:linear-gradient(135deg,#f0f4ff,#fff);border:1.5px dashed var(--indigo);border-radius:12px;padding:16px 20px;margin:18px 0}
+.think-box .tb-title{font-weight:700;color:var(--indigo-dark);font-size:14px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+
+.warning-box{background:var(--danger-light);border:1.5px solid var(--danger);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;color:#991b1b}
+.warning-box .wb-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:#b91c1c}
+.warning-box p:last-child{margin-bottom:0}
+
+.tip-box{background:linear-gradient(135deg,var(--accent-light),#fff);border:1.5px solid var(--accent);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px}
+.tip-box .tip-title{font-weight:700;font-size:14px;margin-bottom:4px;display:flex;align-items:center;gap:6px;color:var(--accent-dark)}
+
+.key-point{display:inline-block;background:linear-gradient(135deg,var(--primary-light),#e0e7ff);color:var(--primary-dark);font-weight:600;padding:1px 10px;border-radius:4px;font-size:inherit}
+.key-point.success{background:linear-gradient(135deg,var(--success-light),#d1fae5);color:#047857}
+.key-point.warn{background:linear-gradient(135deg,var(--accent-light),#fef3c7);color:var(--accent-dark)}
+.key-point.danger{background:linear-gradient(135deg,var(--danger-light),#fee2e2);color:#b91c1c}
+
+.formula-box{background:var(--gray-800);color:#e2e8f0;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:var(--font-mono);font-size:14px;text-align:center;letter-spacing:0.5px}
+
+.table-wrapper{overflow-x:auto;margin:16px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:var(--surface-alt);color:var(--text-secondary);font-weight:600;padding:10px 14px;text-align:left;border-bottom:2px solid var(--border);font-size:13px}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+tbody tr:hover{background:var(--surface-alt)}
+.mono{font-family:var(--font-mono);color:var(--primary);font-size:13px}
+
+.code-block{background:#1e293b;border-radius:10px;margin:16px 0;overflow:hidden;position:relative}
+.code-block .lang-tag{position:absolute;top:8px;right:10px;font-size:11px;color:#94a3b8;background:#334155;padding:2px 8px;border-radius:4px;font-family:var(--font-mono)}
+.code-block pre{padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:13.5px;line-height:1.6;color:#e2e8f0;margin:0}
+
+.answer-toggle{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 16px;border:1.5px solid var(--primary);border-radius:6px;background:var(--primary-light);color:var(--primary);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.answer-toggle:hover{background:var(--primary);color:#fff}
+.answer-toggle .arrow{display:inline-block;transition:transform .25s;font-size:12px}
+.answer-toggle.open .arrow{transform:rotate(90deg)}
+.answer-content{max-height:0;overflow:hidden;transition:max-height .35s ease-out,opacity .25s;opacity:0}
+.answer-content.open{max-height:800px;opacity:1}
+.answer-content .quote-box{margin-top:12px;margin-bottom:0}
+
+hr.divider{border:none;border-top:1px solid var(--border);margin:32px 0}
+
+.back-to-top{position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--text-secondary);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:200;transition:all .2s}
+.back-to-top:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.back-to-top.visible{display:flex}
+
+@media(max-width:900px){
+    nav.sidebar{transform:translateX(-100%);transition:transform .3s}
+    nav.sidebar.open{transform:translateX(0)}
+    .menu-toggle{display:flex!important;position:fixed;top:14px;left:14px;z-index:300;width:40px;height:40px;border-radius:8px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    main.main-content{margin-left:0;padding-top:10px}
+    .content-wrapper{padding:24px 20px 60px}
+    h1{font-size:1.7rem}
+}
+@media(min-width:901px){.menu-toggle{display:none}}
+
+nav.sidebar::-webkit-scrollbar{width:4px}
+nav.sidebar::-webkit-scrollbar-track{background:transparent}
+nav.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</button>
+
+<nav class="sidebar">
+    <div class="sidebar-logo"><span class="icon">🔍</span> GESP C++ · 五级</div>
+    <div class="nav-section">
+        <div class="nav-section-title">教学步骤</div>
+        <a class="nav-link" href="#hero">🏠 课程概览</a>
+        <a class="nav-link" href="#step1">第一步 生活引入</a>
+        <a class="nav-link" href="#step2">第二步 核心概念</a>
+        <a class="nav-link" href="#step3">第三步 代码详解</a>
+        <a class="nav-link" href="#step4">第四步 手工模拟</a>
+        <a class="nav-link" href="#step5">第五步 常见陷阱</a>
+        <a class="nav-link" href="#step6">第六步 真题实战</a>
+        <a class="nav-link" href="#cheatsheet">📋 知识速查卡</a>
+    </div>
+    <div class="nav-section">
+        <div class="nav-section-title">更多课件</div>
+        <a class="nav-link" href="04-链表.html">← 链表</a>
+        <a class="nav-link" href="06-贪心算法.html">贪心算法 →</a>
+    </div>
+</nav>
+
+<main class="main-content">
+<div class="content-wrapper">
+
+<div id="hero">
+<div class="hero-section" style="text-align:center;padding:40px 20px 28px;background:linear-gradient(135deg,#1a1d28 0%,#2a2d3a 60%,#1e293b 100%);border-radius:16px;margin-bottom:28px;border:1px solid #334155;position:relative;overflow:hidden">
+<div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--primary) 0%,transparent 70%);opacity:.15;border-radius:50%"></div>
+<div style="position:absolute;bottom:-60px;left:-30px;width:180px;height:180px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.1;border-radius:50%"></div>
+<h1 style="font-size:32px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:-.5px">🔍 GESP C++ 五级 · 二分查找</h1>
+<p style="font-size:16px;color:#94a3b8;margin:0 0 20px">Binary Search &amp; Binary Search on Answer</p>
+<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+<span style="background:rgba(79,110,247,.2);color:#93a5ff;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(79,110,247,.3)">⚡ 11 道选择题 + 8 道判断题</span>
+<span style="background:rgba(245,158,11,.15);color:#fbbf24;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(245,158,11,.25)">📊 每场约 1~2 道</span>
+<span style="background:rgba(16,185,129,.15);color:#34d399;padding:5px 14px;border-radius:20px;font-size:13px;font-weight:600;border:1px solid rgba(16,185,129,.25)">⭐ 占选择判断分 ≈ 8%</span>
+</div></div></div>
+
+<!-- ========== STEP 1 ========== -->
+<section id="step1">
+<h2 class="section-num"><span class="num-badge">1</span> 生活引入：查字典</h2>
+
+<div class="card accent">
+<div class="card-title">📖 场景一：查英文单词</div>
+<p>你想查字母 <strong>g</strong> 开头的单词，先翻到字典约一半的位置，发现这页是字母 <strong>m</strong> 开头。因为 g 在 m 前面，你直接<strong>排除后半本</strong>，只在前半本继续找。</p>
+<p>然后再翻到前半本的中间，发现是 <strong>d</strong>，g 在 d 后面，于是排除前半段... 每次排除一半，很快就能定位到 g。</p>
+<p>这就是 <span class="key-point">二分查找</span> 的核心思想：<strong>每次将搜索区间缩小一半。</strong></p>
+</div>
+
+<div class="card accent">
+<div class="card-title">🎯 场景二：猜数字游戏</div>
+<p>小杨心里想了一个 1~100 之间的数，你每次可以猜一个数，小杨只告诉你"大了"还是"小了"。你怎样用最少的次数猜到？</p>
+<p>最优策略：<strong>每次都猜中间的数</strong>。比如第一次猜 50，如果大了就猜 25，小了就猜 75... 最多 <strong>7 次</strong> 就能找到！（因为 ⌈log₂100⌉ = 7）</p>
+</div>
+
+<div class="goal-box" style="background:linear-gradient(135deg,var(--primary-light),#fff);border:1.5px solid var(--primary);border-radius:12px;padding:18px 22px;margin:20px 0">
+<h3 style="color:var(--primary-dark);margin-top:0;font-size:15px">🎯 本节学习目标</h3>
+<ul style="margin-bottom:0">
+    <li>掌握经典二分查找的 while(left <= right) 模板</li>
+    <li>掌握左边界二分（right = mid）和右边界二分（mid = (low+high+1)/2）</li>
+    <li>理解二分答案的 check 函数验证模式</li>
+    <li>熟记防溢出写法 mid = left + (right - left) / 2</li>
+</ul>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 2 ========== -->
+<section id="step2">
+<h2 class="section-num"><span class="num-badge">2</span> 核心概念</h2>
+
+<h3>📐 二分查找的前提与原理</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 核心前提</div>
+<p><strong>数据必须有序。</strong> 二分查找依赖于"中间值与目标值比较后可以排除一半区间"这一性质。如果数据无序，无法判断目标值在左半还是右半。</p>
+</div>
+
+<div class="highlight-box blue">
+<div class="hb-title">📌 核心原理</div>
+<p>每次取当前区间的中间元素，与目标值比较：</p>
+<ul>
+    <li>相等 → 找到</li>
+    <li>中间值 < 目标 → 排除左半，搜索右半</li>
+    <li>中间值 > 目标 → 排除右半，搜索左半</li>
+</ul>
+<p>时间复杂度：<span class="key-point">O(log n)</span></p>
+</div>
+
+<h3>🔢 三种二分模板对比</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:20%">模板</th><th style="width:25%">循环条件</th><th style="width:25%">mid 计算</th><th style="width:30%">区间收缩</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>经典二分（找目标值）</strong></td>
+    <td class="mono">while (left ≤ right)</td>
+    <td class="mono">mid = left + (right - left) / 2</td>
+    <td>left = mid+1 或 right = mid-1</td>
+</tr>
+<tr>
+    <td><strong>左边界（第一个 ≥ target）</strong></td>
+    <td class="mono">while (left < right)</td>
+    <td class="mono">mid = left + (right - left) / 2</td>
+    <td class="key-point danger">right = mid</td>
+</tr>
+<tr>
+    <td><strong>右边界（最后一个 ≤ target）</strong></td>
+    <td class="mono">while (low < high)</td>
+    <td class="key-point danger">mid = (low + high + 1) / 2</td>
+    <td>low = mid</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>🔍 二分答案</h3>
+
+<div class="card primary">
+<div class="card-title">🔵 什么是二分答案？</div>
+<p>当问题要求"求最大的可行值"或"最小的可行值"时，我们可以<strong>二分答案</strong>，然后用 <span class="mono">check(mid)</span> 函数验证该值是否可行。如果可行，则继续在更大/更小的范围二分。</p>
+</div>
+
+<div class="highlight-box green">
+<div class="hb-title">✨ 典型场景</div>
+<p>✓ 切木头：给定 n 根木头，要切成至少 m 段等长木段，求最大长度<br>
+✓ 分配点：从 n 个位置中选 k 个点，使相邻最小距离最大化<br>
+✓ 平方根：二分计算一个数的平方根</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 3 ========== -->
+<section id="step3">
+<h2 class="section-num"><span class="num-badge">3</span> 代码详解</h2>
+
+<h3>📌 模板一：经典二分查找</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">int binarySearch(vector&lt;int&gt;& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    while (left &lt;= right) {               // 注意：left &lt;= right
+        int mid = left + (right - left) / 2;  // 防溢出写法
+        if (nums[mid] == target) return mid;
+        else if (nums[mid] &lt; target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;  // 未找到
+}</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 为什么用 left + (right - left) / 2 而不是 (left + right) / 2？</div>
+<p>当 left 和 right 都非常大时，<span class="mono">left + right</span> 可能导致 <strong>int 溢出</strong>。用 <span class="mono">left + (right - left) / 2</span> 避免溢出。</p>
+</div>
+
+<h3>📌 模板二：左边界二分</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 找第一个 &gt;= target 的位置
+int getLeftBoundary(vector&lt;int&gt;& nums, int target) {
+    int left = 0, right = nums.size() - 1;
+    while (left &lt; right) {               // 注意：left &lt; right
+        int middle = left + (right - left) / 2;
+        if (target &lt;= nums[middle])
+            right = middle;              // ← 不是 middle - 1 ！
+        else
+            left = middle + 1;
+    }
+    return nums[left] == target ? left : -1;
+}</code></pre>
+</div>
+
+<div class="highlight-box purple">
+<div class="hb-title">🟣 左边界二分要点</div>
+<p>循环条件：<span class="mono">while (left < right)</span>，区间收缩：<span class="key-point danger">right = mid</span>（不是 mid-1）。</p>
+</div>
+
+<h3>📌 模板三：右边界二分</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 找最后一个 &lt;= target 的位置
+int binary_search_last(vector&lt;int&gt;& lst, int target) {
+    int low = 0, high = lst.size() - 1;
+    while (low &lt; high) {
+        int mid = (low + high + 1) / 2;    // ← +1 防止死循环！
+        if (lst[mid] &lt;= target)
+            low = mid;                     // 向右收缩
+        else
+            high = mid - 1;
+    }
+    return lst[low] == target ? low : -1;
+}</code></pre>
+</div>
+
+<div class="highlight-box purple">
+<div class="hb-title">🟣 右边界二分要点</div>
+<p>循环条件：<span class="mono">while (low < high)</span>，mid 计算：<span class="key-point danger">mid = (low + high + 1) / 2</span>（必须 +1），区间收缩：<span class="mono">low = mid</span>。</p>
+</div>
+
+<h3>📌 模板四：二分答案</h3>
+<div class="code-block">
+<span class="lang-tag">C++</span>
+<pre><code class="language-cpp">// 求"最大的可行解"典型模板
+int l = 1, r = max_value, ans = 0;
+while (l &lt;= r) {
+    int mid = l + (r - l) / 2;
+    if (check(mid)) {      // 验证 mid 是否可行
+        ans = mid;         // 记录当前可行解
+        l = mid + 1;       // 尝试更大的解
+    } else {
+        r = mid - 1;       // mid 太大，收缩右边
+    }
+}
+return ans;</code></pre>
+</div>
+
+<div class="tip-box">
+<div class="tip-title">💡 二分答案通用模式</div>
+<p><span class="mono">check(mid)</span> 函数判断"解为 mid 时是否满足条件"。对于"最大值最小化"类问题，check 返回 true 时收紧上界（r = mid）；对于"最小值最大化"类问题，check 返回 true 时收紧下界（l = mid）。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 4 ========== -->
+<section id="step4">
+<h2 class="section-num"><span class="num-badge">4</span> 手工模拟：二分查找 31</h2>
+
+<h3>🎬 在 [1, 3, 6, 9, 17, 31, 39, 52, 61, 79] 中二分查找 31</h3>
+
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:10%">循环</th><th style="width:10%">left</th><th style="width:10%">right</th><th style="width:10%">mid</th><th style="width:12%">nums[mid]</th><th>比较 & 动作</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>第1次</strong></td>
+    <td class="mono">0</td>
+    <td class="mono">9</td>
+    <td class="mono">4</td>
+    <td><strong>17</strong></td>
+    <td>17 < 31，<span style="color:var(--primary)">排除左半</span> → left = 5</td>
+</tr>
+<tr>
+    <td><strong>第2次</strong></td>
+    <td class="mono">5</td>
+    <td class="mono">9</td>
+    <td class="mono">7</td>
+    <td><strong>52</strong></td>
+    <td>52 > 31，<span style="color:var(--accent)">排除右半</span> → right = 6</td>
+</tr>
+<tr>
+    <td><strong>第3次</strong></td>
+    <td class="mono">5</td>
+    <td class="mono">6</td>
+    <td class="mono">5</td>
+    <td><strong>31</strong></td>
+    <td>31 == 31，<span style="color:var(--success)">找到！</span> 返回 mid=5</td>
+</tr>
+<tr style="background:var(--success-light)">
+    <td colspan="6"><strong>✅ 共执行 3 次循环，找到 target = 31 在索引 5</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="think-box">
+<div class="tb-title">🤔 想一想</div>
+<p>在相同数组中二分查找 82（不存在），比较的元素依次是哪些？</p>
+<p style="margin-top:8px"><span class="mono">① mid=4(17)<82 → left=5；② mid=7(52)<82 → left=8；③ mid=8(61)<82 → left=9；④ mid=9(79)<82 → left=10 > right，退出返回 -1。</span></p>
+<p>总共 <strong>4 次</strong>比较。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 5 ========== -->
+<section id="step5">
+<h2 class="section-num"><span class="num-badge">5</span> 常见陷阱</h2>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 1：二分查找只适用有序数组，不适用链表</div>
+<p>"二分查找适用于无序数组和有序数组"——这句话是 <strong>❌ 错的</strong>。</p>
+<p>"二分查找适用于链表"——也不对。因为二分查找需要 <strong>跳跃式访问</strong> 中间元素，链表需要 O(n) 才能找到中间节点，失去了 O(log n) 的优势。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 2：左边界查找时 right = mid，不是 right = mid - 1</div>
+<p>在左边界查找（找第一个 ≥ target）中，当 <span class="mono">target ≤ nums[middle]</span> 时，答案可能在 mid 或其左边，所以用 <span class="mono">right = middle</span>（保留 mid）。</p>
+<p>如果写成 <span class="mono">right = middle - 1</span>，可能会 <strong>跳过正确答案</strong>。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 3：右边界查找时 mid = (low + high + 1) / 2</div>
+<p>普通二分用 <span class="mono">mid = (low + high) / 2</span>。但在右边界查找中，当 <span class="mono">low = mid</span> 时，如果不用 <span class="mono">+1</span>，当 <span class="mono">low + 1 = high</span> 时 <span class="mono">mid = low</span>，导致 <strong>死循环</strong>！</p>
+<p><span class="key-point danger">口诀</span>：有 <span class="mono">low = mid</span> 就要在 mid 计算中 +1。</p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 4：mid = left + (right - left) / 2 防止溢出</div>
+<p>当 left 和 right 都很大时（比如接近 INT_MAX），<span class="mono">left + right</span> 会溢出变成负数，导致 <span class="mono">mid</span> 计算错误。</p>
+<p>推荐写法：<span class="key-point success">mid = left + (right - left) / 2</span></p>
+</div>
+
+<div class="warning-box">
+<div class="wb-title">🚨 陷阱 5：[1, 100] 猜数最多猜 7 次</div>
+<p>二分查找每次排除一半。n 个元素最多需要 ⌈log₂n⌉ 次比较。</p>
+<p><span class="mono">⌈log₂100⌉ = 7</span>（因为 2⁶=64 < 100 ≤ 2⁷=128），所以最多猜 7 次，不是 10 次、也不是 5 次。</p>
+</div>
+</section>
+
+<hr class="divider">
+
+<!-- ========== STEP 6 ========== -->
+<section id="step6">
+<h2 class="section-num"><span class="num-badge">6</span> 真题实战</h2>
+
+<!-- 经典二分 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--primary)">
+<div class="card-title" style="color:var(--primary)">📌 考点一：经典二分查找</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 1（2025/03 第11题）</div>
+<p>二分法在 [1, 100] 内猜数，最多需要猜多少次？</p>
+<p><strong>A.</strong> 100 &nbsp;&nbsp; <strong>B.</strong> 10 &nbsp;&nbsp; <strong>C.</strong> 7 &nbsp;&nbsp; <strong>D.</strong> 5</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · ⌈log₂100⌉ ≈ 6.64 → 最多 7 次。64 < 100 ≤ 128，需要 7 次二分。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 2（2025/03 第12题）</div>
+<p>在二分查找中计算 mid，下面最佳代码是哪一个？</p>
+<p><strong>A.</strong> int mid = left + (right - left) / 2;<br>
+<strong>B.</strong> int mid = left;<br>
+<strong>C.</strong> int mid = (left + right) / 2;<br>
+<strong>D.</strong> int mid = right;</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · A 防止 left+right 溢出，是最佳写法。C 也能正确计算但可能溢出。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 3（2024/12 第11题）</div>
+<p>下面是递归实现的二分查找，关于该程序描述不正确的是哪一个？</p>
+<p><strong>A.</strong> 每次计算中点，排除一半搜索区间<br>
+<strong>B.</strong> 采用递归求解，每次问题规模减半<br>
+<strong>C.</strong> 递归终止条件是中间元素值等于 target，若数组不含该元素则递归不会终止<br>
+<strong>D.</strong> 复杂度为 O(log n)</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · 递归还有 left > right 的终止条件，不含 target 时会走到这个分支返回 -1。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 4（2024/09 第13题）</div>
+<p>在数组 [1, 3, 6, 9, 17, 31, 39, 52, 61, 79] 中二分查找 31，while 循环执行了多少次？</p>
+<p><strong>A.</strong> 1 &nbsp;&nbsp; <strong>B.</strong> 2 &nbsp;&nbsp; <strong>C.</strong> 3 &nbsp;&nbsp; <strong>D.</strong> 4</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · ① mid=4(17)<31→left=5；② mid=7(52)>31→right=6；③ mid=5(31)=31→找到。共 3 次。</div></div>
+</div>
+
+<!-- 左/右边界 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--purple)">
+<div class="card-title" style="color:var(--purple-dark)">📌 考点二：左边界 / 右边界二分</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 5（2026/03 第8题）</div>
+<p>下面是查找左边界的代码，横线上应填入什么？</p>
+<div class="code-block"><pre><code class="language-cpp">while (left &lt; right) {
+    int middle = left + (right - left) / 2;
+    if (target &lt;= nums[middle])
+        ________________________________ // 在此处填入代码
+    else
+        left = middle + 1;
+}</code></pre></div>
+<p><strong>A.</strong> right = middle - 1; &nbsp;&nbsp; <strong>B.</strong> right = middle; &nbsp;&nbsp; <strong>C.</strong> right = middle + 1; &nbsp;&nbsp; <strong>D.</strong> 以上都不对</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 找左边界时，target ≤ nums[middle] 说明答案可能在 mid 或其左边，用 right=middle 保留 mid。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 6（2025/06 第11题）</div>
+<p>关于查找最后一次出现位置（右边界）的代码，以下说法正确的是哪一个？</p>
+<p><strong>A.</strong> 存在重复 target 时总能返回最后位置，即便数组全由相同元素组成<br>
+<strong>B.</strong> 当 target 小于所有元素时，返回 0<br>
+<strong>C.</strong> 改为 while (low <= high) 效果相同<br>
+<strong>D.</strong> 改为 (low + high) / 2 效果相同</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · B 错（应返回 -1），C 和 D 可能导致死循环。A 正确，右边界模板能正确处理重复元素。</div></div>
+</div>
+
+<!-- 二分答案 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--teal)">
+<div class="card-title" style="color:var(--teal-dark)">📌 考点三：二分答案</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 7（2026/03 第7题）</div>
+<p>下面程序的运行结果是什么？</p>
+<div class="code-block"><pre><code class="language-cpp">bool check(int n, int a[], int k, int dist) {
+    int cnt = 1, last = a[0];
+    for (int i = 1; i &lt; n; i++)
+        if (a[i] - last >= dist) { cnt++; last = a[i]; }
+    return cnt >= k;
+}
+int solve(int n, int a[], int k) {
+    sort(a, a + n);
+    int l = 0, r = a[n-1] - a[0];
+    while (l &lt; r) {
+        int mid = (l + r + 1) / 2;
+        if (check(n, a, k, mid)) l = mid;
+        else r = mid - 1;
+    }
+    return l;
+}
+int main() {
+    int a[] = {1, 2, 8, 4, 9};
+    cout &lt;&lt; solve(5, a, 3) &lt;&lt; endl;
+}</code></pre></div>
+<p><strong>A.</strong> 2 &nbsp;&nbsp; <strong>B.</strong> 3 &nbsp;&nbsp; <strong>C.</strong> 4 &nbsp;&nbsp; <strong>D.</strong> 5</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：B</strong> · 排序后 {1,2,4,8,9}，选3个点最大最小距离。二分答案，dist=3 时可选 {1,4,8} 满足 3 个点。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 8（2026/03 第10题）</div>
+<p>给定 n 根木头，第 i 根长度为 a[i]，要切成不少于 m 段等长木段，求最大可能长度。横线上分别应填写什么？</p>
+<div class="code-block"><pre><code class="language-cpp">long long l = 1, r = mx, ans = 0;
+while (l &lt;= r) {
+    long long mid = l + (r - l) / 2;
+    if (check(mid)) {
+        ans = mid;
+        ______________________
+    } else {
+        ______________________
+    }
+}</code></pre></div>
+<p><strong>A.</strong> l = mid + 1; 和 r = mid - 1;<br>
+<strong>B.</strong> l = mid - 1; 和 r = mid + 1;<br>
+<strong>C.</strong> l = mid + 1; 和 r = mid;<br>
+<strong>D.</strong> l = mid; 和 r = mid + 1;</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：A</strong> · 这是"最大的可行解"二分模板。check(mid) 返回 true 时记录答案并收紧下界 l=mid+1。</div></div>
+</div>
+
+<!-- 平方根二分 -->
+<div class="card flat" style="margin:32px 0 12px;border-left:4px solid var(--orange)">
+<div class="card-title" style="color:var(--orange-dark)">📌 考点四：平方根二分</div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 9（2025/06 第12题）</div>
+<p>关于二分法计算平方根的程序，说法错误的是哪一个？</p>
+<p><strong>A.</strong> 阶段 1 的目标是寻找正整数 n 可能的正完全平方根<br>
+<strong>B.</strong> 阶段 2 的目标是在完全平方根附近寻找带小数点的平方根<br>
+<strong>C.</strong> check_int = (long long)(result + 0.5) 是检查是否为正完全平方根<br>
+<strong>D.</strong> high_d - low_d >= epsilon 不能用于浮点数比较，会进入死循环</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · epsilon 法用于浮点数比较是标准做法，不会死循环。A/B/C 说法正确。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 10（2024/06 第11题）</div>
+<p>在数组 [1, 3, 6, 9, 17, 31, 39, 52, 61, 79, 81, 90, 96] 中查找 82，比较的元素依次是哪一个？</p>
+<p><strong>A.</strong> 52, 61, 81, 90<br>
+<strong>B.</strong> 52, 79, 90, 81<br>
+<strong>C.</strong> 39, 79, 90, 81<br>
+<strong>D.</strong> 39, 79, 90</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：C</strong> · ① mid=6(39)<82→left=7；② mid=10(79)<82→left=11；③ mid=12(90)>82→right=11；④ mid=11(81)<82→left=12>right，未找到。比较了 39, 79, 90, 81。</div></div>
+</div>
+
+<div class="card success">
+<div class="card-title">📝 真题 11（2024/03 第8题）</div>
+<p>在有序数组中二分查找不存在的元素 82，while 循环执行的次数为多少次？</p>
+<p><strong>A.</strong> 2 &nbsp;&nbsp; <strong>B.</strong> 5 &nbsp;&nbsp; <strong>C.</strong> 3 &nbsp;&nbsp; <strong>D.</strong> 4</p>
+<button class="answer-toggle" onclick="toggleAnswer(this)"><span class="arrow">▶</span> 显示答案</button>
+<div class="answer-content"><div class="quote-box"><strong>答案：D</strong> · 查找不存在元素 82 需要 4 次比较：17→52→61→79，每次左半排除直到 left>right 退出。</div></div>
+</div>
+
+</section>
+
+<hr class="divider">
+
+<!-- ========== CHEATSHEET ========== -->
+<section id="cheatsheet">
+<h2 class="section-num"><span class="num-badge">📋</span> 知识速查卡</h2>
+
+<h3>🔢 三种二分模板对比</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:20%">模板</th><th style="width:22%">循环条件</th><th style="width:22%">mid 计算</th><th>区间收缩与易错点</th></tr></thead>
+<tbody>
+<tr>
+    <td><strong>经典二分</strong></td>
+    <td class="mono">while (left ≤ right)</td>
+    <td class="mono">mid = left + (right - left) / 2</td>
+    <td>left=mid+1, right=mid-1；找到即返回</td>
+</tr>
+<tr>
+    <td><strong>左边界</strong></td>
+    <td class="mono">while (left < right)</td>
+    <td class="mono">mid = left + (right - left) / 2</td>
+    <td><span class="key-point danger">right = mid</span>（不是 mid-1）；最后判 left 是否等于 target</td>
+</tr>
+<tr>
+    <td><strong>右边界</strong></td>
+    <td class="mono">while (low < high)</td>
+    <td class="mono">(low + high + 1) / 2</td>
+    <td><span class="key-point danger">+1 防死循环</span>；low = mid；最后判 low 是否等于 target</td>
+</tr>
+<tr>
+    <td><strong>二分答案（最大可行）</strong></td>
+    <td class="mono">while (l ≤ r)</td>
+    <td class="mono">mid = l + (r - l) / 2</td>
+    <td>check(mid) 可行 → ans=mid, l=mid+1；不可行 → r=mid-1</td>
+</tr>
+<tr>
+    <td><strong>二分答案（最小可行）</strong></td>
+    <td class="mono">while (l ≤ r)</td>
+    <td class="mono">mid = l + (r - l) / 2</td>
+    <td>check(mid) 可行 → ans=mid, r=mid-1；不可行 → l=mid+1</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h3>⚡ 快速记忆</h3>
+<div class="table-wrapper">
+<table>
+<thead><tr><th style="width:25%">要点</th><th style="width:25%">公式/写法</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td><strong>防溢出 mid</strong></td><td class="mono">left + (right - left) / 2</td><td>代替 (left+right)/2，防 INT 溢出</td></tr>
+<tr><td><strong>左边界口诀</strong></td><td>target ≤ nums[mid] → right = mid</td><td>保留 mid，可能含正确答案</td></tr>
+<tr><td><strong>右边界防死循环</strong></td><td class="mono">mid = (low + high + 1) / 2</td><td>有 low = mid 时必须 +1</td></tr>
+<tr><td><strong>最大比较次数</strong></td><td>⌈log₂n⌉</td><td>100 个数最多 7 次</td></tr>
+<tr><td><strong>适用条件</strong></td><td>数据必须有序</td><td>无序数组需先排序（但排序 O(n log n) 可能不划算）</td></tr>
+<tr><td><strong>不适用场景</strong></td><td>链表</td><td>无法 O(1) 跳跃访问中间元素</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="highlight-box yellow" style="margin-top:28px">
+<div class="hb-title">💡 一句话记住</div>
+<p><strong>"有序才二分，mid 防溢出；左界 right=mid，右界 mid 要加一；check 验证二分答案，log₂n 算次数。"</strong></p>
+</div>
+</section>
+
+</div><!-- .content-wrapper -->
+</main>
+
+<button class="back-to-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+hljs.highlightAll();
+
+function toggleAnswer(b){
+    const c = b.nextElementSibling;
+    const o = c.classList.contains('open');
+    if(o){
+        c.classList.remove('open'); b.classList.remove('open');
+        b.innerHTML='<span class="arrow">▶</span> 显示答案'
+    }else{
+        c.classList.add('open'); b.classList.add('open');
+        b.innerHTML='<span class="arrow">▶</span> 隐藏答案'
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const colors = ['purple', 'pink', 'teal', 'indigo', 'orange'];
+    const cards = document.querySelectorAll('#step6 > .card.success');
+    cards.forEach((card, i) => {
+        card.classList.remove('success');
+        card.classList.add(colors[i % colors.length]);
+    });
+});
+
+(function(){
+    const sections = document.querySelectorAll('section[id], div[id="hero"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll',()=>{
+        let current = '';
+        sections.forEach(s=>{
+            const top = s.offsetTop - 100;
+            if(window.scrollY >= top) current = s.getAttribute('id');
+        });
+        navLinks.forEach(l=>{
+            l.classList.remove('active');
+            if(l.getAttribute('href') === '#'+current) l.classList.add('active');
+        });
+    });
+})();
+
+(function(){
+    const btn = document.getElementById('backTop');
+    window.addEventListener('scroll',()=>{
+        btn.classList.toggle('visible', window.scrollY > 500);
+    });
+})();
+</script>
+
+</body>
+</html>
