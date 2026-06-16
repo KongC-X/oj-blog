@@ -1076,7 +1076,7 @@
       let html = '';
       const parts = md.split(/(```[\s\S]*?```)/);
       for (const part of parts) {
-        const codeMatch = part.match(/^```(\w*)\n([\s\S]*?)```\n?$/);
+        const codeMatch = part.match(/^```([^\n]*)\n([\s\S]*?)```\n?$/);
         if (codeMatch) {
           html += '<pre><code>' + escapeHtml(codeMatch[2].trim()) + '</code></pre>';
         } else {
