@@ -1069,35 +1069,19 @@
       if (!res.ok) { document.getElementById('app').innerHTML = '<div class="loading-msg">模版未找到</div>'; return; }
       let md = await res.text();
 
-      // 去掉 YAML front matter（如果有）
-      md = md.replace(/^---[\s\S]*?---\n?/, '');
-
-      // 逐块渲染：代码块 vs 普通文本
-      let html = '';
-      const parts = md.split(/(```[\s\S]*?```)/);
-      for (const part of parts) {
-        const codeMatch = part.match(/^```([^\n]*)\n([\s\S]*?)```\n?$/);
-        if (codeMatch) {
-          html += '<pre><code>' + escapeHtml(codeMatch[2].trim()) + '</code></pre>';
-        } else {
-          let text = part.trim();
-          if (!text) continue;
-          // 把单个 # 开头的行当标题
-          text = text.replace(/^# (.+)$/gm, '<h2 class="d-title">$1</h2>');
-          text = text.replace(/^## (.+)$/gm, '<h3 class="d-subtitle">$1</h3>');
-          // 剩下的行包裹在 <p> 中
-          if (!text.startsWith('<h')) {
-            text = '<p>' + text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
-          }
-          html += text;
-        }
-      }
+      // 用 marked 渲染 Markdown
+      const html = marked.parse(md);
 
       document.getElementById('app').innerHTML = `
         <div class="page"><div class="tmpl-detail">
           <a class="tmpl-back" href="#/templates">← 返回模版库</a>
-          ${html}
+          <div class="tmpl-detail-content">${html}</div>
         </div></div>`;
+
+      // 代码高亮
+      if (typeof hljs !== 'undefined') {
+        document.querySelectorAll('.tmpl-detail pre code').forEach(b => hljs.highlightElement(b));
+      }
     } catch {
       document.getElementById('app').innerHTML = '<div class="loading-msg">加载失败</div>';
     }
