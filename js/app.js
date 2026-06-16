@@ -1082,6 +1082,21 @@
       if (typeof hljs !== 'undefined') {
         document.querySelectorAll('.tmpl-detail pre code').forEach(b => hljs.highlightElement(b));
       }
+
+      // 代码块添加复制按钮
+      document.querySelectorAll('.tmpl-detail pre').forEach(pre => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.textContent = '复制';
+        btn.addEventListener('click', async () => {
+          const code = pre.querySelector('code')?.textContent || pre.textContent;
+          await navigator.clipboard.writeText(code);
+          btn.textContent = '✅ 已复制';
+          setTimeout(() => btn.textContent = '复制', 2000);
+        });
+        pre.style.position = 'relative';
+        pre.appendChild(btn);
+      });
     } catch {
       document.getElementById('app').innerHTML = '<div class="loading-msg">加载失败</div>';
     }
