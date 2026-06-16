@@ -1067,18 +1067,36 @@
     try {
       const res = await fetch(API_BASE + '/templates/' + encodeURIComponent(name) + '.md');
       if (!res.ok) { document.getElementById('app').innerHTML = '<div class="loading-msg">模版未找到</div>'; return; }
-      const md = await res.text();
-      let content = md.replace(/^---[\s\S]*?---\n/, '');
-      content = content.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-        '<pre><code class="language-' + (lang || 'cpp') + '">' + escapeHtml(code.trim()) + '</code></pre>');
-      content = content.replace(/^# (.+)$/gm, '<h2 class="d-title">$1</h2>');
-      content = content.replace(/^## (.+)$/gm, '<h3 class="d-subtitle">$1</h3>');
-      content = content.replace(/\n\n/g, '</p><p>');
-      content = '<p>' + content + '</p>';
+      let md = await res.text();
+
+      // 去掉 YAML front matter（如果有）
+      md = md.replace(/^---[\s\S]*?---\n?/, '');
+
+      // 逐块渲染：代码块 vs 普通文本
+      let html = '';
+      const parts = md.split(/(```[\s\S]*?```)/);
+      for (const part of parts) {
+        const codeMatch = part.match(/^```(\w*)\n([\s\S]*?)```\n?$/);
+        if (codeMatch) {
+          html += '<pre><code>' + escapeHtml(codeMatch[2].trim()) + '</code></pre>';
+        } else {
+          let text = part.trim();
+          if (!text) continue;
+          // 把单个 # 开头的行当标题
+          text = text.replace(/^# (.+)$/gm, '<h2 class="d-title">$1</h2>');
+          text = text.replace(/^## (.+)$/gm, '<h3 class="d-subtitle">$1</h3>');
+          // 剩下的行包裹在 <p> 中
+          if (!text.startsWith('<h')) {
+            text = '<p>' + text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+          }
+          html += text;
+        }
+      }
+
       document.getElementById('app').innerHTML = `
         <div class="page"><div class="tmpl-detail">
           <a class="tmpl-back" href="#/templates">← 返回模版库</a>
-          ${content}
+          ${html}
         </div></div>`;
     } catch {
       document.getElementById('app').innerHTML = '<div class="loading-msg">加载失败</div>';
