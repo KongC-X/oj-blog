@@ -661,6 +661,9 @@
   function renderMarkdown(content) {
     // 剥离 YAML front matter，避免渲染出原始的 title/tags/difficulty
     content = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+    // 修复爬虫产生的 Markdown 格式：代码块关闭标记和内容在同一行
+    // 例如：0-670-82162-4``` → 0-670-82162-4\n```
+    content = content.replace(/^(.+)```\s*$/gm, '$1\n```');
     // 清洗 LaTeX 符号
     content = cleanLatex(content);
     try {
