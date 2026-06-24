@@ -1339,6 +1339,7 @@
       const html = renderMarkdown(mdContent);
       body.innerHTML = html;
       addCopyButtons();
+      addPrevNextNav(id);
     } catch (e) {
       console.error('loadAndRenderSolution error:', e);
       body.innerHTML = `
@@ -1351,6 +1352,38 @@
         </div>
       `;
     }
+  }
+
+  function addPrevNextNav(currentId) {
+    const idx = INDEX.problems.findIndex(p => p.id === currentId);
+    if (idx < 0) return;
+
+    const body = document.getElementById('articleBody');
+    if (!body) return;
+
+    const prev = idx > 0 ? INDEX.problems[idx - 1] : null;
+    const next = idx < INDEX.problems.length - 1 ? INDEX.problems[idx + 1] : null;
+    if (!prev && !next) return;
+
+    const diffColors = (p) => {
+      const colors = p.source === '洛谷' ? LUOGU_DIFF_COLORS : DFBOY_DIFF_COLORS;
+      return p.difficulty && colors[p.difficulty] ? colors[p.difficulty] : null;
+    };
+
+    const card = (p, cls) => p ? `
+      <a class="pn-card ${cls}" href="#/post/${p.id}">
+        <span class="pn-arrow">${cls === 'prev' ? '←' : '→'}</span>
+        <div class="pn-info">
+          <span class="pn-id">${escapeHtml(p.id)}</span>
+          <span class="pn-title">${escapeHtml(p.title)}</span>
+        </div>
+        ${diffColors(p) ? `<span class="pn-diff" style="background:${diffColors(p).bg};color:${diffColors(p).color};">${escapeHtml(p.difficulty)}</span>` : ''}
+      </a>` : `<div class="pn-card ${cls} pn-empty"></div>`;
+
+    const nav = document.createElement('div');
+    nav.className = 'prev-next-nav';
+    nav.innerHTML = card(prev, 'prev') + card(next, 'next');
+    body.appendChild(nav);
   }
 
   // ========== 洛谷官方难度配色 ==========
