@@ -31,8 +31,9 @@ const DIFF_MAP = {
   7: 'NOI/NOI+/CTSC'
 };
 
-// 洛谷算法标签 ID → 名称映射（社区公开数据）
-const TAG_MAP = {
+// 洛谷算法标签 ID → 名称映射
+// 内置表仅作兜底：官方 ID 会变动，运行时优先从 /_lfe/tags 拉取最新词典
+let TAG_MAP = {
   1: '模拟',
   2: '贪心',
   3: '动态规划',
@@ -223,6 +224,31 @@ const TAG_MAP = {
 // 将标签 ID 转为名称列表
 function resolveTags(tagIds) {
   return tagIds.map(id => TAG_MAP[id] || `标签${id}`).filter(t => t && !t.startsWith('标签'));
+}
+
+// 从官方接口拉取最新标签词典，覆盖内置兜底表
+// 返回值：true 表示成功，false 表示沿用内置表
+async function loadTagDict() {
+  try {
+    const res = await doFetch('https://www.luogu.com.cn/_lfe/tags', { Accept: 'application/json' });
+    if (res.status === 200) {
+      const data = parseLuoguPayload(res.body);
+      const list = data && data.tags;
+      if (Array.isArray(list) && list.length > 0) {
+        const m = {};
+        for (const t of list) {
+          if (t && t.id !== undefined && t.name) m[t.id] = t.name;
+        }
+        TAG_MAP = m;
+        console.log(`🏷️  已加载洛谷标签词典：${list.length} 个标签`);
+        return true;
+      }
+    }
+  } catch {
+    // 忽略，沿用内置表
+  }
+  console.log('⚠️ 标签词典加载失败，沿用内置映射表');
+  return false;
 }
 
 let sessionCookie = '';
@@ -571,6 +597,9 @@ async function main() {
 
   // Ensure output dir
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+
+  // 拉取最新标签词典（失败则用内置兜底表）
+  await loadTagDict();
 
   // Fetch AC records（复用第一页数据，只取最近几页）
   console.log('\n📋 获取最近 AC 提交记录...');
