@@ -19,16 +19,17 @@ const UID = '1370195';
 const OUTPUT_DIR = path.join(__dirname, 'solutions', 'luogu');
 const FORCE = process.argv.includes('--force');
 
-// 难度映射
+// 难度映射（洛谷新版 8 级体系）
 const DIFF_MAP = {
   0: '暂无评定',
   1: '入门',
   2: '普及-',
-  3: '普及/提高-',
-  4: '普及+/提高',
-  5: '提高+/省选-',
-  6: '省选/NOI-',
-  7: 'NOI/NOI+/CTSC'
+  3: '普及',
+  4: '普及+/提高-',
+  5: '提高',
+  6: '提高+/省选-',
+  7: '省选/NOI-',
+  8: 'NOI/NOI+/CTS'
 };
 
 // 洛谷算法标签 ID → 名称映射

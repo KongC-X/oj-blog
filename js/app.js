@@ -1386,19 +1386,21 @@
     body.appendChild(nav);
   }
 
-  // ========== 洛谷官方难度配色 ==========
+  // ========== 洛谷官方难度配色（新版 8 级体系） ==========
   const LUOGU_DIFF_COLORS = {
+    '暂无评定':      { bg: 'rgba(100,116,139,0.2)',  color: '#94a3b8', border: '#94a3b8' },
     '入门':         { bg: 'rgba(248,81,73,0.15)',    color: '#f85149', border: '#f85149' },
     '普及-':        { bg: 'rgba(251,146,60,0.15)',   color: '#fb923c', border: '#fb923c' },
-    '普及/提高-':   { bg: 'rgba(251,191,36,0.15)',   color: '#fbbf24', border: '#fbbf24' },
-    '普及+/提高':   { bg: 'rgba(52,211,153,0.15)',   color: '#34d399', border: '#34d399' },
+    '普及':         { bg: 'rgba(251,191,36,0.15)',   color: '#fbbf24', border: '#fbbf24' },
+    '普及+/提高-':  { bg: 'rgba(52,211,153,0.15)',   color: '#34d399', border: '#34d399' },
+    '提高':         { bg: 'rgba(45,212,191,0.15)',   color: '#2dd4bf', border: '#2dd4bf' },
     '提高+/省选-':  { bg: 'rgba(56,189,248,0.15)',   color: '#38bdf8', border: '#38bdf8' },
     '省选/NOI-':    { bg: 'rgba(187,134,252,0.15)',  color: '#bb86fc', border: '#bb86fc' },
-    'NOI/NOI+/CTSC': { bg: 'rgba(100,116,139,0.2)', color: '#64748b', border: '#64748b' },
+    'NOI/NOI+/CTS': { bg: 'rgba(100,116,139,0.2)',   color: '#64748b', border: '#64748b' },
   };
 
   // 洛谷难度排序权重
-  const LUOGU_DIFF_ORDER = ['入门', '普及-', '普及/提高-', '普及+/提高', '提高+/省选-', '省选/NOI-', 'NOI/NOI+/CTSC'];
+  const LUOGU_DIFF_ORDER = ['暂无评定', '入门', '普及-', '普及', '普及+/提高-', '提高', '提高+/省选-', '省选/NOI-', 'NOI/NOI+/CTS'];
 
   // 东方博宜难度配色
   const DFBOY_DIFF_COLORS = {
