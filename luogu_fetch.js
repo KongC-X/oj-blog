@@ -364,7 +364,9 @@ function parseLuoguPayload(body) {
 // 新 AC 的题一定在前几页
 async function fetchRecentACRecords(firstPageBody) {
   let allRecords = [];
-  const MAX_PAGES = 3; // 只翻 3 页（60 条记录），新 AC 的题一定在前几页
+  // 翻完全部 AC 记录：洛谷一页 20 条，按总数动态算页数
+  // （早前版本只翻 3 页，导致历史 AC 的题目从未被抓取）
+  let totalPages = 3;
 
   // 如果已有第一页数据，直接解析
   if (firstPageBody) {
@@ -373,13 +375,17 @@ async function fetchRecentACRecords(firstPageBody) {
     if (records.length > 0) {
       allRecords.push(...records);
       const count = data?.records?.count || 0;
+      const perPage = data?.records?.perPage || records.length || 20;
+      if (count > 0) totalPages = Math.ceil(count / perPage);
       console.log(`  📄 第 1 页...`);
-      console.log(`     本页 ${records.length} 条，总 AC 数: ${count}`);
+      console.log(`     本页 ${records.length} 条，总 AC 记录 ${count} 条（共 ${totalPages} 页）`);
     }
   }
 
-  for (let page = 2; page <= MAX_PAGES; page++) {
-    console.log(`  📄 第 ${page} 页...`);
+  let failedPages = 0;
+
+  for (let page = 2; page <= totalPages; page++) {
+    console.log(`  📄 第 ${page}/${totalPages} 页...`);
     await sleep(1000 + Math.random() * 500);
 
     let res;
@@ -388,7 +394,6 @@ async function fetchRecentACRecords(firstPageBody) {
       res = await doFetch(
         `https://www.luogu.com.cn/record/list?user=${UID}&page=${page}&status=12&_contentOnly=1`
       );
-      console.log('     status=' + res.status + ', bodyLen=' + res.body.length);
 
       if (res.status === 200 && res.body.length > 100) break;
       retries++;
@@ -399,9 +404,11 @@ async function fetchRecentACRecords(firstPageBody) {
       }
     }
 
+    // 单页失败不中断整体，记录后继续下一页
     if (res.status !== 200 || res.body.length < 100) {
-      console.log(`  ⚠️ 第 ${page} 页获取失败，停止翻页`);
-      break;
+      console.log(`     ⚠️ 第 ${page} 页获取失败，跳过`);
+      failedPages++;
+      continue;
     }
 
     const data = parseLuoguPayload(res.body);
@@ -409,6 +416,10 @@ async function fetchRecentACRecords(firstPageBody) {
     if (records.length === 0) break;
     allRecords.push(...records);
     console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length} 条`);
+  }
+
+  if (failedPages > 0) {
+    console.log(`  ⚠️ 共 ${failedPages} 页获取失败，可能漏题，建议重跑`);
   }
 
   return allRecords;
