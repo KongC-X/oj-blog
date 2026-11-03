@@ -312,6 +312,27 @@ function updateCookies(setCookies) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// 统一解析洛谷接口返回
+// 新版洛谷即使带 _contentOnly=1 也返回完整 HTML，数据内联在
+// <script id="lentille-context" type="application/json"> 中；
+// 旧版直接返回纯 JSON。两种格式都兼容，统一返回其中的 data 对象。
+function parseLuoguPayload(body) {
+  const text = (body || '').trim();
+  if (!text) return null;
+  if (text.startsWith('{')) {
+    try {
+      const j = JSON.parse(text);
+      return j.currentData || j.data || j;
+    } catch { return null; }
+  }
+  const m = text.match(/<script id="lentille-context" type="application\/json">([\s\S]*?)<\/script>/);
+  if (!m) return null;
+  try {
+    const ctx = JSON.parse(m[1]);
+    return ctx.data || null;
+  } catch { return null; }
+}
+
 // Step 1: 获取最近的 AC 提交记录（只翻前几页，避免被限速）
 // 洛谷会在约 6-7 页后断开连接，所以只取前 5 页（100 条记录）
 // 新 AC 的题一定在前几页
@@ -321,17 +342,13 @@ async function fetchRecentACRecords(firstPageBody) {
 
   // 如果已有第一页数据，直接解析
   if (firstPageBody) {
-    try {
-      const data = JSON.parse(firstPageBody);
-      const records = data?.currentData?.records?.result || [];
-      if (records.length > 0) {
-        allRecords.push(...records);
-        const count = data?.currentData?.records?.count || 0;
-        console.log(`  📄 第 1 页...`);
-        console.log(`     本页 ${records.length} 条，总 AC 数: ${count}`);
-      }
-    } catch {
-      // 忽略解析错误
+    const data = parseLuoguPayload(firstPageBody);
+    const records = data?.records?.result || [];
+    if (records.length > 0) {
+      allRecords.push(...records);
+      const count = data?.records?.count || 0;
+      console.log(`  📄 第 1 页...`);
+      console.log(`     本页 ${records.length} 条，总 AC 数: ${count}`);
     }
   }
 
@@ -361,15 +378,11 @@ async function fetchRecentACRecords(firstPageBody) {
       break;
     }
 
-    try {
-      const data = JSON.parse(res.body);
-      const records = data?.currentData?.records?.result || [];
-      if (records.length === 0) break;
-      allRecords.push(...records);
-      console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length} 条`);
-    } catch {
-      break;
-    }
+    const data = parseLuoguPayload(res.body);
+    const records = data?.records?.result || [];
+    if (records.length === 0) break;
+    allRecords.push(...records);
+    console.log(`     本页 ${records.length} 条，已获取 ${allRecords.length} 条`);
   }
 
   return allRecords;
@@ -395,8 +408,8 @@ async function fetchCode(recordId) {
         `https://www.luogu.com.cn/record/${recordId}?_contentOnly=1`
       );
       if (res.status === 200 && res.body.length > 10) {
-        const data = JSON.parse(res.body);
-        const code = data?.currentData?.record?.sourceCode || null;
+        const data = parseLuoguPayload(res.body);
+        const code = data?.record?.sourceCode || null;
         if (code) return code;
       }
     } catch {
@@ -414,9 +427,9 @@ async function fetchProblemDetail(pid) {
       const res = await doFetch(`https://www.luogu.com.cn/problem/${pid}`, {
         'x-lentille-request': 'content-only',
       });
-      if (res.status === 200 && res.body.trim().startsWith('{') && res.body.length > 20) {
-        const data = JSON.parse(res.body);
-        const problem = data?.data?.problem || null;
+      if (res.status === 200 && res.body.length > 20) {
+        const data = parseLuoguPayload(res.body);
+        const problem = data?.problem || null;
         if (problem) return problem;
       }
     } catch {
@@ -438,7 +451,7 @@ function cleanMarkdown(md) {
 // 生成 Markdown 文件
 function generateMd(record, code, problemDetail) {
   const pid = record.problem.pid;
-  const title = record.problem.title || pid;
+  const title = record.problem.name || record.problem.title || pid;
   const difficulty = DIFF_MAP[record.problem.difficulty] || '';
   const submitDate = new Date(record.submitTime * 1000).toISOString().split('T')[0];
   const lang = record.language === 28 ? 'C++14' : record.language === 1 ? 'C' : `Lang${record.language}`;
@@ -541,12 +554,13 @@ async function main() {
   const initRes = await doFetch('https://www.luogu.com.cn/record/list?user=' + UID + '&page=1&status=12&_contentOnly=1');
   console.log('会话初始化:', initRes.status === 200 ? '✅ 成功' : '⚠️ 可能需要重新提供 Cookie');
 
-  // Debug: 如果返回的是 HTML 而不是 JSON
-  if (initRes.body && !initRes.body.trim().startsWith('{')) {
-    console.error('❌ API 返回了 HTML 而不是 JSON！');
-    console.error('   这通常意味着 Cookie 中缺少登录凭证（需要完整的浏览器 Cookie）');
-    console.error('   请确保从浏览器的 Network 请求中复制完整的 Cookie 字符串');
-    console.error('   Body preview:', initRes.body.substring(0, 100));
+  // 无法解析出记录数据，说明未登录或被风控拦截
+  const initData = parseLuoguPayload(initRes.body);
+  if (!initData || !initData.records) {
+    console.error('❌ 无法解析洛谷返回的提交记录！');
+    console.error('   可能原因：Cookie 已失效（未登录），或请求被风控拦截');
+    console.error('   请重新登录洛谷，从浏览器 Network 面板复制完整的 Cookie');
+    console.error('   Body preview:', (initRes.body || '').trim().substring(0, 120));
     process.exit(1);
   }
 
@@ -601,7 +615,7 @@ async function main() {
   for (let i = 0; i < toProcess.length; i++) {
     const record = toProcess[i];
     const pid = record.problem.pid;
-    const title = record.problem.title || pid;
+    const title = record.problem.name || record.problem.title || pid;
 
     process.stdout.write(`  📥 [${i + 1}/${toProcess.length}] ${pid} ${title} ... `);
 
