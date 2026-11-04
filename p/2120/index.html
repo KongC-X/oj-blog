@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2120 连续自然数和 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="对一个给定的自然数 ，求出所有的连续的自然数段，这些连续的自然数段中的全部数之和为 。 例子： ，所以从 到 的一个自然数段为 的一个解。">
+<link rel="canonical" href="https://zymojblog.top/p/2120/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2120 连续自然数和 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="对一个给定的自然数 ，求出所有的连续的自然数段，这些连续的自然数段中的全部数之和为 。 例子： ，所以从 到 的一个自然数段为 的一个解。">
+<meta property="og:url" content="https://zymojblog.top/p/2120/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2120 连续自然数和 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="对一个给定的自然数 ，求出所有的连续的自然数段，这些连续的自然数段中的全部数之和为 。 例子： ，所以从 到 的一个自然数段为 的一个解。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2120 连续自然数和","headline":"2120 连续自然数和 题解","description":"对一个给定的自然数 ，求出所有的连续的自然数段，这些连续的自然数段中的全部数之和为 。 例子： ，所以从 到 的一个自然数段为 的一个解。","url":"https://zymojblog.top/p/2120/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"前缀和差分、双指针","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2120</span></div>
+  <h1 class="seo-title">2120 连续自然数和</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C%E5%B7%AE%E5%88%86">前缀和差分</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88">双指针</a></div>
+  <article class="markdown-body seo-article">
+<h1>2120 - 连续自然数和</h1>
+<h2>题目描述</h2>
+<p>对一个给定的自然数 $M$ ，求出所有的连续的自然数段，这些连续的自然数段中的全部数之和为 $M$ 。 </p>
+<p>例子：$1998+1999+2000+2001+2002 = 10000$，所以从 $1998$ 到 $2002$ 的一个自然数段为 $M=10000$ 的一个解。</p>
+<h2>输入</h2>
+<p>包含一个整数的单独一行给出 $M$ 的值（$10 \le M \le 2,000,000$ ）。</p>
+<h2>输出</h2>
+<p>每行两个自然数，给出一个满足条件的连续自然数段中的第一个数和最后一个数，两数之间用一个空格隔开；</p>
+<p>所有输出行的第一个按从小到大的升序排列，对于给定的输入数据，保证至少有一个解。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> m;
+<span class="hljs-type">int</span> sum[<span class="hljs-number">1000005</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">1000000</span>;i++)<span class="hljs-comment">//第一条</span>
+    {
+        sum[i]=sum[i<span class="hljs-number">-1</span>]+i;<span class="hljs-comment">//前缀和</span>
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m/<span class="hljs-number">2</span>+<span class="hljs-number">1</span>;i++)<span class="hljs-comment">//枚举左端点</span>
+    {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=i;j&gt;=<span class="hljs-number">1</span>;j--)<span class="hljs-comment">//枚举右端点</span>
+        {
+            <span class="hljs-keyword">if</span>(sum[i]-sum[j<span class="hljs-number">-1</span>]&gt;m)<span class="hljs-keyword">break</span>;<span class="hljs-comment">//优化</span>
+            <span class="hljs-keyword">if</span>(sum[i]-sum[j<span class="hljs-number">-1</span>]==m&amp;&amp;i!=j)
+            {
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %d\n&quot;</span>,j,i);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<span class="hljs-comment">//好习惯</span>
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2120">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

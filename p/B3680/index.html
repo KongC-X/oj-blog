@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3680 [语言月赛202211] BAN-PICK 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在第五人格职业联赛的每一场对局中，需要进行 Ban-Pick 流程。Ban 即角色禁用，Pick 即角色选用。 如试题 Winner 所述，游戏分为 求生者（ ） 与 监管者（$\texttt {Hunter} n m$ 名角色。 在某局比赛中，监管者 可以 ban(禁用) 掉 求生者阵营 名角色…">
+<link rel="canonical" href="https://zymojblog.top/p/B3680/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3680 [语言月赛202211] BAN-PICK 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在第五人格职业联赛的每一场对局中，需要进行 Ban-Pick 流程。Ban 即角色禁用，Pick 即角色选用。 如试题 Winner 所述，游戏分为 求生者（ ） 与 监管者（$\texttt {Hunter} n m$ 名角色。 在某局比赛中，监管者 可以 ban(禁用) 掉 求生者阵营 名角色…">
+<meta property="og:url" content="https://zymojblog.top/p/B3680/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3680 [语言月赛202211] BAN-PICK 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在第五人格职业联赛的每一场对局中，需要进行 Ban-Pick 流程。Ban 即角色禁用，Pick 即角色选用。 如试题 Winner 所述，游戏分为 求生者（ ） 与 监管者（$\texttt {Hunter} n m$ 名角色。 在某局比赛中，监管者 可以 ban(禁用) 掉 求生者阵营 名角色…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3680 [语言月赛202211] BAN-PICK","headline":"B3680 [语言月赛202211] BAN-PICK 题解","description":"在第五人格职业联赛的每一场对局中，需要进行 Ban-Pick 流程。Ban 即角色禁用，Pick 即角色选用。 如试题 Winner 所述，游戏分为 求生者（ ） 与 监管者（$\\texttt {Hunter} n m$ 名角色。 在某局比赛中，监管者 可以 ban(禁用) 掉 求生者阵营 名角色…","url":"https://zymojblog.top/p/B3680/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2022、字符串（入门）、结构体、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3680</span></div>
+  <h1 class="seo-title">B3680 [语言月赛202211] BAN-PICK</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3680 [语言月赛202211] BAN-PICK</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>字符串（入门）</code>、<code>结构体</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>在第五人格职业联赛的每一场对局中，需要进行 Ban-Pick 流程。Ban 即角色禁用，Pick 即角色选用。</p>
+<p>如试题 Winner 所述，游戏分为 <strong>求生者（$\texttt{Survivor}$）</strong> 与 <strong>监管者（$\texttt<br>{Hunter}$）</strong> 两个阵营。<strong>求生者阵营</strong> 共有 $n$ 名角色，<strong>监管者阵营</strong> 共有 $m$ 名角色。</p>
+<p>在某局比赛中，<strong>监管者</strong> 可以 ban(禁用) 掉 <strong>求生者阵营</strong> $5$ 名角色，<strong>求生者</strong> 可以 ban(禁用) 掉 <strong>监管者阵营</strong> $2$ 名角色。</p>
+<p>每个角色，无论其属于求生者阵营还是监管者阵营，均可以使用 <strong>熟练度</strong> 来量化该阵营选手选择该角色的优先程度。选手一定会优先选择 <strong>熟练度</strong> 更高的角色进行游戏。</p>
+<p>基于这样的考量，<strong>监管者选手</strong> 在进行 Ban 流程时，往往会选择 ban(禁用) 掉 <strong>求生者阵营熟练度最高</strong> 的若干名 <strong>求生者角色</strong>。同样，<strong>求生者选手</strong> 在进行 Ban 流程时，往往会选择 ban(禁用) 掉 <strong>监管者阵营熟练度最高</strong> 的若干名 <strong>监管者角色</strong>。</p>
+<p>在 Ban 流程完成后，需要执行 Pick 流程。</p>
+<p>如试题 Winner 所述，<strong>求生者选手</strong> 需要从 <strong>求生者阵营</strong> 中选择 $4$ 名不同的角色，<strong>监管者选手</strong> 需要从 <strong>监管者阵营</strong> 中选择 $1$ 名角色。</p>
+<p>现在告诉你所有角色的名字、阵营与选手对其熟练度，请你给出双方阵营 Pick 的角色名字。</p>
+<h2>输入格式</h2>
+<p>输入共 $n+m+1$ 行。</p>
+<p>输入的第一行为两个整数 $n,m$，分别代表求生者阵营角色数和监管者阵营角色数。</p>
+<p>接下来 $n+m$ 行，首先为一个仅由英文字母组成的字符串，代表该角色的姓名；接下来为一个大写字符 <code>H</code> 或 <code>S</code>，若为 <code>H</code>，则代表该角色为监管者阵营，若为 <code>S</code>，则代表该角色为求生者阵营；接下来一个正整数，代表该阵营选手对该角色的熟练度。上述字符串、大写字符、正整数之间由一个空格分隔。</p>
+<h2>输出格式</h2>
+<p>输出共 $5$ 行。</p>
+<p>输出的第一行为监管者阵营选择角色的角色名。</p>
+<p>输出的第二到五行为求生者阵营选择角色的角色名，按照熟练度从高到低排列。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">9</span> <span class="hljs-number">3</span>
+Amily S <span class="hljs-number">1</span>
+Lydia S <span class="hljs-number">2</span>
+Lisa S <span class="hljs-number">4</span>
+Beck H <span class="hljs-number">1</span>
+Freddie S <span class="hljs-number">5</span>
+Cliche S <span class="hljs-number">6</span>
+Aesop S <span class="hljs-number">7</span>
+Eli S <span class="hljs-number">8</span>
+Norton S <span class="hljs-number">9</span>
+Tiletower H <span class="hljs-number">3</span>
+Yidhra H <span class="hljs-number">2</span>
+Emma S <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">Beck
+Lisa
+Emma
+Lydia
+Amily```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    string na;          <span class="hljs-comment">// 角色名</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> w;        <span class="hljs-comment">// 熟练度</span>
+};
+
+<span class="hljs-type">int</span> n, m;               <span class="hljs-comment">// n:求生者数量, m:监管者数量</span>
+Node a[<span class="hljs-number">100005</span>], b[<span class="hljs-number">100005</span>]; <span class="hljs-comment">// a:求生者, b:监管者</span>
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Node p, Node q)</span> </span>{
+    <span class="hljs-keyword">return</span> p.w &gt; q.w;   <span class="hljs-comment">// 按熟练度降序排序</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-type">int</span> p = <span class="hljs-number">0</span>, q = <span class="hljs-number">0</span>;   <span class="hljs-comment">// p:求生者个数, q:监管者个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n + m; i++) {
+        string na;
+        <span class="hljs-type">char</span> c;
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> w;
+        cin &gt;&gt; na &gt;&gt; c &gt;&gt; w;
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;S&#x27;</span>) {
+            a[p].na = na;
+            a[p].w = w;
+            p++;
+        } <span class="hljs-keyword">else</span> {
+            b[q].na = na;
+            b[q].w = w;
+            q++;
+        }
+    }
+
+    <span class="hljs-comment">// 求生者阵营：熟练度最高的5个被Ban，取第6~9名（即下标5~8）</span>
+    <span class="hljs-built_in">sort</span>(a, a + p, cmp);
+    <span class="hljs-comment">// 监管者阵营：熟练度最高的2个被Ban，取第3名（即下标2）</span>
+    <span class="hljs-built_in">sort</span>(b, b + q, cmp);
+
+    <span class="hljs-comment">// 输出监管者Pick</span>
+    cout &lt;&lt; b[<span class="hljs-number">2</span>].na &lt;&lt; endl;
+    <span class="hljs-comment">// 输出求生者Pick（按熟练度从高到低）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">5</span>; i &lt;= <span class="hljs-number">8</span>; i++) {
+        cout &lt;&lt; a[i].na &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3680">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

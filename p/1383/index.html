@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1383 奶牛和草丛 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…">
+<link rel="canonical" href="https://zymojblog.top/p/1383/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1383 奶牛和草丛 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…">
+<meta property="og:url" content="https://zymojblog.top/p/1383/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1383 奶牛和草丛 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1383 奶牛和草丛","headline":"1383 奶牛和草丛 题解","description":"奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…","url":"https://zymojblog.top/p/1383/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"深搜、递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1383</span></div>
+  <h1 class="seo-title">1383 奶牛和草丛</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>1383 - 奶牛和草丛</h1>
+<h2>题目描述</h2>
+<p>奶牛Bessie计划好好享受柔软的春季新草。新草分布在 $R$ 行 $C$ 列的牧场里。它想计算一下牧场中的草丛数量。</p>
+<p>在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。</p>
+<p>例如，考虑如下5行6列的牧场地图；</p>
+<pre><code class="hljs language-cpp">`.#....
+..#...
+..#..#
+....##
+.....#
+`</code></pre><p>这个牧场有 $3$ 个草丛：一个在第一行，一个在第三列横跨了二、三行，一个在第三行横跨了三、四、五行。</p>
+<h2>输入</h2>
+<p>第一行包含两个整数 $R$ 和 $C$ ，中间用单个空格隔开。</p>
+<p>接下来 $R$ 行，每行 $C$ 个字符，描述牧场地图。字符只有“#”或“.”两种。($1 ≤ R, C ≤ 100 $)</p>
+<h2>输出</h2>
+<p>输出一个整数，表示草丛数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iomanip&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-type">char</span> a[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>]; <span class="hljs-comment">// 初值为\0</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">10</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">10</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">// 深度优先搜索</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span> </span>{
+    a[x][y] = <span class="hljs-string">&#x27;.&#x27;</span>;
+    <span class="hljs-type">int</span> tx,ty;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++) {
+        tx = x + fx[i];
+        ty = y + fy[i];
+        <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-string">&#x27;#&#x27;</span>) {
+            <span class="hljs-built_in">dfs</span>(tx,ty);
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+            <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-string">&#x27;#&#x27;</span>) {
+                c++;
+                <span class="hljs-built_in">dfs</span>(i,j);
+            }
+        }
+    }
+    cout &lt;&lt; c &lt;&lt; endl;
+
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1383">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

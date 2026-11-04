@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1236 二分查找 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="请在一个有序递增数组中（不存在相同元素），采用二分查找，找出值 的位置，如果 在数组中不存在，请输出 -1 ！">
+<link rel="canonical" href="https://zymojblog.top/p/1236/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1236 二分查找 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="请在一个有序递增数组中（不存在相同元素），采用二分查找，找出值 的位置，如果 在数组中不存在，请输出 -1 ！">
+<meta property="og:url" content="https://zymojblog.top/p/1236/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1236 二分查找 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="请在一个有序递增数组中（不存在相同元素），采用二分查找，找出值 的位置，如果 在数组中不存在，请输出 -1 ！">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1236 二分查找","headline":"1236 二分查找 题解","description":"请在一个有序递增数组中（不存在相同元素），采用二分查找，找出值 的位置，如果 在数组中不存在，请输出 -1 ！","url":"https://zymojblog.top/p/1236/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二分、分治","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1236</span></div>
+  <h1 class="seo-title">1236 二分查找</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">二分</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%B2%BB">分治</a></div>
+  <article class="markdown-body seo-article">
+<h1>1236 - 二分查找</h1>
+<h2>题目描述</h2>
+<p>请在一个有序递增数组中（不存在相同元素），采用二分查找，找出值 $x$ 的位置，如果 $x$ 在数组中不存在，请输出 <code>-1</code> ！</p>
+<h2>输入</h2>
+<p>第一行，一个整数 $n$ ，代表数组元素个数（$n \le 10^6$）</p>
+<p>第二行，$n$ 个数，代表数组的 $n$ 个递增元素（$1 \le $数组元素值$\le 10^8$）</p>
+<p>第三行，一个整数 $x$ ，代表要查找的数（$0 \le x \le 10^8$）</p>
+<h2>输出</h2>
+<p>$x$ 在数组中的位置，或者 <code>-1</code>。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1000010</span>],n,x;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> i,r = <span class="hljs-number">-1</span>; <span class="hljs-comment">// r用来记录找到的数的位置，如果没找到就返回-1</span>
+    <span class="hljs-type">int</span> left,right,mid;
+    <span class="hljs-comment">// scanf(&quot;%d&quot;,&amp;n);</span>
+    <span class="hljs-comment">// ios::sync_with_stdio(false);</span>
+    <span class="hljs-comment">// cin.tie(0);</span>
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;a[i]);
+        <span class="hljs-comment">// cin &gt;&gt; a[i];</span>
+    }
+    cin &gt;&gt; x;
+    <span class="hljs-comment">// 二分查找</span>
+    left = <span class="hljs-number">0</span>,right = n - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span>(left &lt;= right) {
+        mid = (left + right) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span>(a[mid] == x) {
+            r = mid + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>; <span class="hljs-comment">// 找到就退出循环</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[mid] &lt; x) {
+            left = mid + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            right = mid - <span class="hljs-number">1</span>;
+        }
+    }
+    cout &lt;&lt; r;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1236">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

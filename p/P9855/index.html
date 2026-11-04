@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9855 [CCC 2008 J2] Do the Shuffle 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Those tiny music machines that play your digital music are really computers that keep track of and play music files. The CCC music player is currentl…">
+<link rel="canonical" href="https://zymojblog.top/p/P9855/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9855 [CCC 2008 J2] Do the Shuffle 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Those tiny music machines that play your digital music are really computers that keep track of and play music files. The CCC music player is currentl…">
+<meta property="og:url" content="https://zymojblog.top/p/P9855/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9855 [CCC 2008 J2] Do the Shuffle 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Those tiny music machines that play your digital music are really computers that keep track of and play music files. The CCC music player is currentl…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9855 [CCC 2008 J2] Do the Shuffle","headline":"P9855 [CCC 2008 J2] Do the Shuffle 题解","description":"Those tiny music machines that play your digital music are really computers that keep track of and play music files. The CCC music player is currentl…","url":"https://zymojblog.top/p/P9855/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2008、CCC（加拿大）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9855</span></div>
+  <h1 class="seo-title">P9855 [CCC 2008 J2] Do the Shuffle</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2008">2008</a><a class="seo-tag" href="/#/tag/CCC%EF%BC%88%E5%8A%A0%E6%8B%BF%E5%A4%A7%EF%BC%89">CCC（加拿大）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9855 [CCC 2008 J2] Do the Shuffle</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2008</code>、<code>CCC（加拿大）</code></p>
+<h2>题目描述</h2>
+<p>Those tiny music machines that play your digital music are really computers that keep track of and play music files. The CCC music player $(C^3MP)$ is currently in development and will be hitting the stores soon! In this problem, you have to simulate a $C^3MP$.</p>
+<p>The $C^3MP$ music player will hold $5$ songs in memory, whose titles will always be <code>A</code>, <code>B</code>, <code>C</code>, <code>D</code>, <code>E</code>. The $C^3MP$ also keeps track of a playlist, which is an ordering of all the songs. The $C^3MP$ has 4 buttons that the user will press to rearrange the playlist and play the songs.</p>
+<p>Initially, the $C^3MP$ playist is <code>A,B,C,D,E</code>. The $4$ control buttons do the following:</p>
+<ul>
+<li><p>button $1$: move the first song of the playlist to the end of the playlist. For example: <code>A,B,C,D,E</code> will change to <code>B,C,D,E,A</code>.</p>
+</li>
+<li><p>button $2$: move the last song of the playlist to the start of the playlist. For example, <code>A,B,C,D,E</code> will change to <code>E,A,B,C,D</code>.</p>
+</li>
+<li><p>button $3$: swap the first two songs of the playlist. For example, <code>A,B,C,D,E</code> will change to <code>B,A,C,D,E</code>.</p>
+</li>
+<li><p>button $4$: stop rearranging songs and output the playlist.</p>
+</li>
+</ul>
+<h2>输入格式</h2>
+<p>You need to write a program to simulate a CCC music player. Your program should repeatedly ask for two positive integers b and n. Here b represents the button number that the user wants to press, $1 \leq b \leq 4$, and n represents the number of times that the user wants to press button b. You can assume that n always satisfies $1 \leq n \leq 10$.</p>
+<h2>输出格式</h2>
+<p>The input will always finish with the pair of inputs $(b = 4, n = 1)$ when this happens, you should print the order of songs in the current playlist and your program should end. You can assume that the user will only ever press button $4$ once.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>B C D A E```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目类型：模拟
+     * 思路：用字符串存储播放列表，按按钮操作改变字符串顺序。
+     * 按钮1：首字母移到末尾
+     * 按钮2：末字母移到开头
+     * 按钮3：交换前两个字母
+     * 按钮4：输出并结束
+     */</span>
+    string s = <span class="hljs-string">&quot;ABCDE&quot;</span>;
+    <span class="hljs-type">int</span> b, n;
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; b &gt;&gt; n) {
+        <span class="hljs-keyword">if</span> (b == <span class="hljs-number">4</span>) {
+            <span class="hljs-comment">// 输出播放列表，每个字母后跟空格（样例输出末尾有空格）</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+                cout &lt;&lt; s[i];
+                <span class="hljs-keyword">if</span> (i &lt; <span class="hljs-number">4</span>) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+            }
+            cout &lt;&lt; endl;
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-comment">// 重复 n 次操作</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (b == <span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// 第一首歌移到末尾</span>
+                s = s.<span class="hljs-built_in">substr</span>(<span class="hljs-number">1</span>) + s[<span class="hljs-number">0</span>];
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (b == <span class="hljs-number">2</span>) {
+                <span class="hljs-comment">// 最后一首歌移到开头</span>
+                s = s[<span class="hljs-number">4</span>] + s.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (b == <span class="hljs-number">3</span>) {
+                <span class="hljs-comment">// 交换前两首歌</span>
+                <span class="hljs-built_in">swap</span>(s[<span class="hljs-number">0</span>], s[<span class="hljs-number">1</span>]);
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9855">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

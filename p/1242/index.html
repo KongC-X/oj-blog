@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1242 第K大与第K小数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个长度为 ( )的序列，保证每一个序列中的数字 是正整数且唯一 ，编程要求求出整个序列中第 大的数字减去第 小的数字的值 ，并判断 是否为质数。( )">
+<link rel="canonical" href="https://zymojblog.top/p/1242/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1242 第K大与第K小数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个长度为 ( )的序列，保证每一个序列中的数字 是正整数且唯一 ，编程要求求出整个序列中第 大的数字减去第 小的数字的值 ，并判断 是否为质数。( )">
+<meta property="og:url" content="https://zymojblog.top/p/1242/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1242 第K大与第K小数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个长度为 ( )的序列，保证每一个序列中的数字 是正整数且唯一 ，编程要求求出整个序列中第 大的数字减去第 小的数字的值 ，并判断 是否为质数。( )">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1242 第K大与第K小数","headline":"1242 第K大与第K小数 题解","description":"给定一个长度为 ( )的序列，保证每一个序列中的数字 是正整数且唯一 ，编程要求求出整个序列中第 大的数字减去第 小的数字的值 ，并判断 是否为质数。( )","url":"https://zymojblog.top/p/1242/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1242</span></div>
+  <h1 class="seo-title">1242 第K大与第K小数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1242 - 第K大与第K小数</h1>
+<h2>题目描述</h2>
+<p>给定一个长度为 $N$ ( $0 \lt n \le 10000$ )的序列，保证每一个序列中的数字 $a[i]$ 是正整数且唯一  ，编程要求求出整个序列中第 $k$ 大的数字减去第 $k$ 小的数字的值 $m$ ，并判断 $m$ 是否为质数。($0 \lt k \le n$)</p>
+<h2>输入</h2>
+<p>输入格式：</p>
+<p>第一行为 $2$ 个数 $n，k$（含义如上题）；</p>
+<p>第二行为 $n$ 个数，表示这个序列。</p>
+<h2>输出</h2>
+<p>输出格式：</p>
+<p>如果 $m$ 为质数,则第一行为<code>YES</code>,第二行为这个数 $m$;</p>
+<p>否则 ，第一行为<code>NO</code> ，第二行为这个数 $m$。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> a[<span class="hljs-number">10010</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n,i,j,t,k,m;
+    cin &gt;&gt; n &gt;&gt; k;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;n; i++) {
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>; j &lt; n - i - <span class="hljs-number">1</span>; j++) {
+            <span class="hljs-keyword">if</span>(a[j] &gt; a[j+<span class="hljs-number">1</span>]) {
+                t=a[j];
+                a[j]=a[j+<span class="hljs-number">1</span>];
+                a[j+<span class="hljs-number">1</span>]=t;
+            }
+        }
+    }
+    m = a[n-k] - a[k<span class="hljs-number">-1</span>];
+    <span class="hljs-comment">// 判断m是否是质数</span>
+    <span class="hljs-type">bool</span> flag = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= m / <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span>(m % i == <span class="hljs-number">0</span>) {
+            flag = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-keyword">if</span>(m &lt;= <span class="hljs-number">1</span>) {
+        flag = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 有可能m是负数</span>
+    }
+    <span class="hljs-keyword">if</span>(flag) {
+        cout &lt;&lt; <span class="hljs-string">&quot;YES&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; <span class="hljs-string">&quot;NO&quot;</span> &lt;&lt; endl;
+    }
+    cout &lt;&lt; m &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1242">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

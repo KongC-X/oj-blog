@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3787 [信息与未来 2023] 精密计时 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小小有一个非常精密的计时器，每秒可以计数 100 次 (两个连续的时钟计数之间恰好间隔百分之一秒)。例如，以下是从 到 的计时过程： 小小记录了计时器上的两个时刻，你能帮助他计算这两个时刻之间经过了多少个 “百分之一秒”吗？">
+<link rel="canonical" href="https://zymojblog.top/p/B3787/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3787 [信息与未来 2023] 精密计时 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小小有一个非常精密的计时器，每秒可以计数 100 次 (两个连续的时钟计数之间恰好间隔百分之一秒)。例如，以下是从 到 的计时过程： 小小记录了计时器上的两个时刻，你能帮助他计算这两个时刻之间经过了多少个 “百分之一秒”吗？">
+<meta property="og:url" content="https://zymojblog.top/p/B3787/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3787 [信息与未来 2023] 精密计时 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小小有一个非常精密的计时器，每秒可以计数 100 次 (两个连续的时钟计数之间恰好间隔百分之一秒)。例如，以下是从 到 的计时过程： 小小记录了计时器上的两个时刻，你能帮助他计算这两个时刻之间经过了多少个 “百分之一秒”吗？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3787 [信息与未来 2023] 精密计时","headline":"B3787 [信息与未来 2023] 精密计时 题解","description":"小小有一个非常精密的计时器，每秒可以计数 100 次 (两个连续的时钟计数之间恰好间隔百分之一秒)。例如，以下是从 到 的计时过程： 小小记录了计时器上的两个时刻，你能帮助他计算这两个时刻之间经过了多少个 “百分之一秒”吗？","url":"https://zymojblog.top/p/B3787/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数学、2023、江苏、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3787</span></div>
+  <h1 class="seo-title">B3787 [信息与未来 2023] 精密计时</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">信息与未来入门</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3787 [信息与未来 2023] 精密计时</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-04-11</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2023</code>、<code>江苏</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>小小有一个非常精密的计时器，每秒可以计数 100 次 (两个连续的时钟计数之间恰好间隔百分之一秒)。例如，以下是从 $13:01:02.37$ 到 $13:01:03.01$ 的计时过程：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">02.37</span> (<span class="hljs-number">13</span> 时 <span class="hljs-number">1</span> 分 <span class="hljs-number">2</span> 秒<span class="hljs-number">.37</span>)
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">02.38</span>
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">02.39</span>
+...
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">02.98</span>
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">02.99</span> (<span class="hljs-number">13</span> 时 <span class="hljs-number">1</span> 分 <span class="hljs-number">2</span> 秒<span class="hljs-number">.99</span>)
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">03.00</span> (<span class="hljs-number">13</span> 时 <span class="hljs-number">1</span> 分 <span class="hljs-number">3</span> 秒<span class="hljs-number">.00</span>)
+<span class="hljs-number">13</span>:<span class="hljs-number">01</span>:<span class="hljs-number">03.01</span></code></pre><p>小小记录了计时器上的两个时刻，你能帮助他计算这两个时刻之间经过了多少个 “百分之一秒”吗？</p>
+<h2>输入格式</h2>
+<p>输入数据仅一行，包含空格分开的两个字符串，代表了两个计时器上显示的时刻。时刻中的时、分、秒、百分之一秒均使用两位十进制数字表示，不足两位时在十位添零。时、分、秒之间用冒号 <code>:</code> 分隔，秒和百分之一秒之间用小数点 <code>.</code> 分隔。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表两个时刻之间经过的 “百分之一秒” 数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">01</span>:<span class="hljs-number">02</span>:<span class="hljs-number">34.56</span> <span class="hljs-number">01</span>:<span class="hljs-number">03</span>:<span class="hljs-number">00.10</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2554```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00.00</span> <span class="hljs-number">23</span>:<span class="hljs-number">59</span>:<span class="hljs-number">59.99</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>8639999```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-title">fun</span><span class="hljs-params">(string s)</span> </span>{
+    <span class="hljs-type">int</span> h = (s[<span class="hljs-number">0</span>]-<span class="hljs-string">&#x27;0&#x27;</span>)*<span class="hljs-number">10</span> + (s[<span class="hljs-number">1</span>]-<span class="hljs-string">&#x27;0&#x27;</span>);
+    <span class="hljs-type">int</span> m = (s[<span class="hljs-number">3</span>]-<span class="hljs-string">&#x27;0&#x27;</span>)*<span class="hljs-number">10</span> + (s[<span class="hljs-number">4</span>]-<span class="hljs-string">&#x27;0&#x27;</span>);
+    <span class="hljs-type">int</span> sec = (s[<span class="hljs-number">6</span>]-<span class="hljs-string">&#x27;0&#x27;</span>)*<span class="hljs-number">10</span> + (s[<span class="hljs-number">7</span>]-<span class="hljs-string">&#x27;0&#x27;</span>);
+    <span class="hljs-type">int</span> c = (s[<span class="hljs-number">9</span>]-<span class="hljs-string">&#x27;0&#x27;</span>)*<span class="hljs-number">10</span> + (s[<span class="hljs-number">10</span>]-<span class="hljs-string">&#x27;0&#x27;</span>);
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">long</span> <span class="hljs-type">long</span>)h*<span class="hljs-number">3600</span>*<span class="hljs-number">100</span> + m*<span class="hljs-number">60</span>*<span class="hljs-number">100</span> + sec*<span class="hljs-number">100</span> + c;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string a, b;
+    cin &gt;&gt; a &gt;&gt; b;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> t1 = <span class="hljs-built_in">fun</span>(a);
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> t2 = <span class="hljs-built_in">fun</span>(b);
+    cout &lt;&lt; t2 - t1 &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3787">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

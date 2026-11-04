@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1365 位数问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在所有的 位数中，有多少个数中有偶数个数字 ？由于结果可能很大，你只需要输出这个答案对 取余的值。 比如：在所有的 位数字，包含 个 的数有 个，包含 个 的数有 个，共 个。（请注意： 位数指 这 个数，不包含数字 ）">
+<link rel="canonical" href="https://zymojblog.top/p/1365/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1365 位数问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在所有的 位数中，有多少个数中有偶数个数字 ？由于结果可能很大，你只需要输出这个答案对 取余的值。 比如：在所有的 位数字，包含 个 的数有 个，包含 个 的数有 个，共 个。（请注意： 位数指 这 个数，不包含数字 ）">
+<meta property="og:url" content="https://zymojblog.top/p/1365/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1365 位数问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在所有的 位数中，有多少个数中有偶数个数字 ？由于结果可能很大，你只需要输出这个答案对 取余的值。 比如：在所有的 位数字，包含 个 的数有 个，包含 个 的数有 个，共 个。（请注意： 位数指 这 个数，不包含数字 ）">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1365 位数问题","headline":"1365 位数问题 题解","description":"在所有的 位数中，有多少个数中有偶数个数字 ？由于结果可能很大，你只需要输出这个答案对 取余的值。 比如：在所有的 位数字，包含 个 的数有 个，包含 个 的数有 个，共 个。（请注意： 位数指 这 个数，不包含数字 ）","url":"https://zymojblog.top/p/1365/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"递推","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1365</span></div>
+  <h1 class="seo-title">1365 位数问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a></div>
+  <article class="markdown-body seo-article">
+<h1>1365 - 位数问题</h1>
+<h2>题目描述</h2>
+<p>在所有的 $N$ 位数中，有多少个数中有偶数个数字 $3$ ？由于结果可能很大，你只需要输出这个答案对 $12345$ 取余的值。</p>
+<p>比如：在所有的 $2$ 位数字，包含 $0$ 个 $3$ 的数有 $72$ 个，包含 $2$ 个 $3$ 的数有 $1$个，共 $73$ 个。（请注意：$1$ 位数指 $1 \sim 9$ 这 $9$ 个数，不包含数字 $0$ ）</p>
+<h2>输入</h2>
+<p>一个整数 $N$（$1 \le N \le 1000$）。</p>
+<h2>输出</h2>
+<p>$N$ 位数中含有偶数个数组 $3$ 的个数。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">/*
+设a[i]为i位时有偶数个3，b[i]是i位时有奇数个3
+当i=1时，注意，dp一般从最高位算起，所以慢慢打表下来是加的低位，a[1]=8（0不包括），b[1]=1，
+所以在递推的时候进行分类讨论：
+1.若n-1位为奇数个3，则n位就应该加3，这样才有偶数个3
+2.若n-1位为偶数个3，则n位应该不为3，有9种情况 ，这样才有偶数个3
+*/</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">10000</span>],b[<span class="hljs-number">1000</span>];
+    <span class="hljs-type">int</span> i,n;
+    cin&gt;&gt;n;
+    a[<span class="hljs-number">1</span>]=<span class="hljs-number">1</span>;
+    b[<span class="hljs-number">1</span>]=<span class="hljs-number">8</span>;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">2</span>;i&lt;=n;i++){
+        a[i] = (a[i<span class="hljs-number">-1</span>]*<span class="hljs-number">9</span>+b[i<span class="hljs-number">-1</span>])%<span class="hljs-number">12345</span>;
+        b[i] = (b[i<span class="hljs-number">-1</span>]*<span class="hljs-number">9</span>+a[i<span class="hljs-number">-1</span>])%<span class="hljs-number">12345</span>;
+    }
+    cout&lt;&lt;b[n];
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1365">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

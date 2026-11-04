@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3870 [GESP202309 四级] 变长编码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小明刚刚学习了三种整数编码方式：原码、反码、补码，并了解到计算机存储整数通常使用补码。但他总是觉得，生活中很少用到 这么大的数，生活中常用的 这种数也同样需要用 个字节的补码表示，太浪费了些。 热爱学习的小明通过搜索，发现了一种正整数的变长编码方式。这种编码方式的规则如下： 1. 对于给定的非负整…">
+<link rel="canonical" href="https://zymojblog.top/p/B3870/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3870 [GESP202309 四级] 变长编码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小明刚刚学习了三种整数编码方式：原码、反码、补码，并了解到计算机存储整数通常使用补码。但他总是觉得，生活中很少用到 这么大的数，生活中常用的 这种数也同样需要用 个字节的补码表示，太浪费了些。 热爱学习的小明通过搜索，发现了一种正整数的变长编码方式。这种编码方式的规则如下： 1. 对于给定的非负整…">
+<meta property="og:url" content="https://zymojblog.top/p/B3870/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3870 [GESP202309 四级] 变长编码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小明刚刚学习了三种整数编码方式：原码、反码、补码，并了解到计算机存储整数通常使用补码。但他总是觉得，生活中很少用到 这么大的数，生活中常用的 这种数也同样需要用 个字节的补码表示，太浪费了些。 热爱学习的小明通过搜索，发现了一种正整数的变长编码方式。这种编码方式的规则如下： 1. 对于给定的非负整…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3870 [GESP202309 四级] 变长编码","headline":"B3870 [GESP202309 四级] 变长编码 题解","description":"小明刚刚学习了三种整数编码方式：原码、反码、补码，并了解到计算机存储整数通常使用补码。但他总是觉得，生活中很少用到 这么大的数，生活中常用的 这种数也同样需要用 个字节的补码表示，太浪费了些。 热爱学习的小明通过搜索，发现了一种正整数的变长编码方式。这种编码方式的规则如下： 1. 对于给定的非负整…","url":"https://zymojblog.top/p/B3870/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2023、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3870</span></div>
+  <h1 class="seo-title">B3870 [GESP202309 四级] 变长编码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 四级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3870 [GESP202309 四级] 变长编码</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-02-27</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1130">https://ti.luogu.com.cn/problemset/1130</a></p>
+<h2>题目描述</h2>
+<p>小明刚刚学习了三种整数编码方式：原码、反码、补码，并了解到计算机存储整数通常使用补码。但他总是觉得，生活中很少用到 $2^{31}-1$ 这么大的数，生活中常用的 $0\sim 100$ 这种数也同样需要用 $4$ 个字节的补码表示，太浪费了些。<br>热爱学习的小明通过搜索，发现了一种正整数的变长编码方式。这种编码方式的规则如下：</p>
+<ol>
+<li><p>对于给定的非负整数，首先将其表达为二进制形式。例如，$(0)<em>{{10}}=(0)</em>{{2}}$，$(926)<em>{{10}}=(1110011110)</em>{{2}}$。</p>
+</li>
+<li><p>将二进制数从低位到高位切分成每组 $7$ bit，不足 $7$bit 的在高位用 $0$ 填补。例如，$(0)<em>{{2}}$ 变为$0000000$ 的一组，$(1110011110)</em>{{2}}$ 变为 $0011110$ 和 $0000111$ 的两组。</p>
+</li>
+<li><p>由代表低位的组开始，为其加入最高位。如果这组是最后一组，则在最高位填上 $0$，否则在最高位填上 $1$。于是，$0$ 的变长编码为 $00000000$ 一个字节， $926$ 的变长编码为 $10011110$ 和 $00000111$ 两个字节。</p>
+</li>
+</ol>
+<p>这种编码方式可以用更少的字节表达比较小的数，也可以用很多的字节表达非常大的数。例如，$987654321012345678$ 的二进制为 $(0001101 \ 1011010 \ 0110110 \ 1001011 \ 1110100 \ 0100110 \ 1001000 \ 0010110 \ 1001110)_{{2}}$，于是它的变长编码为（十六进制表示） <code>CE 96 C8 A6 F4 CB B6 DA 0D</code>，共 $9$ 个字节。</p>
+<p>你能通过编写程序，找到一个正整数的变长编码吗？</p>
+<h2>输入格式</h2>
+<p>输入第一行，包含一个非负整数 $N$。约定 $0\le N \le 10^{18}$。</p>
+<h2>输出格式</h2>
+<p>输出一行，输出 $N$ 对应的变长编码的每个字节，每个字节均以 $2$ 位十六进制表示（其中， <code>A-F</code> 使用大写字母表示），两个字节间以空格分隔。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>00```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">926</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>9E 07```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">987654321012345678</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>CE 96 C8 A6 F4 CB B6 DA 0D```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n;
+string a=<span class="hljs-string">&quot;0123456789ABCDEF&quot;</span>;<span class="hljs-comment">//十六进制的数字</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span></span>{<span class="hljs-comment">//输出</span>
+    cout&lt;&lt;a[i/<span class="hljs-number">16</span>]&lt;&lt;a[i%<span class="hljs-number">16</span>]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">if</span>(n==<span class="hljs-number">0</span>){cout&lt;&lt;<span class="hljs-string">&quot;00&quot;</span>;<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;}<span class="hljs-comment">//0需要特判</span>
+    <span class="hljs-keyword">while</span>(n&gt;<span class="hljs-number">0</span>){
+        <span class="hljs-type">int</span> k=n%<span class="hljs-number">128</span>;<span class="hljs-comment">//2^7=128，7位一截</span>
+        n/=<span class="hljs-number">128</span>;
+        <span class="hljs-keyword">if</span>(n&gt;<span class="hljs-number">0</span>)<span class="hljs-built_in">print</span>(k+<span class="hljs-number">128</span>);<span class="hljs-comment">//判断是否为最高位</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-built_in">print</span>(k);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3870">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

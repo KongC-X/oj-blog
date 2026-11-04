@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1478 陶陶摘苹果（升级版） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="又是一年秋季时，陶陶家的苹果树结了 个果子。陶陶又跑去摘苹果，这次他有一个 公分的椅子。当他手够不着时，他会站到椅子上再试试。 这次与 NOIp2005 普及组第一题不同的是：陶陶之前搬凳子，力气只剩下 了。当然，每次摘苹果时都要用一定的力气。陶陶想知道在 之前最多能摘到多少个苹果。 现在已知 个…">
+<link rel="canonical" href="https://zymojblog.top/p/P1478/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1478 陶陶摘苹果（升级版） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="又是一年秋季时，陶陶家的苹果树结了 个果子。陶陶又跑去摘苹果，这次他有一个 公分的椅子。当他手够不着时，他会站到椅子上再试试。 这次与 NOIp2005 普及组第一题不同的是：陶陶之前搬凳子，力气只剩下 了。当然，每次摘苹果时都要用一定的力气。陶陶想知道在 之前最多能摘到多少个苹果。 现在已知 个…">
+<meta property="og:url" content="https://zymojblog.top/p/P1478/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1478 陶陶摘苹果（升级版） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="又是一年秋季时，陶陶家的苹果树结了 个果子。陶陶又跑去摘苹果，这次他有一个 公分的椅子。当他手够不着时，他会站到椅子上再试试。 这次与 NOIp2005 普及组第一题不同的是：陶陶之前搬凳子，力气只剩下 了。当然，每次摘苹果时都要用一定的力气。陶陶想知道在 之前最多能摘到多少个苹果。 现在已知 个…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1478 陶陶摘苹果（升级版）","headline":"P1478 陶陶摘苹果（升级版） 题解","description":"又是一年秋季时，陶陶家的苹果树结了 个果子。陶陶又跑去摘苹果，这次他有一个 公分的椅子。当他手够不着时，他会站到椅子上再试试。 这次与 NOIp2005 普及组第一题不同的是：陶陶之前搬凳子，力气只剩下 了。当然，每次摘苹果时都要用一定的力气。陶陶想知道在 之前最多能摘到多少个苹果。 现在已知 个…","url":"https://zymojblog.top/p/P1478/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、洛谷原创、排序、背包 DP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1478</span></div>
+  <h1 class="seo-title">P1478 陶陶摘苹果（升级版）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-5】贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1478 陶陶摘苹果（升级版）</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-05</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>洛谷原创</code>、<code>排序</code>、<code>背包 DP</code></p>
+<h2>题目描述</h2>
+<p>又是一年秋季时，陶陶家的苹果树结了 $n$ 个果子。陶陶又跑去摘苹果，这次他有一个 $a$ 公分的椅子。当他手够不着时，他会站到椅子上再试试。</p>
+<p>这次与 NOIp2005 普及组第一题不同的是：陶陶之前搬凳子，力气只剩下 $s$ 了。当然，每次摘苹果时都要用一定的力气。陶陶想知道在 $s&lt;0$ 之前最多能摘到多少个苹果。</p>
+<p>现在已知 $n$ 个苹果到达地上的高度 $x_i$，椅子的高度 $a$，陶陶手伸直的最大长度 $b$，陶陶所剩的力气 $s$，陶陶摘一个苹果需要的力气 $y_i$，求陶陶最多能摘到多少个苹果。</p>
+<h2>输入格式</h2>
+<p>第 $1$ 行：两个数 苹果数 $n$，力气 $s$。</p>
+<p>第 $2$ 行：两个数 椅子的高度 $a$，陶陶手伸直的最大长度 $b$。</p>
+<p>第 $3$ 行~第 $3+n-1$ 行：每行两个数 苹果高度 $x_i$，摘这个苹果需要的力气 $y_i$。</p>
+<h2>输出格式</h2>
+<p>只有一个整数，表示陶陶最多能摘到的苹果数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span> <span class="hljs-number">15</span>
+<span class="hljs-number">20</span> <span class="hljs-number">130</span>
+<span class="hljs-number">120</span> <span class="hljs-number">3</span>
+<span class="hljs-number">150</span> <span class="hljs-number">2</span>
+<span class="hljs-number">110</span> <span class="hljs-number">7</span>
+<span class="hljs-number">180</span> <span class="hljs-number">1</span>
+<span class="hljs-number">50</span> <span class="hljs-number">8</span>
+<span class="hljs-number">200</span> <span class="hljs-number">0</span>
+<span class="hljs-number">140</span> <span class="hljs-number">3</span>
+<span class="hljs-number">120</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>4```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 苹果结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Apple</span> {
+    <span class="hljs-type">int</span> h;  <span class="hljs-comment">// 高度</span>
+    <span class="hljs-type">int</span> c;  <span class="hljs-comment">// 花费力气</span>
+};
+
+<span class="hljs-comment">// 比较函数：按花费力气升序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">const</span> Apple &amp;a, <span class="hljs-type">const</span> Apple &amp;b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.c &lt; b.c;
+}
+
+Apple all[<span class="hljs-number">5005</span>];    <span class="hljs-comment">// 所有苹果</span>
+Apple ok[<span class="hljs-number">5005</span>];     <span class="hljs-comment">// 可摘的苹果</span>
+<span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 可摘苹果数量</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, s;       <span class="hljs-comment">// 苹果数，剩余力气</span>
+    <span class="hljs-type">int</span> a, b;       <span class="hljs-comment">// 椅子高度，手臂长度</span>
+    
+    cin &gt;&gt; n &gt;&gt; s;
+    cin &gt;&gt; a &gt;&gt; b;
+    
+    <span class="hljs-type">int</span> max_h = a + b;  <span class="hljs-comment">// 能够到的最大高度</span>
+    
+    <span class="hljs-comment">// 读入所有苹果</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; all[i].h &gt;&gt; all[i].c;
+    }
+    
+    <span class="hljs-comment">// 筛选可摘的苹果</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (all[i].h &lt;= max_h) {
+            ok[cnt].h = all[i].h;
+            ok[cnt].c = all[i].c;
+            cnt++;
+        }
+    }
+    
+    <span class="hljs-comment">// 按花费力气排序（贪心：先摘花费力气小的）</span>
+    <span class="hljs-built_in">sort</span>(ok, ok + cnt, cmp);
+    
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 摘到的苹果数</span>
+    <span class="hljs-type">int</span> left = s;       <span class="hljs-comment">// 剩余力气</span>
+    
+    <span class="hljs-comment">// 贪心摘苹果</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cnt; i++) {
+        <span class="hljs-keyword">if</span> (left &gt;= ok[i].c) {  <span class="hljs-comment">// 力气足够</span>
+            ans++;               <span class="hljs-comment">// 摘到苹果</span>
+            left -= ok[i].c;     <span class="hljs-comment">// 消耗力气</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">break</span>;               <span class="hljs-comment">// 力气不够，结束</span>
+        }
+    }
+    
+    cout &lt;&lt; ans &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1478">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3773 [信息与未来 2022] 完美字符串 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="你可能见过下面这一句英文： &quot;The quick brown fox jumps over the lazy dog.&quot; 短短的一句话就包含了所有 个英文字母！因此这句话广泛地用于字体效果的展示。更短的还有： &quot;The five boxing wizards jump quickly.&quot; 所以你很…">
+<link rel="canonical" href="https://zymojblog.top/p/B3773/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3773 [信息与未来 2022] 完美字符串 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="你可能见过下面这一句英文： &quot;The quick brown fox jumps over the lazy dog.&quot; 短短的一句话就包含了所有 个英文字母！因此这句话广泛地用于字体效果的展示。更短的还有： &quot;The five boxing wizards jump quickly.&quot; 所以你很…">
+<meta property="og:url" content="https://zymojblog.top/p/B3773/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3773 [信息与未来 2022] 完美字符串 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="你可能见过下面这一句英文： &quot;The quick brown fox jumps over the lazy dog.&quot; 短短的一句话就包含了所有 个英文字母！因此这句话广泛地用于字体效果的展示。更短的还有： &quot;The five boxing wizards jump quickly.&quot; 所以你很…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3773 [信息与未来 2022] 完美字符串","headline":"B3773 [信息与未来 2022] 完美字符串 题解","description":"你可能见过下面这一句英文： \"The quick brown fox jumps over the lazy dog.\" 短短的一句话就包含了所有 个英文字母！因此这句话广泛地用于字体效果的展示。更短的还有： \"The five boxing wizards jump quickly.\" 所以你很…","url":"https://zymojblog.top/p/B3773/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"2022、江苏、双指针 two-pointer、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3773</span></div>
+  <h1 class="seo-title">B3773 [信息与未来 2022] 完美字符串</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88%20two-pointer">双指针 two-pointer</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3773 [信息与未来 2022] 完美字符串</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>江苏</code>、<code>双指针 two-pointer</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>你可能见过下面这一句英文：</p>
+<blockquote>
+<p>&quot;The quick brown fox jumps over the lazy dog.&quot;</p>
+</blockquote>
+<p>短短的一句话就包含了所有 $26$ 个英文字母！因此这句话广泛地用于字体效果的展示。更短的还有：</p>
+<blockquote>
+<p>&quot;The five boxing wizards jump quickly.&quot;</p>
+</blockquote>
+<p>所以你很好奇：还有没有更多这样包含所有 $26$ 个英文字母的句子？于是你用爬虫在互联网上爬取了许多英文文本，并且提取出了其中的单词。你现在希望从一个很长的单词序列中找出<strong>一段连续出现的</strong>单词，它满足：</p>
+<ul>
+<li>所有 $26$ 个英文字母都至少出现一次；</li>
+<li>长度尽可能短，即包含的字母总数尽可能少。</li>
+</ul>
+<h2>输入格式</h2>
+<p>输入的第一行包含一个整数 $n$，代表单词序列的长度，即单词的数量。</p>
+<p>输入的第二行包含 $n$ 个空格分隔的英文单词（<strong>单词仅由小写字母构成</strong>）。输入数据保证每个小写英文字母都至少出现一次。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，是你找到的单词序列中的字母总数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">13</span>
+there is a quick brown fox jumping over the lazy dog <span class="hljs-keyword">and</span> cat```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>37```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 我们使用滑动窗口（双指针）解决这个问题。核心思想是：</span>
+<span class="hljs-comment">// 维护一个包含所有26个字母的窗口，并在保证包含所有字母的前提下，尽可能缩小窗口长度（字母总数）。</span>
+<span class="hljs-comment">// 具体步骤如下：</span>
+<span class="hljs-comment">// 预处理：读入所有单词，存储到字符串数组中。</span>
+<span class="hljs-comment">// 滑动窗口：</span>
+<span class="hljs-comment">// 右指针 r 逐个将单词加入窗口，更新字母计数 cnt[26] 和不同字母数 t，并累加窗口内字母总数 sum。</span>
+<span class="hljs-comment">// 当 t == 26 时，说明窗口已包含所有字母，尝试右移左指针 l 缩小窗口：</span>
+<span class="hljs-comment">// 如果移除单词 l 后仍然包含所有字母，则移除并更新计数和 sum，直到不能移除为止。期间用 sum 更新答案。</span>
+<span class="hljs-comment">// 输出答案：遍历结束后输出最小的 sum。</span>
+
+<span class="hljs-type">int</span> n;
+string w[<span class="hljs-number">100010</span>];
+<span class="hljs-type">int</span> a[<span class="hljs-number">26</span>];          <span class="hljs-comment">// 各字母在窗口内的出现次数</span>
+<span class="hljs-type">int</span> t = <span class="hljs-number">0</span>;                  <span class="hljs-comment">// 窗口内不同字母数</span>
+
+<span class="hljs-comment">// 向窗口添加单词</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; w[n].<span class="hljs-built_in">length</span>(); i++) {
+        <span class="hljs-type">char</span> c = w[n][i];
+        <span class="hljs-type">int</span> m = c - <span class="hljs-string">&#x27;a&#x27;</span>;
+        <span class="hljs-keyword">if</span> (a[m] == <span class="hljs-number">0</span>) t++;
+        a[m]++;
+    }
+}
+
+<span class="hljs-comment">// 从窗口移除单词</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">remove</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; w[n].<span class="hljs-built_in">length</span>(); i++) {
+        <span class="hljs-type">char</span> c = w[n][i];
+        <span class="hljs-type">int</span> m = c - <span class="hljs-string">&#x27;a&#x27;</span>;
+        a[m]--;
+        <span class="hljs-keyword">if</span> (a[m] == <span class="hljs-number">0</span>) t--;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; w[i];
+
+    <span class="hljs-type">int</span> l = <span class="hljs-number">0</span>, sum = <span class="hljs-number">0</span>, ans = <span class="hljs-number">1e9</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; n; r++) {
+        <span class="hljs-built_in">add</span>(r);
+        sum += w[r].<span class="hljs-built_in">length</span>();
+        <span class="hljs-keyword">while</span> (t == <span class="hljs-number">26</span>) {          <span class="hljs-comment">// 窗口满足条件，尝试缩小</span>
+            <span class="hljs-keyword">if</span> (sum &lt; ans) ans = sum;
+            sum -= w[l].<span class="hljs-built_in">length</span>();
+            <span class="hljs-built_in">remove</span>(l);
+            l++;
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3773">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

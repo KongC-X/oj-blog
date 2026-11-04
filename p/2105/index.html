@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2105 不太甜的糖果 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小Y走啊走啊，翻山越岭、跋山涉水，终于，小Y累了。虽然，糖果的诱惑强大，但他的两条腿已经不听使唤，只能坐在地上叹气，内心无比焦急…… 突然眼前一黑，小Y没有昏过去，但是眼前出现了一个糖人。在这无人之地，小Y没有别的办法，只得求助糖人。 善良的糖人没法拒绝小Y的请求，但还要遵守这个世界的规则，所以，…">
+<link rel="canonical" href="https://zymojblog.top/p/2105/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2105 不太甜的糖果 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小Y走啊走啊，翻山越岭、跋山涉水，终于，小Y累了。虽然，糖果的诱惑强大，但他的两条腿已经不听使唤，只能坐在地上叹气，内心无比焦急…… 突然眼前一黑，小Y没有昏过去，但是眼前出现了一个糖人。在这无人之地，小Y没有别的办法，只得求助糖人。 善良的糖人没法拒绝小Y的请求，但还要遵守这个世界的规则，所以，…">
+<meta property="og:url" content="https://zymojblog.top/p/2105/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2105 不太甜的糖果 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小Y走啊走啊，翻山越岭、跋山涉水，终于，小Y累了。虽然，糖果的诱惑强大，但他的两条腿已经不听使唤，只能坐在地上叹气，内心无比焦急…… 突然眼前一黑，小Y没有昏过去，但是眼前出现了一个糖人。在这无人之地，小Y没有别的办法，只得求助糖人。 善良的糖人没法拒绝小Y的请求，但还要遵守这个世界的规则，所以，…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2105 不太甜的糖果","headline":"2105 不太甜的糖果 题解","description":"小Y走啊走啊，翻山越岭、跋山涉水，终于，小Y累了。虽然，糖果的诱惑强大，但他的两条腿已经不听使唤，只能坐在地上叹气，内心无比焦急…… 突然眼前一黑，小Y没有昏过去，但是眼前出现了一个糖人。在这无人之地，小Y没有别的办法，只得求助糖人。 善良的糖人没法拒绝小Y的请求，但还要遵守这个世界的规则，所以，…","url":"https://zymojblog.top/p/2105/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二分答案、前缀和差分、动态规划、双指针","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2105</span></div>
+  <h1 class="seo-title">2105 不太甜的糖果</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86%E7%AD%94%E6%A1%88">二分答案</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C%E5%B7%AE%E5%88%86">前缀和差分</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88">双指针</a></div>
+  <article class="markdown-body seo-article">
+<h1>2105 - 不太甜的糖果</h1>
+<h2>题目描述</h2>
+<p>小Y走啊走啊，翻山越岭、跋山涉水，终于，小Y累了。虽然，糖果的诱惑强大，但他的两条腿已经不听使唤，只能坐在地上叹气，内心无比焦急……</p>
+<p>突然眼前一黑，小Y没有昏过去，但是眼前出现了一个糖人。在这无人之地，小Y没有别的办法，只得求助糖人。</p>
+<p>善良的糖人没法拒绝小Y的请求，但还要遵守这个世界的规则，所以，小Y不能”不劳而获”，但小Y现在已经没有力气。糖人只让他玩一个小小的游戏，完成这个游戏，小Y才能获得补充能量，继续前进。</p>
+<p>但是，小Y满脑子都是糖果，他没有心思玩游戏，只想着吃糖。所以，他向你求助。</p>
+<p>游戏的规则是这样的：<br>给定一排长度为 $n$ 的糖果串，每个糖果有一个甜度；在不改变糖果顺序的前提下，求出一个最短的糖果串使得它的甜度之和大于等于 $m$ 。</p>
+<h2>输入</h2>
+<p>第一行包含两个数 $n$ 和 $m$，第二行有 $n$ 个数。</p>
+<h2>输出</h2>
+<p>输出一行，包含一个数，即最短的糖果串的长度；如果找不到这样的糖果串，输出 $0$。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+关键信息：
+给定一排长度为n的糖果串，每个糖果有一个甜度；
+在不改变糖果顺序的前提下，求出一个最短的糖果串使得它的甜度之和大于等于m
+
+题目原意：
+给定一个数组，求最短的字符串，使得 元素之和 &gt;= m
+
+归纳法！
+要考虑特殊情况！
+
+由此，可构建出伪代码：
+
+//穷举所有可能出现的长度
+for (len = 1 ~ n){
+    //从每个数开始求连续len个数的和
+    //穷举每个数的开头
+    for (i = 1 ~ n - len + 1){
+        //用前缀和优化
+    }
+}
+
+解题关键：
+1、二分可能的长度（知识点：二分）
+2、用前缀和求区间和 （知识点：前缀和）
+*/</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">230010</span>;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[N], f[N];
+<span class="hljs-type">int</span> n, m;
+
+<span class="hljs-comment">// 检验字串长度为mid的情况下，子串和是否可能 &gt;= m</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> mid)</span> </span>{
+    <span class="hljs-comment">// 从每个可能的开头开始求连续mid个数的和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n - mid + <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-comment">// 区间范围：i ~ i + mid - 1</span>
+        <span class="hljs-keyword">if</span> (f[i + mid - <span class="hljs-number">1</span>] - f[i - <span class="hljs-number">1</span>] &gt;= m)
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 找到了满足条件的子串</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 没有找到满足条件的子串</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-number">0</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; a[i];
+        <span class="hljs-comment">// 求前缀和</span>
+        f[i] = f[i - <span class="hljs-number">1</span>] + a[i];
+    }
+
+    <span class="hljs-comment">// 二分可能的长度</span>
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n, ans = n + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (l &lt;= r) {
+        <span class="hljs-type">int</span> mid = (l + r) / <span class="hljs-number">2</span>;
+        <span class="hljs-comment">// 如果长度为mid的字串和满足 &gt;= m</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)) {
+            ans = mid; <span class="hljs-comment">// 更新答案</span>
+            r = mid - <span class="hljs-number">1</span>; <span class="hljs-comment">// 缩小右边界</span>
+        }
+        <span class="hljs-keyword">else</span> {
+            l = mid + <span class="hljs-number">1</span>; <span class="hljs-comment">// 扩大左边界</span>
+        }
+    }
+
+    <span class="hljs-comment">// 如果找不到这样的串，输出0</span>
+    <span class="hljs-keyword">if</span> (ans == n + <span class="hljs-number">1</span>) cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+    <span class="hljs-keyword">else</span> cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2105">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

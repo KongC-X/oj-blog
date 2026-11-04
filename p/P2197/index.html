@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2197 【模板】Nim 游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="甲，乙两个人玩 Nim 取石子游戏。 Nim 游戏的规则是这样的：地上有 堆石子，每人每次可从任意一堆石子里取出任意多枚石子扔掉，可以取完，不能不取。每次只能从一堆里取。最后没石子可取的人就输了。假如甲是先手，且告诉你这 堆石子的数量，他想知道是否存在先手必胜的策略。">
+<link rel="canonical" href="https://zymojblog.top/p/P2197/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2197 【模板】Nim 游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="甲，乙两个人玩 Nim 取石子游戏。 Nim 游戏的规则是这样的：地上有 堆石子，每人每次可从任意一堆石子里取出任意多枚石子扔掉，可以取完，不能不取。每次只能从一堆里取。最后没石子可取的人就输了。假如甲是先手，且告诉你这 堆石子的数量，他想知道是否存在先手必胜的策略。">
+<meta property="og:url" content="https://zymojblog.top/p/P2197/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2197 【模板】Nim 游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="甲，乙两个人玩 Nim 取石子游戏。 Nim 游戏的规则是这样的：地上有 堆石子，每人每次可从任意一堆石子里取出任意多枚石子扔掉，可以取完，不能不取。每次只能从一堆里取。最后没石子可取的人就输了。假如甲是先手，且告诉你这 堆石子的数量，他想知道是否存在先手必胜的策略。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2197 【模板】Nim 游戏","headline":"P2197 【模板】Nim 游戏 题解","description":"甲，乙两个人玩 Nim 取石子游戏。 Nim 游戏的规则是这样的：地上有 堆石子，每人每次可从任意一堆石子里取出任意多枚石子扔掉，可以取完，不能不取。每次只能从一堆里取。最后没石子可取的人就输了。假如甲是先手，且告诉你这 堆石子的数量，他想知道是否存在先手必胜的策略。","url":"https://zymojblog.top/p/P2197/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"博弈论、SG 函数、模板题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2197</span></div>
+  <h1 class="seo-title">P2197 【模板】Nim 游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8D%9A%E5%BC%88%E8%AE%BA">博弈论</a><a class="seo-tag" href="/#/tag/SG%20%E5%87%BD%E6%95%B0">SG 函数</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%9D%BF%E9%A2%98">模板题</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2197 【模板】Nim 游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-07-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>博弈论</code>、<code>SG 函数</code>、<code>模板题</code></p>
+<h2>题目描述</h2>
+<p>甲，乙两个人玩 Nim 取石子游戏。</p>
+<p>Nim 游戏的规则是这样的：地上有 $n$ 堆石子，每人每次可从任意一堆石子里取出任意多枚石子扔掉，可以取完，不能不取。每次只能从一堆里取。最后没石子可取的人就输了。假如甲是先手，且告诉你这 $n$ 堆石子的数量，他想知道是否存在先手必胜的策略。</p>
+<h2>输入格式</h2>
+<p><strong>本题有多组测试数据。</strong></p>
+<p>第一行一个整数 $T$，表示有 $T$ 组数据。</p>
+<p>接下来每两行是一组数据：</p>
+<ul>
+<li>第一行一个整数 $n$，表示有 $n$ 堆石子；</li>
+<li>第二行有 $n$ 个非负整数，表示每一堆石子的数量。</li>
+</ul>
+<h2>输出格式</h2>
+<p>共 $T$ 行，每行表示如果对于这组数据存在先手必胜策略则输出 <code>Yes</code>，否则输出 <code>No</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>No<br>Yes```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：Nim 游戏模板题
+      结论：所有堆石子数量的异或和不为 0 时，先手必胜；否则先手必败。
+      因为只有将所有石子数异或起来不等于0，先手才能通过一次操作将其变为0，
+      从而使自己处于必胜态。
+    */</span>
+    <span class="hljs-type">int</span> T;
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        <span class="hljs-type">int</span> n;
+        cin &gt;&gt; n;
+        <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 异或和</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-type">int</span> a;
+            cin &gt;&gt; a;
+            x ^= a;
+        }
+        <span class="hljs-keyword">if</span> (x != <span class="hljs-number">0</span>) {
+            cout &lt;&lt; <span class="hljs-string">&quot;Yes&quot;</span> &lt;&lt; endl;
+        } <span class="hljs-keyword">else</span> {
+            cout &lt;&lt; <span class="hljs-string">&quot;No&quot;</span> &lt;&lt; endl;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2197">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

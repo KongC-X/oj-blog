@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2121 最长最短单词 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="输入 行句子（不多于 个单词，每个单词长度不超过 ，只包含字母、空格、逗号和句号。单词由至少一个连续的字母构成，空格、逗号和句号都是单词间的间隔。 输出第 个最长的单词和第 个最短单词。">
+<link rel="canonical" href="https://zymojblog.top/p/B2121/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2121 最长最短单词 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="输入 行句子（不多于 个单词，每个单词长度不超过 ，只包含字母、空格、逗号和句号。单词由至少一个连续的字母构成，空格、逗号和句号都是单词间的间隔。 输出第 个最长的单词和第 个最短单词。">
+<meta property="og:url" content="https://zymojblog.top/p/B2121/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2121 最长最短单词 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="输入 行句子（不多于 个单词，每个单词长度不超过 ，只包含字母、空格、逗号和句号。单词由至少一个连续的字母构成，空格、逗号和句号都是单词间的间隔。 输出第 个最长的单词和第 个最短单词。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2121 最长最短单词","headline":"B2121 最长最短单词 题解","description":"输入 行句子（不多于 个单词，每个单词长度不超过 ，只包含字母、空格、逗号和句号。单词由至少一个连续的字母构成，空格、逗号和句号都是单词间的间隔。 输出第 个最长的单词和第 个最短单词。","url":"https://zymojblog.top/p/B2121/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串（入门）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2121</span></div>
+  <h1 class="seo-title">B2121 最长最短单词</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2121 最长最短单词</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串（入门）</code></p>
+<h2>题目描述</h2>
+<p>输入 $1$ 行句子（不多于 $200$ 个单词，每个单词长度不超过 $100)$，只包含字母、空格、逗号和句号。单词由至少一个连续的字母构成，空格、逗号和句号都是单词间的间隔。</p>
+<p>输出第 $1$ 个最长的单词和第 $1$ 个最短单词。</p>
+<h2>输出格式</h2>
+<p>输出数据：</p>
+<p>第 $1$ 行，第一个最长的单词。</p>
+<p>第 $2$ 行，第一个最短的单词。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">I am a student,i am studying Programming language C in Peking University.```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Programming<br>I```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 1. 读入一行句子（包含空格、逗号、句号等）。</span>
+    <span class="hljs-comment">// 2. 逐个字符遍历，字母则累加到当前单词 cur 中。</span>
+    <span class="hljs-comment">// 3. 遇到非字母（分隔符或结束符）时，如果 cur 非空，则一个单词结束。</span>
+    <span class="hljs-comment">//    获取该单词长度，更新最长/最短单词（都是取第一个出现的）。</span>
+    <span class="hljs-comment">// 4. 循环结束后输出最长和最短单词（各占一行）。</span>
+    <span class="hljs-comment">// 注意：需要将单词长度转为 int 再与 max_len/min_len 比较，避免无符号数与负数比较的问题。</span>
+
+    string s;
+    <span class="hljs-built_in">getline</span>(cin, s);
+
+    <span class="hljs-type">int</span> max_len = <span class="hljs-number">-1</span>;              <span class="hljs-comment">// 最长单词长度，初始 -1 保证第一次必定更新</span>
+    <span class="hljs-type">int</span> min_len = <span class="hljs-number">1000</span>;            <span class="hljs-comment">// 最短单词长度，初始设一个大于最大可能长度的值（单词长度 &lt;= 100）</span>
+    string max_word, min_word;     <span class="hljs-comment">// 对应的单词</span>
+    string cur = <span class="hljs-string">&quot;&quot;</span>;               <span class="hljs-comment">// 当前正在构建的单词</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= s.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-type">char</span> c = s[i];             <span class="hljs-comment">// 当 i == s.size() 时 c 为 &#x27;\0&#x27;，作为结束标志</span>
+        <span class="hljs-keyword">if</span> ((c &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) || (c &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>)) {
+            cur += c;              <span class="hljs-comment">// 字母则追加</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 非字母（分隔符或结束符）且 cur 非空，说明一个单词刚结束</span>
+            <span class="hljs-keyword">if</span> (!cur.<span class="hljs-built_in">empty</span>()) {
+                <span class="hljs-type">int</span> len = cur.<span class="hljs-built_in">size</span>();   <span class="hljs-comment">// 将 size_t 转为 int，单词长度 &lt;= 100，安全</span>
+                <span class="hljs-keyword">if</span> (len &gt; max_len) {    <span class="hljs-comment">// 更新最长单词（第一次找到或更长）</span>
+                    max_len = len;
+                    max_word = cur;
+                }
+                <span class="hljs-keyword">if</span> (len &lt; min_len) {    <span class="hljs-comment">// 更新最短单词（第一次找到或更短）</span>
+                    min_len = len;
+                    min_word = cur;
+                }
+                cur = <span class="hljs-string">&quot;&quot;</span>;              <span class="hljs-comment">// 清空，准备下一个单词</span>
+            }
+        }
+    }
+
+    cout &lt;&lt; max_word &lt;&lt; endl;
+    cout &lt;&lt; min_word &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2121">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

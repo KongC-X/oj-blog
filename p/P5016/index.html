@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5016 [NOIP 2018 普及组] 龙虎斗 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="轩轩和凯凯正在玩一款叫《龙虎斗》的游戏，游戏的棋盘是一条线段，线段上有 个兵营（自左至右编号 ），相邻编号的兵营之间相隔 厘米，即棋盘为长度为 厘米的线段。 号兵营里有 位工兵。下面图 1 为 的示例： 轩轩在左侧，代表“龙”；凯凯在右侧，代表“虎”。 他们以 号兵营作为分界， 靠左的工兵属于龙势…">
+<link rel="canonical" href="https://zymojblog.top/p/P5016/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5016 [NOIP 2018 普及组] 龙虎斗 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="轩轩和凯凯正在玩一款叫《龙虎斗》的游戏，游戏的棋盘是一条线段，线段上有 个兵营（自左至右编号 ），相邻编号的兵营之间相隔 厘米，即棋盘为长度为 厘米的线段。 号兵营里有 位工兵。下面图 1 为 的示例： 轩轩在左侧，代表“龙”；凯凯在右侧，代表“虎”。 他们以 号兵营作为分界， 靠左的工兵属于龙势…">
+<meta property="og:url" content="https://zymojblog.top/p/P5016/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5016 [NOIP 2018 普及组] 龙虎斗 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="轩轩和凯凯正在玩一款叫《龙虎斗》的游戏，游戏的棋盘是一条线段，线段上有 个兵营（自左至右编号 ），相邻编号的兵营之间相隔 厘米，即棋盘为长度为 厘米的线段。 号兵营里有 位工兵。下面图 1 为 的示例： 轩轩在左侧，代表“龙”；凯凯在右侧，代表“虎”。 他们以 号兵营作为分界， 靠左的工兵属于龙势…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5016 [NOIP 2018 普及组] 龙虎斗","headline":"P5016 [NOIP 2018 普及组] 龙虎斗 题解","description":"轩轩和凯凯正在玩一款叫《龙虎斗》的游戏，游戏的棋盘是一条线段，线段上有 个兵营（自左至右编号 ），相邻编号的兵营之间相隔 厘米，即棋盘为长度为 厘米的线段。 号兵营里有 位工兵。下面图 1 为 的示例： 轩轩在左侧，代表“龙”；凯凯在右侧，代表“虎”。 他们以 号兵营作为分界， 靠左的工兵属于龙势…","url":"https://zymojblog.top/p/P5016/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2018、NOIP 普及组、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5016</span></div>
+  <h1 class="seo-title">P5016 [NOIP 2018 普及组] 龙虎斗</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2018">2018</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5016 [NOIP 2018 普及组] 龙虎斗</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2018</code>、<code>NOIP 普及组</code>、<code>枚举</code></p>
+<h2>题目背景</h2>
+<p>NOIP2018 普及组 T2</p>
+<h2>题目描述</h2>
+<p>轩轩和凯凯正在玩一款叫《龙虎斗》的游戏，游戏的棋盘是一条线段，线段上有 $n$ 个兵营（自左至右编号 $1 \sim n$），相邻编号的兵营之间相隔 $1$ 厘米，即棋盘为长度为 $n-1$ 厘米的线段。$i$ 号兵营里有 $c_i$ 位工兵。下面图 1 为 $n=6$ 的示例： </p>
+<p><img src="https://cdn.luogu.com.cn/upload/pic/43224.png" alt="">    </p>
+<p>轩轩在左侧，代表“龙”；凯凯在右侧，代表“虎”。 他们以 $m$ 号兵营作为分界， 靠左的工兵属于龙势力，靠右的工兵属于虎势力，而第 $m$ 号兵营中的工兵很纠结，他们不属于任何一方。    </p>
+<p>一个兵营的气势为：该兵营中的工兵数$ \times $ 该兵营到 $m$ 号兵营的距离；参与游戏一方的势力定义为：属于这一方所有兵营的气势之和。</p>
+<p>下面图 2 为 $n = 6,m = 4$ 的示例，其中红色为龙方，黄色为虎方：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/pic/43225.png" alt="">  </p>
+<p>游戏过程中，某一刻天降神兵，共有 $s_1$ 位工兵突然出现在了 $p_1$ 号兵营。作为轩轩和凯凯的朋友，你知道如果龙虎双方气势差距太悬殊，轩轩和凯凯就不愿意继续玩下去了。为了让游戏继续，你需要选择一个兵营 $p_2$，并将你手里的 $s_2$ 位工兵全部派往兵营 $p_2$，使得双方气势差距尽可能小。 </p>
+<p> 注意：你手中的工兵落在哪个兵营，就和该兵营中其他工兵有相同的势力归属（如果落在 $m$ 号兵营，则不属于任何势力）。</p>
+<h2>输入格式</h2>
+<p>输入文件的第一行包含一个正整数 $n$，代表兵营的数量。  </p>
+<p>接下来的一行包含 $n$ 个正整数，相邻两数之间以一个空格分隔，第 $i$ 个正整数代 表编号为 $i$ 的兵营中起始时的工兵数量 $c_i$。  </p>
+<p>接下来的一行包含四个正整数，相邻两数间以一个空格分隔，分别代表 $m,p_1,s_1,s_2$。</p>
+<h2>输出格式</h2>
+<p>输出文件有一行，包含一个正整数，即 $p_2$，表示你选择的兵营编号。如果存在多个编号同时满足最优，取最小的编号。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> 
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> 
+<span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span> ```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> 
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">16</span> 
+<span class="hljs-number">5</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】模拟 + 枚举
+     * 【思路】
+     * 1. 读入 n 和 c[1..n]。
+     * 2. 读入 m, p1, s1, s2。
+     * 3. 计算龙方气势（i&lt;m）和虎方气势（i&gt;m）。
+     * 4. 加上 s1 的影响（若 p1&lt;m 则加给龙，若 p1&gt;m 则加给虎）。
+     * 5. 枚举 p2 从 1 到 n：
+     *    - 若 p2&lt;m，s2 加给龙。
+     *    - 若 p2&gt;m，s2 加给虎。
+     *    - 若 p2==m，不影响任何一方。
+     *    计算差值，取绝对值，与最优比较，取更小或相等时更小编号。
+     * 6. 输出最优 p2。
+     *
+     * 【时间复杂度】O(n)
+     */</span>
+
+    <span class="hljs-type">int</span> n;                  <span class="hljs-comment">// n: 兵营数</span>
+    cin &gt;&gt; n;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> c[<span class="hljs-number">100005</span>];    <span class="hljs-comment">// c[i]: 第 i 个兵营的工兵数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; c[i];
+    }
+
+    <span class="hljs-type">int</span> m, p;               <span class="hljs-comment">// m: 分界点, p: 神兵出现位置</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> s, t;         <span class="hljs-comment">// s: s1, t: s2</span>
+    cin &gt;&gt; m &gt;&gt; p &gt;&gt; s &gt;&gt; t;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> l = <span class="hljs-number">0</span>, r = <span class="hljs-number">0</span>; <span class="hljs-comment">// l: 龙方气势, r: 虎方气势</span>
+
+    <span class="hljs-comment">// 计算初始气势</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; m; i++) {
+        l += c[i] * (m - i);
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = m + <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        r += c[i] * (i - m);
+    }
+
+    <span class="hljs-comment">// 加上 s1 的影响</span>
+    <span class="hljs-keyword">if</span> (p &lt; m) l += s * (m - p);
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p &gt; m) r += s * (p - m);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">1</span>;          <span class="hljs-comment">// 最优 p2</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> best = <span class="hljs-number">1e18</span>;      <span class="hljs-comment">// 最优差值绝对值</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> L = l, R = r;
+        <span class="hljs-keyword">if</span> (i &lt; m) {
+            L += t * (m - i);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i &gt; m) {
+            R += t * (i - m);
+        }
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> dif = L - R;
+        <span class="hljs-keyword">if</span> (dif &lt; <span class="hljs-number">0</span>) dif = -dif;   <span class="hljs-comment">// 绝对值</span>
+        <span class="hljs-keyword">if</span> (dif &lt; best) {
+            best = dif;
+            ans = i;
+        }
+        <span class="hljs-comment">// 如果 dif 相等，因为 i 从小到大，所以不需要更新</span>
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5016">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

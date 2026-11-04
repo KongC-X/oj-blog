@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2440 木材加工 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="木材厂有 根原木，现在想把这些木头切割成 段长度均为 的小段木头（木头有可能有剩余）。 当然，我们希望得到的小段木头越长越好，请求出 的最大值。 木头长度的单位是 ，原木的长度都是正整数，我们要求切割得到的小段木头的长度也是正整数。 例如有两根原木长度分别为 和 ，要求切割成等长的 段，很明显能切…">
+<link rel="canonical" href="https://zymojblog.top/p/P2440/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2440 木材加工 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="木材厂有 根原木，现在想把这些木头切割成 段长度均为 的小段木头（木头有可能有剩余）。 当然，我们希望得到的小段木头越长越好，请求出 的最大值。 木头长度的单位是 ，原木的长度都是正整数，我们要求切割得到的小段木头的长度也是正整数。 例如有两根原木长度分别为 和 ，要求切割成等长的 段，很明显能切…">
+<meta property="og:url" content="https://zymojblog.top/p/P2440/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2440 木材加工 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="木材厂有 根原木，现在想把这些木头切割成 段长度均为 的小段木头（木头有可能有剩余）。 当然，我们希望得到的小段木头越长越好，请求出 的最大值。 木头长度的单位是 ，原木的长度都是正整数，我们要求切割得到的小段木头的长度也是正整数。 例如有两根原木长度分别为 和 ，要求切割成等长的 段，很明显能切…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2440 木材加工","headline":"P2440 木材加工 题解","description":"木材厂有 根原木，现在想把这些木头切割成 段长度均为 的小段木头（木头有可能有剩余）。 当然，我们希望得到的小段木头越长越好，请求出 的最大值。 木头长度的单位是 ，原木的长度都是正整数，我们要求切割得到的小段木头的长度也是正整数。 例如有两根原木长度分别为 和 ，要求切割成等长的 段，很明显能切…","url":"https://zymojblog.top/p/P2440/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、二分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2440</span></div>
+  <h1 class="seo-title">P2440 木材加工</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-6】二分查找与二分答案</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2440 木材加工</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>二分</code></p>
+<h2>题目描述</h2>
+<p>木材厂有 $n$ 根原木，现在想把这些木头切割成 $k$ 段长度<strong>均</strong>为 $l$ 的小段木头（木头有可能有剩余）。</p>
+<p>当然，我们希望得到的小段木头越长越好，请求出 $l$ 的最大值。</p>
+<p>木头长度的单位是 $\text{cm}$，原木的长度都是正整数，我们要求切割得到的小段木头的长度也是正整数。</p>
+<p>例如有两根原木长度分别为 $11$ 和 $21$，要求切割成等长的 $6$ 段，很明显能切割出来的小段木头长度最长为 $5$。</p>
+<h2>输入格式</h2>
+<p>第一行是两个正整数 $n,k$，分别表示原木的数量，需要得到的小段的数量。</p>
+<p>接下来 $n$ 行，每行一个正整数 $L_i$，表示一根原木的长度。</p>
+<h2>输出格式</h2>
+<p>仅一行，即 $l$ 的最大值。</p>
+<p>如果连 $\text{1cm}$ 长的小段都切不出来，输出 <code>0</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">7</span>
+<span class="hljs-number">232</span>
+<span class="hljs-number">124</span>
+<span class="hljs-number">456</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>114```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n, k;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">1000005</span>];
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> l, r, mid;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> x)</span> </span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        ans += a[i] / x;
+    }
+    <span class="hljs-keyword">return</span> ans &gt;= k;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; k;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++){
+        cin &gt;&gt; a[i];
+        r = <span class="hljs-built_in">max</span>(r, a[i]);
+    }
+    <span class="hljs-keyword">while</span> (l + <span class="hljs-number">1</span> &lt; r) {
+        mid = (l + r) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)){
+            l = mid;
+        }<span class="hljs-keyword">else</span>{
+            r = mid;
+        }
+    }
+    cout &lt;&lt; l &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+} </code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2440">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

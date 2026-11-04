@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3714 [语言月赛202302] 牵连的世界 (Easy Version) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="下面程序想要实现的功能为： 输入 和 个数，统计其中奇数的个数。 但是这个程序存在一些问题，请你提交一个程序，你提交的程序应当输出一组这道题的输入数据，使得上面的程序输出错误的结果。">
+<link rel="canonical" href="https://zymojblog.top/p/B3714/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3714 [语言月赛202302] 牵连的世界 (Easy Version) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="下面程序想要实现的功能为： 输入 和 个数，统计其中奇数的个数。 但是这个程序存在一些问题，请你提交一个程序，你提交的程序应当输出一组这道题的输入数据，使得上面的程序输出错误的结果。">
+<meta property="og:url" content="https://zymojblog.top/p/B3714/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3714 [语言月赛202302] 牵连的世界 (Easy Version) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="下面程序想要实现的功能为： 输入 和 个数，统计其中奇数的个数。 但是这个程序存在一些问题，请你提交一个程序，你提交的程序应当输出一组这道题的输入数据，使得上面的程序输出错误的结果。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3714 [语言月赛202302] 牵连的世界 (Easy Version)","headline":"B3714 [语言月赛202302] 牵连的世界 (Easy Version) 题解","description":"下面程序想要实现的功能为： 输入 和 个数，统计其中奇数的个数。 但是这个程序存在一些问题，请你提交一个程序，你提交的程序应当输出一组这道题的输入数据，使得上面的程序输出错误的结果。","url":"https://zymojblog.top/p/B3714/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2023、提交答案、Special Judge、O2优化、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3714</span></div>
+  <h1 class="seo-title">B3714 [语言月赛202302] 牵连的世界 (Easy Version)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%8F%90%E4%BA%A4%E7%AD%94%E6%A1%88">提交答案</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3714 [语言月赛202302] 牵连的世界 (Easy Version)</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-09-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>提交答案</code>、<code>Special Judge</code>、<code>O2优化</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>下面程序想要实现的功能为：</p>
+<blockquote>
+<p>输入 $n$ 和 $n$ 个数，统计其中奇数的个数。</p>
+</blockquote>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+  <span class="hljs-type">int</span> n, ans = <span class="hljs-number">0</span>;
+  cin &gt;&gt; n;
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>, x; i &lt;= n; i++) {
+    cin &gt;&gt; x;
+    <span class="hljs-keyword">if</span>(x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) ++ans;
+  }
+  cout &lt;&lt; ans &lt;&lt; endl;
+}</code></pre><p>但是这个程序存在一些问题，请你提交一个程序，<strong>你提交的程序应当输出一组这道题的输入数据，使得上面的程序输出错误的结果</strong>。</p>
+<h2>输出格式</h2>
+<p>你提交的程序输出的输入数据应当符合下面的格式：</p>
+<blockquote>
+<p>$n$</p>
+<p>$a_1\ a_2\ \cdots \ a_n$</p>
+</blockquote>
+<p>第一行为一个整数 $n(1 \le n \le 1000)$。</p>
+<p>第二行为 $n$ 个整数 $a_i(-10^6 \le a_i \le 10^6)$，每两个整数之间由一个空格隔开。</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3714 [语言月赛202302] 牵连的世界 (Easy Version)
+     * 要求：输出一组输入数据，使得给定程序（统计奇数个数）输出错误结果。
+     *
+     * 给定程序中判断奇数的条件是 x % 2 == 1。
+     * 在 C++ 中，负数取模结果可能为负，例如 -1 % 2 = -1，不等于 1。
+     * 因此负数奇数会被漏掉。
+     *
+     * 我们只需构造一个包含负数奇数的输入，例如 n=1, a[1]=-1。
+     * 正确的奇数个数是 1，但程序会输出 0，结果错误。
+     */</span>
+    cout &lt;&lt; <span class="hljs-number">1</span> &lt;&lt; endl;
+    cout &lt;&lt; <span class="hljs-number">-1</span> &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3714">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

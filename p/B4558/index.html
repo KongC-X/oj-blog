@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4558 [GESP202606 四级] 身高体重指数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个人的身高体重指数（BMI）等于其体重（千克为单位）除以其身高（米为单位）的平方。 例如，一个体重为 ，身高为 的人的身高体重指数为 。 现在有 个小朋友，第 个小朋友的编号为 ，体重为 ，身高为 。 请按照身高体重指数从高到低为小朋友们排序，数据保证不存在两个小朋友的身高体重指数完全相同。输出…">
+<link rel="canonical" href="https://zymojblog.top/p/B4558/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4558 [GESP202606 四级] 身高体重指数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个人的身高体重指数（BMI）等于其体重（千克为单位）除以其身高（米为单位）的平方。 例如，一个体重为 ，身高为 的人的身高体重指数为 。 现在有 个小朋友，第 个小朋友的编号为 ，体重为 ，身高为 。 请按照身高体重指数从高到低为小朋友们排序，数据保证不存在两个小朋友的身高体重指数完全相同。输出…">
+<meta property="og:url" content="https://zymojblog.top/p/B4558/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4558 [GESP202606 四级] 身高体重指数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个人的身高体重指数（BMI）等于其体重（千克为单位）除以其身高（米为单位）的平方。 例如，一个体重为 ，身高为 的人的身高体重指数为 。 现在有 个小朋友，第 个小朋友的编号为 ，体重为 ，身高为 。 请按照身高体重指数从高到低为小朋友们排序，数据保证不存在两个小朋友的身高体重指数完全相同。输出…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4558 [GESP202606 四级] 身高体重指数","headline":"B4558 [GESP202606 四级] 身高体重指数 题解","description":"一个人的身高体重指数（BMI）等于其体重（千克为单位）除以其身高（米为单位）的平方。 例如，一个体重为 ，身高为 的人的身高体重指数为 。 现在有 个小朋友，第 个小朋友的编号为 ，体重为 ，身高为 。 请按照身高体重指数从高到低为小朋友们排序，数据保证不存在两个小朋友的身高体重指数完全相同。输出…","url":"https://zymojblog.top/p/B4558/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"排序、2026、结构体、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4558</span></div>
+  <h1 class="seo-title">B4558 [GESP202606 四级] 身高体重指数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4558 [GESP202606 四级] 身高体重指数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>排序</code>、<code>2026</code>、<code>结构体</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>一个人的身高体重指数（BMI）等于其体重（千克为单位）除以其身高（米为单位）的平方。</p>
+<p>例如，一个体重为 $50\text{ kg}$，身高为 $1.6\text{ m}$ 的人的身高体重指数为 $50\text{ kg}/1.6\text{ m}/1.6\text{ m} = 19.53125\text{ kg/m}^2$。</p>
+<p>现在有 $n$ 个小朋友，第 $i$ 个小朋友的编号为 $i$，体重为 $w_i$，身高为 $h_i$。</p>
+<p>请按照身高体重指数从高到低为小朋友们排序，数据保证不存在两个小朋友的身高体重指数完全相同。输出排序后小朋友的编号。</p>
+<h2>输入格式</h2>
+<p>输入 $3$ 行，</p>
+<p>第一行为一个正整数 $n$，表示小朋友的个数；</p>
+<p>第二行为 $n$ 个整数 $w_1, w_2, \cdots, w_n$ 表示小朋友们的体重，单位为 $\text{kg}$；</p>
+<p>第三行为 $n$ 个浮点数 $h_1, h_2, \cdots, h_n$ 表示小朋友们的身高，单位为 $\text{m}$。</p>
+<h2>输出格式</h2>
+<p>输出一行 $n$ 个数，表示按照身高体重指数从高到低排序后的编号。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">45</span> <span class="hljs-number">33</span> <span class="hljs-number">39</span>
+<span class="hljs-number">1.55</span> <span class="hljs-number">1.33</span> <span class="hljs-number">1.44</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3 1 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Kid</span> {
+    <span class="hljs-type">int</span> id;            <span class="hljs-comment">// 小朋友编号</span>
+    <span class="hljs-type">double</span> bmi;        <span class="hljs-comment">// 身高体重指数</span>
+};
+
+<span class="hljs-comment">// 按 BMI 降序排序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Kid a, Kid b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.bmi &gt; b.bmi;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// n: 小朋友个数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">int</span> w[<span class="hljs-number">1005</span>];               <span class="hljs-comment">// 体重（kg）</span>
+    <span class="hljs-type">double</span> h[<span class="hljs-number">1005</span>];            <span class="hljs-comment">// 身高（m）</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; w[i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; h[i];
+    }
+
+    Kid a[<span class="hljs-number">1005</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        a[i].id = i;
+        a[i].bmi = w[i] / (h[i] * h[i]);   <span class="hljs-comment">// BMI = 体重 / 身高²</span>
+    }
+
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + n + <span class="hljs-number">1</span>, cmp);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cout &lt;&lt; a[i].id;
+        <span class="hljs-keyword">if</span> (i &lt; n) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+    }
+    cout &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4558">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

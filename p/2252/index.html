@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2252 判断整除 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个给定的正整数序列，在每个数之前都插入+号或-号后计算它们的和。比如序列：1、2、4共有8种可能的序列： (+1) + (+2) + (+4) = 7 (+1) + (+2) + (-4) = -1 (+1) + (-2) + (+4) = 3 (+1) + (-2) + (-4) = -5 (…">
+<link rel="canonical" href="https://zymojblog.top/p/2252/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2252 判断整除 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个给定的正整数序列，在每个数之前都插入+号或-号后计算它们的和。比如序列：1、2、4共有8种可能的序列： (+1) + (+2) + (+4) = 7 (+1) + (+2) + (-4) = -1 (+1) + (-2) + (+4) = 3 (+1) + (-2) + (-4) = -5 (…">
+<meta property="og:url" content="https://zymojblog.top/p/2252/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2252 判断整除 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个给定的正整数序列，在每个数之前都插入+号或-号后计算它们的和。比如序列：1、2、4共有8种可能的序列： (+1) + (+2) + (+4) = 7 (+1) + (+2) + (-4) = -1 (+1) + (-2) + (+4) = 3 (+1) + (-2) + (-4) = -5 (…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2252 判断整除","headline":"2252 判断整除 题解","description":"一个给定的正整数序列，在每个数之前都插入+号或-号后计算它们的和。比如序列：1、2、4共有8种可能的序列： (+1) + (+2) + (+4) = 7 (+1) + (+2) + (-4) = -1 (+1) + (-2) + (+4) = 3 (+1) + (-2) + (-4) = -5 (…","url":"https://zymojblog.top/p/2252/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2252</span></div>
+  <h1 class="seo-title">2252 判断整除</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2252 - 判断整除</h1>
+<h2>题目描述</h2>
+<p>一个给定的正整数序列，在每个数之前都插入+号或-号后计算它们的和。比如序列：1、2、4共有8种可能的序列： (+1) + (+2) + (+4) = 7 (+1) + (+2) + (-4) = -1 (+1) + (-2) + (+4) = 3 (+1) + (-2) + (-4) = -5 (-1) + (+2) + (+4) = 5 (-1) + (+2) + (-4) = -3 (-1) + (-2) + (+4) = 1 (-1) + (-2) + (-4) = -7 所有结果中至少有一个可被整数k整除，我们则称此正整数序列可被k整除。例如上述序列可以被3、5、7整除，而不能被2、4、6、8……整除。注意：0、-3、-6、-9……都可以认为是3的倍数。</p>
+<h2>输入</h2>
+<p>输入的第一行包含两个数：N（2 &lt; N &lt; 10000）和k(2 &lt; k&lt; 100)，其中N代表一共有N个数，k代表被除数。第二行给出序列中的N个整数，这些整数的取值范围都0到10000之间（可能重复）。</p>
+<h2>输出</h2>
+<p>如果此正整数序列可被k整除，则输出YES，否则输出NO。（注意：都是大写字母）</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">//前i个数按题意%k的结果是否为j </span>
+<span class="hljs-type">int</span> dp[<span class="hljs-number">10010</span>][<span class="hljs-number">110</span>];
+<span class="hljs-type">int</span> a[<span class="hljs-number">10010</span>];
+<span class="hljs-type">int</span> n,k;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n&gt;&gt;k;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//边界 </span>
+    <span class="hljs-comment">//n个数字 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-comment">//%k的结果 </span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt;= k - <span class="hljs-number">1</span>;j++){
+            dp[i][j] = dp[i<span class="hljs-number">-1</span>][(k+j-a[i]%k)%k]||dp[i<span class="hljs-number">-1</span>][(j+a[i]%k)%k];
+        } 
+    }
+    
+    <span class="hljs-keyword">if</span>(dp[n][<span class="hljs-number">0</span>]) cout&lt;&lt;<span class="hljs-string">&quot;YES&quot;</span>&lt;&lt;endl;
+    <span class="hljs-keyword">else</span> cout&lt;&lt;<span class="hljs-string">&quot;NO&quot;</span>&lt;&lt;endl; 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2252">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

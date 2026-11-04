@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1550 房屋积水 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="乌龟家的屋顶是凹凸不平的，所以每次雨后都会积水。为了知道屋顶是否会在暴雨后塌掉，他把屋顶的形 状给了你，希望你帮他计算暴雨后屋顶的积水总量。 乌龟的屋顶由顺次排在同一水平线上的 个宽度为 、高度为整数 (分别给出) 的瓦片组成。例如给定 ，瓦片的高度分别为 ，屋顶可以画在下图所示的网格中，灰色格子…">
+<link rel="canonical" href="https://zymojblog.top/p/1550/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1550 房屋积水 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="乌龟家的屋顶是凹凸不平的，所以每次雨后都会积水。为了知道屋顶是否会在暴雨后塌掉，他把屋顶的形 状给了你，希望你帮他计算暴雨后屋顶的积水总量。 乌龟的屋顶由顺次排在同一水平线上的 个宽度为 、高度为整数 (分别给出) 的瓦片组成。例如给定 ，瓦片的高度分别为 ，屋顶可以画在下图所示的网格中，灰色格子…">
+<meta property="og:url" content="https://zymojblog.top/p/1550/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1550 房屋积水 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="乌龟家的屋顶是凹凸不平的，所以每次雨后都会积水。为了知道屋顶是否会在暴雨后塌掉，他把屋顶的形 状给了你，希望你帮他计算暴雨后屋顶的积水总量。 乌龟的屋顶由顺次排在同一水平线上的 个宽度为 、高度为整数 (分别给出) 的瓦片组成。例如给定 ，瓦片的高度分别为 ，屋顶可以画在下图所示的网格中，灰色格子…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1550 房屋积水","headline":"1550 房屋积水 题解","description":"乌龟家的屋顶是凹凸不平的，所以每次雨后都会积水。为了知道屋顶是否会在暴雨后塌掉，他把屋顶的形 状给了你，希望你帮他计算暴雨后屋顶的积水总量。 乌龟的屋顶由顺次排在同一水平线上的 个宽度为 、高度为整数 (分别给出) 的瓦片组成。例如给定 ，瓦片的高度分别为 ，屋顶可以画在下图所示的网格中，灰色格子…","url":"https://zymojblog.top/p/1550/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"省赛、动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1550</span></div>
+  <h1 class="seo-title">1550 房屋积水</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">动态规划-DP</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>1550 - 房屋积水</h1>
+<h2>题目描述</h2>
+<p>乌龟家的屋顶是凹凸不平的，所以每次雨后都会积水。为了知道屋顶是否会在暴雨后塌掉，他把屋顶的形 状给了你，希望你帮他计算暴雨后屋顶的积水总量。</p>
+<p>乌龟的屋顶由顺次排在同一水平线上的 $n$ 个宽度为 $1$、高度为整数 (分别给出) 的瓦片组成。例如给定 $n = 5$ ，瓦片的高度分别为 $4, 2, 3, 5, 1$ ，屋顶可以画在下图所示的网格中，灰色格子为瓦片。</p>
+<p>暴雨过后，如果一个方格向左右两侧延伸都能到达瓦片占据的方格，它就会积水。所以图中波浪线格子在暴雨后会积水，屋顶的积水方格总数为 $3$ 。</p>
+<h2>输入</h2>
+<p>两个整数 $n$, $R_1$，表示屋顶的宽度和生成数列的首项。从左向右数第 $i$ ( $1 \le i \le n$ )个瓦片的高度 $a_i = R_i \mod 10$ 。</p>
+<p>试题中使用的生成数列 $R$ 定义如下：整数 $0 \le R_1 \lt 201701$ 在输入中给出。对于 $i \gt 1$，$R_i = (R$$i−1$$ \times 6807 + 2831) \mod 201701$。</p>
+<h2>输出</h2>
+<p>一个整数，表示暴雨后屋顶积水方格的总数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,r,a[<span class="hljs-number">1000</span>],dpl[<span class="hljs-number">1000</span>],dpr[<span class="hljs-number">1000</span>]; 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>
+</span>{
+    <span class="hljs-comment">//审清楚题目，别给题目给的图片坑了！</span>
+    <span class="hljs-comment">//顺次排在同一水平线上的n个瓦片组成的，是一位数组的线性dp模拟；</span>
+    cin&gt;&gt;n&gt;&gt;r;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        a[i]=r%<span class="hljs-number">10</span>;
+        r=(r*<span class="hljs-number">6807</span>+<span class="hljs-number">2831</span>)%<span class="hljs-number">201701</span>;<span class="hljs-comment">//模拟题意 </span>
+    }
+    
+    <span class="hljs-comment">//求从左向右的前缀最大值 </span>
+    dpl[<span class="hljs-number">1</span>]=a[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>;i&lt;=n;i++)
+    {
+        dpl[i]=<span class="hljs-built_in">max</span>(dpl[i<span class="hljs-number">-1</span>],a[i]);
+    }
+    
+    <span class="hljs-comment">//求从右向左的前缀最大值 </span>
+    dpr[n]=a[n];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=n<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">1</span>;i--)
+    {
+        dpr[i]=<span class="hljs-built_in">max</span>(dpr[i+<span class="hljs-number">1</span>],a[i]);
+    }
+    
+    <span class="hljs-comment">//求每个位置的积水量，逐个位置进行统计 </span>
+    <span class="hljs-type">int</span> c=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>;i&lt;n;i++)
+    {
+        <span class="hljs-comment">//短板效应，再减去自己本身 </span>
+        c+=<span class="hljs-built_in">min</span>(dpl[i],dpr[i])-a[i]; 
+    }
+    cout&lt;&lt;c;<span class="hljs-comment">//雨后屋顶的积水总量 </span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1550">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

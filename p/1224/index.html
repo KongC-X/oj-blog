@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1224 过河卒 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="点有一个过河卒，需要走到目标 点。 卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如下图的 点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。 例如：下图 点可以控制 个点（图中的 和 ），卒不能通过对方马的控制点。 棋盘用坐标表示，现给定 点位置为 ， 点位置为 …">
+<link rel="canonical" href="https://zymojblog.top/p/1224/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1224 过河卒 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="点有一个过河卒，需要走到目标 点。 卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如下图的 点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。 例如：下图 点可以控制 个点（图中的 和 ），卒不能通过对方马的控制点。 棋盘用坐标表示，现给定 点位置为 ， 点位置为 …">
+<meta property="og:url" content="https://zymojblog.top/p/1224/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1224 过河卒 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="点有一个过河卒，需要走到目标 点。 卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如下图的 点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。 例如：下图 点可以控制 个点（图中的 和 ），卒不能通过对方马的控制点。 棋盘用坐标表示，现给定 点位置为 ， 点位置为 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1224 过河卒","headline":"1224 过河卒 题解","description":"点有一个过河卒，需要走到目标 点。 卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如下图的 点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。 例如：下图 点可以控制 个点（图中的 和 ），卒不能通过对方马的控制点。 棋盘用坐标表示，现给定 点位置为 ， 点位置为 …","url":"https://zymojblog.top/p/1224/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"递推","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1224</span></div>
+  <h1 class="seo-title">1224 过河卒</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">递推</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a></div>
+  <article class="markdown-body seo-article">
+<h1>1224 - 过河卒</h1>
+<h2>题目描述</h2>
+<p>$A$ 点有一个过河卒，需要走到目标 $B$ 点。</p>
+<p>卒行走规则：可以向下、或者向右。同时在棋盘上的任一点有一个对方的马（如下图的 $C$ 点），该马所在的点和所有跳跃一步可达的点称为对方马的控制点。</p>
+<p>例如：下图 $C$ 点可以控制 $9$ 个点（图中的 $P1,P2 \dots  P8$ 和 $C$ ），卒不能通过对方马的控制点。 棋盘用坐标表示，现给定 $A$ 点位置为 $(0,0)$， $B$ 点位置为 $(n,m)$ ($n,m$ 为不超过 $20$ 的整数)，马的位置 $C$ 为 $(X,Y)$（约定: $C$ 点与 $A$ 点不重叠，与 $B$ 点也不重叠）。</p>
+<p>要求你计算出卒从 $A$ 点能够到达 $B$ 点的路径的条数。</p>
+<h2>输入</h2>
+<p>$B$ 点的坐标 $(n,m)$ 以及对方马的坐标 $(X,Y)$；（马的坐标一定在棋盘范围内，但要注意，可能落在边界的轴上）</p>
+<h2>输出</h2>
+<p>输出卒从 $A$ 点能够到达 $B$ 点的路径条数。（本题的路径条数<strong>可能会超过 $10^9$</strong>，但不会超过 $10^{18}$，C/C++选手请注意使用long long）</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">30</span>][<span class="hljs-number">30</span>];
+    <span class="hljs-type">int</span> n,m,x,y;
+    cin&gt;&gt; n &gt;&gt; m &gt;&gt; x &gt;&gt; y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;=m;j++){
+            a[i][j] = <span class="hljs-number">1</span>;
+        }
+    }
+    a[x][y] = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 如果控制点在棋盘内，则设置为0</span>
+    <span class="hljs-keyword">if</span>(x<span class="hljs-number">-1</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; y<span class="hljs-number">-2</span> &gt;= <span class="hljs-number">0</span>) a[x<span class="hljs-number">-1</span>][y<span class="hljs-number">-2</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x<span class="hljs-number">-2</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; y<span class="hljs-number">-1</span> &gt;= <span class="hljs-number">0</span>) a[x<span class="hljs-number">-2</span>][y<span class="hljs-number">-1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x<span class="hljs-number">-2</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; y+<span class="hljs-number">1</span> &lt;= m) a[x<span class="hljs-number">-2</span>][y+<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x<span class="hljs-number">-1</span> &gt;= <span class="hljs-number">0</span> &amp;&amp; y+<span class="hljs-number">2</span> &lt;= m) a[x<span class="hljs-number">-1</span>][y+<span class="hljs-number">2</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x+<span class="hljs-number">1</span> &lt;= n &amp;&amp; y<span class="hljs-number">-2</span> &gt;= <span class="hljs-number">0</span>) a[x+<span class="hljs-number">1</span>][y<span class="hljs-number">-2</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x+<span class="hljs-number">2</span> &lt;= n &amp;&amp; y<span class="hljs-number">-1</span> &gt;= <span class="hljs-number">0</span>) a[x+<span class="hljs-number">2</span>][y<span class="hljs-number">-1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x+<span class="hljs-number">2</span> &lt;= n &amp;&amp; y+<span class="hljs-number">1</span> &lt;= m) a[x+<span class="hljs-number">2</span>][y+<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(x+<span class="hljs-number">1</span> &lt;= n &amp;&amp; y+<span class="hljs-number">2</span> &lt;= m) a[x+<span class="hljs-number">1</span>][y+<span class="hljs-number">2</span>] = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt;= m;j++){
+            <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span> &amp;&amp; j == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span>) {
+                a[i][j] = a[i][j<span class="hljs-number">-1</span>];
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(j == <span class="hljs-number">0</span>) {
+                a[i][j] = a[i<span class="hljs-number">-1</span>][j];
+            } <span class="hljs-keyword">else</span> {
+                a[i][j] = a[i<span class="hljs-number">-1</span>][j] + a[i][j<span class="hljs-number">-1</span>];
+            }
+        }
+    }
+    cout &lt;&lt; a[n][m] &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1224">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

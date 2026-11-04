@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1577 切绳子 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 条绳子，它们的长度分别为 。如果从它们中切割出 条长度相同的绳子，这 条绳子每条最长能有多长？答案保留到小数点后 位(直接舍掉 位后的小数)。">
+<link rel="canonical" href="https://zymojblog.top/p/P1577/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1577 切绳子 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 条绳子，它们的长度分别为 。如果从它们中切割出 条长度相同的绳子，这 条绳子每条最长能有多长？答案保留到小数点后 位(直接舍掉 位后的小数)。">
+<meta property="og:url" content="https://zymojblog.top/p/P1577/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1577 切绳子 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 条绳子，它们的长度分别为 。如果从它们中切割出 条长度相同的绳子，这 条绳子每条最长能有多长？答案保留到小数点后 位(直接舍掉 位后的小数)。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1577 切绳子","headline":"P1577 切绳子 题解","description":"有 条绳子，它们的长度分别为 。如果从它们中切割出 条长度相同的绳子，这 条绳子每条最长能有多长？答案保留到小数点后 位(直接舍掉 位后的小数)。","url":"https://zymojblog.top/p/P1577/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"二分、Special Judge","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1577</span></div>
+  <h1 class="seo-title">P1577 切绳子</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1577 切绳子</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>二分</code>、<code>Special Judge</code></p>
+<h2>题目描述</h2>
+<p>有 $N$ 条绳子，它们的长度分别为 $L_i$。如果从它们中切割出 $K$ 条长度相同的绳子，这 $K$ 条绳子每条最长能有多长？答案保留到小数点后 $2$ 位(直接舍掉 $2$ 位后的小数)。</p>
+<h2>输入格式</h2>
+<p>第一行两个整数 $N$ 和 $K$，接下来 $N$ 行，描述了每条绳子的长度 $L_i$ 。</p>
+<h2>输出格式</h2>
+<p>切割后每条绳子的最大长度。答案与标准答案误差不超过 $0.01$ 或者相对误差不超过 $1%$ 即可通过。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">11</span>
+<span class="hljs-number">8.02</span>
+<span class="hljs-number">7.43</span>
+<span class="hljs-number">4.57</span>
+<span class="hljs-number">5.39</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2.00```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">10010</span>;            <span class="hljs-comment">// 绳子数量上限 10000，多开10个</span>
+<span class="hljs-type">int</span> a[MAXN];                       <span class="hljs-comment">// 存储每条绳子的长度（单位：0.01米）</span>
+<span class="hljs-type">int</span> n, k;                          <span class="hljs-comment">// n:绳子数量, k:需要切出的段数</span>
+
+<span class="hljs-comment">// 判断当每段长度为 len（单位0.01米）时，能否切出至少 k 段</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> len)</span> </span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> cnt = <span class="hljs-number">0</span>;             <span class="hljs-comment">// 总段数，可能很大，用long long</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cnt += a[i] / len;
+        <span class="hljs-keyword">if</span> (cnt &gt;= k) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// 已经够k段，提前返回</span>
+    }
+    <span class="hljs-keyword">return</span> cnt &gt;= k;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-comment">/*
+      思路：二分答案（整数二分）
+      将每条绳子的长度乘以100转化为整数（单位厘米），这样避免了浮点误差。
+      对目标长度进行二分，范围 [1, 10000000]（即0.01米 ~ 100000.00米）。
+      每次判断当前长度mid能否切出至少k段。
+      最后将找到的最大长度除以100.0，保留两位小数输出即可。
+      时间复杂度 O(n log(max_len))
+    */</span>
+    
+    cin &gt;&gt; n &gt;&gt; k;
+    <span class="hljs-type">int</span> max_len = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 记录最长绳子的整数长度（上界）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">double</span> x;
+        cin &gt;&gt; x;
+        a[i] = (<span class="hljs-type">int</span>)(x * <span class="hljs-number">100</span> + <span class="hljs-number">0.5</span>);  <span class="hljs-comment">// 四舍五入取整，避免浮点截断误差</span>
+        <span class="hljs-keyword">if</span> (a[i] &gt; max_len) max_len = a[i];
+    }
+    
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = max_len;        <span class="hljs-comment">// 二分左右边界</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// 记录答案（单位厘米）</span>
+    
+    <span class="hljs-keyword">while</span> (l &lt;= r) {
+        <span class="hljs-type">int</span> mid = l + (r - l) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)) {
+            ans = mid;             <span class="hljs-comment">// 可行，记录答案，尝试更大的长度</span>
+            l = mid + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            r = mid - <span class="hljs-number">1</span>;
+        }
+    }
+    
+    <span class="hljs-comment">// 输出结果，保留两位小数（直接截断就是向下取整，而我们的ans是整数，除以100.0即可）</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%.2f\n&quot;</span>, ans / <span class="hljs-number">100.0</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1577">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3772 [信息与未来 2022] 沙滩面积 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="我们获得了一幅陆地和水域情况的卫星照片，照片可以看成是一个 行 列的矩形，矩形中的每个格子要么是陆地（用半角点号 表示），要么是水域（用井号 表示）。 虽然卫星照片可以清楚的辨别出陆地和水域，但陆地的具体类型却并不明确。现在我们了解到，对于一块是水域的方格，它向上、下、左、右四个方向 步之内可达的…">
+<link rel="canonical" href="https://zymojblog.top/p/B3772/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3772 [信息与未来 2022] 沙滩面积 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="我们获得了一幅陆地和水域情况的卫星照片，照片可以看成是一个 行 列的矩形，矩形中的每个格子要么是陆地（用半角点号 表示），要么是水域（用井号 表示）。 虽然卫星照片可以清楚的辨别出陆地和水域，但陆地的具体类型却并不明确。现在我们了解到，对于一块是水域的方格，它向上、下、左、右四个方向 步之内可达的…">
+<meta property="og:url" content="https://zymojblog.top/p/B3772/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3772 [信息与未来 2022] 沙滩面积 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="我们获得了一幅陆地和水域情况的卫星照片，照片可以看成是一个 行 列的矩形，矩形中的每个格子要么是陆地（用半角点号 表示），要么是水域（用井号 表示）。 虽然卫星照片可以清楚的辨别出陆地和水域，但陆地的具体类型却并不明确。现在我们了解到，对于一块是水域的方格，它向上、下、左、右四个方向 步之内可达的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3772 [信息与未来 2022] 沙滩面积","headline":"B3772 [信息与未来 2022] 沙滩面积 题解","description":"我们获得了一幅陆地和水域情况的卫星照片，照片可以看成是一个 行 列的矩形，矩形中的每个格子要么是陆地（用半角点号 表示），要么是水域（用井号 表示）。 虽然卫星照片可以清楚的辨别出陆地和水域，但陆地的具体类型却并不明确。现在我们了解到，对于一块是水域的方格，它向上、下、左、右四个方向 步之内可达的…","url":"https://zymojblog.top/p/B3772/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"搜索、2022、江苏、枚举、广度优先搜索 BFS、深度优先搜索 DFS、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3772</span></div>
+  <h1 class="seo-title">B3772 [信息与未来 2022] 沙滩面积</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3772 [信息与未来 2022] 沙滩面积</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-04-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>2022</code>、<code>江苏</code>、<code>枚举</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>我们获得了一幅陆地和水域情况的卫星照片，照片可以看成是一个 $n$ 行 $m$ 列的矩形，矩形中的每个格子要么是陆地（用半角点号 $\texttt{.}$ 表示），要么是水域（用井号 $\texttt{#}$ 表示）。</p>
+<p>虽然卫星照片可以清楚的辨别出陆地和水域，但陆地的具体类型却并不明确。现在我们了解到，对于一块是水域的方格，它向上、下、左、右四个方向 $k$ 步之内可达的陆地格子，均会形成沙滩。例如，下图展示了 $k=2$ 的情况，蓝色的格子代表水域，标为黄色的陆地格子是沙滩。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/bermo74l.png" alt=""></p>
+<p>你的任务是根据卫星照片计算出属于“沙滩”格子的数量。注意：卫星照片只拍摄了包含水域的部分，<strong>水域附近的沙滩可能出现在卫星照片边界之外</strong>。你可以假设卫星照片之外不存在任何水域。</p>
+<h2>输入格式</h2>
+<p>输入的第一行是空格分隔的三个整数 $n,m$ 和 $k$，代表拍摄的卫星照片共有 $n$ 行 $m$ 列，以及形成沙滩的范围 $k$。</p>
+<p>接下来 $n$ 行，每行一个字符串。字符串的长度恰好是 $m$，代表卫星照片的一行，其中：</p>
+<ul>
+<li>井号 $\texttt{#}$ 表示一片水域；</li>
+<li>半角点号 $\texttt{.}$ 表示一片陆地。</li>
+</ul>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表沙滩格子的数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+##.#
+...#```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>26```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">10</span> <span class="hljs-number">3</span>
+.........#
+..########
+.........#
+#....###.#
+..####...#```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>103```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> N, M, k;
+<span class="hljs-type">char</span> a[<span class="hljs-number">150</span>][<span class="hljs-number">150</span>];
+<span class="hljs-type">bool</span> sand[<span class="hljs-number">150</span>][<span class="hljs-number">150</span>];   <span class="hljs-comment">// 标记是否为沙滩</span>
+
+<span class="hljs-type">int</span> dx[<span class="hljs-number">4</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+<span class="hljs-type">int</span> dy[<span class="hljs-number">4</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>};
+
+<span class="hljs-comment">// DFS 函数：当前坐标 (x, y)，剩余可走步数 step</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, <span class="hljs-type">int</span> step)</span> </span>{
+    <span class="hljs-keyword">if</span> (step == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;                <span class="hljs-comment">// 步数用尽</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; d++) {
+        <span class="hljs-type">int</span> nx = x + dx[d];
+        <span class="hljs-type">int</span> ny = y + dy[d];
+        <span class="hljs-comment">// 检查是否在地图内</span>
+        <span class="hljs-keyword">if</span> (nx &lt; <span class="hljs-number">0</span> || nx &gt;= N || ny &lt; <span class="hljs-number">0</span> || ny &gt;= M) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-comment">// 只关心陆地格子</span>
+        <span class="hljs-keyword">if</span> (a[nx][ny] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+            sand[nx][ny] = <span class="hljs-literal">true</span>;           <span class="hljs-comment">// 标记为沙滩</span>
+            <span class="hljs-built_in">dfs</span>(nx, ny, step - <span class="hljs-number">1</span>);         <span class="hljs-comment">// 继续递归（即使之前访问过，也可能以更长的剩余步数到达，从而覆盖更远）</span>
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+
+    <span class="hljs-comment">// 扩展地图大小</span>
+    N = n + <span class="hljs-number">2</span> * k;
+    M = m + <span class="hljs-number">2</span> * k;
+
+    <span class="hljs-comment">// 初始化为陆地</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j++) {
+            a[i][j] = <span class="hljs-string">&#x27;.&#x27;</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 读入原始照片</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        string s;
+        cin &gt;&gt; s;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            a[i + k][j + k] = s[j];
+        }
+    }
+
+    <span class="hljs-comment">// 对每个水域启动 DFS</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j++) {
+            <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;#&#x27;</span>) {
+                <span class="hljs-built_in">dfs</span>(i, j, k);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 统计沙滩数量</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; M; j++) {
+            <span class="hljs-keyword">if</span> (sand[i][j]) ans++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3772">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11246 [GESP202409 六级] 小杨和整数拆分 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨有一个正整数 ，小杨想将它拆分成若干完全平方数的和，同时小杨希望拆分的数量越少越好。 编程计算总和为 的完全平方数的最小数量。">
+<link rel="canonical" href="https://zymojblog.top/p/P11246/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11246 [GESP202409 六级] 小杨和整数拆分 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨有一个正整数 ，小杨想将它拆分成若干完全平方数的和，同时小杨希望拆分的数量越少越好。 编程计算总和为 的完全平方数的最小数量。">
+<meta property="og:url" content="https://zymojblog.top/p/P11246/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11246 [GESP202409 六级] 小杨和整数拆分 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨有一个正整数 ，小杨想将它拆分成若干完全平方数的和，同时小杨希望拆分的数量越少越好。 编程计算总和为 的完全平方数的最小数量。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11246 [GESP202409 六级] 小杨和整数拆分","headline":"P11246 [GESP202409 六级] 小杨和整数拆分 题解","description":"小杨有一个正整数 ，小杨想将它拆分成若干完全平方数的和，同时小杨希望拆分的数量越少越好。 编程计算总和为 的完全平方数的最小数量。","url":"https://zymojblog.top/p/P11246/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、2024、广度优先搜索 BFS、深度优先搜索 DFS、记忆化搜索、背包 DP、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11246</span></div>
+  <h1 class="seo-title">P11246 [GESP202409 六级] 小杨和整数拆分</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2">记忆化搜索</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11246 [GESP202409 六级] 小杨和整数拆分</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2024</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>记忆化搜索</code>、<code>背包 DP</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1162">https://ti.luogu.com.cn/problemset/1162</a></p>
+<h2>题目描述</h2>
+<p>小杨有一个正整数 $n$，小杨想将它拆分成若干完全平方数的和，同时小杨希望拆分的数量越少越好。</p>
+<p>编程计算总和为 $n$ 的完全平方数的最小数量。</p>
+<h2>输入格式</h2>
+<p>输入只有一行一个正整数 $n$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">18</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 问题类型：完全背包求最小物品数（每种平方数无限使用）</span>
+<span class="hljs-comment">// 要将 n 拆成若干个完全平方数（1,4,9,16,...）的和，求最少需要几个。</span>
+<span class="hljs-comment">// dp 数组定义：dp[i] 表示凑出整数 i 所需的最少完全平方数个数。</span>
+<span class="hljs-comment">// 初始条件：dp[0] = 0，表示凑出 0 需要 0 个。</span>
+<span class="hljs-comment">// 状态转移：对于每个 i 从 1 到 n，枚举最后一个平方数 j*j（j*j &lt;= i），</span>
+<span class="hljs-comment">//           则 dp[i] = min(dp[i], dp[i - j*j] + 1）。</span>
+<span class="hljs-comment">// 最坏情况：全是1相加，需要 i 个，所以 dp[i] 初始化为 i。</span>
+<span class="hljs-comment">// 时间复杂度 O(n * sqrt(n))，空间 O(n)，对于 n &lt;= 1e5 可以接受。</span>
+
+<span class="hljs-type">int</span> dp[<span class="hljs-number">100010</span>];
+<span class="hljs-type">int</span> n;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>; <span class="hljs-comment">// 初始化 dp[0] 为 0，表示凑出 0 需要 0 个。</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        dp[i] = i; <span class="hljs-comment">// 最坏情况就是全是1相加，需要 i 个，所以 dp[i] 初始化为 i。</span>
+        <span class="hljs-comment">// 尝试所有的平方数 j*j 作为最后一项</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j * j &lt;= i; j++) {
+            <span class="hljs-comment">// 如果使用 j*j 能减少个数，更新 dp[i]</span>
+            dp[i] = <span class="hljs-built_in">min</span>(dp[i], dp[i - j * j] + <span class="hljs-number">1</span>);
+        }
+    }
+    cout &lt;&lt; dp[n] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11246">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

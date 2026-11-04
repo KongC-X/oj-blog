@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P14917 [GESP202512 五级] 数字移动 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有一个包含 个正整数的序列 ，序列 恰好包含 对不同的正整数。形式化地，对于任意 ，存在唯一一个 满足 。 小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 ，将当前序列的第 个数字移动到任意位置，并花费对应数字的体力。 例如，假设序列 ，小 A 可以选…">
+<link rel="canonical" href="https://zymojblog.top/p/P14917/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P14917 [GESP202512 五级] 数字移动 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有一个包含 个正整数的序列 ，序列 恰好包含 对不同的正整数。形式化地，对于任意 ，存在唯一一个 满足 。 小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 ，将当前序列的第 个数字移动到任意位置，并花费对应数字的体力。 例如，假设序列 ，小 A 可以选…">
+<meta property="og:url" content="https://zymojblog.top/p/P14917/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P14917 [GESP202512 五级] 数字移动 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有一个包含 个正整数的序列 ，序列 恰好包含 对不同的正整数。形式化地，对于任意 ，存在唯一一个 满足 。 小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 ，将当前序列的第 个数字移动到任意位置，并花费对应数字的体力。 例如，假设序列 ，小 A 可以选…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P14917 [GESP202512 五级] 数字移动","headline":"P14917 [GESP202512 五级] 数字移动 题解","description":"小 A 有一个包含 个正整数的序列 ，序列 恰好包含 对不同的正整数。形式化地，对于任意 ，存在唯一一个 满足 。 小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 ，将当前序列的第 个数字移动到任意位置，并花费对应数字的体力。 例如，假设序列 ，小 A 可以选…","url":"https://zymojblog.top/p/P14917/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"二分、2025、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P14917</span></div>
+  <h1 class="seo-title">P14917 [GESP202512 五级] 数字移动</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 五级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P14917 [GESP202512 五级] 数字移动</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-01-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>二分</code>、<code>2025</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1201">https://ti.luogu.com.cn/problemset/1201</a></p>
+<h2>题目描述</h2>
+<p>小 A 有一个包含 $N$ 个正整数的序列 $A={A_1,A_2,\cdots,A_N}$，序列 $A$ 恰好包含 $\frac{N}{2}$ 对不同的正整数。形式化地，对于任意 $1 \le i \le N$，存在唯一一个 $j$ 满足 $1\le j \le N, i\neq j, A_i=A_j$。</p>
+<p>小 A 希望每对相同的数字在序列中相邻，为了实现这一目的，小 A 每次操作会选择任意 $i(1\le i\le N)$，将当前序列的第 $i$ 个数字移动到任意位置，并花费对应数字的体力。</p>
+<p>例如，假设序列 $A={1,2,1,3,2,3}$，小 A 可以选择 $i=2$，将 $A_2=2$ 移动到 $A_3=1$ 的后面，此时序列变为 ${1,1,2,3,2,3}$，耗费 $2$ 点体力。小 A 也可以选择 $i=3$，将 $A_3=1$ 移动到 $A_2=2$ 的前面，此时序列变为 ${1,1,2,3,2,3}$，花费 $1$ 点体力。</p>
+<p>小 A 可以执行任意次操作，但他希望自己每次花费的体力尽可能小。小 A 希望你能帮他计算出一个最小的 $x$，使得他能够在每次花费的体力均不超过 $x$ 的情况下令每对相同的数字在序列中相邻。</p>
+<h2>输入格式</h2>
+<p>第一行一个正整数 $N$，代表序列长度，保证 $N$ 为偶数。</p>
+<p>第二行包含 $N$ 个正整数 $A_1,A_2,\ldots,A_N$，代表序列 $A$。且对于任意 $1\le i\le N$，存在唯一一个 $j$ 满足 $1\le j\le N,i\neq j,A_i=A_j$。</p>
+<p>数据保证小 A 至少需要执行一次操作。</p>
+<h2>输出格式</h2>
+<p>输出一行，代表满足要求的 $x$ 的最小值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">100010</span>],b[<span class="hljs-number">100010</span>],n;
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> t = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 提取超过x的值</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) {
+        <span class="hljs-keyword">if</span>(a[i] &gt; x) {
+            b[t++] = a[i];
+        }
+    }
+    <span class="hljs-keyword">if</span>(t % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-comment">// 配对检查</span>
+    <span class="hljs-comment">// 这里检查的是提取出的序列中，每对相邻的数字是否相等</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; t;i += <span class="hljs-number">2</span>) {
+        <span class="hljs-keyword">if</span>(b[i] != b[i + <span class="hljs-number">1</span>]) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> max = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++) {
+        cin &gt;&gt; a[i];
+        <span class="hljs-keyword">if</span>(a[i] &gt; max) {
+            max = a[i];
+        }
+    }
+    <span class="hljs-type">int</span> left = <span class="hljs-number">0</span>,right = max, ans = max;
+    <span class="hljs-comment">// 二分答案</span>
+    <span class="hljs-keyword">while</span>(left &lt;= right) {
+        <span class="hljs-type">int</span> mid = (left + right) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(mid)) {
+            <span class="hljs-comment">// 如果mid可行，尝试更小的mid</span>
+            ans = mid;
+            right = mid - <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 如果mid不可行，尝试更大的mid</span>
+            left = mid + <span class="hljs-number">1</span>;
+        }
+    }
+    cout &lt;&lt; ans &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P14917">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

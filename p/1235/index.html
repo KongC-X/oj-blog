@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1235 过河的最短时间 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在漆黑的夜里， 位旅行者来到了一座狭窄而且没有护栏的桥边。如果不借助手电筒的话，大家是无论如何也不敢过桥去的。 不幸的是， 个人一共只带了一只手电筒，而桥窄得只够让两个人同时过。 如果各自单独过桥的话， 人所需要的时间已知；而如果两人同时过桥，所需要的时间就是走得比较慢的那个人单独行动时所需的时间…">
+<link rel="canonical" href="https://zymojblog.top/p/1235/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1235 过河的最短时间 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在漆黑的夜里， 位旅行者来到了一座狭窄而且没有护栏的桥边。如果不借助手电筒的话，大家是无论如何也不敢过桥去的。 不幸的是， 个人一共只带了一只手电筒，而桥窄得只够让两个人同时过。 如果各自单独过桥的话， 人所需要的时间已知；而如果两人同时过桥，所需要的时间就是走得比较慢的那个人单独行动时所需的时间…">
+<meta property="og:url" content="https://zymojblog.top/p/1235/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1235 过河的最短时间 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在漆黑的夜里， 位旅行者来到了一座狭窄而且没有护栏的桥边。如果不借助手电筒的话，大家是无论如何也不敢过桥去的。 不幸的是， 个人一共只带了一只手电筒，而桥窄得只够让两个人同时过。 如果各自单独过桥的话， 人所需要的时间已知；而如果两人同时过桥，所需要的时间就是走得比较慢的那个人单独行动时所需的时间…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1235 过河的最短时间","headline":"1235 过河的最短时间 题解","description":"在漆黑的夜里， 位旅行者来到了一座狭窄而且没有护栏的桥边。如果不借助手电筒的话，大家是无论如何也不敢过桥去的。 不幸的是， 个人一共只带了一只手电筒，而桥窄得只够让两个人同时过。 如果各自单独过桥的话， 人所需要的时间已知；而如果两人同时过桥，所需要的时间就是走得比较慢的那个人单独行动时所需的时间…","url":"https://zymojblog.top/p/1235/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1235</span></div>
+  <h1 class="seo-title">1235 过河的最短时间</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>1235 - 过河的最短时间</h1>
+<h2>题目描述</h2>
+<p>在漆黑的夜里，$N$ 位旅行者来到了一座狭窄而且没有护栏的桥边。如果不借助手电筒的话，大家是无论如何也不敢过桥去的。</p>
+<p>不幸的是，$N$ 个人一共只带了一只手电筒，而桥窄得只够让两个人同时过。</p>
+<p>如果各自单独过桥的话，$N$ 人所需要的时间已知；而如果两人同时过桥，所需要的时间就是走得比较慢的那个人单独行动时所需的时间。</p>
+<p>问题是，如何设计一个方案，让这 $N$ 人尽快过桥，计算成绩这 $N$ 个人的最短过桥时间。</p>
+<p>比如：有四个人甲乙丙丁，他们过河需要的时间分别为，甲：$1$，乙：$2$，丙：$5$，丁：$10$。</p>
+<p>第一种办法：最快的 $2$ 个人先过桥，然后让跑的最快的人来回去接剩下的人：</p>
+<p>先让甲乙过去（$2$ 分钟），甲回来（$1$ 分钟），甲丙过去（$5$ 分钟），甲回来（$1$ 分钟），甲丁再过去（$10$ 分钟），总共需要 $19$ 分钟就可以让四个人都过去。</p>
+<p>第二种办法：让最慢的地 $2$ 个人一起过桥，减少最慢的人在桥上的次数。</p>
+<p>先让甲乙过去（$2$ 分钟），甲回来（$1$ 分钟），丙丁过去（$10$ 分钟），乙回来（$2$ 分钟），甲乙再过去（$2$ 分钟），总共需要 $17$ 分钟可以让四个人都过去。</p>
+<p>那么最慢的时间就是需要 $17$ 分钟！</p>
+<h2>输入</h2>
+<p>每组测试数据的第一行是一个整数 $N$ ($1 \le N \le 1000$)，表示共有 $N$ 个人要过河。</p>
+<p>每组测试数据的第二行是 $N$ 个整数 $S_i$,表示这 $N$ 个人过河所需要花时间。($0 \lt S_i \le 100$)</p>
+<h2>输出</h2>
+<p>所有人过河的最短时间。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1005</span>]; <span class="hljs-comment">//每个人所需时间</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+
+    <span class="hljs-type">int</span> n;<span class="hljs-comment">//n个旅行家</span>
+    <span class="hljs-type">int</span> sum=<span class="hljs-number">0</span>;<span class="hljs-comment">//过桥用的总时间</span>
+    cin&gt;&gt;n;
+
+    <span class="hljs-comment">//输入每个人的过桥时间</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>; i&lt;n; i++)
+        cin&gt;&gt;a[i];
+
+    <span class="hljs-comment">//过桥时间排序</span>
+    <span class="hljs-built_in">sort</span>(a,a+n);
+
+    <span class="hljs-comment">//如果超过4人</span>
+    <span class="hljs-keyword">while</span>(n &gt;= <span class="hljs-number">4</span>) {
+        <span class="hljs-comment">//当方案1优于方案2</span>
+        <span class="hljs-keyword">if</span>((a[<span class="hljs-number">0</span>]+a[n<span class="hljs-number">-2</span>]) &lt; (<span class="hljs-number">2</span>*a[<span class="hljs-number">1</span>])) {
+            <span class="hljs-comment">//将用时最长的2个人送到河对面</span>
+            sum += a[n<span class="hljs-number">-1</span>]; <span class="hljs-comment">//用时最短和用时最长的一起过去</span>
+            sum += a[<span class="hljs-number">0</span>]; <span class="hljs-comment">//用时最短的回来</span>
+            sum += a[n<span class="hljs-number">-2</span>]; <span class="hljs-comment">//用时最短的和用时第二长的过去</span>
+            sum += a[<span class="hljs-number">0</span>]; <span class="hljs-comment">//用时最短的回来</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//同样也是将用时最长的2个人送到河对面</span>
+            sum += a[<span class="hljs-number">1</span>]; <span class="hljs-comment">// 最短和第二短的人过去</span>
+            sum += a[<span class="hljs-number">0</span>]; <span class="hljs-comment">//最短的回来送手电</span>
+            sum += a[n<span class="hljs-number">-1</span>]; <span class="hljs-comment">//最长的和第二长的过去</span>
+            sum += a[<span class="hljs-number">1</span>]; <span class="hljs-comment">//第二短的回来</span>
+        }
+
+        <span class="hljs-comment">//人数减少2人 ：用时最长的2人已经被送过河了就不动他们了</span>
+        n -= <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-comment">//如果n==3，用时最短的和用时最长的一起过去，然后用时最短的回来，再和剩下的一个人过去 ；</span>
+    <span class="hljs-keyword">if</span>(n == <span class="hljs-number">3</span>)
+        sum += a[<span class="hljs-number">1</span>] + a[<span class="hljs-number">0</span>] + a[<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n == <span class="hljs-number">2</span>)
+        sum += a[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">else</span>
+        sum += a[<span class="hljs-number">0</span>];
+
+    cout&lt;&lt;sum&lt;&lt;endl;
+
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1235">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1179 求N个整数的平均数、众数和中位数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="求 个整数的平均数，众数和中位数。 小知识： 1. 众数 如有 个数： , , , , , , , , ，其中 出现的次数最多，即为这组数的众数。 （本题确保测试数据中，出现次数最多的数只有一个） 2. 中位数 如有 个数： , , , , , , , , 。 将这 个数按一定的顺序（从大到小或从…">
+<link rel="canonical" href="https://zymojblog.top/p/1179/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1179 求N个整数的平均数、众数和中位数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="求 个整数的平均数，众数和中位数。 小知识： 1. 众数 如有 个数： , , , , , , , , ，其中 出现的次数最多，即为这组数的众数。 （本题确保测试数据中，出现次数最多的数只有一个） 2. 中位数 如有 个数： , , , , , , , , 。 将这 个数按一定的顺序（从大到小或从…">
+<meta property="og:url" content="https://zymojblog.top/p/1179/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1179 求N个整数的平均数、众数和中位数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="求 个整数的平均数，众数和中位数。 小知识： 1. 众数 如有 个数： , , , , , , , , ，其中 出现的次数最多，即为这组数的众数。 （本题确保测试数据中，出现次数最多的数只有一个） 2. 中位数 如有 个数： , , , , , , , , 。 将这 个数按一定的顺序（从大到小或从…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1179 求N个整数的平均数、众数和中位数","headline":"1179 求N个整数的平均数、众数和中位数 题解","description":"求 个整数的平均数，众数和中位数。 小知识： 1. 众数 如有 个数： , , , , , , , , ，其中 出现的次数最多，即为这组数的众数。 （本题确保测试数据中，出现次数最多的数只有一个） 2. 中位数 如有 个数： , , , , , , , , 。 将这 个数按一定的顺序（从大到小或从…","url":"https://zymojblog.top/p/1179/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1179</span></div>
+  <h1 class="seo-title">1179 求N个整数的平均数、众数和中位数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1179 - 求N个整数的平均数、众数和中位数</h1>
+<h2>题目描述</h2>
+<p>求 $N$ 个整数的平均数，众数和中位数。</p>
+<p><strong>小知识：</strong></p>
+<p><strong>1. 众数</strong></p>
+<p>如有 $9$ 个数：$17$,$13$,$17$,$9$,$17$,$17$,$3$,$16$,$17$，其中 $17$ 出现的次数最多，即为这组数的众数。 （本题确保测试数据中，出现次数最多的数只有一个）</p>
+<p><strong>2. 中位数</strong></p>
+<p>如有 $9$ 个数：$102$,$170$,$96$,$90$,$97$,$106$,$110$,$182$,$100$。</p>
+<p>将这 $9$ 个数按一定的顺序（从大到小或从小到大）排列后得到：$182$,$170$,$110$,$106$,$102$,$100$,$97$,$96$,$90$。正中间的一个数是 $102$ ， $102$ 是这组数的中位数。</p>
+<p>而这 $10$ 个数：$106$,$99$,$104$,$120$,$107$,$112$,$33$,$102$,$97$,$100$。</p>
+<p>按一定顺序排列后得到：$120$,$112$,$107$,$106$,$104$,$102$,$100$,$99$,$97$,$33$。</p>
+<p>正中间有两个数：$104$,$102$ ，中位数就是这两个数的平均数，即 $(104+102)/2=103.0$ 。</p>
+<h2>输入</h2>
+<p>第一行为整数 $N$ （ $5  \le  N  \le 10000$  )；</p>
+<p>第二行为空格隔开的 $N$ 个数 $Ai$ （ $0  \le  Ai  \le  100 $)。</p>
+<h2>输出</h2>
+<p>输出空格隔开的平均数 众数 中位数（平均数保留两位小数，中位数保留一位小数）。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> b[<span class="hljs-number">10010</span>]; <span class="hljs-comment">// 存储数组</span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">110</span>] = {<span class="hljs-number">0</span>}; <span class="hljs-comment">// 计数数组</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n,i,m,k,s = <span class="hljs-number">0</span>;
+    <span class="hljs-type">double</span> v,t;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; b[i];
+        a[b[i]]++;
+        s += b[i];
+    }
+    v = s * <span class="hljs-number">1.0</span> / n; <span class="hljs-comment">// 平均数</span>
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%.2lf &quot;</span>,v);
+    <span class="hljs-type">int</span> max = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt;= <span class="hljs-number">100</span>; i++) {
+        <span class="hljs-keyword">if</span>(a[i] &gt; a[max]) {
+            max = i;
+        }
+    }
+    cout &lt;&lt; max &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-comment">// 对b数组进行冒泡排序</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n - <span class="hljs-number">1</span>;i++) {
+        <span class="hljs-keyword">for</span>(k = <span class="hljs-number">0</span>;k &lt; n - i - <span class="hljs-number">1</span>;k++) {
+            <span class="hljs-keyword">if</span>(b[k] &gt; b[k + <span class="hljs-number">1</span>]) {
+                m = b[k];
+                b[k] = b[k + <span class="hljs-number">1</span>];
+                b[k + <span class="hljs-number">1</span>] = m;
+            }
+        }
+    }
+    <span class="hljs-keyword">if</span>(n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+        t = (b[n / <span class="hljs-number">2</span>] + b[n / <span class="hljs-number">2</span> - <span class="hljs-number">1</span>]) * <span class="hljs-number">1.0</span> / <span class="hljs-number">2</span>;
+    } <span class="hljs-keyword">else</span> {
+        t = b[(n - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>] * <span class="hljs-number">1.0</span>;
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%.1lf &quot;</span>,t);
+    <span class="hljs-comment">// 验证</span>
+    <span class="hljs-comment">// for(i = 0;i &lt; n;i++) {</span>
+    <span class="hljs-comment">//     cout &lt;&lt; b[i] &lt;&lt; &quot; &quot;;</span>
+    <span class="hljs-comment">// }</span>
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1179">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

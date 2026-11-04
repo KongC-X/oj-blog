@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P14919 [GESP202512 六级] 路径覆盖 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵有 结点的有根树 ，结点依次以 编号，根结点编号为 。方便起见，编号为 的结点称为结点 。 初始时 中的结点均为白色。你需要将 中的若干个结点染为黑色，使得所有叶子到根的路径上至少有一个黑色结点。将结点 染为黑色需要代价 ，你需要在满足以上条件的情况下，最小化染色代价之和。 叶子是指 中没…">
+<link rel="canonical" href="https://zymojblog.top/p/P14919/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P14919 [GESP202512 六级] 路径覆盖 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵有 结点的有根树 ，结点依次以 编号，根结点编号为 。方便起见，编号为 的结点称为结点 。 初始时 中的结点均为白色。你需要将 中的若干个结点染为黑色，使得所有叶子到根的路径上至少有一个黑色结点。将结点 染为黑色需要代价 ，你需要在满足以上条件的情况下，最小化染色代价之和。 叶子是指 中没…">
+<meta property="og:url" content="https://zymojblog.top/p/P14919/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P14919 [GESP202512 六级] 路径覆盖 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵有 结点的有根树 ，结点依次以 编号，根结点编号为 。方便起见，编号为 的结点称为结点 。 初始时 中的结点均为白色。你需要将 中的若干个结点染为黑色，使得所有叶子到根的路径上至少有一个黑色结点。将结点 染为黑色需要代价 ，你需要在满足以上条件的情况下，最小化染色代价之和。 叶子是指 中没…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P14919 [GESP202512 六级] 路径覆盖","headline":"P14919 [GESP202512 六级] 路径覆盖 题解","description":"给定一棵有 结点的有根树 ，结点依次以 编号，根结点编号为 。方便起见，编号为 的结点称为结点 。 初始时 中的结点均为白色。你需要将 中的若干个结点染为黑色，使得所有叶子到根的路径上至少有一个黑色结点。将结点 染为黑色需要代价 ，你需要在满足以上条件的情况下，最小化染色代价之和。 叶子是指 中没…","url":"https://zymojblog.top/p/P14919/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、贪心、2025、深度优先搜索 DFS、树形 DP、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P14919</span></div>
+  <h1 class="seo-title">P14919 [GESP202512 六级] 路径覆盖</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E6%A0%91%E5%BD%A2%20DP">树形 DP</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P14919 [GESP202512 六级] 路径覆盖</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>贪心</code>、<code>2025</code>、<code>深度优先搜索 DFS</code>、<code>树形 DP</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1202">https://ti.luogu.com.cn/problemset/1202</a></p>
+<h2>题目描述</h2>
+<p>给定一棵有 $n$ 结点的有根树 $T$，结点依次以 $1,2,\ldots,n$ 编号，根结点编号为 $1$。方便起见，编号为 $i$ 的结点称为结点 $i$。</p>
+<p>初始时 $T$ 中的结点均为白色。你需要将 $T$ 中的若干个结点染为黑色，使得所有叶子到根的路径上至少有一个黑色结点。将结点 $i$ 染为黑色需要代价 $c_i$，你需要在满足以上条件的情况下，最小化染色代价之和。</p>
+<p>叶子是指 $T$ 中没有子结点的结点。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示结点数量。</p>
+<p>第二行，$n-1$ 个正整数 $f_2,f_3,\ldots,f_n$，其中 $f_i$ 表示结点 $i$ 的父结点的编号，保证 $f_i&lt;i$。</p>
+<p>第三行，$n$ 个正整数 $c_1,c_2,\ldots,c_n$，其中 $c_i$ 表示将结点 $i$ 染为黑色所需的代价。</p>
+<h2>输出格式</h2>
+<p>一行，一个整数，表示在满足所有叶子到根的路径上至少有一个黑色结点的前提下，染色代价之和的最小值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span>
+<span class="hljs-number">64</span> <span class="hljs-number">16</span> <span class="hljs-number">15</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>10```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100005</span>;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> c[MAXN];                <span class="hljs-comment">// c[i]：染黑结点i的代价</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> sum[MAXN];              <span class="hljs-comment">// sum[i]：结点i的所有子结点的dp值之和</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> dp[MAXN];               <span class="hljs-comment">// dp[i]：以i为根的子树，在祖先无黑点的前提下，满足叶子到i路径至少一个黑点的最小代价</span>
+<span class="hljs-type">int</span> f[MAXN];                      <span class="hljs-comment">// f[i]：结点i的父结点</span>
+<span class="hljs-type">bool</span> leaf[MAXN];                  <span class="hljs-comment">// leaf[i]：i是否为叶子</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n;                        <span class="hljs-comment">// n：结点数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 初始化所有结点为叶子，后面更新</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) leaf[i] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-comment">// 读入父结点信息，并标记父结点不是叶子</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        cin &gt;&gt; f[i];
+        leaf[f[i]] = <span class="hljs-literal">false</span>;       <span class="hljs-comment">// f[i] 有了孩子，不再是叶子</span>
+    }
+    <span class="hljs-comment">// 注意：根1如果没有任何孩子，那么leaf[1]仍为true，后面会特殊处理</span>
+
+    <span class="hljs-comment">// 读入染色代价</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; c[i];
+    }
+
+    <span class="hljs-comment">// 自底向上DP：从n倒序遍历到2</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = n; i &gt;= <span class="hljs-number">2</span>; i--) {
+        <span class="hljs-keyword">if</span> (leaf[i]) {
+            <span class="hljs-comment">// 叶子：祖先无黑点时，必须自己染黑</span>
+            dp[i] = c[i];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 非叶子：可以在自己染黑 或 让所有孩子的子树内部满足 中取较小者</span>
+            dp[i] = <span class="hljs-built_in">min</span>(c[i], sum[i]);
+        }
+        <span class="hljs-comment">// 将当前结点的dp值贡献给父结点</span>
+        sum[f[i]] += dp[i];
+    }
+
+    <span class="hljs-comment">// 处理根结点1</span>
+    <span class="hljs-keyword">if</span> (leaf[<span class="hljs-number">1</span>]) {                <span class="hljs-comment">// 如果根是叶子（树只有1个结点的情况，但n&gt;=2一般不会）</span>
+        dp[<span class="hljs-number">1</span>] = c[<span class="hljs-number">1</span>];
+    } <span class="hljs-keyword">else</span> {
+        dp[<span class="hljs-number">1</span>] = <span class="hljs-built_in">min</span>(c[<span class="hljs-number">1</span>], sum[<span class="hljs-number">1</span>]);
+    }
+
+    cout &lt;&lt; dp[<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P14919">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

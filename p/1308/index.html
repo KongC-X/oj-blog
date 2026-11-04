@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1308 全排列的结果 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="从键盘读入一个整数 ，请输出 中所有整数的全排列，按照由小到大输出结果，每组的 个数之间用空格隔开。 全排列的含义：从 个不同元素中任取 （ ）个元素，按照一定的顺序排列起来，叫做从 个不同元素中取出 个元素的一个排列。当 时所有的排列情况叫全排列。 如当 时，全排列的结果为：">
+<link rel="canonical" href="https://zymojblog.top/p/1308/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1308 全排列的结果 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="从键盘读入一个整数 ，请输出 中所有整数的全排列，按照由小到大输出结果，每组的 个数之间用空格隔开。 全排列的含义：从 个不同元素中任取 （ ）个元素，按照一定的顺序排列起来，叫做从 个不同元素中取出 个元素的一个排列。当 时所有的排列情况叫全排列。 如当 时，全排列的结果为：">
+<meta property="og:url" content="https://zymojblog.top/p/1308/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1308 全排列的结果 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="从键盘读入一个整数 ，请输出 中所有整数的全排列，按照由小到大输出结果，每组的 个数之间用空格隔开。 全排列的含义：从 个不同元素中任取 （ ）个元素，按照一定的顺序排列起来，叫做从 个不同元素中取出 个元素的一个排列。当 时所有的排列情况叫全排列。 如当 时，全排列的结果为：">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1308 全排列的结果","headline":"1308 全排列的结果 题解","description":"从键盘读入一个整数 ，请输出 中所有整数的全排列，按照由小到大输出结果，每组的 个数之间用空格隔开。 全排列的含义：从 个不同元素中任取 （ ）个元素，按照一定的顺序排列起来，叫做从 个不同元素中取出 个元素的一个排列。当 时所有的排列情况叫全排列。 如当 时，全排列的结果为：","url":"https://zymojblog.top/p/1308/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"回溯、排列组合","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1308</span></div>
+  <h1 class="seo-title">1308 全排列的结果</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%9E%E6%BA%AF">回溯</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88">排列组合</a></div>
+  <article class="markdown-body seo-article">
+<h1>1308 - 全排列的结果</h1>
+<h2>题目描述</h2>
+<p>从键盘读入一个整数 $n$，请输出 $1 \sim n$ 中所有整数的全排列，按照由小到大输出结果，每组的 $n$ 个数之间用空格隔开。</p>
+<p>全排列的含义：从 $n$ 个不同元素中任取 $m$ （$m \le n$）个元素，按照一定的顺序排列起来，叫做从 $n$ 个不同元素中取出 $m$ 个元素的一个排列。当 $m=n$ 时所有的排列情况叫全排列。</p>
+<p>如当 $n=3$ 时，全排列的结果为：</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+`</code></pre><h2>输入</h2>
+<p>一个整数 $n$（$1 \le n \le 6$）；</p>
+<h2>输出</h2>
+<p>$1 \sim n$ 中所有数的全排列的结果，按照由小到大输出，每行 $n$ 个数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> a[<span class="hljs-number">10</span>]; <span class="hljs-comment">// 存放全排列的结果</span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">10</span>]; <span class="hljs-comment">// 标记数组，表示某个数字是否已经被使用</span>
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        cout &lt;&lt; a[i];
+        <span class="hljs-keyword">if</span>(i != n) {
+            cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        } <span class="hljs-keyword">else</span> {
+            cout &lt;&lt; endl;
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> </span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-comment">// 如果这个i没有被使用过，则填写到下标为k的位置</span>
+        <span class="hljs-keyword">if</span>(f[i] == <span class="hljs-literal">false</span>) {
+            a[k] = i; <span class="hljs-comment">// 填写数字</span>
+            f[i] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// 标记为使用</span>
+            <span class="hljs-comment">// 如果a中存储了n个元素，输出结果，否则继续递归k+1</span>
+            <span class="hljs-keyword">if</span>(k == n) {
+                <span class="hljs-built_in">print</span>(); <span class="hljs-comment">// 输出结果</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">dfs</span>(k + <span class="hljs-number">1</span>); <span class="hljs-comment">// 继续填下一个位置</span>
+            }
+            f[i] = <span class="hljs-literal">false</span>; <span class="hljs-comment">// 回溯，标记为未使用</span>
+        }
+    }
+
+}
+
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// 从第1个位置开始全排列</span>
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1308">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

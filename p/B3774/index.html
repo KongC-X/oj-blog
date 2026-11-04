@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3774 [信息与未来 2022] 样本分类 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在人工智能中，“分类”是一项非常重要的任务。例如，公安系统通过人工智能分类潜在的电信诈骗，并进行及时的预警。现在我们考虑一种最简单的“线性二分类器”，它由 个整数参数（常数） 组成。在输入一组整数 时，如果 成立，则分类器输出 ，否则分类器输出 。如果分类器的输入（称为“特征”）选择得当，即便是简…">
+<link rel="canonical" href="https://zymojblog.top/p/B3774/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3774 [信息与未来 2022] 样本分类 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在人工智能中，“分类”是一项非常重要的任务。例如，公安系统通过人工智能分类潜在的电信诈骗，并进行及时的预警。现在我们考虑一种最简单的“线性二分类器”，它由 个整数参数（常数） 组成。在输入一组整数 时，如果 成立，则分类器输出 ，否则分类器输出 。如果分类器的输入（称为“特征”）选择得当，即便是简…">
+<meta property="og:url" content="https://zymojblog.top/p/B3774/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3774 [信息与未来 2022] 样本分类 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在人工智能中，“分类”是一项非常重要的任务。例如，公安系统通过人工智能分类潜在的电信诈骗，并进行及时的预警。现在我们考虑一种最简单的“线性二分类器”，它由 个整数参数（常数） 组成。在输入一组整数 时，如果 成立，则分类器输出 ，否则分类器输出 。如果分类器的输入（称为“特征”）选择得当，即便是简…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3774 [信息与未来 2022] 样本分类","headline":"B3774 [信息与未来 2022] 样本分类 题解","description":"在人工智能中，“分类”是一项非常重要的任务。例如，公安系统通过人工智能分类潜在的电信诈骗，并进行及时的预警。现在我们考虑一种最简单的“线性二分类器”，它由 个整数参数（常数） 组成。在输入一组整数 时，如果 成立，则分类器输出 ，否则分类器输出 。如果分类器的输入（称为“特征”）选择得当，即便是简…","url":"https://zymojblog.top/p/B3774/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"2022、江苏、Special Judge、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3774</span></div>
+  <h1 class="seo-title">B3774 [信息与未来 2022] 样本分类</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3774 [信息与未来 2022] 样本分类</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>江苏</code>、<code>Special Judge</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>在人工智能中，“分类”是一项非常重要的任务。例如，公安系统通过人工智能分类潜在的电信诈骗，并进行及时的预警。现在我们考虑一种最简单的“线性二分类器”，它由 $n$ 个整数参数（常数）$a_1,a_2,\cdots,a_n$ 组成。在输入一组整数 $x_1,x_2,\cdots,x_n$ 时，如果</p>
+<p>$$<br>a_1\cdot x_1+a_2\cdot x_2+\dots+a_n\cdot x_n\leq 0<br>$$</p>
+<p>成立，则分类器输出 $\texttt{true}$，否则分类器输出 $\texttt{false}$。如果分类器的输入（称为“特征”）选择得当，即便是简单的线性分类器也能取得很好的分类效果。</p>
+<p>现在，我们得到了两个用于同一分类任务的分类器：</p>
+<ul>
+<li>分类器 $A$，当 $a_1\cdot x_1+a_2\cdot x_2+\dots +a_n\cdot x_n\leq 0$ 时输出 $\texttt{true}$，否则输出 $\texttt{false}$</li>
+<li>分类器 $B$，当 $b_1\cdot x_1+b_2\cdot x_2+\dots +b_n\cdot x_n\leq 0$ 时输出 $\texttt{true}$，否则输出 $\texttt{false}$</li>
+</ul>
+<p>由于 $A$ 和 $B$ 是两个不同的分类器，它们可能会在某些输入的 $x$ 上产生分歧，给出不同的分类结果——这样的问题值得我们特别关注。因此，你的任务就是求出一组 $x_1,x_2,\cdots,x_n$，使得分类器 $A$ 和 $B$ 返回不同的结果。</p>
+<p>为了帮助大家理解，我们假设 $a_i$ 和 $b_i$ 分别保存在数组 $\text{a}$ 和 $\text{b}$ 中（数组下标从 $1$ 到 $n$）。你的任务就是求出数组 $\text{x}$ 的元素 $\texttt{x[1]},\texttt{x[2]},\cdots,\texttt{x[n]}$，使下面的函数 $\texttt{diverge}$ 返回 $\texttt{true}$：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-type">int</span> n; <span class="hljs-comment">// 参数/输⼊的个数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">classify</span><span class="hljs-params">(<span class="hljs-type">int</span> param[], <span class="hljs-type">int</span> x[])</span> </span>{
+ <span class="hljs-type">int</span> y = <span class="hljs-number">0</span>;
+ <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+ y += param[i] * x[i];
+ }
+ <span class="hljs-keyword">if</span> (y &lt;= <span class="hljs-number">0</span>) {
+ <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+ } <span class="hljs-keyword">else</span> {
+ <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+ }
+}
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">diverge</span><span class="hljs-params">(<span class="hljs-type">int</span> x[])</span> </span>{
+ <span class="hljs-keyword">return</span> <span class="hljs-built_in">classify</span>(a, x) != <span class="hljs-built_in">classify</span>(b, x);
+}</code></pre><h2>输入格式</h2>
+<p>输入的第一行包含一个整数 $n$，代表分类器参数的个数。</p>
+<p>输入的第二行包含 $n$ 个整数，代表分类器 $A$ 的参数 $a_i$（$1\le i\le n$）。</p>
+<p>输入的第三行包含 $n$ 个整数，代表分类器 $B$ 的参数 $b_i$（$1\le i\le n$）。</p>
+<p><del><strong>输入数据保证两个分类器的参数不是完全相同的</strong>。</del></p>
+<p>传题人 Update：本题保证两个分类器的参数不对应成比例且同号，即所有 $\dfrac{a_i}{b_i}$ 不全为同一正值，可以证明这种情况下一定有解。</p>
+<h2>输出格式</h2>
+<p>输出一行 $n$ 个整数，分别是 $x_1,x_2,\cdots,x_n$。其中 $x_i$（$1\leq i\leq n$）可以是正数、负数或零，但<strong>绝对值不能超过 $10,000$</strong>。如果有多组满足要求的解，输出任意一个即可。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">-1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>100 0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> a[<span class="hljs-number">1005</span>], b[<span class="hljs-number">1005</span>];
+<span class="hljs-type">int</span> x[<span class="hljs-number">1005</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; b[i];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) x[i] = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 初始化为0</span>
+
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+        <span class="hljs-comment">// n=1时由题目保证a1和b1必然异号或有一个为0，取x1=1即可</span>
+        x[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-type">int</span> p = <span class="hljs-number">-1</span>, q = <span class="hljs-number">-1</span>;   <span class="hljs-comment">// 寻找一对(i,j)使行列式不为0</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n &amp;&amp; p == <span class="hljs-number">-1</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt;= n &amp;&amp; p == <span class="hljs-number">-1</span>; j++) {
+                <span class="hljs-keyword">if</span> (a[i] * b[j] - a[j] * b[i] != <span class="hljs-number">0</span>) {
+                    p = i;
+                    q = j;
+                }
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (p != <span class="hljs-number">-1</span>) {
+            <span class="hljs-comment">// 标准构造：x[p] = b[q]+a[q], x[q] = -a[p]-b[p]</span>
+            <span class="hljs-comment">// 此时 a·x = -b·x ≠ 0，符号必然相反</span>
+            x[p] = b[q] + a[q];
+            x[q] = -a[p] - b[p];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 所有2×2行列式都为0 → a与b线性相关，且必为负比例关系</span>
+            <span class="hljs-comment">// 令 x = a (若a不全为0)，否则 x = b</span>
+            <span class="hljs-type">bool</span> allZero = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+                <span class="hljs-keyword">if</span> (a[i] != <span class="hljs-number">0</span>) { allZero = <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>; }
+            }
+            <span class="hljs-keyword">if</span> (!allZero) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) x[i] = a[i];
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) x[i] = b[i];
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 输出</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cout &lt;&lt; x[i];
+        <span class="hljs-keyword">if</span> (i &lt; n) cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    }
+    cout &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3774">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

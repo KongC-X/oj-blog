@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1222 经典递归问题——汉诺塔 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="汉诺塔（又称河内塔）问题是印度的一个古老的传说。开天辟地的神勃拉玛在一个庙里留下了三根金刚石的棒，第一根上面套着 个圆的金片，最大的一个在底下，其余一个比一个小，依次叠上去，庙里的众僧不倦地把它们一个个地从这根棒搬到另一根棒上，规定可利用中间的一根棒作为帮助，但每次只能搬一个，而且大的不能放在小的…">
+<link rel="canonical" href="https://zymojblog.top/p/1222/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1222 经典递归问题——汉诺塔 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="汉诺塔（又称河内塔）问题是印度的一个古老的传说。开天辟地的神勃拉玛在一个庙里留下了三根金刚石的棒，第一根上面套着 个圆的金片，最大的一个在底下，其余一个比一个小，依次叠上去，庙里的众僧不倦地把它们一个个地从这根棒搬到另一根棒上，规定可利用中间的一根棒作为帮助，但每次只能搬一个，而且大的不能放在小的…">
+<meta property="og:url" content="https://zymojblog.top/p/1222/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1222 经典递归问题——汉诺塔 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="汉诺塔（又称河内塔）问题是印度的一个古老的传说。开天辟地的神勃拉玛在一个庙里留下了三根金刚石的棒，第一根上面套着 个圆的金片，最大的一个在底下，其余一个比一个小，依次叠上去，庙里的众僧不倦地把它们一个个地从这根棒搬到另一根棒上，规定可利用中间的一根棒作为帮助，但每次只能搬一个，而且大的不能放在小的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1222 经典递归问题——汉诺塔","headline":"1222 经典递归问题——汉诺塔 题解","description":"汉诺塔（又称河内塔）问题是印度的一个古老的传说。开天辟地的神勃拉玛在一个庙里留下了三根金刚石的棒，第一根上面套着 个圆的金片，最大的一个在底下，其余一个比一个小，依次叠上去，庙里的众僧不倦地把它们一个个地从这根棒搬到另一根棒上，规定可利用中间的一根棒作为帮助，但每次只能搬一个，而且大的不能放在小的…","url":"https://zymojblog.top/p/1222/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1222</span></div>
+  <h1 class="seo-title">1222 经典递归问题——汉诺塔</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">递归进阶</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>1222 - 经典递归问题——汉诺塔</h1>
+<h2>题目描述</h2>
+<p>汉诺塔（又称河内塔）问题是印度的一个古老的传说。开天辟地的神勃拉玛在一个庙里留下了三根金刚石的棒，第一根上面套着 $64$ 个圆的金片，最大的一个在底下，其余一个比一个小，依次叠上去，庙里的众僧不倦地把它们一个个地从这根棒搬到另一根棒上，规定可利用中间的一根棒作为帮助，但每次只能搬一个，而且大的不能放在小的上面。</p>
+<p>面对庞大的数字(移动圆片的次数) $18446744073709551615$，看来，众僧们耗尽毕生精力也不可能完成金片的移动。</p>
+<p>后来，这个传说就演变为汉诺塔游戏:</p>
+<ul>
+<li><p>有三根杆子 $A,B,C$ 。$A$杆上有若干碟子。</p>
+</li>
+<li><p>每次移动一块碟子，小的只能叠在大的上面。</p>
+</li>
+<li><p>把所有碟子从 $A$ 杆全部移到 $C$杆上。</p>
+</li>
+</ul>
+<p>经过研究发现，汉诺塔的破解很简单，就是按照移动规则向一个方向移动金片：</p>
+<p>如 $3$ 阶汉诺塔的移动：$A→C,A→B,C→B,A→C,B→A,B→C,A→C$。</p>
+<p>此外，汉诺塔问题也是程序设计中的经典递归问题。</p>
+<p>算法思路：</p>
+<ul>
+<li><p>如果只有一个金片，则把该金片从源移动到目标棒，结束。</p>
+</li>
+<li><p>如果有 $n$ 个金片，则把前 $n-1$ 个金片移动到辅助的棒，然后把自己移动到目标棒，最后再把前 $n-1$ 个移动到目标棒。</p>
+</li>
+</ul>
+<h2>输入</h2>
+<p>一个整数 $N$ ，表示 $A$ 柱上有 $N$ 个碟子。（$0 \lt n \le 10$）</p>
+<h2>输出</h2>
+<p>若干行，即移动的最少步骤。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+汉诺塔移动问题
+1、先将n-1个（除了最下面那个）盘子从A借助C移动到B，需要n-1次fun(n-1)次
+2、将最下面那个盘子从A移动到C，需要1次fun(1)次
+3、将n-1个（除了最下面那个）盘子从B借助A移动到C，需要n-1次fun(n-1)次
+因此得到结论：fun(n) = fun(n-1) + 1 + fun(n-1) = 2*fun(n-1) + 1
+* */</span>
+
+<span class="hljs-comment">// 函数的作用：将n个盘子从p1位置借助p2位置移动到p3位置</span>
+<span class="hljs-comment">// p1:起始位置，p2:借助位置，p3:目标位置</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">char</span> p1, <span class="hljs-type">char</span> p2, <span class="hljs-type">char</span> p3)</span> </span>{
+    <span class="hljs-keyword">if</span>(n &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-comment">// 第一步：将n-1个盘子从p1借助p3移动到p2</span>
+        <span class="hljs-built_in">move</span>(n<span class="hljs-number">-1</span>, p1, p3, p2);
+        <span class="hljs-comment">// 第二步：将第n个盘子从p1移动到p3</span>
+        cout &lt;&lt; p1 &lt;&lt; <span class="hljs-string">&quot; To &quot;</span> &lt;&lt; p3 &lt;&lt; endl;
+        <span class="hljs-comment">// 第三步：将n-1个盘子从p2借助p1移动到p3</span>
+        <span class="hljs-built_in">move</span>(n<span class="hljs-number">-1</span>, p2, p1, p3);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-built_in">move</span>(n, <span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>);
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1222">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

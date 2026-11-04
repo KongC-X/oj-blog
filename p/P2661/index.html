@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2661 [NOIP 2015 提高组] 信息传递 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个同学（编号为 到 ）正在玩一个信息传递的游戏。在游戏里每人都有一个固定的信息传递对象，其中，编号为 的同学的信息传递对象是编号为 的同学。 游戏开始时，每人都只知道自己的生日。之后每一轮中，所有人会同时将自己当前所知的生日信息告诉各自的信息传递对象（注意：可能有人可以从若干人那里获取信息，但…">
+<link rel="canonical" href="https://zymojblog.top/p/P2661/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2661 [NOIP 2015 提高组] 信息传递 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个同学（编号为 到 ）正在玩一个信息传递的游戏。在游戏里每人都有一个固定的信息传递对象，其中，编号为 的同学的信息传递对象是编号为 的同学。 游戏开始时，每人都只知道自己的生日。之后每一轮中，所有人会同时将自己当前所知的生日信息告诉各自的信息传递对象（注意：可能有人可以从若干人那里获取信息，但…">
+<meta property="og:url" content="https://zymojblog.top/p/P2661/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2661 [NOIP 2015 提高组] 信息传递 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个同学（编号为 到 ）正在玩一个信息传递的游戏。在游戏里每人都有一个固定的信息传递对象，其中，编号为 的同学的信息传递对象是编号为 的同学。 游戏开始时，每人都只知道自己的生日。之后每一轮中，所有人会同时将自己当前所知的生日信息告诉各自的信息传递对象（注意：可能有人可以从若干人那里获取信息，但…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2661 [NOIP 2015 提高组] 信息传递","headline":"P2661 [NOIP 2015 提高组] 信息传递 题解","description":"有 个同学（编号为 到 ）正在玩一个信息传递的游戏。在游戏里每人都有一个固定的信息传递对象，其中，编号为 的同学的信息传递对象是编号为 的同学。 游戏开始时，每人都只知道自己的生日。之后每一轮中，所有人会同时将自己当前所知的生日信息告诉各自的信息传递对象（注意：可能有人可以从若干人那里获取信息，但…","url":"https://zymojblog.top/p/P2661/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"图论、2015、并查集、NOIP 提高组、深度优先搜索 DFS、拓扑排序、强连通分量、Tarjan、基环树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2661</span></div>
+  <h1 class="seo-title">P2661 [NOIP 2015 提高组] 信息传递</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/2015">2015</a><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F">拓扑排序</a><a class="seo-tag" href="/#/tag/%E5%BC%BA%E8%BF%9E%E9%80%9A%E5%88%86%E9%87%8F">强连通分量</a><a class="seo-tag" href="/#/tag/Tarjan">Tarjan</a><a class="seo-tag" href="/#/tag/%E5%9F%BA%E7%8E%AF%E6%A0%91">基环树</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2661 [NOIP 2015 提高组] 信息传递</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-10</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>图论</code>、<code>2015</code>、<code>并查集</code>、<code>NOIP 提高组</code>、<code>深度优先搜索 DFS</code>、<code>拓扑排序</code>、<code>强连通分量</code>、<code>Tarjan</code>、<code>基环树</code></p>
+<h2>题目背景</h2>
+<p>NOIP2015 Day1T2</p>
+<h2>题目描述</h2>
+<p>有 $n$ 个同学（编号为 $1$ 到 $n$）正在玩一个信息传递的游戏。在游戏里每人都有一个固定的信息传递对象，其中，编号为 $i$ 的同学的信息传递对象是编号为 $T_i$ 的同学。</p>
+<p>游戏开始时，每人都只知道自己的生日。之后每一轮中，所有人会同时将自己当前所知的生日信息告诉各自的信息传递对象（注意：可能有人可以从若干人那里获取信息，但是每人只会把信息告诉一个人，即自己的信息传递对象）。当有人从别人口中得知自己的生日时，游戏结束。请问该游戏一共可以进行几轮？</p>
+<h2>输入格式</h2>
+<p>输入共 $2$ 行。</p>
+<p>第一行包含 $1$ 个正整数 $n$，表示 $n$ 个人。</p>
+<p>第二行包含 $n$ 个用空格隔开的正整数 $T_1,T_2,\cdots,T_n$，其中第 $i$ 个整数 $T_i$ 表示编号为 $i$ 的同学的信息传递对象是编号为 $T_i$ 的同学，$T_i\leq n$ 且 $T_i\neq i$。</p>
+<h2>输出格式</h2>
+<p>共一行一个整数，表示游戏一共可以进行多少轮。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">200010</span>;         <span class="hljs-comment">// n 最大 200000，多开10个</span>
+<span class="hljs-type">int</span> fa[MAXN];                    <span class="hljs-comment">// 并查集父节点</span>
+<span class="hljs-type">int</span> d[MAXN];                     <span class="hljs-comment">// d[x] 表示 x 到其根节点的距离</span>
+<span class="hljs-type">int</span> ans = MAXN;                  <span class="hljs-comment">// 最小环的长度，初始设一个大数</span>
+
+<span class="hljs-comment">/*
+  带权并查集的查找：找到 x 的根，同时更新 d[x] 为到根的距离。
+*/</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (fa[x] != x) {
+        <span class="hljs-type">int</span> root = <span class="hljs-built_in">find</span>(fa[x]);  <span class="hljs-comment">// 递归找根</span>
+        d[x] += d[fa[x]];        <span class="hljs-comment">// 将父节点到根的距离加上去</span>
+        fa[x] = root;            <span class="hljs-comment">// 路径压缩</span>
+    }
+    <span class="hljs-keyword">return</span> fa[x];
+}
+
+<span class="hljs-comment">/*
+  合并 x 和 y，并指定 x 指向 y（即有一条 x -&gt; y 的边）。
+  如果 x 和 y 已经在同一个集合，说明形成了环，更新最小环长。
+*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+    <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+    <span class="hljs-keyword">if</span> (fx != fy) {
+        <span class="hljs-comment">// 将 fx 接到 fy 上，并设置 fx 到 fy 的距离</span>
+        <span class="hljs-comment">// 使得 x 到 y 的距离恰好为 1（因为 x 直接传递信息给 y）</span>
+        fa[fx] = fy;
+        d[fx] = d[y] - d[x] + <span class="hljs-number">1</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// x 和 y 已经连通，说明找到环</span>
+        <span class="hljs-type">int</span> len = d[x] + d[y] + <span class="hljs-number">1</span>;   <span class="hljs-comment">// 环长 = x到根 + 根到y + 新边(x-&gt;y)</span>
+        <span class="hljs-keyword">if</span> (len &lt; ans) ans = len;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                       <span class="hljs-comment">// n：总人数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 初始化并查集：每个人是自己的根，距离为 0</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        fa[i] = i;
+        d[i] = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 读入每个人的信息传递对象，并合并</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> v;                   <span class="hljs-comment">// i 把信息传给 v</span>
+        cin &gt;&gt; v;
+        <span class="hljs-built_in">merge</span>(i, v);             <span class="hljs-comment">// 合并 i 和 v，边 i -&gt; v</span>
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2661">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

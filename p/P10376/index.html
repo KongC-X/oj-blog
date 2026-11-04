@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10376 [GESP202403 六级] 游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="你有四个正整数 ，并准备用它们玩一个简单的小游戏。 在一轮游戏操作中，你可以选择将 减去 ，或是将 减去 。游戏将会进行多轮操作，直到当 时游戏结束。 你想知道游戏结束时有多少种不同的游戏操作序列。两种游戏操作序列不同，当且仅当游戏操作轮数不同，或是某一轮游戏操作中，一种操作序列选择将 减去 ，而…">
+<link rel="canonical" href="https://zymojblog.top/p/P10376/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10376 [GESP202403 六级] 游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="你有四个正整数 ，并准备用它们玩一个简单的小游戏。 在一轮游戏操作中，你可以选择将 减去 ，或是将 减去 。游戏将会进行多轮操作，直到当 时游戏结束。 你想知道游戏结束时有多少种不同的游戏操作序列。两种游戏操作序列不同，当且仅当游戏操作轮数不同，或是某一轮游戏操作中，一种操作序列选择将 减去 ，而…">
+<meta property="og:url" content="https://zymojblog.top/p/P10376/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10376 [GESP202403 六级] 游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="你有四个正整数 ，并准备用它们玩一个简单的小游戏。 在一轮游戏操作中，你可以选择将 减去 ，或是将 减去 。游戏将会进行多轮操作，直到当 时游戏结束。 你想知道游戏结束时有多少种不同的游戏操作序列。两种游戏操作序列不同，当且仅当游戏操作轮数不同，或是某一轮游戏操作中，一种操作序列选择将 减去 ，而…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10376 [GESP202403 六级] 游戏","headline":"P10376 [GESP202403 六级] 游戏 题解","description":"你有四个正整数 ，并准备用它们玩一个简单的小游戏。 在一轮游戏操作中，你可以选择将 减去 ，或是将 减去 。游戏将会进行多轮操作，直到当 时游戏结束。 你想知道游戏结束时有多少种不同的游戏操作序列。两种游戏操作序列不同，当且仅当游戏操作轮数不同，或是某一轮游戏操作中，一种操作序列选择将 减去 ，而…","url":"https://zymojblog.top/p/P10376/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、2024、深度优先搜索 DFS、记忆化搜索、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10376</span></div>
+  <h1 class="seo-title">P10376 [GESP202403 六级] 游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2">记忆化搜索</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10376 [GESP202403 六级] 游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2024</code>、<code>深度优先搜索 DFS</code>、<code>记忆化搜索</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1146">https://ti.luogu.com.cn/problemset/1146</a></p>
+<h2>题目描述</h2>
+<p>你有四个正整数 $n,a,b,c$，并准备用它们玩一个简单的小游戏。</p>
+<p>在一轮游戏操作中，你可以选择将 $n$ 减去 $a$，或是将 $n$ 减去 $b$。游戏将会进行多轮操作，直到当 $n \leq c$ 时游戏结束。</p>
+<p>你想知道游戏结束时有多少种不同的游戏操作序列。两种游戏操作序列不同，当且仅当游戏操作轮数不同，或是某一轮游戏操作中，一种操作序列选择将 $n$ 减去 $a$，而另一种操作序列选择将 $n$ 减去 $b$。如果 $a=b$，也认为将 $n$ 减去 $a$ 与将 $n$ 减去 $b$ 是不同的操作。</p>
+<p>由于答案可能很大，你只需要求出答案对 $10^9 + 7$ 取模的结果。</p>
+<h2>输入格式</h2>
+<p>一行四个整数 $n,a,b,c$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">114</span> <span class="hljs-number">51</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>176```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">114514</span> <span class="hljs-number">191</span> <span class="hljs-number">9</span> <span class="hljs-number">810</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>384178446```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MOD = <span class="hljs-number">1000000007</span>;            <span class="hljs-comment">// 模数 1e9+7</span>
+<span class="hljs-type">int</span> dp[<span class="hljs-number">200010</span>];                        <span class="hljs-comment">// dp[x] 表示从当前值为 x 开始到游戏结束的方案数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, a, b, c;
+    cin &gt;&gt; n &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 该问题是一个有向无环图上的路径计数，可以用动态规划解决。</span>
+    <span class="hljs-comment">// 状态定义：dp[x] = 从值为 x 开始，进行若干次操作直到值 ≤ c 的方案总数。</span>
+    <span class="hljs-comment">// </span>
+    <span class="hljs-comment">// 初始化：若 x ≤ c，游戏已经结束，只有空操作序列一种方案，故 dp[x] = 1。</span>
+    <span class="hljs-comment">// </span>
+    <span class="hljs-comment">// 状态转移（x &gt; c）：</span>
+    <span class="hljs-comment">//   可以选择减 a 或减 b（即使 a == b 也视为两种不同操作）。</span>
+    <span class="hljs-comment">//   减 a 后新值为 x - a（若 x - a ≤ c 则直接结束，贡献为 1），</span>
+    <span class="hljs-comment">//   同理减 b 后贡献为 1 或 dp[x - b]。</span>
+    <span class="hljs-comment">//   因此 dp[x] = ( (x - a ≤ c ? 1 : dp[x - a]) + (x - b ≤ c ? 1 : dp[x - b]) ) % MOD。</span>
+    <span class="hljs-comment">// </span>
+    <span class="hljs-comment">// 最终答案即为 dp[n]。</span>
+    <span class="hljs-comment">// 注意：当 x - a ≤ c 时，包括 x - a &lt;= 0 的情况，都视为 1。</span>
+    <span class="hljs-comment">// 时间复杂度 O(n)，空间 O(n)。</span>
+
+    <span class="hljs-comment">// 初始化所有 ≤ c 的状态为 1</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= c; i++) {
+        dp[i] = <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-comment">// 递推计算 &gt; c 的状态</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x = c + <span class="hljs-number">1</span>; x &lt;= n; x++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> v = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 用 long long 避免加法溢出</span>
+        <span class="hljs-comment">// // 选择减 a</span>
+        <span class="hljs-comment">// x - a &lt;= c ? v += 1 : v += dp[x - a];</span>
+        <span class="hljs-comment">// // 选择减 b</span>
+        <span class="hljs-comment">// x - b &lt;= c ? v += 1 : v += dp[x - b];</span>
+        <span class="hljs-comment">// dp[x] = v % MOD;</span>
+        dp[x] = ( (x - a &lt;= c ? <span class="hljs-number">1</span> : dp[x - a]) + (x - b &lt;= c ? <span class="hljs-number">1</span> : dp[x - b]) ) % MOD;
+    }
+
+    cout &lt;&lt; dp[n] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10376">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2053 图的bfs遍历 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个有 个结点的无向连通图，这些结点以编号： 进行编号，现给出结点间的连接关系。 请以结点 为起点，按广度优先搜索（bfs）、优先访问小编号结点的顺序遍历并输出该图。">
+<link rel="canonical" href="https://zymojblog.top/p/2053/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2053 图的bfs遍历 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个有 个结点的无向连通图，这些结点以编号： 进行编号，现给出结点间的连接关系。 请以结点 为起点，按广度优先搜索（bfs）、优先访问小编号结点的顺序遍历并输出该图。">
+<meta property="og:url" content="https://zymojblog.top/p/2053/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2053 图的bfs遍历 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个有 个结点的无向连通图，这些结点以编号： 进行编号，现给出结点间的连接关系。 请以结点 为起点，按广度优先搜索（bfs）、优先访问小编号结点的顺序遍历并输出该图。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2053 图的bfs遍历","headline":"2053 图的bfs遍历 题解","description":"一个有 个结点的无向连通图，这些结点以编号： 进行编号，现给出结点间的连接关系。 请以结点 为起点，按广度优先搜索（bfs）、优先访问小编号结点的顺序遍历并输出该图。","url":"https://zymojblog.top/p/2053/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论、图的遍历","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2053</span></div>
+  <h1 class="seo-title">2053 图的bfs遍历</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86">图的遍历</a></div>
+  <article class="markdown-body seo-article">
+<h1>2053 - 图的bfs遍历</h1>
+<h2>题目描述</h2>
+<p>一个有 $n$ 个结点的无向连通图，这些结点以编号：$1,2 \dots n$ 进行编号，现给出结点间的连接关系。</p>
+<p>请以结点 $1$ 为起点，按广度优先搜索（bfs）、优先访问小编号结点的顺序遍历并输出该图。</p>
+<h2>输入</h2>
+<p>第一行为两整数，$n$ 和 $e$ ，表示 $n$ 个顶点，$e$ 条边。（ $2 \le n,e \le 10$ ）</p>
+<p>以下 $e$ 行每行两个数，表示两个结点是连通的。</p>
+<h2>输出</h2>
+<p>只有一行，为节点按照广度优先、小编号结点优先访问的结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+ 
+<span class="hljs-type">int</span> n,e;
+<span class="hljs-type">int</span> a[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>];<span class="hljs-comment">//邻接矩阵 </span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">20</span>];<span class="hljs-comment">//节点是否访问 </span>
+<span class="hljs-type">int</span> q[<span class="hljs-number">20</span>];<span class="hljs-comment">//存储走过的点</span>
+<span class="hljs-type">int</span> head,tail; 
+ 
+<span class="hljs-comment">//访问x节点 </span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">()</span></span>{
+    head = <span class="hljs-number">1</span>;
+    tail = <span class="hljs-number">1</span>;
+    q[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//从1的点开始访问</span>
+    f[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//标记走过</span>
+    cout&lt;&lt;<span class="hljs-number">1</span>&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-keyword">while</span>(head &lt;= tail){
+        <span class="hljs-comment">//尝试head能访问到的所有的点</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+            <span class="hljs-keyword">if</span>(a[q[head]][i]==<span class="hljs-number">1</span>&amp;&amp;!f[i]){
+                <span class="hljs-comment">//入队 </span>
+                tail++;
+                f[i] = <span class="hljs-literal">true</span>;
+                q[tail] = i;
+                cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+            }
+        } 
+         
+        head++;
+    } 
+}
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;e;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-comment">//存储邻接矩阵</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= e;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        a[x][y] = <span class="hljs-number">1</span>;
+        a[y][x] = <span class="hljs-number">1</span>;
+    } 
+     
+    <span class="hljs-comment">//从节点1开始访问 </span>
+    <span class="hljs-built_in">bfs</span>(); 
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2053">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

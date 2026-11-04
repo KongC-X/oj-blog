@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1015 [NOIP 1999 普及组] 回文数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称为回文数。 例如，给定一个十进制数 ，将 加 （即把 从右向左读），得到的 是一个回文数。 又如，对于十进制数 ： STEP1： STEP2： STEP3： STEP4： 在这里，一步是指进行一次 进制加法，上例最少用了 步得到回文数…">
+<link rel="canonical" href="https://zymojblog.top/p/P1015/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1015 [NOIP 1999 普及组] 回文数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称为回文数。 例如，给定一个十进制数 ，将 加 （即把 从右向左读），得到的 是一个回文数。 又如，对于十进制数 ： STEP1： STEP2： STEP3： STEP4： 在这里，一步是指进行一次 进制加法，上例最少用了 步得到回文数…">
+<meta property="og:url" content="https://zymojblog.top/p/P1015/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1015 [NOIP 1999 普及组] 回文数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称为回文数。 例如，给定一个十进制数 ，将 加 （即把 从右向左读），得到的 是一个回文数。 又如，对于十进制数 ： STEP1： STEP2： STEP3： STEP4： 在这里，一步是指进行一次 进制加法，上例最少用了 步得到回文数…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1015 [NOIP 1999 普及组] 回文数","headline":"P1015 [NOIP 1999 普及组] 回文数 题解","description":"若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称为回文数。 例如，给定一个十进制数 ，将 加 （即把 从右向左读），得到的 是一个回文数。 又如，对于十进制数 ： STEP1： STEP2： STEP3： STEP4： 在这里，一步是指进行一次 进制加法，上例最少用了 步得到回文数…","url":"https://zymojblog.top/p/P1015/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、高精度、1999、NOIP 普及组、进制","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1015</span></div>
+  <h1 class="seo-title">P1015 [NOIP 1999 普及组] 回文数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a><a class="seo-tag" href="/#/tag/1999">1999</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1015 [NOIP 1999 普及组] 回文数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>高精度</code>、<code>1999</code>、<code>NOIP 普及组</code>、<code>进制</code></p>
+<h2>题目描述</h2>
+<p>若一个数（首位不为零）从左向右读与从右向左读都一样，我们就将其称为回文数。</p>
+<p>例如，给定一个十进制数 $56$，将 $56$ 加 $65$（即把 $56$ 从右向左读），得到的 $121$ 是一个回文数。</p>
+<p>又如，对于十进制数 $87$：</p>
+<p>STEP1：$87+78=165$<br>STEP2：$165+561=726$<br>STEP3：$726+627=1353$<br>STEP4：$1353+3531=4884$  </p>
+<p>在这里，一步是指进行一次 $N$ 进制加法，上例最少用了 $4$ 步得到回文数 $4884$。</p>
+<p>请编写程序，给定一个 $N$ 进制数 $M$，求最少经过几步可以得到回文数。如果在 $30$ 步以内（包含 $30$ 步）不可能得到回文数，则输出 <code>Impossible!</code>。</p>
+<p>其中，$2\le N\le 10$ 或 $N=16$，$M$ 的长度不超过 $100$ 位，且只包含数字或大写字母。</p>
+<h2>输入格式</h2>
+<p>输入共两行。</p>
+<p>第一行包含一个整数 $N$。</p>
+<p>第二行包含一个 $N$ 进制数 $M$。</p>
+<h2>输出格式</h2>
+<p>如果能在 $30$ 步以内得到回文数，输出格式形如 <code>STEP=ans</code>，其中 $\text{ans}$ 为最少得到回文数的步数。</p>
+<p>否则输出 <code>Impossible!</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>
+<span class="hljs-number">87</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">STEP=<span class="hljs-number">4</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 字符转数值（支持0-9, A-F）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">val</span><span class="hljs-params">(<span class="hljs-type">char</span> c)</span> </span>{
+    <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) <span class="hljs-keyword">return</span> c - <span class="hljs-string">&#x27;0&#x27;</span>;
+    <span class="hljs-keyword">return</span> c - <span class="hljs-string">&#x27;A&#x27;</span> + <span class="hljs-number">10</span>;               <span class="hljs-comment">// &#x27;A&#x27;~&#x27;F&#x27; -&gt; 10~15</span>
+}
+
+<span class="hljs-comment">// 数值转字符（0-15）</span>
+<span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">chr</span><span class="hljs-params">(<span class="hljs-type">int</span> v)</span> </span>{
+    <span class="hljs-keyword">if</span> (v &lt; <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span> + v;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;A&#x27;</span> + v - <span class="hljs-number">10</span>;
+}
+
+<span class="hljs-comment">// N 进制高精度加法，返回 s1 + s2 的字符串</span>
+<span class="hljs-function">string <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">const</span> string &amp;s1, <span class="hljs-type">const</span> string &amp;s2, <span class="hljs-type">int</span> N)</span> </span>{
+    <span class="hljs-type">const</span> <span class="hljs-type">int</span> L = <span class="hljs-number">250</span>;                 <span class="hljs-comment">// 最大长度（题目保证100位，足够）</span>
+    <span class="hljs-type">int</span> a[L] = {<span class="hljs-number">0</span>}, b[L] = {<span class="hljs-number">0</span>}, c[L] = {<span class="hljs-number">0</span>};
+
+    <span class="hljs-comment">// 逆序存入数组，高位在后</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s1.<span class="hljs-built_in">size</span>(); i++) {
+        a[i] = <span class="hljs-built_in">val</span>(s1[s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i]);
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s2.<span class="hljs-built_in">size</span>(); i++) {
+        b[i] = <span class="hljs-built_in">val</span>(s2[s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i]);
+    }
+
+    <span class="hljs-type">int</span> len = <span class="hljs-built_in">max</span>(s1.<span class="hljs-built_in">size</span>(), s2.<span class="hljs-built_in">size</span>());
+    <span class="hljs-comment">// 逐位相加</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        c[i] = a[i] + b[i];
+    }
+    <span class="hljs-comment">// 处理进位</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        <span class="hljs-keyword">if</span> (c[i] &gt;= N) {
+            c[i + <span class="hljs-number">1</span>] += c[i] / N;
+            c[i] %= N;
+        }
+    }
+    <span class="hljs-keyword">if</span> (c[len] != <span class="hljs-number">0</span>) len++;            <span class="hljs-comment">// 最高位进位</span>
+
+    <span class="hljs-comment">// 逆序输出为字符串</span>
+    string res;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        res.<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">chr</span>(c[i]));
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-comment">// 判断字符串是否为回文</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPal</span><span class="hljs-params">(<span class="hljs-type">const</span> string &amp;s)</span> </span>{
+    <span class="hljs-type">int</span> len = s.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len / <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span> (s[i] != s[len - <span class="hljs-number">1</span> - i]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> N;                             <span class="hljs-comment">// 进制</span>
+    string M;                          <span class="hljs-comment">// 输入的 N 进制数</span>
+    cin &gt;&gt; N &gt;&gt; M;
+
+    <span class="hljs-type">int</span> step = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (step &lt;= <span class="hljs-number">30</span>) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isPal</span>(M)) {
+            cout &lt;&lt; <span class="hljs-string">&quot;STEP=&quot;</span> &lt;&lt; step &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (step == <span class="hljs-number">30</span>) <span class="hljs-keyword">break</span>;         <span class="hljs-comment">// 已达30步，不可能</span>
+        <span class="hljs-comment">// 将 M 反转作为第二个加数</span>
+        string rev = M;
+        <span class="hljs-built_in">reverse</span>(rev.<span class="hljs-built_in">begin</span>(), rev.<span class="hljs-built_in">end</span>());
+        M = <span class="hljs-built_in">add</span>(M, rev, N);
+        step++;
+    }
+
+    cout &lt;&lt; <span class="hljs-string">&quot;Impossible!\n&quot;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1015">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

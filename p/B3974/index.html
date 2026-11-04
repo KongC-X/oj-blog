@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3974 [语言月赛 202405] 放行李 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 S 推着她的行李箱走上高铁，开启了一段精彩的旅行。 这节车厢的行李架分为左右两列，每一列分别有 个位置，从前往后按 到 依次编号。对于任意两个编号为 和 的位置（不区分是哪一列），它们之间的距离是 。 代表 的绝对值。当 ， ；当 ， 。 用 表示行李架左边一列，用 来表示右边一列。小 S 的…">
+<link rel="canonical" href="https://zymojblog.top/p/B3974/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3974 [语言月赛 202405] 放行李 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 S 推着她的行李箱走上高铁，开启了一段精彩的旅行。 这节车厢的行李架分为左右两列，每一列分别有 个位置，从前往后按 到 依次编号。对于任意两个编号为 和 的位置（不区分是哪一列），它们之间的距离是 。 代表 的绝对值。当 ， ；当 ， 。 用 表示行李架左边一列，用 来表示右边一列。小 S 的…">
+<meta property="og:url" content="https://zymojblog.top/p/B3974/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3974 [语言月赛 202405] 放行李 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 S 推着她的行李箱走上高铁，开启了一段精彩的旅行。 这节车厢的行李架分为左右两列，每一列分别有 个位置，从前往后按 到 依次编号。对于任意两个编号为 和 的位置（不区分是哪一列），它们之间的距离是 。 代表 的绝对值。当 ， ；当 ， 。 用 表示行李架左边一列，用 来表示右边一列。小 S 的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3974 [语言月赛 202405] 放行李","headline":"B3974 [语言月赛 202405] 放行李 题解","description":"小 S 推着她的行李箱走上高铁，开启了一段精彩的旅行。 这节车厢的行李架分为左右两列，每一列分别有 个位置，从前往后按 到 依次编号。对于任意两个编号为 和 的位置（不区分是哪一列），它们之间的距离是 。 代表 的绝对值。当 ， ；当 ， 。 用 表示行李架左边一列，用 来表示右边一列。小 S 的…","url":"https://zymojblog.top/p/B3974/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2024、O2优化、循环结构、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3974</span></div>
+  <h1 class="seo-title">B3974 [语言月赛 202405] 放行李</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3974 [语言月赛 202405] 放行李</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2024</code>、<code>O2优化</code>、<code>循环结构</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>小 S 推着她的行李箱走上高铁，开启了一段精彩的旅行。</p>
+<p>这节车厢的行李架分为左右两列，每一列分别有 $n$ 个位置，从前往后按 $1$ 到 $n$ 依次编号。对于任意两个编号为 $i$ 和 $j$ 的位置（不区分是哪一列），它们之间的距离是 $\vert i - j \vert$。</p>
+<p>$\vert x \vert$ 代表 $x$ 的绝对值。当 $x \geq 0$，$\vert x \vert = x$；当 $x &lt; 0$，$\vert x \vert = -x$。</p>
+<p>用 $0$ 表示行李架左边一列，用 $1$ 来表示右边一列。小 S 的座位在 $p$ 列的编号 $q$ 的位置处（$p = 0$ 或 $1$，$1 \leq q \leq n$）。</p>
+<p>现在小 S 想要在某个位置摆放她的行李箱。然而，已经有一些位置被其它行李占用，所以那些位置是不能摆放行李箱的。小 S 只能选择一个没有行李的空位。</p>
+<p>在此基础上，小 S 首先希望行李箱的摆放位置距离她尽可能小。其次，如果有两个<strong>不同列</strong>的空位置和她的位置距离最小且相同，那么小 S 会选择和她在<strong>同一列</strong>的那一个位置。</p>
+<p>现在给你左右两列的行李摆放情况，请你找到一个满足条件的最佳行李摆放位置。如果没有任何空位置，请你输出 $-1$。</p>
+<h2>输入格式</h2>
+<p>第一行一个整数 $n$，表示每一列位置数量。<br>第二行 $n$ 个 $0$ 或 $1$ 的整数，第 $i$ 个整数表示<strong>左列</strong>第 $i$ 个位置是否已经有行李，若为 $1$ 则有行李，若为 $0$ 则没有行李。<br>第三行 $n$ 个 $0$ 或 $1$ 的整数，第 $i$ 个整数表示<strong>右列</strong>第 $i$ 个位置是否已经有行李，若为 $1$ 则有行李，若为 $0$ 则没有行李。</p>
+<p>第四行，两个整数 $p, q$，表示小 S 所在位置是哪一列，在这一列的哪个位置。</p>
+<h2>输出格式</h2>
+<p>输出一行，若有可以摆放行李的位置，则输出两个整数，分别表示最佳位置在左列还是右列，最佳位置与小 S 所在位置的<strong>距离</strong>。</p>
+<p>如果没有可以放行李的位置，则输出一个整数 $-1$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0</span> <span class="hljs-number">2</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">-1</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1000010</span>], b[<span class="hljs-number">1000010</span>]; <span class="hljs-comment">// a: 左列占用, b: 右列占用, 1有行李,0空</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3974 [语言月赛 202405] 放行李
+     * 题意：两列位置，左列和右列各有 n 个位置，已占用用 1，空位用 0。
+     *       小 S 在 (p, q)，p 为列号(0左1右)，q 为位置编号。
+     *       找空位，优先级：
+     *         1. 距离 |i - q| 最小
+     *         2. 距离相同，优先选择与小 S 同一列的位置
+     *       输出最佳空位的列号和距离，无空位输出 -1。
+     */</span>
+    <span class="hljs-type">int</span> n;          <span class="hljs-comment">// n: 每列位置数量</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;a[i]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;b[i]);
+
+    <span class="hljs-type">int</span> p, q;       <span class="hljs-comment">// p: 小S列号(0左1右), q: 小S位置编号</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;p, &amp;q);
+
+    <span class="hljs-type">int</span> c = <span class="hljs-number">-1</span>;     <span class="hljs-comment">// c: 最佳列号，-1表示未找到</span>
+    <span class="hljs-type">int</span> d = <span class="hljs-number">1e9</span>;    <span class="hljs-comment">// d: 最佳距离</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-comment">// 左列</span>
+        <span class="hljs-keyword">if</span> (a[i] == <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> dist = <span class="hljs-built_in">abs</span>(i - q);
+            <span class="hljs-keyword">if</span> (dist &lt; d) {
+                d = dist;
+                c = <span class="hljs-number">0</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dist == d &amp;&amp; p == <span class="hljs-number">0</span> &amp;&amp; c != <span class="hljs-number">0</span>) {
+                c = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 同列优先</span>
+            }
+        }
+        <span class="hljs-comment">// 右列</span>
+        <span class="hljs-keyword">if</span> (b[i] == <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> dist = <span class="hljs-built_in">abs</span>(i - q);
+            <span class="hljs-keyword">if</span> (dist &lt; d) {
+                d = dist;
+                c = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dist == d &amp;&amp; p == <span class="hljs-number">1</span> &amp;&amp; c != <span class="hljs-number">1</span>) {
+                c = <span class="hljs-number">1</span>;   <span class="hljs-comment">// 同列优先</span>
+            }
+        }
+    }
+
+    <span class="hljs-keyword">if</span> (c == <span class="hljs-number">-1</span>) <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;-1\n&quot;</span>);
+    <span class="hljs-keyword">else</span> <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %d\n&quot;</span>, c, d);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3974">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

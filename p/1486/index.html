@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1486 括号匹配 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="输入一个由 ()[] 四种符号构成的字符串。判断其中的括号是否匹配，是，就输出 yes，否则输出 no。 比如：输入 ([])、([()])、[((()))]、()[][][] 这几个字符串（双引号内部的内容），我们都算是匹配的。 再比如：输入 ([)、([)]、([(])) 这几个字符串，我们都…">
+<link rel="canonical" href="https://zymojblog.top/p/1486/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1486 括号匹配 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="输入一个由 ()[] 四种符号构成的字符串。判断其中的括号是否匹配，是，就输出 yes，否则输出 no。 比如：输入 ([])、([()])、[((()))]、()[][][] 这几个字符串（双引号内部的内容），我们都算是匹配的。 再比如：输入 ([)、([)]、([(])) 这几个字符串，我们都…">
+<meta property="og:url" content="https://zymojblog.top/p/1486/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1486 括号匹配 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="输入一个由 ()[] 四种符号构成的字符串。判断其中的括号是否匹配，是，就输出 yes，否则输出 no。 比如：输入 ([])、([()])、[((()))]、()[][][] 这几个字符串（双引号内部的内容），我们都算是匹配的。 再比如：输入 ([)、([)]、([(])) 这几个字符串，我们都…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1486 括号匹配","headline":"1486 括号匹配 题解","description":"输入一个由 ()[] 四种符号构成的字符串。判断其中的括号是否匹配，是，就输出 yes，否则输出 no。 比如：输入 ([])、([()])、[((()))]、()[][][] 这几个字符串（双引号内部的内容），我们都算是匹配的。 再比如：输入 ([)、([)]、([(])) 这几个字符串，我们都…","url":"https://zymojblog.top/p/1486/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"容器、stack","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1486</span></div>
+  <h1 class="seo-title">1486 括号匹配</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AE%B9%E5%99%A8">容器</a><a class="seo-tag" href="/#/tag/stack">stack</a></div>
+  <article class="markdown-body seo-article">
+<h1>1486 - 括号匹配</h1>
+<h2>题目描述</h2>
+<p>输入一个由 <code>()[]</code> 四种符号构成的字符串。判断其中的括号是否匹配，是，就输出 <code>yes</code>，否则输出 <code>no</code>。</p>
+<p>比如：输入 <code>([])</code>、<code>([()])</code>、<code>[((()))]</code>、<code>()[][][]()[]</code> 这几个字符串（双引号内部的内容），我们都算是匹配的。</p>
+<p>再比如：输入 <code>([)</code>、<code>([)]</code>、<code>([(]))</code> 这几个字符串，我们都认为是不匹配的。</p>
+<h2>输入</h2>
+<p>一个由 <code>()[]</code> 四种符号构成的字符串，字符串长度不超过 $100$ 。</p>
+<h2>输出</h2>
+<p>如果匹配，请输出 <code>yes</code>，如果不匹配，请输出 <code>no</code>。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+思路：
+准备一个栈(在栈底存储一个*,防止栈空),存储左括号，遇到左括号，入栈
+遇到右括号：判断栈顶元素是否是配对的左括号
+如果是，弹出栈顶元素
+如果不是，结束判断，得到结论，括号不匹配
+循环结束，栈的大小应该是1
+*/</span>
+
+stack&lt;<span class="hljs-type">char</span>&gt; s;
+string t;
+<span class="hljs-type">int</span> i;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; t;
+    s.<span class="hljs-built_in">push</span>(<span class="hljs-string">&#x27;*&#x27;</span>); <span class="hljs-comment">// 栈底放一个*，防止栈空</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; t.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">if</span> (t[i] == <span class="hljs-string">&#x27;(&#x27;</span> || t[i] == <span class="hljs-string">&#x27;[&#x27;</span>){
+            <span class="hljs-comment">// 如果是左括号，入栈</span>
+            s.<span class="hljs-built_in">push</span>(t[i]);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 说明遇到右括号</span>
+            <span class="hljs-keyword">if</span>(t[i] == <span class="hljs-string">&#x27;)&#x27;</span> &amp;&amp; s.<span class="hljs-built_in">top</span>() == <span class="hljs-string">&#x27;(&#x27;</span> || t[i] == <span class="hljs-string">&#x27;]&#x27;</span> &amp;&amp; s.<span class="hljs-built_in">top</span>() == <span class="hljs-string">&#x27;[&#x27;</span>) {
+                <span class="hljs-comment">// 如果栈顶元素是配对的左括号，弹出栈顶元素</span>
+                s.<span class="hljs-built_in">pop</span>();
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 否则，括号不匹配</span>
+                cout &lt;&lt; <span class="hljs-string">&quot;no&quot;</span> &lt;&lt; endl;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+        }
+    }
+    <span class="hljs-comment">// 如果栈大小是1，说明括号匹配</span>
+    <span class="hljs-keyword">if</span> (s.<span class="hljs-built_in">size</span>() == <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-string">&quot;yes&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 否则，括号不匹配</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;no&quot;</span> &lt;&lt; endl;	
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1486">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

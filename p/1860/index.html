@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1860 薪水计算 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="编写一个程序，计算员工的周薪。 薪水的计算是 以小时为单位，如果在一周的时间内，员工工作的时间不超过 个小时，那么他/她的总收入等于工作时间乘以每小时的薪水。 如果员工工作的时间在 到 个小时之间，那么对于前 个小时，仍按常规方法计算；而对于剩余的超额部分，每小时的薪水按 倍计算。 如果员工工作的…">
+<link rel="canonical" href="https://zymojblog.top/p/1860/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1860 薪水计算 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="编写一个程序，计算员工的周薪。 薪水的计算是 以小时为单位，如果在一周的时间内，员工工作的时间不超过 个小时，那么他/她的总收入等于工作时间乘以每小时的薪水。 如果员工工作的时间在 到 个小时之间，那么对于前 个小时，仍按常规方法计算；而对于剩余的超额部分，每小时的薪水按 倍计算。 如果员工工作的…">
+<meta property="og:url" content="https://zymojblog.top/p/1860/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1860 薪水计算 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="编写一个程序，计算员工的周薪。 薪水的计算是 以小时为单位，如果在一周的时间内，员工工作的时间不超过 个小时，那么他/她的总收入等于工作时间乘以每小时的薪水。 如果员工工作的时间在 到 个小时之间，那么对于前 个小时，仍按常规方法计算；而对于剩余的超额部分，每小时的薪水按 倍计算。 如果员工工作的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1860 薪水计算","headline":"1860 薪水计算 题解","description":"编写一个程序，计算员工的周薪。 薪水的计算是 以小时为单位，如果在一周的时间内，员工工作的时间不超过 个小时，那么他/她的总收入等于工作时间乘以每小时的薪水。 如果员工工作的时间在 到 个小时之间，那么对于前 个小时，仍按常规方法计算；而对于剩余的超额部分，每小时的薪水按 倍计算。 如果员工工作的…","url":"https://zymojblog.top/p/1860/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、分支问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1860</span></div>
+  <h1 class="seo-title">1860 薪水计算</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">蓝桥杯STEAM</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%94%AF%E9%97%AE%E9%A2%98">分支问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1860 - 薪水计算</h1>
+<h2>题目描述</h2>
+<p>编写一个程序，计算员工的周薪。</p>
+<p> 薪水的计算是 以小时为单位，如果在一周的时间内，员工工作的时间不超过 $40$ 个小时，那么他/她的总收入等于工作时间乘以每小时的薪水。</p>
+<p>如果员工工作的时间在 $40$ 到 $50$ 个小时之间，那么对于前 $40$ 个小时，仍按常规方法计算；而对于剩余的超额部分，每小时的薪水按 $1.5$ 倍计算。</p>
+<p>如果员工工作的时间超过了 $50$ 个小时，那么对于前 $40 $ 个小时，仍按常规方法计算；对于 $40 \sim 50$ 个小时之间的部分，每小时的薪水按 $1.5$ 倍计算；而对于超出 $50$ 个小时的部分，每小时的薪水按 $2$ 倍计算。</p>
+<p>请编写一个程序，输入员工的工作时间和每小时的薪水，然后计算并显示他/她应该得到的周薪。</p>
+<h2>输入</h2>
+<p>输入只有一行，包括一个整数和一个实数，分别表示工作时间和每小时薪水。</p>
+<h2>输出</h2>
+<p>输出只有一个实数，表示周薪，保留小数点后 $2$ 位。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//定义整数变量n代表工作时间 </span>
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-comment">//s代表每小时薪水，sum代表总薪水 </span>
+    <span class="hljs-type">double</span> s,sum;
+    cin&gt;&gt;n&gt;&gt;s;
+    <span class="hljs-keyword">if</span>(n&lt;=<span class="hljs-number">40</span>){
+        sum = n * s;
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n &gt; <span class="hljs-number">40</span> &amp;&amp; n &lt;= <span class="hljs-number">50</span>){
+        sum = <span class="hljs-number">40</span> * s + (n<span class="hljs-number">-40</span>) * s * <span class="hljs-number">1.5</span>;
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n &gt; <span class="hljs-number">50</span>){
+        sum = <span class="hljs-number">40</span> * s + <span class="hljs-number">10</span> * s * <span class="hljs-number">1.5</span> + (n<span class="hljs-number">-50</span>) * s * <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-comment">//输出总薪水，结果保留2位小数 </span>
+    cout&lt;&lt;fixed&lt;&lt;<span class="hljs-built_in">setprecision</span>(<span class="hljs-number">2</span>)&lt;&lt;sum&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1860">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

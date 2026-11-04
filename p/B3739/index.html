@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3739 [信息与未来 2018] 整数乘方 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="定义 的 次幂 （共 个 相乘）。记 的十进制表示转换为字符串后奇数字符（阿拉伯数字 ）的个数为 ，偶数字符（阿拉伯数字 ）的个数为 ，求 的数值。 例如， 。 奇数数位用方框标出： ，故 ； 偶数数位用方框标出： , 故 。">
+<link rel="canonical" href="https://zymojblog.top/p/B3739/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3739 [信息与未来 2018] 整数乘方 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="定义 的 次幂 （共 个 相乘）。记 的十进制表示转换为字符串后奇数字符（阿拉伯数字 ）的个数为 ，偶数字符（阿拉伯数字 ）的个数为 ，求 的数值。 例如， 。 奇数数位用方框标出： ，故 ； 偶数数位用方框标出： , 故 。">
+<meta property="og:url" content="https://zymojblog.top/p/B3739/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3739 [信息与未来 2018] 整数乘方 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="定义 的 次幂 （共 个 相乘）。记 的十进制表示转换为字符串后奇数字符（阿拉伯数字 ）的个数为 ，偶数字符（阿拉伯数字 ）的个数为 ，求 的数值。 例如， 。 奇数数位用方框标出： ，故 ； 偶数数位用方框标出： , 故 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3739 [信息与未来 2018] 整数乘方","headline":"B3739 [信息与未来 2018] 整数乘方 题解","description":"定义 的 次幂 （共 个 相乘）。记 的十进制表示转换为字符串后奇数字符（阿拉伯数字 ）的个数为 ，偶数字符（阿拉伯数字 ）的个数为 ，求 的数值。 例如， 。 奇数数位用方框标出： ，故 ； 偶数数位用方框标出： , 故 。","url":"https://zymojblog.top/p/B3739/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、高精度、2018、江苏、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3739</span></div>
+  <h1 class="seo-title">B3739 [信息与未来 2018] 整数乘方</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a><a class="seo-tag" href="/#/tag/2018">2018</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3739 [信息与未来 2018] 整数乘方</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-17</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>高精度</code>、<code>2018</code>、<code>江苏</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>定义 $a$ 的 $n$ 次幂 $a^n = a × a × \cdots × a$（共 $n$ 个 $a$ 相乘）。记 $a^n$ 的十进制表示转换为字符串后奇数字符（阿拉伯数字 $1, 3, 5, 7, 9$）的个数为 $A$，偶数字符（阿拉伯数字 $0, 2, 4, 6, 8$）的个数为 $B$，求 $A-B$ 的数值。</p>
+<p>例如，$a = 3, n = 12, a^n = 3^{12} = (531441)_{10}$。</p>
+<p>奇数数位用方框标出：$\boxed{5}\boxed{3}\boxed{1}44\boxed{1}$，故 $A = 4$；</p>
+<p>偶数数位用方框标出：$531\boxed{4}\boxed{4}1$, 故 $B = 2, A-B = 2$。</p>
+<h2>输入格式</h2>
+<p>输入一行两个整数 $a, n$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表 $A − B$ 的值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">12</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">18</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>-1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 高精度乘法函数</span>
+<span class="hljs-function">string <span class="hljs-title">cheng</span><span class="hljs-params">(string s1, string s2)</span> </span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">5010</span>] = {<span class="hljs-number">0</span>}, b[<span class="hljs-number">5010</span>] = {<span class="hljs-number">0</span>}, c[<span class="hljs-number">10010</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> i, j, p = <span class="hljs-number">0</span>;
+    string s3 = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-comment">// 逆序存储</span>
+    <span class="hljs-keyword">for</span> (i = s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        a[i] = s1[s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span> (i = s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        b[i] = s2[s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-comment">// 乘法累加</span>
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-type">int</span>)s1.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">for</span> (j = <span class="hljs-number">0</span>; j &lt; (<span class="hljs-type">int</span>)s2.<span class="hljs-built_in">size</span>(); j++) {
+            c[i + j] += a[i] * b[j];
+            <span class="hljs-keyword">if</span> (c[i + j] &gt;= <span class="hljs-number">10</span>) {
+                c[i + j + <span class="hljs-number">1</span>] += c[i + j] / <span class="hljs-number">10</span>;
+                c[i + j] %= <span class="hljs-number">10</span>;
+            }
+        }
+    }
+    <span class="hljs-comment">// 找最高位</span>
+    <span class="hljs-keyword">for</span> (i = s1.<span class="hljs-built_in">size</span>() + s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span> (c[i] != <span class="hljs-number">0</span>) {
+            p = i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-comment">// 逆序拼接结果</span>
+    <span class="hljs-keyword">for</span> (i = p; i &gt;= <span class="hljs-number">0</span>; i--) {
+        s3 += <span class="hljs-built_in">to_string</span>(c[i]);
+    }
+    <span class="hljs-keyword">return</span> s3;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> a, n;
+    cin &gt;&gt; a &gt;&gt; n;
+    string sa = <span class="hljs-built_in">to_string</span>(a);        <span class="hljs-comment">// 底数的字符串形式</span>
+    string res = <span class="hljs-string">&quot;1&quot;</span>;                <span class="hljs-comment">// a^0 = 1，但题目 n&gt;=1，所以直接乘</span>
+
+    <span class="hljs-comment">// 计算 a^n</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        res = <span class="hljs-built_in">cheng</span>(res, sa);
+    }
+
+    <span class="hljs-comment">// 统计奇数位与偶数位</span>
+    <span class="hljs-type">int</span> A = <span class="hljs-number">0</span>, B = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-type">int</span>)res.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-type">int</span> digit = res[i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+        <span class="hljs-keyword">if</span> (digit % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) A++;
+        <span class="hljs-keyword">else</span> B++;
+    }
+
+    cout &lt;&lt; A - B &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3739">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

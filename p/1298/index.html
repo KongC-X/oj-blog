@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1298 摘花生问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Hello Kitty 想摘点花生送给她喜欢的米老鼠。她来到一片有网格状道路的矩形花生地(如下图)，从西北角进去，东南角出来。地里每个道路的交叉点上都有种着一株花生苗，上面有若干颗花生，经过一株花生苗就能摘走该它上面所有的花生。Hello Kitty只能向东或向南走，不能向西或向北走。问Hello…">
+<link rel="canonical" href="https://zymojblog.top/p/1298/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1298 摘花生问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Hello Kitty 想摘点花生送给她喜欢的米老鼠。她来到一片有网格状道路的矩形花生地(如下图)，从西北角进去，东南角出来。地里每个道路的交叉点上都有种着一株花生苗，上面有若干颗花生，经过一株花生苗就能摘走该它上面所有的花生。Hello Kitty只能向东或向南走，不能向西或向北走。问Hello…">
+<meta property="og:url" content="https://zymojblog.top/p/1298/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1298 摘花生问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Hello Kitty 想摘点花生送给她喜欢的米老鼠。她来到一片有网格状道路的矩形花生地(如下图)，从西北角进去，东南角出来。地里每个道路的交叉点上都有种着一株花生苗，上面有若干颗花生，经过一株花生苗就能摘走该它上面所有的花生。Hello Kitty只能向东或向南走，不能向西或向北走。问Hello…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1298 摘花生问题","headline":"1298 摘花生问题 题解","description":"Hello Kitty 想摘点花生送给她喜欢的米老鼠。她来到一片有网格状道路的矩形花生地(如下图)，从西北角进去，东南角出来。地里每个道路的交叉点上都有种着一株花生苗，上面有若干颗花生，经过一株花生苗就能摘走该它上面所有的花生。Hello Kitty只能向东或向南走，不能向西或向北走。问Hello…","url":"https://zymojblog.top/p/1298/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"递推","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1298</span></div>
+  <h1 class="seo-title">1298 摘花生问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">递推</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a></div>
+  <article class="markdown-body seo-article">
+<h1>1298 - 摘花生问题</h1>
+<h2>题目描述</h2>
+<p>Hello Kitty 想摘点花生送给她喜欢的米老鼠。她来到一片有网格状道路的矩形花生地(如下图)，从西北角进去，东南角出来。地里每个道路的交叉点上都有种着一株花生苗，上面有若干颗花生，经过一株花生苗就能摘走该它上面所有的花生。Hello Kitty只能向东或向南走，不能向西或向北走。问Hello Kitty 最多能够摘到多少颗花生。  </p>
+<p>如输入：  </p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">2</span> <span class="hljs-number">2</span>  
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>  
+<span class="hljs-number">3</span> <span class="hljs-number">4</span>  
+`</code></pre><p>代表有 $2$ 行，每行有 $2$ 株花生，那么摘能摘到的最多的花生就是：$1$-&gt;$3$-&gt;$4$ ，总和为 $8$ 颗花生。</p>
+<h2>输入</h2>
+<p>第一行是两个整数 $n$ 和 $m$ （ $1 \le n,m \le 100$ ），代表了花生地里有 $n$ 行，每行有 $m$ 列的花生！</p>
+<p>后面 $n$ 行，每行有 $m$ 个整数代表了每行中，每株花生的数量！( 每株花生数量$ \le 10000$ )</p>
+<h2>输出</h2>
+<p>输出是一个整数，代表了最多能摘到的花生的总数；</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>];
+    <span class="hljs-type">int</span> n,m,i,j,x,y;
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-comment">// 输入数组</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            a[i][j] = a[i][j] + <span class="hljs-built_in">max</span>(a[i - <span class="hljs-number">1</span>][j], a[i][j - <span class="hljs-number">1</span>]);
+        }
+    }
+    cout &lt;&lt; a[n][m] &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1298">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

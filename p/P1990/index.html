@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1990 覆盖墙壁 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="你有一个长为 宽为 的墙壁，给你两种砖头：一个长 宽 ，另一个是 L 型覆盖 个单元的砖头。如下图： 砖头可以旋转，两种砖头可以无限制提供。你的任务是计算用这两种来覆盖 的墙壁的覆盖方法。例如一个 的墙可以有 种覆盖方法，如下： 注意可以使用两种砖头混合起来覆盖，如 的墙可以这样覆盖： 给定 ，要…">
+<link rel="canonical" href="https://zymojblog.top/p/P1990/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1990 覆盖墙壁 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="你有一个长为 宽为 的墙壁，给你两种砖头：一个长 宽 ，另一个是 L 型覆盖 个单元的砖头。如下图： 砖头可以旋转，两种砖头可以无限制提供。你的任务是计算用这两种来覆盖 的墙壁的覆盖方法。例如一个 的墙可以有 种覆盖方法，如下： 注意可以使用两种砖头混合起来覆盖，如 的墙可以这样覆盖： 给定 ，要…">
+<meta property="og:url" content="https://zymojblog.top/p/P1990/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1990 覆盖墙壁 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="你有一个长为 宽为 的墙壁，给你两种砖头：一个长 宽 ，另一个是 L 型覆盖 个单元的砖头。如下图： 砖头可以旋转，两种砖头可以无限制提供。你的任务是计算用这两种来覆盖 的墙壁的覆盖方法。例如一个 的墙可以有 种覆盖方法，如下： 注意可以使用两种砖头混合起来覆盖，如 的墙可以这样覆盖： 给定 ，要…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1990 覆盖墙壁","headline":"P1990 覆盖墙壁 题解","description":"你有一个长为 宽为 的墙壁，给你两种砖头：一个长 宽 ，另一个是 L 型覆盖 个单元的砖头。如下图： 砖头可以旋转，两种砖头可以无限制提供。你的任务是计算用这两种来覆盖 的墙壁的覆盖方法。例如一个 的墙可以有 种覆盖方法，如下： 注意可以使用两种砖头混合起来覆盖，如 的墙可以这样覆盖： 给定 ，要…","url":"https://zymojblog.top/p/P1990/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"递推","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1990</span></div>
+  <h1 class="seo-title">P1990 覆盖墙壁</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1990 覆盖墙壁</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>递推</code></p>
+<h2>题目描述</h2>
+<p>你有一个长为 $N$ 宽为 $2$ 的墙壁，给你两种砖头：一个长 $2$ 宽 $1$，另一个是 L 型覆盖 $3$ 个单元的砖头。如下图：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0</span>  <span class="hljs-number">0</span>
+<span class="hljs-number">0</span>  <span class="hljs-number">00</span></code></pre><p>砖头可以旋转，两种砖头可以无限制提供。你的任务是计算用这两种来覆盖 $N\times 2$ 的墙壁的覆盖方法。例如一个 $2\times3$ 的墙可以有 $5$ 种覆盖方法，如下：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">012</span> <span class="hljs-number">002</span> <span class="hljs-number">011</span> <span class="hljs-number">001</span> <span class="hljs-number">011</span>  
+<span class="hljs-number">012</span> <span class="hljs-number">112</span> <span class="hljs-number">022</span> <span class="hljs-number">011</span> <span class="hljs-number">001</span></code></pre><p>注意可以使用两种砖头混合起来覆盖，如 $2\times4$ 的墙可以这样覆盖：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0112</span>
+<span class="hljs-number">0012</span></code></pre><p>给定 $N$，要求计算 $2\times N$ 的墙壁的覆盖方法。由于结果很大，所以只要求输出最后 $4$ 位。例如 $2\times 13$ 的覆盖方法为 $13465$，只需输出 $3465$ 即可。如果答案少于 $4$ 位，就直接输出就可以，不用加前导 $0$，如 $N=3$ 时输出 $5$。</p>
+<h2>输入格式</h2>
+<p>一个整数 $N$，表示墙壁的长。</p>
+<h2>输出格式</h2>
+<p>输出覆盖方法的最后 $4$ 位，如果不足 $4$ 位就输出整个答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">13</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3465```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MOD = <span class="hljs-number">10000</span>;  <span class="hljs-comment">// 只保留最后 4 位</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> N;
+    cin &gt;&gt; N;
+
+    <span class="hljs-comment">// dp[i][s] 表示前 i 列已经铺满，且第 i+1 列的状态为 s 的方案数</span>
+    <span class="hljs-comment">// s 的含义：</span>
+    <span class="hljs-comment">// 0: 第 i+1 列两个格子都未被覆盖</span>
+    <span class="hljs-comment">// 1: 只有上面的格子被覆盖</span>
+    <span class="hljs-comment">// 2: 只有下面的格子被覆盖</span>
+    <span class="hljs-comment">// 3: 两个格子都被覆盖（相当于前 i+1 列铺满，可以看作下一轮的状态 0）</span>
+    <span class="hljs-comment">// 采用滚动数组，只保留当前 i 的四个状态</span>
+    <span class="hljs-type">int</span> dp0 = <span class="hljs-number">1</span>, dp1 = <span class="hljs-number">0</span>, dp2 = <span class="hljs-number">0</span>, dp3 = <span class="hljs-number">0</span>;   <span class="hljs-comment">// i = 0 时的初始值</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) {
+        <span class="hljs-comment">// 根据转移矩阵计算下一列的状态</span>
+        <span class="hljs-type">int</span> new0 = (dp0 + dp3) % MOD;
+        <span class="hljs-type">int</span> new1 = (dp0 + dp2) % MOD;
+        <span class="hljs-type">int</span> new2 = (dp0 + dp1) % MOD;
+        <span class="hljs-type">int</span> new3 = (dp0 + dp1 + dp2) % MOD;
+        dp0 = new0;
+        dp1 = new1;
+        dp2 = new2;
+        dp3 = new3;
+    }
+
+    <span class="hljs-comment">// dp0 即为铺满 N 列且第 N+1 列为空的方案数</span>
+    cout &lt;&lt; dp0 &lt;&lt; endl;   <span class="hljs-comment">// 题目要求答案不足 4 位时不补 0，直接输出整数即可</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1990">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

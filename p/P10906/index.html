@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10906 [蓝桥杯 2024 国 B] 合法密码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小蓝正在开发自己的 OJ 网站。他要求网站用户的密码必须符合以下条件： 1. 长度大于等于 个字符，小于等于 个字符。 2. 必须包含至少 个数字字符和至少 个符号字符。 例如 lanqiao2024!、+-/0601、8((&gt;w&lt;))8 都是合法的密码。 而 12345678、####、abc0…">
+<link rel="canonical" href="https://zymojblog.top/p/P10906/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10906 [蓝桥杯 2024 国 B] 合法密码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小蓝正在开发自己的 OJ 网站。他要求网站用户的密码必须符合以下条件： 1. 长度大于等于 个字符，小于等于 个字符。 2. 必须包含至少 个数字字符和至少 个符号字符。 例如 lanqiao2024!、+-/0601、8((&gt;w&lt;))8 都是合法的密码。 而 12345678、####、abc0…">
+<meta property="og:url" content="https://zymojblog.top/p/P10906/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10906 [蓝桥杯 2024 国 B] 合法密码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小蓝正在开发自己的 OJ 网站。他要求网站用户的密码必须符合以下条件： 1. 长度大于等于 个字符，小于等于 个字符。 2. 必须包含至少 个数字字符和至少 个符号字符。 例如 lanqiao2024!、+-/0601、8((&gt;w&lt;))8 都是合法的密码。 而 12345678、####、abc0…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10906 [蓝桥杯 2024 国 B] 合法密码","headline":"P10906 [蓝桥杯 2024 国 B] 合法密码 题解","description":"小蓝正在开发自己的 OJ 网站。他要求网站用户的密码必须符合以下条件： 1. 长度大于等于 个字符，小于等于 个字符。 2. 必须包含至少 个数字字符和至少 个符号字符。 例如 lanqiao2024!、+-/0601、8((>w<))8 都是合法的密码。 而 12345678、####、abc0…","url":"https://zymojblog.top/p/P10906/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2024、蓝桥杯国赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10906</span></div>
+  <h1 class="seo-title">P10906 [蓝桥杯 2024 国 B] 合法密码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%9B%BD%E8%B5%9B">蓝桥杯国赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10906 [蓝桥杯 2024 国 B] 合法密码</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-17</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2024</code>、<code>蓝桥杯国赛</code></p>
+<h2>题目描述</h2>
+<p>小蓝正在开发自己的 OJ 网站。他要求网站用户的密码必须符合以下条件：</p>
+<ol>
+<li>长度大于等于 $8$ 个字符，小于等于 $16$ 个字符。</li>
+<li>必须包含至少 $1$ 个数字字符和至少 $1$ 个符号字符。</li>
+</ol>
+<p>例如 <code>lanqiao2024!</code>、<code>+-*/0601</code>、<code>8((&gt;w&lt;))8</code> 都是合法的密码。</p>
+<p>而 <code>12345678</code>、<code>##**##**</code>、<code>abc0!#</code>、<code>lanqiao20240601!?</code> 都不是合法的密码。</p>
+<p>请你计算以下的字符串中，有多少个子串可以当作合法密码？只要两个子串的开头字符和末尾字符在原串中的位置不同，就算作不同的子串。</p>
+<p>字符串为：</p>
+<pre><code class="hljs language-cpp">kfdhtshmrw4nxg#f44ehlbn33ccto#mwfn2waebry#<span class="hljs-number">3</span>qd1ubwyhcyuavuajb#vyecsycuzsmwp31ipzah#catatja3kaqbcss2th</code></pre><h2>输入格式</h2>
+<p>这是一道结果填空题，你只需要算出结果后提交即可。本题的结果为一个整数，在提交答案时只填写这个整数，填写多余的内容将无法得分。</p>
+<h2>输出格式</h2>
+<p>这是一道结果填空题，你只需要算出结果后提交即可。本题的结果为一个整数，在提交答案时只填写这个整数，填写多余的内容将无法得分。</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P10906 [蓝桥杯 2024 国 B] 合法密码
+     * 题意：给定一个字符串，统计有多少个子串满足：
+     *       1. 长度在 [8, 16] 之间
+     *       2. 至少包含 1 个数字字符
+     *       3. 至少包含 1 个符号字符（非字母且非数字）
+     * 枚举所有子串判断即可。
+     */</span>
+    string s = <span class="hljs-string">&quot;kfdhtshmrw4nxg#f44ehlbn33ccto#mwfn2waebry#3qd1ubwyhcyuavuajb#vyecsycuzsmwp31ipzah#catatja3kaqbcss2th&quot;</span>;
+    <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();          <span class="hljs-comment">// n: 字符串长度</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;         <span class="hljs-comment">// ans: 答案计数</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> d = <span class="hljs-number">0</span>, t = <span class="hljs-number">0</span>;      <span class="hljs-comment">// d: 数字个数, t: 符号个数</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i; j &lt; n; j++) {
+            <span class="hljs-type">char</span> c = s[j];
+            <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) d++;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) ; <span class="hljs-comment">// 小写字母忽略</span>
+            <span class="hljs-keyword">else</span> t++;          <span class="hljs-comment">// 其他字符（符号）</span>
+
+            <span class="hljs-type">int</span> l = j - i + <span class="hljs-number">1</span>; <span class="hljs-comment">// 当前子串长度</span>
+            <span class="hljs-keyword">if</span> (l &gt; <span class="hljs-number">16</span>) <span class="hljs-keyword">break</span>;
+            <span class="hljs-keyword">if</span> (l &gt;= <span class="hljs-number">8</span> &amp;&amp; d &gt;= <span class="hljs-number">1</span> &amp;&amp; t &gt;= <span class="hljs-number">1</span>) ans++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10906">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1249 最大乘积 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个正整数一般可以分为几个互不相同的自然数的和，如 ， ， ， 。 现在你的任务是将指定的正整数 分解成若干个互不相同的自然数（也可以不分解，就是这个数字本身）的和，且使这些自然数的乘积最大。">
+<link rel="canonical" href="https://zymojblog.top/p/P1249/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1249 最大乘积 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个正整数一般可以分为几个互不相同的自然数的和，如 ， ， ， 。 现在你的任务是将指定的正整数 分解成若干个互不相同的自然数（也可以不分解，就是这个数字本身）的和，且使这些自然数的乘积最大。">
+<meta property="og:url" content="https://zymojblog.top/p/P1249/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1249 最大乘积 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个正整数一般可以分为几个互不相同的自然数的和，如 ， ， ， 。 现在你的任务是将指定的正整数 分解成若干个互不相同的自然数（也可以不分解，就是这个数字本身）的和，且使这些自然数的乘积最大。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1249 最大乘积","headline":"P1249 最大乘积 题解","description":"一个正整数一般可以分为几个互不相同的自然数的和，如 ， ， ， 。 现在你的任务是将指定的正整数 分解成若干个互不相同的自然数（也可以不分解，就是这个数字本身）的和，且使这些自然数的乘积最大。","url":"https://zymojblog.top/p/P1249/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、高精度","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1249</span></div>
+  <h1 class="seo-title">P1249 最大乘积</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-1】模拟与高精度</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1249 最大乘积</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-10</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>高精度</code></p>
+<h2>题目描述</h2>
+<p>一个正整数一般可以分为几个互不相同的自然数的和，如 $3=1+2$，$4=1+3$，$5=1+4=2+3$，$6=1+5=2+4$。</p>
+<p>现在你的任务是将指定的正整数 $n$ 分解成若干个互不相同的自然数（也可以不分解，就是这个数字本身）的和，且使这些自然数的乘积最大。</p>
+<h2>输入格式</h2>
+<p>只有一个正整数 $n$，（$3 \leq n \leq 10000$）。</p>
+<h2>输出格式</h2>
+<p>第一行是分解方案，相邻的数之间用一个空格分开，并且按由小到大的顺序。</p>
+<p>第二行是最大的乘积。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span>
+<span class="hljs-number">30</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 高精度乘法函数</span>
+<span class="hljs-function">string <span class="hljs-title">cheng</span><span class="hljs-params">(string s1, string s2)</span> </span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">5010</span>] = {<span class="hljs-number">0</span>}, b[<span class="hljs-number">5010</span>] = {<span class="hljs-number">0</span>}, c[<span class="hljs-number">10010</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> i, j, p = <span class="hljs-number">0</span>;
+    string s3 = <span class="hljs-string">&quot;&quot;</span>;
+    
+    <span class="hljs-comment">// 逆序存储</span>
+    <span class="hljs-keyword">for</span>(i = s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        a[i] = s1[s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span>(i = s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        b[i] = s2[s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+
+    <span class="hljs-comment">// 循环a数组的每一位，用a[i]去乘b数组的每一位b[j]</span>
+    <span class="hljs-comment">// 结果错位加到c数组的c[i+j]这一位上</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s1.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>; j &lt; s2.<span class="hljs-built_in">size</span>(); j++) {
+            c[i + j] += a[i] * b[j];
+            <span class="hljs-comment">// 进位</span>
+            <span class="hljs-keyword">if</span>(c[i + j] &gt;= <span class="hljs-number">10</span>) {
+                c[i + j + <span class="hljs-number">1</span>] += c[i + j] / <span class="hljs-number">10</span>;
+                c[i + j] %= <span class="hljs-number">10</span>;
+            }
+        }
+    }
+    
+    <span class="hljs-comment">// 去除前导0</span>
+    <span class="hljs-keyword">for</span>(i = s1.<span class="hljs-built_in">size</span>() + s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span>(c[i] != <span class="hljs-number">0</span>) {
+            p = i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    
+    <span class="hljs-comment">// 逆序输出结果</span>
+    <span class="hljs-keyword">for</span>(i = p; i &gt;= <span class="hljs-number">0</span>; i--) {
+        s3 += <span class="hljs-built_in">to_string</span>(c[i]);
+    }
+    <span class="hljs-keyword">return</span> s3;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    
+    <span class="hljs-comment">// 特殊情况：n &lt;= 4</span>
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">4</span>) {
+        cout &lt;&lt; n &lt;&lt; endl;
+        cout &lt;&lt; n &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    
+    <span class="hljs-comment">// 贪心分解：从2开始连续取数</span>
+    <span class="hljs-type">int</span> a[<span class="hljs-number">200</span>];  <span class="hljs-comment">// 存储分解的数，n最大10000，分解的数不会超过200个</span>
+    <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 分解的数的个数</span>
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 当前和</span>
+    
+    <span class="hljs-comment">// 从2开始连续取数，直到不能再取</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; sum + i &lt;= n; ++i) {
+        a[count] = i;
+        sum += i;
+        count++;
+    }
+    
+    <span class="hljs-comment">// 剩余的数</span>
+    <span class="hljs-type">int</span> r = n - sum;
+    
+    <span class="hljs-comment">// 从后往前分配剩余的数</span>
+    <span class="hljs-type">int</span> index = count - <span class="hljs-number">1</span>;  <span class="hljs-comment">// 从最后一个数开始</span>
+    <span class="hljs-keyword">while</span> (r &gt; <span class="hljs-number">0</span>) {
+        a[index] += <span class="hljs-number">1</span>;
+        r--;
+        index--;
+        
+        <span class="hljs-comment">// 如果已经加到第一个数，但还有剩余，回到最后一个数继续</span>
+        <span class="hljs-keyword">if</span> (index &lt; <span class="hljs-number">0</span> &amp;&amp; r &gt; <span class="hljs-number">0</span>) {
+            index = count - <span class="hljs-number">1</span>;
+        }
+    }
+    
+    <span class="hljs-comment">// 输出分解方案</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        cout &lt;&lt; a[i];
+    }
+    cout &lt;&lt; endl;
+    
+    <span class="hljs-comment">// 计算最大乘积（高精度）</span>
+    string p = <span class="hljs-string">&quot;1&quot;</span>;  <span class="hljs-comment">// 初始化为1</span>
+    
+    <span class="hljs-comment">// 逐个乘以分解的数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {
+        <span class="hljs-comment">// 将整数转换为字符串</span>
+        string s1 = <span class="hljs-built_in">to_string</span>(a[i]);
+        p = <span class="hljs-built_in">cheng</span>(p, s1);
+    }
+    
+    <span class="hljs-comment">// 输出乘积</span>
+    cout &lt;&lt; p &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1249">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

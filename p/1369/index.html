@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1369 Pell数列 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一种数列，它的前 项的值分别为： ，这个数列被称为 Pell 数列，请问该数列的第 项的值是多少？（ ）">
+<link rel="canonical" href="https://zymojblog.top/p/1369/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1369 Pell数列 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一种数列，它的前 项的值分别为： ，这个数列被称为 Pell 数列，请问该数列的第 项的值是多少？（ ）">
+<meta property="og:url" content="https://zymojblog.top/p/1369/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1369 Pell数列 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一种数列，它的前 项的值分别为： ，这个数列被称为 Pell 数列，请问该数列的第 项的值是多少？（ ）">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1369 Pell数列","headline":"1369 Pell数列 题解","description":"有一种数列，它的前 项的值分别为： ，这个数列被称为 Pell 数列，请问该数列的第 项的值是多少？（ ）","url":"https://zymojblog.top/p/1369/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"递推、高精度","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1369</span></div>
+  <h1 class="seo-title">1369 Pell数列</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span><span class="seo-badge seo-badge-soft">递推</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a></div>
+  <article class="markdown-body seo-article">
+<h1>1369 - Pell数列</h1>
+<h2>题目描述</h2>
+<p>有一种数列，它的前 $10$ 项的值分别为：$1$ $2$ $5$ $12$ $29$ $70$ $169$ $408$ $985$ $2378$，这个数列被称为 Pell 数列，请问该数列的第 $n$ 项的值是多少？（$n \le 1000$）</p>
+<h2>输入</h2>
+<p>一个整数 $n$ 。</p>
+<h2>输出</h2>
+<p>第 $n$ 项的值。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// An = A(n - 1) * 2 + A(n - 2)</span>
+
+<span class="hljs-comment">// 求两个高精度的整数之和</span>
+<span class="hljs-function">string <span class="hljs-title">he</span><span class="hljs-params">(string s1,string s2)</span> </span>{
+    string r; <span class="hljs-comment">// 存放总和</span>
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>}, b[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>}, c[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s1.<span class="hljs-built_in">size</span>(); i++) {
+        a[i] = s1[s1.<span class="hljs-built_in">size</span>() - i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s2.<span class="hljs-built_in">size</span>(); i++) {
+        b[i] = s2[s2.<span class="hljs-built_in">size</span>() - i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-type">int</span> len = <span class="hljs-built_in">max</span>(s1.<span class="hljs-built_in">size</span>(), s2.<span class="hljs-built_in">size</span>());
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+        c[i] += a[i] + b[i];
+        <span class="hljs-keyword">if</span>(c[i] &gt;= <span class="hljs-number">10</span>) {
+            c[i + <span class="hljs-number">1</span>] += c[i] / <span class="hljs-number">10</span>;
+            c[i] %= <span class="hljs-number">10</span>;
+        }
+    }
+    <span class="hljs-keyword">if</span>(c[len] != <span class="hljs-number">0</span>) {
+        len++;
+    }
+    <span class="hljs-keyword">for</span>(i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        r += <span class="hljs-built_in">char</span>(c[i] + <span class="hljs-string">&#x27;0&#x27;</span>);
+    }
+    <span class="hljs-keyword">return</span> r;
+}
+
+<span class="hljs-comment">// 求一个高精度的整数 * 2 的积</span>
+<span class="hljs-function">string <span class="hljs-title">cheng</span><span class="hljs-params">(string s)</span> </span>{
+    string r;
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+        a[i] = s[s.<span class="hljs-built_in">size</span>() - i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+        a[i] = a[i] * <span class="hljs-number">2</span>;
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">if</span>(a[i] &gt;= <span class="hljs-number">10</span>) {
+            a[i + <span class="hljs-number">1</span>] += a[i] / <span class="hljs-number">10</span>;
+            a[i] %= <span class="hljs-number">10</span>;
+        }
+    }
+    <span class="hljs-type">int</span> len = s.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">if</span>(a[len] != <span class="hljs-number">0</span>) {
+        len++;
+    }
+    <span class="hljs-keyword">for</span>(i = len - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        r += <span class="hljs-built_in">char</span>(a[i] + <span class="hljs-string">&#x27;0&#x27;</span>);
+    }
+    <span class="hljs-keyword">return</span> r;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// cout &lt;&lt; he(&quot;9999&quot;,&quot;1&quot;);</span>
+    <span class="hljs-comment">// cout &lt;&lt; cheng(&quot;512&quot;);</span>
+    <span class="hljs-type">int</span> i,n;
+    <span class="hljs-comment">// z代表计算结果，就是当前项，x代表前前一项，y代表前一项</span>
+    string x,y,z; 
+    cin &gt;&gt; n;
+    x = <span class="hljs-string">&quot;1&quot;</span>;
+    y = <span class="hljs-string">&quot;2&quot;</span>;
+    <span class="hljs-keyword">if</span>(n == <span class="hljs-number">1</span>) {
+        cout &lt;&lt; x;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(n == <span class="hljs-number">2</span>) {
+        cout &lt;&lt; y;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 从第三项开始递推</span>
+        <span class="hljs-keyword">for</span>(i = <span class="hljs-number">3</span>;i &lt;= n;i++) {
+            z = <span class="hljs-built_in">he</span>(<span class="hljs-built_in">cheng</span>(y),x);
+            x = y;
+            y = z;
+        }
+        cout &lt;&lt; z;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1369">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

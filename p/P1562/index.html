@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1562 还是 N 皇后 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。">
+<link rel="canonical" href="https://zymojblog.top/p/P1562/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1562 还是 N 皇后 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。">
+<meta property="og:url" content="https://zymojblog.top/p/P1562/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1562 还是 N 皇后 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1562 还是 N 皇后","headline":"P1562 还是 N 皇后 题解","description":"一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。","url":"https://zymojblog.top/p/P1562/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、进制、位运算","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1562</span></div>
+  <h1 class="seo-title">P1562 还是 N 皇后</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a><a class="seo-tag" href="/#/tag/%E4%BD%8D%E8%BF%90%E7%AE%97">位运算</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1562 还是 N 皇后</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>进制</code>、<code>位运算</code></p>
+<h2>题目背景</h2>
+<p>正如题目所说，这题是著名的 $N$ 皇后问题。</p>
+<h2>题目描述</h2>
+<p>一个 $ N×N $ 的跳棋棋盘，有 $ N $ 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。</p>
+<p>求放置棋子的方案总数。</p>
+<h2>输入格式</h2>
+<p>第一行有一个 $N$。接下来有 $N$ 行 $N$ 列描述一个棋盘，<code>*</code> 表示可放，<code>.</code> 表示不可放。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+**.*
+****
+****
+****```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">char</span> g[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>];                     <span class="hljs-comment">// 棋盘，1‑based，&#x27;*&#x27; 可放，&#x27;.&#x27; 不可放</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;                      <span class="hljs-comment">// 方案数可能较大</span>
+
+<span class="hljs-comment">/*
+  位运算版 DFS（深度优先搜索）
+  参数：
+    r    : 当前要放的行 (1‑based)
+    col  : 列占用标记，二进制从低位到高位对应列 1~n
+    ld   : 左对角线占用标记（左上到右下），同一对角线的 (r+j) 相同
+    rd   : 右对角线占用标记（右上到左下），同一对角线的 (r-j+n) 相同
+*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> col, <span class="hljs-type">int</span> ld, <span class="hljs-type">int</span> rd)</span> </span>{
+    <span class="hljs-keyword">if</span> (r &gt; n) {                    <span class="hljs-comment">// 所有行都已成功放置</span>
+        ans++;
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">// 当前行能放的位置：</span>
+    <span class="hljs-comment">// 1) 列、两个对角线都没有占用；</span>
+    <span class="hljs-comment">// 2) 该格子是 &#x27;*&#x27;（可放）。</span>
+    <span class="hljs-type">int</span> mask = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+        <span class="hljs-keyword">if</span> (g[r][j] == <span class="hljs-string">&#x27;*&#x27;</span>)
+            mask |= (<span class="hljs-number">1</span> &lt;&lt; (j - <span class="hljs-number">1</span>));        <span class="hljs-comment">// 第 j 列可用则对应位置 1</span>
+    }
+    <span class="hljs-comment">// 排除被占用的列、被占用的对角线</span>
+    <span class="hljs-type">int</span> can = mask &amp; ~(col | ld | rd);
+    <span class="hljs-comment">// 遍历所有可放位置（利用 lowbit）</span>
+    <span class="hljs-keyword">while</span> (can) {
+        <span class="hljs-type">int</span> pos = can &amp; -can;              <span class="hljs-comment">// 取出最低位的 1</span>
+        can ^= pos;                        <span class="hljs-comment">// 去掉这个位置，继续尝试其他</span>
+        <span class="hljs-comment">// 计算 pos 对应的列号（1‑based）</span>
+        <span class="hljs-type">int</span> j = __builtin_ctz(pos) + <span class="hljs-number">1</span>;    <span class="hljs-comment">// GCC 内置函数，计算末尾 0 的个数</span>
+        <span class="hljs-built_in">dfs</span>(r + <span class="hljs-number">1</span>,
+            col | pos,
+            (ld | pos) &lt;&lt; <span class="hljs-number">1</span>,               <span class="hljs-comment">// 左对角线：下一行会右移一位</span>
+            (rd | pos) &gt;&gt; <span class="hljs-number">1</span>);              <span class="hljs-comment">// 右对角线：下一行会左移一位</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        cin &gt;&gt; (g[i] + <span class="hljs-number">1</span>);        <span class="hljs-comment">// 读入整行，从 g[i][1] 开始</span>
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1562">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

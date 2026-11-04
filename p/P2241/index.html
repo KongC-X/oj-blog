@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2241 统计方形（数据加强版） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个 方格的棋盘，求其方格包含多少正方形、长方形（不包含正方形）。">
+<link rel="canonical" href="https://zymojblog.top/p/P2241/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2241 统计方形（数据加强版） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个 方格的棋盘，求其方格包含多少正方形、长方形（不包含正方形）。">
+<meta property="og:url" content="https://zymojblog.top/p/P2241/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2241 统计方形（数据加强版） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个 方格的棋盘，求其方格包含多少正方形、长方形（不包含正方形）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2241 统计方形（数据加强版）","headline":"P2241 统计方形（数据加强版） 题解","description":"有一个 方格的棋盘，求其方格包含多少正方形、长方形（不包含正方形）。","url":"https://zymojblog.top/p/P2241/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、1997、NOIP 普及组、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2241</span></div>
+  <h1 class="seo-title">P2241 统计方形（数据加强版）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-3】暴力枚举</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/1997">1997</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2241 统计方形（数据加强版）</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>1997</code>、<code>NOIP 普及组</code>、<code>枚举</code></p>
+<h2>题目背景</h2>
+<p>1997年普及组第一题</p>
+<h2>题目描述</h2>
+<p>有一个 $n \times m$ 方格的棋盘，求其方格包含多少正方形、长方形（不包含正方形）。</p>
+<h2>输入格式</h2>
+<p>一行，两个正整数 $n,m$（$n \leq 5000,m \leq 5000$）。</p>
+<h2>输出格式</h2>
+<p>一行，两个正整数，分别表示方格包含多少正方形、长方形（不包含正方形）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>8 10```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 对于这道题，我们先考虑第一个问题</span>
+<span class="hljs-comment">// 一、算正方形的个数</span>
+<span class="hljs-comment">// 1.如果我们固定了正方形的右下角(i,j),你能不能算出此时可能的正方形的个数？</span>
+<span class="hljs-comment">// 2.显然，此时答案为Min(i,j).</span>
+<span class="hljs-comment">// 3.所以可以枚举右下角，计算此时答案，求和即可。</span>
+<span class="hljs-comment">// 二、算长方形个数</span>
+<span class="hljs-comment">// 1.其实算长方形并不常见，但算矩形大家应该经常遇到，所以如果你会算矩形，再联系第一个问题，那答案就转化为 矩形个数-正方形个数.</span>
+<span class="hljs-comment">// 2.像求解正方形个数一样，固定矩形右下角(i,j),显然此时矩形个数为i*j.</span>
+<span class="hljs-comment">// 3.同理，求和即可.</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ll long long</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ll n,m,i,j,sum=<span class="hljs-number">0</span>,sum1=<span class="hljs-number">0</span>;
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=n;i++) {
+      <span class="hljs-keyword">for</span>(j=<span class="hljs-number">1</span>;j&lt;=m;j++) {
+        sum+=<span class="hljs-built_in">min</span>(i,j);
+        sum1+=i*j;
+      }
+    }
+    
+    cout&lt;&lt;sum&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;sum1-sum&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2241">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

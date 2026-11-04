@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1443 泉水 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Leyni是一个地质调查员，有一天在他调查的地方突然出现个泉眼。由于当地的地势不均匀，有高有低，他觉得如果这个泉眼不断的向外溶出水来，这意味着这里在不久的将来将会一个小湖。水往低处流，凡是比泉眼地势低或者等于的地方都会被水淹没，地势高的地方水不会越过。而且又因为泉水比较弱，当所有地势低的地方被淹没…">
+<link rel="canonical" href="https://zymojblog.top/p/1443/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1443 泉水 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Leyni是一个地质调查员，有一天在他调查的地方突然出现个泉眼。由于当地的地势不均匀，有高有低，他觉得如果这个泉眼不断的向外溶出水来，这意味着这里在不久的将来将会一个小湖。水往低处流，凡是比泉眼地势低或者等于的地方都会被水淹没，地势高的地方水不会越过。而且又因为泉水比较弱，当所有地势低的地方被淹没…">
+<meta property="og:url" content="https://zymojblog.top/p/1443/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1443 泉水 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Leyni是一个地质调查员，有一天在他调查的地方突然出现个泉眼。由于当地的地势不均匀，有高有低，他觉得如果这个泉眼不断的向外溶出水来，这意味着这里在不久的将来将会一个小湖。水往低处流，凡是比泉眼地势低或者等于的地方都会被水淹没，地势高的地方水不会越过。而且又因为泉水比较弱，当所有地势低的地方被淹没…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1443 泉水","headline":"1443 泉水 题解","description":"Leyni是一个地质调查员，有一天在他调查的地方突然出现个泉眼。由于当地的地势不均匀，有高有低，他觉得如果这个泉眼不断的向外溶出水来，这意味着这里在不久的将来将会一个小湖。水往低处流，凡是比泉眼地势低或者等于的地方都会被水淹没，地势高的地方水不会越过。而且又因为泉水比较弱，当所有地势低的地方被淹没…","url":"https://zymojblog.top/p/1443/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"广搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1443</span></div>
+  <h1 class="seo-title">1443 泉水</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">广度优先搜索-BFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%BF%E6%90%9C">广搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1443 - 泉水</h1>
+<h2>题目描述</h2>
+<p>Leyni是一个地质调查员，有一天在他调查的地方突然出现个泉眼。由于当地的地势不均匀，有高有低，他觉得如果这个泉眼不断的向外溶出水来，这意味着这里在不久的将来将会一个小湖。水往低处流，凡是比泉眼地势低或者等于的地方都会被水淹没，地势高的地方水不会越过。而且又因为泉水比较弱，当所有地势低的地方被淹没后，水位将不会上涨，一直定在跟泉眼一样的水位上。</p>
+<p>由于Leyni已经调查过当地很久了，所以他手中有这里地势的详细数据。所有的地图都是一个矩形，并按照坐标系分成了一个个小方格，Leyni知道每个方格的具体高度。我们假定当水流到地图边界时，不会流出地图外，现在他想通过这些数据分析出，将来这里将会出现一个多大面积的湖。</p>
+<h2>输入</h2>
+<p>第一行有四个整数 $n,m,p_1,p_2$ ($n,m \le 1000$)，$n$ 和 $m$ 表示当前地图的长和宽，$p_1$ 和 $p_2$ 表示当前地图的泉眼位置，即第 $p_1$ 行第 $p_2$ 列。</p>
+<p>随后的 $n$ 行中，每行有 $m$ 个数据。表示这每一个对应坐标的高度。</p>
+<h2>输出</h2>
+<p>输出对应地图中会有多少个格子被水充满。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>],q[<span class="hljs-number">1000010</span>][<span class="hljs-number">3</span>];
+<span class="hljs-type">bool</span> f[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>]; <span class="hljs-comment">// f数组用于标记是否走过</span>
+<span class="hljs-type">int</span> n,m,i,j,tx,ty,p1,p2;
+
+<span class="hljs-type">int</span> head = <span class="hljs-number">1</span>,tail = <span class="hljs-number">1</span>; <span class="hljs-comment">// 队列头尾指针</span>
+
+<span class="hljs-comment">// 右下左上</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; p1 &gt;&gt; p2;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= m;j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-comment">// 把起点存到队列中</span>
+    q[head][<span class="hljs-number">1</span>] = p1;
+    q[tail][<span class="hljs-number">2</span>] = p2;
+    f[p1][p2] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// 标记起点为走过</span>
+    <span class="hljs-keyword">while</span>(head &lt;= tail) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++) {
+            tx = q[head][<span class="hljs-number">1</span>] + fx[i];
+            ty = q[head][<span class="hljs-number">2</span>] + fy[i];
+            <span class="hljs-keyword">if</span>(tx &gt;= <span class="hljs-number">1</span> &amp;&amp; tx &lt;= n &amp;&amp; ty &gt;= <span class="hljs-number">1</span> &amp;&amp; ty &lt;= m &amp;&amp; f[tx][ty] == <span class="hljs-literal">false</span> &amp;&amp; a[tx][ty] &lt;= a[p1][p2]) {
+                tail++;
+                q[tail][<span class="hljs-number">1</span>] = tx;
+                q[tail][<span class="hljs-number">2</span>] = ty;
+                f[tx][ty] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// 标记为走过</span>
+            }
+        }
+        head++; <span class="hljs-comment">// 队列头指针后移</span>
+    }
+    cout &lt;&lt; tail &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1443">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

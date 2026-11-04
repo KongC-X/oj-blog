@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1143 纯粹合数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个合数，去掉最低位，剩下的数仍是合数，再去掉剩下的数的最低位，余留下来的数还是合数，这样反复，一直到最后剩下的一位数仍是合数；我们把这样的数称为纯粹合数。求所有的三位纯粹合数。">
+<link rel="canonical" href="https://zymojblog.top/p/1143/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1143 纯粹合数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个合数，去掉最低位，剩下的数仍是合数，再去掉剩下的数的最低位，余留下来的数还是合数，这样反复，一直到最后剩下的一位数仍是合数；我们把这样的数称为纯粹合数。求所有的三位纯粹合数。">
+<meta property="og:url" content="https://zymojblog.top/p/1143/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1143 纯粹合数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个合数，去掉最低位，剩下的数仍是合数，再去掉剩下的数的最低位，余留下来的数还是合数，这样反复，一直到最后剩下的一位数仍是合数；我们把这样的数称为纯粹合数。求所有的三位纯粹合数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1143 纯粹合数","headline":"1143 纯粹合数 题解","description":"一个合数，去掉最低位，剩下的数仍是合数，再去掉剩下的数的最低位，余留下来的数还是合数，这样反复，一直到最后剩下的一位数仍是合数；我们把这样的数称为纯粹合数。求所有的三位纯粹合数。","url":"https://zymojblog.top/p/1143/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1143</span></div>
+  <h1 class="seo-title">1143 纯粹合数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">函数</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E9%97%AE%E9%A2%98">函数问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1143 - 纯粹合数</h1>
+<h2>题目描述</h2>
+<p>一个合数，去掉最低位，剩下的数仍是合数，再去掉剩下的数的最低位，余留下来的数还是合数，这样反复，一直到最后剩下的一位数仍是合数；我们把这样的数称为纯粹合数。求所有的三位纯粹合数。</p>
+<h2>输入</h2>
+<p>无</p>
+<h2>输出</h2>
+<p>若干个 $3$ 位数，每行一个（从小到大）。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 合数判断</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isComposite</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= <span class="hljs-built_in">sqrt</span>(n); i++) {
+        <span class="hljs-keyword">if</span> (n % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// cout &lt;&lt; isComposite(6) &lt;&lt; endl; // 输出 1，表示 6 是合数</span>
+    <span class="hljs-type">int</span> i,a,b;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">100</span>;i&lt;= <span class="hljs-number">999</span>;i++){
+        a = i / <span class="hljs-number">10</span>;
+        b = i / <span class="hljs-number">100</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">isComposite</span>(i) &amp;&amp; <span class="hljs-built_in">isComposite</span>(a) &amp;&amp; <span class="hljs-built_in">isComposite</span>(b)){
+            cout&lt;&lt; i &lt;&lt;endl;
+        }
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1143">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1268 高精度加法 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="计算 的值， 皆为不超过 位的非负整数。">
+<link rel="canonical" href="https://zymojblog.top/p/1268/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1268 高精度加法 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="计算 的值， 皆为不超过 位的非负整数。">
+<meta property="og:url" content="https://zymojblog.top/p/1268/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1268 高精度加法 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="计算 的值， 皆为不超过 位的非负整数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1268 高精度加法","headline":"1268 高精度加法 题解","description":"计算 的值， 皆为不超过 位的非负整数。","url":"https://zymojblog.top/p/1268/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"高精度算法","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1268</span></div>
+  <h1 class="seo-title">1268 高精度加法</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%AE%97%E6%B3%95">高精度算法</a></div>
+  <article class="markdown-body seo-article">
+<h1>1268 - 高精度加法</h1>
+<h2>题目描述</h2>
+<p>计算 $a+b$ 的值，$a,b$ 皆为不超过 $240$ 位的非负整数。</p>
+<h2>输入</h2>
+<p>两个正整数，每行一个。</p>
+<h2>输出</h2>
+<p>一个数，代表两个整数的和。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">/*
+第⼀步：⽤string读⼊⾼精度整数
+第⼆步：将两个⾼精度整数逆序存⼊ab两个整数数组
+第三步：从左向右，逐位求和，结果存⼊c数组从左向右，逐位进位
+第四步：逆序输出结果
+*/</span>
+string s1,s2; <span class="hljs-comment">//⾼精度整数</span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">250</span>],b[<span class="hljs-number">250</span>],c[<span class="hljs-number">250</span>]; <span class="hljs-comment">//存储⾼精度整数的数组</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; s1 &gt;&gt; s2; <span class="hljs-comment">//读⼊⾼精度整数</span>
+    <span class="hljs-comment">// 逆序存放到数组中</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--) {
+        a[i] = s1[s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--) {
+        b[i] = s2[s2.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> - i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-comment">//验证</span>
+    <span class="hljs-comment">// for(int i = 0;i &lt; s1.size();i++) {</span>
+    <span class="hljs-comment">// 	cout &lt;&lt; a[i];</span>
+    <span class="hljs-comment">// }</span>
+    <span class="hljs-comment">// 找到更长的一个数</span>
+    <span class="hljs-type">int</span> len = s1.<span class="hljs-built_in">size</span>() &gt; s2.<span class="hljs-built_in">size</span>() ? s1.<span class="hljs-built_in">size</span>() : s2.<span class="hljs-built_in">size</span>();
+    <span class="hljs-comment">// int len = max(s1.size(),s2.size());</span>
+    <span class="hljs-comment">// 诸位相加</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; len;i++) {
+        c[i] = a[i] + b[i];
+    }
+    <span class="hljs-comment">// 判断是否需要进位</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; len;i++) {
+        <span class="hljs-keyword">if</span>(c[i] &gt;= <span class="hljs-number">10</span>) {
+            c[i + <span class="hljs-number">1</span>]++; <span class="hljs-comment">//进位</span>
+            c[i] = c[i] - <span class="hljs-number">10</span>; <span class="hljs-comment">//当前位</span>
+        }
+    }
+    <span class="hljs-comment">// 两个不超过len位的整数做加法，结果可能是len+1位</span>
+    <span class="hljs-keyword">if</span>(c[len] != <span class="hljs-number">0</span>) {
+        len++; <span class="hljs-comment">//如果最后一位不为0，长度加1</span>
+    }
+    <span class="hljs-comment">// 逆序输出结果</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = len - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--) {
+        cout &lt;&lt; c[i];
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1268">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

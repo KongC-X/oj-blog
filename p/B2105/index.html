@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2105 矩阵乘法 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="计算两个矩阵的乘法。 阶的矩阵 乘以 阶的矩阵 得到的矩阵 是 阶的，且 …… 表示 矩阵中第 行第 列元素）。">
+<link rel="canonical" href="https://zymojblog.top/p/B2105/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2105 矩阵乘法 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="计算两个矩阵的乘法。 阶的矩阵 乘以 阶的矩阵 得到的矩阵 是 阶的，且 …… 表示 矩阵中第 行第 列元素）。">
+<meta property="og:url" content="https://zymojblog.top/p/B2105/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2105 矩阵乘法 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="计算两个矩阵的乘法。 阶的矩阵 乘以 阶的矩阵 得到的矩阵 是 阶的，且 …… 表示 矩阵中第 行第 列元素）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2105 矩阵乘法","headline":"B2105 矩阵乘法 题解","description":"计算两个矩阵的乘法。 阶的矩阵 乘以 阶的矩阵 得到的矩阵 是 阶的，且 …… 表示 矩阵中第 行第 列元素）。","url":"https://zymojblog.top/p/B2105/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"矩阵运算、矩阵乘法、数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2105</span></div>
+  <h1 class="seo-title">B2105 矩阵乘法</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9F%A9%E9%98%B5%E8%BF%90%E7%AE%97">矩阵运算</a><a class="seo-tag" href="/#/tag/%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95">矩阵乘法</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2105 矩阵乘法</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-09</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>矩阵运算</code>、<code>矩阵乘法</code>、<code>数组</code></p>
+<h2>题目描述</h2>
+<p>计算两个矩阵的乘法。$n \times m$ 阶的矩阵 $A$ 乘以 $m \times k$ 阶的矩阵 $B$ 得到的矩阵 $C$ 是 $n \times k$ 阶的，且 $C[i][j]=A[i][0] \times B[0][j]+A[i][1] \times B[1][j]+$ …… $+A[i][m-1] \times B[m-1][j](C[i][j]$ 表示 $C$ 矩阵中第 $i$ 行第 $j$ 列元素）。</p>
+<h2>输入格式</h2>
+<p>第一行为 $n,m,k$，表示 $A$ 矩阵是 $n$ 行 $m$ 列，$B$ 矩阵是 $m$ 行 $k$ 列，$n,m,k$ 均小于等于 $100$。</p>
+<p>然后先后输入 $A$ 和 $B$ 两个矩阵，$A$ 矩阵 $n$ 行 $m$ 列，$B$ 矩阵 $m$ 行 $k$ 列，矩阵中每个元素的绝对值不会大于 $1000$。</p>
+<h2>输出格式</h2>
+<p>输出矩阵 $C$，一共 $n$ 行，每行 $k$ 个整数，整数之间以一个空格分开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2 2 2<br>2 2 2<br>2 2 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：矩阵乘法，A(n×m) * B(m×k) = C(n×k)</span>
+    <span class="hljs-comment">// 公式：C[i][j] = sum_{t=1..m} A[i][t] * B[t][j]</span>
+    <span class="hljs-comment">// 读入矩阵A和B，然后三重循环计算结果矩阵C，最后输出C。</span>
+    <span class="hljs-comment">// 时间复杂度 O(n*m*k)，n,m,k &lt;= 100，完全可行。</span>
+    
+    <span class="hljs-type">int</span> n, m, k;                       <span class="hljs-comment">// n: A的行数, m: A的列数和B的行数, k: B的列数</span>
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+
+    <span class="hljs-type">int</span> A[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>], B[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>];      <span class="hljs-comment">// 矩阵A和B，多开10个</span>
+    <span class="hljs-type">int</span> C[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>] = {<span class="hljs-number">0</span>};             <span class="hljs-comment">// 结果矩阵C，初始化为0</span>
+
+    <span class="hljs-comment">// 读入矩阵A</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++)
+            cin &gt;&gt; A[i][j];
+
+    <span class="hljs-comment">// 读入矩阵B</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; j++)
+            cin &gt;&gt; B[i][j];
+
+    <span class="hljs-comment">// 计算矩阵乘法：C = A * B</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {         <span class="hljs-comment">// 遍历C的行</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; j++) {     <span class="hljs-comment">// 遍历C的列</span>
+            <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> t = <span class="hljs-number">1</span>; t &lt;= m; t++) { <span class="hljs-comment">// 累加A的行和B的列的乘积</span>
+                sum += A[i][t] * B[t][j];
+            }
+            C[i][j] = sum;
+        }
+    }
+
+    <span class="hljs-comment">// 输出结果矩阵C</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; j++) {
+            cout &lt;&lt; C[i][j];
+            <span class="hljs-keyword">if</span> (j &lt; k) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;      <span class="hljs-comment">// 数字间加空格</span>
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2105">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1921 是不是亲戚 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="若某个家族人员过于庞大，要判断两个是否是亲戚，确实还很不容易，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。 规定： 和 是亲戚， 和 是亲戚，那么 和 也是亲戚。如果 是亲戚，那么 的亲戚都是 的亲戚， 的亲戚也都是 的亲戚。">
+<link rel="canonical" href="https://zymojblog.top/p/1921/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1921 是不是亲戚 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="若某个家族人员过于庞大，要判断两个是否是亲戚，确实还很不容易，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。 规定： 和 是亲戚， 和 是亲戚，那么 和 也是亲戚。如果 是亲戚，那么 的亲戚都是 的亲戚， 的亲戚也都是 的亲戚。">
+<meta property="og:url" content="https://zymojblog.top/p/1921/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1921 是不是亲戚 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="若某个家族人员过于庞大，要判断两个是否是亲戚，确实还很不容易，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。 规定： 和 是亲戚， 和 是亲戚，那么 和 也是亲戚。如果 是亲戚，那么 的亲戚都是 的亲戚， 的亲戚也都是 的亲戚。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1921 是不是亲戚","headline":"1921 是不是亲戚 题解","description":"若某个家族人员过于庞大，要判断两个是否是亲戚，确实还很不容易，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。 规定： 和 是亲戚， 和 是亲戚，那么 和 也是亲戚。如果 是亲戚，那么 的亲戚都是 的亲戚， 的亲戚也都是 的亲戚。","url":"https://zymojblog.top/p/1921/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1921</span></div>
+  <h1 class="seo-title">1921 是不是亲戚</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>1921 - 是不是亲戚</h1>
+<h2>题目描述</h2>
+<p>若某个家族人员过于庞大，要判断两个是否是亲戚，确实还很不容易，现在给出某个亲戚关系图，求任意给出的两个人是否具有亲戚关系。</p>
+<p>规定：$x$ 和 $y$ 是亲戚，$y$ 和 $z$ 是亲戚，那么 $x$ 和 $z$ 也是亲戚。如果 $x,y$ 是亲戚，那么 $x$ 的亲戚都是 $y$ 的亲戚，$y$ 的亲戚也都是 $x$ 的亲戚。</p>
+<h2>输入</h2>
+<p>第一行：三个整数 $n,m,p$，（$n \le 5000,m \le 5000,p \le 5000$ ），分别表示有 $n$ 个人，$m$ 个亲戚关系，询问 $p$ 对亲戚关系。</p>
+<p>以下 $m$ 行：每行两个数 $M_i,M_j$，$1 \le M_i,M_j \le N$，表示 $M_i$ 和 $M_j$ 具有亲戚关系。</p>
+<p>接下来 $p$ 行：每行两个数 $P_i,P_j$，询问 $P_i$ 和 $P_j$ 是否具有亲戚关系。</p>
+<h2>输出</h2>
+<p>$P$行，每行一个 <code>Yes</code> 或 <code>No</code>。表示第 $i$ 个询问的答案为“具有”或“不具有”亲戚关系。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,m,p,f[<span class="hljs-number">5100</span>],c,d,a,b;
+
+<span class="hljs-comment">//找到元素x的根(不含路径压缩) </span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-comment">//如果x的父节点就是自己，那么x就是根，否则找f[x]的根 </span>
+    <span class="hljs-keyword">if</span>(f[x]==x){
+        <span class="hljs-keyword">return</span> x;   
+    } <span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">find</span>(f[x]);
+    }
+    <span class="hljs-comment">//路径压缩版本的写法</span>
+    <span class="hljs-comment">//如果x的父节点就是自己，那么x就是根，否则将x的父节点直接指向x所在集合的根 </span>
+    <span class="hljs-comment">//return f[x]==x?x:f[x]=find(f[x]); </span>
+}
+
+<span class="hljs-comment">//合并：将x和y合并到同一个集合，前提：x和y必须是不同的集合</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x); <span class="hljs-comment">//找到x的根</span>
+    <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y); <span class="hljs-comment">//找到y的根</span>
+    <span class="hljs-keyword">if</span>(fx != fy){
+        <span class="hljs-comment">//将y的根的父节点，设置为x的根 </span>
+        f[fx] = fy;
+    }
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//n个人，m个亲戚关系，p次查询 </span>
+    cin&gt;&gt;n&gt;&gt;m&gt;&gt;p;
+    <span class="hljs-comment">//初始化，每个人的根节点都指向自己 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        f[i] = i;
+    }
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++){
+        cin&gt;&gt;c&gt;&gt;d;
+        <span class="hljs-comment">//cd是亲戚关系，将其合并到同一个集合</span>
+        <span class="hljs-built_in">merge</span>(c,d); 
+    } 
+    
+    <span class="hljs-comment">//p次查询</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= p;i++){
+        cin&gt;&gt;a&gt;&gt;b;
+        <span class="hljs-comment">//问：ab是否有亲戚关系，如果ab的根节点相同，那么是亲戚 </span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">find</span>(a)==<span class="hljs-built_in">find</span>(b)){
+            cout&lt;&lt;<span class="hljs-string">&quot;Yes&quot;</span>&lt;&lt;endl;
+        } <span class="hljs-keyword">else</span>{
+            cout&lt;&lt;<span class="hljs-string">&quot;No&quot;</span>&lt;&lt;endl; 
+        } 
+    } 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1921">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

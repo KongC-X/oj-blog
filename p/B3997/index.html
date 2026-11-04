@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="对于一个字符串 ，小洛定义它为 回文 的，当且仅当字符串 从左往右读和从右往左读一样，例如 是回文的，而 不是。 小洛现在有一个字符串 ，他想将这个字符串分为若干段，段长度分别为 。具体而言，他会先将第一个字符拿出来作为字符串 ，再将第 个字符拿出来作为 ，再将第 个字符拿出来作为 ，以此类推………">
+<link rel="canonical" href="https://zymojblog.top/p/B3997/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="对于一个字符串 ，小洛定义它为 回文 的，当且仅当字符串 从左往右读和从右往左读一样，例如 是回文的，而 不是。 小洛现在有一个字符串 ，他想将这个字符串分为若干段，段长度分别为 。具体而言，他会先将第一个字符拿出来作为字符串 ，再将第 个字符拿出来作为 ，再将第 个字符拿出来作为 ，以此类推………">
+<meta property="og:url" content="https://zymojblog.top/p/B3997/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="对于一个字符串 ，小洛定义它为 回文 的，当且仅当字符串 从左往右读和从右往左读一样，例如 是回文的，而 不是。 小洛现在有一个字符串 ，他想将这个字符串分为若干段，段长度分别为 。具体而言，他会先将第一个字符拿出来作为字符串 ，再将第 个字符拿出来作为 ，再将第 个字符拿出来作为 ，以此类推………">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割","headline":"B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割 题解","description":"对于一个字符串 ，小洛定义它为 回文 的，当且仅当字符串 从左往右读和从右往左读一样，例如 是回文的，而 不是。 小洛现在有一个字符串 ，他想将这个字符串分为若干段，段长度分别为 。具体而言，他会先将第一个字符拿出来作为字符串 ，再将第 个字符拿出来作为 ，再将第 个字符拿出来作为 ，以此类推………","url":"https://zymojblog.top/p/B3997/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串（入门）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3997</span></div>
+  <h1 class="seo-title">B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3997 [洛谷 202406GESP 模拟 三级] 小洛的字符串分割</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-09-23</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>对于一个字符串 $S$，小洛定义它为 <strong>回文</strong> 的，当且仅当字符串 $S$ 从左往右读和从右往左读一样，例如 $\tt abcba$ 是回文的，而 $\tt abcca$ 不是。</p>
+<p>小洛现在有一个字符串 $S$，他想将这个字符串分为若干段，段长度分别为 $1,2,3,\dots$。具体而言，他会先将第一个字符拿出来作为字符串 $S_1$，再将第 $2,3$ 个字符拿出来作为 $S_2$，再将第 $4,5,6$ 个字符拿出来作为 $S_3$，以此类推……最后若还有多余的字符，则单独作为一段。</p>
+<p>例如说，对于字符串 $\tt aaababcaacd$，会被分为如下的五个字符串：</p>
+<ul>
+<li>$S_1=\tt a$；</li>
+<li>$S_2=\tt aa$；</li>
+<li>$S_3=\tt bab$；</li>
+<li>$S_4=\tt caac$；</li>
+<li>$S_5=\tt d$；</li>
+</ul>
+<p>字符串 $\tt aaababcaacd$ 分割出的 $5$ 个字符串都是回文的。</p>
+<p>小洛想要知道，对于读入的字符串 $S$，这些被分割出来的字符串，有<strong>多少个</strong>是回文的呢？</p>
+<h2>输入格式</h2>
+<p>输入一行，一个字符串 $S$。</p>
+<h2>输出格式</h2>
+<p>输出一个整数，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">aaababcaacd```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>5```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">abacdcaaba```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string s;
+    cin &gt;&gt; s;
+
+    <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();
+    <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;          <span class="hljs-comment">// i: 当前段的起始下标</span>
+    <span class="hljs-type">int</span> len = <span class="hljs-number">1</span>;        <span class="hljs-comment">// len: 期望的段长度，从 1 开始递增</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;        <span class="hljs-comment">// ans: 回文段的数量</span>
+
+    <span class="hljs-keyword">while</span> (i &lt; n) {
+        <span class="hljs-comment">// 实际段长度：如果剩余字符不足 len，则取剩余全部</span>
+        <span class="hljs-type">int</span> t = <span class="hljs-built_in">min</span>(len, n - i);
+
+        <span class="hljs-comment">// 判断 s[i ... i+t-1] 是否回文</span>
+        <span class="hljs-type">bool</span> flag = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; t / <span class="hljs-number">2</span>; j++) {
+            <span class="hljs-keyword">if</span> (s[i + j] != s[i + t - <span class="hljs-number">1</span> - j]) {
+                flag = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (flag) ans++;
+
+        i += t;    <span class="hljs-comment">// 移动到下一段的起始位置</span>
+        len++;          <span class="hljs-comment">// 下一段期望长度增加 1</span>
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3997">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2069 重建电路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小A同学所在的城市遭受了洪灾，城市中的电路受到了严重的破坏。政府部门一方面要救灾，一方面要用最小的代价来重建电路系统。 现在已知该城市有若干个村庄（编号为 ），并已知村庄之间如果重建电路所需要的花费，请你编程帮助该城市计算出，如果要使得该城市恢复电路系统，最少的花费是多少？ 请注意：只需要保证任意…">
+<link rel="canonical" href="https://zymojblog.top/p/2069/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2069 重建电路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小A同学所在的城市遭受了洪灾，城市中的电路受到了严重的破坏。政府部门一方面要救灾，一方面要用最小的代价来重建电路系统。 现在已知该城市有若干个村庄（编号为 ），并已知村庄之间如果重建电路所需要的花费，请你编程帮助该城市计算出，如果要使得该城市恢复电路系统，最少的花费是多少？ 请注意：只需要保证任意…">
+<meta property="og:url" content="https://zymojblog.top/p/2069/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2069 重建电路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小A同学所在的城市遭受了洪灾，城市中的电路受到了严重的破坏。政府部门一方面要救灾，一方面要用最小的代价来重建电路系统。 现在已知该城市有若干个村庄（编号为 ），并已知村庄之间如果重建电路所需要的花费，请你编程帮助该城市计算出，如果要使得该城市恢复电路系统，最少的花费是多少？ 请注意：只需要保证任意…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2069 重建电路","headline":"2069 重建电路 题解","description":"小A同学所在的城市遭受了洪灾，城市中的电路受到了严重的破坏。政府部门一方面要救灾，一方面要用最小的代价来重建电路系统。 现在已知该城市有若干个村庄（编号为 ），并已知村庄之间如果重建电路所需要的花费，请你编程帮助该城市计算出，如果要使得该城市恢复电路系统，最少的花费是多少？ 请注意：只需要保证任意…","url":"https://zymojblog.top/p/2069/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2069</span></div>
+  <h1 class="seo-title">2069 重建电路</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>2069 - 重建电路</h1>
+<h2>题目描述</h2>
+<p>小A同学所在的城市遭受了洪灾，城市中的电路受到了严重的破坏。政府部门一方面要救灾，一方面要用最小的代价来重建电路系统。</p>
+<p>现在已知该城市有若干个村庄（编号为 $0 \sim n-1$），并已知村庄之间如果重建电路所需要的花费，请你编程帮助该城市计算出，如果要使得该城市恢复电路系统，最少的花费是多少？</p>
+<p>请注意：只需要保证任意两个村庄之间至少存在一条通路，电路系统即可恢复。</p>
+<h2>输入</h2>
+<p>输入的第一行为一个整数 $T$（$1 \le T \le 50$），表示有 $T$ 组测试数据。</p>
+<p>每组输入第一行是两个正整数 $N$，$E$（$2 \le N \le 500，N \le E \le N \times (N-1)/2$），分别表示该城市村庄个数和原有电力线路的个数。</p>
+<p>接下来的 $E$ 行，每行包含三个整数 $A,B,K$（$0 \le A,B \lt N$，$0 \le K \lt 1000$）。</p>
+<p>$A$ 和 $B$ 分别表示电力线路的起始村庄代号。</p>
+<p>如果 $K=0$，表示这条线路仍然正常；如果 $K$ 是一个正整数，表示这条线路需要花费 $K$ 的代价来重建。</p>
+<p>题目保证输入中没有重边，也没有起始村庄相同的边；本题的数据确保一定能重建电路系统。</p>
+<h2>输出</h2>
+<p>对于每组输入，输出重建电力系统所需的最小花费，以此来保证任意两个村庄之间至少存在一条通路。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+  1. 读入数据，将数据存入结构体数组；
+  2. 对结构体数组按照建网络的长度，从小到大排序；
+  3. 选出n-1条边，不能构成回路，长度的和就是最小长度；
+  4. K=0 表示线路正常，可以直接连通（花费0），先处理这些边。
+  5. K&gt;0 的边存入结构体，用于后续 Kruskal 选边。
+  6. 由于有多组数据，注意数组下标和变量重置。
+*/</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">510</span>;            <span class="hljs-comment">// 村庄数最大 500，多开10个</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXE = <span class="hljs-number">125000</span>;         <span class="hljs-comment">// 最大边数 500*499/2 ≈ 124750</span>
+
+<span class="hljs-type">int</span> f[MAXN];                     <span class="hljs-comment">// 并查集数组</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> x, y, len;               <span class="hljs-comment">// x,y:村庄编号, len:重建花费</span>
+} a[MAXE];                       <span class="hljs-comment">// 存储需要重建的边</span>
+
+<span class="hljs-type">int</span> n, e, k;                     <span class="hljs-comment">// n:村庄数, e:总边数, k:需要重建的边数</span>
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Node a, Node b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.len &lt; b.len;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">return</span> x == f[x] ? x : f[x] = <span class="hljs-built_in">find</span>(f[x]); <span class="hljs-comment">// 路径压缩</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> T;                       <span class="hljs-comment">// T: 测试数据组数</span>
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        cin &gt;&gt; n &gt;&gt; e;
+        <span class="hljs-comment">// 初始化并查集，村庄编号 0~n-1</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) f[i] = i;
+        k = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// 需要重建的边数置零</span>
+
+        <span class="hljs-comment">// 读入 e 条边</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; e; i++) {
+            <span class="hljs-type">int</span> u, v, w;
+            cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+            <span class="hljs-keyword">if</span> (w == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// 正常线路，直接合并，不算花费</span>
+                <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(u);
+                <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(v);
+                <span class="hljs-keyword">if</span> (fx != fy) f[fx] = fy;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 需要重建的边，存入数组</span>
+                k++;
+                a[k].x = u;
+                a[k].y = v;
+                a[k].len = w;
+            }
+        }
+
+        <span class="hljs-comment">// 对需要重建的边按费用从小到大排序</span>
+        <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + k + <span class="hljs-number">1</span>, cmp);
+
+        <span class="hljs-comment">// Kruskal 选边</span>
+        <span class="hljs-type">int</span> s = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 重建总花费</span>
+        <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 已连通的边数（正常线路未统计，这里重新统计）</span>
+        <span class="hljs-comment">// 先统计当前已有的连通分量？不，我们直接选边时统计。</span>
+        <span class="hljs-comment">// 我们需要达到 n-1 条边连通。因为正常线路已经合并，我们只需在需要重建的边中选。</span>
+        <span class="hljs-comment">// 设置 c 为已选中的重建边数，最后选够 (n-1 - 已合并的正常线路数) 条。</span>
+        <span class="hljs-comment">// 但我们可以在选边时直接判断 find(u)!=find(v) 即可，无需单独计数正常线路。</span>
+        <span class="hljs-comment">// 最终所有村庄连通时，循环结束，输出 s。</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) {
+            <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(a[i].x);
+            <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(a[i].y);
+            <span class="hljs-keyword">if</span> (fx != fy) {
+                f[fx] = fy;
+                s += a[i].len;   <span class="hljs-comment">// 累加重建费用</span>
+                c++;             <span class="hljs-comment">// 可选，用作调试</span>
+            }
+        }
+        cout &lt;&lt; s &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2069">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

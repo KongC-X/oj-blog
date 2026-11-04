@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3753 [信息与未来 2019] 堆栈计算机 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一种新型的堆栈计算机，计算机的内存是一个初始为空的数列，计算机支持三种操作： - 将整数 放入数列的尾部。任意时刻都可执行此操作。 - 将数列尾部的数字复制一份，放入数列尾部。只有数列非空时才能执行此操作。 - 取出（并删除）数列尾部的两个数字，相加后放回数列的尾部。只有数列中至少有两个数字时才…">
+<link rel="canonical" href="https://zymojblog.top/p/B3753/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3753 [信息与未来 2019] 堆栈计算机 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一种新型的堆栈计算机，计算机的内存是一个初始为空的数列，计算机支持三种操作： - 将整数 放入数列的尾部。任意时刻都可执行此操作。 - 将数列尾部的数字复制一份，放入数列尾部。只有数列非空时才能执行此操作。 - 取出（并删除）数列尾部的两个数字，相加后放回数列的尾部。只有数列中至少有两个数字时才…">
+<meta property="og:url" content="https://zymojblog.top/p/B3753/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3753 [信息与未来 2019] 堆栈计算机 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一种新型的堆栈计算机，计算机的内存是一个初始为空的数列，计算机支持三种操作： - 将整数 放入数列的尾部。任意时刻都可执行此操作。 - 将数列尾部的数字复制一份，放入数列尾部。只有数列非空时才能执行此操作。 - 取出（并删除）数列尾部的两个数字，相加后放回数列的尾部。只有数列中至少有两个数字时才…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3753 [信息与未来 2019] 堆栈计算机","headline":"B3753 [信息与未来 2019] 堆栈计算机 题解","description":"有一种新型的堆栈计算机，计算机的内存是一个初始为空的数列，计算机支持三种操作： - 将整数 放入数列的尾部。任意时刻都可执行此操作。 - 将数列尾部的数字复制一份，放入数列尾部。只有数列非空时才能执行此操作。 - 取出（并删除）数列尾部的两个数字，相加后放回数列的尾部。只有数列中至少有两个数字时才…","url":"https://zymojblog.top/p/B3753/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"2019、江苏、Special Judge、进制、栈、构造、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3753</span></div>
+  <h1 class="seo-title">B3753 [信息与未来 2019] 堆栈计算机</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2019">2019</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a><a class="seo-tag" href="/#/tag/%E6%9E%84%E9%80%A0">构造</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3753 [信息与未来 2019] 堆栈计算机</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2019</code>、<code>江苏</code>、<code>Special Judge</code>、<code>进制</code>、<code>栈</code>、<code>构造</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>有一种新型的堆栈计算机，计算机的内存是一个初始为空的数列，计算机支持三种操作：</p>
+<ul>
+<li>$\tt 1$ - 将整数 $1$ 放入数列的尾部。任意时刻都可执行此操作。</li>
+<li>$\tt dup$ - 将数列尾部的数字复制一份，放入数列尾部。只有数列非空时才能执行此操作。</li>
+<li>$\tt add$ - 取出（并删除）数列尾部的两个数字，相加后放回数列的尾部。只有数列中至少有两个数字时才能执行此操作。</li>
+</ul>
+<p>给定一个正整数，你需要输出一个长度不超过 $200$ 的程序（操作的序列），它在执行结束后，恰好得到一个长度为 $1$ 的数列，并且数列中的数字恰好为 $n$。下图展示了一个最终得到 $8$ 的程序。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/unim6xbj.png" alt=""></p>
+<h2>输入格式</h2>
+<p>输入一行一个正整数 $n$，表示希望输出的数字。</p>
+<h2>输出格式</h2>
+<p>输出一个若干行（不超过 $200$ 行，否则判为不正确）的满足上述要求的程序。如有多种方案，输出任意一种即可。注意 $\tt dup$ 和 $\tt add$ 均为小写。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>1<br>1<br>add<br>dup<br>add<br>dup<br>add```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 这道题要求用堆栈计算机指令构造出给定的数字n。</span>
+<span class="hljs-comment">// 因为只有加法和复制，我们可以利用“二进制分解”的方法：</span>
+<span class="hljs-comment">// 先放一个1作为基础，然后对于n的二进制表示中从第二个高位到最低位的每一位，执行“乘2”（dup + add），</span>
+<span class="hljs-comment">// 如果该位是1则再“加1”（1 + add）。这样操作次数远小于200，可以轻松完成。</span>
+
+<span class="hljs-comment">// 核心思想：用“翻倍”和“加1”来构造任何数</span>
+<span class="hljs-comment">// 堆栈计算机只有三种操作：放1、复制栈顶、将栈顶两个数相加。巧妙的是：</span>
+<span class="hljs-comment">// 复制栈顶再相加（dup + add）的效果就是把当前数翻倍（变成原来的2倍）。</span>
+<span class="hljs-comment">// 放一个1再相加（1 + add）的效果就是把当前数加1。</span>
+<span class="hljs-comment">// 所以，我们可以像搭积木一样，从1开始，通过“翻倍”和“加1”两种操作，逐步构造出任意大的数。</span>
+<span class="hljs-comment">// 我们想构造数字n，可以从1开始，每次决定是“翻倍”还是“翻倍后加1”，直到达到n。具体做法是：看n能不能被2整除。</span>
+<span class="hljs-comment">// 如果n是偶数，说明最后一步是翻倍得到的，我们先想办法构造出n/2，再翻倍。</span>
+<span class="hljs-comment">// 如果n是奇数，说明最后一步是翻倍后加1得到的，我们先想办法构造出(n-1)/2，再翻倍然后加1。</span>
+<span class="hljs-comment">// 这样一直倒推，直到回到1。然后我们把过程正过来输出指令即可。</span>
+<span class="hljs-comment">// 因为n最大10^9，每次除以2大约30次就到1了。每次操作最多4条指令，总指令数不超过30×4=120条，完全满足要求。</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-number">1</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 将 n 转为二进制字符串（无前导0）</span>
+    string b = <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-type">int</span> t = n;
+    <span class="hljs-keyword">while</span> (t &gt; <span class="hljs-number">0</span>) {
+        b = <span class="hljs-built_in">char</span>(<span class="hljs-string">&#x27;0&#x27;</span> + (t % <span class="hljs-number">2</span>)) + b;
+        t /= <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-comment">// 初始放一个 1</span>
+    cout &lt;&lt; <span class="hljs-number">1</span> &lt;&lt; endl;
+
+    <span class="hljs-comment">// 从二进制第二位开始处理（索引1），第一位已经由初始1表示</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; b.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-comment">// 乘以2：dup + add</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;dup&quot;</span> &lt;&lt; endl;
+        cout &lt;&lt; <span class="hljs-string">&quot;add&quot;</span> &lt;&lt; endl;
+
+        <span class="hljs-comment">// 如果该位是1，再加1</span>
+        <span class="hljs-keyword">if</span> (b[i] == <span class="hljs-string">&#x27;1&#x27;</span>) {
+            cout &lt;&lt; <span class="hljs-number">1</span> &lt;&lt; endl;
+            cout &lt;&lt; <span class="hljs-string">&quot;add&quot;</span> &lt;&lt; endl;
+        }   
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3753">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2200 树的公共祖先(LCA)(3) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵 个结点的树（结点标号 ）以及树中结点的边，结点 为树的根。 有 次询问，请求出每次询问的两个结点 和 的最近的公共祖先结点。">
+<link rel="canonical" href="https://zymojblog.top/p/2200/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2200 树的公共祖先(LCA)(3) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵 个结点的树（结点标号 ）以及树中结点的边，结点 为树的根。 有 次询问，请求出每次询问的两个结点 和 的最近的公共祖先结点。">
+<meta property="og:url" content="https://zymojblog.top/p/2200/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2200 树的公共祖先(LCA)(3) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵 个结点的树（结点标号 ）以及树中结点的边，结点 为树的根。 有 次询问，请求出每次询问的两个结点 和 的最近的公共祖先结点。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2200 树的公共祖先(LCA)(3)","headline":"2200 树的公共祖先(LCA)(3) 题解","description":"给定一棵 个结点的树（结点标号 ）以及树中结点的边，结点 为树的根。 有 次询问，请求出每次询问的两个结点 和 的最近的公共祖先结点。","url":"https://zymojblog.top/p/2200/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树、LCA","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2200</span></div>
+  <h1 class="seo-title">2200 树的公共祖先(LCA)(3)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91">树</a><a class="seo-tag" href="/#/tag/LCA">LCA</a></div>
+  <article class="markdown-body seo-article">
+<h1>2200 - 树的公共祖先(LCA)(3)</h1>
+<h2>题目描述</h2>
+<p>给定一棵 $n$ 个结点的树（结点标号 $1 \dots n$ ）以及树中结点的边，结点 $s$ 为树的根。</p>
+<p>有 $m$ 次询问，请求出每次询问的两个结点 $x$ 和 $y$ 的最近的公共祖先结点。</p>
+<h2>输入</h2>
+<p>第 $1$ 行输入 $3$ 个整数 $n$、$m$、$s$（$n≤500000$，$m≤500000$，$1≤s≤n$）； </p>
+<p>接下来 $n-1$ 行，每行两个整数 $a$ 和 $b$ ，结点 $a$ 和 $b$ 是父子关系，但<strong>不保证 $a$ 是 $b$ 的父</strong>，数据保证一定能构成树；</p>
+<p>接下来 $m$ 行，每行两个整数 $x$，$y$，表示要求出 $x$ 和 $y$ 结点的公共祖先。</p>
+<h2>输出</h2>
+<p>输出 $m$ 行，每行一个整数，表示 $m$ 次询问求出的结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">5e5</span> + <span class="hljs-number">10</span>;   <span class="hljs-comment">// 最大结点数</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> L = <span class="hljs-number">20</span>;          <span class="hljs-comment">// 2^20 = 1,048,576 &gt; 5e5，所以 20 就够了</span>
+
+<span class="hljs-comment">// ---------- 链式前向星（邻接表） ----------</span>
+<span class="hljs-type">int</span> pre[N];          <span class="hljs-comment">// pre[x]：结点 x 的最后一条出边在 a 数组中的下标</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span> {
+    <span class="hljs-type">int</span> to;          <span class="hljs-comment">// 这条边指向的目标结点</span>
+    <span class="hljs-type">int</span> next;        <span class="hljs-comment">// 上一条以相同起点出发的边的下标</span>
+} a[N * <span class="hljs-number">2</span>];          <span class="hljs-comment">// 存边数组，无向图每条边存两次</span>
+
+<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>;           <span class="hljs-comment">// 当前已使用的 a 数组下标</span>
+
+<span class="hljs-comment">// 加一条从 u 到 v 的有向边</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v)</span> </span>{
+    k++;
+    a[k].to = v;
+    a[k].next = pre[u]; <span class="hljs-comment">// 新边的 next 指向 u 原来的&quot;最后一条边&quot;</span>
+    pre[u] = k;         <span class="hljs-comment">// 更新 u 的最后一条边为当前新边</span>
+}
+<span class="hljs-comment">// -----------------------------------------</span>
+
+<span class="hljs-type">int</span> n, m, s;         <span class="hljs-comment">// n:结点数, m:询问数, s:根结点编号</span>
+<span class="hljs-type">int</span> f[N][L];         <span class="hljs-comment">// f[x][j]：结点 x 的 2^j 级祖先</span>
+<span class="hljs-type">int</span> dep[N];          <span class="hljs-comment">// dep[x]：结点 x 的深度（根深度为 1）</span>
+<span class="hljs-type">int</span> lg[N];           <span class="hljs-comment">// lg[i]：⌊log₂(i)⌋，即 i 的二进制位数减 1</span>
+
+<span class="hljs-comment">/**
+ * DFS 预处理深度和一级祖先（f[x][0]）
+ * @param x 当前结点
+ * @param fath 当前结点的父结点
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> fath)</span> </span>{
+    dep[x] = dep[fath] + <span class="hljs-number">1</span>;      <span class="hljs-comment">// 深度 = 父结点深度 + 1</span>
+    f[x][<span class="hljs-number">0</span>] = fath;              <span class="hljs-comment">// 1 级祖先（2^0）就是父结点</span>
+
+    <span class="hljs-comment">// 遍历 x 的所有邻居</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = pre[x]; i != <span class="hljs-number">0</span>; i = a[i].next) {
+        <span class="hljs-type">int</span> to = a[i].to;
+        <span class="hljs-keyword">if</span> (to != fath) {        <span class="hljs-comment">// 不走回头路</span>
+            <span class="hljs-built_in">dfs</span>(to, x);
+        }
+    }
+}
+
+<span class="hljs-comment">/**
+ * 求 x 和 y 的最近公共祖先
+ */</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lca</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-comment">// ===== 第一步：将 x 和 y 提升到同一深度 =====</span>
+    <span class="hljs-comment">// 保证 x 是较深的那个</span>
+    <span class="hljs-keyword">if</span> (dep[x] &lt; dep[y]) <span class="hljs-built_in">swap</span>(x, y);
+
+    <span class="hljs-comment">// 将 x 向上跳 (dep[x] - dep[y]) 步，使 x 和 y 深度相同</span>
+    <span class="hljs-comment">// 利用二进制拆分：dep[x] - dep[y] 这个差值可以拆成若干个 2^j 的和</span>
+    <span class="hljs-comment">// lg[dep[x]-dep[y]] 就是最大的 j 满足 2^j &lt;= 差值</span>
+    <span class="hljs-keyword">while</span> (dep[x] &gt; dep[y]) {
+        <span class="hljs-comment">// 每次跳 2^(lg[差值]) 步，直到深度相等</span>
+        x = f[x][lg[dep[x] - dep[y]]];
+    }
+
+    <span class="hljs-comment">// 如果此时 x == y，说明 y 本来就是 x 的祖先</span>
+    <span class="hljs-keyword">if</span> (x == y) <span class="hljs-keyword">return</span> x;
+
+    <span class="hljs-comment">// ===== 第二步：x 和 y 一起向上跳，直到它们的父结点相同 =====</span>
+    <span class="hljs-comment">// 从高位到低位枚举，保证不跳过头</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = L - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-comment">// 如果跳 2^i 步后，x 和 y 还不相等，说明 LCA 还在上面</span>
+        <span class="hljs-keyword">if</span> (f[x][i] != f[y][i]) {
+            x = f[x][i];   <span class="hljs-comment">// 一起往上跳</span>
+            y = f[y][i];
+        }
+    }
+    <span class="hljs-comment">// 循环结束后，x 和 y 的父结点就是 LCA</span>
+    <span class="hljs-keyword">return</span> f[x][<span class="hljs-number">0</span>];
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 输入 n, m, s</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d%d&quot;</span>, &amp;n, &amp;m, &amp;s);
+
+    <span class="hljs-comment">// 读入 n-1 条边，建无向图</span>
+    <span class="hljs-type">int</span> x, y;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);
+        <span class="hljs-built_in">add</span>(x, y);   <span class="hljs-comment">// 加 x→y</span>
+        <span class="hljs-built_in">add</span>(y, x);   <span class="hljs-comment">// 加 y→x（双向）</span>
+    }
+
+    <span class="hljs-comment">// ===== 第一步：DFS 预处理深度和一级祖先 =====</span>
+    <span class="hljs-comment">// 从根 s 开始，父结点设为 0（不存在）</span>
+    <span class="hljs-built_in">dfs</span>(s, <span class="hljs-number">0</span>);       <span class="hljs-comment">// dep[0] = 0，所以 dep[s] = 1</span>
+
+    <span class="hljs-comment">// ===== 第二步：预处理倍增表 f[x][j] =====</span>
+    <span class="hljs-comment">// f[x][j] = f[ f[x][j-1] ][j-1]</span>
+    <span class="hljs-comment">// 即：x 的 2^j 级祖先 = (x 的 2^(j-1) 级祖先) 的 2^(j-1) 级祖先</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; L; j++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            f[i][j] = f[f[i][j<span class="hljs-number">-1</span>]][j<span class="hljs-number">-1</span>];
+        }
+    }
+
+    <span class="hljs-comment">// ===== 第三步：预计算 log2 向下取整 =====</span>
+    <span class="hljs-comment">// lg[i] = ⌊log₂(i)⌋</span>
+    <span class="hljs-comment">// 用于 lca 函数中快速确定每次跳多少步</span>
+    lg[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        lg[i] = lg[i / <span class="hljs-number">2</span>] + <span class="hljs-number">1</span>;  <span class="hljs-comment">// 等价于 floor(log2(i))</span>
+    }
+
+    <span class="hljs-comment">// ===== 第四步：处理 m 次询问 =====</span>
+    <span class="hljs-keyword">while</span> (m--) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;x, &amp;y);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, <span class="hljs-built_in">lca</span>(x, y));
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2200">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

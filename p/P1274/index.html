@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1274 魔术数字游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="填数字方格的游戏有很多种变化，如下图所示的 方格中，我们要选择从数字 到 来填满这十六个格子( ，其中 ， )。为了让游戏更有挑战性，我们要求下列六项中的每一项所指定的四个格子，其数字累加的和必须为 ： | | | | | | :----------- | :----------- | :----…">
+<link rel="canonical" href="https://zymojblog.top/p/P1274/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1274 魔术数字游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="填数字方格的游戏有很多种变化，如下图所示的 方格中，我们要选择从数字 到 来填满这十六个格子( ，其中 ， )。为了让游戏更有挑战性，我们要求下列六项中的每一项所指定的四个格子，其数字累加的和必须为 ： | | | | | | :----------- | :----------- | :----…">
+<meta property="og:url" content="https://zymojblog.top/p/P1274/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1274 魔术数字游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="填数字方格的游戏有很多种变化，如下图所示的 方格中，我们要选择从数字 到 来填满这十六个格子( ，其中 ， )。为了让游戏更有挑战性，我们要求下列六项中的每一项所指定的四个格子，其数字累加的和必须为 ： | | | | | | :----------- | :----------- | :----…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1274 魔术数字游戏","headline":"P1274 魔术数字游戏 题解","description":"填数字方格的游戏有很多种变化，如下图所示的 方格中，我们要选择从数字 到 来填满这十六个格子( ，其中 ， )。为了让游戏更有挑战性，我们要求下列六项中的每一项所指定的四个格子，其数字累加的和必须为 ： | | | | | | :----------- | :----------- | :----…","url":"https://zymojblog.top/p/P1274/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"搜索","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1274</span></div>
+  <h1 class="seo-title">P1274 魔术数字游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1274 魔术数字游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code></p>
+<h2>题目描述</h2>
+<p>填数字方格的游戏有很多种变化，如下图所示的 $4 \times 4$ 方格中，我们要选择从数字 $1$ 到 $16$ 来填满这十六个格子($A_{i,j}$ ，其中 $i=1 \cdots 4$ ，$j=1 \cdots 4$)。为了让游戏更有挑战性，我们要求下列六项中的每一项所指定的四个格子，其数字累加的和必须为 $34$ ：</p>
+<table>
+<thead>
+<tr>
+<th align="left">$A_{1,1}$</th>
+<th align="left">$A_{1,2}$</th>
+<th align="left">$A_{1,3}$</th>
+<th align="left">$A_{1,4}$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">$A_{2,1}$</td>
+<td align="left">$A_{2,2}$</td>
+<td align="left">$A_{2,3}$</td>
+<td align="left">$A_{2,4}$</td>
+</tr>
+<tr>
+<td align="left">$A_{3,1}$</td>
+<td align="left">$A_{3,2}$</td>
+<td align="left">$A_{3,3}$</td>
+<td align="left">$A_{3,4}$</td>
+</tr>
+<tr>
+<td align="left">$A_{4,1}$</td>
+<td align="left">$A_{4,2}$</td>
+<td align="left">$A_{4,3}$</td>
+<td align="left">$A_{4,4}$</td>
+</tr>
+</tbody></table>
+<ul>
+<li>四个角落上的数字，即 $A_{1,1}+A_{1,4}+A_{4,1}+A_{4,4}=34$ 。</li>
+<li>每个角落上的 $2 \times 2$ 方格中的数字，例如左上角 $A_{1,1}+A_{1,2}+A_{2,1}+A_{2,2}=34$ 。</li>
+<li>最中间的 $2 \times 2$ 方格中的数字，即 $A_{2,2}+A_{2,3}+A_{3,2}+A_{3,3}=34$ 。</li>
+<li>每条水平线上四个格子中的数字，即 $A_{i,1}+A_{i,2}+A_{i,3}+A_{i,4}=34$，其中 $i=1 \cdots 4$ 。</li>
+<li>每条垂直线上四个格子中的数字，即 $A_{1,j}+A_{2,j}+A_{3,j}+A_{4,j}=34$，其中 $j=1 \cdots 4$ 。</li>
+<li>两条对角线上四个格子中的数字，例如左上角到右下角 $A_{1,1}+A_{2,2}+A_{3,3}+A_{4,4}=34$ 。</li>
+<li>右上角到左下角：$A_{1,4}+A_{2,3}+A_{3,2}+A_{4,1}=34$ 。</li>
+</ul>
+<p>特别的，我们会指定把数字 $1$ 先固定在某一格内。</p>
+<h2>输入格式</h2>
+<p>输入只有一行包含两个正数据 $i$ 和 $j$ ，表示第 $i$ 行和第 $j$ 列的格子放数字 $1$。剩下的十五个格子，请按照前述六项条件用数字 $2$ 到 $16$ 来填满。</p>
+<h2>输出格式</h2>
+<p>输出所有合法解，并且依序排好。相邻两组合法解之间用一个空行隔开。</p>
+<p>对于每一组合法解，输出四行，每行四个数，相邻两数之间用一个空格隔开。</p>
+<p>合法解排序的方式，是先从第一行的数字开始比较，每一行数字，由最左边的数字开始比，数字较小的解答必须先输出到文件中。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">13</span> <span class="hljs-number">16</span> 
+<span class="hljs-number">14</span> <span class="hljs-number">15</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> 
+<span class="hljs-number">8</span> <span class="hljs-number">5</span> <span class="hljs-number">12</span> <span class="hljs-number">9</span> 
+<span class="hljs-number">11</span> <span class="hljs-number">10</span> <span class="hljs-number">7</span> <span class="hljs-number">6</span> 
+
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">13</span> <span class="hljs-number">16</span> 
+<span class="hljs-number">14</span> <span class="hljs-number">15</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> 
+<span class="hljs-number">12</span> <span class="hljs-number">9</span> <span class="hljs-number">8</span> <span class="hljs-number">5</span> 
+<span class="hljs-number">7</span> <span class="hljs-number">6</span> <span class="hljs-number">11</span> <span class="hljs-number">10</span> 
+
+……剩余<span class="hljs-number">214</span>组合法解省略```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">4</span>][<span class="hljs-number">4</span>];                     <span class="hljs-comment">// 存储结果，0 表示未填</span>
+<span class="hljs-type">bool</span> used[<span class="hljs-number">17</span>];                   <span class="hljs-comment">// 数字是否已使用</span>
+
+<span class="hljs-comment">// 每条线已填入的数字个数以及当前和</span>
+<span class="hljs-type">int</span> line_cnt[<span class="hljs-number">16</span>];
+<span class="hljs-type">int</span> line_sum[<span class="hljs-number">16</span>];
+
+<span class="hljs-comment">// 记录每个格子所属的线的编号列表</span>
+vector&lt;<span class="hljs-type">int</span>&gt; lines_of_cell[<span class="hljs-number">4</span>][<span class="hljs-number">4</span>];
+
+<span class="hljs-type">bool</span> first_solution = <span class="hljs-literal">true</span>;      <span class="hljs-comment">// 控制输出格式</span>
+
+<span class="hljs-comment">// 输出找到的一组解</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print_solution</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">if</span> (!first_solution) {
+        cout &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;             <span class="hljs-comment">// 解之间用空行隔开</span>
+    }
+    first_solution = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+            cout &lt;&lt; a[i][j];
+            <span class="hljs-keyword">if</span> (j &lt; <span class="hljs-number">3</span>) cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        }
+        cout &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
+    }
+}
+
+<span class="hljs-comment">// 检查放置在 (r,c) 的数字是否违反任何约束</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> lid : lines_of_cell[r][c]) {
+        <span class="hljs-type">int</span> cnt = line_cnt[lid];
+        <span class="hljs-type">int</span> sum = line_sum[lid];
+        <span class="hljs-keyword">if</span> (cnt == <span class="hljs-number">4</span>) {
+            <span class="hljs-keyword">if</span> (sum != <span class="hljs-number">34</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (sum &gt;= <span class="hljs-number">34</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;                <span class="hljs-comment">// 已经超过，后面至少加1</span>
+            <span class="hljs-keyword">if</span> (sum + (<span class="hljs-number">4</span> - cnt) * <span class="hljs-number">16</span> &lt; <span class="hljs-number">34</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 即使全填16也达不到34</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-comment">// 在 (r,c) 放置 num 或 移除 num（由 add 控制）</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, <span class="hljs-type">int</span> num, <span class="hljs-type">bool</span> add)</span> </span>{
+    <span class="hljs-type">int</span> delta = add ? <span class="hljs-number">1</span> : <span class="hljs-number">-1</span>;
+    <span class="hljs-type">int</span> val_delta = add ? num : -num;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> lid : lines_of_cell[r][c]) {
+        line_cnt[lid] += delta;
+        line_sum[lid] += val_delta;
+    }
+}
+
+<span class="hljs-comment">// 深度优先搜索</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c)</span> </span>{
+    <span class="hljs-keyword">if</span> (r == <span class="hljs-number">4</span>) {
+        <span class="hljs-built_in">print_solution</span>();
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-type">int</span> next_r = r, next_c = c + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span> (next_c == <span class="hljs-number">4</span>) {
+        next_r = r + <span class="hljs-number">1</span>;
+        next_c = <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-keyword">if</span> (a[r][c] != <span class="hljs-number">0</span>) {          <span class="hljs-comment">// 已经是固定的 1，跳过</span>
+        <span class="hljs-built_in">dfs</span>(next_r, next_c);
+        <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num = <span class="hljs-number">2</span>; num &lt;= <span class="hljs-number">16</span>; num++) {
+        <span class="hljs-keyword">if</span> (!used[num]) {
+            used[num] = <span class="hljs-literal">true</span>;
+            a[r][c] = num;
+            <span class="hljs-built_in">update</span>(r, c, num, <span class="hljs-literal">true</span>);   <span class="hljs-comment">// 加入</span>
+
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(r, c)) {
+                <span class="hljs-built_in">dfs</span>(next_r, next_c);
+            }
+
+            <span class="hljs-built_in">update</span>(r, c, num, <span class="hljs-literal">false</span>);  <span class="hljs-comment">// 移除</span>
+            a[r][c] = <span class="hljs-number">0</span>;
+            used[num] = <span class="hljs-literal">false</span>;
+        }
+    }
+}
+
+<span class="hljs-comment">// 初始化所有线的格子归属</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init_lines</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 行 0~3</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">4</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">4</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(r);
+    <span class="hljs-comment">// 列 4~7</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">4</span>; c++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">4</span>; r++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">4</span> + c);
+    <span class="hljs-comment">// 主对角线 8</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)
+        lines_of_cell[i][i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">8</span>);
+    <span class="hljs-comment">// 副对角线 9</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++)
+        lines_of_cell[i][<span class="hljs-number">3</span> - i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">9</span>);
+    <span class="hljs-comment">// 左上 2x2 10</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">2</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">2</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">10</span>);
+    <span class="hljs-comment">// 右上 2x2 11</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; <span class="hljs-number">2</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">2</span>; c &lt; <span class="hljs-number">4</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">11</span>);
+    <span class="hljs-comment">// 左下 2x2 12</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">2</span>; r &lt; <span class="hljs-number">4</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>; c &lt; <span class="hljs-number">2</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">12</span>);
+    <span class="hljs-comment">// 右下 2x2 13</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">2</span>; r &lt; <span class="hljs-number">4</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">2</span>; c &lt; <span class="hljs-number">4</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">13</span>);
+    <span class="hljs-comment">// 中心 2x2 14</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">1</span>; r &lt;= <span class="hljs-number">2</span>; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">1</span>; c &lt;= <span class="hljs-number">2</span>; c++)
+            lines_of_cell[r][c].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">14</span>);
+    <span class="hljs-comment">// 四个角 15</span>
+    lines_of_cell[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">15</span>);
+    lines_of_cell[<span class="hljs-number">0</span>][<span class="hljs-number">3</span>].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">15</span>);
+    lines_of_cell[<span class="hljs-number">3</span>][<span class="hljs-number">0</span>].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">15</span>);
+    lines_of_cell[<span class="hljs-number">3</span>][<span class="hljs-number">3</span>].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">15</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> r1, c1;
+    cin &gt;&gt; r1 &gt;&gt; c1;               <span class="hljs-comment">// 输入 1 所在的行列（1‑based）</span>
+    r1--; c1--;                    <span class="hljs-comment">// 转为 0‑based</span>
+
+    <span class="hljs-built_in">init_lines</span>();
+
+    <span class="hljs-comment">// 固定数字 1</span>
+    a[r1][c1] = <span class="hljs-number">1</span>;
+    used[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">update</span>(r1, c1, <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>);      <span class="hljs-comment">// 更新相关线</span>
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1274">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1276 挖地雷的算法 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在一个地图上有 个地窖（ ）,每个地窖中埋有一定数量的地雷。同时，给出地窖之间的连接路径，并规定路径都是单向的,且保证都是小序号地窖指向大序号地窖，也不存在可以从一个地窖出发经过若干地窖后又回到原来地窖的路径。某人可以从任一处开始挖地雷，然后沿着指出的连接往下挖（仅能选择一条路径），当无连接时挖地…">
+<link rel="canonical" href="https://zymojblog.top/p/1276/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1276 挖地雷的算法 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在一个地图上有 个地窖（ ）,每个地窖中埋有一定数量的地雷。同时，给出地窖之间的连接路径，并规定路径都是单向的,且保证都是小序号地窖指向大序号地窖，也不存在可以从一个地窖出发经过若干地窖后又回到原来地窖的路径。某人可以从任一处开始挖地雷，然后沿着指出的连接往下挖（仅能选择一条路径），当无连接时挖地…">
+<meta property="og:url" content="https://zymojblog.top/p/1276/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1276 挖地雷的算法 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在一个地图上有 个地窖（ ）,每个地窖中埋有一定数量的地雷。同时，给出地窖之间的连接路径，并规定路径都是单向的,且保证都是小序号地窖指向大序号地窖，也不存在可以从一个地窖出发经过若干地窖后又回到原来地窖的路径。某人可以从任一处开始挖地雷，然后沿着指出的连接往下挖（仅能选择一条路径），当无连接时挖地…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1276 挖地雷的算法","headline":"1276 挖地雷的算法 题解","description":"在一个地图上有 个地窖（ ）,每个地窖中埋有一定数量的地雷。同时，给出地窖之间的连接路径，并规定路径都是单向的,且保证都是小序号地窖指向大序号地窖，也不存在可以从一个地窖出发经过若干地窖后又回到原来地窖的路径。某人可以从任一处开始挖地雷，然后沿着指出的连接往下挖（仅能选择一条路径），当无连接时挖地…","url":"https://zymojblog.top/p/1276/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1276</span></div>
+  <h1 class="seo-title">1276 挖地雷的算法</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">动态规划-DP</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>1276 - 挖地雷的算法</h1>
+<h2>题目描述</h2>
+<p>在一个地图上有 $n$ 个地窖（ $n \le 200$）,每个地窖中埋有一定数量的地雷。同时，给出地窖之间的连接路径，并规定路径都是单向的,且保证都是小序号地窖指向大序号地窖，也不存在可以从一个地窖出发经过若干地窖后又回到原来地窖的路径。某人可以从任一处开始挖地雷，然后沿着指出的连接往下挖（仅能选择一条路径），当无连接时挖地雷工作结束。设计一个挖地雷的方案，使他能挖到最多的地雷。</p>
+<p>如下图所示：圆圈内的 $1 \ 2 \ 3 \ 4 \ 5 \ 6$，代表 $6$ 个地窖的编号，地窖编号旁边的数字代表这个地窖地雷的数量！</p>
+<h2>输入</h2>
+<p>第一行：地窖的个数；</p>
+<p>第二行为依次每个地窖地雷的个数；</p>
+<p>下面若干行：</p>
+<p>$x_i$ $y_i$ //表示从 $x_i$ 可到 $y_i$，$x_i \lt y_i$。</p>
+<p>最后一行为&quot;$0$ $0$&quot;表示结束。</p>
+<h2>输出</h2>
+<p>第一行输出挖地雷的地窖编号的顺序：$k1-k2-\dots-kv$;</p>
+<p>第二行输出一个整数，代表最多能挖到的地雷的数量。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">/*
+ dp[i]=a[i]+max(dp[j])  j=i+1 ... n  ij有通路
+ dp[n]=a[n]  边界
+ 
+ dp:存储从每个地窖开始最多能挖到的地雷数量
+ a：存储每个地窖的地雷数量
+ r：存储第i号地窖去了哪一号地窖
+ f：存储地窖之间的通路关系 
+*/</span>
+<span class="hljs-type">int</span> n,i,j,a[<span class="hljs-number">210</span>],dp[<span class="hljs-number">210</span>],r[<span class="hljs-number">210</span>];
+<span class="hljs-type">bool</span> f[<span class="hljs-number">210</span>][<span class="hljs-number">210</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-comment">//读入地雷数量 </span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-comment">//读入通路关系</span>
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>){
+        cin&gt;&gt;x&gt;&gt;y;
+        <span class="hljs-keyword">if</span>(x == <span class="hljs-number">0</span> &amp;&amp; y == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>; 
+        f[x][y] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//x y之间有通路 </span>
+    } 
+    
+    <span class="hljs-comment">//边界：从最后一个地窖开始最多能挖到的地雷数就是最后一个地窖的地雷数</span>
+    dp[n] = a[n];
+    <span class="hljs-comment">//index：存放i号地窖应该去哪个地窖</span>
+    <span class="hljs-comment">//count：编号&gt;i的地窖中，有通路的情况下，哪个地窖开始挖到的地雷最多，存地雷数 </span>
+    <span class="hljs-type">int</span> index,count;
+    <span class="hljs-comment">//逆推</span>
+    <span class="hljs-keyword">for</span>(i = n - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">1</span>;i--){
+        <span class="hljs-comment">/*
+          从第i个地窖开始应该去哪个地窖取决于： 
+          从i+1~n之间的地窖中有通路的地窖，从哪个地窖开始挖，得到的地雷最多 
+        */</span> 
+        count = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(j = i + <span class="hljs-number">1</span>;j &lt;= n;j++){
+            <span class="hljs-comment">//如果i j有通路，且从j开始挖到的地雷更多 </span>
+            <span class="hljs-keyword">if</span>(f[i][j] == <span class="hljs-literal">true</span> &amp;&amp; dp[j] &gt; count){
+                index = j;
+                count = dp[j];
+            } 
+        }
+        <span class="hljs-comment">//记录从i开始最多能挖到的地雷数量 </span>
+        dp[i] = a[i] + count; 
+        <span class="hljs-comment">//存储第i号地窖，去了哪个编号的地窖</span>
+        r[i] = index; 
+    } 
+    
+    <span class="hljs-comment">//求从哪个地窖出发：求dp数组最大值的下标</span>
+    index = <span class="hljs-number">1</span>; 
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">2</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">if</span>(dp[i] &gt; dp[index]) index = i;
+    } 
+    <span class="hljs-type">int</span> ans = dp[index];<span class="hljs-comment">//最多地雷数 </span>
+    
+    <span class="hljs-comment">//打印路径</span>
+    <span class="hljs-keyword">while</span>(index != <span class="hljs-number">0</span>){
+        cout&lt;&lt;index;
+        index = r[index];<span class="hljs-comment">//求出index编号的地窖去了哪里</span>
+        <span class="hljs-keyword">if</span>(index != <span class="hljs-number">0</span>) cout&lt;&lt;<span class="hljs-string">&quot;-&quot;</span>; 
+    } 	
+    cout&lt;&lt;endl&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1276">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

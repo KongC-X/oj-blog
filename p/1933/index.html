@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1933 比赛组队 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一场数学团体赛，学校要从 个人中选出 个人组队参赛，这 个人中有 对人本身在校内就是一个团队的，因此在一个团队的同学要么都选，要么都不选。 请你编程选出尽可能和 接近的人数。">
+<link rel="canonical" href="https://zymojblog.top/p/1933/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1933 比赛组队 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一场数学团体赛，学校要从 个人中选出 个人组队参赛，这 个人中有 对人本身在校内就是一个团队的，因此在一个团队的同学要么都选，要么都不选。 请你编程选出尽可能和 接近的人数。">
+<meta property="og:url" content="https://zymojblog.top/p/1933/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1933 比赛组队 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一场数学团体赛，学校要从 个人中选出 个人组队参赛，这 个人中有 对人本身在校内就是一个团队的，因此在一个团队的同学要么都选，要么都不选。 请你编程选出尽可能和 接近的人数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1933 比赛组队","headline":"1933 比赛组队 题解","description":"有一场数学团体赛，学校要从 个人中选出 个人组队参赛，这 个人中有 对人本身在校内就是一个团队的，因此在一个团队的同学要么都选，要么都不选。 请你编程选出尽可能和 接近的人数。","url":"https://zymojblog.top/p/1933/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集、背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1933</span></div>
+  <h1 class="seo-title">1933 比赛组队</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85">背包</a></div>
+  <article class="markdown-body seo-article">
+<h1>1933 - 比赛组队</h1>
+<h2>题目描述</h2>
+<p>有一场数学团体赛，学校要从 $n$ 个人中选出 $m$个人组队参赛，这 $m$ 个人中有 $k$ 对人本身在校内就是一个团队的，因此在一个团队的同学要么都选，要么都不选。</p>
+<p>请你编程选出尽可能和 $m$ 接近的人数。</p>
+<h2>输入</h2>
+<p>第一行，三个正整数 $n,m,k$。</p>
+<p>第 $2$ 至第 $k$ 行,每行 $2$个数，表示在校内就在一个团队的 $2$ 个人的编号（编号为 $1,2, \dots ,n$）。</p>
+<p>数据范围：</p>
+<p>$1≤n,m≤2 \times 10^4$。</p>
+<h2>输出</h2>
+<p>一行，与原来的 $m$ 尽可能接近的选出的人数。</p>
+<p>如果有两种方案与 $m$ 的差的绝对值相等，选较小的一种。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+  思路：
+  1. 用并查集将同一个团队的人合并，同时统计每个团队的人数 p[i]。
+  2. 问题转化为：从这些团队中选若干个，使得总人数尽量接近 m。
+     这是一个 0/1 背包问题，每个团队看作一个物品，其“重量”和“价值”都是团队人数。
+  3. 背包容量设为 2*m，这样可以覆盖所有可能接近 m 的人数（包括超过 m 的情况）。
+  4. 最后在 0 ~ 2*m 中找与 m 差值最小的 dp[i]，差值相同时选较小的那个。
+*/</span>
+
+<span class="hljs-type">int</span> n, m, k;
+<span class="hljs-type">int</span> fa[<span class="hljs-number">20010</span>];           <span class="hljs-comment">// 并查集父节点</span>
+<span class="hljs-type">int</span> p[<span class="hljs-number">20010</span>];            <span class="hljs-comment">// p[i]：以 i 为根的团队人数，非根节点为 0</span>
+<span class="hljs-type">int</span> dp[<span class="hljs-number">40010</span>];           <span class="hljs-comment">// dp[j]：容量为 j 时能获得的最大人数（0/1背包）</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x == fa[x]) <span class="hljs-keyword">return</span> x;
+    <span class="hljs-keyword">return</span> fa[x] = <span class="hljs-built_in">find</span>(fa[x]);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+
+    <span class="hljs-comment">// 初始化并查集，每个人最初都是自己的根，团队人数为 1</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        fa[i] = i;
+        p[i] = <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-type">int</span> x, y;
+    <span class="hljs-comment">// 读入 k 对关系，合并团队</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) {
+        cin &gt;&gt; x &gt;&gt; y;
+        <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+        <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+        <span class="hljs-keyword">if</span> (fx != fy) {
+            fa[fx] = fy;          <span class="hljs-comment">// 将 fx 的根指向 fy</span>
+            p[fy] += p[fx];       <span class="hljs-comment">// 人数累加到新根</span>
+            p[fx] = <span class="hljs-number">0</span>;            <span class="hljs-comment">// 旧根的人数清零</span>
+        }
+    }
+
+    <span class="hljs-comment">// 0/1 背包：每个团队要么全选，要么不选</span>
+    <span class="hljs-comment">// 背包容量设为 2*m，确保能容纳所有可能的人数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (p[i] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;     <span class="hljs-comment">// 跳过非根节点</span>
+        <span class="hljs-type">int</span> sz = p[i];               <span class="hljs-comment">// 当前团队的人数</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">2</span> * m; j &gt;= sz; j--) {
+            <span class="hljs-comment">// 选或不选该团队，取人数较大者</span>
+            dp[j] = <span class="hljs-built_in">max</span>(dp[j], dp[j - sz] + sz);
+        }
+    }
+
+    <span class="hljs-comment">// 寻找最接近 m 的结果</span>
+    <span class="hljs-type">int</span> mi = INT_MAX;   <span class="hljs-comment">// 记录当前最小差值</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 记录最终答案（人数）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">2</span> * m; i++) {
+        <span class="hljs-type">int</span> diff = <span class="hljs-built_in">abs</span>(dp[i] - m);
+        <span class="hljs-comment">// 差值更小，直接更新</span>
+        <span class="hljs-keyword">if</span> (diff &lt; mi) {
+            mi = diff;
+            ans = dp[i];
+        }
+        <span class="hljs-comment">// 差值相等时，选择人数较小的方案</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (diff == mi &amp;&amp; dp[i] &lt; ans) {
+            ans = dp[i];
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1933">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1042 [NOIP 2003 普及组] 乒乓球 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="华华通过以下方式进行分析，首先将比赛每个球的胜负列成一张表，然后分别计算在 分制和 分制下，双方的比赛结果（截至记录末尾）。 比如现在有这么一份记录，（其中 表示华华获得一分， 表示华华对手获得一分）： 在 分制下，此时比赛的结果是华华第一局 比 获胜，第二局 比 获胜，正在进行第三局，当前比分 …">
+<link rel="canonical" href="https://zymojblog.top/p/P1042/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1042 [NOIP 2003 普及组] 乒乓球 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="华华通过以下方式进行分析，首先将比赛每个球的胜负列成一张表，然后分别计算在 分制和 分制下，双方的比赛结果（截至记录末尾）。 比如现在有这么一份记录，（其中 表示华华获得一分， 表示华华对手获得一分）： 在 分制下，此时比赛的结果是华华第一局 比 获胜，第二局 比 获胜，正在进行第三局，当前比分 …">
+<meta property="og:url" content="https://zymojblog.top/p/P1042/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1042 [NOIP 2003 普及组] 乒乓球 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="华华通过以下方式进行分析，首先将比赛每个球的胜负列成一张表，然后分别计算在 分制和 分制下，双方的比赛结果（截至记录末尾）。 比如现在有这么一份记录，（其中 表示华华获得一分， 表示华华对手获得一分）： 在 分制下，此时比赛的结果是华华第一局 比 获胜，第二局 比 获胜，正在进行第三局，当前比分 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1042 [NOIP 2003 普及组] 乒乓球","headline":"P1042 [NOIP 2003 普及组] 乒乓球 题解","description":"华华通过以下方式进行分析，首先将比赛每个球的胜负列成一张表，然后分别计算在 分制和 分制下，双方的比赛结果（截至记录末尾）。 比如现在有这么一份记录，（其中 表示华华获得一分， 表示华华对手获得一分）： 在 分制下，此时比赛的结果是华华第一局 比 获胜，第二局 比 获胜，正在进行第三局，当前比分 …","url":"https://zymojblog.top/p/P1042/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2003、NOIP 普及组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1042</span></div>
+  <h1 class="seo-title">P1042 [NOIP 2003 普及组] 乒乓球</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-1】模拟与高精度</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2003">2003</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1042 [NOIP 2003 普及组] 乒乓球</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-11</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2003</code>、<code>NOIP 普及组</code></p>
+<h2>题目背景</h2>
+<p>国际乒联现在主席沙拉拉自从上任以来就立志于推行一系列改革，以推动乒乓球运动在全球的普及。其中 $11$ 分制改革引起了很大的争议，有一部分球员因为无法适应新规则只能选择退役。华华就是其中一位，他退役之后走上了乒乓球研究工作，意图弄明白 $11$ 分制和 $21$ 分制对选手的不同影响。在开展他的研究之前，他首先需要对他多年比赛的统计数据进行一些分析，所以需要你的帮忙。</p>
+<h2>题目描述</h2>
+<p>华华通过以下方式进行分析，首先将比赛每个球的胜负列成一张表，然后分别计算在 $11$ 分制和 $21$ 分制下，双方的比赛结果（截至记录末尾）。</p>
+<p>比如现在有这么一份记录，（其中 $\texttt W$ 表示华华获得一分，$\texttt L$ 表示华华对手获得一分）：</p>
+<p>$$\texttt{WWWWWWWWWWWWWWWWWWWWWWLW}$$</p>
+<p>在 $11$ 分制下，此时比赛的结果是华华第一局 $11$ 比 $0$ 获胜，第二局 $11$ 比 $0$ 获胜，正在进行第三局，当前比分 $1$ 比 $1$。而在 $21$ 分制下，此时比赛结果是华华第一局 $21$ 比 $0$ 获胜，正在进行第二局，比分 $2$ 比 $1$。如果一局比赛刚开始，则此时比分为 $0$ 比 $0$。直到分差大于或者等于 $2$，才一局结束。</p>
+<p><strong>注意：当一局比赛结束后，下一局立刻开始</strong>。</p>
+<p>你的程序就是要对于一系列比赛信息的输入（$\texttt{WL}$ 形式），输出正确的结果。</p>
+<h2>输入格式</h2>
+<p>每个输入文件包含若干行字符串，字符串由大写的 $\texttt W$ 、 $\texttt L$ 和 $\texttt E$ 组成。其中 $\texttt E$ 表示比赛信息结束，程序应该忽略 $\texttt E$ 之后的所有内容。</p>
+<h2>输出格式</h2>
+<p>输出由两部分组成，每部分有若干行，每一行对应一局比赛的比分（按比赛信息输入顺序）。其中第一部分是 $11$ 分制下的结果，第二部分是 $21$ 分制下的结果，两部分之间由一个空行分隔。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">WWWWWWWWWWWWWWWWWWWW
+WWLWE</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">11</span>:<span class="hljs-number">0</span>
+<span class="hljs-number">11</span>:<span class="hljs-number">0</span>
+<span class="hljs-number">1</span>:<span class="hljs-number">1</span>
+
+<span class="hljs-number">21</span>:<span class="hljs-number">0</span>
+<span class="hljs-number">2</span>:<span class="hljs-number">1</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+string s;
+<span class="hljs-type">char</span> c;
+<span class="hljs-type">int</span> n,a,b;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">work</span><span class="hljs-params">(<span class="hljs-type">int</span> t)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;s.<span class="hljs-built_in">size</span>();i++){
+        <span class="hljs-keyword">if</span>(s[i]==<span class="hljs-string">&#x27;W&#x27;</span>)a++;
+        <span class="hljs-keyword">if</span>(s[i]==<span class="hljs-string">&#x27;L&#x27;</span>)b++;
+        <span class="hljs-keyword">if</span>(s[i]==<span class="hljs-string">&#x27;E&#x27;</span>)<span class="hljs-keyword">break</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">max</span>(a,b)&gt;=t&amp;&amp;<span class="hljs-built_in">abs</span>(a-b)&gt;=<span class="hljs-number">2</span>){
+            cout&lt;&lt;a&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;b&lt;&lt;endl;
+            a=<span class="hljs-number">0</span>,b=<span class="hljs-number">0</span>;
+        }
+    }
+    cout&lt;&lt;a&lt;&lt;<span class="hljs-string">&quot;:&quot;</span>&lt;&lt;b&lt;&lt;endl&lt;&lt;endl;
+    a=b=<span class="hljs-number">0</span>;	
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">while</span>(cin&gt;&gt;c) s+=c;
+    <span class="hljs-built_in">work</span>(<span class="hljs-number">11</span>),<span class="hljs-built_in">work</span>(<span class="hljs-number">21</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1042">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

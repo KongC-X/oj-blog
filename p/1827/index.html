@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1827 小猫吃鱼：fish.cpp 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="原理： 明明家从 号站点出发，开车去旅游，一共要经过 个站点，依次为 、 …… 。 由于明明带上了心爱的小猫，在每个站点都要为小猫提供一条鱼用做美餐（包括 号站点）。 除了 号站点只能吃 号站点买的鱼，其他站点既可以吃当地买的鱼，也可吃之前经过的站点买了存入车载冰箱中的鱼。 但车载冰箱消耗的电能来…">
+<link rel="canonical" href="https://zymojblog.top/p/1827/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1827 小猫吃鱼：fish.cpp 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="原理： 明明家从 号站点出发，开车去旅游，一共要经过 个站点，依次为 、 …… 。 由于明明带上了心爱的小猫，在每个站点都要为小猫提供一条鱼用做美餐（包括 号站点）。 除了 号站点只能吃 号站点买的鱼，其他站点既可以吃当地买的鱼，也可吃之前经过的站点买了存入车载冰箱中的鱼。 但车载冰箱消耗的电能来…">
+<meta property="og:url" content="https://zymojblog.top/p/1827/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1827 小猫吃鱼：fish.cpp 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="原理： 明明家从 号站点出发，开车去旅游，一共要经过 个站点，依次为 、 …… 。 由于明明带上了心爱的小猫，在每个站点都要为小猫提供一条鱼用做美餐（包括 号站点）。 除了 号站点只能吃 号站点买的鱼，其他站点既可以吃当地买的鱼，也可吃之前经过的站点买了存入车载冰箱中的鱼。 但车载冰箱消耗的电能来…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1827 小猫吃鱼：fish.cpp","headline":"1827 小猫吃鱼：fish.cpp 题解","description":"原理： 明明家从 号站点出发，开车去旅游，一共要经过 个站点，依次为 、 …… 。 由于明明带上了心爱的小猫，在每个站点都要为小猫提供一条鱼用做美餐（包括 号站点）。 除了 号站点只能吃 号站点买的鱼，其他站点既可以吃当地买的鱼，也可吃之前经过的站点买了存入车载冰箱中的鱼。 但车载冰箱消耗的电能来…","url":"https://zymojblog.top/p/1827/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、数组问题、递推、贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1827</span></div>
+  <h1 class="seo-title">1827 小猫吃鱼：fish.cpp</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>1827 - 小猫吃鱼：fish.cpp</h1>
+<h2>题目描述</h2>
+<p>原理：</p>
+<p>明明家从 $1$  号站点出发，开车去旅游，一共要经过 $n$  个站点，依次为 $2$ 、$3$ …… $n$ 。</p>
+<p>由于明明带上了心爱的小猫，在每个站点都要为小猫提供一条鱼用做美餐（包括 $1$ 号站点）。</p>
+<p>除了 $1$ 号站点只能吃  $1$  号站点买的鱼，其他站点既可以吃当地买的鱼，也可吃之前经过的站点买了存入车载冰箱中的鱼。</p>
+<p>但车载冰箱消耗的电能来自汽油，所以每条鱼用冰箱保存到下一站的费用与各个站点的汽油价格有关。</p>
+<p>为使问题简化，我们约定：</p>
+<p>（1）车从某站开出时油箱中都是此站点刚加的汽油。</p>
+<p>（2）车载冰箱能容纳一路上需要的所有鱼。</p>
+<p>即：每条鱼的费用既包括购买时的费用，也包括用冰箱保存鱼的费用。</p>
+<p>编程实现：</p>
+<p>为了降低小猫吃鱼的总代价，明明预先上网查到了这 $n$ 个站点的鱼价和汽油价格。并据此算出每个站点买一条鱼的费用以及从该站点到下一站用冰箱保存一条鱼的费用。你能帮明明算出这一路上小猫吃鱼的最小总费用吗？</p>
+<h2>输入</h2>
+<p>第一行：站点数 $n$ ，$1 \lt n \lt100$。</p>
+<p>接下来的 $n$ 行：每行两个以空格分隔的正整数，表示：这一站买一条鱼的费用，以及从这一站把每条鱼保存到下一站的费用，两个费用均为小于 $10000$ 的正整数。</p>
+<h2>输出</h2>
+<p>最小总费用，是一个正整数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+对于每一站而言有2个选择，要么从上一站带鱼，要么从本站买 
+本站吃鱼的最低代价 = min(上一站吃鱼的最低代价+运费,本站买鱼的最低代价) 
+*/</span>
+<span class="hljs-type">int</span> n;
+<span class="hljs-comment">//a代表每一站买鱼的费用（会将其计算为每一站吃鱼的最低代价）</span>
+<span class="hljs-comment">//b代表运费 </span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">110</span>],b[<span class="hljs-number">110</span>]; 
+<span class="hljs-type">int</span> r;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i]&gt;&gt;b[i];
+    } 
+    
+    r = a[<span class="hljs-number">1</span>];<span class="hljs-comment">//第1站吃鱼的费用是确定的</span>
+    <span class="hljs-comment">//推导出第i站吃鱼的最低费用</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= n;i++){
+        a[i] = <span class="hljs-built_in">min</span>(a[i],a[i<span class="hljs-number">-1</span>]+b[i<span class="hljs-number">-1</span>]);
+        r = r + a[i];
+    } 
+    
+    cout&lt;&lt;r;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1827">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

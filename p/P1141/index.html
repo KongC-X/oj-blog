@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1141 01迷宫 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<link rel="canonical" href="https://zymojblog.top/p/P1141/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1141 01迷宫 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<meta property="og:url" content="https://zymojblog.top/p/P1141/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1141 01迷宫 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1141 01迷宫","headline":"P1141 01迷宫 题解","description":"有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。","url":"https://zymojblog.top/p/P1141/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、并查集、广度优先搜索 BFS、深度优先搜索 DFS、队列","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1141</span></div>
+  <h1 class="seo-title">P1141 01迷宫</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E9%98%9F%E5%88%97">队列</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1141 01迷宫</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>并查集</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>队列</code></p>
+<h2>题目描述</h2>
+<p>有一个仅由数字 $0$ 与 $1$ 组成的 $n \times n$ 格迷宫。若你位于一格 $0$ 上，那么你可以移动到相邻 $4$ 格中的某一格 $1$ 上，同样若你位于一格 $1$ 上，那么你可以移动到相邻 $4$ 格中的某一格 $0$ 上。</p>
+<p>你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。</p>
+<h2>输入格式</h2>
+<p>第一行为两个正整数 $n,m$。</p>
+<p>下面 $n$ 行，每行 $n$ 个字符，字符只可能是 $0$ 或者 $1$，字符之间没有空格。</p>
+<p>接下来 $m$ 行，每行两个用空格分隔的正整数 $i,j$，对应了迷宫中第 $i$ 行第 $j$ 列的一个格子，询问从这一格开始能移动到多少格。</p>
+<h2>输出格式</h2>
+<p>$m$ 行，对于每个询问输出相应答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">01</span>
+<span class="hljs-number">10</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">4</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">1005</span>;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXQ = <span class="hljs-number">1000005</span>;          <span class="hljs-comment">// 最大格子数 1000*1000+5</span>
+<span class="hljs-type">int</span> n, m;                          <span class="hljs-comment">// n:迷宫边长，m:询问次数</span>
+<span class="hljs-type">char</span> g[MAXN][MAXN];                <span class="hljs-comment">// 地图，下标从1开始，0/1 字符</span>
+<span class="hljs-type">int</span> v[MAXN][MAXN];                 <span class="hljs-comment">// v[x][y] 表示(x,y)所属连通块编号，0表示未访问</span>
+<span class="hljs-type">int</span> s[MAXQ];                       <span class="hljs-comment">// s[id] 表示编号为 id 的连通块大小</span>
+<span class="hljs-type">int</span> q[MAXQ][<span class="hljs-number">3</span>];                    <span class="hljs-comment">// 队列，q[?][1]存行，q[?][2]存列</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};         <span class="hljs-comment">// 方向数组，1~4：右、下、左、上</span>
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>, g[i] + <span class="hljs-number">1</span>);     <span class="hljs-comment">// 读入一行字符，从下标1开始存放</span>
+    }
+
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// 连通块编号计数器</span>
+    <span class="hljs-comment">// 遍历所有格子，对未访问的格子开始BFS，划分连通块</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; ++j) {
+            <span class="hljs-keyword">if</span> (v[i][j] == <span class="hljs-number">0</span>) {
+                cnt++;                         <span class="hljs-comment">// 新连通块编号</span>
+                <span class="hljs-type">int</span> head = <span class="hljs-number">1</span>, tail = <span class="hljs-number">1</span>;        <span class="hljs-comment">// 队列头尾指针</span>
+                q[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = i;                   <span class="hljs-comment">// 起点入队</span>
+                q[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>] = j;
+                v[i][j] = cnt;                 <span class="hljs-comment">// 标记为当前连通块</span>
+                <span class="hljs-type">int</span> sum = <span class="hljs-number">1</span>;                   <span class="hljs-comment">// 连通块大小</span>
+                <span class="hljs-keyword">while</span> (head &lt;= tail) {
+                    <span class="hljs-type">int</span> x = q[head][<span class="hljs-number">1</span>];
+                    <span class="hljs-type">int</span> y = q[head][<span class="hljs-number">2</span>];
+                    <span class="hljs-comment">// 尝试四个方向</span>
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">1</span>; d &lt;= <span class="hljs-number">4</span>; ++d) {
+                        <span class="hljs-type">int</span> tx = x + fx[d];
+                        <span class="hljs-type">int</span> ty = y + fy[d];
+                        <span class="hljs-comment">// 坐标合法、未访问、且数字与当前格子不同（0/1交替）</span>
+                        <span class="hljs-keyword">if</span> (tx &gt;= <span class="hljs-number">1</span> &amp;&amp; tx &lt;= n &amp;&amp; ty &gt;= <span class="hljs-number">1</span> &amp;&amp; ty &lt;= n &amp;&amp; v[tx][ty] == <span class="hljs-number">0</span> &amp;&amp; g[tx][ty] != g[x][y]) {
+                            tail++;
+                            q[tail][<span class="hljs-number">1</span>] = tx;
+                            q[tail][<span class="hljs-number">2</span>] = ty;
+                            v[tx][ty] = cnt;   <span class="hljs-comment">// 标记</span>
+                            sum++;             <span class="hljs-comment">// 连通块大小加1</span>
+                        }
+                    }
+                    head++;
+                }
+                s[cnt] = sum;                  <span class="hljs-comment">// 记录该连通块大小</span>
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 处理询问</span>
+    <span class="hljs-keyword">while</span> (m--) {
+        <span class="hljs-type">int</span> x, y;
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;x, &amp;y);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, s[v[x][y]]);            <span class="hljs-comment">// 直接输出所属连通块的大小</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1141">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

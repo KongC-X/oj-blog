@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5019 [NOIP 2018 提高组] 铺设道路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="春春是一名道路工程师，负责铺设一条长度为 的道路。 铺设道路的主要工作是填平下陷的地表。整段道路可以看作是 块连续的区域，一开始，第 块区域下陷的深度为 。 春春每天可以选择一段连续区间 ，填充这段区间中的每块区域，让其下陷深度减少 。在选择区间时，需要保证，区间内的每块区域在填充前下陷深度均不为…">
+<link rel="canonical" href="https://zymojblog.top/p/P5019/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5019 [NOIP 2018 提高组] 铺设道路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="春春是一名道路工程师，负责铺设一条长度为 的道路。 铺设道路的主要工作是填平下陷的地表。整段道路可以看作是 块连续的区域，一开始，第 块区域下陷的深度为 。 春春每天可以选择一段连续区间 ，填充这段区间中的每块区域，让其下陷深度减少 。在选择区间时，需要保证，区间内的每块区域在填充前下陷深度均不为…">
+<meta property="og:url" content="https://zymojblog.top/p/P5019/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5019 [NOIP 2018 提高组] 铺设道路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="春春是一名道路工程师，负责铺设一条长度为 的道路。 铺设道路的主要工作是填平下陷的地表。整段道路可以看作是 块连续的区域，一开始，第 块区域下陷的深度为 。 春春每天可以选择一段连续区间 ，填充这段区间中的每块区域，让其下陷深度减少 。在选择区间时，需要保证，区间内的每块区域在填充前下陷深度均不为…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5019 [NOIP 2018 提高组] 铺设道路","headline":"P5019 [NOIP 2018 提高组] 铺设道路 题解","description":"春春是一名道路工程师，负责铺设一条长度为 的道路。 铺设道路的主要工作是填平下陷的地表。整段道路可以看作是 块连续的区域，一开始，第 块区域下陷的深度为 。 春春每天可以选择一段连续区间 ，填充这段区间中的每块区域，让其下陷深度减少 。在选择区间时，需要保证，区间内的每块区域在填充前下陷深度均不为…","url":"https://zymojblog.top/p/P5019/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、2018、NOIP 提高组、差分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5019</span></div>
+  <h1 class="seo-title">P5019 [NOIP 2018 提高组] 铺设道路</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-5】贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2018">2018</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E5%B7%AE%E5%88%86">差分</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5019 [NOIP 2018 提高组] 铺设道路</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2018</code>、<code>NOIP 提高组</code>、<code>差分</code></p>
+<h2>题目背景</h2>
+<p>NOIP2018 提高组 D1T1</p>
+<h2>题目描述</h2>
+<p>春春是一名道路工程师，负责铺设一条长度为 $n$ 的道路。 </p>
+<p>铺设道路的主要工作是填平下陷的地表。整段道路可以看作是 $n$ 块连续的区域，一开始，第 $i$ 块区域下陷的深度为 $d_i$ 。 </p>
+<p>春春每天可以选择一段连续区间 $[L,R]$ ，填充这段区间中的每块区域，让其下陷深度减少 $1$。在选择区间时，需要保证，区间内的每块区域在填充前下陷深度均不为 $0$ 。 </p>
+<p>春春希望你能帮他设计一种方案，可以在最短的时间内将整段道路的下陷深度都变为 $0$ 。</p>
+<h2>输入格式</h2>
+<p>输入文件包含两行，第一行包含一个整数 $n$，表示道路的长度。 第二行包含 $n$ 个整数，相邻两数间用一个空格隔开，第 $i$ 个整数为 $d_i$ 。</p>
+<h2>输出格式</h2>
+<p>输出文件仅包含一个整数，即最少需要多少天才能完成任务。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>   
+<span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> </code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">9</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> d[<span class="hljs-number">100005</span>];  <span class="hljs-comment">// 道路下陷深度</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;  <span class="hljs-comment">// 道路长度</span>
+    cin &gt;&gt; n;
+    
+    <span class="hljs-comment">// 读入深度</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; d[i];
+    }
+    
+    <span class="hljs-comment">// 贪心计算最少天数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = d[<span class="hljs-number">1</span>];  <span class="hljs-comment">// 第一天至少需要d[1]天</span>
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (d[i] &gt; d[i<span class="hljs-number">-1</span>]) {
+            <span class="hljs-comment">// 当前深度大于前一个，需要额外天数</span>
+            ans += d[i] - d[i<span class="hljs-number">-1</span>];
+        }
+        <span class="hljs-comment">// 如果d[i] &lt;= d[i-1]，在填充前一个位置时已经一起填充了</span>
+    }
+    
+    cout &lt;&lt; ans &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5019">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2054 骑马修栅栏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="农民John每年有很多栅栏要修理。他总是骑着马穿过每一个栅栏并修复它破损的地方。 John是一个与其他农民一样懒的人。他讨厌骑马，因此从来不两次经过一个栅栏。你必须编一个程序，读入栅栏网络的描述，并计算出一条修栅栏的路径，使每个栅栏都恰好被经过一次。John能从任何一个顶点(即两个栅栏的交点)开始…">
+<link rel="canonical" href="https://zymojblog.top/p/2054/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2054 骑马修栅栏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="农民John每年有很多栅栏要修理。他总是骑着马穿过每一个栅栏并修复它破损的地方。 John是一个与其他农民一样懒的人。他讨厌骑马，因此从来不两次经过一个栅栏。你必须编一个程序，读入栅栏网络的描述，并计算出一条修栅栏的路径，使每个栅栏都恰好被经过一次。John能从任何一个顶点(即两个栅栏的交点)开始…">
+<meta property="og:url" content="https://zymojblog.top/p/2054/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2054 骑马修栅栏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="农民John每年有很多栅栏要修理。他总是骑着马穿过每一个栅栏并修复它破损的地方。 John是一个与其他农民一样懒的人。他讨厌骑马，因此从来不两次经过一个栅栏。你必须编一个程序，读入栅栏网络的描述，并计算出一条修栅栏的路径，使每个栅栏都恰好被经过一次。John能从任何一个顶点(即两个栅栏的交点)开始…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2054 骑马修栅栏","headline":"2054 骑马修栅栏 题解","description":"农民John每年有很多栅栏要修理。他总是骑着马穿过每一个栅栏并修复它破损的地方。 John是一个与其他农民一样懒的人。他讨厌骑马，因此从来不两次经过一个栅栏。你必须编一个程序，读入栅栏网络的描述，并计算出一条修栅栏的路径，使每个栅栏都恰好被经过一次。John能从任何一个顶点(即两个栅栏的交点)开始…","url":"https://zymojblog.top/p/2054/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论、欧拉路","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2054</span></div>
+  <h1 class="seo-title">2054 骑马修栅栏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/%E6%AC%A7%E6%8B%89%E8%B7%AF">欧拉路</a></div>
+  <article class="markdown-body seo-article">
+<h1>2054 - 骑马修栅栏</h1>
+<h2>题目描述</h2>
+<p>农民John每年有很多栅栏要修理。他总是骑着马穿过每一个栅栏并修复它破损的地方。 </p>
+<p>John是一个与其他农民一样懒的人。他讨厌骑马，因此从来不两次经过一个栅栏。你必须编一个程序，读入栅栏网络的描述，并计算出一条修栅栏的路径，使每个栅栏都恰好被经过一次。John能从任何一个顶点(即两个栅栏的交点)开始骑马，在任意一个顶点结束。 </p>
+<p>每一个栅栏连接两个顶点，顶点用1到500标号(虽然有的农场并没有500个顶点)。<strong>一个顶点上可连接任意多(&gt;=1)个栅栏</strong>。所有栅栏都是连通的(也就是你可以从任意一个栅栏到达另外的所有栅栏)。 </p>
+<p>你的程序必须输出骑马的路径(用路上依次经过的顶点号码表示)。我们如果把输出的路径看成是一个500进制的数，那么当存在多组解的情况下，输出500进制表示法中最小的一个 (也就是输出第一个数较小的，如果还有多组解，输出第二个数较小的，等等)。 输入数据保证至少有一个解。</p>
+<h2>输入</h2>
+<p>第1行: 一个整数F(1 &lt;= F &lt;= 1024)，表示栅栏的数目  </p>
+<p>第2到F+1行: 每行两个整数i, j(1 &lt;= i,j &lt;= 500)表示这条栅栏连接i与j号顶点。</p>
+<h2>输出</h2>
+<p>输出应当有F+1行，每行一个整数，依次表示路径经过的顶点号。注意数据可能有多组解，但是只有上面题目要求的那一组解是认为正确的。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">510</span>;
+<span class="hljs-type">int</span> a[N][N],x,y,n;
+<span class="hljs-type">int</span> path[<span class="hljs-number">1030</span>];<span class="hljs-comment">//存储走过的点</span>
+<span class="hljs-type">int</span> k;<span class="hljs-comment">//路径数组下标 </span>
+<span class="hljs-type">int</span> d[N];<span class="hljs-comment">//存放每个点的度 </span>
+<span class="hljs-type">int</span> mi = INT_MAX,ma = INT_MIN;<span class="hljs-comment">//存放x和y的最小和最大值 </span>
+
+<span class="hljs-comment">//深搜求欧拉路 </span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> s)</span></span>{
+    <span class="hljs-comment">//从小到大尝试邻接点</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = mi;i &lt;= ma;i++){
+        <span class="hljs-comment">//如果有路径可达</span>
+        <span class="hljs-keyword">if</span>(a[s][i] &gt; <span class="hljs-number">0</span>){
+            <span class="hljs-comment">//删除该边 </span>
+            a[s][i]--;
+            a[i][s]--;
+            <span class="hljs-built_in">dfs</span>(i);
+        }  
+    }
+    
+    <span class="hljs-comment">//回溯时，该点没有任何其他的边可以尝试了，存储点</span>
+    <span class="hljs-comment">//第1次走过的路径不一定是正确的欧拉路径，回来时的路径是正确的 </span>
+    path[k] = s;
+    k++;	 
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+     cin&gt;&gt;n;
+     <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+     	cin&gt;&gt;x&gt;&gt;y;
+     	<span class="hljs-comment">//邻接矩阵存储</span>
+        a[x][y]++;
+        a[y][x]++;
+        d[x]++;<span class="hljs-comment">//点的度增加 </span>
+        d[y]++; 
+        mi = <span class="hljs-built_in">min</span>(mi,<span class="hljs-built_in">min</span>(x,y));
+        ma = <span class="hljs-built_in">max</span>(ma,<span class="hljs-built_in">max</span>(x,y));
+     } 
+     
+     <span class="hljs-type">int</span> s = mi;<span class="hljs-comment">//没有奇点从第1个点开始 </span>
+     <span class="hljs-comment">//求第1个奇点</span>
+     <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = mi;i &lt;= ma;i++){
+     	<span class="hljs-keyword">if</span>(d[i]%<span class="hljs-number">2</span>==<span class="hljs-number">1</span>){
+     		s = i;<span class="hljs-comment">//从编号最小的点开始遍历 </span>
+     		<span class="hljs-keyword">break</span>;
+         }
+     } 
+     
+     <span class="hljs-built_in">dfs</span>(s);<span class="hljs-comment">//从s点开始深搜 </span>
+     
+     <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = k - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--){
+     	cout&lt;&lt;path[i]&lt;&lt;endl;
+     } 
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2054">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

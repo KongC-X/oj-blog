@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2171 树的高度（2） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一棵树有 个结点，结点编号为 ，其中 号结点为根结点，根结点的深度为 ，请问每个结点的父结点是谁，每个结点的深度是多少。">
+<link rel="canonical" href="https://zymojblog.top/p/2171/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2171 树的高度（2） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一棵树有 个结点，结点编号为 ，其中 号结点为根结点，根结点的深度为 ，请问每个结点的父结点是谁，每个结点的深度是多少。">
+<meta property="og:url" content="https://zymojblog.top/p/2171/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2171 树的高度（2） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一棵树有 个结点，结点编号为 ，其中 号结点为根结点，根结点的深度为 ，请问每个结点的父结点是谁，每个结点的深度是多少。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2171 树的高度（2）","headline":"2171 树的高度（2） 题解","description":"一棵树有 个结点，结点编号为 ，其中 号结点为根结点，根结点的深度为 ，请问每个结点的父结点是谁，每个结点的深度是多少。","url":"https://zymojblog.top/p/2171/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2171</span></div>
+  <h1 class="seo-title">2171 树的高度（2）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91">树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2171 - 树的高度（2）</h1>
+<h2>题目描述</h2>
+<p>一棵树有 $n$ 个结点，结点编号为 $1$~$n$，其中 $1$ 号结点为根结点，根结点的深度为 $1$，请问每个结点的父结点是谁，每个结点的深度是多少。</p>
+<h2>输入</h2>
+<p>第一行是整数 $n$，表示结点数。（$1≤n≤20$）</p>
+<p>后面若干行，每行两个整数$a$ $b$，读入数据<strong>不保证结点a是结点b的父结点</strong>。</p>
+<p>本题测试数据保证所有结点能构建为一棵树。</p>
+<h2>输出</h2>
+<p>输出有 $n-1$ 行（根结点不需要输出），每行输出 $3$ 个整数；</p>
+<p>第 $i$ 行输出：结点编号 $i+1$，编号为 $i+1$ 的结点的父结点的编号，该结点的深度（三个整数之间用空格隔开）。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">30</span>;
+<span class="hljs-comment">//fa：父结点 a：邻接矩阵 dep：深度 </span>
+<span class="hljs-type">int</span> fa[N],a[N][N],dep[N];
+<span class="hljs-type">int</span> n;
+
+<span class="hljs-comment">//深搜求：每个结点的父结点编号、深度</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> f)</span></span>{
+    fa[x] = f;<span class="hljs-comment">//标记元素的父</span>
+    dep[x] = dep[f] + <span class="hljs-number">1</span>;<span class="hljs-comment">//求深度</span>
+    <span class="hljs-comment">//讨论x点能去的点</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-comment">//有边 &amp;&amp; 要去的点不是父结点</span>
+        <span class="hljs-keyword">if</span>(a[x][i]==<span class="hljs-number">1</span>&amp;&amp;i!=fa[x]){
+            <span class="hljs-comment">//i的父是x，继续深搜</span>
+            <span class="hljs-built_in">dfs</span>(i,x);
+        } 
+    } 
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n - <span class="hljs-number">1</span>;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        <span class="hljs-comment">//按无向图来建边 </span>
+        a[x][y] = <span class="hljs-number">1</span>;
+        a[y][x] = <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-comment">//根结点为1</span>
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);
+    
+    <span class="hljs-comment">//输出结果</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= n;i++){
+        cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;fa[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;dep[i]&lt;&lt;endl;
+    } 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2171">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

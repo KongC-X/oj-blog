@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1470 校门外的树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="某校大门外长度为 的马路上有一排树，每两棵相邻的树之间的间隔都是 米。我们可以把马路看成一个数轴，马路的一端在数轴 的位置，另一端在 的位置；数轴上的每个整数点，即 ，都种有一棵树。 由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都…">
+<link rel="canonical" href="https://zymojblog.top/p/1470/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1470 校门外的树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="某校大门外长度为 的马路上有一排树，每两棵相邻的树之间的间隔都是 米。我们可以把马路看成一个数轴，马路的一端在数轴 的位置，另一端在 的位置；数轴上的每个整数点，即 ，都种有一棵树。 由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都…">
+<meta property="og:url" content="https://zymojblog.top/p/1470/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1470 校门外的树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="某校大门外长度为 的马路上有一排树，每两棵相邻的树之间的间隔都是 米。我们可以把马路看成一个数轴，马路的一端在数轴 的位置，另一端在 的位置；数轴上的每个整数点，即 ，都种有一棵树。 由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1470 校门外的树","headline":"1470 校门外的树 题解","description":"某校大门外长度为 的马路上有一排树，每两棵相邻的树之间的间隔都是 米。我们可以把马路看成一个数轴，马路的一端在数轴 的位置，另一端在 的位置；数轴上的每个整数点，即 ，都种有一棵树。 由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都…","url":"https://zymojblog.top/p/1470/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"noip复赛、数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1470</span></div>
+  <h1 class="seo-title">1470 校门外的树</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1470 - 校门外的树</h1>
+<h2>题目描述</h2>
+<p>某校大门外长度为 $l$ 的马路上有一排树，每两棵相邻的树之间的间隔都是 $1$ 米。我们可以把马路看成一个数轴，马路的一端在数轴 $0$ 的位置，另一端在 $l$ 的位置；数轴上的每个整数点，即 $0,1,2,\dots,l$，都种有一棵树。</p>
+<p>由于马路上有一些区域要用来建地铁。这些区域用它们在数轴上的起始点和终止点表示。已知任一区域的起始点和终止点的坐标都是整数，区域之间可能有重合的部分。现在要把这些区域中的树（包括区域端点处的两棵树）移走。你的任务是计算将这些树都移走后，马路上还有多少棵树。</p>
+<p>比如：$l=5$，那么马路上默认有 $6$ 棵树，分别种在$0,1,2,3,4,5$ 这几个位置，现要求将 $1$-$3$ 及 $2$-$4$ 之间的树移走，那么需要移走 $4$ 棵树，还剩 $2$ 棵树。</p>
+<h2>输入</h2>
+<p>第一行有两个整数，分别表示马路的长度 $l$ 和区域的数目 $m$；</p>
+<p>接下来 $m$ 行，每行两个整数 $u, v$，表示一个区域的起始点和终止点的坐标。</p>
+<h2>输出</h2>
+<p>输出一行一个整数，表示将这些树都移走后，马路上剩余的树木数量。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">10010</span>],l,m,c;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;l&gt;&gt;m;
+    <span class="hljs-comment">//将数组所有值都标记为1</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt;= l;i++){
+        a[i] = <span class="hljs-number">1</span>;
+    } 
+    
+    <span class="hljs-comment">//m次挖树操作</span>
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        <span class="hljs-comment">//将x~y之间的值标记为0</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = x;j &lt;= y;j++){
+            a[j] = <span class="hljs-number">0</span>;
+        } 
+    } 
+    
+    <span class="hljs-comment">//统计长度为l的马路上，剩余的树有几棵</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt;= l;i++){
+        <span class="hljs-keyword">if</span>(a[i] == <span class="hljs-number">1</span>) c++;
+    } 
+    
+    cout&lt;&lt;c;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1470">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

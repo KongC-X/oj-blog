@@ -1,0 +1,34 @@
+# Cloudflare Pages 响应头配置
+# 生产环境（静态托管）没有 Node 服务，安全头在这里统一下发
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+# 字体与第三方库：文件名带版本语义，可长缓存
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# CSS / JS 由 index.html 的 ?v= 控制版本，可缓存 7 天
+/css/*
+  Cache-Control: public, max-age=604800
+
+/js/*
+  Cache-Control: public, max-age=604800
+
+# 数据与题解正文：靠 ETag 协商缓存，保证更新后立刻可见
+/data/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/solutions/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 预渲染静态页：同样走协商缓存
+/p/*
+  Cache-Control: public, max-age=0, must-revalidate

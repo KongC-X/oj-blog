@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4194 [海淀区小学组 2023] 生日 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="陶陶过生日，有 个小伙伴站成环形为他庆祝，并将他们标号为 ，他们对应的身高为 。求如何排序，能让任意相邻的两个小伙伴之间身高差的绝对值最大值最小。">
+<link rel="canonical" href="https://zymojblog.top/p/B4194/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4194 [海淀区小学组 2023] 生日 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="陶陶过生日，有 个小伙伴站成环形为他庆祝，并将他们标号为 ，他们对应的身高为 。求如何排序，能让任意相邻的两个小伙伴之间身高差的绝对值最大值最小。">
+<meta property="og:url" content="https://zymojblog.top/p/B4194/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4194 [海淀区小学组 2023] 生日 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="陶陶过生日，有 个小伙伴站成环形为他庆祝，并将他们标号为 ，他们对应的身高为 。求如何排序，能让任意相邻的两个小伙伴之间身高差的绝对值最大值最小。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4194 [海淀区小学组 2023] 生日","headline":"B4194 [海淀区小学组 2023] 生日 题解","description":"陶陶过生日，有 个小伙伴站成环形为他庆祝，并将他们标号为 ，他们对应的身高为 。求如何排序，能让任意相邻的两个小伙伴之间身高差的绝对值最大值最小。","url":"https://zymojblog.top/p/B4194/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2023、北京、Special Judge、排序、科创活动、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4194</span></div>
+  <h1 class="seo-title">B4194 [海淀区小学组 2023] 生日</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E5%8C%97%E4%BA%AC">北京</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4194 [海淀区小学组 2023] 生日</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>北京</code>、<code>Special Judge</code>、<code>排序</code>、<code>科创活动</code>、<code>小学活动</code></p>
+<h2>题目背景</h2>
+<p>2023 年海淀区中小学生信息学竞赛小学组复赛题目，数据为洛谷自造。</p>
+<p>本题数据范围较官方赛事有所修改，保证 $n\leq 5\times 10^{\color{red}6}$，避免不必要的过大的输入输出量。尽管如此，本题最大的单测试点输入输出仍然可达 100MB 左右，请优化你的输入输出速度。</p>
+<h2>题目描述</h2>
+<p>陶陶过生日，有 $ n $ 个小伙伴站成环形为他庆祝，并将他们标号为 $ 1 \ldots n $，他们对应的身高为 $ a_1 \ldots a_n $。求如何排序，能让任意相邻的两个小伙伴之间身高差的绝对值最大值最小。</p>
+<h2>输入格式</h2>
+<p>第一行仅有一个整数 $ n $，表示参加生日聚会的小伙伴人数。</p>
+<p>第二行有 $ n $ 个整数 $ a_1, a_2, \ldots, a_n $，$ a_i $ 表示第 $ i $ 位小伙伴的身高。</p>
+<h2>输出格式</h2>
+<p>输出 $ n $ 个整数，表示排序后的小伙伴的身高。如果有多种方案，输出一种即可。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1 2 3 2 1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">30</span> <span class="hljs-number">10</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>10 20 30```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">5000010</span>];                        <span class="hljs-comment">// 存放身高</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;a[i]);
+    }
+
+    <span class="hljs-comment">// 从小到大排序</span>
+    <span class="hljs-built_in">sort</span>(a, a + n);
+
+    <span class="hljs-comment">/*
+      思路（贪心构造）：
+      排序后，先将所有奇数下标的元素（0,2,4,...）按升序输出，
+      再将偶数下标的元素（...,5,3,1）按降序输出。
+      这样得到的环形序列，相邻元素的最大差值为 max(a[i+2] - a[i])，
+      这是理论上的最小可能值，因此满足“最大相邻差最小”的要求。
+      注意：环形排列，从任意位置开始读都可以，我们按此顺序输出即是合法方案。
+    */</span>
+
+    <span class="hljs-comment">// 先输出所有奇数位置（0,2,4,...）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i += <span class="hljs-number">2</span>) {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, a[i]);
+    }
+    <span class="hljs-comment">// 再输出所有偶数位置（最大的那个偶数开始降序）</span>
+    <span class="hljs-comment">// 如果 n 是奇数，最后一个奇数下标是 n-1，偶数从 n-2 开始降序</span>
+    <span class="hljs-comment">// 如果 n 是偶数，最后一个奇数下标是 n-2，偶数从 n-1 开始降序</span>
+    <span class="hljs-type">int</span> start = (n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) ? (n - <span class="hljs-number">1</span>) : (n - <span class="hljs-number">2</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &gt;= <span class="hljs-number">0</span>; i -= <span class="hljs-number">2</span>) {
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>, a[i]);
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4194">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1439 素数环2 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="将 这 个数字首尾相连，形成一个圆环，要求圆环上任意两个相邻的数字之和都是一个素数，请编程输出符合条件的素数环。">
+<link rel="canonical" href="https://zymojblog.top/p/1439/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1439 素数环2 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="将 这 个数字首尾相连，形成一个圆环，要求圆环上任意两个相邻的数字之和都是一个素数，请编程输出符合条件的素数环。">
+<meta property="og:url" content="https://zymojblog.top/p/1439/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1439 素数环2 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="将 这 个数字首尾相连，形成一个圆环，要求圆环上任意两个相邻的数字之和都是一个素数，请编程输出符合条件的素数环。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1439 素数环2","headline":"1439 素数环2 题解","description":"将 这 个数字首尾相连，形成一个圆环，要求圆环上任意两个相邻的数字之和都是一个素数，请编程输出符合条件的素数环。","url":"https://zymojblog.top/p/1439/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"回溯、排列组合","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1439</span></div>
+  <h1 class="seo-title">1439 素数环2</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%9E%E6%BA%AF">回溯</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88">排列组合</a></div>
+  <article class="markdown-body seo-article">
+<h1>1439 - 素数环2</h1>
+<h2>题目描述</h2>
+<p>将 $1 \sim n$ 这 $n$ 个数字首尾相连，形成一个圆环，要求圆环上任意两个相邻的数字之和都是一个素数，请编程输出符合条件的素数环。</p>
+<h2>输入</h2>
+<p>输入数据仅一行，包含一个正整数 $n$（$n \le 20$）。</p>
+<h2>输出</h2>
+<p>输出数据最多包括 $10$ 行，每行由 $n$ 个整数组成，表示前十个符合条件的素数环（不足十个时全部输出）。</p>
+<p>所有素数环第一个元素必须是 $1$ ，且按照从小到大的顺序排列。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,c;
+<span class="hljs-type">int</span> a[<span class="hljs-number">30</span>];
+<span class="hljs-type">bool</span> f[<span class="hljs-number">30</span>];
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span>(x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>; i*i&lt;=x; i++) {
+        <span class="hljs-keyword">if</span>(x%i==<span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span> </span>{
+    c++;
+    <span class="hljs-keyword">if</span>(c &gt; <span class="hljs-number">10</span>) {
+        <span class="hljs-comment">// 直接结束整个程序</span>
+        <span class="hljs-built_in">exit</span>(<span class="hljs-number">0</span>);
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        cout &lt;&lt; a[i] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    }
+    cout &lt;&lt; a[n] &lt;&lt; endl;
+}
+
+
+<span class="hljs-comment">// 深度优先搜索函数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> </span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-keyword">if</span>(f[i] == <span class="hljs-literal">false</span> &amp;&amp; <span class="hljs-built_in">isPrime</span>(a[k<span class="hljs-number">-1</span>] + i)) {
+            a[k] = i;
+            f[i] = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">if</span>(k == n &amp;&amp; <span class="hljs-built_in">isPrime</span>(a[n] + a[<span class="hljs-number">1</span>])) {
+                <span class="hljs-built_in">print</span>();
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-built_in">dfs</span>(k+<span class="hljs-number">1</span>);
+            }
+            f[i] = <span class="hljs-literal">false</span>;
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">if</span>(n % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    a[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    f[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">2</span>);
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1439">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

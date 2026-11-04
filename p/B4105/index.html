@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4105 [CSP-X2024 山东] 消灭怪兽 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="怪兽入侵了地球！ 为了抵抗入侵，人类设计出了按顺序排列好的 件武器，其中第 件武器的攻击力为 ，可以造成 的伤害。 武器已经排列好了，因此不能改变顺序。某件武器可以单独攻击，也可以与相邻的武器进行组合攻击。具体来说，每次你可以把相邻的若干个（可以为 个，即不进行组合）连续的武器组合起来进行攻击，则…">
+<link rel="canonical" href="https://zymojblog.top/p/B4105/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4105 [CSP-X2024 山东] 消灭怪兽 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="怪兽入侵了地球！ 为了抵抗入侵，人类设计出了按顺序排列好的 件武器，其中第 件武器的攻击力为 ，可以造成 的伤害。 武器已经排列好了，因此不能改变顺序。某件武器可以单独攻击，也可以与相邻的武器进行组合攻击。具体来说，每次你可以把相邻的若干个（可以为 个，即不进行组合）连续的武器组合起来进行攻击，则…">
+<meta property="og:url" content="https://zymojblog.top/p/B4105/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4105 [CSP-X2024 山东] 消灭怪兽 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="怪兽入侵了地球！ 为了抵抗入侵，人类设计出了按顺序排列好的 件武器，其中第 件武器的攻击力为 ，可以造成 的伤害。 武器已经排列好了，因此不能改变顺序。某件武器可以单独攻击，也可以与相邻的武器进行组合攻击。具体来说，每次你可以把相邻的若干个（可以为 个，即不进行组合）连续的武器组合起来进行攻击，则…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4105 [CSP-X2024 山东] 消灭怪兽","headline":"B4105 [CSP-X2024 山东] 消灭怪兽 题解","description":"怪兽入侵了地球！ 为了抵抗入侵，人类设计出了按顺序排列好的 件武器，其中第 件武器的攻击力为 ，可以造成 的伤害。 武器已经排列好了，因此不能改变顺序。某件武器可以单独攻击，也可以与相邻的武器进行组合攻击。具体来说，每次你可以把相邻的若干个（可以为 个，即不进行组合）连续的武器组合起来进行攻击，则…","url":"https://zymojblog.top/p/B4105/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2024、山东、CSP-X 小学组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4105</span></div>
+  <h1 class="seo-title">B4105 [CSP-X2024 山东] 消灭怪兽</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E5%B1%B1%E4%B8%9C">山东</a><a class="seo-tag" href="/#/tag/CSP-X%20%E5%B0%8F%E5%AD%A6%E7%BB%84">CSP-X 小学组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4105 [CSP-X2024 山东] 消灭怪兽</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2024</code>、<code>山东</code>、<code>CSP-X 小学组</code></p>
+<h2>题目描述</h2>
+<p>怪兽入侵了地球！</p>
+<p>为了抵抗入侵，人类设计出了按顺序排列好的 $n$ 件武器，其中第 $i$ 件武器的攻击力为 $a_i$，可以造成 $a_i$ 的伤害。</p>
+<p>武器已经排列好了，因此不能改变顺序。某件武器可以单独攻击，也可以与相邻的武器进行组合攻击。具体来说，每次你可以把相邻的若干个（可以为 $1$ 个，即不进行组合）连续的武器组合起来进行攻击，则攻击力为这些连续的武器攻击力之和。</p>
+<p>来自外星的怪兽拥有无敌护盾，不会受到任何伤害。</p>
+<p>但是人类在交战过程中发现怪兽有个致命的弱点：每次当受到 $k$ 的倍数的伤害时，怪兽的无敌护盾就能被打破。</p>
+<p>请你帮助人类求出有多少种组合武器的方案，使得造成的伤害能打破怪兽的无敌护盾。</p>
+<h2>输入格式</h2>
+<p>第一行两个正整数 $n, k$ 如题所述；</p>
+<p>第二行为 $n$ 个正整数，其中第 $i$ 个数 $a_i$ 表示第 $i$ 件武器的攻击力。</p>
+<h2>输出格式</h2>
+<p>一行一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">11</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">16</span> <span class="hljs-number">19</span> <span class="hljs-number">21</span> <span class="hljs-number">25</span> <span class="hljs-number">30</span> <span class="hljs-number">43</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>7```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>21```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXK = <span class="hljs-number">1000005</span>;
+<span class="hljs-type">int</span> cnt[MAXK];        <span class="hljs-comment">// cnt[i] 表示前缀和模 k 余 i 的出现次数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * ======================================================================
+     * 题目：B4105 [CSP-X2024 山东] 消灭怪兽
+     * 算法：前缀和 + 同余计数
+     * ======================================================================
+     *
+     * 核心思路（再讲一遍，这次更直观）：
+     * 1. 前缀和 pre[i] = a[1]+...+a[i]，pre[0]=0。
+     *    区间 [L, R] 的和 = pre[R] - pre[L-1]。
+     *    要使区间和能被 k 整除，只需要 pre[R] % k == pre[L-1] % k。
+     *    如果两个前缀和除以 k 的余数相同，那么它们之间的区间和一定能被 k 整除。
+     *
+     * 2. 所以，我们只需要统计每个余数出现了多少次。
+     *    相同余数的任意两个位置之间，就夹着一个合法区间。
+     *
+     * 3. cnt[0] = 1 是因为 pre[0] = 0 也要参与配对。
+     *
+     * 4. 统计答案：
+     *    对于每个余数 i（i 的范围是 0 ~ k-1），
+     *    如果它出现了 cnt[i] 次，那么从这 cnt[i] 个位置中任选 2 个，
+     *    都能形成一个合法区间。
+     *    组合数 = cnt[i] * (cnt[i] - 1) / 2。
+     *    把所有 i 的贡献加起来，就是答案。
+     *    循环 0 ~ k-1 是因为余数范围只有这么大，遍历所有可能，
+     *    不会漏掉任何一个余数，也不会越界访问。
+     *
+     * 5. 时间复杂度：O(n + k)，空间 O(k)。
+     * ======================================================================
+     */</span>
+    <span class="hljs-type">int</span> n, k;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;n, &amp;k);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;
+    cnt[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;        <span class="hljs-comment">// 空前缀 pre[0] 的余数为 0</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> x;
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lld&quot;</span>, &amp;x);
+        sum = (sum + x) % k;
+        cnt[sum]++;
+    }
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 遍历所有可能的余数 0 ~ k-1</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        <span class="hljs-comment">// 如果 cnt[i] &gt;= 2，就有 cnt[i]*(cnt[i]-1)/2 个合法区间</span>
+        <span class="hljs-comment">// 数学里的组合数公式，表示“从 cnt[i] 个东西里，任选 2 个，有多少种选法”。</span>
+        ans += <span class="hljs-number">1LL</span> * cnt[i] * (cnt[i] - <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lld\n&quot;</span>, ans);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4105">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

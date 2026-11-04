@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10098 [ROIR 2023] 地铁建设 (Day 2) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="最少需要提供多大的电压（电压需要是整数），才能使所有发动机的总功率大于或等于 ？">
+<link rel="canonical" href="https://zymojblog.top/p/P10098/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10098 [ROIR 2023] 地铁建设 (Day 2) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="最少需要提供多大的电压（电压需要是整数），才能使所有发动机的总功率大于或等于 ？">
+<meta property="og:url" content="https://zymojblog.top/p/P10098/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10098 [ROIR 2023] 地铁建设 (Day 2) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="最少需要提供多大的电压（电压需要是整数），才能使所有发动机的总功率大于或等于 ？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10098 [ROIR 2023] 地铁建设 (Day 2)","headline":"P10098 [ROIR 2023] 地铁建设 (Day 2) 题解","description":"最少需要提供多大的电压（电压需要是整数），才能使所有发动机的总功率大于或等于 ？","url":"https://zymojblog.top/p/P10098/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、二分、2023、Special Judge、枚举、ROIR（俄罗斯）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10098</span></div>
+  <h1 class="seo-title">P10098 [ROIR 2023] 地铁建设 (Day 2)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/ROIR%EF%BC%88%E4%BF%84%E7%BD%97%E6%96%AF%EF%BC%89">ROIR（俄罗斯）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10098 [ROIR 2023] 地铁建设 (Day 2)</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>二分</code>、<code>2023</code>、<code>Special Judge</code>、<code>枚举</code>、<code>ROIR（俄罗斯）</code></p>
+<h2>题目背景</h2>
+<p>翻译自 <a href="https://neerc.ifmo.ru/school/archive/2022-2023/ru-olymp-regional-2023-day2.pdf">ROIR 2023 D2T1</a>。</p>
+<p>用于铺设地铁隧道的盾构机有 $n$ 个发动机。所有发动机是并联的，所以所有发动机两端的电压都相同。</p>
+<p>每个发动机有两种模式，假设所有发动机接收到的电压都为 $x$，则当 $x\le z_i$ 时第 $i$ 个发动机在第一模式下工作，否则它在第二模式下工作。</p>
+<p>第 $i$ 个发动机在第一模式下的单位电流为 $a_i$，在第二模式下的单位电流为 $b_i$。所以，根据 $P=UI$，当发动机处于第一模式时，每增加 $1$ 单位电压，其功率增加 $a_i$ 单位；当发动机处于第二模式时，每增加 $1$ 单位电压，其功率增加 $b_i$ 单位。换句话说，当电压为 $x$ 单位电压，如果第 $i$ 个发动机处于第一模式下，它以 $a_i\times x$ 的单位功率运行；如果处于第二模式下，它以 $a_i\times z_i + b_i\times(x - z_i)$ 的单位功率运行。</p>
+<h2>题目描述</h2>
+<p>最少需要提供多大的电压（电压需要是整数），才能使所有发动机的总功率大于或等于 $p$？</p>
+<h2>输入格式</h2>
+<p>第一行输入两个整数 $n$ 和 $p$。</p>
+<p>接下来的 $n$ 行，每行包含三个整数 $z_i,a_i,b_i$。</p>
+<h2>输出格式</h2>
+<p>输出一个整数表示最小电压。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">6</span>
+<span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>5```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">15</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">5</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;              <span class="hljs-comment">// n: 发动机个数</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> p;        <span class="hljs-comment">// p: 目标总功率</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> z[<span class="hljs-number">105</span>];   <span class="hljs-comment">// z[i]: 第 i 个发动机的模式切换电压</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">105</span>];   <span class="hljs-comment">// a[i]: 第 i 个发动机第一模式的单位电流</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> b[<span class="hljs-number">105</span>];   <span class="hljs-comment">// b[i]: 第 i 个发动机第二模式的单位电流</span>
+
+<span class="hljs-comment">// 检查函数：判断电压为 x 时，总功率是否 &gt;= p</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> x)</span> </span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;   <span class="hljs-comment">// sum: 当前总功率</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (x &lt;= z[i]) {
+            <span class="hljs-comment">// 第一模式：功率 = a[i] * x</span>
+            sum += a[i] * x;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 第二模式：功率 = a[i] * z[i] + b[i] * (x - z[i])</span>
+            sum += a[i] * z[i] + b[i] * (x - z[i]);
+        }
+        <span class="hljs-comment">// 剪枝：如果已经达到目标，提前返回 true，防止溢出</span>
+        <span class="hljs-keyword">if</span> (sum &gt;= p) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> sum &gt;= p;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】二分答案
+     * 【核心思路】
+     * 1. 总功率 P(x) 随电压 x 单调不递减，因此可以二分答案。
+     * 2. 二分范围：左边界 L = 0（电压为0时功率为0），右边界 R = 2e12（足够大）。
+     * 3. 每次取 mid = (L + R) / 2，用 check(mid) 判断 mid 是否可行。
+     * 4. 如果可行，说明答案 &lt;= mid，缩小右边界；否则答案 &gt; mid，缩小左边界。
+     * 5. 最终 L 为最小可行电压。
+     *
+     * 【时间复杂度】O(n log V)，V ≈ 2e12
+     */</span>
+
+    cin &gt;&gt; n &gt;&gt; p;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; z[i] &gt;&gt; a[i] &gt;&gt; b[i];
+    }
+
+    <span class="hljs-comment">// 二分查找最小可行电压</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> L = <span class="hljs-number">0</span>, R = <span class="hljs-number">2000000000000LL</span>;  <span class="hljs-comment">// R: 上界 2e12</span>
+    <span class="hljs-keyword">while</span> (L + <span class="hljs-number">1</span> &lt; R) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> mid = (L + R) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)) {
+            R = mid;   <span class="hljs-comment">// mid 可行，尝试更小</span>
+        } <span class="hljs-keyword">else</span> {
+            L = mid;   <span class="hljs-comment">// mid 不可行，需要更大</span>
+        }
+    }
+
+    cout &lt;&lt; R &lt;&lt; endl;   <span class="hljs-comment">// R 即为最小可行电压</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10098">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

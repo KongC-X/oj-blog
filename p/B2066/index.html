@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2066 救援 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="救生船从大本营出发，营救若干屋顶上的人回到大本营，屋顶数目以及每个屋顶的坐标和人数都将由输入决定，求出所有人都到达大本营并登陆所用的时间。 在直角坐标系的原点是大本营，救生船每次从大本营出发，救了人之后将人送回大本营。坐标系中的点代表屋顶，每个屋顶由其位置坐标和其上的人数表示。救生船每次从大本营出…">
+<link rel="canonical" href="https://zymojblog.top/p/B2066/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2066 救援 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="救生船从大本营出发，营救若干屋顶上的人回到大本营，屋顶数目以及每个屋顶的坐标和人数都将由输入决定，求出所有人都到达大本营并登陆所用的时间。 在直角坐标系的原点是大本营，救生船每次从大本营出发，救了人之后将人送回大本营。坐标系中的点代表屋顶，每个屋顶由其位置坐标和其上的人数表示。救生船每次从大本营出…">
+<meta property="og:url" content="https://zymojblog.top/p/B2066/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2066 救援 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="救生船从大本营出发，营救若干屋顶上的人回到大本营，屋顶数目以及每个屋顶的坐标和人数都将由输入决定，求出所有人都到达大本营并登陆所用的时间。 在直角坐标系的原点是大本营，救生船每次从大本营出发，救了人之后将人送回大本营。坐标系中的点代表屋顶，每个屋顶由其位置坐标和其上的人数表示。救生船每次从大本营出…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2066 救援","headline":"B2066 救援 题解","description":"救生船从大本营出发，营救若干屋顶上的人回到大本营，屋顶数目以及每个屋顶的坐标和人数都将由输入决定，求出所有人都到达大本营并登陆所用的时间。 在直角坐标系的原点是大本营，救生船每次从大本营出发，救了人之后将人送回大本营。坐标系中的点代表屋顶，每个屋顶由其位置坐标和其上的人数表示。救生船每次从大本营出…","url":"https://zymojblog.top/p/B2066/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"循环结构","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2066</span></div>
+  <h1 class="seo-title">B2066 救援</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2066 救援</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-02</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>救生船从大本营出发，营救若干屋顶上的人回到大本营，屋顶数目以及每个屋顶的坐标和人数都将由输入决定，求出所有人都到达大本营并登陆所用的时间。</p>
+<p>在直角坐标系的原点是大本营，救生船每次从大本营出发，救了人之后将人送回大本营。坐标系中的点代表屋顶，每个屋顶由其位置坐标和其上的人数表示。救生船每次从大本营出发，以速度 $50$ 米 / 分钟驶向下一个屋顶，达到一个屋顶后，救下其上的所有人，每人上船 $1$ 分钟，船原路返回，达到大本营，每人下船 $0.5$ 分钟。假设原点与任意一个屋顶的连线不穿过其它屋顶。</p>
+<h2>输入格式</h2>
+<p>第一行，一个整数，表示屋顶数 $n(1\leq n \leq 1000)$。</p>
+<p>接下来依次有 $n$ 行输入，每一行上包含两个表示屋顶相对于大本营的平面坐标位置的实数（单位是米）、一个表示人数的整数，数之间以一个空格分开。</p>
+<h2>输出格式</h2>
+<p>一行，救援需要的总时间，精确到分钟（向上取整）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>
+<span class="hljs-number">30</span> <span class="hljs-number">40</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// n: 屋顶数量</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">double</span> total = <span class="hljs-number">0.0</span>;        <span class="hljs-comment">// 总时间（分钟）</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">double</span> x, y;           <span class="hljs-comment">// 屋顶坐标</span>
+        <span class="hljs-type">int</span> p;                 <span class="hljs-comment">// 屋顶上的人数</span>
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; p;
+
+        <span class="hljs-type">double</span> dist = <span class="hljs-built_in">sqrt</span>(x * x + y * y);          <span class="hljs-comment">// 大本营到屋顶的距离</span>
+        <span class="hljs-type">double</span> time = dist / <span class="hljs-number">25.0</span> + <span class="hljs-number">1.5</span> * p;        <span class="hljs-comment">// 该屋顶救援总时间：行船(2*dist/50) + 上船(p*1) + 下船(p*0.5)</span>
+        total += time;
+    }
+
+    <span class="hljs-comment">// 向上取整输出</span>
+    cout &lt;&lt; (<span class="hljs-type">int</span>)<span class="hljs-built_in">ceil</span>(total) &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2066">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

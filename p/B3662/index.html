@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3662 [语言月赛202209] 山峰 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="洛咕公司可以被分为 行 列的土地，第 行第 列的土地初始海拔为 。行号和列号均从 开始编号。 在漫长的岁月中，一共发生了 次地理变迁。每次地理变迁，两块土地的海拔会发生交换。 如果有一块土地，比上下左右直接相邻的土地海拔都高，我们称其为一个山峰。 Berland 王国的首领想要知道，在所有地理变迁…">
+<link rel="canonical" href="https://zymojblog.top/p/B3662/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3662 [语言月赛202209] 山峰 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="洛咕公司可以被分为 行 列的土地，第 行第 列的土地初始海拔为 。行号和列号均从 开始编号。 在漫长的岁月中，一共发生了 次地理变迁。每次地理变迁，两块土地的海拔会发生交换。 如果有一块土地，比上下左右直接相邻的土地海拔都高，我们称其为一个山峰。 Berland 王国的首领想要知道，在所有地理变迁…">
+<meta property="og:url" content="https://zymojblog.top/p/B3662/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3662 [语言月赛202209] 山峰 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="洛咕公司可以被分为 行 列的土地，第 行第 列的土地初始海拔为 。行号和列号均从 开始编号。 在漫长的岁月中，一共发生了 次地理变迁。每次地理变迁，两块土地的海拔会发生交换。 如果有一块土地，比上下左右直接相邻的土地海拔都高，我们称其为一个山峰。 Berland 王国的首领想要知道，在所有地理变迁…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3662 [语言月赛202209] 山峰","headline":"B3662 [语言月赛202209] 山峰 题解","description":"洛咕公司可以被分为 行 列的土地，第 行第 列的土地初始海拔为 。行号和列号均从 开始编号。 在漫长的岁月中，一共发生了 次地理变迁。每次地理变迁，两块土地的海拔会发生交换。 如果有一块土地，比上下左右直接相邻的土地海拔都高，我们称其为一个山峰。 Berland 王国的首领想要知道，在所有地理变迁…","url":"https://zymojblog.top/p/B3662/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2022、Special Judge、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3662</span></div>
+  <h1 class="seo-title">B3662 [语言月赛202209] 山峰</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3662 [语言月赛202209] 山峰</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-23</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>Special Judge</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>洛咕公司可以被分为 $n$ 行 $m$ 列的土地，第 $i$ 行第 $j$ 列的土地初始海拔为 $a_{i,j}$。行号和列号均从 $1$ 开始编号。</p>
+<p>在漫长的岁月中，一共发生了 $T$ 次地理变迁。每次地理变迁，两块土地的海拔会发生交换。</p>
+<p>如果有一块土地，比上下左右直接相邻的土地海拔都高，我们称其为一个山峰。</p>
+<p>Berland 王国的首领想要知道，在所有地理变迁完成后，王国一共有多少山峰，它们的坐标分别为多少。</p>
+<p>例如：$n=m=3$，海拔高度如下所示</p>
+<p>$$1 \ \ 2 \ \ 3 \<br>1 \ \ 4 \ \ 2\<br>1 \ \ 1 \ \ 2<br>$$</p>
+<p>其中，$(1,3),(2,2)$ 是山峰。</p>
+<h2>输入格式</h2>
+<p>输入的第一行为两个整数 $n,m$，分别代表行数与列数。</p>
+<p>接下来 $n$ 行，每行 $m$ 个整数，第 $i$ 行第 $j$ 个整数代表 $a_{i,j}$。</p>
+<p>接下来一行一个整数 $T$。</p>
+<p>接下来 $T$ 行，每行四个整数 $x_1,y_1,x_2,y_2$，代表 $x_1$ 行 $y_1$ 列的土地与 $x_2$ 行 $y_2$ 列的土地发生了地理变迁。</p>
+<h2>输出格式</h2>
+<p>输出的第一行为一个整数，代表地理变迁后山峰的数量 $k$。</p>
+<p>接下来 $k$ 行，每行两个整数 $x,y$，代表一座山峰在第 $x$ 行第 $y$ 列。</p>
+<p>你可以以任意顺序输出山峰的坐标。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2<br>2 2<br>1 3```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>2<br>1 3<br>2 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n, m, T;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">1005</span>][<span class="hljs-number">1005</span>];
+
+<span class="hljs-comment">// 判断 (x,y) 是否为山峰</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">ok</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> h = a[x][y];
+    <span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">1</span> &amp;&amp; a[x<span class="hljs-number">-1</span>][y] &gt;= h) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span> (x &lt; n &amp;&amp; a[x+<span class="hljs-number">1</span>][y] &gt;= h) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span> (y &gt; <span class="hljs-number">1</span> &amp;&amp; a[x][y<span class="hljs-number">-1</span>] &gt;= h) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span> (y &lt; m &amp;&amp; a[x][y+<span class="hljs-number">1</span>] &gt;= h) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++)
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lld&quot;</span>, &amp;a[i][j]);
+
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;T);
+    <span class="hljs-keyword">while</span> (T--) {
+        <span class="hljs-type">int</span> x1, y1, x2, y2;
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d%d%d&quot;</span>, &amp;x1, &amp;y1, &amp;x2, &amp;y2);
+        <span class="hljs-built_in">swap</span>(a[x1][y1], a[x2][y2]);
+    }
+
+    <span class="hljs-type">int</span> ans[<span class="hljs-number">1000005</span>][<span class="hljs-number">2</span>];   <span class="hljs-comment">// 最多 n*m 个山峰</span>
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++)
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">ok</span>(i, j)) {
+                ans[cnt][<span class="hljs-number">0</span>] = i;
+                ans[cnt][<span class="hljs-number">1</span>] = j;
+                cnt++;
+            }
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, cnt);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cnt; i++)
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d %d\n&quot;</span>, ans[i][<span class="hljs-number">0</span>], ans[i][<span class="hljs-number">1</span>]);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3662">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

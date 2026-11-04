@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P7910 [CSP-J 2021] 插入排序 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="插入排序是一种非常常见且简单的排序算法。小 Z 是一名大一的新生，今天 H 老师刚刚在上课的时候讲了插入排序算法。 假设比较两个元素的时间为 ，则插入排序可以以 的时间复杂度完成长度为 的数组的排序。不妨假设这 个数字分别存储在 之中，则如下伪代码给出了插入排序算法的一种最简单的实现方式： 这下面…">
+<link rel="canonical" href="https://zymojblog.top/p/P7910/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P7910 [CSP-J 2021] 插入排序 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="插入排序是一种非常常见且简单的排序算法。小 Z 是一名大一的新生，今天 H 老师刚刚在上课的时候讲了插入排序算法。 假设比较两个元素的时间为 ，则插入排序可以以 的时间复杂度完成长度为 的数组的排序。不妨假设这 个数字分别存储在 之中，则如下伪代码给出了插入排序算法的一种最简单的实现方式： 这下面…">
+<meta property="og:url" content="https://zymojblog.top/p/P7910/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P7910 [CSP-J 2021] 插入排序 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="插入排序是一种非常常见且简单的排序算法。小 Z 是一名大一的新生，今天 H 老师刚刚在上课的时候讲了插入排序算法。 假设比较两个元素的时间为 ，则插入排序可以以 的时间复杂度完成长度为 的数组的排序。不妨假设这 个数字分别存储在 之中，则如下伪代码给出了插入排序算法的一种最简单的实现方式： 这下面…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P7910 [CSP-J 2021] 插入排序","headline":"P7910 [CSP-J 2021] 插入排序 题解","description":"插入排序是一种非常常见且简单的排序算法。小 Z 是一名大一的新生，今天 H 老师刚刚在上课的时候讲了插入排序算法。 假设比较两个元素的时间为 ，则插入排序可以以 的时间复杂度完成长度为 的数组的排序。不妨假设这 个数字分别存储在 之中，则如下伪代码给出了插入排序算法的一种最简单的实现方式： 这下面…","url":"https://zymojblog.top/p/P7910/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"2021、O2优化、枚举、排序、CSP-J 入门级","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P7910</span></div>
+  <h1 class="seo-title">P7910 [CSP-J 2021] 插入排序</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">CSP-J复赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2021">2021</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/CSP-J%20%E5%85%A5%E9%97%A8%E7%BA%A7">CSP-J 入门级</a></div>
+  <article class="markdown-body seo-article">
+<h1>P7910 [CSP-J 2021] 插入排序</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2025-10-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2021</code>、<code>O2优化</code>、<code>枚举</code>、<code>排序</code>、<code>CSP-J 入门级</code></p>
+<h2>题目描述</h2>
+<p>插入排序是一种非常常见且简单的排序算法。小 Z 是一名大一的新生，今天 H 老师刚刚在上课的时候讲了插入排序算法。</p>
+<p>假设比较两个元素的时间为 $\mathcal O(1)$，则插入排序可以以 $\mathcal O(n^2)$ 的时间复杂度完成长度为 $n$ 的数组的排序。不妨假设这 $n$ 个数字分别存储在 $a_1, a_2, \ldots, a_n$ 之中，则如下伪代码给出了插入排序算法的一种最简单的实现方式：</p>
+<p>这下面是 C/C++ 的示范代码：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i; j &gt;= <span class="hljs-number">2</span>; j--)
+        <span class="hljs-keyword">if</span> (a[j] &lt; a[j<span class="hljs-number">-1</span>]) {
+            <span class="hljs-type">int</span> t = a[j<span class="hljs-number">-1</span>];
+            a[j<span class="hljs-number">-1</span>] = a[j];
+            a[j] = t;
+        }</code></pre><p>这下面是 Pascal 的示范代码：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-keyword">for</span> i:=<span class="hljs-number">1</span> to n <span class="hljs-keyword">do</span>
+    <span class="hljs-keyword">for</span> j:=i downto <span class="hljs-number">2</span> <span class="hljs-keyword">do</span>
+        <span class="hljs-keyword">if</span> a[j]&lt;a[j<span class="hljs-number">-1</span>] then
+            begin
+                t:=a[i];
+                a[i]:=a[j];
+                a[j]:=t;
+            end;</code></pre><p>为了帮助小 Z 更好的理解插入排序，小 Z 的老师 H 老师留下了这么一道家庭作业：</p>
+<p>H 老师给了一个长度为 $n$ 的数组 $a$，数组下标从 $1$ 开始，并且数组中的所有元素均为非负整数。小 Z 需要支持在数组 $a$ 上的 $Q$ 次操作，操作共两种，参数分别如下：</p>
+<p>$1<del>x</del>v$：这是第一种操作，会将 $a$ 的第 $x$ 个元素，也就是 $a_x$ 的值，修改为 $v$。保证 $1 \le x \le n$，$1 \le v \le 10^9$。<strong>注意这种操作会改变数组的元素，修改得到的数组会被保留，也会影响后续的操作</strong>。</p>
+<p>$2~x$：这是第二种操作，假设 H 老师按照<strong>上面的伪代码</strong>对 $a$ 数组进行排序，你需要告诉 H 老师原来 $a$ 的第 $x$ 个元素，也就是 $a_x$，在排序后的新数组所处的位置。保证 $1 \le x \le n$。<strong>注意这种操作不会改变数组的元素，排序后的数组不会被保留，也不会影响后续的操作</strong>。</p>
+<p>H 老师不喜欢过多的修改，所以他保证类型 $1$ 的操作次数不超过 $5000$。</p>
+<p>小 Z 没有学过计算机竞赛，因此小 Z 并不会做这道题。他找到了你来帮助他解决这个问题。</p>
+<h2>输入格式</h2>
+<p>第一行，包含两个正整数 $n, Q$，表示数组长度和操作次数。</p>
+<p>第二行，包含 $n$ 个空格分隔的非负整数，其中第 $i$ 个非负整数表示 $a_i$。</p>
+<p>接下来 $Q$ 行，每行 $2 \sim 3$ 个正整数，表示一次操作，操作格式见【<strong>题目描述</strong>】。</p>
+<h2>输出格式</h2>
+<p>对于每一次类型为 $2$ 的询问，输出一行一个正整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">10011</span>];  <span class="hljs-comment">// 定义数组，存储原始数据</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-type">int</span> n, q;
+    cin &gt;&gt; n &gt;&gt; q;  <span class="hljs-comment">// 输入数组长度n和操作次数q</span>
+    
+    <span class="hljs-comment">// 读入初始数组</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;a[i]);
+    
+    <span class="hljs-comment">// 处理每个操作</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= q; i++){
+        <span class="hljs-type">int</span> xx;  <span class="hljs-comment">// 操作类型</span>
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;xx);
+        
+        <span class="hljs-keyword">if</span>(xx == <span class="hljs-number">1</span>){  <span class="hljs-comment">// 修改操作</span>
+            <span class="hljs-type">int</span> x, v;
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;x, &amp;v);
+            a[x] = v;  <span class="hljs-comment">// 直接将a[x]修改为v</span>
+        } 
+        <span class="hljs-keyword">else</span> {  <span class="hljs-comment">// 查询操作：询问a[x]在插入排序后的位置</span>
+            <span class="hljs-type">int</span> x;
+            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;x);
+            <span class="hljs-type">int</span> w = a[x];  <span class="hljs-comment">// 保存要查询的元素值</span>
+            
+            <span class="hljs-comment">/**
+             * 核心算法思路：
+             * 1. 初始假设a[x]在排序后处于最后一个位置（即位置n）
+             * 2. 遍历x前面的元素：如果有比a[x]大的，说明这些元素在排序后会排在a[x]后面，所以a[x]的位置要前移
+             * 3. 遍历x后面的元素：如果有大于等于a[x]的，说明这些元素在排序后会排在a[x]前面，所以a[x]的位置要前移
+             * 
+             * 最终得到的就是a[x]在排序后的正确位置
+             */</span>
+            <span class="hljs-type">int</span> sum = n;  <span class="hljs-comment">// 初始假设a[x]在最后位置</span>
+            
+            <span class="hljs-comment">// 遍历x前面的元素</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; x; j++){
+                <span class="hljs-keyword">if</span>(a[j] &gt; w){  
+                    <span class="hljs-comment">// 前面有比a[x]大的元素，在稳定排序中这些大元素会排在a[x]后面</span>
+                    <span class="hljs-comment">// 所以a[x]的位置可以前移一位</span>
+                    sum--;
+                }
+            }
+            
+            <span class="hljs-comment">// 遍历x后面的元素</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = x + <span class="hljs-number">1</span>; j &lt;= n; j++){
+                <span class="hljs-keyword">if</span>(a[j] &gt;= w){  
+                    <span class="hljs-comment">// 后面有大于等于a[x]的元素，在排序中这些元素会排在a[x]前面</span>
+                    <span class="hljs-comment">// 所以a[x]的位置要前移一位</span>
+                    sum--;
+                }
+            }
+            
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, sum);  <span class="hljs-comment">// 输出a[x]在排序后的位置</span>
+        }
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P7910">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1910 愤怒的奶牛 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Farmer John 建造了一个有 ( ) 个隔间的牛棚，这些隔间分布在一条直线上，坐标是 ,..., (0 )。 他的 ( ) 头牛不满于隔间的位置分布，它们为牛棚里其他的牛的存在而愤怒。为了防止牛之间的互相打斗，Farmer John 想把这些牛安置在指定的隔间，所有牛中相邻两头的最近距离越…">
+<link rel="canonical" href="https://zymojblog.top/p/1910/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1910 愤怒的奶牛 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Farmer John 建造了一个有 ( ) 个隔间的牛棚，这些隔间分布在一条直线上，坐标是 ,..., (0 )。 他的 ( ) 头牛不满于隔间的位置分布，它们为牛棚里其他的牛的存在而愤怒。为了防止牛之间的互相打斗，Farmer John 想把这些牛安置在指定的隔间，所有牛中相邻两头的最近距离越…">
+<meta property="og:url" content="https://zymojblog.top/p/1910/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1910 愤怒的奶牛 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Farmer John 建造了一个有 ( ) 个隔间的牛棚，这些隔间分布在一条直线上，坐标是 ,..., (0 )。 他的 ( ) 头牛不满于隔间的位置分布，它们为牛棚里其他的牛的存在而愤怒。为了防止牛之间的互相打斗，Farmer John 想把这些牛安置在指定的隔间，所有牛中相邻两头的最近距离越…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1910 愤怒的奶牛","headline":"1910 愤怒的奶牛 题解","description":"Farmer John 建造了一个有 ( ) 个隔间的牛棚，这些隔间分布在一条直线上，坐标是 ,..., (0 )。 他的 ( ) 头牛不满于隔间的位置分布，它们为牛棚里其他的牛的存在而愤怒。为了防止牛之间的互相打斗，Farmer John 想把这些牛安置在指定的隔间，所有牛中相邻两头的最近距离越…","url":"https://zymojblog.top/p/1910/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"USACO、二分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1910</span></div>
+  <h1 class="seo-title">1910 愤怒的奶牛</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">二分</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a></div>
+  <article class="markdown-body seo-article">
+<h1>1910 - 愤怒的奶牛</h1>
+<h2>题目描述</h2>
+<p>Farmer John 建造了一个有 $N$($2$ $\le$ $N$ $\le$ $100000$) 个隔间的牛棚，这些隔间分布在一条直线上，坐标是 $x_1$ ,...,$x_N$<br> (0 $\le$ $x_i$ $\le$ $1000000000$)。</p>
+<p>他的 $C$($2$ $\le$ $C$ $\le$ $N$) 头牛不满于隔间的位置分布，它们为牛棚里其他的牛的存在而愤怒。为了防止牛之间的互相打斗，Farmer John 想把这些牛安置在指定的隔间，所有牛中相邻两头的最近距离越大越好。那么，这个最大的最近距离是多少呢？</p>
+<h2>输入</h2>
+<p>第 $1$ 行：两个用空格隔开的数字 $N$ 和 $C$。</p>
+<p>第 $2$ ~ $N+1$ 行：每行一个整数，表示每个隔间的坐标。</p>
+<h2>输出</h2>
+<p>输出只有一行，即相邻两头牛最大的最近距离。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1e5</span> + <span class="hljs-number">10</span>;
+<span class="hljs-type">int</span> a[N],l,r,mid,n,c;
+
+<span class="hljs-comment">//测试距离为mid，可以放几头牛</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> mid)</span> </span>{
+    <span class="hljs-type">int</span> tot = <span class="hljs-number">1</span>;<span class="hljs-comment">//默认能放1头 </span>
+    <span class="hljs-comment">//last:表示上1个牛栏</span>
+    <span class="hljs-type">int</span> last = <span class="hljs-number">1</span>;<span class="hljs-comment">//第1个牛栏肯定有牛</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span>(a[i] - a[last] &gt;= mid) {
+            tot++;<span class="hljs-comment">//牛栏数自增</span>
+            last = i;
+        }
+    }
+
+    <span class="hljs-keyword">if</span>(tot &gt;= c) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//n个牛栏，c头要分隔的奶牛</span>
+    cin&gt;&gt;n&gt;&gt;c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-comment">//排序</span>
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+<span class="hljs-number">1</span>+n);
+    <span class="hljs-comment">//在[l,r]之间查找最大的最近距离</span>
+    l=<span class="hljs-number">1</span>,r=a[n]-a[<span class="hljs-number">1</span>];
+    <span class="hljs-comment">//找右边界</span>
+    <span class="hljs-keyword">while</span>(l &lt;= r) {
+        mid = (l + r) &gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(mid)) l = mid + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> r = mid - <span class="hljs-number">1</span>;
+    }
+
+    cout&lt;&lt;l<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1910">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

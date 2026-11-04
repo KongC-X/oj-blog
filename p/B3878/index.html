@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3878 [信息与未来 2015] 连续数的和 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出两个整数 和 ，求出 中连续 个数的和为完全平方数的个数。">
+<link rel="canonical" href="https://zymojblog.top/p/B3878/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3878 [信息与未来 2015] 连续数的和 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出两个整数 和 ，求出 中连续 个数的和为完全平方数的个数。">
+<meta property="og:url" content="https://zymojblog.top/p/B3878/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3878 [信息与未来 2015] 连续数的和 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出两个整数 和 ，求出 中连续 个数的和为完全平方数的个数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3878 [信息与未来 2015] 连续数的和","headline":"B3878 [信息与未来 2015] 连续数的和 题解","description":"给出两个整数 和 ，求出 中连续 个数的和为完全平方数的个数。","url":"https://zymojblog.top/p/B3878/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2015、江苏、枚举、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3878</span></div>
+  <h1 class="seo-title">B3878 [信息与未来 2015] 连续数的和</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2015">2015</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3878 [信息与未来 2015] 连续数的和</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-06-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2015</code>、<code>江苏</code>、<code>枚举</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>给出两个整数 $n$ 和 $k$，求出 $1\sim n$ 中连续 $k$ 个数的和为完全平方数的个数。</p>
+<h2>输入格式</h2>
+<p>一行两个整数 $n,k$。</p>
+<h2>输出格式</h2>
+<p>一行一个整数，即 $1\sim n$ 中连续 $k$ 个数的和为平方数的个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>, i, n, k, x;
+<span class="hljs-type">int</span> a[N], qz[N];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; k;
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">1</span>; i &lt;= n; ++i){
+        qz[i] = qz[i - <span class="hljs-number">1</span>] + i;
+    }
+    <span class="hljs-keyword">for</span> (i = k; i &lt;= n; ++i) {
+        x = qz[i] - qz[i - k];
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">int</span>(<span class="hljs-built_in">sqrt</span>(x)) * <span class="hljs-built_in">int</span>(<span class="hljs-built_in">sqrt</span>(x)) == x){
+            c++;
+        }
+    }
+    cout &lt;&lt; c &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3878">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2076 环游世界之背包问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="张老师准备环游世界，出发之前要做的最重要的事情，当然是整理自己的背包啦。张老师有一个容积为m的背包 ，有n个物品作为放入背包的待选物品 ，每样东西都有自己的价值Wi，和体积Vi ，第i个物品有Ni个 （Ni=0时表示有无限多个），请你编程帮助张老师计算，他的背包能够存入的最大价值是多少？ 数据满足…">
+<link rel="canonical" href="https://zymojblog.top/p/2076/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2076 环游世界之背包问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="张老师准备环游世界，出发之前要做的最重要的事情，当然是整理自己的背包啦。张老师有一个容积为m的背包 ，有n个物品作为放入背包的待选物品 ，每样东西都有自己的价值Wi，和体积Vi ，第i个物品有Ni个 （Ni=0时表示有无限多个），请你编程帮助张老师计算，他的背包能够存入的最大价值是多少？ 数据满足…">
+<meta property="og:url" content="https://zymojblog.top/p/2076/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2076 环游世界之背包问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="张老师准备环游世界，出发之前要做的最重要的事情，当然是整理自己的背包啦。张老师有一个容积为m的背包 ，有n个物品作为放入背包的待选物品 ，每样东西都有自己的价值Wi，和体积Vi ，第i个物品有Ni个 （Ni=0时表示有无限多个），请你编程帮助张老师计算，他的背包能够存入的最大价值是多少？ 数据满足…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2076 环游世界之背包问题","headline":"2076 环游世界之背包问题 题解","description":"张老师准备环游世界，出发之前要做的最重要的事情，当然是整理自己的背包啦。张老师有一个容积为m的背包 ，有n个物品作为放入背包的待选物品 ，每样东西都有自己的价值Wi，和体积Vi ，第i个物品有Ni个 （Ni=0时表示有无限多个），请你编程帮助张老师计算，他的背包能够存入的最大价值是多少？ 数据满足…","url":"https://zymojblog.top/p/2076/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、混合背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2076</span></div>
+  <h1 class="seo-title">2076 环游世界之背包问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">动态规划-DP</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E6%B7%B7%E5%90%88%E8%83%8C%E5%8C%85">混合背包</a></div>
+  <article class="markdown-body seo-article">
+<h1>2076 - 环游世界之背包问题</h1>
+<h2>题目描述</h2>
+<p>张老师准备环游世界，出发之前要做的最重要的事情，当然是整理自己的背包啦。张老师有一个容积为m的背包 ，有n个物品作为放入背包的待选物品 ，每样东西都有自己的价值Wi，和体积Vi ，第i个物品有Ni个 （Ni=0时表示有无限多个），请你编程帮助张老师计算，他的背包能够存入的最大价值是多少？</p>
+<p>$30%$数据满足  1 &lt;= m,n &lt;=1000</p>
+<p>$100%$数据满足  1 &lt;=m,n &lt;= 10000</p>
+<h2>输入</h2>
+<p>第$1$行有$2$个整数$N,M$，表示物品的种类和背包的容积；</p>
+<p>第$2-N+1$行，每行有$3$个整数$Vi$，$Wi$，$Pi$，分别表示每个物品的体积，价值，个数。（体积&lt;=5000,价值&lt;=5000,个数&lt;=1000）</p>
+<h2>输出</h2>
+<p>一个整数，表示能够存入背包的最大价值。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    
+    <span class="hljs-comment">// dp[i]表示容积为i时的最大价值</span>
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">dp</span><span class="hljs-params">(m + <span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> v, w, p;
+        cin &gt;&gt; v &gt;&gt; w &gt;&gt; p;
+        
+        <span class="hljs-keyword">if</span> (p == <span class="hljs-number">0</span>) {  <span class="hljs-comment">// 完全背包：无限个物品</span>
+            <span class="hljs-comment">// 正序遍历，可以重复使用同一物品</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = v; j &lt;= m; j++) {
+                dp[j] = <span class="hljs-built_in">max</span>(dp[j], dp[j - v] + w);
+            }
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (p == <span class="hljs-number">1</span>) {  <span class="hljs-comment">// 01背包：只有1个物品</span>
+            <span class="hljs-comment">// 逆序遍历，确保每个物品只用一次</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = m; j &gt;= v; j--) {
+                dp[j] = <span class="hljs-built_in">max</span>(dp[j], dp[j - v] + w);
+            }
+        }
+        <span class="hljs-keyword">else</span> {  <span class="hljs-comment">// 多重背包：有p个物品</span>
+            <span class="hljs-comment">// 使用二进制优化的多重背包</span>
+            <span class="hljs-type">int</span> k = <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (k &lt;= p) {
+                <span class="hljs-comment">// 将k个物品看作一个整体</span>
+                <span class="hljs-type">int</span> vol = k * v;
+                <span class="hljs-type">int</span> val = k * w;
+                
+                <span class="hljs-comment">// 如果超出背包容量，跳出</span>
+                <span class="hljs-keyword">if</span> (vol &gt; m) {
+                    <span class="hljs-keyword">break</span>;
+                }
+                
+                <span class="hljs-comment">// 01背包方式处理这个&quot;物品包&quot;</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = m; j &gt;= vol; j--) {
+                    dp[j] = <span class="hljs-built_in">max</span>(dp[j], dp[j - vol] + val);
+                }
+                
+                p -= k;
+                k *= <span class="hljs-number">2</span>;
+            }
+            
+            <span class="hljs-comment">// 处理剩余的物品</span>
+            <span class="hljs-keyword">if</span> (p &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-type">int</span> vol = p * v;
+                <span class="hljs-type">int</span> val = p * w;
+                <span class="hljs-keyword">if</span> (vol &lt;= m) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = m; j &gt;= vol; j--) {
+                        dp[j] = <span class="hljs-built_in">max</span>(dp[j], dp[j - vol] + val);
+                    }
+                }
+            }
+        }
+    }
+    
+    cout &lt;&lt; dp[m] &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2076">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

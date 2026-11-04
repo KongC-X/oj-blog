@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1411 迷宫的路径 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Mitch老鼠在森林里游玩，不小心走进了一个迷宫里面，这个迷宫是一个 行 列的矩阵，迷宫中有些格子是可以走的，有些格子是不能走的，能走的格子用 o （小写字母 o ）表示，不能走的格子用 # 表示。 Mitch选择走出迷宫的策略是：先向右，如果右边走不通则选择向下，如果下边走不通则选择向左，如果左…">
+<link rel="canonical" href="https://zymojblog.top/p/1411/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1411 迷宫的路径 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Mitch老鼠在森林里游玩，不小心走进了一个迷宫里面，这个迷宫是一个 行 列的矩阵，迷宫中有些格子是可以走的，有些格子是不能走的，能走的格子用 o （小写字母 o ）表示，不能走的格子用 # 表示。 Mitch选择走出迷宫的策略是：先向右，如果右边走不通则选择向下，如果下边走不通则选择向左，如果左…">
+<meta property="og:url" content="https://zymojblog.top/p/1411/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1411 迷宫的路径 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Mitch老鼠在森林里游玩，不小心走进了一个迷宫里面，这个迷宫是一个 行 列的矩阵，迷宫中有些格子是可以走的，有些格子是不能走的，能走的格子用 o （小写字母 o ）表示，不能走的格子用 # 表示。 Mitch选择走出迷宫的策略是：先向右，如果右边走不通则选择向下，如果下边走不通则选择向左，如果左…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1411 迷宫的路径","headline":"1411 迷宫的路径 题解","description":"Mitch老鼠在森林里游玩，不小心走进了一个迷宫里面，这个迷宫是一个 行 列的矩阵，迷宫中有些格子是可以走的，有些格子是不能走的，能走的格子用 o （小写字母 o ）表示，不能走的格子用 # 表示。 Mitch选择走出迷宫的策略是：先向右，如果右边走不通则选择向下，如果下边走不通则选择向左，如果左…","url":"https://zymojblog.top/p/1411/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"回溯、深搜、递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1411</span></div>
+  <h1 class="seo-title">1411 迷宫的路径</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%9E%E6%BA%AF">回溯</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>1411 - 迷宫的路径</h1>
+<h2>题目描述</h2>
+<p>Mitch老鼠在森林里游玩，不小心走进了一个迷宫里面，这个迷宫是一个 $n$ 行 $m$ 列的矩阵，迷宫中有些格子是可以走的，有些格子是不能走的，能走的格子用 <code>o</code> （小写字母 <code>o</code> ）表示，不能走的格子用 <code>#</code> 表示。  </p>
+<p>Mitch选择走出迷宫的策略是：先向右，如果右边走不通则选择向下，如果下边走不通则选择向左，如果左边走不通则选择向上；如果四个方向都走不通，则后退选择其他能走的路径。  </p>
+<p>Mitch从类似下图所示的迷宫的左上角 $(1,1)$ 点进入迷宫（请注意：入口 $1,1$ 和出口的 $n,m$ 点都不是 <code>#</code> ），请问Mitch有哪些方法可以走出迷宫，走到 $(n,m)$ 点；请编程求出所有可能的路径，输出这些路径，如果不存在任何的路径可以走出迷宫，请输出 <code>no</code>。</p>
+<h2>输入</h2>
+<p>第一行包含两个整数 $n$ 和 $m$ ，中间用单个空格隔开，代表迷宫的行和列的数量。</p>
+<p>接下来 $n$ 行，每行 $m$ 个字符，描述迷宫地图。字符只有<code>o</code> 或 <code>#</code> 两种，<code>o</code> 代表这个格子可以走，<code>#</code> 代表这个格子不能走。( $4 ≤ n,m ≤ 10$ )</p>
+<h2>输出</h2>
+<p>请按照Mitch选择的走出迷宫的策略，输出所有可能的路径，输出形式请参考样例输出的形式。</p>
+<p>如果不存在任何的路径可以走出迷宫，请输出 <code>no</code>。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,m,c;
+<span class="hljs-type">char</span> a[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>];
+<span class="hljs-type">int</span> r[<span class="hljs-number">400</span>][<span class="hljs-number">3</span>]; <span class="hljs-comment">// 存储路径</span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>]; <span class="hljs-comment">// 标记是否走过</span>
+
+<span class="hljs-comment">// 右下左上</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">// 打印输出函数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span></span>{
+    c++;
+    cout &lt;&lt; c &lt;&lt; <span class="hljs-string">&quot;:&quot;</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; k; i++) {
+        cout &lt;&lt; r[i][<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-string">&quot;,&quot;</span> &lt;&lt; r[i][<span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-string">&quot;-&gt;&quot;</span>;
+    }
+    cout &lt;&lt; n &lt;&lt; <span class="hljs-string">&quot;,&quot;</span> &lt;&lt; m &lt;&lt; endl;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> k)</span> </span>{
+    r[k][<span class="hljs-number">1</span>] = x;
+    r[k][<span class="hljs-number">2</span>] = y;
+    <span class="hljs-comment">// 如果到了终点就打印路径</span>
+    <span class="hljs-keyword">if</span>(x == n &amp;&amp; y == m) {
+        <span class="hljs-built_in">print</span>(k);
+        <span class="hljs-keyword">return</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 否则尝试不同的方向</span>
+        <span class="hljs-type">int</span> tx,ty;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">4</span>; i++) {
+            tx = x + fx[i];
+            ty = y + fy[i];
+            <span class="hljs-comment">// 如果新的方向可达，且没有访问过</span>
+            <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-string">&#x27;o&#x27;</span> &amp;&amp; f[tx][ty] == <span class="hljs-literal">false</span>) {
+                f[tx][ty] = <span class="hljs-literal">true</span>; <span class="hljs-comment">// 标记为已访问</span>
+                <span class="hljs-built_in">dfs</span>(tx,ty,k+<span class="hljs-number">1</span>); <span class="hljs-comment">// 递归搜索</span>
+                f[tx][ty] = <span class="hljs-literal">false</span>; <span class="hljs-comment">// 回溯，撤销标记</span>
+            }
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    f[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(c == <span class="hljs-number">0</span>) {
+        cout &lt;&lt; <span class="hljs-string">&quot;no&quot;</span>;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1411">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

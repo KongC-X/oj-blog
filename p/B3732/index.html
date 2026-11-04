@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3732 [信息与未来 2017] 任务调度 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="乌龟因为动作太慢，有 个任务已经超过截止日期 了。乌龟处理第 个任务需要 单位时间。从 时刻开始，乌龟可以选择某项任务，完成它，然后再开始另一项任务，如此往复直到所有任务都被完成。 由于已经超过截止日期，乌龟会为此受到一定的惩罚，惩罚值等于所有任务完成时刻之和。例如，有 2 个任务分别需要 和 单…">
+<link rel="canonical" href="https://zymojblog.top/p/B3732/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3732 [信息与未来 2017] 任务调度 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="乌龟因为动作太慢，有 个任务已经超过截止日期 了。乌龟处理第 个任务需要 单位时间。从 时刻开始，乌龟可以选择某项任务，完成它，然后再开始另一项任务，如此往复直到所有任务都被完成。 由于已经超过截止日期，乌龟会为此受到一定的惩罚，惩罚值等于所有任务完成时刻之和。例如，有 2 个任务分别需要 和 单…">
+<meta property="og:url" content="https://zymojblog.top/p/B3732/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3732 [信息与未来 2017] 任务调度 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="乌龟因为动作太慢，有 个任务已经超过截止日期 了。乌龟处理第 个任务需要 单位时间。从 时刻开始，乌龟可以选择某项任务，完成它，然后再开始另一项任务，如此往复直到所有任务都被完成。 由于已经超过截止日期，乌龟会为此受到一定的惩罚，惩罚值等于所有任务完成时刻之和。例如，有 2 个任务分别需要 和 单…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3732 [信息与未来 2017] 任务调度","headline":"B3732 [信息与未来 2017] 任务调度 题解","description":"乌龟因为动作太慢，有 个任务已经超过截止日期 了。乌龟处理第 个任务需要 单位时间。从 时刻开始，乌龟可以选择某项任务，完成它，然后再开始另一项任务，如此往复直到所有任务都被完成。 由于已经超过截止日期，乌龟会为此受到一定的惩罚，惩罚值等于所有任务完成时刻之和。例如，有 2 个任务分别需要 和 单…","url":"https://zymojblog.top/p/B3732/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2017、江苏、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3732</span></div>
+  <h1 class="seo-title">B3732 [信息与未来 2017] 任务调度</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2017">2017</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3732 [信息与未来 2017] 任务调度</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-04-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2017</code>、<code>江苏</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>乌龟因为动作太慢，有 $n$ 个任务已经超过截止日期<br>了。乌龟处理第 $i$ 个任务需要 $a_i$ 单位时间。从 $0$ 时刻开始，乌龟可以选择某项任务，完成它，然后再开始另一项任务，如此往复直到所有任务都被完成。</p>
+<p>由于已经超过截止日期，乌龟会为此受到一定的惩罚，惩罚值等于所有任务完成时刻之和。例如，有 2 个任务分别需要 $10$ 和 $20$ 单位时间完成。如果先完成任务 1，惩罚值为 $10+30=40$；如果先完成任务 2，惩罚值为 $20+30=50$。</p>
+<p>乌龟希望你求出惩罚值最小的完成任务的顺序。</p>
+<hr>
+<p>试题中使用的生成数列 $R$ 定义如下：整数 $0\leq R_1\lt 201701$ 在输入中给出。</p>
+<p>对于 $i\gt 1,R_i=(R_{i−1}\times 6807+2831)\mod 201701$。</p>
+<h2>输入格式</h2>
+<p>两个整数 $n,R_1$，表示任务的数量和生成数列的首项。处理任务 $i(1\leq i\leq n)$ 的时间 $a_i=(R_i\bmod 100)+1$。</p>
+<h2>输出格式</h2>
+<p>一个整数，表示完成所有任务的最小惩罚值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1641```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+  贪心
+  策略：由于每个任务完成的总时间 = 任务本身时间 + 排队时间
+  因此不难想到，优先完成消耗时间少的任务
+  1.对所有任务升序排序
+  2.计算出每个任务完成的总时间 
+  总时间 = 当前任务消耗时间 + 上一个任务完成的总时间 
+*/</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">1010</span>],n,r,s = <span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;r;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        a[i] = (r % <span class="hljs-number">100</span>) + <span class="hljs-number">1</span>;
+        r = (r * <span class="hljs-number">6807</span> + <span class="hljs-number">2831</span>) % <span class="hljs-number">201701</span>;
+    }
+    
+    <span class="hljs-comment">//排序</span>
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>);
+    
+    <span class="hljs-comment">//计算每个任务完成的总时间</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        a[i] = a[i] + a[i<span class="hljs-number">-1</span>];
+        s = s + a[i];
+    } 
+    
+    cout&lt;&lt;s;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3732">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

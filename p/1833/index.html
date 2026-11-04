@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1833 八皇后 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="会下国际象棋的人都很清楚：皇后可以在横、竖、斜线上不限步数地吃掉其他棋子。如何将 个皇后放在棋盘上（有 个方格），使它们谁也不能被吃掉！这就是著名的八皇后问题。 对于某个满足要求的 皇后的摆放方法，定义一个皇后串 与之对应，即 ，其中 为相应摆法中第 行皇后所处的列数。已经知道 皇后问题一共有 组…">
+<link rel="canonical" href="https://zymojblog.top/p/1833/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1833 八皇后 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="会下国际象棋的人都很清楚：皇后可以在横、竖、斜线上不限步数地吃掉其他棋子。如何将 个皇后放在棋盘上（有 个方格），使它们谁也不能被吃掉！这就是著名的八皇后问题。 对于某个满足要求的 皇后的摆放方法，定义一个皇后串 与之对应，即 ，其中 为相应摆法中第 行皇后所处的列数。已经知道 皇后问题一共有 组…">
+<meta property="og:url" content="https://zymojblog.top/p/1833/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1833 八皇后 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="会下国际象棋的人都很清楚：皇后可以在横、竖、斜线上不限步数地吃掉其他棋子。如何将 个皇后放在棋盘上（有 个方格），使它们谁也不能被吃掉！这就是著名的八皇后问题。 对于某个满足要求的 皇后的摆放方法，定义一个皇后串 与之对应，即 ，其中 为相应摆法中第 行皇后所处的列数。已经知道 皇后问题一共有 组…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1833 八皇后","headline":"1833 八皇后 题解","description":"会下国际象棋的人都很清楚：皇后可以在横、竖、斜线上不限步数地吃掉其他棋子。如何将 个皇后放在棋盘上（有 个方格），使它们谁也不能被吃掉！这就是著名的八皇后问题。 对于某个满足要求的 皇后的摆放方法，定义一个皇后串 与之对应，即 ，其中 为相应摆法中第 行皇后所处的列数。已经知道 皇后问题一共有 组…","url":"https://zymojblog.top/p/1833/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"回溯","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1833</span></div>
+  <h1 class="seo-title">1833 八皇后</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%9E%E6%BA%AF">回溯</a></div>
+  <article class="markdown-body seo-article">
+<h1>1833 - 八皇后</h1>
+<h2>题目描述</h2>
+<p>会下国际象棋的人都很清楚：皇后可以在横、竖、斜线上不限步数地吃掉其他棋子。如何将 $8$ 个皇后放在棋盘上（有 $8 \times 8$ 个方格），使它们谁也不能被吃掉！这就是著名的八皇后问题。 </p>
+<p>对于某个满足要求的 $8$ 皇后的摆放方法，定义一个皇后串 $a$ 与之对应，即 $a=b_1b_2 \dots b_8$，其中 $b_i$ 为相应摆法中第 $i$ 行皇后所处的列数。已经知道 $8$ 皇后问题一共有 $92$ 组解（即 $92$ 个不同的皇后串）。</p>
+<p>给出一个数 $b$ ，要求输出第 $b$ 个串。串的比较是这样的：皇后串 $x$ 置于皇后串 $y$ 之前，当且仅当将 $x$ 视为整数时比 $y$ 小。</p>
+<h2>输入</h2>
+<p>第 $1$ 行是测试数据的组数 $n$ ，后面跟着 $n$ 行输入。</p>
+<p>每组测试数据占 $1$ 行，包括一个正整数 $b$ ($1 \le b \le 92$)。</p>
+<h2>输出</h2>
+<p>输出有 $n$ 行，每行输出对应一个输入。输出应是一个正整数，是对应于 $b$ 的皇后串。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> h[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>], s[<span class="hljs-number">20</span>], lx[<span class="hljs-number">40</span>], rx[<span class="hljs-number">40</span>]; <span class="hljs-comment">//h[][]是存放排列的数组, s[]横行被占用, lx左斜  rx右斜行</span>
+<span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>, r[<span class="hljs-number">100</span>][<span class="hljs-number">10</span>]; <span class="hljs-comment">//r存放第i个结果,每行就是对应的皇后串</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span>
+</span>{
+    cnt++;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+    {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++)
+        {
+            <span class="hljs-keyword">if</span>(h[i][j]) r[cnt][i] = j + <span class="hljs-number">1</span>; <span class="hljs-comment">//j从0开始计数的,所以要加1</span>
+        }
+
+    }
+
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> <span class="hljs-comment">//放置第x列的皇后.从0遍历到n-1列,这里就是0~7,仔细看题目结果,是按列排序输出结果的,刚开始按行输出结果不对.</span>
+</span>{
+    <span class="hljs-keyword">if</span>(x == n) <span class="hljs-built_in">print</span>();
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x &lt; n)
+    {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++)
+        {
+            <span class="hljs-keyword">if</span>(s[i] == <span class="hljs-number">0</span> &amp;&amp; lx[x + i] == <span class="hljs-number">0</span> &amp;&amp; rx[i - x + n] == <span class="hljs-number">0</span>) <span class="hljs-comment">//若h[i][x]的横\斜都是0,说明可以放置</span>
+            {
+                h[x][i] = <span class="hljs-number">1</span>; <span class="hljs-comment">//为x,i放置皇后 按行遍历</span>
+                s[i] = lx[x+i] = rx[i - x + n] = <span class="hljs-number">1</span>; <span class="hljs-comment">//将标志设为1</span>
+                <span class="hljs-built_in">dfs</span>(x+<span class="hljs-number">1</span>);
+                h[x][i] = <span class="hljs-number">0</span>;
+                s[i] = lx[x+i] = rx[i - x + n] = <span class="hljs-number">0</span>; <span class="hljs-comment">//将标志设为0</span>
+            }
+        }
+    }
+
+
+}
+
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-comment">//cin &gt;&gt; n;</span>
+    n = <span class="hljs-number">8</span>;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-type">int</span> k, a;
+    cin &gt;&gt; k;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++)
+    {
+        cin &gt;&gt; a;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) cout &lt;&lt; r[a][j];
+        cout &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1833">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

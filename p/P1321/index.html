@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1321 单词覆盖还原 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="我有一个长度为 的字符串，最开始时，这个字符串由 个句号（.）组成。 我在这个字符串中，将多次把 boy 或者 girl 两单词，依次贴到这个字符串中。 后贴上单词，会覆盖之前贴上的单词，或者覆盖句号。最终，每个单词至少有一个字符没有被覆盖。 请问，一共贴有几个 boy 几个 girl？">
+<link rel="canonical" href="https://zymojblog.top/p/P1321/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1321 单词覆盖还原 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="我有一个长度为 的字符串，最开始时，这个字符串由 个句号（.）组成。 我在这个字符串中，将多次把 boy 或者 girl 两单词，依次贴到这个字符串中。 后贴上单词，会覆盖之前贴上的单词，或者覆盖句号。最终，每个单词至少有一个字符没有被覆盖。 请问，一共贴有几个 boy 几个 girl？">
+<meta property="og:url" content="https://zymojblog.top/p/P1321/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1321 单词覆盖还原 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="我有一个长度为 的字符串，最开始时，这个字符串由 个句号（.）组成。 我在这个字符串中，将多次把 boy 或者 girl 两单词，依次贴到这个字符串中。 后贴上单词，会覆盖之前贴上的单词，或者覆盖句号。最终，每个单词至少有一个字符没有被覆盖。 请问，一共贴有几个 boy 几个 girl？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1321 单词覆盖还原","headline":"P1321 单词覆盖还原 题解","description":"我有一个长度为 的字符串，最开始时，这个字符串由 个句号（.）组成。 我在这个字符串中，将多次把 boy 或者 girl 两单词，依次贴到这个字符串中。 后贴上单词，会覆盖之前贴上的单词，或者覆盖句号。最终，每个单词至少有一个字符没有被覆盖。 请问，一共贴有几个 boy 几个 girl？","url":"https://zymojblog.top/p/P1321/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、字符串、洛谷原创","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1321</span></div>
+  <h1 class="seo-title">P1321 单词覆盖还原</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门5】字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1321 单词覆盖还原</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>洛谷原创</code></p>
+<h2>题目描述</h2>
+<p>我有一个长度为 $l$ 的字符串，最开始时，这个字符串由 $l$ 个句号（<code>.</code>）组成。</p>
+<p>我在这个字符串中，将多次把 <code>boy</code> 或者 <code>girl</code> 两单词，依次贴到这个字符串中。</p>
+<p>后贴上单词，会覆盖之前贴上的单词，或者覆盖句号。最终，每个单词至少有一个字符没有被覆盖。</p>
+<p>请问，一共贴有几个 <code>boy</code> 几个 <code>girl</code>？</p>
+<h2>输入格式</h2>
+<p>一行被反复贴有 <code>boy</code> 和 <code>girl</code> 两单词的字符串。</p>
+<h2>输出格式</h2>
+<p>两行，两个整数。第一行为 <code>boy</code> 的个数，第二行为 <code>girl</code> 的个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">......boyogirlyy......girl.......</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span><span class="hljs-comment">//万能头文件</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<span class="hljs-comment">//命名空间 </span>
+<span class="hljs-comment">// 此题只需要找出有连着的 b、o、y 或是 g、i、r、l 的部分，用一个循环逐个判断就能找出所有情况。</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//主函数 </span>
+    string s;
+    cin&gt;&gt;s;
+    <span class="hljs-type">int</span> n=s.<span class="hljs-built_in">size</span>(),boy=<span class="hljs-number">0</span>,girl=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;n;i++){
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;b&#x27;</span>) boy++;
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;o&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-1</span>]!=<span class="hljs-string">&#x27;b&#x27;</span>) boy++;
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;y&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-1</span>]!=<span class="hljs-string">&#x27;o&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-2</span>]!=<span class="hljs-string">&#x27;b&#x27;</span>) boy++;<span class="hljs-comment">//boy的运算</span>
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;g&#x27;</span>) girl++;
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;i&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-1</span>]!=<span class="hljs-string">&#x27;g&#x27;</span>) girl++;
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;r&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-1</span>]!=<span class="hljs-string">&#x27;i&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-2</span>]!=<span class="hljs-string">&#x27;g&#x27;</span>) girl++;
+        <span class="hljs-keyword">if</span> (s[i]==<span class="hljs-string">&#x27;l&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-1</span>]!=<span class="hljs-string">&#x27;r&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-2</span>]!=<span class="hljs-string">&#x27;i&#x27;</span>&amp;&amp;s[i<span class="hljs-number">-3</span>]!=<span class="hljs-string">&#x27;g&#x27;</span>) girl++;<span class="hljs-comment">//girl的运算</span>
+    }
+    cout&lt;&lt;boy&lt;&lt;endl&lt;&lt;girl&lt;&lt;endl;<span class="hljs-comment">//输出结果</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1321">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

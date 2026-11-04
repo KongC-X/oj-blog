@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1182 数列分段 Section II 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="对于给定的一个长度为 的正整数数列 ，现要将其分成 （ ）段，并要求每段连续，且每段和的最大值最小。 关于最大值最小： 例如一数列 要分成 段。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 并且…">
+<link rel="canonical" href="https://zymojblog.top/p/P1182/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1182 数列分段 Section II 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="对于给定的一个长度为 的正整数数列 ，现要将其分成 （ ）段，并要求每段连续，且每段和的最大值最小。 关于最大值最小： 例如一数列 要分成 段。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 并且…">
+<meta property="og:url" content="https://zymojblog.top/p/P1182/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1182 数列分段 Section II 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="对于给定的一个长度为 的正整数数列 ，现要将其分成 （ ）段，并要求每段连续，且每段和的最大值最小。 关于最大值最小： 例如一数列 要分成 段。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 并且…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1182 数列分段 Section II","headline":"P1182 数列分段 Section II 题解","description":"对于给定的一个长度为 的正整数数列 ，现要将其分成 （ ）段，并要求每段连续，且每段和的最大值最小。 关于最大值最小： 例如一数列 要分成 段。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 将其如下分段： 第一段和为 ，第 段和为 ，第 段和为 ，和最大值为 。 并且…","url":"https://zymojblog.top/p/P1182/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、二分、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1182</span></div>
+  <h1 class="seo-title">P1182 数列分段 Section II</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-6】二分查找与二分答案</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1182 数列分段 Section II</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>二分</code>、<code>前缀和</code></p>
+<h2>题目描述</h2>
+<p>对于给定的一个长度为 $N$ 的正整数数列 $A_{1\sim N}$，现要将其分成 $M$（$M\leq N$）段，并要求每段连续，且每段和的最大值最小。</p>
+<p>关于最大值最小：</p>
+<p>例如一数列 $4\ 2\ 4\ 5\ 1$ 要分成 $3$ 段。</p>
+<p>将其如下分段：</p>
+<p>$$[4\ 2][4\ 5][1]$$</p>
+<p>第一段和为 $6$，第 $2$ 段和为 $9$，第 $3$ 段和为 $1$，和最大值为 $9$。</p>
+<p>将其如下分段：</p>
+<p>$$[4][2\ 4][5\ 1]$$</p>
+<p>第一段和为 $4$，第 $2$ 段和为 $6$，第 $3$ 段和为 $6$，和最大值为 $6$。</p>
+<p>并且无论如何分段，最大值不会小于 $6$。</p>
+<p>所以可以得到要将数列 $4\ 2\ 4\ 5\ 1$ 要分成 $3$ 段，每段和的最大值最小为 $6$。</p>
+<h2>输入格式</h2>
+<p>第 $1$ 行包含两个正整数 $N,M$。  </p>
+<p>第 $2$ 行包含 $N$ 个空格隔开的非负整数 $A_i$，含义如题目所述。</p>
+<h2>输出格式</h2>
+<p>一个正整数，即每段和最大值最小为多少。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>6```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 定义全局数组存储数列，最大长度100010（根据题目N最大为10^5）</span>
+<span class="hljs-type">int</span> arr[<span class="hljs-number">100010</span>];
+<span class="hljs-type">int</span> n, m;  <span class="hljs-comment">// n: 数列长度, m: 需要分成的段数</span>
+
+<span class="hljs-comment">// 检查当每段和的最大值限制为limit时，能否将数列分成不超过m段</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> limit)</span> </span>{
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">1</span>;        <span class="hljs-comment">// 当前段数，至少为1段（从第一个元素开始）</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> s = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 当前段的和</span>
+    
+    <span class="hljs-comment">// 遍历数列中的每个元素</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-comment">// 如果单个元素已经超过限制值，直接返回false（因为每个元素必须属于某一段）</span>
+        <span class="hljs-keyword">if</span> (arr[i] &gt; limit) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        
+        <span class="hljs-comment">// 如果当前段加入当前元素后和不超过限制，则加入当前段</span>
+        <span class="hljs-keyword">if</span> (s + arr[i] &lt;= limit) {
+            s += arr[i];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 否则需要开启新的一段</span>
+            cnt++;
+            s = arr[i];  <span class="hljs-comment">// 新段的初始和就是当前元素</span>
+            
+            <span class="hljs-comment">// 如果当前段数已经超过m，说明limit太小，返回false</span>
+            <span class="hljs-keyword">if</span> (cnt &gt; m) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    }
+    <span class="hljs-comment">// 遍历完所有元素后，如果段数不超过m，则满足条件</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 关闭同步流，提高cin/cout速度</span>
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-literal">nullptr</span>);
+    
+    <span class="hljs-comment">// 输入数列长度n和需要分成的段数m</span>
+    cin &gt;&gt; n &gt;&gt; m;
+    
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> total = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 数列所有元素的总和</span>
+    <span class="hljs-type">int</span> mx = <span class="hljs-number">0</span>;           <span class="hljs-comment">// 数列中的最大值</span>
+    
+    <span class="hljs-comment">// 输入数列并计算总和和最大值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        cin &gt;&gt; arr[i];
+        total += arr[i];
+        <span class="hljs-keyword">if</span> (arr[i] &gt; mx) mx = arr[i];
+    }
+    
+    <span class="hljs-comment">// 二分查找：左边界为数列最大值（每段至少包含一个元素），右边界为总和（只分成一段）</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> l = mx, r = total, ans = total;
+    
+    <span class="hljs-comment">// 二分查找模板：寻找满足条件的最小值</span>
+    <span class="hljs-keyword">while</span> (l &lt;= r) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> mid = l + (r - l) / <span class="hljs-number">2</span>;  <span class="hljs-comment">// 防止溢出的写法，等同于(l+r)/2</span>
+        
+        <span class="hljs-comment">// 检查mid是否满足条件</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)) {
+            ans = mid;   <span class="hljs-comment">// 记录当前可行解</span>
+            r = mid - <span class="hljs-number">1</span>; <span class="hljs-comment">// 尝试寻找更小的解（减小每段和限制）</span>
+        } <span class="hljs-keyword">else</span> {
+            l = mid + <span class="hljs-number">1</span>; <span class="hljs-comment">// 当前mid太小，需要增大每段和限制</span>
+        }
+    }
+    
+    <span class="hljs-comment">// 输出答案：每段和的最大值的最小可能值</span>
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1182">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

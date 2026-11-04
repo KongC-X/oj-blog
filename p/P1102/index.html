@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1102 A-B 数对 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出一串正整数数列以及一个正整数 ，要求计算出所有满足 的数对的个数（不同位置的数字一样的数对算不同的数对）。">
+<link rel="canonical" href="https://zymojblog.top/p/P1102/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1102 A-B 数对 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出一串正整数数列以及一个正整数 ，要求计算出所有满足 的数对的个数（不同位置的数字一样的数对算不同的数对）。">
+<meta property="og:url" content="https://zymojblog.top/p/P1102/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1102 A-B 数对 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出一串正整数数列以及一个正整数 ，要求计算出所有满足 的数对的个数（不同位置的数字一样的数对算不同的数对）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1102 A-B 数对","headline":"P1102 A-B 数对 题解","description":"给出一串正整数数列以及一个正整数 ，要求计算出所有满足 的数对的个数（不同位置的数字一样的数对算不同的数对）。","url":"https://zymojblog.top/p/P1102/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、数学、二分、离散化、排序、哈希 hashing、双指针 two-pointer、STL","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1102</span></div>
+  <h1 class="seo-title">P1102 A-B 数对</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-6】二分查找与二分答案</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E7%A6%BB%E6%95%A3%E5%8C%96">离散化</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E5%93%88%E5%B8%8C%20hashing">哈希 hashing</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88%20two-pointer">双指针 two-pointer</a><a class="seo-tag" href="/#/tag/STL">STL</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1102 A-B 数对</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>数学</code>、<code>二分</code>、<code>离散化</code>、<code>排序</code>、<code>哈希 hashing</code>、<code>双指针 two-pointer</code>、<code>STL</code></p>
+<h2>题目背景</h2>
+<p>出题是一件痛苦的事情！</p>
+<p>相同的题目看多了也会有审美疲劳，于是我舍弃了大家所熟悉的 A+B Problem，改用 A-B 了哈哈！</p>
+<h2>题目描述</h2>
+<p>给出一串正整数数列以及一个正整数 $C$，要求计算出所有满足 $A - B = C$ 的数对的个数（不同位置的数字一样的数对算不同的数对）。</p>
+<h2>输入格式</h2>
+<p>输入共两行。</p>
+<p>第一行，两个正整数 $N,C$。</p>
+<p>第二行，第 $i$ 个数为 $a_i$，数字之间用一个空格隔开，共 $N$ 个正整数，作为要求处理的那串数。</p>
+<h2>输出格式</h2>
+<p>一行，表示该串正整数中包含的满足 $A - B = C$ 的数对的个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">200001</span>];
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n,c,s;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        s+=((<span class="hljs-built_in">upper_bound</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>,a[i]+c)-a)-(<span class="hljs-built_in">lower_bound</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>,a[i]+c)-a));
+    }
+    cout&lt;&lt;s&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1102">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

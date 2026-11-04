@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3757 [信息与未来 2021] 摩尔斯电码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="摩尔斯电码就是这样一种早期的数字通信协议，它通过喇叭发声长短来表示不同的英文字母： 1. 点（半角点号 .），喇叭响 单位时间，读作“滴”（ ）； 1. 划（半角减号 -），喇叭响 单位时间，读作“嗒”（ ）； 1. 字符/单词间的停顿，字符停顿 单位时间，单词停顿 单位时间。 下图列出了摩尔斯电…">
+<link rel="canonical" href="https://zymojblog.top/p/B3757/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3757 [信息与未来 2021] 摩尔斯电码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="摩尔斯电码就是这样一种早期的数字通信协议，它通过喇叭发声长短来表示不同的英文字母： 1. 点（半角点号 .），喇叭响 单位时间，读作“滴”（ ）； 1. 划（半角减号 -），喇叭响 单位时间，读作“嗒”（ ）； 1. 字符/单词间的停顿，字符停顿 单位时间，单词停顿 单位时间。 下图列出了摩尔斯电…">
+<meta property="og:url" content="https://zymojblog.top/p/B3757/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3757 [信息与未来 2021] 摩尔斯电码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="摩尔斯电码就是这样一种早期的数字通信协议，它通过喇叭发声长短来表示不同的英文字母： 1. 点（半角点号 .），喇叭响 单位时间，读作“滴”（ ）； 1. 划（半角减号 -），喇叭响 单位时间，读作“嗒”（ ）； 1. 字符/单词间的停顿，字符停顿 单位时间，单词停顿 单位时间。 下图列出了摩尔斯电…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3757 [信息与未来 2021] 摩尔斯电码","headline":"B3757 [信息与未来 2021] 摩尔斯电码 题解","description":"摩尔斯电码就是这样一种早期的数字通信协议，它通过喇叭发声长短来表示不同的英文字母： 1. 点（半角点号 .），喇叭响 单位时间，读作“滴”（ ）； 1. 划（半角减号 -），喇叭响 单位时间，读作“嗒”（ ）； 1. 字符/单词间的停顿，字符停顿 单位时间，单词停顿 单位时间。 下图列出了摩尔斯电…","url":"https://zymojblog.top/p/B3757/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、2021、江苏、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3757</span></div>
+  <h1 class="seo-title">B3757 [信息与未来 2021] 摩尔斯电码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2021">2021</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3757 [信息与未来 2021] 摩尔斯电码</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-04-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>2021</code>、<code>江苏</code>、<code>信息与未来</code></p>
+<h2>题目背景</h2>
+<p>早期的电报机只能表达两种状态：电路导通和电路断开。电路导通时喇叭可以发声；断开时则不发声。如何用这样的机器来传递人类能理解的信号呢？聪明的你一定想到了——时间的长短可以表达不同的含义（例如长代表 $\tt{1}$、短代表 $\tt{0}$），然后再把 $\tt{01}$ 的二进制序列对应到字符就可以啦。</p>
+<h2>题目描述</h2>
+<p>摩尔斯电码就是这样一种早期的数字通信协议，它通过喇叭发声长短来表示不同的英文字母：</p>
+<ol>
+<li>点（半角点号 <code>.</code>），喇叭响 $1$ 单位时间，读作“滴”（$\tt dit$）；</li>
+<li>划（半角减号 <code>-</code>），喇叭响 $3$ 单位时间，读作“嗒”（$\tt dah$）；</li>
+<li>字符/单词间的停顿，字符停顿 $3$ 单位时间，单词停顿 $7$ 单位时间。</li>
+</ol>
+<p>下图列出了摩尔斯电码和英文字母之间的对应：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ztfabvb2.png" alt=""></p>
+<p>例如，大家可以试试把 <code>... --- ...</code> 对照上面的表格翻译成英文（空格代表字符的分割）。没错，这就是著名的 “$\tt SOS$” 紧急求救信号。现在，你需要写一个程序把收到的摩尔斯电码翻译回英文字符。</p>
+<h2>输入格式</h2>
+<p>输入数据的第一行是一个整数 $n$，代表共有 $n$ 个需要解码的英文字母。</p>
+<p>输入数据的第二行包含 $n$ 个摩尔斯电码点/划组成的字符串（字符串之间用一个空格隔开），每个字符串仅包含若干半角减号 <code>-</code> 和半角点号 <code>.</code>，且保证能翻译为 $26$ 个英文字母中的一个。</p>
+<h2>输出格式</h2>
+<p>输出一行，为摩尔斯电码解码后得到的字符串。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+... --- ...```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>SOS```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">35</span>
+- .... . --.- ..- .. -.-. -.- -... .-. --- .-- -. ..-. --- -..- .--- ..- -- .--. ... --- ...- . .-. - .... . .-.. .- --.. -.-- -.. --- --.```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>THEQUICKBROWNFOXJUMPSOVERTHELAZYDOG```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 1. 建立摩尔斯码到字母的对应表（按A~Z顺序）</span>
+    string codes[<span class="hljs-number">26</span>] = {
+        <span class="hljs-string">&quot;.-&quot;</span>,      <span class="hljs-comment">// A</span>
+        <span class="hljs-string">&quot;-...&quot;</span>,    <span class="hljs-comment">// B</span>
+        <span class="hljs-string">&quot;-.-.&quot;</span>,    <span class="hljs-comment">// C</span>
+        <span class="hljs-string">&quot;-..&quot;</span>,     <span class="hljs-comment">// D</span>
+        <span class="hljs-string">&quot;.&quot;</span>,       <span class="hljs-comment">// E</span>
+        <span class="hljs-string">&quot;..-.&quot;</span>,    <span class="hljs-comment">// F</span>
+        <span class="hljs-string">&quot;--.&quot;</span>,     <span class="hljs-comment">// G</span>
+        <span class="hljs-string">&quot;....&quot;</span>,    <span class="hljs-comment">// H</span>
+        <span class="hljs-string">&quot;..&quot;</span>,      <span class="hljs-comment">// I</span>
+        <span class="hljs-string">&quot;.---&quot;</span>,    <span class="hljs-comment">// J</span>
+        <span class="hljs-string">&quot;-.-&quot;</span>,     <span class="hljs-comment">// K</span>
+        <span class="hljs-string">&quot;.-..&quot;</span>,    <span class="hljs-comment">// L</span>
+        <span class="hljs-string">&quot;--&quot;</span>,      <span class="hljs-comment">// M</span>
+        <span class="hljs-string">&quot;-.&quot;</span>,      <span class="hljs-comment">// N</span>
+        <span class="hljs-string">&quot;---&quot;</span>,     <span class="hljs-comment">// O</span>
+        <span class="hljs-string">&quot;.--.&quot;</span>,    <span class="hljs-comment">// P</span>
+        <span class="hljs-string">&quot;--.-&quot;</span>,    <span class="hljs-comment">// Q</span>
+        <span class="hljs-string">&quot;.-.&quot;</span>,     <span class="hljs-comment">// R</span>
+        <span class="hljs-string">&quot;...&quot;</span>,     <span class="hljs-comment">// S</span>
+        <span class="hljs-string">&quot;-&quot;</span>,       <span class="hljs-comment">// T</span>
+        <span class="hljs-string">&quot;..-&quot;</span>,     <span class="hljs-comment">// U</span>
+        <span class="hljs-string">&quot;...-&quot;</span>,    <span class="hljs-comment">// V</span>
+        <span class="hljs-string">&quot;.--&quot;</span>,     <span class="hljs-comment">// W</span>
+        <span class="hljs-string">&quot;-..-&quot;</span>,    <span class="hljs-comment">// X</span>
+        <span class="hljs-string">&quot;-.--&quot;</span>,    <span class="hljs-comment">// Y</span>
+        <span class="hljs-string">&quot;--..&quot;</span>     <span class="hljs-comment">// Z</span>
+    };
+
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 2. 逐个读取摩尔斯码并翻译</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        string s;
+        cin &gt;&gt; s;   <span class="hljs-comment">// 读入一个摩尔斯码</span>
+
+        <span class="hljs-comment">// 在表中查找匹配</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">26</span>; j++) {
+            <span class="hljs-keyword">if</span> (codes[j] == s) {
+                <span class="hljs-comment">// 输出对应的大写字母（A的ASCII码是65）</span>
+                cout &lt;&lt; <span class="hljs-built_in">char</span>(<span class="hljs-string">&#x27;A&#x27;</span> + j);
+                <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// 找到就跳出内层循环</span>
+            }
+        }
+    }
+    cout &lt;&lt; endl;   <span class="hljs-comment">// 最后输出换行</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3757">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

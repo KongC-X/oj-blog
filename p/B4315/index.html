@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4315 [语言月赛 202504] 地铁停靠 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一路地铁依次经过 个站点，编号依次为 。地铁从第 个站点到第 个站点需要用 秒，而地铁到第 站时会停 秒。 小 M 想从第 站坐地铁到第 站。那么他在地铁上的最长时间是多少？ 注：最长时间，即地铁刚到第 站就上地铁，地铁即将离开第 站才下地铁的情况下，小 M 在地铁上的时间。单位为秒。">
+<link rel="canonical" href="https://zymojblog.top/p/B4315/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4315 [语言月赛 202504] 地铁停靠 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一路地铁依次经过 个站点，编号依次为 。地铁从第 个站点到第 个站点需要用 秒，而地铁到第 站时会停 秒。 小 M 想从第 站坐地铁到第 站。那么他在地铁上的最长时间是多少？ 注：最长时间，即地铁刚到第 站就上地铁，地铁即将离开第 站才下地铁的情况下，小 M 在地铁上的时间。单位为秒。">
+<meta property="og:url" content="https://zymojblog.top/p/B4315/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4315 [语言月赛 202504] 地铁停靠 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一路地铁依次经过 个站点，编号依次为 。地铁从第 个站点到第 个站点需要用 秒，而地铁到第 站时会停 秒。 小 M 想从第 站坐地铁到第 站。那么他在地铁上的最长时间是多少？ 注：最长时间，即地铁刚到第 站就上地铁，地铁即将离开第 站才下地铁的情况下，小 M 在地铁上的时间。单位为秒。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4315 [语言月赛 202504] 地铁停靠","headline":"B4315 [语言月赛 202504] 地铁停靠 题解","description":"一路地铁依次经过 个站点，编号依次为 。地铁从第 个站点到第 个站点需要用 秒，而地铁到第 站时会停 秒。 小 M 想从第 站坐地铁到第 站。那么他在地铁上的最长时间是多少？ 注：最长时间，即地铁刚到第 站就上地铁，地铁即将离开第 站才下地铁的情况下，小 M 在地铁上的时间。单位为秒。","url":"https://zymojblog.top/p/B4315/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2025、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4315</span></div>
+  <h1 class="seo-title">B4315 [语言月赛 202504] 地铁停靠</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4315 [语言月赛 202504] 地铁停靠</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-01</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>一路地铁依次经过 $n$ 个站点，编号依次为 $1\sim n$。地铁从第 $i$ 个站点到第 $i+1$ 个站点需要用 $t_i$ 秒，而地铁到第 $i$ 站时会停 $s_i$ 秒。</p>
+<p>小 M 想从第 $x$ 站坐地铁到第 $y$ 站。那么他在地铁上的<strong>最长时间</strong>是多少？</p>
+<p>注：<strong>最长时间</strong>，即地铁刚到第 $x$ 站就上地铁，地铁即将离开第 $y$ 站才下地铁的情况下，小 M 在地铁上的时间。单位为秒。</p>
+<h2>输入格式</h2>
+<p>第一行有一个正整数 $n$，表示经过的站点数目。</p>
+<p>第二行有 $n-1$ 个正整数 $t_1,t_2,\ldots, t_{n-1}$，表示地铁在相邻两站之间的用时。</p>
+<p>第三行有 $n$ 个正整数 $s_1,s_2,\ldots,s_n$，表示地铁在每一站的停靠时间。</p>
+<p>最后一行有两个正整数 $x,y$，表示小 M 想从第 $x$ 站坐到第 $y$ 站。</p>
+<h2>输出格式</h2>
+<p>输出一行一个正整数，表示小 M 在地铁上的最长时间，单位为秒。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">150</span> <span class="hljs-number">180</span> <span class="hljs-number">170</span>
+<span class="hljs-number">35</span> <span class="hljs-number">32</span> <span class="hljs-number">33</span> <span class="hljs-number">34</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">449</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">300</span> <span class="hljs-number">300</span> <span class="hljs-number">300</span> <span class="hljs-number">300</span>
+<span class="hljs-number">40</span> <span class="hljs-number">40</span> <span class="hljs-number">40</span> <span class="hljs-number">40</span> <span class="hljs-number">40</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">720</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">150</span> <span class="hljs-number">180</span> <span class="hljs-number">170</span>
+<span class="hljs-number">35</span> <span class="hljs-number">32</span> <span class="hljs-number">33</span> <span class="hljs-number">34</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span></code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">634</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】简单模拟
+     * 【核心思路】
+     * 1. 读入 n，t[1..n-1]，s[1..n]，x, y。
+     * 2. 累加停靠时间：for i = x to y: sum_s += s[i]
+     * 3. 累加行驶时间：for i = x to y-1: sum_t += t[i]
+     * 4. 输出 sum_s + sum_t
+     *
+     * 【时间复杂度】O(n)
+     */</span>
+
+    <span class="hljs-type">int</span> n;          <span class="hljs-comment">// n: 站点数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">int</span> t[<span class="hljs-number">55</span>];      <span class="hljs-comment">// t[i]: 从 i 到 i+1 的行驶时间</span>
+    <span class="hljs-type">int</span> s[<span class="hljs-number">55</span>];      <span class="hljs-comment">// s[i]: 第 i 站的停靠时间</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n<span class="hljs-number">-1</span>; i++) {
+        cin &gt;&gt; t[i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; s[i];
+    }
+
+    <span class="hljs-type">int</span> x, y;       <span class="hljs-comment">// x: 起点站, y: 终点站</span>
+    cin &gt;&gt; x &gt;&gt; y;
+
+    <span class="hljs-type">int</span> sum_s = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 停靠总时间</span>
+    <span class="hljs-type">int</span> <span class="hljs-type">sum_t</span> = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 行驶总时间</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = x; i &lt;= y; i++) {
+        sum_s += s[i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = x; i &lt;= y - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-type">sum_t</span> += t[i];
+    }
+
+    <span class="hljs-type">int</span> ans = sum_s + <span class="hljs-type">sum_t</span>;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4315">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

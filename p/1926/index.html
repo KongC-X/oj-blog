@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1926 立方体积木Cube Stacking 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="约翰和贝茜在玩一个方块游戏。编号为 … 的 ( )个方块正放在地上，每个构成一个立方柱。 游戏开始后，约翰会给贝茜发出 ( )个指令。指令有两种： 移动（M）：将包含 的立方柱移动到包含 的立方柱上。 统计（C）：统计含 的立方柱中，在 下方的方块数目。 写个程序帮贝茜完成游戏。">
+<link rel="canonical" href="https://zymojblog.top/p/1926/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1926 立方体积木Cube Stacking 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="约翰和贝茜在玩一个方块游戏。编号为 … 的 ( )个方块正放在地上，每个构成一个立方柱。 游戏开始后，约翰会给贝茜发出 ( )个指令。指令有两种： 移动（M）：将包含 的立方柱移动到包含 的立方柱上。 统计（C）：统计含 的立方柱中，在 下方的方块数目。 写个程序帮贝茜完成游戏。">
+<meta property="og:url" content="https://zymojblog.top/p/1926/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1926 立方体积木Cube Stacking 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="约翰和贝茜在玩一个方块游戏。编号为 … 的 ( )个方块正放在地上，每个构成一个立方柱。 游戏开始后，约翰会给贝茜发出 ( )个指令。指令有两种： 移动（M）：将包含 的立方柱移动到包含 的立方柱上。 统计（C）：统计含 的立方柱中，在 下方的方块数目。 写个程序帮贝茜完成游戏。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1926 立方体积木Cube Stacking","headline":"1926 立方体积木Cube Stacking 题解","description":"约翰和贝茜在玩一个方块游戏。编号为 … 的 ( )个方块正放在地上，每个构成一个立方柱。 游戏开始后，约翰会给贝茜发出 ( )个指令。指令有两种： 移动（M）：将包含 的立方柱移动到包含 的立方柱上。 统计（C）：统计含 的立方柱中，在 下方的方块数目。 写个程序帮贝茜完成游戏。","url":"https://zymojblog.top/p/1926/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"USACO、带权并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1926</span></div>
+  <h1 class="seo-title">1926 立方体积木Cube Stacking</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E5%B8%A6%E6%9D%83%E5%B9%B6%E6%9F%A5%E9%9B%86">带权并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>1926 - 立方体积木Cube Stacking</h1>
+<h2>题目描述</h2>
+<p>约翰和贝茜在玩一个方块游戏。编号为 $ 1 $…$ n $的$n$($ 1 ≤ n ≤ 30000 $)个方块正放在地上，每个构成一个立方柱。</p>
+<p>游戏开始后，约翰会给贝茜发出 $P$($1 ≤ P ≤ 100000 $)个指令。指令有两种：</p>
+<p>移动（M）：将包含 $X$ 的立方柱移动到包含 $Y$ 的立方柱上。</p>
+<p>统计（C）：统计含 $X$ 的立方柱中，在 $X$ 下方的方块数目。</p>
+<p>写个程序帮贝茜完成游戏。</p>
+<h2>输入</h2>
+<p>第 $ 1 $ 行输入 $ P $，之后 $ P $ 行每行输入一条指令，形式为 M X Y 或者 C X。</p>
+<p>输入保证不会有将立方柱放在自己头上的指令。</p>
+<h2>输出</h2>
+<p>输出共 $ P $ 行，对于每个统计指令，输出其结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">30010</span>;
+<span class="hljs-type">int</span> f[N];<span class="hljs-comment">//表示关系</span>
+<span class="hljs-type">int</span> dis[N];<span class="hljs-comment">//表示每个元素离根的距离</span>
+<span class="hljs-type">int</span> len[N];<span class="hljs-comment">//表示第i列有几个立方块</span>
+<span class="hljs-type">int</span> p;
+
+<span class="hljs-comment">// 查询</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-keyword">if</span>(f[x] == x) <span class="hljs-keyword">return</span> x;
+    <span class="hljs-keyword">else</span>{
+        <span class="hljs-type">int</span> t=f[x];<span class="hljs-comment">//记录当前父节点的编号</span>
+        f[x]=<span class="hljs-built_in">find</span>(f[x]);<span class="hljs-comment">//递归找根</span>
+        dis[x] = dis[x] + dis[t]; <span class="hljs-comment">//回溯的时候，更新dis的值</span>
+        <span class="hljs-keyword">return</span> f[x];
+    }
+}
+
+<span class="hljs-comment">// 合并</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span></span>{
+    <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+    <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+    <span class="hljs-keyword">if</span>(fx != fy){
+        f[fx] = fy;
+        <span class="hljs-comment">//更新dis</span>
+        dis[fx] = dis[fx] + len[fy];
+        <span class="hljs-comment">//更新该列中方块的数量</span>
+        len[fy] = len[fy] + len[fx];
+        len[fx] = <span class="hljs-number">0</span>; <span class="hljs-comment">//合并后，fx的列没有立方块了</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;p;
+    <span class="hljs-comment">//初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">30000</span>;i++) {
+        f[i]= i;
+        len[i]=<span class="hljs-number">1</span>;<span class="hljs-comment">// /默认每一列有1个元素</span>
+    }
+    <span class="hljs-comment">//读入指令</span>
+    <span class="hljs-type">char</span> c;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=p;i++) {
+        cin&gt;&gt;c&gt;&gt;x;
+        <span class="hljs-comment">//如果是查询</span>
+        <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;C&#x27;</span>){
+            <span class="hljs-built_in">find</span>(x);<span class="hljs-comment">//更新dis的值，做路径压缩</span>
+            cout&lt;&lt;dis[x]&lt;&lt;endl;
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-comment">//移动  </span>
+            cin&gt;&gt;y;
+            <span class="hljs-built_in">merge</span>(x, y);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1926">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

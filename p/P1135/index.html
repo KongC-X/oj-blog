@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1135 奇怪的电梯 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="呵呵，有一天我做了一个梦，梦见了一种很奇怪的电梯。大楼的每一层楼都可以停电梯，而且第 层楼（ ）上有一个数字 （ ）。电梯只有四个按钮：开，关，上，下。上下的层数等于当前楼层上的那个数字。当然，如果不能满足要求，相应的按钮就会失灵。例如： 代表了 （ ， ，……），从 楼开始。在 楼，按“上”可以…">
+<link rel="canonical" href="https://zymojblog.top/p/P1135/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1135 奇怪的电梯 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="呵呵，有一天我做了一个梦，梦见了一种很奇怪的电梯。大楼的每一层楼都可以停电梯，而且第 层楼（ ）上有一个数字 （ ）。电梯只有四个按钮：开，关，上，下。上下的层数等于当前楼层上的那个数字。当然，如果不能满足要求，相应的按钮就会失灵。例如： 代表了 （ ， ，……），从 楼开始。在 楼，按“上”可以…">
+<meta property="og:url" content="https://zymojblog.top/p/P1135/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1135 奇怪的电梯 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="呵呵，有一天我做了一个梦，梦见了一种很奇怪的电梯。大楼的每一层楼都可以停电梯，而且第 层楼（ ）上有一个数字 （ ）。电梯只有四个按钮：开，关，上，下。上下的层数等于当前楼层上的那个数字。当然，如果不能满足要求，相应的按钮就会失灵。例如： 代表了 （ ， ，……），从 楼开始。在 楼，按“上”可以…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1135 奇怪的电梯","headline":"P1135 奇怪的电梯 题解","description":"呵呵，有一天我做了一个梦，梦见了一种很奇怪的电梯。大楼的每一层楼都可以停电梯，而且第 层楼（ ）上有一个数字 （ ）。电梯只有四个按钮：开，关，上，下。上下的层数等于当前楼层上的那个数字。当然，如果不能满足要求，相应的按钮就会失灵。例如： 代表了 （ ， ，……），从 楼开始。在 楼，按“上”可以…","url":"https://zymojblog.top/p/P1135/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、广度优先搜索 BFS、深度优先搜索 DFS、最短路","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1135</span></div>
+  <h1 class="seo-title">P1135 奇怪的电梯</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-7】搜索</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E7%9F%AD%E8%B7%AF">最短路</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1135 奇怪的电梯</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>最短路</code></p>
+<h2>题目背景</h2>
+<p>感谢 @<a href="https://www.luogu.com.cn/user/101694">yummy</a> 提供的一些数据。</p>
+<h2>题目描述</h2>
+<p>呵呵，有一天我做了一个梦，梦见了一种很奇怪的电梯。大楼的每一层楼都可以停电梯，而且第 $i$ 层楼（$1 \le i \le N$）上有一个数字 $K_i$（$0 \le K_i \le N$）。电梯只有四个按钮：开，关，上，下。上下的层数等于当前楼层上的那个数字。当然，如果不能满足要求，相应的按钮就会失灵。例如：$3, 3, 1, 2, 5$ 代表了 $K_i$（$K_1=3$，$K_2=3$，……），从 $1$ 楼开始。在 $1$ 楼，按“上”可以到 $4$ 楼，按“下”是不起作用的，因为没有 $-2$ 楼。那么，从 $A$ 楼到 $B$ 楼至少要按几次按钮呢？</p>
+<h2>输入格式</h2>
+<p>共二行。  </p>
+<p>第一行为三个用空格隔开的正整数，表示 $N, A, B$（$1 \le N \le 200$，$1 \le A, B \le N$）。</p>
+<p>第二行为 $N$ 个用空格隔开的非负整数，表示 $K_i$。</p>
+<h2>输出格式</h2>
+<p>一行，即最少按键次数，若无法到达，则输出 <code>-1</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">5</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> q[<span class="hljs-number">210</span>][<span class="hljs-number">3</span>];<span class="hljs-comment">//走到每个点及最少步数</span>
+<span class="hljs-type">int</span> h,t;
+<span class="hljs-type">int</span> fx[<span class="hljs-number">3</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> a[<span class="hljs-number">210</span>];
+<span class="hljs-type">bool</span> f[<span class="hljs-number">210</span>];<span class="hljs-comment">//标记走过</span>
+<span class="hljs-type">int</span> s,e;<span class="hljs-comment">//起止点 </span>
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;s&gt;&gt;e;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    
+    <span class="hljs-comment">//特判起点 == 终点的情况</span>
+    <span class="hljs-keyword">if</span>(s == e){
+        cout&lt;&lt;<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    } 
+    
+    <span class="hljs-comment">//bfs求从s点到e点的最少步数</span>
+    h = <span class="hljs-number">1</span>;
+    t = <span class="hljs-number">1</span>;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = s;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>] = <span class="hljs-number">0</span>;
+    f[s] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//走过标记</span>
+    
+    <span class="hljs-type">int</span> tx,ty;<span class="hljs-comment">//表示要去的点 </span>
+    <span class="hljs-keyword">while</span>(h &lt;= t){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span>;i++){
+            tx = q[h][<span class="hljs-number">1</span>] + fx[i] * a[q[h][<span class="hljs-number">1</span>]];
+            <span class="hljs-comment">//如果该层可以走</span>
+            <span class="hljs-keyword">if</span>(tx&gt;=<span class="hljs-number">1</span>&amp;&amp;tx&lt;=n&amp;&amp;f[tx]==<span class="hljs-literal">false</span>){
+                <span class="hljs-comment">//入队，标记，判终点</span>
+                t++;
+                q[t][<span class="hljs-number">1</span>] = tx;
+                q[t][<span class="hljs-number">2</span>] = q[h][<span class="hljs-number">2</span>] + <span class="hljs-number">1</span>;
+                f[tx] = <span class="hljs-literal">true</span>;
+                
+                <span class="hljs-comment">//判终点</span>
+                <span class="hljs-keyword">if</span>(tx == e){
+                    cout&lt;&lt;q[t][<span class="hljs-number">2</span>];
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                } 
+            } 
+        }
+        
+        h++;
+    } 
+    
+    cout&lt;&lt;<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1135">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

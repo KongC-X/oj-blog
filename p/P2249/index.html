@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2249 【深基13.例1】查找 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="输入 个不超过 的单调不减的（就是后面的数字不小于前面的数字）非负整数 ，然后进行 次询问。对于每次询问，给出一个整数 ，要求输出这个数字在序列中第一次出现的编号，如果没有找到的话输出 。">
+<link rel="canonical" href="https://zymojblog.top/p/P2249/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2249 【深基13.例1】查找 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="输入 个不超过 的单调不减的（就是后面的数字不小于前面的数字）非负整数 ，然后进行 次询问。对于每次询问，给出一个整数 ，要求输出这个数字在序列中第一次出现的编号，如果没有找到的话输出 。">
+<meta property="og:url" content="https://zymojblog.top/p/P2249/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2249 【深基13.例1】查找 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="输入 个不超过 的单调不减的（就是后面的数字不小于前面的数字）非负整数 ，然后进行 次询问。对于每次询问，给出一个整数 ，要求输出这个数字在序列中第一次出现的编号，如果没有找到的话输出 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2249 【深基13.例1】查找","headline":"P2249 【深基13.例1】查找 题解","description":"输入 个不超过 的单调不减的（就是后面的数字不小于前面的数字）非负整数 ，然后进行 次询问。对于每次询问，给出一个整数 ，要求输出这个数字在序列中第一次出现的编号，如果没有找到的话输出 。","url":"https://zymojblog.top/p/P2249/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"二分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2249</span></div>
+  <h1 class="seo-title">P2249 【深基13.例1】查找</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-6】二分查找与二分答案</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2249 【深基13.例1】查找</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>二分</code></p>
+<h2>题目描述</h2>
+<p>输入 $n$ 个不超过 $10^9$ 的单调不减的（就是后面的数字不小于前面的数字）非负整数 $a_1,a_2,\dots,a_{n}$，然后进行 $m$ 次询问。对于每次询问，给出一个整数 $q$，要求输出这个数字在序列中第一次出现的编号，如果没有找到的话输出 $-1$ 。</p>
+<h2>输入格式</h2>
+<p>第一行 $2$ 个整数 $n$ 和 $m$，表示数字个数和询问次数。</p>
+<p>第二行 $n$ 个整数，表示这些待查询的数字。</p>
+<p>第三行 $m$ 个整数，表示询问这些数字的编号，从 $1$ 开始编号。</p>
+<h2>输出格式</h2>
+<p>输出一行，$m$ 个整数，以空格隔开，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">11</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span> <span class="hljs-number">11</span> <span class="hljs-number">13</span> <span class="hljs-number">15</span> <span class="hljs-number">15</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1 2 -1 ```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1000010</span>], m, n, q;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n + <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (l &lt; r){
+        <span class="hljs-type">int</span> mid = l + (r - l) / <span class="hljs-number">2</span>; <span class="hljs-comment">// 中间页数</span>
+        <span class="hljs-keyword">if</span>(a[mid] &gt;= x){
+            r = mid; <span class="hljs-comment">// 在左半部分</span>
+        }
+        <span class="hljs-keyword">else</span>{
+            l = mid + <span class="hljs-number">1</span>; <span class="hljs-comment">// 在右半部分</span>
+        }
+    }
+    <span class="hljs-keyword">if</span>(a[l] == x) {
+        <span class="hljs-keyword">return</span> l;
+    }<span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++){
+        cin &gt;&gt; a[i];
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++){
+        cin &gt;&gt; q;
+        cout &lt;&lt; <span class="hljs-built_in">find</span>(q) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2249">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

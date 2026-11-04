@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2708 硬币翻转 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有很多个硬币摆在一行，有正面朝上的，也有背面朝上的。正面朝上的用 表示，背面朝上的用 表示。 现在要求从这行的第一个硬币开始，将从第一个硬币开始的前若干个硬币同时翻面，求如果要将所有硬币翻到正面朝上，最少要进行这样的操作多少次？">
+<link rel="canonical" href="https://zymojblog.top/p/P2708/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2708 硬币翻转 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有很多个硬币摆在一行，有正面朝上的，也有背面朝上的。正面朝上的用 表示，背面朝上的用 表示。 现在要求从这行的第一个硬币开始，将从第一个硬币开始的前若干个硬币同时翻面，求如果要将所有硬币翻到正面朝上，最少要进行这样的操作多少次？">
+<meta property="og:url" content="https://zymojblog.top/p/P2708/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2708 硬币翻转 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有很多个硬币摆在一行，有正面朝上的，也有背面朝上的。正面朝上的用 表示，背面朝上的用 表示。 现在要求从这行的第一个硬币开始，将从第一个硬币开始的前若干个硬币同时翻面，求如果要将所有硬币翻到正面朝上，最少要进行这样的操作多少次？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2708 硬币翻转","headline":"P2708 硬币翻转 题解","description":"有很多个硬币摆在一行，有正面朝上的，也有背面朝上的。正面朝上的用 表示，背面朝上的用 表示。 现在要求从这行的第一个硬币开始，将从第一个硬币开始的前若干个硬币同时翻面，求如果要将所有硬币翻到正面朝上，最少要进行这样的操作多少次？","url":"https://zymojblog.top/p/P2708/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、搜索","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2708</span></div>
+  <h1 class="seo-title">P2708 硬币翻转</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2708 硬币翻转</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>搜索</code></p>
+<h2>题目描述</h2>
+<p>有很多个硬币摆在一行，有正面朝上的，也有背面朝上的。正面朝上的用 $1$ 表示，背面朝上的用 $0$ 表示。</p>
+<p>现在要求从这行的第一个硬币开始，将<strong>从第一个硬币开始的前若干个硬币</strong>同时翻面，求如果要将所有硬币翻到正面朝上，最少要进行这样的操作多少次？</p>
+<h2>输入格式</h2>
+<p>一个字符串，由 $0$ 和 $1$ 组成，表示硬币的初始状态。</p>
+<h2>输出格式</h2>
+<p>一个整数，表示要翻转的最少次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】贪心 / 思维
+     * 【核心思路】
+     * 操作规则：每次可以选择从第一个硬币开始的前若干个硬币（一个前缀）同时翻面。
+     * 
+     * 关键观察：
+     * 1. 翻面操作只会改变前缀区间的状态，不会改变未选中的部分。
+     * 2. 最终目标是所有硬币变为 &#x27;1&#x27;。
+     * 3. 从左到右扫描，每当遇到当前字符和前一个字符不同时，意味着这两个位置之间
+     *    必须有一次翻转操作，才能让它们变成相同（因为翻转前缀会影响所有位置，
+     *    但只有分界点需要额外处理）。
+     *    例如 &quot;10&quot;：第一个是1，第二个是0，不同，需要一次翻转（翻转第1个变0，得到&quot;00&quot;）；
+     *    再从0到1的不同再需要一次翻转（翻转前两个变1，得到&quot;11&quot;）。所以相邻不同就计数。
+     * 4. 另外，如果最后一个字符是 &#x27;0&#x27;，因为最终要求全部为 &#x27;1&#x27;，而翻转操作只能翻转前缀，
+     *    最后一个字符若为0，则必须通过一次翻转整个字符串（前缀长度为n）来把它变成1，
+     *    所以需要额外加1次。
+     * 
+     * 综上所述：
+     *   答案 = (相邻字符不同的次数) + (最后一个字符是否为 &#x27;0&#x27; ? 1 : 0)
+     * 
+     * 【时间复杂度】O(n)，n为字符串长度，最坏1e6，完全可行。
+     */</span>
+
+    string s;          <span class="hljs-comment">// s: 输入的硬币状态字符串</span>
+    cin &gt;&gt; s;
+
+    <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();  <span class="hljs-comment">// n: 字符串长度</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;       <span class="hljs-comment">// ans: 最少翻转次数</span>
+
+    <span class="hljs-comment">// 统计相邻不同的次数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (s[i] != s[i<span class="hljs-number">-1</span>]) {
+            ans++;
+        }
+    }
+
+    <span class="hljs-comment">// 如果最后一位是 &#x27;0&#x27;，需要额外一次翻转整个字符串</span>
+    <span class="hljs-keyword">if</span> (s[n<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;0&#x27;</span>) {
+        ans++;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2708">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

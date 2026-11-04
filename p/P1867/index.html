@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1867 【Mc生存】经验值 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="话说 clearman 在 MC 世界开了个祥艺奶牛场，用岩浆、TNT 等丧心病狂的折磨牛，获取牛肉、牛奶等刷经验。他想知道他到底达到什么层次。 他总共进行了 项操作，每次操作要付出 生命值（初始生命是 点，初一党都知道！并且要先计算付出的生命值，如果小于等于 ，则死亡，本次及以下操作都无效。但切…">
+<link rel="canonical" href="https://zymojblog.top/p/P1867/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1867 【Mc生存】经验值 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="话说 clearman 在 MC 世界开了个祥艺奶牛场，用岩浆、TNT 等丧心病狂的折磨牛，获取牛肉、牛奶等刷经验。他想知道他到底达到什么层次。 他总共进行了 项操作，每次操作要付出 生命值（初始生命是 点，初一党都知道！并且要先计算付出的生命值，如果小于等于 ，则死亡，本次及以下操作都无效。但切…">
+<meta property="og:url" content="https://zymojblog.top/p/P1867/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1867 【Mc生存】经验值 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="话说 clearman 在 MC 世界开了个祥艺奶牛场，用岩浆、TNT 等丧心病狂的折磨牛，获取牛肉、牛奶等刷经验。他想知道他到底达到什么层次。 他总共进行了 项操作，每次操作要付出 生命值（初始生命是 点，初一党都知道！并且要先计算付出的生命值，如果小于等于 ，则死亡，本次及以下操作都无效。但切…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1867 【Mc生存】经验值","headline":"P1867 【Mc生存】经验值 题解","description":"话说 clearman 在 MC 世界开了个祥艺奶牛场，用岩浆、TNT 等丧心病狂的折磨牛，获取牛肉、牛奶等刷经验。他想知道他到底达到什么层次。 他总共进行了 项操作，每次操作要付出 生命值（初始生命是 点，初一党都知道！并且要先计算付出的生命值，如果小于等于 ，则死亡，本次及以下操作都无效。但切…","url":"https://zymojblog.top/p/P1867/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、洛谷原创","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1867</span></div>
+  <h1 class="seo-title">P1867 【Mc生存】经验值</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1867 【Mc生存】经验值</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-06-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>洛谷原创</code></p>
+<h2>题目描述</h2>
+<p>话说 clearman 在 MC 世界开了个祥艺奶牛场，用岩浆、TNT 等丧心病狂的折磨牛，获取牛肉、牛奶等刷经验。他想知道他到底达到什么层次。</p>
+<p>他总共进行了 $n$ 项操作，每次操作要付出 $x$ 生命值（初始生命是 $10$ 点，初一党都知道！并且要先计算付出的生命值，如果小于等于 $0$，则死亡，本次及以下操作都无效。但切记：付出生命值可以是负数，也就是说可以回复 $−x$ 点生命值，但上限只能是 $10$！切记！），每次操作可以获得 $a$ 经验值（不能为负），他最后能达到 $m$ 级 $t$ 经验。</p>
+<p>P.S. 关于等级</p>
+<p>初始等级为 $0$。每加 $2^m$（$m$ 为当前等级）点经验可升一级。  </p>
+<p>1、假设 clearman 一共得到 $15$ 点经验，那么他应该为 $4$ 级（ $15-1-2-4-8=0$）加 $0$ 点经验。<br>2、假设 clearman 一共获得 $39$ 点经验，那么他应该为 $5$ 级（ $39-1-2-4-8-16=8$）加 $8$ 点经验。</p>
+<h2>输入格式</h2>
+<p>第一行一个正整数 $n$，表示操作个数。</p>
+<p>接下来 $n$ 行，每行两个数，为 clearman 的一次操作。</p>
+<h2>输出格式</h2>
+<p>一行，为等级和经验值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">5.5</span> <span class="hljs-number">15</span>
+<span class="hljs-number">4.5</span> <span class="hljs-number">24</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">0</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n;                           <span class="hljs-comment">// 操作次数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">double</span> hp = <span class="hljs-number">10.0</span>;                <span class="hljs-comment">// 初始生命值</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 累计获得的总经验值</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">double</span> x;                    <span class="hljs-comment">// 本次付出的生命值（可为负）</span>
+        <span class="hljs-type">int</span> a;                       <span class="hljs-comment">// 本次获得的经验值</span>
+        cin &gt;&gt; x &gt;&gt; a;
+
+        <span class="hljs-type">double</span> nhp = hp - x;         <span class="hljs-comment">// 计算付出后的生命值</span>
+        <span class="hljs-keyword">if</span> (nhp &gt; <span class="hljs-number">10.0</span>) nhp = <span class="hljs-number">10.0</span>;  <span class="hljs-comment">// 生命值上限为10</span>
+        <span class="hljs-keyword">if</span> (nhp &lt;= <span class="hljs-number">0.0</span>) <span class="hljs-keyword">break</span>;       <span class="hljs-comment">// 死亡，本次及以后操作无效</span>
+        hp = nhp;
+        sum += a;
+    }
+
+    <span class="hljs-comment">// 计算等级和剩余经验</span>
+    <span class="hljs-type">int</span> lv = <span class="hljs-number">0</span>;                      <span class="hljs-comment">// 当前等级</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> need = <span class="hljs-number">1</span>;              <span class="hljs-comment">// 升到下一级所需经验值</span>
+    <span class="hljs-keyword">while</span> (sum &gt;= need) {
+        sum -= need;
+        lv++;
+        need *= <span class="hljs-number">2</span>;
+    }
+
+    cout &lt;&lt; lv &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; sum &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1867">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

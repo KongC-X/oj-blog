@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4579 [GESP202609 四级] 新汉诺塔 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="汉诺塔问题是最经典的递推问题之一： 有三个可以放圆盘柱子，编号为 、 和 。 开始时柱子 上套着 个圆盘，它们从上到下按照从小到大的顺序排列。 我们的任务是要把这 个圆盘移到柱子 上，并保持它们的原有顺序不变。 在移动圆盘的过程中，需要遵守以下规则： 1. 圆盘只能从一根柱子顶部拿出，从另一根柱子…">
+<link rel="canonical" href="https://zymojblog.top/p/B4579/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4579 [GESP202609 四级] 新汉诺塔 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="汉诺塔问题是最经典的递推问题之一： 有三个可以放圆盘柱子，编号为 、 和 。 开始时柱子 上套着 个圆盘，它们从上到下按照从小到大的顺序排列。 我们的任务是要把这 个圆盘移到柱子 上，并保持它们的原有顺序不变。 在移动圆盘的过程中，需要遵守以下规则： 1. 圆盘只能从一根柱子顶部拿出，从另一根柱子…">
+<meta property="og:url" content="https://zymojblog.top/p/B4579/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4579 [GESP202609 四级] 新汉诺塔 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="汉诺塔问题是最经典的递推问题之一： 有三个可以放圆盘柱子，编号为 、 和 。 开始时柱子 上套着 个圆盘，它们从上到下按照从小到大的顺序排列。 我们的任务是要把这 个圆盘移到柱子 上，并保持它们的原有顺序不变。 在移动圆盘的过程中，需要遵守以下规则： 1. 圆盘只能从一根柱子顶部拿出，从另一根柱子…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4579 [GESP202609 四级] 新汉诺塔","headline":"B4579 [GESP202609 四级] 新汉诺塔 题解","description":"汉诺塔问题是最经典的递推问题之一： 有三个可以放圆盘柱子，编号为 、 和 。 开始时柱子 上套着 个圆盘，它们从上到下按照从小到大的顺序排列。 我们的任务是要把这 个圆盘移到柱子 上，并保持它们的原有顺序不变。 在移动圆盘的过程中，需要遵守以下规则： 1. 圆盘只能从一根柱子顶部拿出，从另一根柱子…","url":"https://zymojblog.top/p/B4579/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"递推、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4579</span></div>
+  <h1 class="seo-title">B4579 [GESP202609 四级] 新汉诺塔</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4579 [GESP202609 四级] 新汉诺塔</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>递推</code>、<code>2026</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>汉诺塔问题是最经典的递推问题之一：</p>
+<p>有三个可以放圆盘柱子，编号为 $A$、$B$ 和 $C$。</p>
+<p>开始时柱子 $A$ 上套着 $n$ 个圆盘，它们从上到下按照从小到大的顺序排列。</p>
+<p>我们的任务是要把这 $n$ 个圆盘移到柱子 $C$ 上，并保持它们的原有顺序不变。</p>
+<p>在移动圆盘的过程中，需要遵守以下规则：</p>
+<ol>
+<li>圆盘只能从一根柱子顶部拿出，从另一根柱子顶部放入。</li>
+<li>每次只能移动一个圆盘。</li>
+<li>小圆盘必须时刻位于大圆盘之上。</li>
+</ol>
+<p>小杨在学习了汉诺塔问题后，决定添加一个新规则：</p>
+<ol start="4">
+<li>每一次移动，圆盘只能从 $A$ 移动到 $B$，从 $B$ 移动到 $C$，或者从 $C$ 移动到 $A$；其它移动是不允许的。</li>
+</ol>
+<p>在新规则下，给定圆盘数量 $n$，试问最少移动步数是多少？</p>
+<h2>输入格式</h2>
+<p>输入一个正整数 $n$，表示圆盘的数量。</p>
+<h2>输出格式</h2>
+<p>输出一个整数，表示在新规则下将 $n$ 个圆盘从 $A$ 移动到 $C$ 所需的最少移动步数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>21```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B4579 [GESP202609 四级] 新汉诺塔
+     * 题意：汉诺塔，但每次只能按 A-&gt;B, B-&gt;C, C-&gt;A 的方向移动盘子。
+     *       求将 n 个盘子从 A 移到 C 的最少步数。
+     *
+     * 推导过程：
+     * 设 f(n) 表示将 n 个盘子从 A 移到 C（顺时针两步）的最少步数。
+     * 设 g(n) 表示将 n 个盘子从 A 移到 B（顺时针一步）的最少步数。
+     *
+     * 初始情况：
+     *   f(1) = 2   （A -&gt; B -&gt; C）
+     *   g(1) = 1   （A -&gt; B）
+     *
+     * 对于 n ≥ 2：
+     *   为了将 n 个盘子从 A 移到 B（一步）：
+     *     1. 将上面的 n-1 个盘子从 A 移到 C（需要 f(n-1) 步）
+     *     2. 将最大的盘子从 A 移到 B（1 步）
+     *     3. 将 n-1 个盘子从 C 移到 B（等价于从 A 移到 C，需要 f(n-1) 步）
+     *   所以：g(n) = 2 * f(n-1) + 1
+     *
+     *   为了将 n 个盘子从 A 移到 C（两步）：
+     *     1. 将 n-1 个盘子从 A 移到 C（f(n-1) 步）
+     *     2. 最大盘子从 A 移到 B（1 步）
+     *     3. 将 n-1 个盘子从 C 移到 A（等价于从 A 移到 B，需要 g(n-1) 步）
+     *     4. 最大盘子从 B 移到 C（1 步）
+     *     5. 将 n-1 个盘子从 A 移到 C（f(n-1) 步）
+     *   所以：f(n) = 2 * f(n-1) + g(n-1) + 2
+     *
+     * 数据范围：n ≤ 20，结果在 long long 范围内。
+     */</span>
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> f = <span class="hljs-number">2</span>;   <span class="hljs-comment">// f(1)</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> g = <span class="hljs-number">1</span>;   <span class="hljs-comment">// g(1)</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> nf = <span class="hljs-number">2</span> * f + g + <span class="hljs-number">2</span>;   <span class="hljs-comment">// 新的 f</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> ng = <span class="hljs-number">2</span> * f + <span class="hljs-number">1</span>;       <span class="hljs-comment">// 新的 g</span>
+        f = nf;
+        g = ng;
+    }
+
+    cout &lt;&lt; f &lt;&lt; endl;   <span class="hljs-comment">// 输出 f(n)</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4579">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

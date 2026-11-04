@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2002 投篮(b.cpp) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 X 刚把猜先的程序交给少年宫的小朋友就接到了健身教练的电话，教练要求他马上到中天体育馆练习投篮，之所以选择投篮这个项目，主要目的是要在帮助小 X 减肥的同时还能预防颈椎病。 小 X 每次必须投满规定的积分才能结束投篮，积分规则是这样的：小 X 每投中一个球得 分，如果没投中但球碰到了篮框、篮板…">
+<link rel="canonical" href="https://zymojblog.top/p/2002/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2002 投篮(b.cpp) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 X 刚把猜先的程序交给少年宫的小朋友就接到了健身教练的电话，教练要求他马上到中天体育馆练习投篮，之所以选择投篮这个项目，主要目的是要在帮助小 X 减肥的同时还能预防颈椎病。 小 X 每次必须投满规定的积分才能结束投篮，积分规则是这样的：小 X 每投中一个球得 分，如果没投中但球碰到了篮框、篮板…">
+<meta property="og:url" content="https://zymojblog.top/p/2002/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2002 投篮(b.cpp) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 X 刚把猜先的程序交给少年宫的小朋友就接到了健身教练的电话，教练要求他马上到中天体育馆练习投篮，之所以选择投篮这个项目，主要目的是要在帮助小 X 减肥的同时还能预防颈椎病。 小 X 每次必须投满规定的积分才能结束投篮，积分规则是这样的：小 X 每投中一个球得 分，如果没投中但球碰到了篮框、篮板…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2002 投篮(b.cpp)","headline":"2002 投篮(b.cpp) 题解","description":"小 X 刚把猜先的程序交给少年宫的小朋友就接到了健身教练的电话，教练要求他马上到中天体育馆练习投篮，之所以选择投篮这个项目，主要目的是要在帮助小 X 减肥的同时还能预防颈椎病。 小 X 每次必须投满规定的积分才能结束投篮，积分规则是这样的：小 X 每投中一个球得 分，如果没投中但球碰到了篮框、篮板…","url":"https://zymojblog.top/p/2002/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"市赛、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2002</span></div>
+  <h1 class="seo-title">2002 投篮(b.cpp)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B8%82%E8%B5%9B">市赛</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>2002 - 投篮(b.cpp)</h1>
+<h2>题目描述</h2>
+<p>小 X 刚把猜先的程序交给少年宫的小朋友就接到了健身教练的电话，教练要求他马上到中天体育馆练习投篮，之所以选择投篮这个项目，主要目的是要在帮助小 X 减肥的同时还能预防颈椎病。</p>
+<p>小 X 每次必须投满规定的积分才能结束投篮，积分规则是这样的：小 X 每投中一个球得 $1$ 分，如果没投中但球碰到了篮框、篮板或篮网则既不得分也不扣分，如果球啥也没碰到(俗称三不沾)则倒扣 $1$ 分，作为奖励小 X 如能连续投中 $3$ 球则额外加 $1$ 分，如连续投中 $4$ 球则额外加 $2$ 分，依次类推，即连续投中 $K$ 球($K \ge 3$)则额外加 $K-2$ 分。</p>
+<p>教练每次给小X 计分都很辛苦，于是他要求小 X 设计一个能自动计分的程序，小 X 觉得这个程序也很简单，于是他把这个任务又交给了你！</p>
+<h2>输入</h2>
+<p>输入数据共有两行，第一行为一个正整数 $n$，表示小 X 共进行了 $n$ 次投篮。</p>
+<p>第二行为一个由 $n$ 个字符组成的字符串，该字符串只包含三种字符，分别是大写字母 <code>V</code>,<code>T</code>,<code>X</code>，其中 <code>V</code> 表示投中了， <code>T</code> 表示没投中但不用扣分， <code>X</code> 表示要扣 $1$ 分。</p>
+<h2>输出</h2>
+<p>输出一行仅有一个整数为小 X 的得分。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">char</span> a[<span class="hljs-number">1000000</span>];
+<span class="hljs-type">int</span> b[<span class="hljs-number">1000000</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n;
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cin&gt;&gt;a[i]; 
+    }
+    <span class="hljs-type">int</span> sum=<span class="hljs-number">0</span>,k=<span class="hljs-number">0</span>;
+    <span class="hljs-comment">/*
+    8
+    VVVTTXVV
+    3+1 -1 +2=5
+    */</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">if</span>(a[i]==<span class="hljs-string">&#x27;V&#x27;</span>){
+            k++;
+            sum++;
+        }
+        <span class="hljs-keyword">if</span>(i==n || a[i+<span class="hljs-number">1</span>]!=<span class="hljs-string">&#x27;V&#x27;</span>){
+            <span class="hljs-keyword">if</span>(k&gt;=<span class="hljs-number">3</span>){
+                sum=sum+k<span class="hljs-number">-2</span>;
+            }
+            k=<span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span>(a[i]==<span class="hljs-string">&#x27;X&#x27;</span>){
+            sum--;
+        }
+    }
+    cout&lt;&lt;sum;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2002">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

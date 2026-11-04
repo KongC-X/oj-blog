@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4183 [中山市赛 2024] 象战 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="国际象棋的棋盘可以表示为一个 行 列的格子图，其中每个格子都可以放一枚棋子。我们将第 行第 列的格子用 来表示，以此类推。 为了帮助妹妹认识国际象棋中的“象”这种棋子，Jimmy 可谓是煞费苦心——他首先教会妹妹：“‘象’是一种能够飞檐走壁的棋子，它不仅可以攻击自己所在的位置，还可以攻击它所在的两…">
+<link rel="canonical" href="https://zymojblog.top/p/B4183/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4183 [中山市赛 2024] 象战 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="国际象棋的棋盘可以表示为一个 行 列的格子图，其中每个格子都可以放一枚棋子。我们将第 行第 列的格子用 来表示，以此类推。 为了帮助妹妹认识国际象棋中的“象”这种棋子，Jimmy 可谓是煞费苦心——他首先教会妹妹：“‘象’是一种能够飞檐走壁的棋子，它不仅可以攻击自己所在的位置，还可以攻击它所在的两…">
+<meta property="og:url" content="https://zymojblog.top/p/B4183/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4183 [中山市赛 2024] 象战 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="国际象棋的棋盘可以表示为一个 行 列的格子图，其中每个格子都可以放一枚棋子。我们将第 行第 列的格子用 来表示，以此类推。 为了帮助妹妹认识国际象棋中的“象”这种棋子，Jimmy 可谓是煞费苦心——他首先教会妹妹：“‘象’是一种能够飞檐走壁的棋子，它不仅可以攻击自己所在的位置，还可以攻击它所在的两…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4183 [中山市赛 2024] 象战","headline":"B4183 [中山市赛 2024] 象战 题解","description":"国际象棋的棋盘可以表示为一个 行 列的格子图，其中每个格子都可以放一枚棋子。我们将第 行第 列的格子用 来表示，以此类推。 为了帮助妹妹认识国际象棋中的“象”这种棋子，Jimmy 可谓是煞费苦心——他首先教会妹妹：“‘象’是一种能够飞檐走壁的棋子，它不仅可以攻击自己所在的位置，还可以攻击它所在的两…","url":"https://zymojblog.top/p/B4183/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2024、枚举、科创活动、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4183</span></div>
+  <h1 class="seo-title">B4183 [中山市赛 2024] 象战</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4183 [中山市赛 2024] 象战</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2024</code>、<code>枚举</code>、<code>科创活动</code>、<code>小学活动</code></p>
+<h2>题目描述</h2>
+<p>国际象棋的棋盘可以表示为一个 $8$ 行 $8$ 列的格子图，其中每个格子都可以放一枚棋子。我们将第 $1$ 行第 $2$ 列的格子用  $(1, 2)$ 来表示，以此类推。</p>
+<p>为了帮助妹妹认识国际象棋中的“象”这种棋子，Jimmy 可谓是煞费苦心——他首先教会妹妹：“‘象’是一种能够飞檐走壁的棋子，它不仅可以攻击自己所在的位置，还可以攻击它所在的两条斜线上的所有格子。”说着，Jimmy 将一只“象”随意地摆放在棋盘上，并且顺便用水彩笔将“象”能攻击到的所有格子涂成了红色。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/tm3c2ym0.png" alt=""></p>
+<p>就在此时，Chen 老师一个电话把 Jimmy 叫去收作业了。等到他回来后，他发现妹妹已经将棋盘推开了，棋盘上的“象”也不知所踪。Jimmy 只记得他没有把“象”放在棋盘的四个角落上（即 $(1, 1),(1, 8),(8, 1),(8, 8)$ 这四个格子）。现在他想知道，原来的“象”摆在了哪个格子上。</p>
+<h2>输入格式</h2>
+<p>共 $8$ 行，每行 $8$ 个字符，每个字符只可能是 <code>#</code> 或<code> .</code>：<code>#</code> 表示被 Jimmy 涂成红色的棋盘格子，<code>.</code> 表示正常的棋盘格子。</p>
+<h2>输出格式</h2>
+<p>一行两个整数 $r$ 和 $c$，表示“象”原先摆放在第 $r$ 行第 $c$ 列的格子上。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">.....#..
+#...#...
+.#.#....
+..#.....
+.#.#....
+#...#...
+.....#..
+......#.```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>4 3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">char</span> g[<span class="hljs-number">10</span>][<span class="hljs-number">10</span>];                    <span class="hljs-comment">// 棋盘，1‑based</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">8</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">8</span>; j++) {
+            cin &gt;&gt; g[i][j];
+        }
+    }
+
+    <span class="hljs-comment">// 枚举象可能的位置，排除四个角落</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">1</span>; r &lt;= <span class="hljs-number">8</span>; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = <span class="hljs-number">1</span>; c &lt;= <span class="hljs-number">8</span>; c++) {
+            <span class="hljs-comment">// 跳过四个角落</span>
+            <span class="hljs-keyword">if</span> ((r == <span class="hljs-number">1</span> &amp;&amp; c == <span class="hljs-number">1</span>) || (r == <span class="hljs-number">1</span> &amp;&amp; c == <span class="hljs-number">8</span>) ||
+                (r == <span class="hljs-number">8</span> &amp;&amp; c == <span class="hljs-number">1</span>) || (r == <span class="hljs-number">8</span> &amp;&amp; c == <span class="hljs-number">8</span>))
+                <span class="hljs-keyword">continue</span>;
+
+            <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">8</span> &amp;&amp; ok; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">8</span>; j++) {
+                    <span class="hljs-keyword">if</span> (i + j == r + c || i - j == r - c) {   <span class="hljs-comment">// 在象的对角线上</span>
+                        <span class="hljs-keyword">if</span> (g[i][j] != <span class="hljs-string">&#x27;#&#x27;</span>) {
+                            ok = <span class="hljs-literal">false</span>;
+                            <span class="hljs-keyword">break</span>;
+                        }
+                    } <span class="hljs-keyword">else</span> {                                   <span class="hljs-comment">// 不在对角线上</span>
+                        <span class="hljs-keyword">if</span> (g[i][j] != <span class="hljs-string">&#x27;.&#x27;</span>) {
+                            ok = <span class="hljs-literal">false</span>;
+                            <span class="hljs-keyword">break</span>;
+                        }
+                    }
+                }
+            }
+
+            <span class="hljs-keyword">if</span> (ok) {
+                cout &lt;&lt; r &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; c &lt;&lt; endl;
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4183">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

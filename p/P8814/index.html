@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P8814 [CSP-J 2022] 解密 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个正整数 ，有 次询问，每次给定三个正整数 ，求两个正整数 ，使 、 。">
+<link rel="canonical" href="https://zymojblog.top/p/P8814/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P8814 [CSP-J 2022] 解密 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个正整数 ，有 次询问，每次给定三个正整数 ，求两个正整数 ，使 、 。">
+<meta property="og:url" content="https://zymojblog.top/p/P8814/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P8814 [CSP-J 2022] 解密 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个正整数 ，有 次询问，每次给定三个正整数 ，求两个正整数 ，使 、 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P8814 [CSP-J 2022] 解密","headline":"P8814 [CSP-J 2022] 解密 题解","description":"给定一个正整数 ，有 次询问，每次给定三个正整数 ，求两个正整数 ，使 、 。","url":"https://zymojblog.top/p/P8814/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、二分、2022、O2优化、CSP-J 入门级","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P8814</span></div>
+  <h1 class="seo-title">P8814 [CSP-J 2022] 解密</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">CSP-J复赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/CSP-J%20%E5%85%A5%E9%97%A8%E7%BA%A7">CSP-J 入门级</a></div>
+  <article class="markdown-body seo-article">
+<h1>P8814 [CSP-J 2022] 解密</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-09-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>二分</code>、<code>2022</code>、<code>O2优化</code>、<code>CSP-J 入门级</code></p>
+<h2>题目描述</h2>
+<p>给定一个正整数 $k$，有 $k$ 次询问，每次给定三个正整数 $n_i, e_i, d_i$，求两个正整数 $p_i, q_i$，使 $n_i = p_i \times q_i$、$e_i \times d_i = (p_i - 1)(q_i - 1) + 1$。</p>
+<h2>输入格式</h2>
+<p>第一行一个正整数 $k$，表示有 $k$ 次询问。</p>
+<p>接下来 $k$ 行，第 $i$ 行三个正整数 $n_i, d_i, e_i$。</p>
+<h2>输出格式</h2>
+<p>输出 $k$ 行，每行两个正整数 $p_i, q_i$ 表示答案。</p>
+<p>为使输出统一，你应当保证 $p_i \leq q_i$。</p>
+<p>如果无解，请输出 <code>NO</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>
+<span class="hljs-number">770</span> <span class="hljs-number">77</span> <span class="hljs-number">5</span>
+<span class="hljs-number">633</span> <span class="hljs-number">1</span> <span class="hljs-number">211</span>
+<span class="hljs-number">545</span> <span class="hljs-number">1</span> <span class="hljs-number">499</span>
+<span class="hljs-number">683</span> <span class="hljs-number">3</span> <span class="hljs-number">227</span>
+<span class="hljs-number">858</span> <span class="hljs-number">3</span> <span class="hljs-number">257</span>
+<span class="hljs-number">723</span> <span class="hljs-number">37</span> <span class="hljs-number">13</span>
+<span class="hljs-number">572</span> <span class="hljs-number">26</span> <span class="hljs-number">11</span>
+<span class="hljs-number">867</span> <span class="hljs-number">17</span> <span class="hljs-number">17</span>
+<span class="hljs-number">829</span> <span class="hljs-number">3</span> <span class="hljs-number">263</span>
+<span class="hljs-number">528</span> <span class="hljs-number">4</span> <span class="hljs-number">109</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">385</span>
+NO
+NO
+NO
+<span class="hljs-number">11</span> <span class="hljs-number">78</span>
+<span class="hljs-number">3</span> <span class="hljs-number">241</span>
+<span class="hljs-number">2</span> <span class="hljs-number">286</span>
+NO
+NO
+<span class="hljs-number">6</span> <span class="hljs-number">88</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n,d,e,t;<span class="hljs-comment">//int 会爆掉</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;t);
+    <span class="hljs-keyword">while</span>(t--){<span class="hljs-comment">//多组数据</span>
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lld %lld %lld&quot;</span>,&amp;n,&amp;d,&amp;e);
+        <span class="hljs-comment">// q + p = n − ed + 2</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> delta=(n - e * d + <span class="hljs-number">2</span>) * (n - e * d + <span class="hljs-number">2</span>) - <span class="hljs-number">4</span> * n;
+        <span class="hljs-keyword">if</span>(delta &lt; <span class="hljs-number">0</span>){<span class="hljs-comment">//特判解为虚数的情况</span>
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NO\n&quot;</span>);
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> p=<span class="hljs-number">1.0</span> * ((n - e * d + <span class="hljs-number">2</span>) - <span class="hljs-built_in">sqrt</span>(delta)) / <span class="hljs-number">2</span>;
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> q=<span class="hljs-number">1.0</span> * ((n - e * d + <span class="hljs-number">2</span>) + <span class="hljs-built_in">sqrt</span>(delta)) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span>(p &gt; <span class="hljs-number">0</span> &amp;&amp; q &gt; <span class="hljs-number">0</span> &amp;&amp; p * q == n &amp;&amp; e * d == (p - <span class="hljs-number">1</span>) * (q - <span class="hljs-number">1</span>) + <span class="hljs-number">1</span>){
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lld %lld\n&quot;</span>,p,q); <span class="hljs-comment">//由于精度原因，需要再次判断题目条件</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;NO\n&quot;</span>);
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P8814">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

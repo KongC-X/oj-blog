@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2260 石头剪刀布 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="石头剪刀布是常见的猜拳游戏。石头胜剪刀，剪刀胜布，布胜石头。如果两个人出拳一样，则不分胜负。 一天，小A和小B正好在玩石头剪刀布。已知他们的出拳都是有周期性规律的，比如：“石头-布-石头-剪刀-石头-布-石头-剪刀……”，就是以“石头-布-石头-剪刀”为周期不断循环的。请问，小A和小B比了N轮之后…">
+<link rel="canonical" href="https://zymojblog.top/p/2260/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2260 石头剪刀布 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="石头剪刀布是常见的猜拳游戏。石头胜剪刀，剪刀胜布，布胜石头。如果两个人出拳一样，则不分胜负。 一天，小A和小B正好在玩石头剪刀布。已知他们的出拳都是有周期性规律的，比如：“石头-布-石头-剪刀-石头-布-石头-剪刀……”，就是以“石头-布-石头-剪刀”为周期不断循环的。请问，小A和小B比了N轮之后…">
+<meta property="og:url" content="https://zymojblog.top/p/2260/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2260 石头剪刀布 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="石头剪刀布是常见的猜拳游戏。石头胜剪刀，剪刀胜布，布胜石头。如果两个人出拳一样，则不分胜负。 一天，小A和小B正好在玩石头剪刀布。已知他们的出拳都是有周期性规律的，比如：“石头-布-石头-剪刀-石头-布-石头-剪刀……”，就是以“石头-布-石头-剪刀”为周期不断循环的。请问，小A和小B比了N轮之后…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2260 石头剪刀布","headline":"2260 石头剪刀布 题解","description":"石头剪刀布是常见的猜拳游戏。石头胜剪刀，剪刀胜布，布胜石头。如果两个人出拳一样，则不分胜负。 一天，小A和小B正好在玩石头剪刀布。已知他们的出拳都是有周期性规律的，比如：“石头-布-石头-剪刀-石头-布-石头-剪刀……”，就是以“石头-布-石头-剪刀”为周期不断循环的。请问，小A和小B比了N轮之后…","url":"https://zymojblog.top/p/2260/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2260</span></div>
+  <h1 class="seo-title">2260 石头剪刀布</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">电子学会考级考试</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2260 - 石头剪刀布</h1>
+<h2>题目描述</h2>
+<p>石头剪刀布是常见的猜拳游戏。石头胜剪刀，剪刀胜布，布胜石头。如果两个人出拳一样，则不分胜负。</p>
+<p>一天，小A和小B正好在玩石头剪刀布。已知他们的出拳都是有周期性规律的，比如：“石头-布-石头-剪刀-石头-布-石头-剪刀……”，就是以“石头-布-石头-剪刀”为周期不断循环的。请问，小A和小B比了N轮之后，谁赢的轮数多？</p>
+<h2>输入</h2>
+<p>输入包含三行。 第一行包含三个整数：N，NA，NB，分别表示比了N轮，小A出拳的周期长度，小B出拳的周期长度。0 &lt; N,NA,NB &lt; 100。 第二行包含NA个整数，表示小A出拳的规律。 第三行包含NB个整数，表示小B出拳的规律。 其中，0表示“石头”，2表示“剪刀”，5表示“布”。相邻两个整数之间用单个空格隔开。</p>
+<h2>输出</h2>
+<p>输出一行，如果小A赢的轮数多，输出A；如果小B赢的轮数多，输出B；如果两人打平，输出draw。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/**
+ * 平手：0 
+ * a赢：1 
+ * b赢：2 
+**/</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">canquan</span><span class="hljs-params">(<span class="hljs-type">int</span> a,<span class="hljs-type">int</span> b)</span></span>{
+    <span class="hljs-type">int</span> r=<span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span>(a==<span class="hljs-number">0</span>&amp;&amp;b==<span class="hljs-number">2</span> || a==<span class="hljs-number">2</span>&amp;&amp;b==<span class="hljs-number">5</span> || a==<span class="hljs-number">5</span>&amp;&amp;b==<span class="hljs-number">0</span>){
+        r=<span class="hljs-number">1</span>;
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a==b){
+        r=<span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">return</span> r;
+} 
+<span class="hljs-type">int</span> a[<span class="hljs-number">100</span>],b[<span class="hljs-number">100</span>],an[<span class="hljs-number">100</span>],bn[<span class="hljs-number">100</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n,na,nb,i,j,ac=<span class="hljs-number">0</span>,bc=<span class="hljs-number">0</span>;
+    cin&gt;&gt;n&gt;&gt;na&gt;&gt;nb;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;na; i++){
+        cin&gt;&gt;a[i]; 
+    }
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;nb; i++){
+        cin&gt;&gt;b[i];
+    }
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;n; i++){
+        an[i] = a[i%na];
+        bn[i] = b[i%nb];
+    }
+<span class="hljs-comment">//	for(i=0; i&lt;n; i++){</span>
+<span class="hljs-comment">//		cout&lt;&lt;an[i]&lt;&lt;&quot; &quot;; </span>
+<span class="hljs-comment">//	}</span>
+<span class="hljs-comment">//	cout&lt;&lt;endl;</span>
+<span class="hljs-comment">//	for(i=0; i&lt;n; i++){</span>
+<span class="hljs-comment">//		cout&lt;&lt;bn[i]&lt;&lt;&quot; &quot;; </span>
+<span class="hljs-comment">//	}</span>
+<span class="hljs-comment">//	cout&lt;&lt;endl;	</span>
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>; i&lt;n; i++){
+         
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">canquan</span>(an[i],bn[i])==<span class="hljs-number">1</span>){
+            ac++;
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-built_in">canquan</span>(an[i],bn[i])==<span class="hljs-number">2</span>){
+            bc++; 
+        } 
+    }
+    
+    <span class="hljs-keyword">if</span>(ac&gt;bc){
+        cout&lt;&lt;<span class="hljs-string">&quot;A&quot;</span>; 
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ac&lt;bc){
+        cout&lt;&lt;<span class="hljs-string">&quot;B&quot;</span>;
+    }<span class="hljs-keyword">else</span>{
+        cout&lt;&lt;<span class="hljs-string">&quot;draw&quot;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2260">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

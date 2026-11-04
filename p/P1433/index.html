@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1433 吃奶酪 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="房间里放着 块奶酪。一只小老鼠要把它们都吃掉，问至少要跑多少距离？老鼠一开始在 点处。">
+<link rel="canonical" href="https://zymojblog.top/p/P1433/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1433 吃奶酪 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="房间里放着 块奶酪。一只小老鼠要把它们都吃掉，问至少要跑多少距离？老鼠一开始在 点处。">
+<meta property="og:url" content="https://zymojblog.top/p/P1433/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1433 吃奶酪 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="房间里放着 块奶酪。一只小老鼠要把它们都吃掉，问至少要跑多少距离？老鼠一开始在 点处。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1433 吃奶酪","headline":"P1433 吃奶酪 题解","description":"房间里放着 块奶酪。一只小老鼠要把它们都吃掉，问至少要跑多少距离？老鼠一开始在 点处。","url":"https://zymojblog.top/p/P1433/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"动态规划 DP、搜索、深度优先搜索 DFS、剪枝、模拟退火、状压 DP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1433</span></div>
+  <h1 class="seo-title">P1433 吃奶酪</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E5%89%AA%E6%9E%9D">剪枝</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F%E9%80%80%E7%81%AB">模拟退火</a><a class="seo-tag" href="/#/tag/%E7%8A%B6%E5%8E%8B%20DP">状压 DP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1433 吃奶酪</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-04-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>搜索</code>、<code>深度优先搜索 DFS</code>、<code>剪枝</code>、<code>模拟退火</code>、<code>状压 DP</code></p>
+<h2>题目描述</h2>
+<p>房间里放着 $n$ 块奶酪。一只小老鼠要把它们都吃掉，问至少要跑多少距离？老鼠一开始在 $(0,0)$ 点处。</p>
+<h2>输入格式</h2>
+<p>第一行有一个整数，表示奶酪的数量 $n$。</p>
+<p>第 $2$ 到第 $(n + 1)$ 行，每行两个实数，第 $(i + 1)$ 行的实数分别表示第 $i$ 块奶酪的横纵坐标 $x_i, y_i$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个实数，表示要跑的最少距离，保留 $2$ 位小数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">-1</span>
+<span class="hljs-number">-1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">-1</span> <span class="hljs-number">-1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7.41```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> min(a,b) (((a)&lt;(b))?(a):(b)) </span>
+<span class="hljs-comment">//洛谷 P1433 吃奶酪 状压DP</span>
+<span class="hljs-type">double</span> a[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>];<span class="hljs-comment">//预处理，从第i块到第j块的距离，使用两点之间距离公式 </span>
+<span class="hljs-type">double</span> x[<span class="hljs-number">20</span>],y[<span class="hljs-number">20</span>];<span class="hljs-comment">//每块奶酪的横、纵坐标</span>
+<span class="hljs-type">double</span> F[<span class="hljs-number">18</span>][<span class="hljs-number">34000</span>];<span class="hljs-comment">//状压DP数组 在第i个点上，走过的二进制状态的十进制表达为j时，最短的距离 </span>
+<span class="hljs-type">int</span> N; 
+<span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">distance</span><span class="hljs-params">(<span class="hljs-type">int</span> v,<span class="hljs-type">int</span> w)</span><span class="hljs-comment">//计算第v个和第w个奶酪之间的距离 </span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sqrt</span>((x[v]-x[w])*(x[v]-x[w])+(y[v]-y[w])*(y[v]-y[w]));<span class="hljs-comment">//两点间距离公式 </span>
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-type">int</span> i,j,k;
+    <span class="hljs-type">double</span> ans;
+    <span class="hljs-built_in">memset</span>(F,<span class="hljs-number">127</span>,<span class="hljs-built_in">sizeof</span>(F));<span class="hljs-comment">//这样可以给浮点数赋值无穷大 </span>
+    ans=F[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;N);
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=N;i++)
+    {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lf%lf&quot;</span>,&amp;x[i],&amp;y[i]);<span class="hljs-comment">//数据读入 </span>
+    }
+    x[<span class="hljs-number">0</span>]=<span class="hljs-number">0</span>;y[<span class="hljs-number">0</span>]=<span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;=N;i++)
+    {
+        <span class="hljs-keyword">for</span>(j=i+<span class="hljs-number">1</span>;j&lt;=N;j++)
+        {
+            a[i][j]=<span class="hljs-built_in">distance</span>(i,j);<span class="hljs-comment">//初始化距离数组 </span>
+            a[j][i]=a[i][j];
+        }
+    } 
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=N;i++)<span class="hljs-comment">//初始化 </span>
+    {
+        F[i][(<span class="hljs-number">1</span>&lt;&lt;(i<span class="hljs-number">-1</span>))]=a[<span class="hljs-number">0</span>][i];<span class="hljs-comment">//在i点上且只有经过i点时距离是原点到i点的距离 </span>
+    }
+    <span class="hljs-keyword">for</span>(k=<span class="hljs-number">1</span>;k&lt;(<span class="hljs-number">1</span>&lt;&lt;N);k++)<span class="hljs-comment">//枚举所有二进制的状态 </span>
+    {
+        <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=N;i++)
+        {
+            <span class="hljs-keyword">if</span>((k&amp;(<span class="hljs-number">1</span>&lt;&lt;(i<span class="hljs-number">-1</span>)))==<span class="hljs-number">0</span>)
+                <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//i的位置没被走过，所以不需要再继续计算了 </span>
+            <span class="hljs-keyword">for</span>(j=<span class="hljs-number">1</span>;j&lt;=N;j++)
+            {
+                <span class="hljs-keyword">if</span>(i==j)
+                    <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//同一个点不需要再计算 </span>
+                <span class="hljs-keyword">if</span>((k&amp;(<span class="hljs-number">1</span>&lt;&lt;(j<span class="hljs-number">-1</span>)))==<span class="hljs-number">0</span>)
+                    <span class="hljs-keyword">continue</span>;<span class="hljs-comment">//j的位置没走过  </span>
+                F[i][k]=<span class="hljs-built_in">min</span>(F[i][k],F[j][k-(<span class="hljs-number">1</span>&lt;&lt;(i<span class="hljs-number">-1</span>))]+a[i][j]);
+            } 
+        } 
+    } 
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=N;i++)
+    {
+        ans=<span class="hljs-built_in">min</span>(ans,F[i][(<span class="hljs-number">1</span>&lt;&lt;N)<span class="hljs-number">-1</span>]);
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%.2f\n&quot;</span>,ans);
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1433">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

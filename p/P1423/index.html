@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1423 小玉在游泳 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小玉开心的在游泳，可是她很快难过的发现，自己的力气不够，游泳好累哦。已知小玉第一步能游 米，可是随着越来越累，力气越来越小，她接下来的每一步都只能游出上一步距离的 。现在小玉想知道，如果要游到距离 米的地方，她需要游多少步呢。请你编程解决这个问题。">
+<link rel="canonical" href="https://zymojblog.top/p/P1423/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1423 小玉在游泳 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小玉开心的在游泳，可是她很快难过的发现，自己的力气不够，游泳好累哦。已知小玉第一步能游 米，可是随着越来越累，力气越来越小，她接下来的每一步都只能游出上一步距离的 。现在小玉想知道，如果要游到距离 米的地方，她需要游多少步呢。请你编程解决这个问题。">
+<meta property="og:url" content="https://zymojblog.top/p/P1423/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1423 小玉在游泳 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小玉开心的在游泳，可是她很快难过的发现，自己的力气不够，游泳好累哦。已知小玉第一步能游 米，可是随着越来越累，力气越来越小，她接下来的每一步都只能游出上一步距离的 。现在小玉想知道，如果要游到距离 米的地方，她需要游多少步呢。请你编程解决这个问题。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1423 小玉在游泳","headline":"P1423 小玉在游泳 题解","description":"小玉开心的在游泳，可是她很快难过的发现，自己的力气不够，游泳好累哦。已知小玉第一步能游 米，可是随着越来越累，力气越来越小，她接下来的每一步都只能游出上一步距离的 。现在小玉想知道，如果要游到距离 米的地方，她需要游多少步呢。请你编程解决这个问题。","url":"https://zymojblog.top/p/P1423/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"洛谷","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1423</span></div>
+  <h1 class="seo-title">P1423 小玉在游泳</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门3】循环结构</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7">洛谷</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1423 小玉在游泳</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-01</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>小玉开心的在游泳，可是她很快难过的发现，自己的力气不够，游泳好累哦。已知小玉第一步能游 $2$ 米，可是随着越来越累，力气越来越小，她接下来的每一步都只能游出上一步距离的 $98%$。现在小玉想知道，如果要游到距离 $s$ 米的地方，她需要游多少步呢。请你编程解决这个问题。</p>
+<h2>输入格式</h2>
+<p>输入一个实数 $s$（单位：米），表示要游的目标距离。</p>
+<h2>输出格式</h2>
+<p>输出一个整数，表示小玉一共需要游多少步。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4.3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<span class="hljs-comment">//定义的游泳次数。</span>
+<span class="hljs-type">long</span> <span class="hljs-type">double</span> x,s=<span class="hljs-number">2</span>,d=<span class="hljs-number">0</span>;<span class="hljs-comment">//x表示输入的距离，s表示小玉一次的游泳距离，d表示她游过的距离。</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin&gt;&gt;x;
+    <span class="hljs-keyword">while</span>(d&lt;x)<span class="hljs-comment">//循环条件是游过的距离小于输入的距离，如果大于或等于，跳出循环。</span>
+      {
+          d+=s;<span class="hljs-comment">//每次加上她游一次的距离。</span>
+          s=s/<span class="hljs-number">100</span>*<span class="hljs-number">98</span>;<span class="hljs-comment">//因为体力耗损，这一次游的距离为上一次的98%。</span>
+          ans++;<span class="hljs-comment">//游泳次数每次增加一。</span>
+      }
+    cout&lt;&lt;ans&lt;&lt;endl;<span class="hljs-comment">//输出答案。</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<span class="hljs-comment">//结束。</span>
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1423">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

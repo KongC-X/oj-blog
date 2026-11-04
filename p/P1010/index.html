@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1010 [NOIP 1998 普及组] 幂次方 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="任何一个正整数都可以用 的幂次方表示。例如 。 同时约定次方用括号来表示，即 可表示为 。 由此可知， 可表示为 。 进一步： ( 用 表示)，并且 。 所以最后 可表示为 。 又如 。 所以 最后可表示为 。">
+<link rel="canonical" href="https://zymojblog.top/p/P1010/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1010 [NOIP 1998 普及组] 幂次方 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="任何一个正整数都可以用 的幂次方表示。例如 。 同时约定次方用括号来表示，即 可表示为 。 由此可知， 可表示为 。 进一步： ( 用 表示)，并且 。 所以最后 可表示为 。 又如 。 所以 最后可表示为 。">
+<meta property="og:url" content="https://zymojblog.top/p/P1010/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1010 [NOIP 1998 普及组] 幂次方 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="任何一个正整数都可以用 的幂次方表示。例如 。 同时约定次方用括号来表示，即 可表示为 。 由此可知， 可表示为 。 进一步： ( 用 表示)，并且 。 所以最后 可表示为 。 又如 。 所以 最后可表示为 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1010 [NOIP 1998 普及组] 幂次方","headline":"P1010 [NOIP 1998 普及组] 幂次方 题解","description":"任何一个正整数都可以用 的幂次方表示。例如 。 同时约定次方用括号来表示，即 可表示为 。 由此可知， 可表示为 。 进一步： ( 用 表示)，并且 。 所以最后 可表示为 。 又如 。 所以 最后可表示为 。","url":"https://zymojblog.top/p/P1010/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、1998、递归、NOIP 普及组、分治","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1010</span></div>
+  <h1 class="seo-title">P1010 [NOIP 1998 普及组] 幂次方</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-4】递推与递归</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/1998">1998</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%B2%BB">分治</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1010 [NOIP 1998 普及组] 幂次方</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>1998</code>、<code>递归</code>、<code>NOIP 普及组</code>、<code>分治</code></p>
+<h2>题目描述</h2>
+<p>任何一个正整数都可以用 $2$ 的幂次方表示。例如 $137=2^7+2^3+2^0 $。</p>
+<p>同时约定次方用括号来表示，即 $a^b$ 可表示为 $a(b)$。</p>
+<p>由此可知，$137$ 可表示为 $2(7)+2(3)+2(0)$。</p>
+<p>进一步：</p>
+<p>$7= 2^2+2+2^0$  ( $2^1$ 用 $2$ 表示)，并且 $3=2+2^0$。</p>
+<p>所以最后 $137$ 可表示为 $2(2(2)+2+2(0))+2(2+2(0))+2(0)$。</p>
+<p>又如 $1315=2^{10} +2^8 +2^5 +2+1$。</p>
+<p>所以 $1315$ 最后可表示为 $2(2(2+2(0))+2)+2(2(2+2(0)))+2(2(2)+2(0))+2+2(0)$。</p>
+<h2>输入格式</h2>
+<p>一行一个正整数 $n$。</p>
+<h2>输出格式</h2>
+<p>符合约定的 $n$ 的 $0, 2$ 表示（在表示中不能有空格）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1315</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2(2(2+2(0))+2)+2(2(2+2(0)))+2(2(2)+2(0))+2+2(0)```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a;
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">14</span>; i &gt;= <span class="hljs-number">0</span>; i--) <span class="hljs-comment">// 两万的数据最多是2（14）</span>
+    {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, i) &lt;= x){
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">1</span>)
+                cout &lt;&lt; <span class="hljs-string">&quot;2&quot;</span>; <span class="hljs-comment">// 2（1）不用再往后分解了且2^1输出为2，单独出来</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>)
+                cout &lt;&lt; <span class="hljs-string">&quot;2(0)&quot;</span>; <span class="hljs-comment">// 2（0）也不用再往后分解了，单独出来</span>
+            <span class="hljs-keyword">else</span> { <span class="hljs-comment">// 若i&gt;1则继续分解指数i</span>
+                cout &lt;&lt; <span class="hljs-string">&quot;2(&quot;</span>;
+                <span class="hljs-built_in">f</span>(i);
+                cout &lt;&lt; <span class="hljs-string">&quot;)&quot;</span>;
+            }
+            x -= <span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, i); <span class="hljs-comment">// 继续循环分解余下的</span>
+            <span class="hljs-keyword">if</span> (x != <span class="hljs-number">0</span>)
+                cout &lt;&lt; <span class="hljs-string">&quot;+&quot;</span>;
+            <span class="hljs-comment">// 加号处理的最简单方法：若此x还没分解完，则后面还有项，所以输出一个+号</span>
+        }
+    }
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; a;
+    <span class="hljs-built_in">f</span>(a);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1010">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9094 [PA 2020] Mieszanie kolorów 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="题目译自 PA 2020 Runda 1 Mieszanie kolorów Byteasar 正准备给栅栏涂漆。他已经准备了 罐白色油漆，他把这些油漆排列成一排，从 到 编号。他想用这些油漆，但他不想把栅栏涂成白色。他委托了调色专家，调色专家有三种颜料：黄色、蓝色和红色。专家进行了 次操作，其中…">
+<link rel="canonical" href="https://zymojblog.top/p/P9094/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9094 [PA 2020] Mieszanie kolorów 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="题目译自 PA 2020 Runda 1 Mieszanie kolorów Byteasar 正准备给栅栏涂漆。他已经准备了 罐白色油漆，他把这些油漆排列成一排，从 到 编号。他想用这些油漆，但他不想把栅栏涂成白色。他委托了调色专家，调色专家有三种颜料：黄色、蓝色和红色。专家进行了 次操作，其中…">
+<meta property="og:url" content="https://zymojblog.top/p/P9094/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9094 [PA 2020] Mieszanie kolorów 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="题目译自 PA 2020 Runda 1 Mieszanie kolorów Byteasar 正准备给栅栏涂漆。他已经准备了 罐白色油漆，他把这些油漆排列成一排，从 到 编号。他想用这些油漆，但他不想把栅栏涂成白色。他委托了调色专家，调色专家有三种颜料：黄色、蓝色和红色。专家进行了 次操作，其中…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9094 [PA 2020] Mieszanie kolorów","headline":"P9094 [PA 2020] Mieszanie kolorów 题解","description":"题目译自 PA 2020 Runda 1 Mieszanie kolorów Byteasar 正准备给栅栏涂漆。他已经准备了 罐白色油漆，他把这些油漆排列成一排，从 到 编号。他想用这些油漆，但他不想把栅栏涂成白色。他委托了调色专家，调色专家有三种颜料：黄色、蓝色和红色。专家进行了 次操作，其中…","url":"https://zymojblog.top/p/P9094/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2020、前缀和、差分、PA（波兰）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9094</span></div>
+  <h1 class="seo-title">P9094 [PA 2020] Mieszanie kolorów</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2020">2020</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a><a class="seo-tag" href="/#/tag/%E5%B7%AE%E5%88%86">差分</a><a class="seo-tag" href="/#/tag/PA%EF%BC%88%E6%B3%A2%E5%85%B0%EF%BC%89">PA（波兰）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9094 [PA 2020] Mieszanie kolorów</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-05</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2020</code>、<code>前缀和</code>、<code>差分</code>、<code>PA（波兰）</code></p>
+<h2>题目描述</h2>
+<p><strong>题目译自 <a href="https://sio2.mimuw.edu.pl/c/pa-2020-1/dashboard/">PA 2020</a> Runda 1 <a href="https://sio2.mimuw.edu.pl/c/pa-2020-1/p/kol/">Mieszanie kolorów</a></strong></p>
+<p>Byteasar 正准备给栅栏涂漆。他已经准备了 $n$ 罐白色油漆，他把这些油漆排列成一排，从 $1$ 到 $n$ 编号。他想用这些油漆，但他不想把栅栏涂成白色。他委托了调色专家，调色专家有三种颜料：黄色、蓝色和红色。专家进行了 $m$ 次操作，其中第 $i$ 次操作是向编号在 $l_i$ 到 $r_i$ 之间（包括两端）的所有罐子中加入某种颜料。</p>
+<p>油漆的最终颜色取决于被添加到其中的颜料。添加的颜料按照下表和图示进行混合。</p>
+<table>
+<thead>
+<tr>
+<th align="center">颜料</th>
+<th align="center">颜色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">无</td>
+<td align="center">白色</td>
+</tr>
+<tr>
+<td align="center">黄色</td>
+<td align="center">黄色</td>
+</tr>
+<tr>
+<td align="center">蓝色</td>
+<td align="center">蓝色</td>
+</tr>
+<tr>
+<td align="center">红色</td>
+<td align="center">红色</td>
+</tr>
+<tr>
+<td align="center">黄色 + 蓝色</td>
+<td align="center">绿色</td>
+</tr>
+<tr>
+<td align="center">黄色 + 红色</td>
+<td align="center">橙色</td>
+</tr>
+<tr>
+<td align="center">蓝色 + 红色</td>
+<td align="center">紫色</td>
+</tr>
+<tr>
+<td align="center">黄色 + 蓝色 + 红色</td>
+<td align="center">棕色</td>
+</tr>
+</tbody></table>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/zow92g6w.png" alt=""></p>
+<p>Byteasar 想要给栅栏涂成一种颜色。思来想去，他选择了绿色，因为绿色代表了你常会在算法竞赛中看到的 Accepted。他想知道现在有多少罐油漆是绿色的，请帮他数数。</p>
+<h2>输入格式</h2>
+<p>第一行两个整数 $n,m$，分别表示油漆的罐数和专家进行的操作数。</p>
+<p>接下来 $m$ 行，每行三个整数 $l_i,r_i,k_i$，表示在第 $i$ 次操作中向编号在 $l_i$ 到 $r_i$ 之间（包括两端）的罐子中加入颜料。加入的颜料是黄色（$k_i=1$），蓝色（$k_i=2$）或红色（$k_i=3$）中的一种。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示在所有操作之后绿色油漆的罐数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">9</span> <span class="hljs-number">5</span>
+<span class="hljs-number">2</span> <span class="hljs-number">8</span> <span class="hljs-number">1</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span>
+<span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">3</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">1000005</span>;   <span class="hljs-comment">// 最大 n</span>
+<span class="hljs-type">int</span> d1[MAXN], d2[MAXN], d3[MAXN];  <span class="hljs-comment">// 分别记录黄、蓝、红的差分数组</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目类型：差分 + 前缀和
+     * 思路：
+     * 1. 对每个操作 (l, r, k)，在对应颜色的差分数组上做区间加：
+     *    dk[l]++, dk[r+1]--
+     * 2. 完成后从左到右计算前缀和，得到每个位置每种颜色的覆盖次数。
+     * 3. 如果当前位置黄色次数&gt;0 且 蓝色次数&gt;0 且 红色次数==0，则算作绿色。
+     * 4. 输出答案。
+     */</span>
+
+    <span class="hljs-type">int</span> n, m;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;n, &amp;m);   <span class="hljs-comment">// 读入 n, m</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-type">int</span> l, r, k;
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d%d&quot;</span>, &amp;l, &amp;r, &amp;k);
+        <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) {       <span class="hljs-comment">// 黄色</span>
+            d1[l]++;
+            d1[r + <span class="hljs-number">1</span>]--;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (k == <span class="hljs-number">2</span>) { <span class="hljs-comment">// 蓝色</span>
+            d2[l]++;
+            d2[r + <span class="hljs-number">1</span>]--;
+        } <span class="hljs-keyword">else</span> {             <span class="hljs-comment">// 红色</span>
+            d3[l]++;
+            d3[r + <span class="hljs-number">1</span>]--;
+        }
+    }
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> c1 = <span class="hljs-number">0</span>, c2 = <span class="hljs-number">0</span>, c3 = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 当前前缀和（黄、蓝、红）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        c1 += d1[i];
+        c2 += d2[i];
+        c3 += d3[i];
+        <span class="hljs-keyword">if</span> (c1 &gt; <span class="hljs-number">0</span> &amp;&amp; c2 &gt; <span class="hljs-number">0</span> &amp;&amp; c3 == <span class="hljs-number">0</span>) {
+            ans++;
+        }
+    }
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lld\n&quot;</span>, ans);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9094">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

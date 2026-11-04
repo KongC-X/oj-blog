@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1658 购物 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="你就要去购物了，现在你手上有 种不同面值的硬币，每种硬币有无限多个。为了方便购物，你希望带尽量少的硬币，但要能组合出 到 之间的任意值。">
+<link rel="canonical" href="https://zymojblog.top/p/P1658/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1658 购物 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="你就要去购物了，现在你手上有 种不同面值的硬币，每种硬币有无限多个。为了方便购物，你希望带尽量少的硬币，但要能组合出 到 之间的任意值。">
+<meta property="og:url" content="https://zymojblog.top/p/P1658/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1658 购物 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="你就要去购物了，现在你手上有 种不同面值的硬币，每种硬币有无限多个。为了方便购物，你希望带尽量少的硬币，但要能组合出 到 之间的任意值。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1658 购物","headline":"P1658 购物 题解","description":"你就要去购物了，现在你手上有 种不同面值的硬币，每种硬币有无限多个。为了方便购物，你希望带尽量少的硬币，但要能组合出 到 之间的任意值。","url":"https://zymojblog.top/p/P1658/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1658</span></div>
+  <h1 class="seo-title">P1658 购物</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1658 购物</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code></p>
+<h2>题目描述</h2>
+<p>你就要去购物了，现在你手上有 $N$ 种不同面值的硬币，每种硬币有无限多个。为了方便购物，你希望带尽量少的硬币，但要能组合出 $1$ 到 $X$ 之间的任意值。</p>
+<h2>输入格式</h2>
+<p>第一行两个数 $X, N$，以下 $N$ 个数，表示每种硬币的面值。</p>
+<h2>输出格式</h2>
+<p>最少需要携带的硬币个数，如果无解输出 <code>-1</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">10</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">15</span>]; <span class="hljs-comment">// 存储硬币面值，N&lt;=10</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> X, N;
+    cin &gt;&gt; X &gt;&gt; N;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; i++) {
+        cin &gt;&gt; a[i];
+    }
+    <span class="hljs-built_in">sort</span>(a, a + N); <span class="hljs-comment">// 从小到大排序</span>
+
+    <span class="hljs-comment">// 如果没有面值1，无法组成1，无解</span>
+    <span class="hljs-keyword">if</span> (a[<span class="hljs-number">0</span>] != <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-number">-1</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-type">int</span> S = <span class="hljs-number">1</span>;       <span class="hljs-comment">// 当前已经可以覆盖 [1, S]</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">1</span>;     <span class="hljs-comment">// 至少需要一枚1分硬币</span>
+    <span class="hljs-type">int</span> pos = <span class="hljs-number">0</span>;     <span class="hljs-comment">// 当前使用的最大面值在数组中的下标，初始为0（即1分）</span>
+
+    <span class="hljs-comment">// 循环直到覆盖范围达到X</span>
+    <span class="hljs-keyword">while</span> (S &lt; X) {
+        <span class="hljs-comment">// 在已排序的硬币中，选择面值 &lt;= S+1 的最大面值</span>
+        <span class="hljs-comment">// 由于数组有序，pos可以后移</span>
+        <span class="hljs-keyword">while</span> (pos + <span class="hljs-number">1</span> &lt; N &amp;&amp; a[pos + <span class="hljs-number">1</span>] &lt;= S + <span class="hljs-number">1</span>) {
+            pos++;
+        }
+        <span class="hljs-comment">// 现在 a[pos] 是当前可用的最大面值</span>
+        S += a[pos];
+        ans++;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1658">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

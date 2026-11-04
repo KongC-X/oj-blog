@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1940 混合牛奶 Mixing Milk 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="由于乳制品产业利润很低，所以降低原材料（牛奶）价格就变得十分重要。帮助 Marry 乳业找到最优的牛奶采购方案。 Marry 乳业从一些奶农手中采购牛奶，并且每一位奶农为乳制品加工企业提供的价格是不同的。此外，就像每头奶牛每天只能挤出固定数量的奶，每位奶农每天能提供的牛奶数量是一定的。每天 Mar…">
+<link rel="canonical" href="https://zymojblog.top/p/1940/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1940 混合牛奶 Mixing Milk 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="由于乳制品产业利润很低，所以降低原材料（牛奶）价格就变得十分重要。帮助 Marry 乳业找到最优的牛奶采购方案。 Marry 乳业从一些奶农手中采购牛奶，并且每一位奶农为乳制品加工企业提供的价格是不同的。此外，就像每头奶牛每天只能挤出固定数量的奶，每位奶农每天能提供的牛奶数量是一定的。每天 Mar…">
+<meta property="og:url" content="https://zymojblog.top/p/1940/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1940 混合牛奶 Mixing Milk 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="由于乳制品产业利润很低，所以降低原材料（牛奶）价格就变得十分重要。帮助 Marry 乳业找到最优的牛奶采购方案。 Marry 乳业从一些奶农手中采购牛奶，并且每一位奶农为乳制品加工企业提供的价格是不同的。此外，就像每头奶牛每天只能挤出固定数量的奶，每位奶农每天能提供的牛奶数量是一定的。每天 Mar…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1940 混合牛奶 Mixing Milk","headline":"1940 混合牛奶 Mixing Milk 题解","description":"由于乳制品产业利润很低，所以降低原材料（牛奶）价格就变得十分重要。帮助 Marry 乳业找到最优的牛奶采购方案。 Marry 乳业从一些奶农手中采购牛奶，并且每一位奶农为乳制品加工企业提供的价格是不同的。此外，就像每头奶牛每天只能挤出固定数量的奶，每位奶农每天能提供的牛奶数量是一定的。每天 Mar…","url":"https://zymojblog.top/p/1940/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"USACO、贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1940</span></div>
+  <h1 class="seo-title">1940 混合牛奶 Mixing Milk</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">结构体</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>1940 - 混合牛奶 Mixing Milk</h1>
+<h2>题目描述</h2>
+<p>由于乳制品产业利润很低，所以降低原材料（牛奶）价格就变得十分重要。帮助 Marry 乳业找到最优的牛奶采购方案。</p>
+<p>Marry 乳业从一些奶农手中采购牛奶，并且每一位奶农为乳制品加工企业提供的价格是不同的。此外，就像每头奶牛每天只能挤出固定数量的奶，每位奶农每天能提供的牛奶数量是一定的。每天 Marry 乳业可以从奶农手中采购到小于或者等于奶农最大产量的整数数量的牛奶。</p>
+<p>给出 Marry 乳业每天对牛奶的需求量，还有每位奶农提供的牛奶单价和产量。计算采购足够数量的牛奶所需的最小花费。</p>
+<p>注：每天所有奶农的总产量大于 Marry 乳业的需求量。</p>
+<h2>输入</h2>
+<p>第一行二个整数 $n$,$m$，表示需要牛奶的总量，和提供牛奶的农民个数。</p>
+<p>接下来 $m$ 行，每行两个整数 $p_i$,$a_i$，表示第 i 个农民牛奶的单价，和农民 $i$ 一天最多能卖出的牛奶量。</p>
+<h2>输出</h2>
+<p>单独的一行包含单独的一个整数，表示 $Marry$ 的牛奶制造公司拿到所需的牛奶所要的最小费用。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 贪心：优先购买单价低的牛奶。</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span> {
+    <span class="hljs-type">int</span> price;<span class="hljs-comment">//单价</span>
+    <span class="hljs-type">int</span> cnt;<span class="hljs-comment">//总量</span>
+};
+<span class="hljs-comment">//按单价升序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(node a, node b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.price &lt; b.price;
+}
+node a[<span class="hljs-number">5010</span>];<span class="hljs-comment">//所有提供牛奶的奶农</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;<span class="hljs-comment">//需要n的牛奶，有m个奶农提供</span>
+    <span class="hljs-comment">//读入奶牛提供牛奶的数据</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        cin &gt;&gt; a[i].price &gt;&gt; a[i].cnt;
+    }
+    <span class="hljs-comment">//按单价升序排序</span>
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + m + <span class="hljs-number">1</span>, cmp);
+
+    <span class="hljs-type">int</span> s = <span class="hljs-number">0</span>,c = <span class="hljs-number">0</span>;<span class="hljs-comment">//s：总共付款金额，c：总共购买牛奶的数量</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-comment">//购买完该商户的牛奶总量不够</span>
+        <span class="hljs-keyword">if</span>(c + a[i].cnt &lt; n) {
+            s = s + a[i].price * a[i].cnt;
+            c = c + a[i].cnt;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//按需购买</span>
+            s = s + (n - c) * a[i].price;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    cout &lt;&lt; s;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1940">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

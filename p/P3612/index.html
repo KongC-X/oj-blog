@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P3612 [USACO17JAN] Secret Cow Code S 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="The cows are experimenting with secret codes, and have devised a method for creating an infinite-length string to be used as part of one of their cod…">
+<link rel="canonical" href="https://zymojblog.top/p/P3612/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P3612 [USACO17JAN] Secret Cow Code S 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="The cows are experimenting with secret codes, and have devised a method for creating an infinite-length string to be used as part of one of their cod…">
+<meta property="og:url" content="https://zymojblog.top/p/P3612/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P3612 [USACO17JAN] Secret Cow Code S 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="The cows are experimenting with secret codes, and have devised a method for creating an infinite-length string to be used as part of one of their cod…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P3612 [USACO17JAN] Secret Cow Code S","headline":"P3612 [USACO17JAN] Secret Cow Code S 题解","description":"The cows are experimenting with secret codes, and have devised a method for creating an infinite-length string to be used as part of one of their cod…","url":"https://zymojblog.top/p/P3612/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、2017、USACO、递归、分治、栈","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P3612</span></div>
+  <h1 class="seo-title">P3612 [USACO17JAN] Secret Cow Code S</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-4】递推与递归</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2017">2017</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%B2%BB">分治</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a></div>
+  <article class="markdown-body seo-article">
+<h1>P3612 [USACO17JAN] Secret Cow Code S</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>2017</code>、<code>USACO</code>、<code>递归</code>、<code>分治</code>、<code>栈</code></p>
+<h2>题目描述</h2>
+<p>The cows are experimenting with secret codes, and have devised a method for creating an infinite-length string to be used as part of one of their codes.</p>
+<p>Given a string $s$, let $F(s)$ be $s$ followed by $s$ &quot;rotated&quot; one character to the right (in a right rotation, the last character of $s$ rotates around and becomes the new first character). Given an initial string $s$, the cows build their infinite-length code string by repeatedly applying $F$; each step therefore doubles the length of the current string.</p>
+<p>Given the initial string and an index $N$, please help the cows compute the character at the $N$th position within the infinite code string.</p>
+<h2>输入格式</h2>
+<p>The input consists of a single line containing a string followed by $N$. The string consists of at most 30 uppercase characters, and $N \leq 10^{18}$.</p>
+<p>Note that $N$ may be too large to fit into a standard 32-bit integer, so you may want to use a 64-bit integer type (e.g., a &quot;long long&quot; in C/C++).</p>
+<h2>输出格式</h2>
+<p>Please output the $N$th character of the infinite code built from the initial string. The first character is $N=1$.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">COW <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>C```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+    <span class="hljs-comment">/**
+     * 逆向推导：
+     * 
+     * 对于任意长度L = len × 2^k，字符串结构为：
+     * [原字符串] [旋转后的字符串]
+     * 
+     * 后半部分的字符映射关系：
+     * - 第一个字符 = 原字符串的最后一个字符
+     * - 其余字符 = 原字符串的第(N-2)个字符
+     * 
+     * 不断缩小N，直到N ≤ len
+     */</span>
+
+<span class="hljs-type">char</span> s[<span class="hljs-number">35</span>];
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> N;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; s &gt;&gt; N;
+    <span class="hljs-type">int</span> len = <span class="hljs-built_in">strlen</span>(s);
+    <span class="hljs-keyword">while</span> (N &gt; len) {
+        <span class="hljs-comment">// 找到当前包含N的完整字符串长度</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> length = len;
+        <span class="hljs-keyword">while</span> (length * <span class="hljs-number">2</span> &lt; N) {
+            length *= <span class="hljs-number">2</span>;
+        }
+        
+        <span class="hljs-comment">// 此时 length &lt; N ≤ length×2</span>
+        <span class="hljs-comment">// N在后半部分</span>
+        N -= length;  <span class="hljs-comment">// 映射到后半部分的相对位置</span>
+        
+        <span class="hljs-keyword">if</span> (N == <span class="hljs-number">1</span>) {
+            N = length;  <span class="hljs-comment">// 对应原字符串的最后一个字符</span>
+        } <span class="hljs-keyword">else</span> {
+            N -= <span class="hljs-number">1</span>;      <span class="hljs-comment">// 对应原字符串的第(N-1)个字符</span>
+        }
+    }
+    
+    cout &lt;&lt; s[N - <span class="hljs-number">1</span>] &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P3612">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

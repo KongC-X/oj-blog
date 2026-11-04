@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1562 加数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出一个正整数n（1≤n≤100000）。在n的右边加入n的一半，然后在新数的右边再加入n的一半的一半，一直进行，直到不能再加为止。 例如 n=37 37的一半为18（取整数）加到n的右边成为 3718 18的一半为9，加到新数的右边成为 37189 9的一半为4，加到新数的右边成为 371894…">
+<link rel="canonical" href="https://zymojblog.top/p/1562/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1562 加数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出一个正整数n（1≤n≤100000）。在n的右边加入n的一半，然后在新数的右边再加入n的一半的一半，一直进行，直到不能再加为止。 例如 n=37 37的一半为18（取整数）加到n的右边成为 3718 18的一半为9，加到新数的右边成为 37189 9的一半为4，加到新数的右边成为 371894…">
+<meta property="og:url" content="https://zymojblog.top/p/1562/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1562 加数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出一个正整数n（1≤n≤100000）。在n的右边加入n的一半，然后在新数的右边再加入n的一半的一半，一直进行，直到不能再加为止。 例如 n=37 37的一半为18（取整数）加到n的右边成为 3718 18的一半为9，加到新数的右边成为 37189 9的一半为4，加到新数的右边成为 371894…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1562 加数","headline":"1562 加数 题解","description":"给出一个正整数n（1≤n≤100000）。在n的右边加入n的一半，然后在新数的右边再加入n的一半的一半，一直进行，直到不能再加为止。 例如 n=37 37的一半为18（取整数）加到n的右边成为 3718 18的一半为9，加到新数的右边成为 37189 9的一半为4，加到新数的右边成为 371894…","url":"https://zymojblog.top/p/1562/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"省赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1562</span></div>
+  <h1 class="seo-title">1562 加数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">递归进阶</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>1562 - 加数</h1>
+<h2>题目描述</h2>
+<p>给出一个正整数n（1≤n≤100000）。在n的右边加入n的一半，然后在新数的右边再加入n的一半的一半，一直进行，直到不能再加为止。</p>
+<p>例如  n=37         37的一半为18（取整数）加到n的右边成为</p>
+<p>        3718         18的一半为9，加到新数的右边成为</p>
+<p>        37189        9的一半为4，加到新数的右边成为</p>
+<p>        371894       4的一半为2，加到新数的右边成为</p>
+<p>        3718942      2的一半为1，加到新数的右边成为</p>
+<p>        37189421     1的一半为0，加数结束，最后得到的数是一个8位的数</p>
+<h2>输入</h2>
+<p>整数n</p>
+<h2>输出</h2>
+<p>加数结束后新数的长度。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 计算数字 x 的位数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">cnt</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (x) {
+        x /= <span class="hljs-number">10</span>;
+        res++;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-built_in">cnt</span>(n);  <span class="hljs-comment">// 先加上初始数字 n 的位数</span>
+
+    <span class="hljs-comment">// 不断除以2，直到为0</span>
+    <span class="hljs-keyword">while</span> (n / <span class="hljs-number">2</span> &gt; <span class="hljs-number">0</span>) {
+        n /= <span class="hljs-number">2</span>;
+        ans += <span class="hljs-built_in">cnt</span>(n);
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1562">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

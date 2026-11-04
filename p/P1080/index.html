@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1080 [NOIP 2012 提高组] 国王游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="恰逢 H 国国庆，国王邀请 位大臣来玩一个有奖游戏。首先，他让每个大臣在左、右手上面分别写下一个整数，国王自己也在左、右手上各写一个整数。然后，让这 位大臣排成一排，国王站在队伍的最前面。排好队后，所有的大臣都会获得国王奖赏的若干金币，每位大臣获得的金币数分别是：排在该大臣前面的所有人的左手上的数…">
+<link rel="canonical" href="https://zymojblog.top/p/P1080/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1080 [NOIP 2012 提高组] 国王游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="恰逢 H 国国庆，国王邀请 位大臣来玩一个有奖游戏。首先，他让每个大臣在左、右手上面分别写下一个整数，国王自己也在左、右手上各写一个整数。然后，让这 位大臣排成一排，国王站在队伍的最前面。排好队后，所有的大臣都会获得国王奖赏的若干金币，每位大臣获得的金币数分别是：排在该大臣前面的所有人的左手上的数…">
+<meta property="og:url" content="https://zymojblog.top/p/P1080/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1080 [NOIP 2012 提高组] 国王游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="恰逢 H 国国庆，国王邀请 位大臣来玩一个有奖游戏。首先，他让每个大臣在左、右手上面分别写下一个整数，国王自己也在左、右手上各写一个整数。然后，让这 位大臣排成一排，国王站在队伍的最前面。排好队后，所有的大臣都会获得国王奖赏的若干金币，每位大臣获得的金币数分别是：排在该大臣前面的所有人的左手上的数…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1080 [NOIP 2012 提高组] 国王游戏","headline":"P1080 [NOIP 2012 提高组] 国王游戏 题解","description":"恰逢 H 国国庆，国王邀请 位大臣来玩一个有奖游戏。首先，他让每个大臣在左、右手上面分别写下一个整数，国王自己也在左、右手上各写一个整数。然后，让这 位大臣排成一排，国王站在队伍的最前面。排好队后，所有的大臣都会获得国王奖赏的若干金币，每位大臣获得的金币数分别是：排在该大臣前面的所有人的左手上的数…","url":"https://zymojblog.top/p/P1080/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"贪心、高精度、2012、NOIP 提高组、排序","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1080</span></div>
+  <h1 class="seo-title">P1080 [NOIP 2012 提高组] 国王游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">【算法1-5】贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a><a class="seo-tag" href="/#/tag/2012">2012</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1080 [NOIP 2012 提高组] 国王游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 提高| C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>高精度</code>、<code>2012</code>、<code>NOIP 提高组</code>、<code>排序</code></p>
+<h2>题目描述</h2>
+<p>恰逢 H 国国庆，国王邀请 $n$ 位大臣来玩一个有奖游戏。首先，他让每个大臣在左、右手上面分别写下一个整数，国王自己也在左、右手上各写一个整数。然后，让这 $n$ 位大臣排成一排，国王站在队伍的最前面。排好队后，所有的大臣都会获得国王奖赏的若干金币，每位大臣获得的金币数分别是：排在该大臣前面的所有人的左手上的数的乘积除以他自己右手上的数，然后向下取整得到的结果。</p>
+<p>国王不希望某一个大臣获得特别多的奖赏，所以他想请你帮他重新安排一下队伍的顺序，使得获得奖赏最多的大臣，所获奖赏尽可能的少。注意，国王的位置始终在队伍的最前面。</p>
+<h2>输入格式</h2>
+<p>第一行包含一个整数 $n$，表示大臣的人数。</p>
+<p>第二行包含两个整数 $a$ 和 $b$，之间用一个空格隔开，分别表示国王左手和右手上的整数。</p>
+<p>接下来 $n$ 行，每行包含两个整数 $a$ 和 $b$，之间用一个空格隔开，分别表示每个大臣左手和右手上的整数。</p>
+<h2>输出格式</h2>
+<p>一个整数，表示重新排列后的队伍中获奖赏最多的大臣所获得的金币数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> 
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> 
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> 
+<span class="hljs-number">7</span> <span class="hljs-number">4</span> 
+<span class="hljs-number">4</span> <span class="hljs-number">6</span> ```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 大臣结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">P</span> {
+    <span class="hljs-type">int</span> l;  <span class="hljs-comment">// 左手上的数字</span>
+    <span class="hljs-type">int</span> r;  <span class="hljs-comment">// 右手上的数字</span>
+    <span class="hljs-type">int</span> v;  <span class="hljs-comment">// l × r 的乘积（排序依据）</span>
+} a[<span class="hljs-number">1010</span>];
+
+<span class="hljs-comment">// 比较函数：按 l×r 升序排序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(P x, P y)</span> </span>{
+    <span class="hljs-keyword">return</span> x.v &lt; y.v;
+}
+
+<span class="hljs-comment">// 高精度乘法：大整数 x 乘以小整数 b</span>
+<span class="hljs-comment">// x 是低位在前的向量（如123存储为[3,2,1]）</span>
+<span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">mul</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; x, <span class="hljs-type">int</span> b)</span> </span>{
+    vector&lt;<span class="hljs-type">int</span>&gt; res;  <span class="hljs-comment">// 存储结果</span>
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 进位值</span>
+    
+    <span class="hljs-comment">// 逐位相乘并处理进位</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; x.<span class="hljs-built_in">size</span>(); i++) {
+        c += x[i] * b;           <span class="hljs-comment">// 当前位乘积加上进位</span>
+        res.<span class="hljs-built_in">push_back</span>(c % <span class="hljs-number">10</span>);   <span class="hljs-comment">// 取个位数存入结果</span>
+        c /= <span class="hljs-number">10</span>;                 <span class="hljs-comment">// 计算新的进位</span>
+    }
+    
+    <span class="hljs-comment">// 处理最后的进位</span>
+    <span class="hljs-keyword">while</span> (c) {
+        res.<span class="hljs-built_in">push_back</span>(c % <span class="hljs-number">10</span>);
+        c /= <span class="hljs-number">10</span>;
+    }
+    
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-comment">// 高精度除法：大整数 x 除以小整数 b（整除）</span>
+<span class="hljs-comment">// x 是低位在前的向量，返回商（也是低位在前）</span>
+<span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">div</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; x, <span class="hljs-type">int</span> b)</span> </span>{
+    vector&lt;<span class="hljs-type">int</span>&gt; res;  <span class="hljs-comment">// 存储商</span>
+    <span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;        <span class="hljs-comment">// 余数</span>
+    
+    <span class="hljs-comment">// 从高位向低位除（x中存储是低位在前，所以从最后一位开始）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = x.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        r = r * <span class="hljs-number">10</span> + x[i];       <span class="hljs-comment">// 当前位的值加上上一位的余数×10</span>
+        res.<span class="hljs-built_in">push_back</span>(r / b);    <span class="hljs-comment">// 计算商的当前位</span>
+        r %= b;                  <span class="hljs-comment">// 计算新的余数</span>
+    }
+    
+    <span class="hljs-comment">// 此时res是高位在前，需要反转变成低位在前</span>
+    <span class="hljs-built_in">reverse</span>(res.<span class="hljs-built_in">begin</span>(), res.<span class="hljs-built_in">end</span>());
+    
+    <span class="hljs-comment">// 去除前导零（至少保留一位）</span>
+    <span class="hljs-keyword">while</span> (res.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">1</span> &amp;&amp; res.<span class="hljs-built_in">back</span>() == <span class="hljs-number">0</span>) {
+        res.<span class="hljs-built_in">pop_back</span>();
+    }
+    
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-comment">// 比较两个高精度数的大小：返回 true 表示 x &gt; y</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">gt</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; x, vector&lt;<span class="hljs-type">int</span>&gt; y)</span> </span>{
+    <span class="hljs-comment">// 先比较位数</span>
+    <span class="hljs-keyword">if</span> (x.<span class="hljs-built_in">size</span>() != y.<span class="hljs-built_in">size</span>()) {
+        <span class="hljs-keyword">return</span> x.<span class="hljs-built_in">size</span>() &gt; y.<span class="hljs-built_in">size</span>();
+    }
+    
+    <span class="hljs-comment">// 位数相同，从高位向低位比较</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = x.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span> (x[i] != y[i]) {
+            <span class="hljs-keyword">return</span> x[i] &gt; y[i];
+        }
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 两个数相等</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;        <span class="hljs-comment">// 大臣人数</span>
+    <span class="hljs-type">int</span> kl, kr;   <span class="hljs-comment">// 国王左手和右手上的数字</span>
+    
+    <span class="hljs-comment">// 输入</span>
+    cin &gt;&gt; n &gt;&gt; kl &gt;&gt; kr;
+    
+    <span class="hljs-comment">// 输入每个大臣的左右手数字</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i].l &gt;&gt; a[i].r;
+        a[i].v = a[i].l * a[i].r;  <span class="hljs-comment">// 计算乘积用于排序</span>
+    }
+    
+    <span class="hljs-comment">// 按 l×r 升序排序大臣</span>
+    <span class="hljs-built_in">sort</span>(a, a + n, cmp);
+    
+    <span class="hljs-comment">// 初始化前缀积 s：存储前面所有人左手数字的乘积</span>
+    <span class="hljs-comment">// 从国王的左手数字开始</span>
+    vector&lt;<span class="hljs-type">int</span>&gt; s;
+    <span class="hljs-type">int</span> t = kl;
+    <span class="hljs-keyword">while</span> (t) {
+        s.<span class="hljs-built_in">push_back</span>(t % <span class="hljs-number">10</span>);  <span class="hljs-comment">// 转为高精度，低位在前</span>
+        t /= <span class="hljs-number">10</span>;
+    }
+    <span class="hljs-comment">// 如果国王左手是0，则初始化为[0]</span>
+    <span class="hljs-keyword">if</span> (s.<span class="hljs-built_in">empty</span>()) {
+        s.<span class="hljs-built_in">push_back</span>(<span class="hljs-number">0</span>);
+    }
+    
+    <span class="hljs-comment">// 记录最大金币数，初始为0</span>
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">ans</span><span class="hljs-params">(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)</span></span>;
+    
+    <span class="hljs-comment">// 遍历排序后的大臣</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-comment">// 计算当前大臣的金币数：前面所有人的左手乘积 ÷ 当前大臣右手数字</span>
+        vector&lt;<span class="hljs-type">int</span>&gt; cur = <span class="hljs-built_in">div</span>(s, a[i].r);
+        
+        <span class="hljs-comment">// 更新最大金币数</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">gt</span>(cur, ans)) {
+            ans = cur;
+        }
+        
+        <span class="hljs-comment">// 更新前缀积：乘上当前大臣的左手数字</span>
+        s = <span class="hljs-built_in">mul</span>(s, a[i].l);
+    }
+    
+    <span class="hljs-comment">// 输出结果：高精度数从高位向低位输出</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = ans.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        cout &lt;&lt; ans[i];
+    }
+    cout &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1080">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

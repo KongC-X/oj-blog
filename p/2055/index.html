@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2055 欧拉路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个无向图，图中要么有两个奇点要么0奇点，如果是欧拉回路请从第一个点（1号点）为起点开始遍历，如果有两个奇点，则以字典序大的为起点开始遍历，在遍历的过程中，字典序小结点的先遍历。 请输出满足条件的欧拉路或者欧拉回路。">
+<link rel="canonical" href="https://zymojblog.top/p/2055/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2055 欧拉路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个无向图，图中要么有两个奇点要么0奇点，如果是欧拉回路请从第一个点（1号点）为起点开始遍历，如果有两个奇点，则以字典序大的为起点开始遍历，在遍历的过程中，字典序小结点的先遍历。 请输出满足条件的欧拉路或者欧拉回路。">
+<meta property="og:url" content="https://zymojblog.top/p/2055/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2055 欧拉路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个无向图，图中要么有两个奇点要么0奇点，如果是欧拉回路请从第一个点（1号点）为起点开始遍历，如果有两个奇点，则以字典序大的为起点开始遍历，在遍历的过程中，字典序小结点的先遍历。 请输出满足条件的欧拉路或者欧拉回路。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2055 欧拉路","headline":"2055 欧拉路 题解","description":"有一个无向图，图中要么有两个奇点要么0奇点，如果是欧拉回路请从第一个点（1号点）为起点开始遍历，如果有两个奇点，则以字典序大的为起点开始遍历，在遍历的过程中，字典序小结点的先遍历。 请输出满足条件的欧拉路或者欧拉回路。","url":"https://zymojblog.top/p/2055/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论、欧拉路","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2055</span></div>
+  <h1 class="seo-title">2055 欧拉路</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/%E6%AC%A7%E6%8B%89%E8%B7%AF">欧拉路</a></div>
+  <article class="markdown-body seo-article">
+<h1>2055 - 欧拉路</h1>
+<h2>题目描述</h2>
+<p>有一个无向图，图中要么有两个奇点要么0奇点，如果是欧拉回路请从第一个点（1号点）为起点开始遍历，如果有两个奇点，则以字典序大的为起点开始遍历，在遍历的过程中，字典序小结点的先遍历。</p>
+<p>请输出满足条件的欧拉路或者欧拉回路。</p>
+<h2>输入</h2>
+<p>第一行两个整数，n和e，表示有n个结点（结点编号为1~n），e条边。（5&lt;=n&lt;=20,5&lt;=e&lt;=15）</p>
+<p>接下来e行，每行有2个数，代表这两个结点之间有一条边。（本题数据保证两个结点之间最多只有1条边，确保本题存在欧拉路或者欧拉回路）</p>
+<h2>输出</h2>
+<p>只有一行，为满足条件的欧拉路或欧拉回路。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 使用DFS寻找欧拉路的基本思想如下：</span>
+<span class="hljs-comment">// 1、DFS寻找到第一个无边可走的结点，则这个结点必定为终点。</span>
+<span class="hljs-comment">// 由于是dfs递归结束的时候记录的，那么该边是走完欧拉道路的最后的那条边，</span>
+<span class="hljs-comment">// 层层返回之后最开始的也是最开始的出发的地方。</span>
+<span class="hljs-comment">// 2、接下来由于DFS的递归回溯，会退回终点的上一个结点，继续往下搜索，直到寻找</span>
+<span class="hljs-comment">// 到第二个无边可走的结点，则这个结点必定为欧拉路中终点前最后访问的结点。</span>
+<span class="hljs-comment">// 3、当通过DFS遍历完整张图后，就可以倒序储存下整个欧拉路。</span>
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">30</span>][<span class="hljs-number">30</span>]; <span class="hljs-comment">// 邻接矩阵</span>
+<span class="hljs-type">int</span> n,e; <span class="hljs-comment">// n个点，e条边</span>
+<span class="hljs-type">int</span> d[<span class="hljs-number">30</span>]; <span class="hljs-comment">// 存储每个节点的度数</span>
+<span class="hljs-type">int</span> r[<span class="hljs-number">50</span>]; <span class="hljs-comment">// 存储走过的点</span>
+<span class="hljs-type">int</span> k; <span class="hljs-comment">// r数组的下标</span>
+ 
+<span class="hljs-comment">// 欧拉路或欧拉回路的dfs实现</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-comment">// 讨论x可能去的点</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-comment">// 如果x可以去i</span>
+        <span class="hljs-keyword">if</span>(a[x][i] == <span class="hljs-number">1</span>){
+            <span class="hljs-comment">// 把边删除，拆边</span>
+            a[x][i] = <span class="hljs-number">0</span>;
+            a[i][x] = <span class="hljs-number">0</span>;
+            <span class="hljs-comment">// 从i开始dfs</span>
+            <span class="hljs-built_in">dfs</span>(i);
+        } 
+    } 
+     
+    <span class="hljs-comment">// 回溯时，记录路径</span>
+    k++;
+    r[k] = x;
+}
+
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n&gt;&gt;e;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= e;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        a[x][y] = <span class="hljs-number">1</span>;
+        a[y][x] = <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// 统计每个节点的度数</span>
+        d[x]++;
+        d[y]++;
+    } 
+    
+    <span class="hljs-comment">// 求起点：默认为1，求最大的奇点</span>
+    <span class="hljs-type">int</span> s = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = n;i &gt;= <span class="hljs-number">1</span>;i--){
+        <span class="hljs-keyword">if</span>(d[i] % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>){
+            s = i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 从起点s开始dfs</span>
+    <span class="hljs-built_in">dfs</span>(s);
+    
+    <span class="hljs-comment">// 逆序打印欧拉路或欧拉回路</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = k;i &gt;= <span class="hljs-number">1</span>;i--){
+        cout&lt;&lt;r[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    } 
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2055">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

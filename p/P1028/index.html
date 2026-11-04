@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1028 [NOIP 2001 普及组] 数的计算 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出正整数 ，要求按如下方式构造数列： 1. 只有一个数 的数列是一个合法的数列。 2. 在一个合法的数列的末尾加入一个正整数，但是这个正整数不能超过该数列最后一项的一半，可以得到一个新的合法数列。 请你求出，一共有多少个合法的数列。两个合法数列 不同当且仅当两数列长度不同或存在一个正整数 ，使得…">
+<link rel="canonical" href="https://zymojblog.top/p/P1028/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1028 [NOIP 2001 普及组] 数的计算 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出正整数 ，要求按如下方式构造数列： 1. 只有一个数 的数列是一个合法的数列。 2. 在一个合法的数列的末尾加入一个正整数，但是这个正整数不能超过该数列最后一项的一半，可以得到一个新的合法数列。 请你求出，一共有多少个合法的数列。两个合法数列 不同当且仅当两数列长度不同或存在一个正整数 ，使得…">
+<meta property="og:url" content="https://zymojblog.top/p/P1028/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1028 [NOIP 2001 普及组] 数的计算 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出正整数 ，要求按如下方式构造数列： 1. 只有一个数 的数列是一个合法的数列。 2. 在一个合法的数列的末尾加入一个正整数，但是这个正整数不能超过该数列最后一项的一半，可以得到一个新的合法数列。 请你求出，一共有多少个合法的数列。两个合法数列 不同当且仅当两数列长度不同或存在一个正整数 ，使得…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1028 [NOIP 2001 普及组] 数的计算","headline":"P1028 [NOIP 2001 普及组] 数的计算 题解","description":"给出正整数 ，要求按如下方式构造数列： 1. 只有一个数 的数列是一个合法的数列。 2. 在一个合法的数列的末尾加入一个正整数，但是这个正整数不能超过该数列最后一项的一半，可以得到一个新的合法数列。 请你求出，一共有多少个合法的数列。两个合法数列 不同当且仅当两数列长度不同或存在一个正整数 ，使得…","url":"https://zymojblog.top/p/P1028/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、递推、2001、递归、NOIP 普及组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1028</span></div>
+  <h1 class="seo-title">P1028 [NOIP 2001 普及组] 数的计算</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-4】递推与递归</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/2001">2001</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1028 [NOIP 2001 普及组] 数的计算</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>递推</code>、<code>2001</code>、<code>递归</code>、<code>NOIP 普及组</code></p>
+<h2>题目描述</h2>
+<p>给出正整数 $n$，要求按如下方式构造数列：</p>
+<ol>
+<li>只有一个数 $n$ 的数列是一个合法的数列。</li>
+<li>在一个合法的数列的末尾加入一个正整数，但是这个正整数不能超过该数列最后一项的一半，可以得到一个新的合法数列。</li>
+</ol>
+<p>请你求出，一共有多少个合法的数列。两个合法数列 $a, b$ 不同当且仅当两数列长度不同或存在一个正整数 $i \leq |a|$，使得 $a_i \neq b_i$。</p>
+<h2>输入格式</h2>
+<p>输入只有一行一个整数，表示 $n$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示合法的数列个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+    
+    <span class="hljs-comment">/**
+     * 思路解析：
+     * 
+     * 1. 问题转化：
+     *    题目要求的是以n为第一个数的所有合法数列个数
+     *    合法数列定义：后一个数 ≤ 前一个数的一半
+     *    
+     * 2. 状态定义：
+     *    f[i] = 以数字i作为第一个数（或者说数列的第一项）时，能构造出的合法数列总数
+     *    
+     * 3. 递推关系：
+     *    对于数字i，它可以自己单独成为一个数列（长度为1）
+     *    也可以在后面接一个数字j，其中1 ≤ j ≤ i/2
+     *    当后面接了数字j后，剩下的部分就是以j为第一个数的合法数列
+     *    
+     *    所以：f[i] = 1 + f[1] + f[2] + ... + f[i/2]
+     *          加的那个&quot;1&quot;是数列[i]本身
+     *    
+     * 4. 边界条件：
+     *    f[1] = 1  (只有[1]这一个数列)
+     *    
+     * 5. 计算顺序：
+     *    从小往大计算，因为f[i]依赖于所有f[1]~f[i/2]
+     */</span>
+
+<span class="hljs-type">int</span> f[<span class="hljs-number">1010</span>];  <span class="hljs-comment">// f[i]表示以数字i开头的合法数列个数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 初始化</span>
+    f[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 数字1只能构造[1]</span>
+    
+    <span class="hljs-comment">// 递推计算f[2]到f[n]</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> sum = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 数列[i]本身</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= i / <span class="hljs-number">2</span>; j++) {
+            sum += f[j];  <span class="hljs-comment">// 数列[i, ..., 以j开头...]</span>
+        }
+        f[i] = sum;
+    }
+    
+    cout &lt;&lt; f[n] &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1028">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

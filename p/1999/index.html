@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1999 操场换位置 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="同学们在操场上排成了一个 行 列的队形，请将这个队形中，年龄最大的同学和年龄最小的同学交换位置，并输出交换的结果（本题数据保证年龄最大的同学和年龄最小的同学在矩阵中是唯一的）。 比如：如下是一个 行 列的队形，这个队形中每个数字代表了每个同学的年龄。 这个队形中，年龄最大的同学在第 行第 列，年龄…">
+<link rel="canonical" href="https://zymojblog.top/p/1999/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1999 操场换位置 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="同学们在操场上排成了一个 行 列的队形，请将这个队形中，年龄最大的同学和年龄最小的同学交换位置，并输出交换的结果（本题数据保证年龄最大的同学和年龄最小的同学在矩阵中是唯一的）。 比如：如下是一个 行 列的队形，这个队形中每个数字代表了每个同学的年龄。 这个队形中，年龄最大的同学在第 行第 列，年龄…">
+<meta property="og:url" content="https://zymojblog.top/p/1999/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1999 操场换位置 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="同学们在操场上排成了一个 行 列的队形，请将这个队形中，年龄最大的同学和年龄最小的同学交换位置，并输出交换的结果（本题数据保证年龄最大的同学和年龄最小的同学在矩阵中是唯一的）。 比如：如下是一个 行 列的队形，这个队形中每个数字代表了每个同学的年龄。 这个队形中，年龄最大的同学在第 行第 列，年龄…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1999 操场换位置","headline":"1999 操场换位置 题解","description":"同学们在操场上排成了一个 行 列的队形，请将这个队形中，年龄最大的同学和年龄最小的同学交换位置，并输出交换的结果（本题数据保证年龄最大的同学和年龄最小的同学在矩阵中是唯一的）。 比如：如下是一个 行 列的队形，这个队形中每个数字代表了每个同学的年龄。 这个队形中，年龄最大的同学在第 行第 列，年龄…","url":"https://zymojblog.top/p/1999/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二维数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1999</span></div>
+  <h1 class="seo-title">1999 操场换位置</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">二维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84">二维数组</a></div>
+  <article class="markdown-body seo-article">
+<h1>1999 - 操场换位置</h1>
+<h2>题目描述</h2>
+<p>同学们在操场上排成了一个 $n$ 行 $m$ 列的队形，请将这个队形中，年龄最大的同学和年龄最小的同学交换位置，并输出交换的结果（本题数据保证年龄最大的同学和年龄最小的同学在矩阵中是唯一的）。</p>
+<p>比如：如下是一个 $3$ 行 $4$ 列的队形，这个队形中每个数字代表了每个同学的年龄。</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">18</span> <span class="hljs-number">9</span>
+<span class="hljs-number">15</span> <span class="hljs-number">12</span> <span class="hljs-number">10</span> <span class="hljs-number">6</span>
+<span class="hljs-number">17</span> <span class="hljs-number">3</span> <span class="hljs-number">12</span> <span class="hljs-number">15</span>
+`</code></pre><p>这个队形中，年龄最大的同学在第 $1$ 行第 $3$ 列，年龄最小的同学在第 $3$ 行第 $2$ 列，将他们交换位置后输出结果为：</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">3</span> <span class="hljs-number">9</span>
+<span class="hljs-number">15</span> <span class="hljs-number">12</span> <span class="hljs-number">10</span> <span class="hljs-number">6</span>
+<span class="hljs-number">17</span> <span class="hljs-number">18</span> <span class="hljs-number">12</span> <span class="hljs-number">15</span>
+`</code></pre><h2>输入</h2>
+<p>第 $1$ 行有 $2$ 个整数 $n$ 和 $m$ ，分别代表队形的行和列的值（$2 \le n,m \le 200$）。</p>
+<p>接下来 $n$ 行，每行有 $m$ 个整数，代表每个同学的年龄（每个同学的年龄的值在 $1 \sim 100$ 之间）</p>
+<h2>输出</h2>
+<p>输出 $n$ 行 $m$ 列，代表交换位置后的结果，每行的 $m$ 个数之间用空格隔开。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">210</span>][<span class="hljs-number">210</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//注意：y1不能定义到main外面会和系统函数同名</span>
+    <span class="hljs-comment">//x1 y1：最大数下标</span>
+    <span class="hljs-comment">//x2 y2：最小数下标</span>
+    <span class="hljs-type">int</span> n,m,x1,y1,x2,y2;
+    cin&gt;&gt;n&gt;&gt;m;
+
+    <span class="hljs-comment">//设定初始值</span>
+    x1 = <span class="hljs-number">1</span>;
+    y1 = <span class="hljs-number">1</span>;
+    x2 = <span class="hljs-number">1</span>;
+    y2 = <span class="hljs-number">1</span>;
+
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            cin&gt;&gt;a[i][j];
+            <span class="hljs-keyword">if</span>(a[i][j] &gt; a[x1][y1]) {
+                x1 = i;
+                y1 = j;
+            }
+
+            <span class="hljs-keyword">if</span>(a[i][j] &lt; a[x2][y2]) {
+                x2 = i;
+                y2 = j;
+            }
+        }
+    }
+
+    <span class="hljs-comment">//交换</span>
+    <span class="hljs-built_in">swap</span>(a[x1][y1],a[x2][y2]);
+
+    <span class="hljs-comment">//输出</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            cout&lt;&lt;a[i][j]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+        }
+        cout&lt;&lt;endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1999">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

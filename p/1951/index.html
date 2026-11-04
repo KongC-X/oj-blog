@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1951 子串统计 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
+<link rel="canonical" href="https://zymojblog.top/p/1951/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1951 子串统计 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
+<meta property="og:url" content="https://zymojblog.top/p/1951/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1951 子串统计 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1951 子串统计","headline":"1951 子串统计 题解","description":"给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。","url":"https://zymojblog.top/p/1951/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1951</span></div>
+  <h1 class="seo-title">1951 子串统计</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">蓝桥杯STEAM</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1951 - 子串统计</h1>
+<h2>题目描述</h2>
+<p>给定一个长度为 $n$ 的字符串 $S$，还有一个数字 $L$，统计长度大于等于 $L$ 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。</p>
+<h2>输入</h2>
+<p>第一行一个数字 $L$。</p>
+<p>第二行是字符串 $S$。</p>
+<p>$L$ 大于 $0$ ，且不超过 $S$ 的长度。</p>
+<h2>输出</h2>
+<p>一行，题目要求的字符串。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+ 从长度为len开始找每个长度的可能的子串出现的次数
+4
+bbaabbaaaaa 
+从长度为4的子串开始求起，求出所有可能的子串每个子串出现的次数；
+然后求长度为5、6……
+*/</span>
+string s,t;<span class="hljs-comment">//t表示子字符串</span>
+string r;<span class="hljs-comment">//表示出现次数最多的结果字符串</span>
+<span class="hljs-type">int</span> ma;<span class="hljs-comment">//表示出现次数最多的字符串的出现次数 </span>
+<span class="hljs-type">int</span> len; 
+
+<span class="hljs-comment">//计算字符串s中t子串出现的次数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fun</span><span class="hljs-params">(string s,string t)</span></span>{
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt;= s.<span class="hljs-built_in">size</span>() - t.<span class="hljs-built_in">size</span>();i++){
+        <span class="hljs-keyword">if</span>(s.<span class="hljs-built_in">substr</span>(i,t.<span class="hljs-built_in">size</span>()) == t){
+            c++;
+        }
+    }
+    <span class="hljs-keyword">return</span> c;
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;len&gt;&gt;s;
+    <span class="hljs-comment">//先循环所有可能的子串的长度</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = len;i &lt;= s.<span class="hljs-built_in">size</span>();i++){
+        <span class="hljs-comment">//求在长度为i的情况下，所有可能出现的子串</span>
+        <span class="hljs-comment">//每个子串出现的次数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt;= s.<span class="hljs-built_in">size</span>() - i;j++){
+            t = s.<span class="hljs-built_in">substr</span>(j,i);<span class="hljs-comment">//截出长度为i的子串</span>
+            <span class="hljs-comment">//计算t字符串在s字符串中出现的次数</span>
+            <span class="hljs-comment">//cout&lt;&lt;t&lt;&lt;endl; </span>
+            <span class="hljs-type">int</span> c = <span class="hljs-built_in">fun</span>(s,t);
+            <span class="hljs-comment">//如果出现次数比ma多</span>
+            <span class="hljs-comment">//或者一样多，但更长 </span>
+            <span class="hljs-keyword">if</span>(c&gt;ma||(c==ma&amp;&amp;t.<span class="hljs-built_in">size</span>()&gt;r.<span class="hljs-built_in">size</span>())){
+                r = t;
+                ma = c;
+            }
+        } 
+    } 
+    
+    cout&lt;&lt;r;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1951">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

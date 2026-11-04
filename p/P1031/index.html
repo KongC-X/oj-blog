@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1031 [NOIP 2002 提高组] 均分纸牌 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 堆纸牌，编号分别为 。每堆上有若干张，但纸牌总数必为 的倍数。可以在任一堆上取若干张纸牌，然后移动。 移牌规则为：在编号为 堆上取的纸牌，只能移到编号为 的堆上；在编号为 的堆上取的纸牌，只能移到编号为 的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。 现在要求找出一种移动方法，用最少…">
+<link rel="canonical" href="https://zymojblog.top/p/P1031/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1031 [NOIP 2002 提高组] 均分纸牌 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 堆纸牌，编号分别为 。每堆上有若干张，但纸牌总数必为 的倍数。可以在任一堆上取若干张纸牌，然后移动。 移牌规则为：在编号为 堆上取的纸牌，只能移到编号为 的堆上；在编号为 的堆上取的纸牌，只能移到编号为 的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。 现在要求找出一种移动方法，用最少…">
+<meta property="og:url" content="https://zymojblog.top/p/P1031/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1031 [NOIP 2002 提高组] 均分纸牌 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 堆纸牌，编号分别为 。每堆上有若干张，但纸牌总数必为 的倍数。可以在任一堆上取若干张纸牌，然后移动。 移牌规则为：在编号为 堆上取的纸牌，只能移到编号为 的堆上；在编号为 的堆上取的纸牌，只能移到编号为 的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。 现在要求找出一种移动方法，用最少…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1031 [NOIP 2002 提高组] 均分纸牌","headline":"P1031 [NOIP 2002 提高组] 均分纸牌 题解","description":"有 堆纸牌，编号分别为 。每堆上有若干张，但纸牌总数必为 的倍数。可以在任一堆上取若干张纸牌，然后移动。 移牌规则为：在编号为 堆上取的纸牌，只能移到编号为 的堆上；在编号为 的堆上取的纸牌，只能移到编号为 的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。 现在要求找出一种移动方法，用最少…","url":"https://zymojblog.top/p/P1031/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、贪心、2002、NOIP 提高组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1031</span></div>
+  <h1 class="seo-title">P1031 [NOIP 2002 提高组] 均分纸牌</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2002">2002</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1031 [NOIP 2002 提高组] 均分纸牌</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-06-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>贪心</code>、<code>2002</code>、<code>NOIP 提高组</code></p>
+<h2>题目描述</h2>
+<p>有 $N$ 堆纸牌，编号分别为 $1,2,\ldots,N$。每堆上有若干张，但纸牌总数必为 $N$ 的倍数。可以在任一堆上取若干张纸牌，然后移动。</p>
+<p>移牌规则为：在编号为 $1$ 堆上取的纸牌，只能移到编号为 $2$ 的堆上；在编号为 $N$ 的堆上取的纸牌，只能移到编号为 $N-1$ 的堆上；其他堆上取的纸牌，可以移到相邻左边或右边的堆上。</p>
+<p>现在要求找出一种移动方法，用最少的移动次数使每堆上纸牌数都一样多。</p>
+<p>例如 $N=4$ 时，$4$ 堆纸牌数分别为 $9,8,17,6$。</p>
+<p>移动 $3$ 次可达到目的：</p>
+<ul>
+<li>从第三堆取 $4$ 张牌放到第四堆，此时每堆纸牌数分别为 $9,8,13,10$。</li>
+<li>从第三堆取 $3$ 张牌放到第二堆，此时每堆纸牌数分别为 $9,11,10,10$。</li>
+<li>从第二堆取 $1$ 张牌放到第一堆，此时每堆纸牌数分别为  $10,10,10,10$。</li>
+</ul>
+<h2>输入格式</h2>
+<p>第一行共一个整数 $N$，表示纸牌堆数。<br>第二行共 $N$ 个整数 $A_1,A_2,\ldots,A_N$，表示每堆纸牌初始时的纸牌数。</p>
+<h2>输出格式</h2>
+<p>共一行，即所有堆均达到相等时的最少移动次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">9</span> <span class="hljs-number">8</span> <span class="hljs-number">17</span> <span class="hljs-number">6</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,a[<span class="hljs-number">105</span>],sum=<span class="hljs-number">0</span>,ave,ans=<span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+  cin&gt;&gt;n;
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=n; i++) { cin&gt;&gt;a[i]; sum+=a[i]; } <span class="hljs-comment">//读入数据，计算总和</span>
+  ave=sum/n; <span class="hljs-comment">//计算平均值</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=n<span class="hljs-number">-1</span>; i++)
+  {
+    <span class="hljs-keyword">if</span>(a[i]==ave) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">//如果已经等于平均值，就跳过不处理。</span>
+    ans++; <span class="hljs-comment">//否则需要处理，答案+1</span>
+    <span class="hljs-keyword">if</span>(a[i]&gt;ave) <span class="hljs-comment">//大于平均值</span>
+    {
+      a[i+<span class="hljs-number">1</span>]=a[i+<span class="hljs-number">1</span>]+(a[i]-ave); <span class="hljs-comment">//将多余牌放到第i+1堆上</span>
+      a[i]=ave; <span class="hljs-comment">//当前牌堆数变为平均值</span>
+    }
+    <span class="hljs-keyword">if</span>(a[i]&lt;ave) <span class="hljs-comment">//小于平均值</span>
+    {
+      a[i+<span class="hljs-number">1</span>]=a[i+<span class="hljs-number">1</span>]-(ave-a[i]); <span class="hljs-comment">//这里不解释了，同上</span>
+      a[i]=ave;
+    }
+  }
+  cout&lt;&lt;ans&lt;&lt;endl; <span class="hljs-comment">//最后输出最少移动次数</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+} <span class="hljs-comment">//结束</span></code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1031">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

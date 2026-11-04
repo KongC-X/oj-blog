@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1205 [USACO1.2] Transformations 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="A square pattern of size ( ) black and white square tiles is transformed into another square pattern. Write a program that will recognize the minimum…">
+<link rel="canonical" href="https://zymojblog.top/p/P1205/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1205 [USACO1.2] Transformations 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="A square pattern of size ( ) black and white square tiles is transformed into another square pattern. Write a program that will recognize the minimum…">
+<meta property="og:url" content="https://zymojblog.top/p/P1205/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1205 [USACO1.2] Transformations 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="A square pattern of size ( ) black and white square tiles is transformed into another square pattern. Write a program that will recognize the minimum…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1205 [USACO1.2] Transformations","headline":"P1205 [USACO1.2] Transformations 题解","description":"A square pattern of size ( ) black and white square tiles is transformed into another square pattern. Write a program that will recognize the minimum…","url":"https://zymojblog.top/p/P1205/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、搜索、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1205</span></div>
+  <h1 class="seo-title">P1205 [USACO1.2] Transformations</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【入门4】数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1205 [USACO1.2] Transformations</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2025-08-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>搜索</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>A square pattern of size $N \times N$ ($1 \le N \le 10$) black and white square tiles is transformed into another square pattern. Write a program that will recognize the minimum transformation that has been applied to the original pattern given the following list of possible transformations:</p>
+<ul>
+<li>#1: 90 Degree Rotation: The pattern was rotated clockwise $90$ degrees.</li>
+<li>#2: 180 Degree Rotation: The pattern was rotated clockwise $180$ degrees.</li>
+<li>#3: 270 Degree Rotation: The pattern was rotated clockwise $270$ degrees.</li>
+<li>#4: Reflection: The pattern was reflected horizontally (turned into a mirror image of itself by reflecting around a vertical line in the middle of the image).</li>
+<li>#5: Combination: The pattern was reflected horizontally and then subjected to one of the rotations (#1-#3).</li>
+<li>#6: No Change: The original pattern was not changed.</li>
+<li>#7: Invalid Transformation: The new pattern was not obtained by any of the above methods.</li>
+</ul>
+<p>In the case that more than one transform could have been used, choose the one with the minimum number above.</p>
+<h2>输入格式</h2>
+<ul>
+<li>Line 1: A single integer, $N$.</li>
+<li>Line 2..$N+1$: $N$ lines of $N$ characters (each either <code>@</code> or <code>-</code>); this is the square before transformation.</li>
+<li>Line $N+2$..$2N+1$: $N$ lines of $N$ characters (each either <code>@</code> or <code>-</code>); this is the square after transformation.</li>
+</ul>
+<h2>输出格式</h2>
+<p>A single line containing the number from $1$ through $7$ described above that categorizes the transformation required to change from the &quot;before&quot; representation to the &quot;after&quot; representation.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+@-@
+---
+@@-
+@-@
+@--
+--@</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">char</span> a[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>],b[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>],c[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>];
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work0</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//判断是否相等</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++){
+            <span class="hljs-keyword">if</span>(b[i][j]!=c[i][j])
+              <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+          }    
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work1</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        b[j][n-i+<span class="hljs-number">1</span>]=a[i][j];
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work0</span>())<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work2</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        b[n-i+<span class="hljs-number">1</span>][n-j+<span class="hljs-number">1</span>]=a[i][j];
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work0</span>())<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work3</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        b[n-j+<span class="hljs-number">1</span>][i]=a[i][j];
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work0</span>())<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work4</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        b[i][n-j+<span class="hljs-number">1</span>]=a[i][j];
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work0</span>())<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">work5</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">work4</span>();
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++){
+            a[i][j]=b[i][j]; 
+        }
+    }   
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work1</span>())<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+       
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        a[i][j]=b[i][j]; 
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work2</span>())<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        a[i][j]=b[i][j]; 
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work3</span>())<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++){
+            cin&gt;&gt;a[i][j];	
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++){
+            cin&gt;&gt;c[i][j];
+        }
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work1</span>()){
+        cout&lt;&lt;<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work2</span>()){
+        cout&lt;&lt;<span class="hljs-number">2</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work3</span>()){
+        cout&lt;&lt;<span class="hljs-number">3</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work4</span>()){
+        cout&lt;&lt;<span class="hljs-number">4</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work5</span>()){
+        cout&lt;&lt;<span class="hljs-number">5</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">work0</span>()){
+        cout&lt;&lt;<span class="hljs-number">6</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    cout&lt;&lt;<span class="hljs-number">7</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1205">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

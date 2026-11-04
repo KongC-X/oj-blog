@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9749 [CSP-J 2023] 公路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小苞准备开着车沿着公路自驾。 公路上一共有 个站点，编号为从 到 。其中站点 与站点 的距离为 公里。 公路上每个站点都可以加油，编号为 的站点一升油的价格为 元，且每个站点只出售整数升的油。 小苞想从站点 开车到站点 ，一开始小苞在站点 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，…">
+<link rel="canonical" href="https://zymojblog.top/p/P9749/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9749 [CSP-J 2023] 公路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小苞准备开着车沿着公路自驾。 公路上一共有 个站点，编号为从 到 。其中站点 与站点 的距离为 公里。 公路上每个站点都可以加油，编号为 的站点一升油的价格为 元，且每个站点只出售整数升的油。 小苞想从站点 开车到站点 ，一开始小苞在站点 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，…">
+<meta property="og:url" content="https://zymojblog.top/p/P9749/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9749 [CSP-J 2023] 公路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小苞准备开着车沿着公路自驾。 公路上一共有 个站点，编号为从 到 。其中站点 与站点 的距离为 公里。 公路上每个站点都可以加油，编号为 的站点一升油的价格为 元，且每个站点只出售整数升的油。 小苞想从站点 开车到站点 ，一开始小苞在站点 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9749 [CSP-J 2023] 公路","headline":"P9749 [CSP-J 2023] 公路 题解","description":"小苞准备开着车沿着公路自驾。 公路上一共有 个站点，编号为从 到 。其中站点 与站点 的距离为 公里。 公路上每个站点都可以加油，编号为 的站点一升油的价格为 元，且每个站点只出售整数升的油。 小苞想从站点 开车到站点 ，一开始小苞在站点 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，…","url":"https://zymojblog.top/p/P9749/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、贪心、2023、O2优化、前缀和、CSP-J 入门级","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9749</span></div>
+  <h1 class="seo-title">P9749 [CSP-J 2023] 公路</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">CSP-J复赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a><a class="seo-tag" href="/#/tag/CSP-J%20%E5%85%A5%E9%97%A8%E7%BA%A7">CSP-J 入门级</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9749 [CSP-J 2023] 公路</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-10-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>贪心</code>、<code>2023</code>、<code>O2优化</code>、<code>前缀和</code>、<code>CSP-J 入门级</code></p>
+<h2>题目描述</h2>
+<p>小苞准备开着车沿着公路自驾。</p>
+<p>公路上一共有 $n$ 个站点，编号为从 $1$ 到 $n$。其中站点 $i$ 与站点 $i + 1$ 的距离为 $v_i$ 公里。</p>
+<p>公路上每个站点都可以加油，编号为 $i$ 的站点一升油的价格为 $a_i$ 元，且每个站点只出售整数升的油。</p>
+<p>小苞想从站点 $1$ 开车到站点 $n$，一开始小苞在站点 $1$ 且车的油箱是空的。已知车的油箱足够大，可以装下任意多的油，且每升油可以让车前进 $d$ 公里。问小苞从站点 $1$ 开到站点 $n$，至少要花多少钱加油？</p>
+<h2>输入格式</h2>
+<p>输入的第一行包含两个正整数 $n$ 和 $d$，分别表示公路上站点的数量和车每升油可以前进的距离。</p>
+<p>输入的第二行包含 $n - 1$ 个正整数 $v_1, v_2\dots v_{n-1}$，分别表示站点间的距离。</p>
+<p>输入的第三行包含 $n$ 个正整数 $a_1, a_2 \dots a_n$，分别表示在不同站点加油的价格。</p>
+<h2>输出格式</h2>
+<p>输出一行，仅包含一个正整数，表示从站点 $1$ 开到站点 $n$，小苞至少要花多少钱加油。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">4</span>
+<span class="hljs-number">10</span> <span class="hljs-number">10</span> <span class="hljs-number">10</span> <span class="hljs-number">10</span>
+<span class="hljs-number">9</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">6</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>79```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 贪心策略：如果我们在某个站点加油，应该尽量利用这个油价来覆盖后面所有油价更贵的路段，直到遇到更便宜的油价站点。</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n, d, a[N], v[N], sum[N], k, ans, t; <span class="hljs-comment">// t表示当前油箱剩余的油量</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 输入处理</span>
+    cin &gt;&gt; n &gt;&gt; d;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) cin &gt;&gt; v[i];  <span class="hljs-comment">// 站点间的距离</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i]; <span class="hljs-comment">// 各站点的油价</span>
+    
+    <span class="hljs-comment">/**
+     * 核心思路：贪心策略
+     * 1. 将整个路程划分为若干&quot;油价区间&quot;
+     * 2. 每个区间内使用该区间的最低油价来加油
+     * 3. 在区间起点加足够跑完整个区间的油
+     */</span>
+    
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> min_price = a[<span class="hljs-number">1</span>];  <span class="hljs-comment">// 当前区间的最低油价</span>
+    k = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 当前最低油价对应的站点编号</span>
+    
+    <span class="hljs-comment">// 第一步：路段分组</span>
+    <span class="hljs-comment">// 将连续的路段按照&quot;当前能使用的最低油价&quot;进行分组</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (a[i] &gt;= min_price) {
+            <span class="hljs-comment">// 当前站点油价不低于区间最低价，将该路段归入当前区间</span>
+            sum[k] += v[i];  <span class="hljs-comment">// 在k站点代表的区间累加距离</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 发现更低的油价，开始新的区间</span>
+            k = i;           <span class="hljs-comment">// 更新最低油价站点</span>
+            min_price = a[i]; <span class="hljs-comment">// 更新最低油价</span>
+            sum[i] += v[i];  <span class="hljs-comment">// 新区间从当前路段开始</span>
+        }
+    }
+    
+    <span class="hljs-comment">// 输出检查</span>
+    <span class="hljs-comment">// for (int i = 1; i &lt;= n; i++) {</span>
+    <span class="hljs-comment">//     cout &lt;&lt; sum[i] &lt;&lt; &quot; &quot;;</span>
+    <span class="hljs-comment">// }</span>
+
+    <span class="hljs-comment">/**
+     * 分组完成后：
+     * sum[i] 表示需要在站点i加油来覆盖的总路程
+     * 如果sum[i] = 0，说明不需要在站点i加油
+     */</span>
+    
+    <span class="hljs-comment">// 第二步：计算加油方案</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (sum[i] == <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// 跳过不需要加油的站点</span>
+        
+        <span class="hljs-comment">// 当前区间需要跑的总距离</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> need_km = sum[i];
+        
+        <span class="hljs-comment">// 如果剩余油量不够跑完当前区间，需要加油</span>
+        <span class="hljs-keyword">if</span> (t &lt; need_km) {
+            <span class="hljs-type">long</span> <span class="hljs-type">long</span> extra_km = need_km - t;  <span class="hljs-comment">// 需要额外跑的公里数</span>
+            <span class="hljs-type">long</span> <span class="hljs-type">long</span> liters = (extra_km + d - <span class="hljs-number">1</span>) / d; <span class="hljs-comment">// 向上取整计算需要买的油量，也可以用ceil函数</span>
+            <span class="hljs-comment">// long long liters = ceil(extra_km * 1.0 / d);  // 向上取整计算需要买的油量</span>
+            
+            ans += liters * a[i];  <span class="hljs-comment">// 累计花费</span>
+            t += liters * d - need_km;  <span class="hljs-comment">// 更新剩余油量</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 剩余油量足够跑完当前区间，直接消耗油量</span>
+            t -= need_km;
+        }
+    }
+    
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9749">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1236 算24点 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="几十年前全世界就流行一种数字游戏，至今仍有人乐此不疲．在中国我们把这种游戏称为“算 点”。您作为游戏者将得到 个 之间的自然数作为操作数，而您的任务是对这 个操作数进行适当的算术运算，要求运算结果等于 。 您可以使用的运算只有： ，您还可以使用 来改变运算顺序。注意：所有的中间结果须是正整数，所以…">
+<link rel="canonical" href="https://zymojblog.top/p/P1236/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1236 算24点 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="几十年前全世界就流行一种数字游戏，至今仍有人乐此不疲．在中国我们把这种游戏称为“算 点”。您作为游戏者将得到 个 之间的自然数作为操作数，而您的任务是对这 个操作数进行适当的算术运算，要求运算结果等于 。 您可以使用的运算只有： ，您还可以使用 来改变运算顺序。注意：所有的中间结果须是正整数，所以…">
+<meta property="og:url" content="https://zymojblog.top/p/P1236/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1236 算24点 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="几十年前全世界就流行一种数字游戏，至今仍有人乐此不疲．在中国我们把这种游戏称为“算 点”。您作为游戏者将得到 个 之间的自然数作为操作数，而您的任务是对这 个操作数进行适当的算术运算，要求运算结果等于 。 您可以使用的运算只有： ，您还可以使用 来改变运算顺序。注意：所有的中间结果须是正整数，所以…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1236 算24点","headline":"P1236 算24点 题解","description":"几十年前全世界就流行一种数字游戏，至今仍有人乐此不疲．在中国我们把这种游戏称为“算 点”。您作为游戏者将得到 个 之间的自然数作为操作数，而您的任务是对这 个操作数进行适当的算术运算，要求运算结果等于 。 您可以使用的运算只有： ，您还可以使用 来改变运算顺序。注意：所有的中间结果须是正整数，所以…","url":"https://zymojblog.top/p/P1236/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"搜索、递归、Special Judge、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1236</span></div>
+  <h1 class="seo-title">P1236 算24点</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1236 算24点</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>递归</code>、<code>Special Judge</code>、<code>枚举</code></p>
+<h2>题目描述</h2>
+<p>几十年前全世界就流行一种数字游戏，至今仍有人乐此不疲．在中国我们把这种游戏称为“算 $24$ 点”。您作为游戏者将得到 $4$ 个 $1 \sim 9$ 之间的自然数作为操作数，而您的任务是对这 $4$ 个操作数进行适当的算术运算，要求运算结果等于 $24$。</p>
+<p>您可以使用的运算只有：$\verb!+!,\verb!-!,\verb!*!,\verb!/!$，您还可以使用 $\verb!()!$ 来改变运算顺序。注意：所有的中间结果须是正整数，所以一些除法运算是不允许的（例如，$(2\times 2)/4$ 是合法的，$2\times (2/4)$ 是不合法的）。下面我们给出一个游戏的具体例子：</p>
+<p>若给出的 $4$ 个操作数是：$1$、$2$、$3$、$7$，则一种可能的解答是 $1+2+3\times 7=24$。</p>
+<h2>输入格式</h2>
+<p>只有一行，四个 $1$ 到 $9$ 之间的自然数。</p>
+<h2>输出格式</h2>
+<p>如果有解的话，只要输出一个解。输出的是三行数据，分别表示运算的步骤。</p>
+<ul>
+<li>其中第一行是输入的两个数和一个运算符和运算后的结果；</li>
+<li>第二行是第一行的结果和一个输入的数据、运算符、运算后的结果，或者是另外两个数的输出结果；</li>
+<li>第三行是前面的结果第二行的结果或者剩下的一个数字、运算符和 $\verb!=24!$。如果两个操作数有大小的话则先输出大的。</li>
+</ul>
+<p>如果没有解则输出 <code>No answer!</code>。</p>
+<p>如果有多重合法解，输出任意一种即可。</p>
+<p>注：所有运算结果均为正整数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>+<span class="hljs-number">1</span>=<span class="hljs-number">3</span>
+<span class="hljs-number">7</span>*<span class="hljs-number">3</span>=<span class="hljs-number">21</span>
+<span class="hljs-number">21</span>+<span class="hljs-number">3</span>=<span class="hljs-number">24</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Step</span> {
+    <span class="hljs-type">int</span> a, b, c;      <span class="hljs-comment">// a op b = c, a &gt;= b</span>
+    <span class="hljs-type">char</span> op;
+};
+
+vector&lt;<span class="hljs-type">int</span>&gt; cur;
+vector&lt;Step&gt; steps, ans;
+<span class="hljs-type">bool</span> found = <span class="hljs-literal">false</span>;
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt;&amp; nums)</span> </span>{
+    <span class="hljs-keyword">if</span> (found) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (nums.<span class="hljs-built_in">size</span>() == <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">if</span> (nums[<span class="hljs-number">0</span>] == <span class="hljs-number">24</span>) {
+            found = <span class="hljs-literal">true</span>;
+            ans = steps;
+        }
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; ++j) {
+            <span class="hljs-type">int</span> x = nums[i], y = nums[j];
+            <span class="hljs-type">int</span> big = <span class="hljs-built_in">max</span>(x, y), small = <span class="hljs-built_in">min</span>(x, y);
+            <span class="hljs-comment">// 尝试四种运算</span>
+            vector&lt;pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">char</span>&gt;&gt; ops;
+            ops.<span class="hljs-built_in">push_back</span>({big + small, <span class="hljs-string">&#x27;+&#x27;</span>});
+            ops.<span class="hljs-built_in">push_back</span>({big - small, <span class="hljs-string">&#x27;-&#x27;</span>});
+            ops.<span class="hljs-built_in">push_back</span>({big * small, <span class="hljs-string">&#x27;*&#x27;</span>});
+            <span class="hljs-keyword">if</span> (small != <span class="hljs-number">0</span> &amp;&amp; big % small == <span class="hljs-number">0</span>)
+                ops.<span class="hljs-built_in">push_back</span>({big / small, <span class="hljs-string">&#x27;/&#x27;</span>});
+
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;op : ops) {
+                <span class="hljs-type">int</span> val = op.first;
+                <span class="hljs-type">char</span> ch = op.second;
+                <span class="hljs-comment">// 生成新列表</span>
+                vector&lt;<span class="hljs-type">int</span>&gt; nxt;
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt; n; ++k) {
+                    <span class="hljs-keyword">if</span> (k != i &amp;&amp; k != j) nxt.<span class="hljs-built_in">push_back</span>(nums[k]);
+                }
+                nxt.<span class="hljs-built_in">push_back</span>(val);
+                <span class="hljs-comment">// 记录步骤</span>
+                steps.<span class="hljs-built_in">push_back</span>({big, small, val, ch});
+                <span class="hljs-built_in">dfs</span>(nxt);
+                <span class="hljs-keyword">if</span> (found) <span class="hljs-keyword">return</span>;
+                steps.<span class="hljs-built_in">pop_back</span>();
+            }
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">init</span><span class="hljs-params">(<span class="hljs-number">4</span>)</span></span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; ++i) cin &gt;&gt; init[i];
+    <span class="hljs-built_in">dfs</span>(init);
+    <span class="hljs-keyword">if</span> (!found) {
+        cout &lt;&lt; <span class="hljs-string">&quot;No answer!&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">auto</span> &amp;s : ans) {
+            cout &lt;&lt; s.a &lt;&lt; s.op &lt;&lt; s.b &lt;&lt; <span class="hljs-string">&quot;=&quot;</span> &lt;&lt; s.c &lt;&lt; endl;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1236">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

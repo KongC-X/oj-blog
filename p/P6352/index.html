@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P6352 [COCI 2007/2008 #3] CETIRI 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="你原本有 个数，它们从小到大排序后构成了等差数列。 但是现在丢失了一个数，并且其余的三个数的顺序也被打乱了。 请你找出第四个数。">
+<link rel="canonical" href="https://zymojblog.top/p/P6352/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P6352 [COCI 2007/2008 #3] CETIRI 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="你原本有 个数，它们从小到大排序后构成了等差数列。 但是现在丢失了一个数，并且其余的三个数的顺序也被打乱了。 请你找出第四个数。">
+<meta property="og:url" content="https://zymojblog.top/p/P6352/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P6352 [COCI 2007/2008 #3] CETIRI 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="你原本有 个数，它们从小到大排序后构成了等差数列。 但是现在丢失了一个数，并且其余的三个数的顺序也被打乱了。 请你找出第四个数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P6352 [COCI 2007/2008 #3] CETIRI","headline":"P6352 [COCI 2007/2008 #3] CETIRI 题解","description":"你原本有 个数，它们从小到大排序后构成了等差数列。 但是现在丢失了一个数，并且其余的三个数的顺序也被打乱了。 请你找出第四个数。","url":"https://zymojblog.top/p/P6352/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2007、Special Judge、COCI（克罗地亚）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P6352</span></div>
+  <h1 class="seo-title">P6352 [COCI 2007/2008 #3] CETIRI</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2007">2007</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/COCI%EF%BC%88%E5%85%8B%E7%BD%97%E5%9C%B0%E4%BA%9A%EF%BC%89">COCI（克罗地亚）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P6352 [COCI 2007/2008 #3] CETIRI</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2007</code>、<code>Special Judge</code>、<code>COCI（克罗地亚）</code></p>
+<h2>题目描述</h2>
+<p>你原本有 $4$ 个数，它们从小到大排序后构成了等差数列。</p>
+<p>但是现在丢失了一个数，并且其余的三个数的顺序也被打乱了。</p>
+<p>请你找出第四个数。</p>
+<h2>输入格式</h2>
+<p>输入一行三个整数。保证这些数字在 $-100\sim 100$ 之间。</p>
+<h2>输出格式</h2>
+<p>输出一行一个数，为第四个数。</p>
+<p><strong>方案可能不是唯一的，但保证一定存在，本题使用SPJ。</strong></p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>10```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>7```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> a[<span class="hljs-number">3</span>];
+    cin &gt;&gt; a[<span class="hljs-number">0</span>] &gt;&gt; a[<span class="hljs-number">1</span>] &gt;&gt; a[<span class="hljs-number">2</span>];
+    <span class="hljs-built_in">sort</span>(a, a + <span class="hljs-number">3</span>); <span class="hljs-comment">// 从小到大排序</span>
+
+    <span class="hljs-type">int</span> x = a[<span class="hljs-number">0</span>], y = a[<span class="hljs-number">1</span>], z = a[<span class="hljs-number">2</span>];
+    <span class="hljs-type">int</span> d1 = y - x;
+    <span class="hljs-type">int</span> d2 = z - y;
+
+    <span class="hljs-keyword">if</span> (d1 == d2) {
+        <span class="hljs-comment">// 三个数是连续的，缺头或缺尾，输出头或尾均可（这里输出尾）</span>
+        cout &lt;&lt; z + d1 &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (d1 == <span class="hljs-number">2</span> * d2) {
+        <span class="hljs-comment">// 缺失的在 x 和 y 之间，公差为 d2</span>
+        cout &lt;&lt; x + d2 &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// d2 == 2 * d1，缺失的在 y 和 z 之间，公差为 d1</span>
+        cout &lt;&lt; y + d1 &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P6352">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

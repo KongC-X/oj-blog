@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4554 [GESP202606 二级] 菱形 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定正整数 ，在 个网格的画布中，使用字符画一个边长为 个网格的菱形。其中，空白网格使用 表示，菱形边所在的网格用 表示。 例如当 时，图形如下：">
+<link rel="canonical" href="https://zymojblog.top/p/B4554/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4554 [GESP202606 二级] 菱形 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定正整数 ，在 个网格的画布中，使用字符画一个边长为 个网格的菱形。其中，空白网格使用 表示，菱形边所在的网格用 表示。 例如当 时，图形如下：">
+<meta property="og:url" content="https://zymojblog.top/p/B4554/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4554 [GESP202606 二级] 菱形 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定正整数 ，在 个网格的画布中，使用字符画一个边长为 个网格的菱形。其中，空白网格使用 表示，菱形边所在的网格用 表示。 例如当 时，图形如下：">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4554 [GESP202606 二级] 菱形","headline":"B4554 [GESP202606 二级] 菱形 题解","description":"给定正整数 ，在 个网格的画布中，使用字符画一个边长为 个网格的菱形。其中，空白网格使用 表示，菱形边所在的网格用 表示。 例如当 时，图形如下：","url":"https://zymojblog.top/p/B4554/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2026、循环结构、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4554</span></div>
+  <h1 class="seo-title">B4554 [GESP202606 二级] 菱形</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4554 [GESP202606 二级] 菱形</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-30</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给定正整数 $n$，在 $(2n - 1) \times (2n - 1)$ 个网格的画布中，使用字符画一个边长为 $n$ 个网格的菱形。其中，空白网格使用 $\cdot$ 表示，菱形边所在的网格用 $+$ 表示。</p>
+<p>例如当 $n = 3$ 时，图形如下：</p>
+<pre><code class="hljs language-cpp">..+..
+.+.+.
++...+
+.+.+.
+..+..</code></pre><h2>输入格式</h2>
+<p>输入一个正整数 $n$；</p>
+<h2>输出格式</h2>
+<p>输出 $2n - 1$ 行，表示按要求画的菱形。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>...+...<br>..+.+..<br>.+...+.<br>+.....+<br>.+...+.<br>..+.+..<br>...+...```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                            <span class="hljs-comment">// n: 菱形边长</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">int</span> sz = <span class="hljs-number">2</span> * n - <span class="hljs-number">1</span>;               <span class="hljs-comment">// 画布大小（行数和列数）</span>
+    <span class="hljs-type">int</span> c = n - <span class="hljs-number">1</span>;                    <span class="hljs-comment">// 中心点的行/列索引（从0开始）</span>
+
+    <span class="hljs-comment">// 逐行输出</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; sz; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; sz; j++) {
+            <span class="hljs-comment">// 判断当前点是否在菱形的四条边上</span>
+            <span class="hljs-comment">// 菱形边上的点满足：曼哈顿距离 |i - c| + |j - c| == c (即 n-1)</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">abs</span>(i - c) + <span class="hljs-built_in">abs</span>(j - c) == c) {
+                cout &lt;&lt; <span class="hljs-string">&quot;+&quot;</span>;
+            } <span class="hljs-keyword">else</span> {
+                cout &lt;&lt; <span class="hljs-string">&quot;.&quot;</span>;
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4554">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

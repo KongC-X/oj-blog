@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2001 猜先(a.cpp) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 X 凭借出色的棋艺被聘请为少年宫的中国象棋老师。 少年宫改造以后所有的设施都焕然一新，象棋教室已不再使用传统的木制棋子和棋盘了，小朋友们所有的操作都是在电脑上进行的，如猜先、对弈、复盘、计算积分等，这给老师的备课带来了极大的挑战，因为除了正常的棋艺教学，还要开发各种应用程序来辅助教学。 众所周…">
+<link rel="canonical" href="https://zymojblog.top/p/2001/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2001 猜先(a.cpp) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 X 凭借出色的棋艺被聘请为少年宫的中国象棋老师。 少年宫改造以后所有的设施都焕然一新，象棋教室已不再使用传统的木制棋子和棋盘了，小朋友们所有的操作都是在电脑上进行的，如猜先、对弈、复盘、计算积分等，这给老师的备课带来了极大的挑战，因为除了正常的棋艺教学，还要开发各种应用程序来辅助教学。 众所周…">
+<meta property="og:url" content="https://zymojblog.top/p/2001/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2001 猜先(a.cpp) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 X 凭借出色的棋艺被聘请为少年宫的中国象棋老师。 少年宫改造以后所有的设施都焕然一新，象棋教室已不再使用传统的木制棋子和棋盘了，小朋友们所有的操作都是在电脑上进行的，如猜先、对弈、复盘、计算积分等，这给老师的备课带来了极大的挑战，因为除了正常的棋艺教学，还要开发各种应用程序来辅助教学。 众所周…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2001 猜先(a.cpp)","headline":"2001 猜先(a.cpp) 题解","description":"小 X 凭借出色的棋艺被聘请为少年宫的中国象棋老师。 少年宫改造以后所有的设施都焕然一新，象棋教室已不再使用传统的木制棋子和棋盘了，小朋友们所有的操作都是在电脑上进行的，如猜先、对弈、复盘、计算积分等，这给老师的备课带来了极大的挑战，因为除了正常的棋艺教学，还要开发各种应用程序来辅助教学。 众所周…","url":"https://zymojblog.top/p/2001/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"市赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2001</span></div>
+  <h1 class="seo-title">2001 猜先(a.cpp)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B8%82%E8%B5%9B">市赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>2001 - 猜先(a.cpp)</h1>
+<h2>题目描述</h2>
+<p>小 X 凭借出色的棋艺被聘请为少年宫的中国象棋老师。</p>
+<p> 少年宫改造以后所有的设施都焕然一新，象棋教室已不再使用传统的木制棋子和棋盘了，小朋友们所有的操作都是在电脑上进行的，如猜先、对弈、复盘、计算积分等，这给老师的备课带来了极大的挑战，因为除了正常的棋艺教学，还要开发各种应用程序来辅助教学。</p>
+<p> 众所周知任何棋类运动开局前都要猜先，如围棋项目猜先仪式是由上手抓起一把围棋子让对手猜单双，猜中先行。而象棋则是甲、乙两人同时从各自的棋盒中摸出一枚棋子比大小，连续比三次， 获胜次数多的一方执红先行，另一方则执黑后行。</p>
+<p>因现在所有的操作都要在电脑上实现，小 X 需要编写一个象棋猜先程序，具体任务如下： 象棋中有七种棋子，分别是帅、士、相、车、马、炮、兵，程序中用 $7,6,5,4,3,2,1$ 表示，定义大小的规则为：帅 $\gt$ 士 $\gt$ 相 $\gt$ 车 $\gt$ 马 $\gt$ 炮，兵最弱，除了帅之外的棋子都比兵大，士 $\gt$ 相 $\gt$ 车 $\gt$ 马 $\gt$ 炮 $\gt$ 兵，但兵却能吃帅，即兵 $\gt$ 帅。</p>
+<p>猜先程序要能实现以下功能：输入三行数据，每行两个棋子的编号，判断谁胜谁负。</p>
+<p>小 X 觉得这个程序太简单了，于是交给了参加本次比赛的你来完成。</p>
+<h2>输入</h2>
+<p>输入数据共有三行，每行两个用空格隔开的正整数，表示两个棋子对应的编号，第一个数对应甲摸出的棋子的编号，第二个数对应乙摸出的棋子的编号。</p>
+<h2>输出</h2>
+<p>输出一行包含一个单词，如甲获胜的次数比乙多则输出“ <code>Win</code>”，如乙获胜的次数多则输出“<code>Lose</code>”，如甲乙两人获胜次数相同则输出“<code>Tie</code>”。请注意大小写， 引号不用输出！</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> winA = <span class="hljs-number">0</span>, winB = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; ++i) {
+        <span class="hljs-type">int</span> a, b;
+        cin &gt;&gt; a &gt;&gt; b;
+        <span class="hljs-comment">// 特殊规则：兵 (1) 吃帅 (7)</span>
+        <span class="hljs-keyword">if</span> (a == <span class="hljs-number">7</span> &amp;&amp; b == <span class="hljs-number">1</span>) {
+            ++winB;   <span class="hljs-comment">// 甲出帅，乙出兵，乙胜</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a == <span class="hljs-number">1</span> &amp;&amp; b == <span class="hljs-number">7</span>) {
+            ++winA;   <span class="hljs-comment">// 甲出兵，乙出帅，甲胜</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a &gt; b) {
+            ++winA;   <span class="hljs-comment">// 一般情况：数值大者胜</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a &lt; b) {
+            ++winB;
+        }
+        <span class="hljs-comment">// 相等则平局，不计入胜场</span>
+    }
+
+    <span class="hljs-keyword">if</span> (winA &gt; winB) cout &lt;&lt; <span class="hljs-string">&quot;Win&quot;</span> &lt;&lt; endl;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (winA &lt; winB) cout &lt;&lt; <span class="hljs-string">&quot;Lose&quot;</span> &lt;&lt; endl;
+    <span class="hljs-keyword">else</span> cout &lt;&lt; <span class="hljs-string">&quot;Tie&quot;</span> &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2001">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

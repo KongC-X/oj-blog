@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2231 最简真分数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出 个正整数，任取两个数分别作为分子和分母组成最简真分数，编程求共有几个这样的组合。">
+<link rel="canonical" href="https://zymojblog.top/p/2231/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2231 最简真分数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出 个正整数，任取两个数分别作为分子和分母组成最简真分数，编程求共有几个这样的组合。">
+<meta property="og:url" content="https://zymojblog.top/p/2231/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2231 最简真分数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出 个正整数，任取两个数分别作为分子和分母组成最简真分数，编程求共有几个这样的组合。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2231 最简真分数","headline":"2231 最简真分数 题解","description":"给出 个正整数，任取两个数分别作为分子和分母组成最简真分数，编程求共有几个这样的组合。","url":"https://zymojblog.top/p/2231/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"嵌套循环","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2231</span></div>
+  <h1 class="seo-title">2231 最简真分数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">电子学会考级考试</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF">嵌套循环</a></div>
+  <article class="markdown-body seo-article">
+<h1>2231 - 最简真分数</h1>
+<h2>题目描述</h2>
+<p>给出 $n$ 个正整数，任取两个数分别作为分子和分母组成最简真分数，编程求共有几个这样的组合。</p>
+<h2>输入</h2>
+<p>第一行是一个正整数 $n（n \le 600$）。 </p>
+<p>第二行是 $n$ 个不同的整数，相邻两个整数之间用单个空格隔开。</p>
+<p>整数大于 $1$ 且小于等于 $1000$ 。</p>
+<h2>输出</h2>
+<p>一个整数，即最简真分数组合的个数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">//计算2个数的最大公约数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fun</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span>
+</span>{
+    <span class="hljs-type">int</span> t;
+    <span class="hljs-keyword">while</span> (x % y != <span class="hljs-number">0</span>)
+    {
+        t = x % y;
+        x = y;
+        y = t;
+    }
+
+    <span class="hljs-keyword">return</span> y;
+}
+
+<span class="hljs-type">int</span> n, a[<span class="hljs-number">610</span>], c = <span class="hljs-number">0</span>;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    {
+        cin &gt;&gt; a[i];
+    }
+
+    <span class="hljs-comment">//穷举所有的两个数之间的组合</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++)
+        {
+            <span class="hljs-keyword">if</span> (i != j &amp;&amp; a[i] &lt; a[j] &amp;&amp; <span class="hljs-built_in">fun</span>(a[i], a[j]) == <span class="hljs-number">1</span>)
+            {
+                c++;
+            }
+        }
+    }
+
+    cout &lt;&lt; c;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2231">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

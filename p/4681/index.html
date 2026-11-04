@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4681 荒地开垦 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨有一大片荒地，可以表示为一个 行 列的网格图。 小杨想要开垦这块荒地，但荒地中一些位置存在杂物，对于一块不存在杂物的荒地，该荒地可以开垦当且仅当其上下左右四个方向相邻的格子均不存在杂物。 小杨可以选择至多一个位置，清除该位置的杂物，移除杂物后该位置变为荒地。小杨想知道在清除至多一个位置的杂物的…">
+<link rel="canonical" href="https://zymojblog.top/p/4681/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="4681 荒地开垦 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨有一大片荒地，可以表示为一个 行 列的网格图。 小杨想要开垦这块荒地，但荒地中一些位置存在杂物，对于一块不存在杂物的荒地，该荒地可以开垦当且仅当其上下左右四个方向相邻的格子均不存在杂物。 小杨可以选择至多一个位置，清除该位置的杂物，移除杂物后该位置变为荒地。小杨想知道在清除至多一个位置的杂物的…">
+<meta property="og:url" content="https://zymojblog.top/p/4681/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4681 荒地开垦 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨有一大片荒地，可以表示为一个 行 列的网格图。 小杨想要开垦这块荒地，但荒地中一些位置存在杂物，对于一块不存在杂物的荒地，该荒地可以开垦当且仅当其上下左右四个方向相邻的格子均不存在杂物。 小杨可以选择至多一个位置，清除该位置的杂物，移除杂物后该位置变为荒地。小杨想知道在清除至多一个位置的杂物的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"4681 荒地开垦","headline":"4681 荒地开垦 题解","description":"小杨有一大片荒地，可以表示为一个 行 列的网格图。 小杨想要开垦这块荒地，但荒地中一些位置存在杂物，对于一块不存在杂物的荒地，该荒地可以开垦当且仅当其上下左右四个方向相邻的格子均不存在杂物。 小杨可以选择至多一个位置，清除该位置的杂物，移除杂物后该位置变为荒地。小杨想知道在清除至多一个位置的杂物的…","url":"https://zymojblog.top/p/4681/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP四级、二维数组、枚举、25年3月","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>4681</span></div>
+  <h1 class="seo-title">4681 荒地开垦</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E5%9B%9B%E7%BA%A7">GESP四级</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84">二维数组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/25%E5%B9%B43%E6%9C%88">25年3月</a></div>
+  <article class="markdown-body seo-article">
+<h1>4681 - 荒地开垦</h1>
+<h2>题目描述</h2>
+<p>小杨有一大片荒地，可以表示为一个 $n$ 行 $m$ 列的网格图。</p>
+<p>小杨想要开垦这块荒地，但荒地中一些位置存在杂物，对于一块不存在杂物的荒地，该荒地可以开垦当且仅当其上下左右四个方向相邻的格子均不存在杂物。</p>
+<p>小杨可以选择至多一个位置，清除该位置的杂物，移除杂物后该位置变为荒地。小杨想知道在清除至多一个位置的杂物的情况下，最多能够开垦多少块荒地。</p>
+<h2>输入</h2>
+<p>第一行包含两个正整数 $n，m$ ，含义如题面所示。</p>
+<p>之后 $n$ 行，每行包含一个长度为 $m$ 且仅包含字符 <code>.</code> 和 <code>#</code> 的字符串。如果为 <code>.</code> ，代表该位置为荒地，如果为 <code>#</code> ，<br>代表该位置为杂物。</p>
+<h2>输出</h2>
+<p>输出一个整数，代表在清除至多一个位置的杂物的情况下，最多能够开垦的荒地块数。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 我们有一个n行m列的网格，每个格子要么是荒地（.），要么是杂物（#）。</span>
+<span class="hljs-comment">// 荒地可以开垦的条件是它的上下左右四个相邻格子都没有杂物。</span>
+<span class="hljs-comment">// 我们可以选择清除最多一个杂物（将其变为荒地），然后计算在这种情况下最多能开垦多少块荒地。</span>
+<span class="hljs-comment">// 解决思路：</span>
+<span class="hljs-comment">// 初始状态：首先计算在不移除任何杂物的情况下，有多少荒地是可以开垦的。</span>
+<span class="hljs-comment">// 移除杂物的影响：对于每一个杂物，假设我们移除它，看看这样能新增多少可开垦的荒地。</span>
+<span class="hljs-comment">// 最优解：在所有可能的杂物移除中，找到能带来最大新增可开垦荒地的情况，结合初始状态得到最终答案。</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    string grid[<span class="hljs-number">1010</span>];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        cin &gt;&gt; grid[i];
+    }
+
+    <span class="hljs-comment">// 初始可开垦的荒地数</span>
+    <span class="hljs-type">int</span> initial = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; ++j) {
+            <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                <span class="hljs-type">bool</span> can_cultivate = <span class="hljs-literal">true</span>;
+                <span class="hljs-comment">// 检查四个方向</span>
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_cultivate = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (i &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_cultivate = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_cultivate = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (j &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_cultivate = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (can_cultivate) {
+                    initial++;
+                }
+            }
+        }
+    }
+
+    <span class="hljs-type">int</span> max_additional = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 尝试清除每一个杂物</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; ++j) {
+            <span class="hljs-keyword">if</span> (grid[i][j] == <span class="hljs-string">&#x27;#&#x27;</span>) {
+                <span class="hljs-type">int</span> additional = <span class="hljs-number">0</span>;
+                <span class="hljs-comment">// 检查清除该杂物后，四个方向的荒地是否变为可开垦</span>
+                <span class="hljs-comment">// 上</span>
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                    <span class="hljs-type">bool</span> can_now = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">if</span> (i<span class="hljs-number">-1</span> &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-2</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (j &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (can_now) additional++;
+                }
+                <span class="hljs-comment">// 下</span>
+                <span class="hljs-keyword">if</span> (i &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                    <span class="hljs-type">bool</span> can_now = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">if</span> (i+<span class="hljs-number">1</span> &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">2</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (j &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (can_now) additional++;
+                }
+                <span class="hljs-comment">// 左</span>
+                <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                    <span class="hljs-type">bool</span> can_now = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">if</span> (j<span class="hljs-number">-1</span> &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i][j<span class="hljs-number">-2</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (i &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (can_now) additional++;
+                }
+                <span class="hljs-comment">// 右</span>
+                <span class="hljs-keyword">if</span> (j &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                    <span class="hljs-type">bool</span> can_now = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">if</span> (j+<span class="hljs-number">1</span> &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i][j+<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (i &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_now = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">if</span> (can_now) additional++;
+                }
+                <span class="hljs-comment">// 当前格子本身是否变为可开垦</span>
+                <span class="hljs-type">bool</span> can_current = <span class="hljs-literal">true</span>;
+                <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i<span class="hljs-number">-1</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_current = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (i &lt; n<span class="hljs-number">-1</span> &amp;&amp; grid[i+<span class="hljs-number">1</span>][j] == <span class="hljs-string">&#x27;#&#x27;</span>) can_current = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span> &amp;&amp; grid[i][j<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_current = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (j &lt; m<span class="hljs-number">-1</span> &amp;&amp; grid[i][j+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;#&#x27;</span>) can_current = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">if</span> (can_current) additional++;
+
+                <span class="hljs-keyword">if</span> (additional &gt; max_additional) {
+                    max_additional = additional;
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; initial + max_additional &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/4681">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

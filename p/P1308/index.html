@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1308 [NOIP 2011 普及组] 统计单词数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一般的文本编辑器都有查找单词的功能，该功能可以快速定位特定单词在文章中的位置，有的还能统计出特定单词在文章中出现的次数。 现在，请你编程实现这一功能，具体要求是：给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章…">
+<link rel="canonical" href="https://zymojblog.top/p/P1308/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1308 [NOIP 2011 普及组] 统计单词数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一般的文本编辑器都有查找单词的功能，该功能可以快速定位特定单词在文章中的位置，有的还能统计出特定单词在文章中出现的次数。 现在，请你编程实现这一功能，具体要求是：给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章…">
+<meta property="og:url" content="https://zymojblog.top/p/P1308/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1308 [NOIP 2011 普及组] 统计单词数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一般的文本编辑器都有查找单词的功能，该功能可以快速定位特定单词在文章中的位置，有的还能统计出特定单词在文章中出现的次数。 现在，请你编程实现这一功能，具体要求是：给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1308 [NOIP 2011 普及组] 统计单词数","headline":"P1308 [NOIP 2011 普及组] 统计单词数 题解","description":"一般的文本编辑器都有查找单词的功能，该功能可以快速定位特定单词在文章中的位置，有的还能统计出特定单词在文章中出现的次数。 现在，请你编程实现这一功能，具体要求是：给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章…","url":"https://zymojblog.top/p/P1308/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2011、NOIP 普及组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1308</span></div>
+  <h1 class="seo-title">P1308 [NOIP 2011 普及组] 统计单词数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【入门5】字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2011">2011</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1308 [NOIP 2011 普及组] 统计单词数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-06-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2011</code>、<code>NOIP 普及组</code></p>
+<h2>题目描述</h2>
+<p>一般的文本编辑器都有查找单词的功能，该功能可以快速定位特定单词在文章中的位置，有的还能统计出特定单词在文章中出现的次数。</p>
+<p>现在，请你编程实现这一功能，具体要求是：给定一个单词，请你输出它在给定的文章中出现的次数和第一次出现的位置。注意：匹配单词时，不区分大小写，但要求完全匹配，即给定单词必须与文章中的某一独立单词在不区分大小写的情况下完全相同（参见样例 1），如果给定单词仅是文章中某一单词的一部分则不算匹配（参见样例 2）。</p>
+<h2>输入格式</h2>
+<p>共 $2$ 行。</p>
+<p>第 $1$ 行为一个字符串，其中只含字母，表示给定单词；</p>
+<p>第 $2$ 行为一个字符串，其中只可能包含字母和空格，表示给定的文章。</p>
+<h2>输出格式</h2>
+<p>一行，如果在文章中找到给定单词则输出两个整数，两个整数之间用一个空格隔开，分别是单词在文章中出现的次数和第一次出现的位置（即在文章中第一次出现时，单词首字母在文章中的位置，位置从 $0$ 开始）；如果单词在文章中没有出现，则直接输出一个整数 $-1$。</p>
+<p>注意：空格占一个字母位</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">To
+to be <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> to be is a question</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">0</span>
+</code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">to
+Did the Ottoman Empire lose its power at that time```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>-1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string s1, s2;
+    <span class="hljs-built_in">getline</span>(cin, s1);
+    <span class="hljs-built_in">getline</span>(cin, s2);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s1.<span class="hljs-built_in">size</span>(); i++) <span class="hljs-keyword">if</span>(<span class="hljs-string">&#x27;A&#x27;</span> &lt;= s1[i] &amp;&amp; <span class="hljs-string">&#x27;Z&#x27;</span> &gt;= s1[i]) s1[i] = s1[i] - <span class="hljs-string">&#x27;A&#x27;</span> + <span class="hljs-string">&#x27;a&#x27;</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s2.<span class="hljs-built_in">size</span>(); i++) <span class="hljs-keyword">if</span>(<span class="hljs-string">&#x27;A&#x27;</span> &lt;= s2[i] &amp;&amp; <span class="hljs-string">&#x27;Z&#x27;</span> &gt;= s2[i]) s2[i] = s2[i] - <span class="hljs-string">&#x27;A&#x27;</span> + <span class="hljs-string">&#x27;a&#x27;</span>;
+    <span class="hljs-comment">//大写改小写</span>
+    s1 = s1 + <span class="hljs-string">&quot; &quot;</span>; s1 = <span class="hljs-string">&quot; &quot;</span> + s1; 
+    s2 = s2 + <span class="hljs-string">&quot; &quot;</span>; s2 = <span class="hljs-string">&quot; &quot;</span> + s2;
+    <span class="hljs-comment">//修改</span>
+    <span class="hljs-type">int</span> len = s1.<span class="hljs-built_in">size</span>(), ans = <span class="hljs-number">0</span>, x;
+    <span class="hljs-type">bool</span> f = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s2.<span class="hljs-built_in">size</span>(); i++) {
+        string s = s2.<span class="hljs-built_in">substr</span>(i, len);
+        <span class="hljs-keyword">if</span>(s == s1) {
+            <span class="hljs-keyword">if</span>(!f) x = i, f = <span class="hljs-number">1</span>;
+            ans++;
+        }
+    }
+    <span class="hljs-comment">//暴力</span>
+    <span class="hljs-keyword">if</span>(ans) cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; x;
+    <span class="hljs-keyword">else</span> cout &lt;&lt; <span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1308">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

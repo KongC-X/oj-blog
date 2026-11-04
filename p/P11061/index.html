@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11061 【MX-X4-T1】「Jason-1」IO++ 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一类只有输入语句与输出语句的程序，我们用一个非负整数序列 描述它。 该程序将从前往后依次执行，对于第 个元素 ： 若 ，表示一条输入语句： 程序将从输入中读取一个整数。 否则，表示一条输出语句： 程序将输出第 次输入读取到的整数。 对于给出的程序，保证执行本语句前，程序至少进行了 次输入。对于你…">
+<link rel="canonical" href="https://zymojblog.top/p/P11061/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11061 【MX-X4-T1】「Jason-1」IO++ 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一类只有输入语句与输出语句的程序，我们用一个非负整数序列 描述它。 该程序将从前往后依次执行，对于第 个元素 ： 若 ，表示一条输入语句： 程序将从输入中读取一个整数。 否则，表示一条输出语句： 程序将输出第 次输入读取到的整数。 对于给出的程序，保证执行本语句前，程序至少进行了 次输入。对于你…">
+<meta property="og:url" content="https://zymojblog.top/p/P11061/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11061 【MX-X4-T1】「Jason-1」IO++ 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一类只有输入语句与输出语句的程序，我们用一个非负整数序列 描述它。 该程序将从前往后依次执行，对于第 个元素 ： 若 ，表示一条输入语句： 程序将从输入中读取一个整数。 否则，表示一条输出语句： 程序将输出第 次输入读取到的整数。 对于给出的程序，保证执行本语句前，程序至少进行了 次输入。对于你…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11061 【MX-X4-T1】「Jason-1」IO++","headline":"P11061 【MX-X4-T1】「Jason-1」IO++ 题解","description":"有一类只有输入语句与输出语句的程序，我们用一个非负整数序列 描述它。 该程序将从前往后依次执行，对于第 个元素 ： 若 ，表示一条输入语句： 程序将从输入中读取一个整数。 否则，表示一条输出语句： 程序将输出第 次输入读取到的整数。 对于给出的程序，保证执行本语句前，程序至少进行了 次输入。对于你…","url":"https://zymojblog.top/p/P11061/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"O2优化、梦熊比赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11061</span></div>
+  <h1 class="seo-title">P11061 【MX-X4-T1】「Jason-1」IO++</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%A2%A6%E7%86%8A%E6%AF%94%E8%B5%9B">梦熊比赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11061 【MX-X4-T1】「Jason-1」IO++</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>O2优化</code>、<code>梦熊比赛</code></p>
+<h2>题目背景</h2>
+<p>原题链接：<a href="https://oier.team/problems/X4B">https://oier.team/problems/X4B</a>。</p>
+<h2>题目描述</h2>
+<p>有一类只有输入语句与输出语句的程序，我们用一个非负整数序列 $[a_1, a_2, \ldots]$ 描述它。</p>
+<p>该程序将从前往后依次执行，对于第 $i$ 个元素 $a_i$：</p>
+<ul>
+<li>若 $a_i = 0$，表示一条输入语句：<ul>
+<li>程序将从输入中读取一个整数。</li>
+</ul>
+</li>
+<li>否则，表示一条输出语句：<ul>
+<li>程序将输出第 $a_i$ 次输入读取到的整数。</li>
+<li>对于给出的程序，保证执行本语句前，程序至少进行了 $a_i$ 次输入。对于你编写的程序，你同样需要保证这一点。</li>
+</ul>
+</li>
+</ul>
+<p>特别地，一个长度为 $0$ 的空程序也是合法的。</p>
+<p>给定一个长度为 $n$ 的程序 $[b_1, \ldots, b_n]$，你需要求出能够实现相同的功能的程序所需的最短长度。</p>
+<p>两个程序能实现相同功能，当且仅当对于任意的长度为 $10^{10^{10}}$、值为 $[1, 10^{10^{10}}]$ 之内整数的输入，两个程序执行的输出语句次数相同，且每一次输出的结果均一致。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示程序的长度。</p>
+<p>第二行，$n$ 个非负整数 $b_1, \ldots, b_n$，描述了一个程序。</p>
+<h2>输出格式</h2>
+<p>仅一行一个整数，表示要实现相同功能的程序所需要的最小长度。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span></code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span></code></pre><p><strong>样例输入 #4</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span></code></pre><p><strong>样例输出 #4</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * ======================================================================
+     * 题目：P11061 【MX-X4-T1】「Jason-1」IO++
+     * 题意：程序由输入语句(0)和输出语句(x&gt;0)组成。输出语句 x 表示输出第 x 次输入的值。
+     *       给定一个程序 b，求能实现同样功能的最短程序长度。
+     *
+     * ======================================================================
+     * 核心原理（结合样例1说明）：
+     *
+     * 样例1输入：
+     *   5
+     *   0 0 0 1 2
+     * 
+     * 原程序执行：
+     *   ① 0 → 读入第1个数（假设输入为 [2,3,4,...]，读入 2）
+     *   ② 0 → 读入第2个数（读入 3）
+     *   ③ 0 → 读入第3个数（读入 4）
+     *   ④ 1 → 输出第1次输入的数（输出 2）
+     *   ⑤ 2 → 输出第2次输入的数（输出 3）
+     * 
+     * 输出为 [2,3]。注意到第3次输入的值（4）从未被任何输出语句引用，是多余的。
+     * 因为最大的输出参数是 2，所以只需保证程序在输出第2个数之前至少执行了2次输入。
+     * 
+     * 优化后最短程序可以是 [0, 0, 1, 2]：
+     *   ① 0 → 读入2
+     *   ② 0 → 读入3
+     *   ③ 1 → 输出第1次输入（2）
+     *   ④ 2 → 输出第2次输入（3）
+     * 输出仍然为 [2,3]，功能完全一样。长度从5减到4。
+     *
+     * ======================================================================
+     * 通用结论：
+     * 1. 每条输出语句（x&gt;0）都必须保留，因为它们各自产生一次输出。
+     *    输出次数不能少，否则功能不同。
+     * 2. 所有输入语句中，只有那些被输出语句引用的输入值是必要的。
+     *    最大输出参数 maxX 表示程序至少需要读取到第 maxX 个输入值。
+     *    因此最少需要的输入语句数量 = maxX。
+     * 3. 最短程序长度 = 输出语句数量 + maxX。
+     *    （构造方式：先放 maxX 个输入语句，再按原顺序放所有输出语句）
+     *
+     * ======================================================================
+     * 复杂度：O(n)，n ≤ 1e5。
+     */</span>
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> outCnt = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 输出语句的个数</span>
+    <span class="hljs-type">int</span> maxX = <span class="hljs-number">0</span>;     <span class="hljs-comment">// 输出语句中参数的最大值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> x;
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">0</span>) {          <span class="hljs-comment">// 是输出语句</span>
+            outCnt++;
+            <span class="hljs-keyword">if</span> (x &gt; maxX) maxX = x;
+        }
+        <span class="hljs-comment">// x == 0 是输入语句，我们不需要统计输入语句个数，只需记录 maxX</span>
+    }
+    cout &lt;&lt; outCnt + maxX &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11061">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

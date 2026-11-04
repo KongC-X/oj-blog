@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4192 [海淀区小学组 2023] 分数线 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一次比赛中，所有参加比赛的选手都获得了一个分数 。已知有 个同学得 分， 个同学得 分，……， 个同学得 分。 请你划定一个分数线 ，使得不低于分数线 的人数 和低于分数线 的人数 均在给定的一个范围 之内，即 ， 。 保证 和 一定是整数，且 ， 。">
+<link rel="canonical" href="https://zymojblog.top/p/B4192/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4192 [海淀区小学组 2023] 分数线 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一次比赛中，所有参加比赛的选手都获得了一个分数 。已知有 个同学得 分， 个同学得 分，……， 个同学得 分。 请你划定一个分数线 ，使得不低于分数线 的人数 和低于分数线 的人数 均在给定的一个范围 之内，即 ， 。 保证 和 一定是整数，且 ， 。">
+<meta property="og:url" content="https://zymojblog.top/p/B4192/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4192 [海淀区小学组 2023] 分数线 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一次比赛中，所有参加比赛的选手都获得了一个分数 。已知有 个同学得 分， 个同学得 分，……， 个同学得 分。 请你划定一个分数线 ，使得不低于分数线 的人数 和低于分数线 的人数 均在给定的一个范围 之内，即 ， 。 保证 和 一定是整数，且 ， 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4192 [海淀区小学组 2023] 分数线","headline":"B4192 [海淀区小学组 2023] 分数线 题解","description":"一次比赛中，所有参加比赛的选手都获得了一个分数 。已知有 个同学得 分， 个同学得 分，……， 个同学得 分。 请你划定一个分数线 ，使得不低于分数线 的人数 和低于分数线 的人数 均在给定的一个范围 之内，即 ， 。 保证 和 一定是整数，且 ， 。","url":"https://zymojblog.top/p/B4192/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2023、北京、前缀和、科创活动、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4192</span></div>
+  <h1 class="seo-title">B4192 [海淀区小学组 2023] 分数线</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E5%8C%97%E4%BA%AC">北京</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4192 [海淀区小学组 2023] 分数线</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>北京</code>、<code>前缀和</code>、<code>科创活动</code>、<code>小学活动</code></p>
+<h2>题目背景</h2>
+<p>2023 年海淀区中小学生信息学竞赛小学组复赛题目，数据为洛谷自造。</p>
+<p>为更好区分不同做法，本题时限下调到 500 毫秒。</p>
+<h2>题目描述</h2>
+<p>一次比赛中，所有参加比赛的选手都获得了一个分数 $ s $。已知有 $ c_1 $ 个同学得 $1$ 分，$ c_2 $ 个同学得 $2$ 分，……，$ c_m $ 个同学得 $ m $ 分。</p>
+<p>请你划定一个分数线 $ k $，使得不低于分数线 $ k $ 的人数 $ n_1 $ 和低于分数线 $ k $ 的人数 $ n_2 $ 均在给定的一个范围 $[x, y]$ 之内，即 $ x \leq n_1 \leq y $，$ x \leq n_2 \leq y $。</p>
+<p>保证 $ s $ 和 $ k $ 一定是整数，且 $ 1 \leq s \leq m $，$ 1 \leq k \leq m $。</p>
+<h2>输入格式</h2>
+<p>第一行仅有一个正整数 $ m $；第二行包含 $ m $ 个整数 $ c_1, c_2, \ldots, c_m $，两两之间以空格分隔，数据保证至少有一个 $ c_i $ 大于 $0$；第三行包含两个用空格分隔的整数 $ x $ 和 $ y $。</p>
+<h2>输出格式</h2>
+<p>如果不存在满足条件的分数线，输出 $0$。否则，输出一个分符合题目要求的分数线。如果有多个答案，输出符合条件的答案中最小的那一个。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">6</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span> <span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXM = <span class="hljs-number">100005</span>;
+<span class="hljs-type">int</span> m;
+ll c[MAXM];          <span class="hljs-comment">// c[i] 表示得 i 分的人数（1‑based）</span>
+ll s[MAXM];          <span class="hljs-comment">// 前缀和，s[i] = c[1]+...+c[i]，s[0]=0</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    cin &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        cin &gt;&gt; c[i];
+    }
+    ll x, y;
+    cin &gt;&gt; x &gt;&gt; y;
+
+    <span class="hljs-comment">// 计算前缀和</span>
+    s[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        s[i] = s[i - <span class="hljs-number">1</span>] + c[i];
+    }
+    ll total = s[m];                     <span class="hljs-comment">// 总人数</span>
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                         <span class="hljs-comment">// 记录最小的 k，0 表示未找到</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">1</span>; k &lt;= m; k++) {
+        ll lower = s[k - <span class="hljs-number">1</span>];             <span class="hljs-comment">// 低于 k 的人数</span>
+        ll upper = total - lower;        <span class="hljs-comment">// 不低于 k 的人数</span>
+
+        <span class="hljs-keyword">if</span> (lower &gt;= x &amp;&amp; lower &lt;= y &amp;&amp; upper &gt;= x &amp;&amp; upper &lt;= y) {
+            ans = k;
+            <span class="hljs-keyword">break</span>;                       <span class="hljs-comment">// 找最小，找到即退出</span>
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4192">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

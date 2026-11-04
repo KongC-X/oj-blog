@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2127 求正整数 2 和 n 之间的完全数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="求正整数 和 之间的完全数（一行一个数）。 完全数：对于一个自然数，所有比它小的所有因数之和，等于它本身，它就是个完全数。如 。">
+<link rel="canonical" href="https://zymojblog.top/p/B2127/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2127 求正整数 2 和 n 之间的完全数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="求正整数 和 之间的完全数（一行一个数）。 完全数：对于一个自然数，所有比它小的所有因数之和，等于它本身，它就是个完全数。如 。">
+<meta property="og:url" content="https://zymojblog.top/p/B2127/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2127 求正整数 2 和 n 之间的完全数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="求正整数 和 之间的完全数（一行一个数）。 完全数：对于一个自然数，所有比它小的所有因数之和，等于它本身，它就是个完全数。如 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2127 求正整数 2 和 n 之间的完全数","headline":"B2127 求正整数 2 和 n 之间的完全数 题解","description":"求正整数 和 之间的完全数（一行一个数）。 完全数：对于一个自然数，所有比它小的所有因数之和，等于它本身，它就是个完全数。如 。","url":"https://zymojblog.top/p/B2127/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2127</span></div>
+  <h1 class="seo-title">B2127 求正整数 2 和 n 之间的完全数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2127 求正整数 2 和 n 之间的完全数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>求正整数 $2$ 和 $n$ 之间的完全数（一行一个数）。</p>
+<p>完全数：对于一个自然数，所有比它小的所有因数之和，等于它本身，它就是个完全数。如 $6=1+2+3$。</p>
+<h2>输入格式</h2>
+<p>输入 $n(n \le 10000)$。</p>
+<h2>输出格式</h2>
+<p>一行一个数，按由小到大的顺序。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">100</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">28</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断 x 是否为完全数（真因数之和等于自身）</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPerfect</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;                  <span class="hljs-comment">// sum: 真因数的和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; x; i++) { <span class="hljs-comment">// 枚举所有比 x 小的数</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) {         <span class="hljs-comment">// i 是 x 的因数</span>
+            sum += i;
+        }
+    }
+    <span class="hljs-keyword">return</span> sum == x;              <span class="hljs-comment">// 相等则是完全数</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                        <span class="hljs-comment">// n: 范围上限</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 遍历 2 到 n，输出所有完全数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isPerfect</span>(i)) {
+            cout &lt;&lt; i &lt;&lt; endl;
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2127">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

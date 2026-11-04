@@ -161,7 +161,16 @@ function build() {
   
   // 确保输出目录存在
   fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
-  
+
+  // 拆分：summary 占索引体积近四成，只在搜索时用到
+  // 主索引去掉 summary，另存 data/search.json 供搜索时懒加载
+  const searchMap = {};
+  const slimProblems = problems.map(p => {
+    const { summary, ...rest } = p;
+    if (summary) searchMap[p.id] = summary;
+    return rest;
+  });
+
   const index = {
     buildTime: new Date().toISOString(),
     totalProblems: problems.length,
@@ -169,7 +178,7 @@ function build() {
     allTags: [...new Set(problems.flatMap(p => p.tags))].sort(),
     // 按来源分组的训练题单统计
     trainingBySource: {},
-    problems,
+    problems: slimProblems,
   };
 
   // 构建训练题单统计（training 现在是数组）
@@ -183,11 +192,17 @@ function build() {
       }
     }
   });
-  
+
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(index, null, 2), 'utf-8');
-  
+  fs.writeFileSync(
+    path.join(__dirname, 'data', 'search.json'),
+    JSON.stringify(searchMap),
+    'utf-8'
+  );
+
   console.log(`✅ 索引构建完成！共 ${problems.length} 道题目`);
   console.log(`📁 输出: ${path.relative(process.cwd(), OUTPUT_FILE)}`);
+  console.log(`🔍 搜索索引: data/search.json（${Object.keys(searchMap).length} 条摘要）`);
   
   if (problems.length > 0) {
     console.log('\n📊 统计:');
@@ -227,3 +242,14 @@ function buildTemplates() {
 
 build();
 buildTemplates();
+
+// 预渲染静态页（/p/<id>/）+ sitemap.xml + robots.txt
+// 用 --no-prerender 跳过，适合只改索引的快速场景
+if (!process.argv.includes('--no-prerender')) {
+  const { spawnSync } = require('child_process');
+  console.log('');
+  const r = spawnSync('node', [path.join(__dirname, 'prerender.js')], { stdio: 'inherit' });
+  if (r.status !== 0) {
+    console.warn('⚠️ 预渲染失败，主站功能不受影响（可稍后单独运行 node prerender.js）');
+  }
+}

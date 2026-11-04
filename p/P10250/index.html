@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10250 [GESP样题 六级] 下楼梯 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="顽皮的小明发现，下楼梯时每步可以走 个台阶、 个台阶或 个台阶。现在一共有 个台阶，你能帮小明算算有多少种方案吗？">
+<link rel="canonical" href="https://zymojblog.top/p/P10250/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10250 [GESP样题 六级] 下楼梯 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="顽皮的小明发现，下楼梯时每步可以走 个台阶、 个台阶或 个台阶。现在一共有 个台阶，你能帮小明算算有多少种方案吗？">
+<meta property="og:url" content="https://zymojblog.top/p/P10250/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10250 [GESP样题 六级] 下楼梯 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="顽皮的小明发现，下楼梯时每步可以走 个台阶、 个台阶或 个台阶。现在一共有 个台阶，你能帮小明算算有多少种方案吗？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10250 [GESP样题 六级] 下楼梯","headline":"P10250 [GESP样题 六级] 下楼梯 题解","description":"顽皮的小明发现，下楼梯时每步可以走 个台阶、 个台阶或 个台阶。现在一共有 个台阶，你能帮小明算算有多少种方案吗？","url":"https://zymojblog.top/p/P10250/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、递推、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10250</span></div>
+  <h1 class="seo-title">P10250 [GESP样题 六级] 下楼梯</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10250 [GESP样题 六级] 下楼梯</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>递推</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1106">https://ti.luogu.com.cn/problemset/1106</a></p>
+<h2>题目描述</h2>
+<p>顽皮的小明发现，下楼梯时每步可以走 $1$ 个台阶、$2$ 个台阶或 $3$ 个台阶。现在一共有 $N$ 个台阶，你能帮小明算算有多少种方案吗？</p>
+<h2>输入格式</h2>
+<p>输入一行，包含一个整数 $N$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>274```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 题目：每次走1、2或3步，求走n级台阶的方案数。</span>
+    <span class="hljs-comment">// DP思路：设dp[i]表示走到第i级台阶的方案数。</span>
+    <span class="hljs-comment">// 边界：dp[0]=1（站在地面一种方式），dp[1]=1，dp[2]=2。</span>
+    <span class="hljs-comment">// 状态转移：dp[i] = dp[i-1] + dp[i-2] + dp[i-3] （i&gt;=3）</span>
+    <span class="hljs-comment">// 因为n &lt;= 60，用 long long 数组防止溢出。</span>
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> dp[<span class="hljs-number">65</span>] = {<span class="hljs-number">0</span>};   <span class="hljs-comment">// dp[i] 存储 i 级台阶的方案数</span>
+    dp[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;                <span class="hljs-comment">// 地面</span>
+    dp[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;                <span class="hljs-comment">// 1级：1步</span>
+    dp[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span>;                <span class="hljs-comment">// 2级：1+1 或 2</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">3</span>; i &lt;= n; i++) {
+        dp[i] = dp[i<span class="hljs-number">-1</span>] + dp[i<span class="hljs-number">-2</span>] + dp[i<span class="hljs-number">-3</span>];
+    }
+
+    cout &lt;&lt; dp[n] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10250">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

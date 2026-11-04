@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Farmer John prides himself on having the healthiest dairy cows in the world. He knows the vitamin content for one scoop of each feed type and the min…">
+<link rel="canonical" href="https://zymojblog.top/p/P1460/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Farmer John prides himself on having the healthiest dairy cows in the world. He knows the vitamin content for one scoop of each feed type and the min…">
+<meta property="og:url" content="https://zymojblog.top/p/P1460/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Farmer John prides himself on having the healthiest dairy cows in the world. He knows the vitamin content for one scoop of each feed type and the min…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins","headline":"P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins 题解","description":"Farmer John prides himself on having the healthiest dairy cows in the world. He knows the vitamin content for one scoop of each feed type and the min…","url":"https://zymojblog.top/p/P1460/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"搜索、USACO、广度优先搜索 BFS、深度优先搜索 DFS","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1460</span></div>
+  <h1 class="seo-title">P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1460 [USACO2.1] 健康的荷斯坦奶牛 Healthy Holsteins</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>USACO</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code></p>
+<h2>题目描述</h2>
+<p>Farmer John prides himself on having the healthiest dairy cows in the world. He knows the vitamin content for one scoop of each feed type and the minimum daily vitamin requirement for his cows. Help Farmer John feed the cows so they stay healthy while minimizing the number of scoops that a cow is fed.</p>
+<p>Given the daily requirements of each kind of vitamin that a cow needs, identify the smallest combination of scoops of feed a cow can be fed in order to meet at least the minimum vitamin requirements.</p>
+<p>Vitamins are measured in integer units. Cows can be fed at most one scoop of any feed type. It is guaranteed that a solution exists for all contest input data.</p>
+<h2>输入格式</h2>
+<ul>
+<li>Line 1: Integer $V$ ($1 \le V \le 25$), the number of types of vitamins.</li>
+<li>Line 2: $V$ integers ($1 \le$ each one $\le 1000$), the minimum requirement for each of the $V$ vitamins that a cow requires each day.</li>
+<li>Line 3: Integer $G$ ($1 \le G \le 15$), the number of types of feeds available.</li>
+<li>Lines 4..$G+3$: $V$ integers ($0 \le$ each one $\le 1000$), the amount of each vitamin that one scoop of this feed contains. The first line of these $G$ lines describes feed $1$; the second line describes feed $2$; and so on.</li>
+</ul>
+<h2>输出格式</h2>
+<p>The output is a single line that contains:</p>
+<ul>
+<li>the minimum number of scoops a cow must eat, followed by</li>
+<li>a sorted list from smallest to largest of the feed types the cow is given</li>
+</ul>
+<p>If more than one set of feed types yields a minimum number of scoops, choose the set with the smallest feed type numbers.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">100</span> <span class="hljs-number">200</span> <span class="hljs-number">300</span> <span class="hljs-number">400</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">50</span>  <span class="hljs-number">50</span>  <span class="hljs-number">50</span>  <span class="hljs-number">50</span>
+<span class="hljs-number">200</span> <span class="hljs-number">300</span> <span class="hljs-number">200</span> <span class="hljs-number">300</span>
+<span class="hljs-number">900</span> <span class="hljs-number">150</span> <span class="hljs-number">389</span> <span class="hljs-number">399</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2 1 3</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> v, g;                     <span class="hljs-comment">// v: 维他命种类, g: 饲料种数</span>
+<span class="hljs-type">int</span> need[<span class="hljs-number">25</span>];                 <span class="hljs-comment">// 每种维他命需求量</span>
+<span class="hljs-type">int</span> feed[<span class="hljs-number">15</span>][<span class="hljs-number">25</span>];             <span class="hljs-comment">// feed[i][j]：第i种饲料含维他命j的量</span>
+<span class="hljs-type">int</span> bestCnt = <span class="hljs-number">100</span>;            <span class="hljs-comment">// 最优种数</span>
+<span class="hljs-type">int</span> best[<span class="hljs-number">15</span>], tmp[<span class="hljs-number">15</span>];        <span class="hljs-comment">// best存放最优编号，tmp存放当前方案</span>
+
+<span class="hljs-comment">// dfs(idx, cnt, sum[]) 当前考虑到第idx种饲料，已选cnt种，当前维他命总量sum[]</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> idx, <span class="hljs-type">int</span> cnt, <span class="hljs-type">int</span> sum[])</span> </span>{
+    <span class="hljs-comment">// 检查当前是否已经满足需求</span>
+    <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; v; i++) {
+        <span class="hljs-keyword">if</span> (sum[i] &lt; need[i]) { ok = <span class="hljs-literal">false</span>; <span class="hljs-keyword">break</span>; }
+    }
+    <span class="hljs-keyword">if</span> (ok) {
+        <span class="hljs-keyword">if</span> (cnt &lt; bestCnt) {           <span class="hljs-comment">// 种数更少，更新</span>
+            bestCnt = cnt;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cnt; i++) best[i] = tmp[i];
+        }
+        <span class="hljs-comment">// 因为按编号从小到大搜索，同种数下第一个就是字典序最小，所以不用再更新</span>
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-keyword">if</span> (idx &gt;= g) <span class="hljs-keyword">return</span>;              <span class="hljs-comment">// 所有饲料都考虑完了</span>
+    <span class="hljs-keyword">if</span> (cnt &gt;= bestCnt) <span class="hljs-keyword">return</span>;        <span class="hljs-comment">// 种数已经不比最优少，再选只会更多，剪枝</span>
+
+    <span class="hljs-comment">// 不选第idx种饲料</span>
+    <span class="hljs-built_in">dfs</span>(idx + <span class="hljs-number">1</span>, cnt, sum);
+
+    <span class="hljs-comment">// 选第idx种饲料</span>
+    tmp[cnt] = idx + <span class="hljs-number">1</span>;                <span class="hljs-comment">// 编号从1开始</span>
+    <span class="hljs-type">int</span> newSum[<span class="hljs-number">25</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; v; i++) newSum[i] = sum[i] + feed[idx][i];
+    <span class="hljs-built_in">dfs</span>(idx + <span class="hljs-number">1</span>, cnt + <span class="hljs-number">1</span>, newSum);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; v;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; v; i++) cin &gt;&gt; need[i];
+    cin &gt;&gt; g;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; g; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; v; j++)
+            cin &gt;&gt; feed[i][j];
+
+    <span class="hljs-type">int</span> init[<span class="hljs-number">25</span>] = {<span class="hljs-number">0</span>};        <span class="hljs-comment">// 初始维他命总量全0</span>
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, init);
+
+    <span class="hljs-comment">// 输出最优方案</span>
+    cout &lt;&lt; bestCnt;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; bestCnt; i++) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; best[i];
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1460">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

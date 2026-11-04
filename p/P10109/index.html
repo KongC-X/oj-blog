@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10109 [GESP202312 六级] 工作沟通 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="某公司有 名员工，编号从 至 。其中，除了 号员工是老板，其余每名员工都有一个直接领导。我们假设编号为 的员工的直接领导是 。 该公司有严格的管理制度，每位员工只能受到本人或直接领导或间接领导的管理。具体来说，规定员工 可以管理员工 ，当且仅当 ，或 ，或 可以管理 。特别地， 号员工老板只能自我…">
+<link rel="canonical" href="https://zymojblog.top/p/P10109/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10109 [GESP202312 六级] 工作沟通 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="某公司有 名员工，编号从 至 。其中，除了 号员工是老板，其余每名员工都有一个直接领导。我们假设编号为 的员工的直接领导是 。 该公司有严格的管理制度，每位员工只能受到本人或直接领导或间接领导的管理。具体来说，规定员工 可以管理员工 ，当且仅当 ，或 ，或 可以管理 。特别地， 号员工老板只能自我…">
+<meta property="og:url" content="https://zymojblog.top/p/P10109/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10109 [GESP202312 六级] 工作沟通 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="某公司有 名员工，编号从 至 。其中，除了 号员工是老板，其余每名员工都有一个直接领导。我们假设编号为 的员工的直接领导是 。 该公司有严格的管理制度，每位员工只能受到本人或直接领导或间接领导的管理。具体来说，规定员工 可以管理员工 ，当且仅当 ，或 ，或 可以管理 。特别地， 号员工老板只能自我…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10109 [GESP202312 六级] 工作沟通","headline":"P10109 [GESP202312 六级] 工作沟通 题解","description":"某公司有 名员工，编号从 至 。其中，除了 号员工是老板，其余每名员工都有一个直接领导。我们假设编号为 的员工的直接领导是 。 该公司有严格的管理制度，每位员工只能受到本人或直接领导或间接领导的管理。具体来说，规定员工 可以管理员工 ，当且仅当 ，或 ，或 可以管理 。特别地， 号员工老板只能自我…","url":"https://zymojblog.top/p/P10109/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"图论、2023、深度优先搜索 DFS、图遍历、最近公共祖先 LCA、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10109</span></div>
+  <h1 class="seo-title">P10109 [GESP202312 六级] 工作沟通</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E5%9B%BE%E9%81%8D%E5%8E%86">图遍历</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%20LCA">最近公共祖先 LCA</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10109 [GESP202312 六级] 工作沟通</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>图论</code>、<code>2023</code>、<code>深度优先搜索 DFS</code>、<code>图遍历</code>、<code>最近公共祖先 LCA</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1138">https://ti.luogu.com.cn/problemset/1138</a></p>
+<h2>题目描述</h2>
+<p>某公司有 $N$ 名员工，编号从 $0$ 至 $N-1$。其中，除了 $0$ 号员工是老板，其余每名员工都有一个直接领导。我们假设编号为 $i$ 的员工的直接领导是 $f_i$。</p>
+<p>该公司有严格的管理制度，每位员工只能受到本人或直接领导或间接领导的管理。具体来说，规定员工 $x$ 可以管理员工 $y$，当且仅当 $x=y$，或 $x=f_y$，或 $x$ 可以管理 $f_y$。特别地，$0$ 号员工老板只能自我管理，无法由其他任何员工管理。</p>
+<p>现在，有一些同事要开展合作，他们希望找到一位同事来主持这场合作，这位同事必须能够管理参与合作的所有同事。如果有多名满足这一条件的员工，他们希望找到编号最大的员工。你能帮帮他们吗？</p>
+<h2>输入格式</h2>
+<p>第一行一个整数 $N$，表示员工的数量。</p>
+<p>第二行 $N - 1$ 个用空格隔开的正整数，依次为 $f_1,f_2,\dots f_{N−1}$。</p>
+<p>第三行一个整数 $Q$，表示共有 $Q$ 场合作需要安排。</p>
+<p>接下来 $Q$ 行，每行描述一场合作：开头是一个整数 $m$（$2 \le m \le N$），表示参与本次合作的员工数量；接着是 $m$ 个整数，依次表示参与本次合作的员工编号（保证编号合法且不重复）。</p>
+<p>保证公司结构合法，即不存在任意一名员工，其本人是自己的直接或间接领导。</p>
+<h2>输出格式</h2>
+<p>输出 $Q$ 行，每行一个整数，依次为每场合作的主持人选。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2<br>2<br>0```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">4</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>2<br>1<br>1<br>1<br>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 求公共祖先问题：给定一个树结构（员工与领导关系），对于多次查询，找出参与员工的公共祖先中编号最大的那个。</span>
+
+<span class="hljs-type">int</span> p[<span class="hljs-number">310</span>];                            <span class="hljs-comment">// p[i] 表示员工 i 的直接领导（0 号老板 p[0]=0 占位）</span>
+<span class="hljs-type">int</span> cnt[<span class="hljs-number">310</span>];                          <span class="hljs-comment">// 用于统计每位员工作为祖先被访问的次数</span>
+<span class="hljs-type">int</span> n;                                 <span class="hljs-comment">// 员工数量</span>
+<span class="hljs-type">int</span> q;                                 <span class="hljs-comment">// 合作场数</span>
+<span class="hljs-type">int</span> m;                                 <span class="hljs-comment">// 本次合作人数</span>
+<span class="hljs-type">int</span> x;                                 <span class="hljs-comment">// 参与员工编号</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    p[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;                           <span class="hljs-comment">// 0 号老板没有领导，指向自己方便处理</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        cin &gt;&gt; p[i];                    <span class="hljs-comment">// 读入 f_i</span>
+    }
+    cin &gt;&gt; q;
+    <span class="hljs-keyword">while</span> (q--) {
+        cin &gt;&gt; m;
+        <span class="hljs-comment">// 清空计数器</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cnt[i] = <span class="hljs-number">0</span>;
+        <span class="hljs-comment">// 处理每位参与员工</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            cin &gt;&gt; x;
+            <span class="hljs-comment">// 向上遍历从 x 到根的所有祖先（包括自己）</span>
+            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+                cnt[x]++;
+                <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;      <span class="hljs-comment">// 根节点处理完即可停止</span>
+                x = p[x];               <span class="hljs-comment">// 跳到直接领导</span>
+            }
+        }
+
+        <span class="hljs-comment">// 找出现次数等于 m 的最大编号员工（即公共祖先中编号最大者）</span>
+        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+            <span class="hljs-keyword">if</span> (cnt[i] == m) {
+                ans = i;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10109">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

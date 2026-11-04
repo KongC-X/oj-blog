@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2131 甲流病人初筛 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="目前正是甲流盛行时期，为了更好地进行分流治疗，医院在挂号时要求对病人的体温和咳嗽情况进行检查，对于体温超过 度（含等于 度）并且咳嗽的病人初步判定为甲流病人（初筛）。现需要统计某天前来挂号就诊的病人中有多少人被初筛为甲流病人。">
+<link rel="canonical" href="https://zymojblog.top/p/B2131/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2131 甲流病人初筛 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="目前正是甲流盛行时期，为了更好地进行分流治疗，医院在挂号时要求对病人的体温和咳嗽情况进行检查，对于体温超过 度（含等于 度）并且咳嗽的病人初步判定为甲流病人（初筛）。现需要统计某天前来挂号就诊的病人中有多少人被初筛为甲流病人。">
+<meta property="og:url" content="https://zymojblog.top/p/B2131/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2131 甲流病人初筛 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="目前正是甲流盛行时期，为了更好地进行分流治疗，医院在挂号时要求对病人的体温和咳嗽情况进行检查，对于体温超过 度（含等于 度）并且咳嗽的病人初步判定为甲流病人（初筛）。现需要统计某天前来挂号就诊的病人中有多少人被初筛为甲流病人。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2131 甲流病人初筛","headline":"B2131 甲流病人初筛 题解","description":"目前正是甲流盛行时期，为了更好地进行分流治疗，医院在挂号时要求对病人的体温和咳嗽情况进行检查，对于体温超过 度（含等于 度）并且咳嗽的病人初步判定为甲流病人（初筛）。现需要统计某天前来挂号就诊的病人中有多少人被初筛为甲流病人。","url":"https://zymojblog.top/p/B2131/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2131</span></div>
+  <h1 class="seo-title">B2131 甲流病人初筛</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2131 甲流病人初筛</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-06-28</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>目前正是甲流盛行时期，为了更好地进行分流治疗，医院在挂号时要求对病人的体温和咳嗽情况进行检查，对于体温超过 $37.5$ 度（含等于 $37.5$ 度）并且咳嗽的病人初步判定为甲流病人（初筛）。现需要统计某天前来挂号就诊的病人中有多少人被初筛为甲流病人。</p>
+<h2>输入格式</h2>
+<p>第一行是某天前来挂号就诊的病人数 $n$。$(n&lt;200)$。</p>
+<p>其后有 $n$ 行，每行是病人的信息，包括三个信息：姓名（字符串，不含空格，最多 $8$ 个字符）、体温（float）、是否咳嗽（整数，$1$ 表示咳嗽，$0$ 表示不咳嗽）。每行三个信息之间以一个空格分开。</p>
+<h2>输出格式</h2>
+<p>按输入顺序依次输出所有被筛选为甲流的病人的姓名，每个名字占一行。之后在输出一行，表示被筛选为甲流的病人数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+Zhang <span class="hljs-number">38.3</span> <span class="hljs-number">0</span>
+Li <span class="hljs-number">37.5</span> <span class="hljs-number">1</span>
+Wang <span class="hljs-number">37.1</span> <span class="hljs-number">1</span>
+Zhao <span class="hljs-number">39.0</span> <span class="hljs-number">1</span>
+Liu <span class="hljs-number">38.2</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Li<br>Zhao<br>Liu<br>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 病人信息结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">P</span> {
+    string s;          <span class="hljs-comment">// 姓名</span>
+    <span class="hljs-type">double</span> t;           <span class="hljs-comment">// 体温</span>
+    <span class="hljs-type">int</span> k;             <span class="hljs-comment">// 是否咳嗽 (1咳嗽, 0不咳嗽)</span>
+};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// n: 病人总数</span>
+    cin &gt;&gt; n;
+
+    P a[<span class="hljs-number">205</span>];                  <span class="hljs-comment">// 存储所有病人信息，最多200人</span>
+    string b[<span class="hljs-number">205</span>];             <span class="hljs-comment">// 存储甲流病人的姓名（按输入顺序）</span>
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;                 <span class="hljs-comment">// c: 甲流病人计数</span>
+
+    <span class="hljs-comment">// 读入病人信息</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i].s &gt;&gt; a[i].t &gt;&gt; a[i].k;
+    }
+
+    <span class="hljs-comment">// 筛选甲流病人：体温 &gt;= 37.5 且咳嗽</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (a[i].t &gt;= <span class="hljs-number">37.5</span> &amp;&amp; a[i].k == <span class="hljs-number">1</span>) {
+            b[c] = a[i].s;
+            c++;
+        }
+    }
+
+    <span class="hljs-comment">// 按输入顺序输出甲流病人姓名</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; c; i++) {
+        cout &lt;&lt; b[i] &lt;&lt; endl;
+    }
+    <span class="hljs-comment">// 输出甲流病人总数</span>
+    cout &lt;&lt; c &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2131">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

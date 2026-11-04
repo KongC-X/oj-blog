@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P4710 「物理」平抛运动 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 F 回到班上，面对自己 28 / 110 的物理，感觉非常凉凉。他准备从最基础的力学学起。 如图，一个可以视为质点的小球在点 沿 轴负方向以某速度抛出，无视除重力外的所有阻力，最后恰好以速度 砸到 点。 给定 的大小与方向，你的任务是求出 。 给定的速度单位为 ，重力加速度 ，请输出以 为单位…">
+<link rel="canonical" href="https://zymojblog.top/p/P4710/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P4710 「物理」平抛运动 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 F 回到班上，面对自己 28 / 110 的物理，感觉非常凉凉。他准备从最基础的力学学起。 如图，一个可以视为质点的小球在点 沿 轴负方向以某速度抛出，无视除重力外的所有阻力，最后恰好以速度 砸到 点。 给定 的大小与方向，你的任务是求出 。 给定的速度单位为 ，重力加速度 ，请输出以 为单位…">
+<meta property="og:url" content="https://zymojblog.top/p/P4710/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P4710 「物理」平抛运动 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 F 回到班上，面对自己 28 / 110 的物理，感觉非常凉凉。他准备从最基础的力学学起。 如图，一个可以视为质点的小球在点 沿 轴负方向以某速度抛出，无视除重力外的所有阻力，最后恰好以速度 砸到 点。 给定 的大小与方向，你的任务是求出 。 给定的速度单位为 ，重力加速度 ，请输出以 为单位…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P4710 「物理」平抛运动","headline":"P4710 「物理」平抛运动 题解","description":"小 F 回到班上，面对自己 28 / 110 的物理，感觉非常凉凉。他准备从最基础的力学学起。 如图，一个可以视为质点的小球在点 沿 轴负方向以某速度抛出，无视除重力外的所有阻力，最后恰好以速度 砸到 点。 给定 的大小与方向，你的任务是求出 。 给定的速度单位为 ，重力加速度 ，请输出以 为单位…","url":"https://zymojblog.top/p/P4710/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、Special Judge、O2优化、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P4710</span></div>
+  <h1 class="seo-title">P4710 「物理」平抛运动</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/Special%20Judge">Special Judge</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P4710 「物理」平抛运动</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-10-10</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>Special Judge</code>、<code>O2优化</code>、<code>洛谷月赛</code></p>
+<h2>题目描述</h2>
+<blockquote>
+<p>小 F 回到班上，面对自己 28 / 110 的物理，感觉非常凉凉。他准备从最基础的力学学起。</p>
+</blockquote>
+<p>如图，一个可以视为质点的小球在点 $A(x_0, y_0)$ 沿 $x$ 轴负方向以某速度抛出，无视除重力外的所有阻力，最后恰好以速度 $v$ 砸到 $B(0, 0)$ 点。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/pic/17884.png" alt="A1"></p>
+<p>给定 $v$ 的大小与方向，你的任务是求出 $(x_0,y_0)$。</p>
+<p>给定的速度单位为 $m \cdot s ^ {-1}$，重力加速度 $g = 10 \ (m \cdot s ^ {-2})$，请输出以 $m$ 为单位的答案。</p>
+<p>如果你没有学过相关内容也没有关系，你可以从样例和提示里理解该题所求内容。</p>
+<h2>输入格式</h2>
+<p>输入一行，为两个最多 $6$ 位的小数 $v, \theta(1 \leq v \leq 100, 15 ^ \circ \leq \theta \leq 75 ^ \circ )$，即速度与图中所标角在弧度制下的大小。</p>
+<h2>输出格式</h2>
+<p>输出一行，两个最多 $15$ 位的小数 $x_0, y_0$，为你的答案。</p>
+<p>你的答案与参考答案的相对误差或者绝对误差小于 $10 ^ {-3}$ 即视为正确。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">14.142136</span> <span class="hljs-number">0.785398</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>10 5```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P4710 「物理」平抛运动
+     * 题意：小球从 A(x0, y0) 沿 x 轴负方向抛出，最终以速度 v 砸到 B(0,0)。
+     *       给定 v 的大小和方向 a（弧度制），重力加速度 g = 10，求 x0, y0。
+     *
+     * 物理分析：
+     *   将落地速度 v 分解：
+     *     水平分速度 vx = v * sin(a)
+     *     竖直分速度 vy = v * cos(a)
+     *   落地时间 t = vy / g = v * cos(a) / g
+     *   水平位移 x0 = vx * t = v^2 * sin(a) * cos(a) / g
+     *   竖直位移 y0 = 1/2 * g * t^2 = v^2 * cos^2(a) / (2g)
+     *
+     * 时间复杂度：O(1)
+     */</span>
+    <span class="hljs-type">double</span> v, a;   <span class="hljs-comment">// v: 落地速度大小, a: 速度与竖直方向的夹角（弧度）</span>
+    cin &gt;&gt; v &gt;&gt; a;
+
+    <span class="hljs-type">double</span> g = <span class="hljs-number">10.0</span>;
+    <span class="hljs-type">double</span> x = v * v * <span class="hljs-built_in">sin</span>(a) * <span class="hljs-built_in">cos</span>(a) / g;
+    <span class="hljs-type">double</span> y = v * v * <span class="hljs-built_in">cos</span>(a) * <span class="hljs-built_in">cos</span>(a) / (<span class="hljs-number">2</span> * g);
+
+    cout &lt;&lt; fixed &lt;&lt; <span class="hljs-built_in">setprecision</span>(<span class="hljs-number">10</span>) &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; y &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P4710">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

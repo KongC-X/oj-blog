@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1532 小X与神牛 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="神牛都长着 只角， 只角从左到右在头顶上排成一排。每只角上都标着数字，不是 就是 。小X将每头神牛的 只角上的数字从左到右依次取出，组成一个只含 或 的 位二进制数。小X将这个二进制数转化为十进制，用这个十进制数来代表一头神牛，这个十进制就是这头神牛的编号。 神牛们之间的关系是很微妙的，如果两头神…">
+<link rel="canonical" href="https://zymojblog.top/p/1532/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1532 小X与神牛 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="神牛都长着 只角， 只角从左到右在头顶上排成一排。每只角上都标着数字，不是 就是 。小X将每头神牛的 只角上的数字从左到右依次取出，组成一个只含 或 的 位二进制数。小X将这个二进制数转化为十进制，用这个十进制数来代表一头神牛，这个十进制就是这头神牛的编号。 神牛们之间的关系是很微妙的，如果两头神…">
+<meta property="og:url" content="https://zymojblog.top/p/1532/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1532 小X与神牛 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="神牛都长着 只角， 只角从左到右在头顶上排成一排。每只角上都标着数字，不是 就是 。小X将每头神牛的 只角上的数字从左到右依次取出，组成一个只含 或 的 位二进制数。小X将这个二进制数转化为十进制，用这个十进制数来代表一头神牛，这个十进制就是这头神牛的编号。 神牛们之间的关系是很微妙的，如果两头神…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1532 小X与神牛","headline":"1532 小X与神牛 题解","description":"神牛都长着 只角， 只角从左到右在头顶上排成一排。每只角上都标着数字，不是 就是 。小X将每头神牛的 只角上的数字从左到右依次取出，组成一个只含 或 的 位二进制数。小X将这个二进制数转化为十进制，用这个十进制数来代表一头神牛，这个十进制就是这头神牛的编号。 神牛们之间的关系是很微妙的，如果两头神…","url":"https://zymojblog.top/p/1532/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"市赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1532</span></div>
+  <h1 class="seo-title">1532 小X与神牛</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B8%82%E8%B5%9B">市赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>1532 - 小X与神牛</h1>
+<h2>题目描述</h2>
+<p>神牛都长着 $B$ 只角，$B$ 只角从左到右在头顶上排成一排。每只角上都标着数字，不是 $0$ 就是 $1$。小X将每头神牛的 $B$ 只角上的数字从左到右依次取出，组成一个只含 $0$ 或 $1$ 的 $B$ 位二进制数。小X将这个二进制数转化为十进制，用这个十进制数来代表一头神牛，这个十进制就是这头神牛的编号。</p>
+<p>神牛们之间的关系是很微妙的，如果两头神牛的第 $i$ 只角上的数字不同，则称这两头神牛的第 $i$ 只角是不一样的。如果两头神牛不同的角的数目大于等于 $D$ ，则称这两头神牛是友好的。比如当$B=8$，$D=2$时，</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">01010100</span>
+<span class="hljs-number">00110100</span>
+ xx
+`</code></pre><p>这两头神牛的第 $2$ 和第 $3$ 只角不同($x$ 指向的位置)，不同的角的数目为 $2$ ，所以这两头神牛是友好的。</p>
+<p>现在小X向你求助：请找出 $N$ 头神牛，使得任意两头神牛都是友好的，并将这 $N$ 头神牛的编号按从小到大排序后依次输出。如果有多种符合条件的解，那么排在越前面的牛的编号越小越好。</p>
+<h2>输入</h2>
+<p>输入仅有一行包含 $3$ 个用空格隔开的正整数，分别表示 $N, B, D$。</p>
+<h2>输出</h2>
+<p>输出仅有一行包含 $N$ 个非负整数，相邻两个数之间用一个空格隔开，表示 $N$ 头神牛的编号。</p>
+<p>如果有多解，你的程序要输出这样的解：越前面的牛的编号越小越好。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+本质：
+从0开始，找出N个数，N个数转成B位的2进制，
+要求任何两个数都有&gt;=D位不同的数。
+
+思路：
+1.从0开始将每个符合条件的数转换为B位的2进制存入二维数组
+2.循环每个数i，判断是否满足条件：
+  i转换为B位的二进制要求和二维数组中已经存储的所有数都有&gt;=D位不同
+*/</span>
+<span class="hljs-comment">//存储符合条件的数对应的二进制</span>
+<span class="hljs-comment">//k表示r数组的长度，默认0是符合要求的</span>
+<span class="hljs-type">int</span> r[<span class="hljs-number">20</span>][<span class="hljs-number">10</span>],k = <span class="hljs-number">1</span>;
+<span class="hljs-type">int</span> n,b,d;
+
+<span class="hljs-comment">//将x转换为b位的二进制，判断和r数组的k个数是否都满足有&gt;=d位的不同</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-type">int</span> t[<span class="hljs-number">10</span>] = {<span class="hljs-number">0</span>};<span class="hljs-comment">//存储x转2进制的结果</span>
+    <span class="hljs-type">int</span> l = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span>(x != <span class="hljs-number">0</span>){
+        l++;
+        t[l] = x % <span class="hljs-number">2</span>;
+        x /= <span class="hljs-number">2</span>;
+    }
+
+    <span class="hljs-comment">//循环r数组的k个数</span>
+    <span class="hljs-type">int</span> c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= k;i++){
+        c = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= b;j++){
+            <span class="hljs-keyword">if</span>(t[j] != r[i][j]) c++;
+        }
+
+        <span class="hljs-keyword">if</span>(c &lt; d) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-comment">//到这个位置，说明编号为x的数和r数组中的数是友好的</span>
+    <span class="hljs-comment">//将编号为x的数对应的二进制存储到r数组</span>
+    k++;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= b;i++){
+        r[k][i] = t[i];
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin&gt;&gt;n&gt;&gt;b&gt;&gt;d;
+    cout&lt;&lt;<span class="hljs-number">0</span>&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;<span class="hljs-comment">//0是默认的一个解</span>
+    <span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span>(k &lt; n){
+        <span class="hljs-comment">//判断i是否友好</span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(i)){
+            cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+        }
+
+        i++;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1532">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

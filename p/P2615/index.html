@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2615 [NOIP 2015 提高组] 神奇的幻方 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="幻方是一种很神奇的 矩阵：它由数字 构成，且每行、每列及两条对角线上的数字之和都相同。 当 为奇数时，我们可以通过下方法构建一个幻方： 首先将 写在第一行的中间。 之后，按如下方式从小到大依次填写每个数 ： 1. 若 在第一行但不在最后一列，则将 填在最后一行， 所在列的右一列； 2. 若 在最后…">
+<link rel="canonical" href="https://zymojblog.top/p/P2615/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2615 [NOIP 2015 提高组] 神奇的幻方 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="幻方是一种很神奇的 矩阵：它由数字 构成，且每行、每列及两条对角线上的数字之和都相同。 当 为奇数时，我们可以通过下方法构建一个幻方： 首先将 写在第一行的中间。 之后，按如下方式从小到大依次填写每个数 ： 1. 若 在第一行但不在最后一列，则将 填在最后一行， 所在列的右一列； 2. 若 在最后…">
+<meta property="og:url" content="https://zymojblog.top/p/P2615/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2615 [NOIP 2015 提高组] 神奇的幻方 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="幻方是一种很神奇的 矩阵：它由数字 构成，且每行、每列及两条对角线上的数字之和都相同。 当 为奇数时，我们可以通过下方法构建一个幻方： 首先将 写在第一行的中间。 之后，按如下方式从小到大依次填写每个数 ： 1. 若 在第一行但不在最后一列，则将 填在最后一行， 所在列的右一列； 2. 若 在最后…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2615 [NOIP 2015 提高组] 神奇的幻方","headline":"P2615 [NOIP 2015 提高组] 神奇的幻方 题解","description":"幻方是一种很神奇的 矩阵：它由数字 构成，且每行、每列及两条对角线上的数字之和都相同。 当 为奇数时，我们可以通过下方法构建一个幻方： 首先将 写在第一行的中间。 之后，按如下方式从小到大依次填写每个数 ： 1. 若 在第一行但不在最后一列，则将 填在最后一行， 所在列的右一列； 2. 若 在最后…","url":"https://zymojblog.top/p/P2615/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2015、NOIP 提高组、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2615</span></div>
+  <h1 class="seo-title">P2615 [NOIP 2015 提高组] 神奇的幻方</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【入门4】数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2015">2015</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2615 [NOIP 2015 提高组] 神奇的幻方</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2015</code>、<code>NOIP 提高组</code>、<code>枚举</code></p>
+<h2>题目背景</h2>
+<p>NOIp2015 提高组 Day1T1</p>
+<h2>题目描述</h2>
+<p>幻方是一种很神奇的 $N\times N$ 矩阵：它由数字 $1,2,3,\cdots \cdots ,N \times N$ 构成，且每行、每列及两条对角线上的数字之和都相同。</p>
+<p>当 $N$ 为奇数时，我们可以通过下方法构建一个幻方：</p>
+<p>首先将 $1$ 写在第一行的中间。</p>
+<p>之后，按如下方式从小到大依次填写每个数 $K \ (K=2,3,\cdots,N \times N)$ ：</p>
+<ol>
+<li>若 $(K-1)$ 在第一行但不在最后一列，则将 $K$ 填在最后一行， $(K-1)$ 所在列的右一列；</li>
+<li>若 $(K-1)$ 在最后一列但不在第一行，则将 $K$ 填在第一列， $(K-1)$ 所在行的上一行；</li>
+<li>若 $(K-1)$ 在第一行最后一列，则将 $K$ 填在 $(K-1)$ 的正下方；</li>
+<li>若 $(K-1)$ 既不在第一行，也不在最后一列，如果 $(K-1)$ 的右上方还未填数，则将 $K$ 填在 $(K-1)$ 的右上方，否则将 $K$ 填在 $(K-1)$ 的正下方。</li>
+</ol>
+<p>现给定 $N$ ，请按上述方法构造 $N \times N$ 的幻方。</p>
+<h2>输入格式</h2>
+<p>一个正整数 $N$，即幻方的大小。</p>
+<h2>输出格式</h2>
+<p>共 $N$ 行，每行 $N$ 个整数，即按上述方法构造出的 $N \times N$ 的幻方，相邻两个整数之间用单空格隔开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span>
+<span class="hljs-number">4</span> <span class="hljs-number">9</span> <span class="hljs-number">2</span>```
+
+**样例输入 #<span class="hljs-number">2</span>**</code></pre><p>25</p>
+<pre><code class="hljs language-cpp">
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>327 354 381 408 435 462 489 516 543 570 597 624 1 28 55 82 109 136 163 190 217 244 271 298 325<br>353 380 407 434 461 488 515 542 569 596 623 25 27 54 81 108 135 162 189 216 243 270 297 324 326<br>379 406 433 460 487 514 541 568 595 622 24 26 53 80 107 134 161 188 215 242 269 296 323 350 352<br>405 432 459 486 513 540 567 594 621 23 50 52 79 106 133 160 187 214 241 268 295 322 349 351 378<br>431 458 485 512 539 566 593 620 22 49 51 78 105 132 159 186 213 240 267 294 321 348 375 377 404<br>457 484 511 538 565 592 619 21 48 75 77 104 131 158 185 212 239 266 293 320 347 374 376 403 430<br>483 510 537 564 591 618 20 47 74 76 103 130 157 184 211 238 265 292 319 346 373 400 402 429 456<br>509 536 563 590 617 19 46 73 100 102 129 156 183 210 237 264 291 318 345 372 399 401 428 455 482<br>535 562 589 616 18 45 72 99 101 128 155 182 209 236 263 290 317 344 371 398 425 427 454 481 508<br>561 588 615 17 44 71 98 125 127 154 181 208 235 262 289 316 343 370 397 424 426 453 480 507 534<br>587 614 16 43 70 97 124 126 153 180 207 234 261 288 315 342 369 396 423 450 452 479 506 533 560<br>613 15 42 69 96 123 150 152 179 206 233 260 287 314 341 368 395 422 449 451 478 505 532 559 586<br>14 41 68 95 122 149 151 178 205 232 259 286 313 340 367 394 421 448 475 477 504 531 558 585 612<br>40 67 94 121 148 175 177 204 231 258 285 312 339 366 393 420 447 474 476 503 530 557 584 611 13<br>66 93 120 147 174 176 203 230 257 284 311 338 365 392 419 446 473 500 502 529 556 583 610 12 39<br>92 119 146 173 200 202 229 256 283 310 337 364 391 418 445 472 499 501 528 555 582 609 11 38 65<br>118 145 172 199 201 228 255 282 309 336 363 390 417 444 471 498 525 527 554 581 608 10 37 64 91<br>144 171 198 225 227 254 281 308 335 362 389 416 443 470 497 524 526 553 580 607 9 36 63 90 117<br>170 197 224 226 253 280 307 334 361 388 415 442 469 496 523 550 552 579 606 8 35 62 89 116 143<br>196 223 250 252 279 306 333 360 387 414 441 468 495 522 549 551 578 605 7 34 61 88 115 142 169<br>222 249 251 278 305 332 359 386 413 440 467 494 521 548 575 577 604 6 33 60 87 114 141 168 195<br>248 275 277 304 331 358 385 412 439 466 493 520 547 574 576 603 5 32 59 86 113 140 167 194 221<br>274 276 303 330 357 384 411 438 465 492 519 546 573 600 602 4 31 58 85 112 139 166 193 220 247<br>300 302 329 356 383 410 437 464 491 518 545 572 599 601 3 30 57 84 111 138 165 192 219 246 273<br>301 328 355 382 409 436 463 490 517 544 571 598 625 2 29 56 83 110 137 164 191 218 245 272 299</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> i,j,n,a[<span class="hljs-number">50</span>][<span class="hljs-number">50</span>],x,y;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-comment">// 设置初始坐标为第一行正中央</span>
+    x = <span class="hljs-number">0</span>;
+    y = n / <span class="hljs-number">2</span>;
+    a[x][y] = <span class="hljs-number">1</span>; <span class="hljs-comment">// 设定第一行正中央为1</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">2</span>;i &lt;= n * n;i++) { <span class="hljs-comment">//重复第二步和第三步操作，总共需要n*n次</span>
+        <span class="hljs-type">int</span> tx = (x - <span class="hljs-number">1</span> + n) % n; <span class="hljs-comment">//上次填数位置x坐标变化</span>
+        <span class="hljs-type">int</span> ty = (y + <span class="hljs-number">1</span>) % n; <span class="hljs-comment">//上次填数位置y坐标变化</span>
+        <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-number">0</span>) { <span class="hljs-comment">//如果新位置为空，则填入数字</span>
+            a[tx][ty] = i; <span class="hljs-comment">//填数</span>
+        } <span class="hljs-keyword">else</span> { <span class="hljs-comment">//第二步没成功做第三步操作</span>
+            tx = (x + <span class="hljs-number">1</span>) % n; <span class="hljs-comment">//上次填数位置x坐标变化</span>
+            ty = y; <span class="hljs-comment">//y坐标不变</span>
+            a[tx][y]=i; <span class="hljs-comment">// 填数</span>
+        }
+        x = tx; <span class="hljs-comment">//更新x坐标</span>
+        y = ty; <span class="hljs-comment">//更新y坐标</span>
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++) { <span class="hljs-comment">//输出结果</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; n;j++) {
+            cout &lt;&lt; a[i][j] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        }
+        cout &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2615">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2274 小球放盒子 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个相同的球， 个不同的盒子，每个盒子最多放 个球。 请计算将这 个球全部放入盒子中的方案数模 后的结果。">
+<link rel="canonical" href="https://zymojblog.top/p/2274/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2274 小球放盒子 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个相同的球， 个不同的盒子，每个盒子最多放 个球。 请计算将这 个球全部放入盒子中的方案数模 后的结果。">
+<meta property="og:url" content="https://zymojblog.top/p/2274/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2274 小球放盒子 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个相同的球， 个不同的盒子，每个盒子最多放 个球。 请计算将这 个球全部放入盒子中的方案数模 后的结果。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2274 小球放盒子","headline":"2274 小球放盒子 题解","description":"有 个相同的球， 个不同的盒子，每个盒子最多放 个球。 请计算将这 个球全部放入盒子中的方案数模 后的结果。","url":"https://zymojblog.top/p/2274/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2274</span></div>
+  <h1 class="seo-title">2274 小球放盒子</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2274 - 小球放盒子</h1>
+<h2>题目描述</h2>
+<p>有 $N$ 个相同的球，$M$ 个不同的盒子，每个盒子最多放 $K$ 个球。</p>
+<p>请计算将这 $N$ 个球全部放入盒子中的方案数模 $1000007$ 后的结果。</p>
+<h2>输入</h2>
+<p>三个正整数，依次为 $N$，$M$，$K$。</p>
+<h2>输出</h2>
+<p>输出方案数模 $1000007$ 后的结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN=<span class="hljs-number">5e3</span>+<span class="hljs-number">10</span>;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MOD=<span class="hljs-number">1000007</span>;
+<span class="hljs-type">int</span> N,M,K;
+<span class="hljs-type">int</span> ways[MAXN][MAXN];
+<span class="hljs-comment">///前m个盒子放入n个球的放法</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d %d&quot;</span>,&amp;N,&amp;M,&amp;K);
+    ways[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=M;i++){
+        ways[i][<span class="hljs-number">0</span>]=<span class="hljs-number">1</span>;
+        ways[<span class="hljs-number">0</span>][i]=<span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> m=<span class="hljs-number">1</span>;m&lt;=M;m++){
+        <span class="hljs-type">int</span> sum=m;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> n=<span class="hljs-number">1</span>;n&lt;=N;n++){
+            ways[m][n]=sum;
+            sum=(sum+ways[m<span class="hljs-number">-1</span>][n+<span class="hljs-number">1</span>])%MOD;
+            <span class="hljs-keyword">if</span>(n-K&gt;=<span class="hljs-number">0</span>)sum=(sum-ways[m<span class="hljs-number">-1</span>][n-K]+MOD)%MOD;
+        }
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,ways[M][N]);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2274">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

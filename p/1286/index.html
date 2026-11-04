@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1286 高精度乘单精度 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="高精度乘单精度， 。 是一个很大的非负整数，但不超过 位， 是一个非负整数不超过 ，求 。">
+<link rel="canonical" href="https://zymojblog.top/p/1286/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1286 高精度乘单精度 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="高精度乘单精度， 。 是一个很大的非负整数，但不超过 位， 是一个非负整数不超过 ，求 。">
+<meta property="og:url" content="https://zymojblog.top/p/1286/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1286 高精度乘单精度 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="高精度乘单精度， 。 是一个很大的非负整数，但不超过 位， 是一个非负整数不超过 ，求 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1286 高精度乘单精度","headline":"1286 高精度乘单精度 题解","description":"高精度乘单精度， 。 是一个很大的非负整数，但不超过 位， 是一个非负整数不超过 ，求 。","url":"https://zymojblog.top/p/1286/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"高精度算法","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1286</span></div>
+  <h1 class="seo-title">1286 高精度乘单精度</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%AE%97%E6%B3%95">高精度算法</a></div>
+  <article class="markdown-body seo-article">
+<h1>1286 - 高精度乘单精度</h1>
+<h2>题目描述</h2>
+<p>高精度乘单精度，$a \times b$。 $a$ 是一个很大的非负整数，但不超过 $240$ 位，$b$ 是一个非负整数不超过 $10000$ ，求 $a \times b$ 。</p>
+<h2>输入</h2>
+<p>两行数字。</p>
+<p>第一行是 $a$ ，第二行是 $b$ 。</p>
+<h2>输出</h2>
+<p>一行，输出 $a \times b$ 的计算结果。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+string s1,s2;
+<span class="hljs-type">int</span> p,x;
+<span class="hljs-type">int</span> a[<span class="hljs-number">250</span>],b[<span class="hljs-number">250</span>],c[<span class="hljs-number">250</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;s1&gt;&gt;x;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=s1.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;i--){
+        a[i]=s1[s1.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>-i]-<span class="hljs-string">&#x27;0&#x27;</span>;
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;s1.<span class="hljs-built_in">size</span>();i++){
+        c[i]=a[i] * x;
+    }
+    <span class="hljs-comment">// 处理进位：需要考虑长度的变化 + 4</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;s1.<span class="hljs-built_in">size</span>() + <span class="hljs-number">4</span>;i++){
+        <span class="hljs-keyword">if</span>(c[i] &gt;= <span class="hljs-number">10</span>){
+            c[i + <span class="hljs-number">1</span>] = c[i + <span class="hljs-number">1</span>] + c[i] / <span class="hljs-number">10</span>;
+            c[i] = c[i] % <span class="hljs-number">10</span>; 
+        }
+    }
+    <span class="hljs-comment">// 去除前导0</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = s1.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span> + <span class="hljs-number">4</span>;i&gt;=<span class="hljs-number">0</span>;i--){
+        <span class="hljs-keyword">if</span>(c[i]!=<span class="hljs-number">0</span>){
+            p=i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=p;i&gt;=<span class="hljs-number">0</span>;i--){
+        cout&lt;&lt;c[i];
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1286">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

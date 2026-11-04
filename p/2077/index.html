@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2077 奖品采购 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="为了迎接班级的元旦晚会，班主任王老师特批了 元请你帮忙采购物品，并给你一张清单，注明了王老师调研小卖部中出售的 个待选物品的价格、价值（价值越高，同学们越喜欢）、以及最多能买到的数量。 请你编程计算出， 元最多能够采购到的物品的最大价值是多少？注意， 元不一定都要花完。">
+<link rel="canonical" href="https://zymojblog.top/p/2077/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2077 奖品采购 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="为了迎接班级的元旦晚会，班主任王老师特批了 元请你帮忙采购物品，并给你一张清单，注明了王老师调研小卖部中出售的 个待选物品的价格、价值（价值越高，同学们越喜欢）、以及最多能买到的数量。 请你编程计算出， 元最多能够采购到的物品的最大价值是多少？注意， 元不一定都要花完。">
+<meta property="og:url" content="https://zymojblog.top/p/2077/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2077 奖品采购 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="为了迎接班级的元旦晚会，班主任王老师特批了 元请你帮忙采购物品，并给你一张清单，注明了王老师调研小卖部中出售的 个待选物品的价格、价值（价值越高，同学们越喜欢）、以及最多能买到的数量。 请你编程计算出， 元最多能够采购到的物品的最大价值是多少？注意， 元不一定都要花完。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2077 奖品采购","headline":"2077 奖品采购 题解","description":"为了迎接班级的元旦晚会，班主任王老师特批了 元请你帮忙采购物品，并给你一张清单，注明了王老师调研小卖部中出售的 个待选物品的价格、价值（价值越高，同学们越喜欢）、以及最多能买到的数量。 请你编程计算出， 元最多能够采购到的物品的最大价值是多少？注意， 元不一定都要花完。","url":"https://zymojblog.top/p/2077/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、多重背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2077</span></div>
+  <h1 class="seo-title">2077 奖品采购</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E5%A4%9A%E9%87%8D%E8%83%8C%E5%8C%85">多重背包</a></div>
+  <article class="markdown-body seo-article">
+<h1>2077 - 奖品采购</h1>
+<h2>题目描述</h2>
+<p>为了迎接班级的元旦晚会，班主任王老师特批了 $m$ 元请你帮忙采购物品，并给你一张清单，注明了王老师调研小卖部中出售的 $n$ 个待选物品的价格、价值（价值越高，同学们越喜欢）、以及最多能买到的数量。</p>
+<p>请你编程计算出，$m$ 元最多能够采购到的物品的最大价值是多少？注意，$m$ 元不一定都要花完。</p>
+<h2>输入</h2>
+<p>第 $1$ 行两个数 $n$ ($n \le 500$)，$m$ ($m \lt 6000$)，其中 $n$ 代表清单中待选物品总数，$m$ 表示王老师的拨款金额。</p>
+<p>接下来 $n$ 行，每行 $3$ 个数，$p$、$v$、$s$ 分别表示第 $i$ 种物品的价格、价值和能够买的最大数量（买 $0$ 件到 $s$ 件均可），其中 $p \le 100,v \le 100,s \le 10$ 。</p>
+<h2>输出</h2>
+<p>输出一个整数，表示能够采购到的最大价值。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> M = <span class="hljs-number">6005</span>;            <span class="hljs-comment">// 最大预算 +5</span>
+<span class="hljs-type">int</span> f[M];                      <span class="hljs-comment">// dp[j] 表示花费 j 元能获得的最大价值</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, m;                  <span class="hljs-comment">// n:物品种类, m:预算</span>
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 多重背包问题：每种物品有限定数量。</span>
+    <span class="hljs-comment">// 状态定义：f[j] 表示花费 j 元可获得的最大价值。</span>
+    <span class="hljs-comment">// 初始条件：f[0] = 0，其余为0。</span>
+    <span class="hljs-comment">// 状态转移：对于第 i 种物品（价格 p，价值 v，数量 s），</span>
+    <span class="hljs-comment">//   枚举容量 j 从 m 到 0（倒序避免重复使用），</span>
+    <span class="hljs-comment">//   再枚举该物品选取数量 k（0..s），</span>
+    <span class="hljs-comment">//   若 j &gt;= k*p，则 f[j] = max(f[j], f[j - k*p] + k*v)</span>
+    <span class="hljs-comment">// 复杂度 O(n * m * s)，n=500,m=6000,s=10 → 约 3e7，可过。</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> p, v, s;           <span class="hljs-comment">// 价格、价值、数量限制</span>
+        cin &gt;&gt; p &gt;&gt; v &gt;&gt; s;
+        <span class="hljs-comment">// 多重背包倒序枚举容量</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = m; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-comment">// 枚举该物品选取 k 件</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt;= s; k++) {
+                <span class="hljs-keyword">if</span> (j &gt;= k * p) {
+                    f[j] = <span class="hljs-built_in">max</span>(f[j], f[j - k * p] + k * v);
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; f[m] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2077">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

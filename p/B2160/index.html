@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2160 病人排队 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="编写一个程序，将登记的病人按照以下原则排出看病的先后顺序： 1. 老年人（年龄 岁）比非老年人优先看病。 2. 老年人按年龄从大到小的顺序看病，年龄相同的按登记的先后顺序排序。 3. 非老年人按登记的先后顺序看病。">
+<link rel="canonical" href="https://zymojblog.top/p/B2160/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2160 病人排队 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="编写一个程序，将登记的病人按照以下原则排出看病的先后顺序： 1. 老年人（年龄 岁）比非老年人优先看病。 2. 老年人按年龄从大到小的顺序看病，年龄相同的按登记的先后顺序排序。 3. 非老年人按登记的先后顺序看病。">
+<meta property="og:url" content="https://zymojblog.top/p/B2160/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2160 病人排队 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="编写一个程序，将登记的病人按照以下原则排出看病的先后顺序： 1. 老年人（年龄 岁）比非老年人优先看病。 2. 老年人按年龄从大到小的顺序看病，年龄相同的按登记的先后顺序排序。 3. 非老年人按登记的先后顺序看病。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2160 病人排队","headline":"B2160 病人排队 题解","description":"编写一个程序，将登记的病人按照以下原则排出看病的先后顺序： 1. 老年人（年龄 岁）比非老年人优先看病。 2. 老年人按年龄从大到小的顺序看病，年龄相同的按登记的先后顺序排序。 3. 非老年人按登记的先后顺序看病。","url":"https://zymojblog.top/p/B2160/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"排序、结构体","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2160</span></div>
+  <h1 class="seo-title">B2160 病人排队</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2160 病人排队</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-28</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>编写一个程序，将登记的病人按照以下原则排出看病的先后顺序：</p>
+<ol>
+<li>老年人（年龄 $\geq 60$ 岁）比非老年人优先看病。</li>
+<li>老年人按年龄从大到小的顺序看病，年龄相同的按登记的先后顺序排序。</li>
+<li>非老年人按登记的先后顺序看病。</li>
+</ol>
+<h2>输入格式</h2>
+<p>第 $1$ 行，输入一个小于 $100$ 的正整数，表示病人的个数；</p>
+<p>后面按照病人登记的先后顺序，每行输入一个病人的信息，包括：一个长度小于 $10$ 的字符串表示病人的 ID（每个病人的 ID 各不相同且只含数字和字母），一个整数表示病人的年龄，中间用单个空格隔开。</p>
+<h2>输出格式</h2>
+<p>按排好的看病顺序输出病人的 ID，每行一个。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">021075</span> <span class="hljs-number">40</span>
+<span class="hljs-number">004003</span> <span class="hljs-number">15</span>
+<span class="hljs-number">010158</span> <span class="hljs-number">67</span>
+<span class="hljs-number">021033</span> <span class="hljs-number">75</span>
+<span class="hljs-number">102012</span> <span class="hljs-number">30</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>021033<br>010158<br>021075<br>004003<br>102012```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Patient</span> {
+    string id;          <span class="hljs-comment">// 病人ID</span>
+    <span class="hljs-type">int</span> age;            <span class="hljs-comment">// 年龄</span>
+    <span class="hljs-type">int</span> idx;            <span class="hljs-comment">// 登记的先后顺序（输入顺序，从0开始）</span>
+};
+
+<span class="hljs-comment">// 排序比较函数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Patient a, Patient b)</span> </span>{
+    <span class="hljs-comment">// 判断是否为老年人</span>
+    <span class="hljs-type">bool</span> old_a = (a.age &gt;= <span class="hljs-number">60</span>);
+    <span class="hljs-type">bool</span> old_b = (b.age &gt;= <span class="hljs-number">60</span>);
+    
+    <span class="hljs-comment">// 如果一个是老年人一个不是，老年人优先</span>
+    <span class="hljs-keyword">if</span> (old_a != old_b) <span class="hljs-keyword">return</span> old_a &gt; old_b;
+    
+    <span class="hljs-comment">// 都是老年人：年龄大的优先，年龄相同按登记顺序</span>
+    <span class="hljs-keyword">if</span> (old_a &amp;&amp; old_b) {
+        <span class="hljs-keyword">if</span> (a.age != b.age) <span class="hljs-keyword">return</span> a.age &gt; b.age;
+        <span class="hljs-keyword">return</span> a.idx &lt; b.idx;
+    }
+    
+    <span class="hljs-comment">// 都不是老年人：按登记顺序</span>
+    <span class="hljs-keyword">return</span> a.idx &lt; b.idx;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// n: 病人数量</span>
+    cin &gt;&gt; n;
+    
+    Patient p[<span class="hljs-number">105</span>];            <span class="hljs-comment">// 最多100人，开105安全</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; p[i].id &gt;&gt; p[i].age;
+        p[i].idx = i;          <span class="hljs-comment">// 记录原始顺序</span>
+    }
+    
+    <span class="hljs-built_in">sort</span>(p, p + n, cmp);
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cout &lt;&lt; p[i].id &lt;&lt; endl;
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2160">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

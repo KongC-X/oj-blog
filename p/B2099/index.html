@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2099 矩阵交换行 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个 的矩阵(数学上，一个 的矩阵是一个由 行 列元素排列成的矩形阵列)，将第 行和第 行交换，输出交换后的结果。">
+<link rel="canonical" href="https://zymojblog.top/p/B2099/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2099 矩阵交换行 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个 的矩阵(数学上，一个 的矩阵是一个由 行 列元素排列成的矩形阵列)，将第 行和第 行交换，输出交换后的结果。">
+<meta property="og:url" content="https://zymojblog.top/p/B2099/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2099 矩阵交换行 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个 的矩阵(数学上，一个 的矩阵是一个由 行 列元素排列成的矩形阵列)，将第 行和第 行交换，输出交换后的结果。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2099 矩阵交换行","headline":"B2099 矩阵交换行 题解","description":"给定一个 的矩阵(数学上，一个 的矩阵是一个由 行 列元素排列成的矩形阵列)，将第 行和第 行交换，输出交换后的结果。","url":"https://zymojblog.top/p/B2099/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2099</span></div>
+  <h1 class="seo-title">B2099 矩阵交换行</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2099 矩阵交换行</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-09</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给定一个 $5 \times 5$ 的矩阵(数学上，一个 $r \times c$ 的矩阵是一个由 $r$ 行 $c$ 列元素排列成的矩形阵列)，将第 $n$ 行和第 $m$ 行交换，输出交换后的结果。</p>
+<h2>输入格式</h2>
+<p>输入共 $6$ 行，前 $5$ 行为矩阵的每一行元素,元素与元素之间以一个空格分开。</p>
+<p>第 $6$ 行包含两个整数 $m$、$n$，以一个空格分开（$1 \le m,n \le 5$）。</p>
+<h2>输出格式</h2>
+<p>输出交换之后的矩阵，矩阵的每一行元素占一行，元素之间以一个空格分开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">3</span>
+<span class="hljs-number">9</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">7</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span>
+<span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">8</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3 0 8 2 4<br>5 6 7 8 3<br>9 3 0 5 3<br>7 2 1 4 6<br>1 2 2 1 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 题目要求交换5x5矩阵的第m行和第n行，然后输出。</span>
+    <span class="hljs-comment">// 1. 读入5x5矩阵到二维数组 g。</span>
+    <span class="hljs-comment">// 2. 读入要交换的行号 m 和 n。</span>
+    <span class="hljs-comment">// 3. 通过循环逐列交换第 m 行和第 n 行的元素。</span>
+    <span class="hljs-comment">// 4. 按行输出交换后的矩阵，每行元素用空格隔开。</span>
+
+    <span class="hljs-type">int</span> g[<span class="hljs-number">15</span>][<span class="hljs-number">15</span>];                 <span class="hljs-comment">// 矩阵，行数5，多开10行和列确保安全</span>
+    <span class="hljs-comment">// 读入5行，每行5列</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">5</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">5</span>; j++) {
+            cin &gt;&gt; g[i][j];
+        }
+    }
+
+    <span class="hljs-type">int</span> m, n;                      <span class="hljs-comment">// m, n: 要交换的两行（行号从1开始）</span>
+    cin &gt;&gt; m &gt;&gt; n;
+
+    <span class="hljs-comment">// 逐列交换第 m 行和第 n 行的元素</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">5</span>; j++) {
+        <span class="hljs-type">int</span> tmp = g[m][j];         <span class="hljs-comment">// 临时变量保存</span>
+        g[m][j] = g[n][j];
+        g[n][j] = tmp;
+    }
+
+    <span class="hljs-comment">// 输出交换后的矩阵</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">5</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">5</span>; j++) {
+            cout &lt;&lt; g[i][j];
+            <span class="hljs-keyword">if</span> (j &lt; <span class="hljs-number">5</span>) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>; <span class="hljs-comment">// 每行元素间空格</span>
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2099">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

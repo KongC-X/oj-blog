@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4228 [常州市赛 2024] 盒子 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 Y 有 个盒子，第 个盒子的大小是 ，小 Y 保证 一定是 的若干次方，比如 ，一个大小为 的盒子的容量是 ，就是说它可以装下总大小不超过 的其他盒子，特别地，大小为 的盒子不能装下其他盒子。并且，装在盒子里的盒子也可以装其他盒子，比如，大小为 的盒子可以装下一个大小为 的盒子且大小为 的盒子…">
+<link rel="canonical" href="https://zymojblog.top/p/B4228/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4228 [常州市赛 2024] 盒子 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 Y 有 个盒子，第 个盒子的大小是 ，小 Y 保证 一定是 的若干次方，比如 ，一个大小为 的盒子的容量是 ，就是说它可以装下总大小不超过 的其他盒子，特别地，大小为 的盒子不能装下其他盒子。并且，装在盒子里的盒子也可以装其他盒子，比如，大小为 的盒子可以装下一个大小为 的盒子且大小为 的盒子…">
+<meta property="og:url" content="https://zymojblog.top/p/B4228/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4228 [常州市赛 2024] 盒子 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 Y 有 个盒子，第 个盒子的大小是 ，小 Y 保证 一定是 的若干次方，比如 ，一个大小为 的盒子的容量是 ，就是说它可以装下总大小不超过 的其他盒子，特别地，大小为 的盒子不能装下其他盒子。并且，装在盒子里的盒子也可以装其他盒子，比如，大小为 的盒子可以装下一个大小为 的盒子且大小为 的盒子…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4228 [常州市赛 2024] 盒子","headline":"B4228 [常州市赛 2024] 盒子 题解","description":"小 Y 有 个盒子，第 个盒子的大小是 ，小 Y 保证 一定是 的若干次方，比如 ，一个大小为 的盒子的容量是 ，就是说它可以装下总大小不超过 的其他盒子，特别地，大小为 的盒子不能装下其他盒子。并且，装在盒子里的盒子也可以装其他盒子，比如，大小为 的盒子可以装下一个大小为 的盒子且大小为 的盒子…","url":"https://zymojblog.top/p/B4228/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2024、江苏、排序、双指针 two-pointer、科创活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4228</span></div>
+  <h1 class="seo-title">B4228 [常州市赛 2024] 盒子</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88%20two-pointer">双指针 two-pointer</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4228 [常州市赛 2024] 盒子</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2024</code>、<code>江苏</code>、<code>排序</code>、<code>双指针 two-pointer</code>、<code>科创活动</code></p>
+<h2>题目背景</h2>
+<p>搬运自 <a href="http://czoj.com.cn/p/954">http://czoj.com.cn/p/954</a>。数据为民间数据。</p>
+<h2>题目描述</h2>
+<p>小 Y 有 $n$ 个盒子，第 $i$ 个盒子的大小是 $a_i$，小 Y 保证 $a_i$ 一定是 $2$ 的若干次方，比如 $1,2,4,8,16,32,64,128,256,512,1024\cdots$，一个大小为 $a_i$ 的盒子的容量是 $\dfrac{a_i}2$，就是说它可以装下总大小不超过 $\dfrac{a_i}2$ 的其他盒子，特别地，大小为 $1$ 的盒子不能装下其他盒子。并且，装在盒子里的盒子也可以装其他盒子，比如，大小为 $8$ 的盒子可以装下一个大小为 $4$ 的盒子且大小为 $4$ 的盒子事先已经装了一个大小为 $2$ 的盒子。</p>
+<p>现在小 Y 想知道，最少能有多少个不被其他盒子装下的盒子？</p>
+<h2>输入格式</h2>
+<p>第一行 $1$ 个正整数 $n$，表示盒子的数量。</p>
+<p>第二行 $n$ 个正整数 $a_i$，表示每个盒子的大小，保证 $a_i$ 一定是 $2$ 的若干次方。</p>
+<h2>输出格式</h2>
+<p>一行一个正整数表示最少能有多少个不被其他盒子装下的盒子。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #4</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">8</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">4</span>**</code></pre><p>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> int long long              <span class="hljs-comment">// 数据可能较大，全部改用 long long 存储</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> maxn = <span class="hljs-number">100005</span>;
+<span class="hljs-type">int</span> n, a[maxn], c[maxn], ans;
+
+<span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    ans = n;                        <span class="hljs-comment">// 初始时假设每个盒子都独立，没有被其他盒子装</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) 
+        cin &gt;&gt; a[i];
+
+    <span class="hljs-comment">// 贪心前必须把盒子从小到大排序</span>
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + n + <span class="hljs-number">1</span>);
+
+    <span class="hljs-comment">// 计算每个盒子的剩余容量：容量 = 自身大小 / 2</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) 
+        c[i] = a[i] / <span class="hljs-number">2</span>;
+
+    <span class="hljs-comment">/*
+      双指针贪心过程：
+        i 指向当前要尝试被装进其他盒子的小盒子（从小到大）
+        j 指向当前考虑的大盒子（容量较大，可能装下小盒子）
+        每次检查第 j 个盒子能否装下第 i 个盒子：
+          - 若能装下，更新第 j 个盒子的剩余容量，小盒子被装走（i++），
+            成功装入一次就意味着最终顶层盒子数 ans 减少 1。
+          - 若装不下，说明当前大盒子不够大，需要换更大的盒子（j++）。
+        每个小盒子最多被装一次，每个大盒子的容量也只被用来装更小的盒子。
+    */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>, j = <span class="hljs-number">2</span>; j &lt;= n; ) {
+        <span class="hljs-keyword">if</span> (c[j] &gt;= a[i]) {        <span class="hljs-comment">// 大盒子 j 能装下小盒子 i</span>
+            c[j] -= a[i];          <span class="hljs-comment">// 占用大盒子对应容量</span>
+            i++;                   <span class="hljs-comment">// 小盒子被处理，指针后移</span>
+            ans--;                 <span class="hljs-comment">// 顶层盒子总数减少 1</span>
+        } <span class="hljs-keyword">else</span> {
+            j++;                   <span class="hljs-comment">// 当前大盒子装不下，试下一个更大的盒子</span>
+        }
+    }
+
+    cout &lt;&lt; ans;                   <span class="hljs-comment">// 输出最少顶层盒子数</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4228">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

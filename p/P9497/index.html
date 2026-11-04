@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9497 「RiOI-2」weight 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个 行 列 的矩阵 。 有 组询问，每次给定一个 ，请将矩阵每一行任意重排（可以不重排），最大化最大值不小于 （也就是说，至少有一个不小于 的数）的列数。请输出这个列数。 询问之间相互独立。换言之，每次询问前可以重新排列。">
+<link rel="canonical" href="https://zymojblog.top/p/P9497/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9497 「RiOI-2」weight 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个 行 列 的矩阵 。 有 组询问，每次给定一个 ，请将矩阵每一行任意重排（可以不重排），最大化最大值不小于 （也就是说，至少有一个不小于 的数）的列数。请输出这个列数。 询问之间相互独立。换言之，每次询问前可以重新排列。">
+<meta property="og:url" content="https://zymojblog.top/p/P9497/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9497 「RiOI-2」weight 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个 行 列 的矩阵 。 有 组询问，每次给定一个 ，请将矩阵每一行任意重排（可以不重排），最大化最大值不小于 （也就是说，至少有一个不小于 的数）的列数。请输出这个列数。 询问之间相互独立。换言之，每次询问前可以重新排列。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9497 「RiOI-2」weight","headline":"P9497 「RiOI-2」weight 题解","description":"给定一个 行 列 的矩阵 。 有 组询问，每次给定一个 ，请将矩阵每一行任意重排（可以不重排），最大化最大值不小于 （也就是说，至少有一个不小于 的数）的列数。请输出这个列数。 询问之间相互独立。换言之，每次询问前可以重新排列。","url":"https://zymojblog.top/p/P9497/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、二分、洛谷原创、O2优化、排序、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9497</span></div>
+  <h1 class="seo-title">P9497 「RiOI-2」weight</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9497 「RiOI-2」weight</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>二分</code>、<code>洛谷原创</code>、<code>O2优化</code>、<code>排序</code>、<code>洛谷月赛</code></p>
+<h2>题目背景</h2>
+<p>在小树林间坐落着一个幻想的城堡。这里是 E 国的领地，而小 E，则是 E 国之王。</p>
+<p>树木，是 E 国抵挡袭击的法宝。树木越高，越能蒙蔽敌人的视线。</p>
+<p>可是，随着自然条件的退化，小 E 却不知怎么处理。怎么办呢？</p>
+<h2>题目描述</h2>
+<p>给定一个 $n$ 行 $n$ 列 的矩阵 $a$。</p>
+<p>有 $q$ 组询问，每次给定一个 $v$，请将矩阵每一行任意重排（可以不重排），最大化<strong>最大值不小于</strong> $v$（也就是说，至少有一个不小于 $v$ 的数）的列数。请输出这个列数。</p>
+<p>询问之间相互独立。换言之，每次询问前可以重新排列。</p>
+<h2>输入格式</h2>
+<p>第一行两个正整数 $n, q$。</p>
+<p>第 $2\sim n+1$ 行，每行 $n$ 个正整数，表示矩阵 $a$。</p>
+<p>接下来 $q$ 行每行一个正整数 $v$，表示一次询问。</p>
+<h2>输出格式</h2>
+<p>对于每次询问，输出一行一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">3</span>
+<span class="hljs-number">9</span> <span class="hljs-number">9</span> <span class="hljs-number">8</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">5</span>
+<span class="hljs-number">9</span>
+<span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3<br>2<br>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 结构体：存储一个询问的数据</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Query</span> {
+    <span class="hljs-type">int</span> v;      <span class="hljs-comment">// 询问的值 v</span>
+    <span class="hljs-type">int</span> id;     <span class="hljs-comment">// 这个询问是第几个（原始顺序）</span>
+};
+
+<span class="hljs-comment">// 比较函数：用于将询问按 v 从大到小排序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Query a, Query b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.v &gt; b.v;   <span class="hljs-comment">// 返回 true 表示 a 应该排在 b 前面</span>
+}
+
+<span class="hljs-comment">// 全局数组：最多 n*n = 1000*1000 = 1e6 个元素</span>
+<span class="hljs-type">int</span> all[<span class="hljs-number">1000005</span>];
+
+<span class="hljs-comment">// 全局数组：最多 q = 5e5 个询问</span>
+Query qs[<span class="hljs-number">500005</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】离线 + 排序 + 扫描
+     * 【核心思路】
+     * 1. 把所有矩阵元素放在 all 数组里，按值从大到小排序。
+     * 2. 把所有询问按 v 从大到小排序，同时记住每个询问原来的编号。
+     * 3. 用一个指针 p 从 all 数组开头向后扫。
+     *    对于当前询问 v，把 all 中所有 &gt;= v 的元素都加进计数 sum。
+     *    此时 sum 就是矩阵中 &gt;= v 的元素总数。
+     * 4. 答案 = min(n, sum)，因为最多只有 n 列。
+     * 5. 最后按原始顺序输出答案。
+     */</span>
+
+    <span class="hljs-type">int</span> n, q;
+    cin &gt;&gt; n &gt;&gt; q;
+
+    <span class="hljs-type">int</span> total = n * n;  <span class="hljs-comment">// 矩阵元素总数</span>
+
+    <span class="hljs-comment">// 读入矩阵，存入 all 数组</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; total; i++) {
+        cin &gt;&gt; all[i];
+    }
+
+    <span class="hljs-comment">// 将 all 数组按值降序排序</span>
+    <span class="hljs-built_in">sort</span>(all, all + total, <span class="hljs-built_in">greater</span>&lt;<span class="hljs-type">int</span>&gt;());
+
+    <span class="hljs-comment">// 读入 q 个询问</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; q; i++) {
+        cin &gt;&gt; qs[i].v;
+        qs[i].id = i;   <span class="hljs-comment">// 记录原始编号</span>
+    }
+
+    <span class="hljs-comment">// 将询问按 v 降序排序（使用自定义比较函数 cmp）</span>
+    <span class="hljs-built_in">sort</span>(qs, qs + q, cmp);
+
+    <span class="hljs-type">int</span> ans[<span class="hljs-number">500005</span>];   <span class="hljs-comment">// 存放每个询问的答案（按原始编号）</span>
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;       <span class="hljs-comment">// sum: 当前已经统计的、&gt;= 当前 v 的元素个数</span>
+    <span class="hljs-type">int</span> p = <span class="hljs-number">0</span>;         <span class="hljs-comment">// p: all 数组中下一个待检查的位置</span>
+
+    <span class="hljs-comment">// 按 v 从大到小依次处理每个询问</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; q; i++) {
+        <span class="hljs-type">int</span> v = qs[i].v;
+        <span class="hljs-type">int</span> id = qs[i].id;
+
+        <span class="hljs-comment">// 把 all 中所有 &gt;= v 的元素都加进来</span>
+        <span class="hljs-keyword">while</span> (p &lt; total &amp;&amp; all[p] &gt;= v) {
+            sum++;
+            p++;
+        }
+
+        <span class="hljs-comment">// 最多只能有 n 列，所以答案不能超过 n</span>
+        ans[id] = (sum &lt; n) ? sum : n;
+    }
+
+    <span class="hljs-comment">// 按原始顺序输出答案</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; q; i++) {
+        cout &lt;&lt; ans[i] &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9497">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

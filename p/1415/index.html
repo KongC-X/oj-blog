@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1415 10进制转D进制 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="十进制整数 和其他 （ 的值为 ）进制数的转换是计算机实现计算的基本问题，其解决方法很多，其中一个简单算法基于下列原理： ( ) (其中： 为整除运算， 为求余运算)。简单来说，就是除 取余，然后倒过来得到 进制的数。 例如： （请注意：转 进制时，用 代表余数 ， 代表余数 ……） 假设现要编制…">
+<link rel="canonical" href="https://zymojblog.top/p/1415/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1415 10进制转D进制 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="十进制整数 和其他 （ 的值为 ）进制数的转换是计算机实现计算的基本问题，其解决方法很多，其中一个简单算法基于下列原理： ( ) (其中： 为整除运算， 为求余运算)。简单来说，就是除 取余，然后倒过来得到 进制的数。 例如： （请注意：转 进制时，用 代表余数 ， 代表余数 ……） 假设现要编制…">
+<meta property="og:url" content="https://zymojblog.top/p/1415/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1415 10进制转D进制 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="十进制整数 和其他 （ 的值为 ）进制数的转换是计算机实现计算的基本问题，其解决方法很多，其中一个简单算法基于下列原理： ( ) (其中： 为整除运算， 为求余运算)。简单来说，就是除 取余，然后倒过来得到 进制的数。 例如： （请注意：转 进制时，用 代表余数 ， 代表余数 ……） 假设现要编制…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1415 10进制转D进制","headline":"1415 10进制转D进制 题解","description":"十进制整数 和其他 （ 的值为 ）进制数的转换是计算机实现计算的基本问题，其解决方法很多，其中一个简单算法基于下列原理： ( ) (其中： 为整除运算， 为求余运算)。简单来说，就是除 取余，然后倒过来得到 进制的数。 例如： （请注意：转 进制时，用 代表余数 ， 代表余数 ……） 假设现要编制…","url":"https://zymojblog.top/p/1415/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"容器、stack、进制转换","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1415</span></div>
+  <h1 class="seo-title">1415 10进制转D进制</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">进制转换</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AE%B9%E5%99%A8">容器</a><a class="seo-tag" href="/#/tag/stack">stack</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2">进制转换</a></div>
+  <article class="markdown-body seo-article">
+<h1>1415 - 10进制转D进制</h1>
+<h2>题目描述</h2>
+<p>十进制整数 $N$ 和其他 $D$（$D$的值为 $2到16$）进制数的转换是计算机实现计算的基本问题，其解决方法很多，其中一个简单算法基于下列原理：$N$ $=$ ($N$ $div$ $d$) $\times$ $d$ $+$ $N$ $mod$ $d$ (其中：$div$ 为整除运算，$mod$ 为求余运算)。简单来说，就是除 $D$ 取余，然后倒过来得到 $D$ 进制的数。</p>
+<p>例如：</p>
+<p>$(1348)10 = (10101000100)2$</p>
+<p>$(1348)10 = (2504)8$</p>
+<p>$(1000)10 = (3E8)16$  </p>
+<p>（请注意：转 $16$ 进制时，用 $A$ 代表余数 $10$ ，$B$ 代表余数 $11$ ……）</p>
+<p>假设现要编制一个满足下列要求的程序：对于输入的任意一个非负十进制整数（$n≤1,000,000,000$），打印输出与其等值的 $D$ 进制数。</p>
+<h2>输入</h2>
+<p>有两个整数 $N$ 和 $D$，$N$ 表示要转换的十进制非负整数， $D$ 代表要转换的进制（$2到16$）</p>
+<h2>输出</h2>
+<p>$N$ 进制转 $D$ 进制的结果。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,d;
+stack&lt;<span class="hljs-type">char</span>&gt; s;
+string t = <span class="hljs-string">&quot;0123456789ABCDEF&quot;</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; d;
+    <span class="hljs-keyword">if</span>(n == <span class="hljs-number">0</span>) {
+        cout &lt;&lt; <span class="hljs-string">&quot;0&quot;</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">while</span>(n != <span class="hljs-number">0</span>) {
+        s.<span class="hljs-built_in">push</span>(t[n%d]);
+        n /= d;
+    }
+    <span class="hljs-keyword">while</span>(s.<span class="hljs-built_in">size</span>() != <span class="hljs-number">0</span>) {
+        cout &lt;&lt; s.<span class="hljs-built_in">top</span>();
+        s.<span class="hljs-built_in">pop</span>();
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1415">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

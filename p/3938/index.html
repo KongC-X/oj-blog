@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3938 地图探险（explore）  [CSP-J 2024] 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 打算前往一片丛林去探险。丛林的地理环境十分复杂，为了防止迷路，他先派遣了一个机器人前去探路。 丛林的地图可以用一个 行 列的字符表来表示。我们将第 行第 列的位置的坐标记作 。如果这个位置的字符为 ，即代表这个位置上有障碍，不可通过。反之，若这个位置的字符为 ，即代表这个位置是一片空地，可…">
+<link rel="canonical" href="https://zymojblog.top/p/3938/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="3938 地图探险（explore）  [CSP-J 2024] 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 打算前往一片丛林去探险。丛林的地理环境十分复杂，为了防止迷路，他先派遣了一个机器人前去探路。 丛林的地图可以用一个 行 列的字符表来表示。我们将第 行第 列的位置的坐标记作 。如果这个位置的字符为 ，即代表这个位置上有障碍，不可通过。反之，若这个位置的字符为 ，即代表这个位置是一片空地，可…">
+<meta property="og:url" content="https://zymojblog.top/p/3938/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3938 地图探险（explore）  [CSP-J 2024] 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 打算前往一片丛林去探险。丛林的地理环境十分复杂，为了防止迷路，他先派遣了一个机器人前去探路。 丛林的地图可以用一个 行 列的字符表来表示。我们将第 行第 列的位置的坐标记作 。如果这个位置的字符为 ，即代表这个位置上有障碍，不可通过。反之，若这个位置的字符为 ，即代表这个位置是一片空地，可…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"3938 地图探险（explore）  [CSP-J 2024]","headline":"3938 地图探险（explore）  [CSP-J 2024] 题解","description":"小 A 打算前往一片丛林去探险。丛林的地理环境十分复杂，为了防止迷路，他先派遣了一个机器人前去探路。 丛林的地图可以用一个 行 列的字符表来表示。我们将第 行第 列的位置的坐标记作 。如果这个位置的字符为 ，即代表这个位置上有障碍，不可通过。反之，若这个位置的字符为 ，即代表这个位置是一片空地，可…","url":"https://zymojblog.top/p/3938/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"CSP-J 2024、模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>3938</span></div>
+  <h1 class="seo-title">3938 地图探险（explore）  [CSP-J 2024]</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/CSP-J%202024">CSP-J 2024</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a></div>
+  <article class="markdown-body seo-article">
+<h1>3938 - 地图探险（explore）  [CSP-J 2024]</h1>
+<h2>题目描述</h2>
+<p>小 A 打算前往一片丛林去探险。丛林的地理环境十分复杂，为了防止迷路，他先派遣了一个机器人前去探路。</p>
+<p>丛林的地图可以用一个 $n$ 行 $m$ 列的字符表来表示。我们将第 $i$ 行第 $j$ 列的位置的坐标记作 $(i, j)(1 \leq i \leq n, 1 \leq j \leq m)$。如果这个位置的字符为 $\tt x$，即代表这个位置上有障碍，不可通过。反之，若这个位置的字符为 $\tt.$，即代表这个位置是一片空地，可以通过。</p>
+<p>这个机器人的状态由位置和朝向两部分组成。其中位置由坐标 $(x, y)(1 \leq x \leq n, 1 \leq y \leq m)$ 刻画，它表示机器人处在地图上第 $x$ 行第 $y$ 列的位置。而朝向用一个 $0 \sim 3$ 的 整数 $d$ 表示，其中 $d = 0$ 代表向东，$d = 1$ 代表向南，$d = 2$ 代表向西，$d = 3$ 代表向北。</p>
+<p>初始时，机器人的位置为 $(x_0, y_0)$，朝向为 $d_0$。<strong>保证初始时机器人所在的位置为空地</strong>。接下来机器人将要进行 $k$ 次操作。每一步，机器人将按照如下的模式操作：</p>
+<ul>
+<li><p>假设机器人当前处在的位置为 $(x, y)$，朝向为 $d$。则它的方向上的下一步的位置 $(x^′, y^′)$ 定义如下：若 $d = 0$，则令 $(x^′, y^′) = (x, y + 1)$，若 $d = 1$，则令 $(x^′, y^′) = (x + 1, y)$，若 $d = 2$，则令 $(x^′, y^′) = (x, y - 1)$，若 $d = 3$，则令 $(x^′, y^′) = (x - 1, y)$。</p>
+</li>
+<li><p>接下来，机器人判断它下一步的位置是否在地图内，且是否为空地。具体地说，它判断 $(x^′, y^′)$ 是否满足 $1 \leq x^′ \leq n, 1 \leq y^′ \leq m$，且 $(x^′, y^′)$ 位置上是空地。如果条件成立，则机器人会向前走一步。它新的位置变为 $(x^′, y^′)$，且朝向不变。如果条件不成立，则它会执行“向右转”操作。也就是说，令 $d^′ = (d + 1) \bmod 4$（即 $d + 1$ 除以 $4$ 的余数），且它所处的位置保持不变，但朝向由 $d$ 变为 $d^′$。</p>
+</li>
+</ul>
+<p>小 A 想要知道，在机器人执行完 $k$ 步操作之后，地图上所有被机器人经过的位置（包括起始位置）有几个。</p>
+<h2>输入</h2>
+<p><strong>本题有多组测试数据。</strong></p>
+<p>输入的第一行包含一个正整数 $T$，表示数据组数。</p>
+<p>接下来包含 $T$ 组数据，每组数据的格式如下：</p>
+<p>第一行包含三个正整数 $n, m, k$。其中 $n, m$ 表示地图的行数和列数，$k$ 表示机器人执行操作的次数。</p>
+<p>第二行包含两个正整数 $x_0, y_0$ 和一个非负整数 $d_0$。</p>
+<p>接下来 $n$ 行，每行包含一个长度为 $m$ 的字符串。保证字符串中只包含 $\tt{x}$ 和 $\tt{.}$ 两个字符。其中，第 $x$ 行的字符串的第 $y$ 个字符代表的位置为 $(x, y)$。这个位置是 $\tt{x}$ 即代表它是障碍，否则代表它是空地。数据保证机器人初始时所在的位置为空地。</p>
+<h2>输出</h2>
+<p>对于每组数据：输出一行包含一个正整数，表示地图上所有被机器人经过的位置（包括起始位置）的个数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> dx[]={<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>},dy[]={<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+<span class="hljs-type">char</span> a[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>];
+<span class="hljs-type">bool</span> v[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-number">0</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-type">int</span> t;
+    cin &gt;&gt; t;
+    <span class="hljs-keyword">while</span>(t--){
+        <span class="hljs-built_in">memset</span>(v,<span class="hljs-number">0</span>,<span class="hljs-built_in">sizeof</span>(v));
+        <span class="hljs-type">int</span> n,m,k;
+        cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+        <span class="hljs-type">int</span> x,y,d;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; d;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+                cin &gt;&gt; a[i][j];
+            }
+        }
+        v[x][y]=<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span>(k--){<span class="hljs-comment">//把递归写成递推形式</span>
+            <span class="hljs-type">int</span> xx=x+dx[d],yy=y+dy[d];
+            <span class="hljs-keyword">if</span>(xx&gt;=<span class="hljs-number">1</span>&amp;&amp;xx&lt;=n&amp;&amp;yy&gt;=<span class="hljs-number">1</span>&amp;&amp;yy&lt;=m&amp;&amp;a[xx][yy]==<span class="hljs-string">&#x27;.&#x27;</span>){
+                x=xx;
+                y=yy;
+                v[xx][yy]=<span class="hljs-number">1</span>;
+            }
+            <span class="hljs-keyword">else</span>{
+                d=(d+<span class="hljs-number">1</span>)%<span class="hljs-number">4</span>;
+            }
+        }
+        <span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+                <span class="hljs-keyword">if</span>(v[i][j]){
+                    ans++;
+                }
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/3938">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

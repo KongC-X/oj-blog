@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1851 好朋友 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个序列号 ，找出序列号不小于 的第一对“非常好友” 。">
+<link rel="canonical" href="https://zymojblog.top/p/P1851/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1851 好朋友 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个序列号 ，找出序列号不小于 的第一对“非常好友” 。">
+<meta property="og:url" content="https://zymojblog.top/p/P1851/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1851 好朋友 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个序列号 ，找出序列号不小于 的第一对“非常好友” 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1851 好朋友","headline":"P1851 好朋友 题解","description":"给定一个序列号 ，找出序列号不小于 的第一对“非常好友” 。","url":"https://zymojblog.top/p/P1851/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数学","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1851</span></div>
+  <h1 class="seo-title">P1851 好朋友</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1851 好朋友</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-06-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code></p>
+<h2>题目背景</h2>
+<p>小可可和所有其他同学的手腕上都戴有一个射频识别序列号码牌，这样老师就可以方便的计算出他们的人数。很多同学都有一个“好朋友” 。如果 $A$ 的序列号的约数之和恰好等于 $B$ 的序列号，那么 $A$ 的好朋友就是 $B$。在这里，一个数的约数不包括这个数本身。因为一些同学的号码约数和大于其他任何同学的号码，所以这些同学没有好朋友。一些同学有一个“非常好友” 。当两个同学互为“好朋友”时，他们就是一对“非常好友” 。注意在这道题中，忽略那些自己是自己的“非常好友”的情况。</p>
+<h2>题目描述</h2>
+<p>给定一个序列号 $s$，找出序列号不小于 $s$ 的第一对“非常好友” 。</p>
+<h2>输入格式</h2>
+<p>只有一行一个整数 $s$，即给定的序列号下界。</p>
+<h2>输出格式</h2>
+<p>输出一行两个用空格隔开的整数 $a$ 和 $b$。</p>
+<p>$a$ 表示第一个序列号不小于 $s$ 的有“非常好友”的同学，$b$ 是 $a$ 的“非常好友” 。（注：允许 $b&lt;s$）</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">206</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">220</span> <span class="hljs-number">284</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 计算 n 的真约数之和（不包括 n 本身）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sum_divisors</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;            <span class="hljs-comment">// 1 的真约数之和为 0</span>
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">1</span>;                     <span class="hljs-comment">// 1 是所有大于1的数的约数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (n % i == <span class="hljs-number">0</span>) {
+            sum += i;
+            <span class="hljs-keyword">if</span> (i != n / i)          <span class="hljs-comment">// 避免完全平方数重复加</span>
+                sum += n / i;
+        }
+    }
+    <span class="hljs-keyword">return</span> sum;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> s;                           <span class="hljs-comment">// s: 起始序列号下界</span>
+    cin &gt;&gt; s;
+
+    <span class="hljs-comment">// 从 s 开始向上寻找最小的 a</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a = s; ; a++) {
+        <span class="hljs-type">int</span> b = <span class="hljs-built_in">sum_divisors</span>(a);     <span class="hljs-comment">// a 的好朋友</span>
+        <span class="hljs-comment">// 互为好朋友，且不能是自己（完全数）</span>
+        <span class="hljs-keyword">if</span> (a != b &amp;&amp; <span class="hljs-built_in">sum_divisors</span>(b) == a) {
+            cout &lt;&lt; a &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1851">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

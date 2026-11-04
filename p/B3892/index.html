@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3892 [语言月赛 202311] 方程求解 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有 个关于 的方程，第 个方程形如 。方程的解 均为正整数，例如下面几个方程都是符合要求的方程： 其中，第一组方程的解为 ，第二组方程的解为 ，第三组方程的解为 。 小 A 想要知道，给定 ，在 的范围内，有多少个正整数 满足 是其中至少一个方程的解。为了防止你欺骗他，他会询问你 次。">
+<link rel="canonical" href="https://zymojblog.top/p/B3892/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3892 [语言月赛 202311] 方程求解 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有 个关于 的方程，第 个方程形如 。方程的解 均为正整数，例如下面几个方程都是符合要求的方程： 其中，第一组方程的解为 ，第二组方程的解为 ，第三组方程的解为 。 小 A 想要知道，给定 ，在 的范围内，有多少个正整数 满足 是其中至少一个方程的解。为了防止你欺骗他，他会询问你 次。">
+<meta property="og:url" content="https://zymojblog.top/p/B3892/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3892 [语言月赛 202311] 方程求解 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有 个关于 的方程，第 个方程形如 。方程的解 均为正整数，例如下面几个方程都是符合要求的方程： 其中，第一组方程的解为 ，第二组方程的解为 ，第三组方程的解为 。 小 A 想要知道，给定 ，在 的范围内，有多少个正整数 满足 是其中至少一个方程的解。为了防止你欺骗他，他会询问你 次。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3892 [语言月赛 202311] 方程求解","headline":"B3892 [语言月赛 202311] 方程求解 题解","description":"小 A 有 个关于 的方程，第 个方程形如 。方程的解 均为正整数，例如下面几个方程都是符合要求的方程： 其中，第一组方程的解为 ，第二组方程的解为 ，第三组方程的解为 。 小 A 想要知道，给定 ，在 的范围内，有多少个正整数 满足 是其中至少一个方程的解。为了防止你欺骗他，他会询问你 次。","url":"https://zymojblog.top/p/B3892/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2023、O2优化、字符串（入门）、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3892</span></div>
+  <h1 class="seo-title">B3892 [语言月赛 202311] 方程求解</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3892 [语言月赛 202311] 方程求解</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2023</code>、<code>O2优化</code>、<code>字符串（入门）</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>小 A 有 $n$ 个关于 $x$ 的方程，第 $i$ 个方程形如 $a_ix_i+b_i=c_i$。方程的解 $x$ 均为正整数，例如下面几个方程都是符合要求的方程：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>x+<span class="hljs-number">4</span>=<span class="hljs-number">10</span>
+<span class="hljs-number">-3</span>x+<span class="hljs-number">13</span>=<span class="hljs-number">10</span>
+<span class="hljs-number">4</span>x<span class="hljs-number">-8</span>=<span class="hljs-number">16</span></code></pre><p>其中，第一组方程的解为 $x_1=3$，第二组方程的解为 $x_2=1$，第三组方程的解为 $x_3=6$。</p>
+<p>小 A 想要知道，给定 $L,R$，在 $L\leq x\leq R$ 的范围内，有多少个正整数 $x$ 满足 $x$ 是其中至少一个方程的解。为了防止你欺骗他，他会询问你 $Q$ 次。</p>
+<h2>输入格式</h2>
+<p>第一行输入两个正整数 $n,Q$，分别表示小 A 有的方程数，以及小 A 想要向你询问的次数。</p>
+<p>第二行开始，往下 $n$ 行，每行一个字符串，描述一个方程。</p>
+<p>第 $(n+2)$ 行开始，往下 $Q$ 行，每行两个正整数 $L,R$，表示一次询问，即给定 $L,R$，询问在 $L\leq x\leq R$ 的范围内，有多少个正整数 $x$ 满足 $x$ 是其中至少一个方程的解。</p>
+<h2>输出格式</h2>
+<p>对于每次询问，输出一行一个整数，表示有多少个在 $L\leq x\leq R$ 的范围内的正整数 $x$，满足 $x$ 是其中至少一个方程的解。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">2</span>x+<span class="hljs-number">4</span>=<span class="hljs-number">10</span>
+<span class="hljs-number">-3</span>x+<span class="hljs-number">13</span>=<span class="hljs-number">10</span>
+<span class="hljs-number">4</span>x<span class="hljs-number">-8</span>=<span class="hljs-number">16</span>
+<span class="hljs-number">1</span> <span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">8</span>
+<span class="hljs-number">3</span> <span class="hljs-number">6</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3<br>3<br>2<br>0```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">5</span>x<span class="hljs-number">-2</span>=<span class="hljs-number">13</span>
+<span class="hljs-number">8</span>x+<span class="hljs-number">5</span>=<span class="hljs-number">45</span>
+<span class="hljs-number">4</span>x<span class="hljs-number">-12</span>=<span class="hljs-number">8</span>
+<span class="hljs-number">-2</span>x+<span class="hljs-number">10</span>=<span class="hljs-number">4</span>
+<span class="hljs-number">3</span>x<span class="hljs-number">-7</span>=<span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>1<br>2<br>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3892 [语言月赛 202311] 方程求解
+     * 题意：给定 n 个形如 &quot;aix+bi=ci&quot; 的方程，解均为正整数。
+     *       有 Q 次询问，每次给出 L, R，问在 [L, R] 内有多少个正整数 x
+     *       是至少一个方程的解。
+     *
+     * 思路：
+     *   1. 用 bool 数组 mark[1005] 标记哪些 x 是某个方程的解（x ≤ 1000）。
+     *   2. 逐个解析方程字符串，提取 a, b, c，计算 x = (c - b) / a。
+     *      因为题目保证解为正整数，直接整除即可。
+     *   3. 若 x 在 1~1000 内，则 mark[x] = true。
+     *   4. 对每个询问 [L, R]，遍历 1~1000，统计 mark[i] 为 true 且在区间内的个数。
+     *
+     * 时间复杂度：O(n * |s| + Q * 1000)，n, Q ≤ 1000，完全可行。
+     */</span>
+
+    <span class="hljs-type">int</span> n, Q;
+    cin &gt;&gt; n &gt;&gt; Q;
+
+    <span class="hljs-type">bool</span> mark[<span class="hljs-number">1005</span>] = {<span class="hljs-literal">false</span>};   <span class="hljs-comment">// mark[x]: x 是否为某个方程的解</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        string s;
+        cin &gt;&gt; s;
+
+        <span class="hljs-comment">// 找到 &#x27;x&#x27; 和 &#x27;=&#x27; 的位置</span>
+        <span class="hljs-type">int</span> p1 = s.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;x&#x27;</span>);
+        <span class="hljs-type">int</span> p2 = s.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;=&#x27;</span>);
+
+        <span class="hljs-comment">// 解析 a</span>
+        string a_str = s.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, p1);
+        <span class="hljs-type">int</span> a;
+        <span class="hljs-keyword">if</span> (a_str == <span class="hljs-string">&quot;&quot;</span> || a_str == <span class="hljs-string">&quot;+&quot;</span>) a = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a_str == <span class="hljs-string">&quot;-&quot;</span>) a = <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">else</span> a = <span class="hljs-built_in">stoi</span>(a_str);
+
+        <span class="hljs-comment">// 解析 b</span>
+        string b_str = s.<span class="hljs-built_in">substr</span>(p1 + <span class="hljs-number">1</span>, p2 - p1 - <span class="hljs-number">1</span>);
+        <span class="hljs-type">int</span> b;
+        <span class="hljs-keyword">if</span> (b_str == <span class="hljs-string">&quot;&quot;</span>) b = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span> b = <span class="hljs-built_in">stoi</span>(b_str);
+
+        <span class="hljs-comment">// 解析 c</span>
+        string c_str = s.<span class="hljs-built_in">substr</span>(p2 + <span class="hljs-number">1</span>);
+        <span class="hljs-type">int</span> c = <span class="hljs-built_in">stoi</span>(c_str);
+
+        <span class="hljs-comment">// 计算解 x</span>
+        <span class="hljs-type">int</span> x = (c - b) / a;
+
+        <span class="hljs-comment">// 标记在 1~1000 内的解</span>
+        <span class="hljs-keyword">if</span> (x &gt;= <span class="hljs-number">1</span> &amp;&amp; x &lt;= <span class="hljs-number">1000</span>) {
+            mark[x] = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 处理询问</span>
+    <span class="hljs-keyword">while</span> (Q--) {
+        <span class="hljs-type">int</span> L, R;
+        cin &gt;&gt; L &gt;&gt; R;
+        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x = L; x &lt;= R; x++) {
+            <span class="hljs-keyword">if</span> (mark[x]) ans++;
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3892">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

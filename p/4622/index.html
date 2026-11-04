@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4622 外观数列 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="外观数列是一个整数序列，给定该数列的第一项数据之后，从第二项开始，每一项都是对前一项数据的描述。 例如： 给定外观数列的第一项为 ； 接下来第二项是对第一项数据的描述，即“一个 ”，记作 ； 第三项是对第二项数据的描述，即“两个 ”，记作 ； 第四项是对第三项数据的描述，即“一个 ，一个 ”，记作…">
+<link rel="canonical" href="https://zymojblog.top/p/4622/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="4622 外观数列 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="外观数列是一个整数序列，给定该数列的第一项数据之后，从第二项开始，每一项都是对前一项数据的描述。 例如： 给定外观数列的第一项为 ； 接下来第二项是对第一项数据的描述，即“一个 ”，记作 ； 第三项是对第二项数据的描述，即“两个 ”，记作 ； 第四项是对第三项数据的描述，即“一个 ，一个 ”，记作…">
+<meta property="og:url" content="https://zymojblog.top/p/4622/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4622 外观数列 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="外观数列是一个整数序列，给定该数列的第一项数据之后，从第二项开始，每一项都是对前一项数据的描述。 例如： 给定外观数列的第一项为 ； 接下来第二项是对第一项数据的描述，即“一个 ”，记作 ； 第三项是对第二项数据的描述，即“两个 ”，记作 ； 第四项是对第三项数据的描述，即“一个 ，一个 ”，记作…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"4622 外观数列","headline":"4622 外观数列 题解","description":"外观数列是一个整数序列，给定该数列的第一项数据之后，从第二项开始，每一项都是对前一项数据的描述。 例如： 给定外观数列的第一项为 ； 接下来第二项是对第一项数据的描述，即“一个 ”，记作 ； 第三项是对第二项数据的描述，即“两个 ”，记作 ； 第四项是对第三项数据的描述，即“一个 ，一个 ”，记作…","url":"https://zymojblog.top/p/4622/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯STEMA、模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>4622</span></div>
+  <h1 class="seo-title">4622 外观数列</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AFSTEMA">蓝桥杯STEMA</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a></div>
+  <article class="markdown-body seo-article">
+<h1>4622 - 外观数列</h1>
+<h2>题目描述</h2>
+<p>外观数列是一个整数序列，给定该数列的第一项数据之后，从第二项开始，每一项都是对前一项数据的描述。</p>
+<p>例如：</p>
+<ul>
+<li><p>给定外观数列的第一项为 $1$；</p>
+</li>
+<li><p>接下来第二项是对第一项数据的描述，即“一个 $1$”，记作 $11$；</p>
+</li>
+<li><p>第三项是对第二项数据的描述，即“两个 $1$”，记作 $21$；</p>
+</li>
+<li><p>第四项是对第三项数据的描述，即“一个 $2$，一个 $1$”，记作 $1211$；</p>
+</li>
+<li><p>第五项是对第四项数据的描述，即“一个 $1$，一个 $2$，两个 $1$”，记作 $111221$；</p>
+</li>
+</ul>
+<p>以此类推......</p>
+<p>给定外观数列的第一项 $x$ 以及一个整数 $n$，请计算出该外观数列第 $n$ 项的值。</p>
+<p>例如：$x = 2$，$n = 3$，外观数列为：</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">2</span>
+<span class="hljs-number">12</span>
+<span class="hljs-number">1112</span>
+<span class="hljs-number">3112</span>
+<span class="hljs-number">132112</span>
+......
+`</code></pre><p>外观数列第 $3$ 项为 $1112$。</p>
+<h2>输入</h2>
+<p>输入两个整数 $x（1 \le x \le 100）$和 $n（1 \le n \le 30)$。</p>
+<h2>输出</h2>
+<p>输出一个整数，表示外观数列第 $n$ 项的值。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 生成外观数列的第n项</span>
+<span class="hljs-function">string <span class="hljs-title">fun</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> n)</span> </span>{
+    string result = <span class="hljs-built_in">to_string</span>(x); <span class="hljs-comment">// 将x转为字符串作为第一项</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt; n;i++) { <span class="hljs-comment">// 从第二项开始循环生成</span>
+        string next = <span class="hljs-string">&quot;&quot;</span>; <span class="hljs-comment">// 用于存储下一项</span>
+        <span class="hljs-type">int</span> count = <span class="hljs-number">1</span>; <span class="hljs-comment">// 计数器，记录连续相同数字的个数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; result.<span class="hljs-built_in">size</span>(); j++) { <span class="hljs-comment">// 遍历当前字符串</span>
+            <span class="hljs-keyword">if</span>(result[j] == result[j - <span class="hljs-number">1</span>]) {
+                count++; <span class="hljs-comment">// 如果当前数字与前一个相同，计数器加1</span>
+            } <span class="hljs-keyword">else</span> {
+                next += <span class="hljs-built_in">to_string</span>(count) + result[j - <span class="hljs-number">1</span>]; <span class="hljs-comment">// 否则，将计数和数字添加到下一项</span>
+                count = <span class="hljs-number">1</span>; <span class="hljs-comment">// 重置计数器</span>
+            }
+        }
+        next += <span class="hljs-built_in">to_string</span>(count) + result[result.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>]; <span class="hljs-comment">// 添加最后一组数字</span>
+        result = next; <span class="hljs-comment">// 更新结果为下一项</span>
+    }
+    <span class="hljs-keyword">return</span> result; <span class="hljs-comment">// 返回生成的外观数列的第n项</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> x,n;
+    cin &gt;&gt; x &gt;&gt; n; <span class="hljs-comment">// 输入x和n</span>
+    string result = <span class="hljs-built_in">fun</span>(x, n); <span class="hljs-comment">// 调用函数生成外观数列的第n项</span>
+    cout &lt;&lt; result &lt;&lt; endl; <span class="hljs-comment">// 输出结果</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/4622">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

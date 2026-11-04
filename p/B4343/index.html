@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4343 [语言月赛 202506] 地铁跑酷 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个车站，编号从 到 。列车从第 站出发，到第 站结束。每两个相邻的车站之间有一定的行车时间。这趟列车会在中间的一些车站短暂停留，停留时间也已知。 你正好在第 车站的车门关上前一刻跳上车，要坐到第 车站下车。请你计算：从列车离开第 车站开始，到列车到达第 车站为止，你一共在车上花费了多少分钟。 …">
+<link rel="canonical" href="https://zymojblog.top/p/B4343/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4343 [语言月赛 202506] 地铁跑酷 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个车站，编号从 到 。列车从第 站出发，到第 站结束。每两个相邻的车站之间有一定的行车时间。这趟列车会在中间的一些车站短暂停留，停留时间也已知。 你正好在第 车站的车门关上前一刻跳上车，要坐到第 车站下车。请你计算：从列车离开第 车站开始，到列车到达第 车站为止，你一共在车上花费了多少分钟。 …">
+<meta property="og:url" content="https://zymojblog.top/p/B4343/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4343 [语言月赛 202506] 地铁跑酷 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个车站，编号从 到 。列车从第 站出发，到第 站结束。每两个相邻的车站之间有一定的行车时间。这趟列车会在中间的一些车站短暂停留，停留时间也已知。 你正好在第 车站的车门关上前一刻跳上车，要坐到第 车站下车。请你计算：从列车离开第 车站开始，到列车到达第 车站为止，你一共在车上花费了多少分钟。 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4343 [语言月赛 202506] 地铁跑酷","headline":"B4343 [语言月赛 202506] 地铁跑酷 题解","description":"有 个车站，编号从 到 。列车从第 站出发，到第 站结束。每两个相邻的车站之间有一定的行车时间。这趟列车会在中间的一些车站短暂停留，停留时间也已知。 你正好在第 车站的车门关上前一刻跳上车，要坐到第 车站下车。请你计算：从列车离开第 车站开始，到列车到达第 车站为止，你一共在车上花费了多少分钟。 …","url":"https://zymojblog.top/p/B4343/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2025、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4343</span></div>
+  <h1 class="seo-title">B4343 [语言月赛 202506] 地铁跑酷</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4343 [语言月赛 202506] 地铁跑酷</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-06-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>有 $n$ 个车站，编号从 $1$ 到 $n$。列车从第 $1$ 站出发，到第 $n$ 站结束。每两个相邻的车站之间有一定的行车时间。这趟列车会在中间的一些车站短暂停留，停留时间也已知。</p>
+<p>你正好在第 $s$ 车站的车门关上前一刻跳上车，要坐到第 $t$ 车站下车。请你计算：从列车离开第 $s$ 车站开始，到列车到达第 $t$ 车站为止，你一共在车上花费了多少分钟。</p>
+<p>注意：上下车所在的两个车站不计入停车时间，只有<strong>中间经过的</strong>停车站需要计算停靠时间。</p>
+<h2>输入格式</h2>
+<p>输入共六行。</p>
+<p>第一行一个整数 $n$，表示车站总数；<br>第二行 $n-1$ 个整数 $a_1, a_2, \cdots, a_{n-1}$，表示从第 $i$ 个车站到第 $i+1$ 个车站的行车时间；<br>第三行一个整数 $k$，表示列车会停靠的车站数量；<br>第四行 $k$ 个整数 $b_1, \cdots, b_k$，表示停靠的车站编号；<br>第五行 $k$ 个整数 $c_1, \cdots, c_k$，表示这些站的停靠时间；<br>第六行两个整数 $s, t$，表示你从第 $s$ 站上车，到第 $t$ 站下车。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示你本次乘车的总时间（分钟）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">7</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">14</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>
+<span class="hljs-number">9</span> <span class="hljs-number">6</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">8</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span>
+<span class="hljs-number">0</span>
+
+
+<span class="hljs-number">2</span> <span class="hljs-number">6</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">15</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>
+<span class="hljs-number">65</span> <span class="hljs-number">58</span> <span class="hljs-number">91</span> <span class="hljs-number">77</span> <span class="hljs-number">59</span> <span class="hljs-number">86</span> <span class="hljs-number">90</span> <span class="hljs-number">22</span> <span class="hljs-number">60</span>
+<span class="hljs-number">7</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">9</span> <span class="hljs-number">10</span>
+<span class="hljs-number">15</span> <span class="hljs-number">72</span> <span class="hljs-number">130</span> <span class="hljs-number">91</span> <span class="hljs-number">44</span> <span class="hljs-number">71</span> <span class="hljs-number">89</span>
+<span class="hljs-number">4</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>447</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> n,i,j,k,s,t;
+<span class="hljs-type">int</span> a[N],b[N],c[N];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt; n; i++){
+        cin &gt;&gt; a[i];
+    }
+    cin &gt;&gt; k;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= k; i++){
+        cin &gt;&gt; b[i];
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= k; i++){
+        cin &gt;&gt; c[i];
+    }
+    cin &gt;&gt; s &gt;&gt; t;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum1 = <span class="hljs-number">0</span>,sum2 = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 计算行车时间</span>
+    <span class="hljs-keyword">for</span>(i = s; i &lt; t; i++){
+        sum1 += a[i];
+    }
+    <span class="hljs-comment">// 计算停靠时间</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= k; i++){
+        <span class="hljs-keyword">if</span>(b[i] &gt; s &amp;&amp; b[i] &lt; t){
+            sum2 += c[i];
+        }
+    }
+    cout &lt;&lt; sum1 + sum2 &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4343">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

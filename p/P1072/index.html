@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1072 [NOIP 2009 提高组] Hankson 的趣味题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Hanks 博士是 BT（Bio-Tech，生物技术）领域的知名专家，他的儿子名叫 Hankson。现在，刚刚放学回家的 Hankson 正在思考一个有趣的问题。 今天在课堂上，老师讲解了如何求两个正整数 和 的最大公约数和最小公倍数。现在 Hankson 认为自己已经熟练地掌握了这些知识，他开始…">
+<link rel="canonical" href="https://zymojblog.top/p/P1072/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1072 [NOIP 2009 提高组] Hankson 的趣味题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Hanks 博士是 BT（Bio-Tech，生物技术）领域的知名专家，他的儿子名叫 Hankson。现在，刚刚放学回家的 Hankson 正在思考一个有趣的问题。 今天在课堂上，老师讲解了如何求两个正整数 和 的最大公约数和最小公倍数。现在 Hankson 认为自己已经熟练地掌握了这些知识，他开始…">
+<meta property="og:url" content="https://zymojblog.top/p/P1072/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1072 [NOIP 2009 提高组] Hankson 的趣味题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Hanks 博士是 BT（Bio-Tech，生物技术）领域的知名专家，他的儿子名叫 Hankson。现在，刚刚放学回家的 Hankson 正在思考一个有趣的问题。 今天在课堂上，老师讲解了如何求两个正整数 和 的最大公约数和最小公倍数。现在 Hankson 认为自己已经熟练地掌握了这些知识，他开始…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1072 [NOIP 2009 提高组] Hankson 的趣味题","headline":"P1072 [NOIP 2009 提高组] Hankson 的趣味题 题解","description":"Hanks 博士是 BT（Bio-Tech，生物技术）领域的知名专家，他的儿子名叫 Hankson。现在，刚刚放学回家的 Hankson 正在思考一个有趣的问题。 今天在课堂上，老师讲解了如何求两个正整数 和 的最大公约数和最小公倍数。现在 Hankson 认为自己已经熟练地掌握了这些知识，他开始…","url":"https://zymojblog.top/p/P1072/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、2009、NOIP 提高组、枚举、最大公约数 gcd","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1072</span></div>
+  <h1 class="seo-title">P1072 [NOIP 2009 提高组] Hankson 的趣味题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2009">2009</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%20gcd">最大公约数 gcd</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1072 [NOIP 2009 提高组] Hankson 的趣味题</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2009</code>、<code>NOIP 提高组</code>、<code>枚举</code>、<code>最大公约数 gcd</code></p>
+<h2>题目描述</h2>
+<p>Hanks 博士是 BT（Bio-Tech，生物技术）领域的知名专家，他的儿子名叫 Hankson。现在，刚刚放学回家的 Hankson 正在思考一个有趣的问题。</p>
+<p>今天在课堂上，老师讲解了如何求两个正整数 $c_1$ 和 $c_2$ 的最大公约数和最小公倍数。现在 Hankson 认为自己已经熟练地掌握了这些知识，他开始思考一个“求公约数”和“求公倍数”之类问题的“逆问题”，这个问题是这样的：已知正整数 $a_0,a_1,b_0,b_1$，设某未知正整数 $x$ 满足：</p>
+<ol>
+<li><p>$x$ 和 $a_0$ 的最大公约数是 $a_1$；</p>
+</li>
+<li><p>$x$ 和 $b_0$ 的最小公倍数是 $b_1$。</p>
+</li>
+</ol>
+<p>Hankson 的“逆问题”就是求出满足条件的正整数 $x$。但稍加思索之后，他发现这样的 $x$ 并不唯一，甚至可能不存在。因此他转而开始考虑如何求解满足条件的 $x$ 的个数。请你帮助他编程求解这个问题。</p>
+<h2>输入格式</h2>
+<p>第一行为一个正整数 $n$，表示有 $n$ 组输入数据。接下来的 $n$ 行每行一组输入数据，为四个正整数 $a_0,a_1,b_0,b_1$，每两个整数之间用一个空格隔开。输入数据保证 $a_0$ 能被 $a_1$ 整除，$b_1$ 能被 $b_0$ 整除。</p>
+<h2>输出格式</h2>
+<p>共 $n$ 行。每组输入数据的输出结果占一行，为一个整数。</p>
+<p>对于每组数据：若不存在这样的 $x$，请输出 $0$，若存在这样的 $x$，请输出满足条件的 $x$ 的个数；</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> 
+<span class="hljs-number">41</span> <span class="hljs-number">1</span> <span class="hljs-number">96</span> <span class="hljs-number">288</span> 
+<span class="hljs-number">95</span> <span class="hljs-number">1</span> <span class="hljs-number">37</span> <span class="hljs-number">1776</span> ```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>6<br>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 手写 gcd，避免依赖 __gcd（如果需要）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>{
+    <span class="hljs-keyword">while</span> (b) {
+        <span class="hljs-type">int</span> t = a % b;
+        a = b;
+        b = t;
+    }
+    <span class="hljs-keyword">return</span> a;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> t;
+    cin &gt;&gt; t;
+    <span class="hljs-keyword">while</span> (t--) {
+        <span class="hljs-type">int</span> a, b, c, d;         <span class="hljs-comment">// a=a0, b=a1, c=b0, d=b1</span>
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c &gt;&gt; d;
+        <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;
+
+        <span class="hljs-comment">// 枚举 d 的所有因子，只需到 sqrt(d)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i * i &lt;= d; ++i) {
+            <span class="hljs-keyword">if</span> (d % i != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+
+            <span class="hljs-comment">// 检查因子 i 是否满足条件</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">gcd</span>(i, a) == b &amp;&amp; (<span class="hljs-type">long</span> <span class="hljs-type">long</span>)i / <span class="hljs-built_in">gcd</span>(i, c) * c == d)
+                cnt++;
+
+            <span class="hljs-comment">// 对称因子 x = d / i，注意判重（i == x 时只计一次）</span>
+            <span class="hljs-type">int</span> x = d / i;
+            <span class="hljs-keyword">if</span> (x != i &amp;&amp; <span class="hljs-built_in">gcd</span>(x, a) == b &amp;&amp; (<span class="hljs-type">long</span> <span class="hljs-type">long</span>)x / <span class="hljs-built_in">gcd</span>(x, c) * c == d)
+                cnt++;
+        }
+
+        cout &lt;&lt; cnt &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1072">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1904 数字的组合 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 个正整数 ，从中选出若干个数，使它们的和为 ，求有多少种选择方案。 注意：选择不同位置的，但值相同的数，认为是不同的方案。 比如：有 个数 ，要组合出 ，那么有 个方案，分别是选第 、 个数，选第 、 个数，选第 、 个数。">
+<link rel="canonical" href="https://zymojblog.top/p/1904/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1904 数字的组合 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 个正整数 ，从中选出若干个数，使它们的和为 ，求有多少种选择方案。 注意：选择不同位置的，但值相同的数，认为是不同的方案。 比如：有 个数 ，要组合出 ，那么有 个方案，分别是选第 、 个数，选第 、 个数，选第 、 个数。">
+<meta property="og:url" content="https://zymojblog.top/p/1904/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1904 数字的组合 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 个正整数 ，从中选出若干个数，使它们的和为 ，求有多少种选择方案。 注意：选择不同位置的，但值相同的数，认为是不同的方案。 比如：有 个数 ，要组合出 ，那么有 个方案，分别是选第 、 个数，选第 、 个数，选第 、 个数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1904 数字的组合","headline":"1904 数字的组合 题解","description":"给定 个正整数 ，从中选出若干个数，使它们的和为 ，求有多少种选择方案。 注意：选择不同位置的，但值相同的数，认为是不同的方案。 比如：有 个数 ，要组合出 ，那么有 个方案，分别是选第 、 个数，选第 、 个数，选第 、 个数。","url":"https://zymojblog.top/p/1904/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1904</span></div>
+  <h1 class="seo-title">1904 数字的组合</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1904 - 数字的组合</h1>
+<h2>题目描述</h2>
+<p>给定 $N$ 个正整数 $A_1,A_2,…,A_N$，从中选出若干个数，使它们的和为 $M$ ，求有多少种选择方案。</p>
+<p>注意：选择不同位置的，但值相同的数，认为是不同的方案。</p>
+<p>比如：有 $3$ 个数 $1$ $1$ $1$，要组合出 $2$，那么有 $3$ 个方案，分别是选第 $1$、$2$ 个数，选第 $1$、$3$ 个数，选第 $2$、$3$ 个数。</p>
+<h2>输入</h2>
+<p>第一行包含两个整数 $N$ 和 $M$ 。</p>
+<p>第二行包含 $N$ 个整数，表示 $A_1,A_2,…,A_N$ 。</p>
+<p><strong>数据范围</strong></p>
+<p>$1≤N≤100,1≤M≤10000,1≤A_i≤1000$。</p>
+<h2>输出</h2>
+<p>包含一个整数，表示可选方案数（本题的计算结果一定在int范围内）。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+n个不同的物品，第i个物品的价格为ai
+选择其中若干物品，其总价格为m 
+
+f(i,j)：代表有i个数，要求出和为j有多少种不同的方案
+第i个数有2种选择
+（1）不要：有i-1个数，要求出和为j -&gt; f(i-1,j) 
+（2）要：从剩余的i-1个数中，求出和为j-ai -&gt; f(i-1,j-ai)
+
+f(i,j) = f(i-1,j) + f(i-1,j-ai)
+f(j) = f(j) + f(j-ai)
+*/</span> 
+
+<span class="hljs-type">int</span> n,m,v;
+<span class="hljs-type">int</span> f[<span class="hljs-number">10010</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-comment">//边界</span>
+    f[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>; 
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;v;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = m;j &gt;= v;j--){
+            f[j] = f[j] + f[j-v];
+        } 
+    }
+    
+    cout&lt;&lt;f[m];
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1904">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

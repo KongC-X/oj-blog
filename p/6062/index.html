@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6062 小球 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个小球摆成一排，第 个小球的颜色为 ，在这一排小球中，你可以选择其中连续的 个小球并且获得他们。 你喜欢五彩缤纷的颜色，所以你获得的小球不同颜色越多，就越高兴，输出你能获得的最多的小球颜色数。">
+<link rel="canonical" href="https://zymojblog.top/p/6062/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="6062 小球 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个小球摆成一排，第 个小球的颜色为 ，在这一排小球中，你可以选择其中连续的 个小球并且获得他们。 你喜欢五彩缤纷的颜色，所以你获得的小球不同颜色越多，就越高兴，输出你能获得的最多的小球颜色数。">
+<meta property="og:url" content="https://zymojblog.top/p/6062/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6062 小球 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个小球摆成一排，第 个小球的颜色为 ，在这一排小球中，你可以选择其中连续的 个小球并且获得他们。 你喜欢五彩缤纷的颜色，所以你获得的小球不同颜色越多，就越高兴，输出你能获得的最多的小球颜色数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"6062 小球","headline":"6062 小球 题解","description":"有 个小球摆成一排，第 个小球的颜色为 ，在这一排小球中，你可以选择其中连续的 个小球并且获得他们。 你喜欢五彩缤纷的颜色，所以你获得的小球不同颜色越多，就越高兴，输出你能获得的最多的小球颜色数。","url":"https://zymojblog.top/p/6062/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"信息素养大赛、25年小学组复赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>6062</span></div>
+  <h1 class="seo-title">6062 小球</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E7%B4%A0%E5%85%BB%E5%A4%A7%E8%B5%9B">信息素养大赛</a><a class="seo-tag" href="/#/tag/25%E5%B9%B4%E5%B0%8F%E5%AD%A6%E7%BB%84%E5%A4%8D%E8%B5%9B">25年小学组复赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>6062 - 小球</h1>
+<h2>题目描述</h2>
+<p>有 $n$ 个小球摆成一排，第 $i$ 个小球的颜色为 $c$，在这一排小球中，你可以选择其中连续的 $K$ 个小球并且获得他们。</p>
+<p>你喜欢五彩缤纷的颜色，所以你获得的小球不同颜色越多，就越高兴，输出你能获得的最多的小球颜色数。</p>
+<h2>输入</h2>
+<p>第一行，两个数字 $n$ 和 $k$，表示一共有多少个小球，以及你可以选择获得其中连续的 $K$ 个小球。</p>
+<p>第二行，$n$ 个数字，表示每个小球的颜色 $c_i$。</p>
+<h2>输出</h2>
+<p>一行，一个整数，表示你能获得的最多小球的颜色数量。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">300005</span>;
+<span class="hljs-type">int</span> a[MAXN];                      <span class="hljs-comment">// 小球颜色序列</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, k;                     <span class="hljs-comment">// n: 小球总数，k: 连续选取的长度</span>
+    cin &gt;&gt; n &gt;&gt; k;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+    }
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 问题：求长度为 K 的连续子数组中不同颜色数的最大值。</span>
+    <span class="hljs-comment">// 采用滑动窗口：维护一个长度为 K 的窗口，用 map 记录窗口内每种颜色的出现次数。</span>
+    <span class="hljs-comment">// 滑动时更新不同颜色计数，并维护最大值。</span>
+    <span class="hljs-comment">// 时间复杂度 O(n log n)（若使用 unordered_map 可期望 O(n)），空间 O(n)。</span>
+
+    unordered_map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; cnt;  <span class="hljs-comment">// 记录窗口内每种颜色的出现次数</span>
+    <span class="hljs-type">int</span> distinct = <span class="hljs-number">0</span>;             <span class="hljs-comment">// 当前窗口内不同颜色的数量</span>
+
+    <span class="hljs-comment">// 初始化第一个长度为 K 的窗口</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        <span class="hljs-keyword">if</span> (cnt[a[i]] == <span class="hljs-number">0</span>) distinct++;
+        cnt[a[i]]++;
+    }
+    <span class="hljs-type">int</span> ans = distinct;
+
+    <span class="hljs-comment">// 滑动窗口：每次移除左端点颜色，添加右端点颜色</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = k; i &lt; n; i++) {
+        <span class="hljs-comment">// 移除左端点（下标 i-k）</span>
+        cnt[a[i - k]]--;
+        <span class="hljs-keyword">if</span> (cnt[a[i - k]] == <span class="hljs-number">0</span>) distinct--;
+
+        <span class="hljs-comment">// 添加右端点（下标 i）</span>
+        <span class="hljs-keyword">if</span> (cnt[a[i]] == <span class="hljs-number">0</span>) distinct++;
+        cnt[a[i]]++;
+
+        <span class="hljs-keyword">if</span> (distinct &gt; ans) ans = distinct;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/6062">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

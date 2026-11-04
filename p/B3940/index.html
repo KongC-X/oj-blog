@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3940 [GESP样题 四级] 填幻方 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在一个 的正方形网格中，每个格子分别填上从 1 到 的正整数，使得正方形中任一行、任一列及对角线的几个数之和都相等，则这种正方形图案就称为“幻方”（输出样例中展示了一个 的幻方）。我国古代称为“河图”、“洛书”，又叫“纵横图”。 幻方看似神奇，但当 为奇数时有很方便的填法： 1. 一开始正方形中没…">
+<link rel="canonical" href="https://zymojblog.top/p/B3940/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3940 [GESP样题 四级] 填幻方 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在一个 的正方形网格中，每个格子分别填上从 1 到 的正整数，使得正方形中任一行、任一列及对角线的几个数之和都相等，则这种正方形图案就称为“幻方”（输出样例中展示了一个 的幻方）。我国古代称为“河图”、“洛书”，又叫“纵横图”。 幻方看似神奇，但当 为奇数时有很方便的填法： 1. 一开始正方形中没…">
+<meta property="og:url" content="https://zymojblog.top/p/B3940/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3940 [GESP样题 四级] 填幻方 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在一个 的正方形网格中，每个格子分别填上从 1 到 的正整数，使得正方形中任一行、任一列及对角线的几个数之和都相等，则这种正方形图案就称为“幻方”（输出样例中展示了一个 的幻方）。我国古代称为“河图”、“洛书”，又叫“纵横图”。 幻方看似神奇，但当 为奇数时有很方便的填法： 1. 一开始正方形中没…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3940 [GESP样题 四级] 填幻方","headline":"B3940 [GESP样题 四级] 填幻方 题解","description":"在一个 的正方形网格中，每个格子分别填上从 1 到 的正整数，使得正方形中任一行、任一列及对角线的几个数之和都相等，则这种正方形图案就称为“幻方”（输出样例中展示了一个 的幻方）。我国古代称为“河图”、“洛书”，又叫“纵横图”。 幻方看似神奇，但当 为奇数时有很方便的填法： 1. 一开始正方形中没…","url":"https://zymojblog.top/p/B3940/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、循环结构、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3940</span></div>
+  <h1 class="seo-title">B3940 [GESP样题 四级] 填幻方</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 四级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3940 [GESP样题 四级] 填幻方</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-02-25</p>
+</blockquote>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1104">https://ti.luogu.com.cn/problemset/1104</a></p>
+<h2>题目描述</h2>
+<p>在一个 $N\times N$ 的正方形网格中，每个格子分别填上从 1 到 $N×N$ 的正整数，使得正方形中任一行、任一列及对角线的几个数之和都相等，则这种正方形图案就称为“幻方”（输出样例中展示了一个 $3×3$ 的幻方）。我国古代称为“河图”、“洛书”，又叫“纵横图”。</p>
+<p>幻方看似神奇，但当 $N$ 为奇数时有很方便的填法：</p>
+<ol>
+<li>一开始正方形中没有填任何数字。首先，在第一行的正中央填上 $1$。</li>
+<li>从上次填数字的位置向上移动一格，如果已经在第一行，则移到同一列的最后一行；再向右移动一格，如果已经在最右一列，则移动至同一行的第一列。如果移动后的位置没有填数字，则把上次填写的数字的下一个数字填到这个位置。</li>
+<li>如果第 2 步填写失败，则从上次填数字的位置向下移动一格，如果已经在最下一行，则移到同一列的第一行。这个位置一定是空的（这可太神奇了！）。把上次填写的数字的下一个数字填到这个位置。</li>
+<li>重复 2、3 步骤，直到所有格子都被填满，幻方就完成了！</li>
+</ol>
+<p>快来编写一个程序，按上述规则，制作一个 $N\times N$ 的幻方吧。</p>
+<h2>输入格式</h2>
+<p>输入为一个正奇数 $N$，保证 $3 \leq N \leq 21$。</p>
+<h2>输出格式</h2>
+<p>输出 $N$ 行，每行 $N$ 个空格分隔的正整数，内容为 $N×N$ 的幻方。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>8 1 6<br>3 5 7<br>4 9 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> i,j,n,a[<span class="hljs-number">50</span>][<span class="hljs-number">50</span>],x,y;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-comment">// 设置初始坐标为第一行正中央</span>
+    x = <span class="hljs-number">0</span>;
+    y = n / <span class="hljs-number">2</span>;
+    a[x][y] = <span class="hljs-number">1</span>; <span class="hljs-comment">// 设定第一行正中央为1</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">2</span>;i &lt;= n * n;i++) { <span class="hljs-comment">//重复第二步和第三步操作，总共需要n*n次</span>
+        <span class="hljs-type">int</span> tx = (x - <span class="hljs-number">1</span> + n) % n; <span class="hljs-comment">//上次填数位置x坐标变化</span>
+        <span class="hljs-type">int</span> ty = (y + <span class="hljs-number">1</span>) % n; <span class="hljs-comment">//上次填数位置y坐标变化</span>
+        <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-number">0</span>) { <span class="hljs-comment">//如果新位置为空，则填入数字</span>
+            a[tx][ty] = i; <span class="hljs-comment">//填数</span>
+        } <span class="hljs-keyword">else</span> { <span class="hljs-comment">//第二步没成功做第三步操作</span>
+            tx = (x + <span class="hljs-number">1</span>) % n; <span class="hljs-comment">//上次填数位置x坐标变化</span>
+            ty = y; <span class="hljs-comment">//y坐标不变</span>
+            a[tx][y]=i; <span class="hljs-comment">// 填数</span>
+        }
+        x = tx; <span class="hljs-comment">//更新x坐标</span>
+        y = ty; <span class="hljs-comment">//更新y坐标</span>
+    }
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++) { <span class="hljs-comment">//输出结果</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; n;j++) {
+            cout &lt;&lt; a[i][j] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        }
+        cout &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3940">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

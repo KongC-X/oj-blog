@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4452 [GESP202512 四级] 优先购买 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<link rel="canonical" href="https://zymojblog.top/p/B4452/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4452 [GESP202512 四级] 优先购买 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<meta property="og:url" content="https://zymojblog.top/p/B4452/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4452 [GESP202512 四级] 优先购买 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4452 [GESP202512 四级] 优先购买","headline":"B4452 [GESP202512 四级] 优先购买 题解","description":"小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…","url":"https://zymojblog.top/p/B4452/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2025、排序、结构体、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4452</span></div>
+  <h1 class="seo-title">B4452 [GESP202512 四级] 优先购买</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 四级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4452 [GESP202512 四级] 优先购买</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-01-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>排序</code>、<code>结构体</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1200">https://ti.luogu.com.cn/problemset/1200</a></p>
+<h2>题目描述</h2>
+<p>小 A 有 $M$ 元预算。商店有 $N$ 个商品，每个商品有商品名 $S$、价格 $P$ 和优先级 $V$ 三种属性，其中 $V$ 为正整数，且 $V$ 越小代表商品的优先级越高。</p>
+<p>小 A 的购物策略为：</p>
+<ul>
+<li>总是优先买优先级最高的东西；</li>
+<li>如果有多个最高优先级商品，购买价格最低的；</li>
+<li>如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。</li>
+</ul>
+<p>小 A 想知道能购买哪些商品。</p>
+<h2>输入格式</h2>
+<p>第一行两个正整数 $M, N$，代表预算和商品数。</p>
+<p>之后 $N$ 行，每行一个商品，依次为 $S_i\ P_i\ V_i$，代表第 $i$ 个商品的商品名、价格、优先级。</p>
+<p>数据保证不存在两个名字相同的商品。</p>
+<h2>输出格式</h2>
+<p>按照字典序从小到大的顺序，输出所有购买商品的商品名。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20</span> <span class="hljs-number">4</span>
+apple <span class="hljs-number">6</span> <span class="hljs-number">8</span>
+bus <span class="hljs-number">15</span> <span class="hljs-number">1</span>
+cab <span class="hljs-number">1</span> <span class="hljs-number">10</span>
+water <span class="hljs-number">4</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>bus<br>cab<br>water```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Goods</span> {
+    string name;
+    <span class="hljs-type">int</span> price;
+    <span class="hljs-type">int</span> t;
+};
+
+<span class="hljs-comment">// 比较函数：先按优先级升序，再按价格升序，最后按名称字典序升序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">const</span> Goods &amp;a, <span class="hljs-type">const</span> Goods &amp;b)</span> </span>{
+    <span class="hljs-keyword">if</span>(a.t &lt; b.t || (a.t == b.t &amp;&amp; a.price &lt; b.price) || (a.t == b.t &amp;&amp; a.price == b.price &amp;&amp; a.name &lt; b.name))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> M, N;
+    cin &gt;&gt; M &gt;&gt; N;
+    Goods a[<span class="hljs-number">1010</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) {
+        cin &gt;&gt; a[i].name &gt;&gt; a[i].price &gt;&gt; a[i].t;
+    }
+    <span class="hljs-comment">// 按规则排序</span>
+    <span class="hljs-built_in">sort</span>(a, a + N, cmp);
+    string b[<span class="hljs-number">1010</span>];  <span class="hljs-comment">// 存储购买的商品名</span>
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;     <span class="hljs-comment">// 购买的商品数量</span>
+    <span class="hljs-type">int</span> r = M;       <span class="hljs-comment">// 剩余预算</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) {
+        <span class="hljs-keyword">if</span> (a[i].price &lt;= r) {
+            b[cnt++] = a[i].name;
+            r -= a[i].price;
+        }
+    }
+    <span class="hljs-comment">// 将购买的商品名按字典序排序</span>
+    <span class="hljs-built_in">sort</span>(b, b + cnt);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cnt; ++i) {
+        cout &lt;&lt; b[i] &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4452">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

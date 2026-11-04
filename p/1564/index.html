@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1564 洗牌2 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="魔术师刘谦要洗牌了，请你写个程序来模拟洗牌的过程。 洗牌分弹牌和切牌两个操作： 弹牌——将牌组等分成两份，然后交错相插，如当前牌为 ，现在开始弹牌，先将牌分成 和 ，然后交错相插，变成 。 切牌——从牌堆里面拿出连续的一段，然后放到顶端。如当前牌为 ，切完 ～ 之间的 张牌后变成 。">
+<link rel="canonical" href="https://zymojblog.top/p/1564/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1564 洗牌2 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="魔术师刘谦要洗牌了，请你写个程序来模拟洗牌的过程。 洗牌分弹牌和切牌两个操作： 弹牌——将牌组等分成两份，然后交错相插，如当前牌为 ，现在开始弹牌，先将牌分成 和 ，然后交错相插，变成 。 切牌——从牌堆里面拿出连续的一段，然后放到顶端。如当前牌为 ，切完 ～ 之间的 张牌后变成 。">
+<meta property="og:url" content="https://zymojblog.top/p/1564/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1564 洗牌2 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="魔术师刘谦要洗牌了，请你写个程序来模拟洗牌的过程。 洗牌分弹牌和切牌两个操作： 弹牌——将牌组等分成两份，然后交错相插，如当前牌为 ，现在开始弹牌，先将牌分成 和 ，然后交错相插，变成 。 切牌——从牌堆里面拿出连续的一段，然后放到顶端。如当前牌为 ，切完 ～ 之间的 张牌后变成 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1564 洗牌2","headline":"1564 洗牌2 题解","description":"魔术师刘谦要洗牌了，请你写个程序来模拟洗牌的过程。 洗牌分弹牌和切牌两个操作： 弹牌——将牌组等分成两份，然后交错相插，如当前牌为 ，现在开始弹牌，先将牌分成 和 ，然后交错相插，变成 。 切牌——从牌堆里面拿出连续的一段，然后放到顶端。如当前牌为 ，切完 ～ 之间的 张牌后变成 。","url":"https://zymojblog.top/p/1564/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1564</span></div>
+  <h1 class="seo-title">1564 洗牌2</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1564 - 洗牌2</h1>
+<h2>题目描述</h2>
+<p>魔术师刘谦要洗牌了，请你写个程序来模拟洗牌的过程。</p>
+<p>洗牌分弹牌和切牌两个操作：</p>
+<p>弹牌——将牌组等分成两份，然后交错相插，如当前牌为 $1$ $2$ $3$ $4$ $5$ $6$ ，现在开始弹牌，先将牌分成 $1$ $2$ $3$ 和 $4$ $5$ $6$ ，然后交错相插，变成 $1$ $4$ $2$ $5$ $3$ $6$ 。</p>
+<p>切牌——从牌堆里面拿出连续的一段，然后放到顶端。如当前牌为$1$ $2$ $3$ $4$ $5$ $6$，切完 $2$～$5$ 之间的 $4$ 张牌后变成 $2$ $3$ $4$ $5$ $1$ $6$ 。</p>
+<h2>输入</h2>
+<p>第一行为两个正整数 $N$ 和 $M$ ，$N$ 表示牌堆里面有 $N$ 张牌，$M$ 表示共进行 $M$ 次洗牌的操作。</p>
+<p>第二行有 $N$ 个正整数，代表 $N$ 张牌上的数字，刘谦用的牌其实就是标有数字的卡片。</p>
+<p>接下来 $M$ 行，每行一个整数或者三个整数。</p>
+<p>如果第一个数为 $0$ ，那么这一行就这只有一个数，表示弹牌。</p>
+<p>如果第一个数为 $1$ ，那么后面跟着两个正整数 $b$ 和 $e$ ，表示把 $b$～$e$ 这段牌切到顶端。</p>
+<h2>输出</h2>
+<p>输出 $M$ 次操作后从第一张开始的每张牌上的数字。</p>
+<p>相邻两数严格用一个空格隔开。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">1000000</span>],b[<span class="hljs-number">1000000</span>],c[<span class="hljs-number">1000000</span>];
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    <span class="hljs-keyword">return</span> x&gt;y;
+} 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n,m;
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cin&gt;&gt;a[i];<span class="hljs-comment">//总牌张数</span>
+    }
+    <span class="hljs-type">int</span> f,r,t;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++){
+        cin&gt;&gt;f;
+        <span class="hljs-keyword">if</span>(f==<span class="hljs-number">0</span>){
+            <span class="hljs-comment">//弹牌1次 </span>
+            <span class="hljs-type">int</span> x=<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n/<span class="hljs-number">2</span>;i++){   <span class="hljs-comment">//前半堆 </span>
+                b[x]=a[i];
+                x+=<span class="hljs-number">2</span>;
+            }
+            <span class="hljs-type">int</span> y=<span class="hljs-number">2</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> z=n/<span class="hljs-number">2</span>+<span class="hljs-number">1</span>;z&lt;=n;z++){  <span class="hljs-comment">//后半堆 </span>
+                b[y]=a[z];
+                y+=<span class="hljs-number">2</span>;
+            }
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+                a[i]=b[i];
+            } 
+        }<span class="hljs-keyword">else</span>{
+            cin&gt;&gt;r&gt;&gt;t;
+            <span class="hljs-comment">//切牌1次</span>
+            <span class="hljs-type">int</span> v=<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=r;i&lt;=t;i++){
+                b[v]=a[i];
+                v++;
+            } 
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=r<span class="hljs-number">-1</span>;i++){
+                b[v]=a[i];
+                v++;
+            }
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=t+<span class="hljs-number">1</span>;i&lt;=n;i++){
+                b[v]=a[i];
+                v++;
+            }
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+                a[i]=b[i];
+            } 
+        } 
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cout&lt;&lt;b[i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1564">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

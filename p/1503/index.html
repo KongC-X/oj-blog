@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1503 排序 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 个数组，要求先对这 个数组分别进行排序，然后再根据 的数组的字典序对这 个数组进行排序。 输出排序的结果。">
+<link rel="canonical" href="https://zymojblog.top/p/1503/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1503 排序 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 个数组，要求先对这 个数组分别进行排序，然后再根据 的数组的字典序对这 个数组进行排序。 输出排序的结果。">
+<meta property="og:url" content="https://zymojblog.top/p/1503/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1503 排序 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 个数组，要求先对这 个数组分别进行排序，然后再根据 的数组的字典序对这 个数组进行排序。 输出排序的结果。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1503 排序","headline":"1503 排序 题解","description":"给定 个数组，要求先对这 个数组分别进行排序，然后再根据 的数组的字典序对这 个数组进行排序。 输出排序的结果。","url":"https://zymojblog.top/p/1503/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"容器、vector","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1503</span></div>
+  <h1 class="seo-title">1503 排序</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AE%B9%E5%99%A8">容器</a><a class="seo-tag" href="/#/tag/vector">vector</a></div>
+  <article class="markdown-body seo-article">
+<h1>1503 - 排序</h1>
+<h2>题目描述</h2>
+<p>给定 $N$ 个数组，要求先对这 $N$ 个数组分别进行排序，然后再根据 $N$ 的数组的字典序对这 $N$ 个数组进行排序。</p>
+<p>输出排序的结果。</p>
+<h2>输入</h2>
+<p>第一行一个整数 $N$，表示数组数。</p>
+<p>接下来 $N$（$N≤1000$）行，每一行先包含一个整数 $C$（$C≤1000$），表示数组的大小，接下来 $C$ 个整数，表示数组中的一个元素。</p>
+<h2>输出</h2>
+<p>共 $N$ 行，每行表示一个数组。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 定义vector类型的数组，数组中的每个元素都是一个vector</span>
+vector&lt;<span class="hljs-type">int</span>&gt; a[<span class="hljs-number">1100</span>];
+<span class="hljs-type">int</span> i,j,n,c,x;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++) {
+        cin &gt;&gt; c;<span class="hljs-comment">// 每个数组的大小</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; c;j++) {
+            cin &gt;&gt; x;<span class="hljs-comment">// 每个数组中的元素</span>
+            a[i].<span class="hljs-built_in">push_back</span>(x);<span class="hljs-comment">// 将元素添加到数组中</span>
+        }
+        <span class="hljs-comment">// 每一行的vector读入结束，直接排序</span>
+        <span class="hljs-built_in">sort</span>(a[i].<span class="hljs-built_in">begin</span>(),a[i].<span class="hljs-built_in">end</span>());
+    }
+    <span class="hljs-built_in">sort</span>(a,a + n); <span class="hljs-comment">// 将数组按照字典从小到大的顺序排序</span>
+    <span class="hljs-comment">// 输出</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; a[i].<span class="hljs-built_in">size</span>();j++) {
+        	cout &lt;&lt; a[i][j] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+        }
+        cout &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1503">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

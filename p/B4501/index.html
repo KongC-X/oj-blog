@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4501 [GESP202603 四级] 山之谷 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="现有一片山地，可以视为一个 行 列的网格图，第 行 列的海拔为 。 如果一个单元格的海拔不高于其所有相邻单元格（相邻包括上、下、左、右、左上、右上、左下、右下，最多 个方向）的海拔，则称该单元格为山谷。 请你数一数该片山地中有多少山谷。">
+<link rel="canonical" href="https://zymojblog.top/p/B4501/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4501 [GESP202603 四级] 山之谷 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="现有一片山地，可以视为一个 行 列的网格图，第 行 列的海拔为 。 如果一个单元格的海拔不高于其所有相邻单元格（相邻包括上、下、左、右、左上、右上、左下、右下，最多 个方向）的海拔，则称该单元格为山谷。 请你数一数该片山地中有多少山谷。">
+<meta property="og:url" content="https://zymojblog.top/p/B4501/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4501 [GESP202603 四级] 山之谷 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="现有一片山地，可以视为一个 行 列的网格图，第 行 列的海拔为 。 如果一个单元格的海拔不高于其所有相邻单元格（相邻包括上、下、左、右、左上、右上、左下、右下，最多 个方向）的海拔，则称该单元格为山谷。 请你数一数该片山地中有多少山谷。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4501 [GESP202603 四级] 山之谷","headline":"B4501 [GESP202603 四级] 山之谷 题解","description":"现有一片山地，可以视为一个 行 列的网格图，第 行 列的海拔为 。 如果一个单元格的海拔不高于其所有相邻单元格（相邻包括上、下、左、右、左上、右上、左下、右下，最多 个方向）的海拔，则称该单元格为山谷。 请你数一数该片山地中有多少山谷。","url":"https://zymojblog.top/p/B4501/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"枚举、2026、分支结构、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4501</span></div>
+  <h1 class="seo-title">B4501 [GESP202603 四级] 山之谷</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 四级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84">分支结构</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4501 [GESP202603 四级] 山之谷</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-03-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>枚举</code>、<code>2026</code>、<code>分支结构</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>现有一片山地，可以视为一个 $N$ 行 $M$ 列的网格图，第 $i$ 行 $j$ 列的海拔为 $h_{i,j}$。</p>
+<p>如果一个单元格的海拔不高于其所有相邻单元格（<strong>相邻包括上、下、左、右、左上、右上、左下、右下，最多 $8$ 个方向</strong>）的海拔，则称该单元格为山谷。</p>
+<p>请你数一数该片山地中有多少山谷。</p>
+<h2>输入格式</h2>
+<p>第一行包含 $2$ 个整数 $N, M$，表示山地的大小。</p>
+<p>之后 $N$ 行，每行包含 $M$ 个整数 $h_{i,1}, h_{i,2}, \cdots, h_{i,M}$，表示海拔。</p>
+<h2>输出格式</h2>
+<p>输出 $1$ 行，包含 $1$ 个整数 $C$，表示山谷的数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">5</span>
+<span class="hljs-number">7</span> <span class="hljs-number">6</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span>
+<span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">6</span>
+<span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 一道经典的dfs问题</span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">105</span>][<span class="hljs-number">105</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+
+    <span class="hljs-type">int</span> dx[<span class="hljs-number">8</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+    <span class="hljs-type">int</span> dy[<span class="hljs-number">8</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>};
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            <span class="hljs-type">bool</span> isValley = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">8</span>; d++) {
+                <span class="hljs-type">int</span> ni = i + dx[d];
+                <span class="hljs-type">int</span> nj = j + dy[d];
+                <span class="hljs-keyword">if</span> (ni &gt;= <span class="hljs-number">0</span> &amp;&amp; ni &lt; n &amp;&amp; nj &gt;= <span class="hljs-number">0</span> &amp;&amp; nj &lt; m) {
+                    <span class="hljs-keyword">if</span> (a[ni][nj] &lt; a[i][j]) {
+                        isValley = <span class="hljs-literal">false</span>;
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+            }
+            <span class="hljs-keyword">if</span> (isValley) ans++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4501">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

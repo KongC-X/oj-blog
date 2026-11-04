@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P17013 [GESP202606 六级] 满二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是满二叉树。 满二叉树是指所有叶子深…">
+<link rel="canonical" href="https://zymojblog.top/p/P17013/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P17013 [GESP202606 六级] 满二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是满二叉树。 满二叉树是指所有叶子深…">
+<meta property="og:url" content="https://zymojblog.top/p/P17013/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P17013 [GESP202606 六级] 满二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是满二叉树。 满二叉树是指所有叶子深…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P17013 [GESP202606 六级] 满二叉树","headline":"P17013 [GESP202606 六级] 满二叉树 题解","description":"给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是满二叉树。 满二叉树是指所有叶子深…","url":"https://zymojblog.top/p/P17013/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"树的遍历、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P17013</span></div>
+  <h1 class="seo-title">P17013 [GESP202606 六级] 满二叉树</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">树的遍历</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P17013 [GESP202606 六级] 满二叉树</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-30</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给定一棵包含 $n$ 个结点的有根二叉树，结点依次以 $1, 2, \dots, n$ 编号，根结点编号为 $1$。</p>
+<p>对于结点 $i$，其左儿子的编号记为 $l_i$，右儿子编号记为 $r_i$。特别地，如果左儿子不存在则 $l_i = 0$，如果右儿子不存在则 $r_i = 0$。</p>
+<p>树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 $n$ 棵子树中，有多少棵子树是满二叉树。</p>
+<p>满二叉树是指所有叶子深度均相同，且除叶子外均有两个儿子的二叉树，例如以下三棵二叉树均是满二叉树：</p>
+<pre><code class="hljs language-cpp">()   ()        ()
+    /  \      /  \
+   ()  ()   ()    ()
+           /  \  /  \
+          ()  ()()  ()</code></pre><p>在上面这棵有 $3$ 个节点的二叉树中，有 $3$ 个子树是满二叉树（包括整个树本身，及所有的单个叶子节点）；</p>
+<p>又例如，</p>
+<pre><code class="hljs language-cpp">   (<span class="hljs-number">1</span>)
+   / \
+ (<span class="hljs-number">2</span>) (<span class="hljs-number">3</span>)
+     / \
+   (<span class="hljs-number">4</span>) (<span class="hljs-number">5</span>)</code></pre><p>在上面这棵有 $5$ 个节点的二叉树中，有 $4$ 个子树是满二叉树（包括节点 $3$ 的子树，以及所有单个叶子节点）。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示有根二叉树结点数量。</p>
+<p>接下来 $n$ 行，每行两个非负整数 $l_i, r_i$，表示结点 $i$ 的左儿子编号和右儿子编号，整数之间以空格分隔。</p>
+<h2>输出格式</h2>
+<p>输出一行，一个整数，表示所有子树中满二叉树的数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>```
+
+**样例输入 #<span class="hljs-number">2</span>**</code></pre><p>3<br>2 3<br>0 0<br>0 0```</p>
+<p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> l[N], r[N];                <span class="hljs-comment">// l[i], r[i]：结点 i 的左、右儿子，0 表示空</span>
+<span class="hljs-type">int</span> n, ans;                    <span class="hljs-comment">// n：结点总数，ans：满二叉树个数</span>
+
+<span class="hljs-comment">// 返回以 u 为根的子树的高度，如果该子树不是满二叉树则返回 -1</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span> </span>{
+    <span class="hljs-keyword">if</span> (u == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;                         <span class="hljs-comment">// 空树高度为 0（满二叉树定义中的辅助边界）</span>
+    <span class="hljs-type">int</span> hl = <span class="hljs-built_in">dfs</span>(l[u]);                            <span class="hljs-comment">// 左子树高度</span>
+    <span class="hljs-type">int</span> hr = <span class="hljs-built_in">dfs</span>(r[u]);                            <span class="hljs-comment">// 右子树高度</span>
+    <span class="hljs-keyword">if</span> (hl != <span class="hljs-number">-1</span> &amp;&amp; hr != <span class="hljs-number">-1</span> &amp;&amp; hl == hr) {        <span class="hljs-comment">// 左右均为满二叉树且高度相等</span>
+        ans++;                                     <span class="hljs-comment">// 当前子树是满二叉树，计数加 1</span>
+        <span class="hljs-keyword">return</span> hl + <span class="hljs-number">1</span>;                             <span class="hljs-comment">// 返回当前子树高度</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;                                     <span class="hljs-comment">// 不是满二叉树，返回 -1</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; l[i] &gt;&gt; r[i];
+    }
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>);
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P17013">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

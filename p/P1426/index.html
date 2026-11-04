@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1426 小鱼会有危险吗 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一次，小鱼要从 A 处沿直线往右边游，小鱼第一秒可以游 米，从第二秒开始每秒游的距离只有前一秒的 。有个极其邪恶的猎人在距离 A 处右边 米的地方，安装了一个隐蔽的探测器，探测器左右 米之内是探测范围。一旦小鱼进入探测器的范围，探测器就会在这一秒结束时把信号传递给那个猎人，猎人在一秒后就要对探测…">
+<link rel="canonical" href="https://zymojblog.top/p/P1426/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1426 小鱼会有危险吗 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一次，小鱼要从 A 处沿直线往右边游，小鱼第一秒可以游 米，从第二秒开始每秒游的距离只有前一秒的 。有个极其邪恶的猎人在距离 A 处右边 米的地方，安装了一个隐蔽的探测器，探测器左右 米之内是探测范围。一旦小鱼进入探测器的范围，探测器就会在这一秒结束时把信号传递给那个猎人，猎人在一秒后就要对探测…">
+<meta property="og:url" content="https://zymojblog.top/p/P1426/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1426 小鱼会有危险吗 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一次，小鱼要从 A 处沿直线往右边游，小鱼第一秒可以游 米，从第二秒开始每秒游的距离只有前一秒的 。有个极其邪恶的猎人在距离 A 处右边 米的地方，安装了一个隐蔽的探测器，探测器左右 米之内是探测范围。一旦小鱼进入探测器的范围，探测器就会在这一秒结束时把信号传递给那个猎人，猎人在一秒后就要对探测…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1426 小鱼会有危险吗","headline":"P1426 小鱼会有危险吗 题解","description":"有一次，小鱼要从 A 处沿直线往右边游，小鱼第一秒可以游 米，从第二秒开始每秒游的距离只有前一秒的 。有个极其邪恶的猎人在距离 A 处右边 米的地方，安装了一个隐蔽的探测器，探测器左右 米之内是探测范围。一旦小鱼进入探测器的范围，探测器就会在这一秒结束时把信号传递给那个猎人，猎人在一秒后就要对探测…","url":"https://zymojblog.top/p/P1426/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1426</span></div>
+  <h1 class="seo-title">P1426 小鱼会有危险吗</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1426 小鱼会有危险吗</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-06-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code></p>
+<h2>题目描述</h2>
+<p>有一次，小鱼要从 A 处沿直线往右边游，小鱼第一秒可以游 $7$ 米，从第二秒开始每秒游的距离只有前一秒的 $98%$。有个极其邪恶的猎人在距离 A 处右边 $s$ 米的地方，安装了一个隐蔽的探测器，探测器左右 $x$ 米之内是探测范围。一旦小鱼进入探测器的范围，探测器就会在这一秒结束时把信号传递给那个猎人，猎人在一秒后就要对探测器范围内的水域进行抓捕，这时如果小鱼还在这范围内就危险了。也就是说小鱼一旦进入探测器范围，如果能在下 $1$ 秒的时间内马上游出探测器的范围，还是安全的。现在给出 $s$ 和 $x$ 的数据，请你判断小鱼会不会有危险？如果有危险输出 <code>y</code>，没有危险输出 <code>n</code>。</p>
+<h2>输入格式</h2>
+<p>一行内输入两个实数，用空格分隔，表示 $s$ 和 $x$。</p>
+<h2>输出格式</h2>
+<p>一行内输出 <code>y</code> 或者 <code>n</code> 表示小鱼是否会有危险。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">14</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>n```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">double</span> s, x;
+    cin &gt;&gt; s &gt;&gt; x;
+
+    <span class="hljs-type">double</span> pos = <span class="hljs-number">0.0</span>;          <span class="hljs-comment">// 小鱼初始位置</span>
+    <span class="hljs-type">double</span> v = <span class="hljs-number">7.0</span>;            <span class="hljs-comment">// 第一秒的速度</span>
+
+    <span class="hljs-comment">// 在未进入探测范围之前，每秒前进并衰减速度</span>
+    <span class="hljs-keyword">while</span> (pos &lt; s - x) {
+        pos += v;
+        v *= <span class="hljs-number">0.98</span>;
+    }
+    <span class="hljs-comment">// 此时 pos 是第一次进入或越过探测范围时的位置（这一秒结束时的位置）</span>
+    <span class="hljs-comment">// v 已经衰减为下一秒的速度</span>
+
+    <span class="hljs-comment">// 如果下一秒结束时能游出探测范围，则安全；否则危险</span>
+    <span class="hljs-keyword">if</span> (pos + v &gt; s + x)
+        cout &lt;&lt; <span class="hljs-string">&quot;n\n&quot;</span>;
+    <span class="hljs-keyword">else</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;y\n&quot;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1426">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3874 [GESP202309 六级] 小杨的握手问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨的班级里共有 名同学，学号从 至 。 某节课上，老师安排全班同学进行一次握手游戏，具体规则如下：老师安排了一个顺序，让全班 名同学依次进入教室。每位同学进入教室时，需要和 已经在教室内 且 学号小于自己 的同学握手。 现在，小杨想知道，整个班级总共会进行多少次握手。 提示：可以考虑使用归并排序…">
+<link rel="canonical" href="https://zymojblog.top/p/B3874/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3874 [GESP202309 六级] 小杨的握手问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨的班级里共有 名同学，学号从 至 。 某节课上，老师安排全班同学进行一次握手游戏，具体规则如下：老师安排了一个顺序，让全班 名同学依次进入教室。每位同学进入教室时，需要和 已经在教室内 且 学号小于自己 的同学握手。 现在，小杨想知道，整个班级总共会进行多少次握手。 提示：可以考虑使用归并排序…">
+<meta property="og:url" content="https://zymojblog.top/p/B3874/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3874 [GESP202309 六级] 小杨的握手问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨的班级里共有 名同学，学号从 至 。 某节课上，老师安排全班同学进行一次握手游戏，具体规则如下：老师安排了一个顺序，让全班 名同学依次进入教室。每位同学进入教室时，需要和 已经在教室内 且 学号小于自己 的同学握手。 现在，小杨想知道，整个班级总共会进行多少次握手。 提示：可以考虑使用归并排序…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3874 [GESP202309 六级] 小杨的握手问题","headline":"B3874 [GESP202309 六级] 小杨的握手问题 题解","description":"小杨的班级里共有 名同学，学号从 至 。 某节课上，老师安排全班同学进行一次握手游戏，具体规则如下：老师安排了一个顺序，让全班 名同学依次进入教室。每位同学进入教室时，需要和 已经在教室内 且 学号小于自己 的同学握手。 现在，小杨想知道，整个班级总共会进行多少次握手。 提示：可以考虑使用归并排序…","url":"https://zymojblog.top/p/B3874/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"树状数组、递归、2023、排序、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3874</span></div>
+  <h1 class="seo-title">B3874 [GESP202309 六级] 小杨的握手问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84">树状数组</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3874 [GESP202309 六级] 小杨的握手问题</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>树状数组</code>、<code>递归</code>、<code>2023</code>、<code>排序</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1132">https://ti.luogu.com.cn/problemset/1132</a></p>
+<h2>题目描述</h2>
+<p>小杨的班级里共有 $N$ 名同学，学号从 $0$ 至 $N-1$。</p>
+<p>某节课上，老师安排全班同学进行一次握手游戏，具体规则如下：老师安排了一个顺序，让全班 $N$ 名同学依次进入教室。每位同学进入教室时，需要和 <strong>已经在教室内</strong> 且 <strong>学号小于自己</strong> 的同学握手。</p>
+<p>现在，小杨想知道，整个班级总共会进行多少次握手。</p>
+<p><strong>提示：可以考虑使用归并排序进行降序排序，并在此过程中求解。</strong></p>
+<h2>输入格式</h2>
+<p>输入包含 $2$ 行。第一行一个整数 $N$ ，表示同学的个数；第二行 $N$ 个用单个空格隔开的整数，依次描述同学们进入教室的顺序，每个整数在 $0 \sim N-1$ 之间，表示该同学的学号。</p>
+<p>保证每位同学会且只会进入教室一次。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示全班握手的总次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>15```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">300010</span>];  <span class="hljs-comment">// 存储学生进入教室的顺序（学号）</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 总握手次数（即顺序对的数量）</span>
+
+<span class="hljs-comment">// ---------- 题目思路 ----------</span>
+<span class="hljs-comment">// 问题本质：给定一个 0..N-1 的排列（进入顺序），每进入一个学生，</span>
+<span class="hljs-comment">// 他需要和当前已经在教室中且学号小于自己的所有人握手。</span>
+<span class="hljs-comment">// 因此，握手总次数 = 对于每一个位置 i，统计在它之前出现的、学号比 a[i] 小的元素个数，</span>
+<span class="hljs-comment">// 并对所有 i 求和。这等价于求整个序列的「正序对」总数。</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// 我们可以利用归并排序在合并过程中高效地统计顺序对：</span>
+<span class="hljs-comment">// 当合并左右两个已排序的子数组时，若左半部分的当前元素 a[i] 小于右半部分的当前元素 a[j]，</span>
+<span class="hljs-comment">// 因为右半部分已经升序，所以 a[i] 一定也小于 a[j] 及其之后的所有元素（共 right - j + 1 个）。</span>
+<span class="hljs-comment">// 这些元素在原序列中均位于 a[i] 之后，且学号更大，因此它们都能和 a[i] 形成握手。</span>
+<span class="hljs-comment">// 累加这些数量，即可得到总的握手次数。</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// 归并排序的时间复杂度为 O(n log n)，空间复杂度 O(n)，满足题目 3e5 的数据范围。</span>
+<span class="hljs-comment">// --------------------------</span>
+
+<span class="hljs-comment">// 合并函数：将 arr[left..mid] 和 arr[mid+1..right] 两个已排序的子数组合并，</span>
+<span class="hljs-comment">//           并在此过程中统计顺序对（握手次数）。</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> right)</span> </span>{
+    <span class="hljs-type">int</span> i = left;                        <span class="hljs-comment">// 左子数组的起始索引</span>
+    <span class="hljs-type">int</span> j = mid + <span class="hljs-number">1</span>;                     <span class="hljs-comment">// 右子数组的起始索引</span>
+    <span class="hljs-type">int</span> k = <span class="hljs-number">0</span>;                           <span class="hljs-comment">// 临时数组 temp 的索引</span>
+    <span class="hljs-type">int</span> temp[right - left + <span class="hljs-number">1</span>];          <span class="hljs-comment">// 临时数组用于存储合并后的结果</span>
+    <span class="hljs-comment">// 区间内的元素数量 = 右边界 - 左边界 + 1</span>
+
+    <span class="hljs-comment">// 当左右子数组都还有元素时，比较它们的当前元素</span>
+    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= right) {
+        <span class="hljs-keyword">if</span> (arr[i] &lt; arr[j]) {           <span class="hljs-comment">// 左元素 &lt; 右元素</span>
+            <span class="hljs-comment">// 此时 arr[i] 小于 arr[j]，且右半部分已经升序，</span>
+            <span class="hljs-comment">// 所以 arr[i] 也小于 arr[j] 及其之后的所有元素（共 right - j + 1 个）。</span>
+            <span class="hljs-comment">// 这些元素在原序列中都位于 arr[i] 之后，即构成握手。</span>
+            ans += (right - j + <span class="hljs-number">1</span>);      <span class="hljs-comment">// 统计顺序对</span>
+            temp[k++] = arr[i++];
+        } <span class="hljs-keyword">else</span> {
+            temp[k++] = arr[j++];
+            <span class="hljs-comment">// 逆序对：左元素大于右元素，统计握手次数</span>
+            <span class="hljs-comment">// ans += (mid - i + 1);</span>
+        }
+    }
+
+    <span class="hljs-comment">// 将左子数组剩余的元素直接放入 temp</span>
+    <span class="hljs-keyword">while</span> (i &lt;= mid) {
+        temp[k++] = arr[i++];
+    }
+
+    <span class="hljs-comment">// 将右子数组剩余的元素直接放入 temp</span>
+    <span class="hljs-keyword">while</span> (j &lt;= right) {
+        temp[k++] = arr[j++];
+    }
+
+    <span class="hljs-comment">// 将临时数组 temp 中的元素复制回原数组 arr</span>
+    <span class="hljs-keyword">for</span> (i = left, k = <span class="hljs-number">0</span>; i &lt;= right; i++, k++) {
+        arr[i] = temp[k];
+    }
+}
+
+<span class="hljs-comment">// 归并排序函数：递归地将数组分成两半，然后调用 merge 进行合并</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> </span>{
+    <span class="hljs-keyword">if</span> (left &lt; right) {
+        <span class="hljs-type">int</span> mid = (left + right) / <span class="hljs-number">2</span>;               <span class="hljs-comment">// 中间索引</span>
+        <span class="hljs-comment">// 另一种防止溢出的写法：int mid = left + (right - left) / 2;</span>
+        <span class="hljs-built_in">mergeSort</span>(arr, left, mid);                  <span class="hljs-comment">// 对左半部分排序</span>
+        <span class="hljs-built_in">mergeSort</span>(arr, mid + <span class="hljs-number">1</span>, right);             <span class="hljs-comment">// 对右半部分排序</span>
+        <span class="hljs-built_in">merge</span>(arr, left, mid, right);               <span class="hljs-comment">// 合并并统计握手次数</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);                  <span class="hljs-comment">// 加速输入输出</span>
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n;                                        <span class="hljs-comment">// 学生总人数</span>
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];                              <span class="hljs-comment">// 读入学生进入教室的顺序（学号）</span>
+    }
+
+    <span class="hljs-built_in">mergeSort</span>(a, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);                       <span class="hljs-comment">// 对数组进行归并排序，内部完成握手次数统计</span>
+
+    cout &lt;&lt; ans &lt;&lt; endl;                          <span class="hljs-comment">// 输出总握手次数</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3874">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3655 [语言月赛202208] 天天爱跑步 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="为了推广《天天爱跑步》，洛咕公司开发了活跃值系统，同其他游戏一样，连续签到天数越多，每次签到获得的活跃值也就越多。但只要一天不签到，连续天数就要清零。 当连续签到天数达到以下天数时，活跃值奖励将发生如下变化。 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天或…">
+<link rel="canonical" href="https://zymojblog.top/p/B3655/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3655 [语言月赛202208] 天天爱跑步 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="为了推广《天天爱跑步》，洛咕公司开发了活跃值系统，同其他游戏一样，连续签到天数越多，每次签到获得的活跃值也就越多。但只要一天不签到，连续天数就要清零。 当连续签到天数达到以下天数时，活跃值奖励将发生如下变化。 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天或…">
+<meta property="og:url" content="https://zymojblog.top/p/B3655/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3655 [语言月赛202208] 天天爱跑步 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="为了推广《天天爱跑步》，洛咕公司开发了活跃值系统，同其他游戏一样，连续签到天数越多，每次签到获得的活跃值也就越多。但只要一天不签到，连续天数就要清零。 当连续签到天数达到以下天数时，活跃值奖励将发生如下变化。 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天或…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3655 [语言月赛202208] 天天爱跑步","headline":"B3655 [语言月赛202208] 天天爱跑步 题解","description":"为了推广《天天爱跑步》，洛咕公司开发了活跃值系统，同其他游戏一样，连续签到天数越多，每次签到获得的活跃值也就越多。但只要一天不签到，连续天数就要清零。 当连续签到天数达到以下天数时，活跃值奖励将发生如下变化。 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天：由 变为 天或…","url":"https://zymojblog.top/p/B3655/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2022、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3655</span></div>
+  <h1 class="seo-title">B3655 [语言月赛202208] 天天爱跑步</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3655 [语言月赛202208] 天天爱跑步</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2022</code>、<code>语言月赛</code></p>
+<h2>题目背景</h2>
+<p>洛咕公司开发了一款新的养成类游戏《天天爱跑步》。</p>
+<h2>题目描述</h2>
+<p>为了推广《天天爱跑步》，洛咕公司开发了活跃值系统，同其他游戏一样，连续签到天数越多，每次签到获得的活跃值也就越多。但只要一天不签到，连续天数就要清零。</p>
+<p>当连续签到天数达到以下天数时，活跃值奖励将发生如下变化。</p>
+<ul>
+<li>$1$ 天：由 $0$ 变为 $v_1$</li>
+<li>$3$ 天：由 $v_1$ 变为 $v_3$</li>
+<li>$7$ 天：由 $v_3$ 变为 $v_7$</li>
+<li>$30$ 天：由 $v_7$ 变为 $v_{30}$</li>
+<li>$120$ 天：由 $v_{30}$ 变为 $v_{120}$</li>
+<li>$365$ 天：由 $v_{120}$ 变为 $v_{365}$</li>
+<li>$366$ 天或更多天数：均为 $v_{365}$</li>
+</ul>
+<p>例如，以下为某游戏玩家连续签到情况及活跃值奖励情况，有助于进一步理解题意。</p>
+<table>
+<thead>
+<tr>
+<th align="center">日期</th>
+<th align="center">是否签到</th>
+<th align="center">连续签到天数</th>
+<th align="center">当天获得活跃值奖励</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">8 月 8 日</td>
+<td align="center">是</td>
+<td align="center">$1$</td>
+<td align="center">$v_1$</td>
+</tr>
+<tr>
+<td align="center">8 月 9 日</td>
+<td align="center">是</td>
+<td align="center">$2$</td>
+<td align="center">$v_1$</td>
+</tr>
+<tr>
+<td align="center">8 月 10 日</td>
+<td align="center">是</td>
+<td align="center">$3$</td>
+<td align="center">$v_3$</td>
+</tr>
+<tr>
+<td align="center">8 月 11 日</td>
+<td align="center">是</td>
+<td align="center">$4$</td>
+<td align="center">$v_3$</td>
+</tr>
+<tr>
+<td align="center">8 月 12 日</td>
+<td align="center">否</td>
+<td align="center">$0$</td>
+<td align="center">$0$</td>
+</tr>
+<tr>
+<td align="center">8 月 13 日</td>
+<td align="center">是</td>
+<td align="center">$1$</td>
+<td align="center">$v_1$</td>
+</tr>
+<tr>
+<td align="center">8 月 14 日</td>
+<td align="center">是</td>
+<td align="center">$2$</td>
+<td align="center">$v_1$</td>
+</tr>
+<tr>
+<td align="center">8 月 15 日</td>
+<td align="center">是</td>
+<td align="center">$3$</td>
+<td align="center">$v_3$</td>
+</tr>
+</tbody></table>
+<p>即，签到系统按照如下顺序处理奖励：</p>
+<ol>
+<li>累计连续签到天数</li>
+<li>根据规则确定当日奖励的活跃值</li>
+<li>发放活跃值</li>
+</ol>
+<p>现在给出 <strong>超高校级的游戏玩家 $\lfloor$七海千秋$\rceil$</strong> 连续 $n$ 天的签到情况，请你求出这 $n$ 天七海千秋获得的活跃值奖励一共为多少。</p>
+<p>连续签到天数从 $0$ 开始计算。</p>
+<h2>输入格式</h2>
+<p>输入共 $n+2$ 行。</p>
+<p>输入的第一行为一个正整数 $n$，代表 $\lfloor$七海千秋$\rceil$ 游戏的天数。</p>
+<p>输入的第二行为六个正整数，分别为 $v_1,v_3,v_7,v_{30},v_{120},v_{365}$，含义如题。</p>
+<p>接下来的 $n$ 行，每行一个整数 $1$ 或 $0$。其中第 $i$ 行为 $1$ 表示第 $i$ 天 $\lfloor$七海千秋$\rceil$ 签到了，输入为 $0$ 表示第 $i$ 天 $\lfloor$七海千秋$\rceil$ 没有签到。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表 $\lfloor$七海千秋$\rceil$ $n$ 天签到所获得的活跃值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">12</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">0</span>
+<span class="hljs-number">0</span>
+<span class="hljs-number">0</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">0</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>11```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> v1, v3, v7, v30, v120, v365;
+    cin &gt;&gt; v1 &gt;&gt; v3 &gt;&gt; v7 &gt;&gt; v30 &gt;&gt; v120 &gt;&gt; v365;
+
+    <span class="hljs-type">int</span> day = <span class="hljs-number">0</span>;          <span class="hljs-comment">// 连续签到天数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;    <span class="hljs-comment">// 总奖励</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> x;
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>) {
+            day = <span class="hljs-number">0</span>;
+            <span class="hljs-comment">// 当天奖励为 0，不需要累加</span>
+        } <span class="hljs-keyword">else</span> {
+            day++;
+            <span class="hljs-comment">// 根据连续天数判断奖励</span>
+            <span class="hljs-keyword">if</span> (day &gt;= <span class="hljs-number">365</span>) ans += v365;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (day &gt;= <span class="hljs-number">120</span>) ans += v120;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (day &gt;= <span class="hljs-number">30</span>) ans += v30;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (day &gt;= <span class="hljs-number">7</span>) ans += v7;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (day &gt;= <span class="hljs-number">3</span>) ans += v3;
+            <span class="hljs-keyword">else</span> ans += v1;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3655">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

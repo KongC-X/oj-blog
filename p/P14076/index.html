@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P14076 [GESP202509 六级] 货物运输 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="A 国有 座城市，依次以 编号，其中 号城市为首都。这 座城市由 条双向道路连接，第 条道路（ ）连接编号为 的两座城市，道路长度为 。任意两座城市间均可通过双向道路到达。 现在 A 国需要从首都向各个城市运送货物。具体来说，满载货物的车队会从首都开出，经过一座城市时将对应的货物送出，因此车队需要…">
+<link rel="canonical" href="https://zymojblog.top/p/P14076/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P14076 [GESP202509 六级] 货物运输 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="A 国有 座城市，依次以 编号，其中 号城市为首都。这 座城市由 条双向道路连接，第 条道路（ ）连接编号为 的两座城市，道路长度为 。任意两座城市间均可通过双向道路到达。 现在 A 国需要从首都向各个城市运送货物。具体来说，满载货物的车队会从首都开出，经过一座城市时将对应的货物送出，因此车队需要…">
+<meta property="og:url" content="https://zymojblog.top/p/P14076/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P14076 [GESP202509 六级] 货物运输 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="A 国有 座城市，依次以 编号，其中 号城市为首都。这 座城市由 条双向道路连接，第 条道路（ ）连接编号为 的两座城市，道路长度为 。任意两座城市间均可通过双向道路到达。 现在 A 国需要从首都向各个城市运送货物。具体来说，满载货物的车队会从首都开出，经过一座城市时将对应的货物送出，因此车队需要…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P14076 [GESP202509 六级] 货物运输","headline":"P14076 [GESP202509 六级] 货物运输 题解","description":"A 国有 座城市，依次以 编号，其中 号城市为首都。这 座城市由 条双向道路连接，第 条道路（ ）连接编号为 的两座城市，道路长度为 。任意两座城市间均可通过双向道路到达。 现在 A 国需要从首都向各个城市运送货物。具体来说，满载货物的车队会从首都开出，经过一座城市时将对应的货物送出，因此车队需要…","url":"https://zymojblog.top/p/P14076/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"图论、贪心、2025、广度优先搜索 BFS、深度优先搜索 DFS、树的遍历、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P14076</span></div>
+  <h1 class="seo-title">P14076 [GESP202509 六级] 货物运输</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">树的遍历</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P14076 [GESP202509 六级] 货物运输</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>图论</code>、<code>贪心</code>、<code>2025</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>树的遍历</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1194">https://ti.luogu.com.cn/problemset/1194</a></p>
+<h2>题目描述</h2>
+<p>A 国有 $n$ 座城市，依次以 $1,2,\ldots,n$ 编号，其中 $1$ 号城市为首都。这 $n$ 座城市由 $n-1$ 条双向道路连接，第 $i$ 条道路（$1 \le i &lt; n$）连接编号为 $u_i,v_i$ 的两座城市，道路长度为 $l_i$。任意两座城市间均可通过双向道路到达。</p>
+<p>现在 A 国需要从首都向各个城市运送货物。具体来说，满载货物的车队会从首都开出，经过一座城市时将对应的货物送出，因此车队需要经过所有城市。A 国希望你设计一条路线，在从首都出发经过所有城市的前提下，最小化经过的道路长度总和。注意一座城市可以经过多次，车队最后可以不返回首都。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示 A 国的城市数量。</p>
+<p>接下来 $n-1$ 行，每行三个正整数 $u_i,v_i,l_i$，表示一条双向道路连接编号为 $u_i,v_i$ 的两座城市，道路长度为 $l_i$。</p>
+<h2>输出格式</h2>
+<p>一行，一个整数，表示你设计的路线所经过的道路长度总和。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>18```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span>
+<span class="hljs-number">7</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span>
+<span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span>
+<span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>9```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// ---------- 解题思路 ----------</span>
+<span class="hljs-comment">// 题目要求：从首都(1)出发，经过所有城市至少一次，可以重复经过，最后不必返回首都。</span>
+<span class="hljs-comment">// 这是一棵 n 个节点的树，边有长度。</span>
+<span class="hljs-comment">// 模型分析：</span>
+<span class="hljs-comment">// 如果要求最终返回首都，那么每条边至少需要走两次（去和回），总路程恰好是 2*total。</span>
+<span class="hljs-comment">// 因为可以不返回，我们可以省去从“最后访问的城市”回到首都的那段路。</span>
+<span class="hljs-comment">// 为了让总路程最短，我们应当选择离首都最远的城市作为终点，这样省去的路程最长。</span>
+<span class="hljs-comment">// 因此，答案 = 2 * total - max_dist，其中 max_dist 是从首都(1)到任意节点的最长距离。</span>
+<span class="hljs-comment">// 算法步骤：</span>
+<span class="hljs-comment">// 1. 读入数据，建立树的邻接表，同时计算 total。</span>
+<span class="hljs-comment">// 2. 用 DFS（或 BFS）从节点 1 出发，计算 dist[1..n]。</span>
+<span class="hljs-comment">// 3. 找到 max_dist = max(dist[i])。</span>
+<span class="hljs-comment">// 4. 输出 2*total - max_dist。</span>
+<span class="hljs-comment">// 复杂度：O(n)，对于 n &lt;= 1e5 完全可行。</span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;
+<span class="hljs-type">int</span> n;
+vector&lt;pair&lt;<span class="hljs-type">int</span>, ll&gt; &gt; g[<span class="hljs-number">100010</span>];          <span class="hljs-comment">// 邻接表：g[u] 存储 (邻居v, 边权w)</span>
+ll dist[<span class="hljs-number">100010</span>];                          <span class="hljs-comment">// dist[i] 表示从首都(1)到城市 i 的距离</span>
+
+<span class="hljs-comment">// 深度优先搜索，计算每个节点到根的距离</span>
+<span class="hljs-comment">// u: 当前节点, fa: 父节点（避免往回走）</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> fa)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; g[u].<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-type">int</span> v = g[u][i].first;          <span class="hljs-comment">// 邻居城市编号</span>
+        ll w = g[u][i].second;          <span class="hljs-comment">// 道路长度</span>
+        <span class="hljs-keyword">if</span> (v == fa) <span class="hljs-keyword">continue</span>;          <span class="hljs-comment">// 避免回到父节点</span>
+        dist[v] = dist[u] + w;          <span class="hljs-comment">// 计算距离</span>
+        <span class="hljs-built_in">dfs</span>(v, u);                      <span class="hljs-comment">// 递归访问子树</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    cin &gt;&gt; n;
+    ll total = <span class="hljs-number">0</span>;                       <span class="hljs-comment">// 所有道路长度之和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+        <span class="hljs-type">int</span> u, v;
+        ll w;
+        cin &gt;&gt; u &gt;&gt; v &gt;&gt; w;
+        <span class="hljs-comment">// 无向图，双方都要记录</span>
+        <span class="hljs-comment">// make_pair() 用于创建 pair 对象</span>
+        g[u].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(v, w)); <span class="hljs-comment">// 从 u 到 v 的边，长度为 w</span>
+        g[v].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(u, w)); <span class="hljs-comment">// 从 v 到 u 的边，长度为 w</span>
+        total += w;                     <span class="hljs-comment">// 累加总权值</span>
+    }
+    
+    dist[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);                           <span class="hljs-comment">// 从根开始遍历</span>
+    
+    <span class="hljs-comment">// 寻找最远距离</span>
+    ll ma = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        ma = <span class="hljs-built_in">max</span>(ma, dist[i]);
+    }
+    
+    ll ans = <span class="hljs-number">2</span> * total - ma;           <span class="hljs-comment">// 计算答案</span>
+    cout &lt;&lt; ans &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P14076">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

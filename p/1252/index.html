@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1252 邮票组合 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="某人有 张 分的邮票和 张 分的邮票，用这些邮票中的一张或若干张（也可以是 张）可以得到多少种不同的大于 的邮资？ 请找出可能组合的邮资方案总数，并按照由小到大的顺序输出所有不重复的大于 的方案！（5.1.97） 如： 张 分和 张 分可能的邮资组合如下 张 分 张 分 分 张 分 张 分 分 张…">
+<link rel="canonical" href="https://zymojblog.top/p/1252/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1252 邮票组合 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="某人有 张 分的邮票和 张 分的邮票，用这些邮票中的一张或若干张（也可以是 张）可以得到多少种不同的大于 的邮资？ 请找出可能组合的邮资方案总数，并按照由小到大的顺序输出所有不重复的大于 的方案！（5.1.97） 如： 张 分和 张 分可能的邮资组合如下 张 分 张 分 分 张 分 张 分 分 张…">
+<meta property="og:url" content="https://zymojblog.top/p/1252/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1252 邮票组合 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="某人有 张 分的邮票和 张 分的邮票，用这些邮票中的一张或若干张（也可以是 张）可以得到多少种不同的大于 的邮资？ 请找出可能组合的邮资方案总数，并按照由小到大的顺序输出所有不重复的大于 的方案！（5.1.97） 如： 张 分和 张 分可能的邮资组合如下 张 分 张 分 分 张 分 张 分 分 张…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1252 邮票组合","headline":"1252 邮票组合 题解","description":"某人有 张 分的邮票和 张 分的邮票，用这些邮票中的一张或若干张（也可以是 张）可以得到多少种不同的大于 的邮资？ 请找出可能组合的邮资方案总数，并按照由小到大的顺序输出所有不重复的大于 的方案！（5.1.97） 如： 张 分和 张 分可能的邮资组合如下 张 分 张 分 分 张 分 张 分 分 张…","url":"https://zymojblog.top/p/1252/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"数组问题、set","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1252</span></div>
+  <h1 class="seo-title">1252 邮票组合</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a><a class="seo-tag" href="/#/tag/set">set</a></div>
+  <article class="markdown-body seo-article">
+<h1>1252 - 邮票组合</h1>
+<h2>题目描述</h2>
+<p>某人有 $m$ 张 $3$ 分的邮票和 $n$ 张 $5$ 分的邮票，用这些邮票中的一张或若干张（也可以是 $0$ 张）可以得到多少种不同的大于 $0$ 的邮资？</p>
+<p>请找出可能组合的邮资方案总数，并按照由小到大的顺序输出所有不重复的大于 $0$ 的方案！（5.1.97）</p>
+<p>如：$1$ 张 $3$ 分和 $1$ 张 $5$ 分可能的邮资组合如下</p>
+<p>$0$ 张 $3$ 分 $+$ $1$ 张 $5$ 分 $=$ $5$ 分</p>
+<p>$1$ 张 $3$ 分 $+$ $0$ 张 $5$ 分 $=$ $3$ 分</p>
+<p>$1$ 张 $3$ 分 $+$ $1$ 张 $5$ 分 $=$ $8$ 分</p>
+<p>因此，可能的方案有 $3$ 种，排序后的结果是：$3$ $5$ $8$ 。</p>
+<h2>输入</h2>
+<p>两个整数，$m$ 和 $n$ ，分别代表了 $3$ 分和 $5$ 分的邮票的数量！（$1 \le m,n \le 100$）</p>
+<h2>输出</h2>
+<p>输出有两行，第一行输出这两种邮票能组合的不同的大于 $0$ 的邮资方案，数与数之间用空格隔开。</p>
+<p>第二行输出可能的方案总数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+由于m和n的最大值是100，按最大值算，能组合出的邮资的最大值=100*3+100*5=800
+用长度为810的数组来记录不同邮资的出现
+*/</span>
+<span class="hljs-type">int</span> m,n,a[<span class="hljs-number">810</span>],c = <span class="hljs-number">0</span>;<span class="hljs-comment">//c表示不同方案的数量</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;m&gt;&gt;n;
+    <span class="hljs-type">int</span> x;
+    <span class="hljs-comment">//组合所有的可能</span>
+    <span class="hljs-comment">//3分的可能范围</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= m; i++) {
+        <span class="hljs-comment">//5分的数量范围</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= n; j++) {
+            x = <span class="hljs-number">3</span> * i + <span class="hljs-number">5</span> * j;
+            <span class="hljs-keyword">if</span>(x != <span class="hljs-number">0</span>) {
+                a[x]++;
+                <span class="hljs-keyword">if</span>(a[x] == <span class="hljs-number">1</span>) c++;<span class="hljs-comment">//统计不同方案的数量</span>
+            }
+        }
+    }
+
+    <span class="hljs-comment">//循环可能的邮资范围 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">800</span>;i++){
+        <span class="hljs-keyword">if</span>(a[i] != <span class="hljs-number">0</span>) cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;	
+    }
+    cout&lt;&lt;endl;
+    cout&lt;&lt;c;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1252">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

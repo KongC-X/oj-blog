@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4578 [GESP202609 三级] 分割字符串 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小明拿到了一段字符串文本，小明希望用下面的规则分割这个字符串： 1. 小明从左到右扫描字符串，遇到第一个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这个空格）； 2. 对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续两个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这…">
+<link rel="canonical" href="https://zymojblog.top/p/B4578/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4578 [GESP202609 三级] 分割字符串 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小明拿到了一段字符串文本，小明希望用下面的规则分割这个字符串： 1. 小明从左到右扫描字符串，遇到第一个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这个空格）； 2. 对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续两个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这…">
+<meta property="og:url" content="https://zymojblog.top/p/B4578/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4578 [GESP202609 三级] 分割字符串 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小明拿到了一段字符串文本，小明希望用下面的规则分割这个字符串： 1. 小明从左到右扫描字符串，遇到第一个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这个空格）； 2. 对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续两个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4578 [GESP202609 三级] 分割字符串","headline":"B4578 [GESP202609 三级] 分割字符串 题解","description":"小明拿到了一段字符串文本，小明希望用下面的规则分割这个字符串： 1. 小明从左到右扫描字符串，遇到第一个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这个空格）； 2. 对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续两个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这…","url":"https://zymojblog.top/p/B4578/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4578</span></div>
+  <h1 class="seo-title">B4578 [GESP202609 三级] 分割字符串</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4578 [GESP202609 三级] 分割字符串</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>2026</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>小明拿到了一段字符串文本，小明希望用下面的规则分割这个字符串：</p>
+<ol>
+<li>小明从左到右扫描字符串，遇到第一个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这个空格）；</li>
+<li>对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续两个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这两个空格）；</li>
+<li>对于上次分割后右侧的字符串，小明继续扫描，第一次遇到连续三个空格后停止，并将字符串分割为左右两个部分（舍弃用于分割的这三个空格）；</li>
+<li>以此类推，小明每分割一次，下一次分割就需要更长的连续空格；直到字符串无法再次分割。</li>
+</ol>
+<p>最后输出每次分割的左侧的字符串，以及最后一次分割的右侧字符串。</p>
+<p>如果字符串完全无法进行任何一次分割，直接输出其本身。</p>
+<h2>输入格式</h2>
+<p>输入一行，一个字符串。</p>
+<h2>输出格式</h2>
+<p>输出若干行。每行为分割后的一个字符串，注意依次输出：</p>
+<p>第一次分割左侧的字符串，第二次分割左侧的字符串，……，最后一次分割左侧的字符串，最后一次分割右侧的字符串。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">sdfd <span class="hljs-number">55</span> <span class="hljs-number">55</span>   <span class="hljs-number">99312</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>sdfd<br>55 55<br> 99312```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">AbCd   <span class="hljs-number">999</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>AbCd</p>
+<p>999```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B4578 [GESP202609 三级] 分割字符串
+     * 题意：按照连续空格个数依次递增（1个、2个、3个...）分割字符串。
+     *       每次找到第一个连续 k 个空格，将字符串分成左右两部分（去掉这 k 个空格），
+     *       输出左侧部分，然后对右侧部分继续用 k+1 个空格分割。
+     *       直到找不到连续 k 个空格，最后输出剩余的右侧部分。
+     *       如果一开始就无法分割，直接输出原字符串。
+     *
+     * 思路：
+     *   1. 读入整行字符串 s。
+     *   2. 令 k = 1，表示本次需要寻找连续 k 个空格。
+     *   3. 循环：
+     *        a. 在 s 中寻找连续 k 个空格的起始位置 pos。
+     *        b. 如果找不到，跳出循环。
+     *        c. 输出 s 从开头到 pos 之前的部分（左侧字符串）。
+     *        d. 将 s 更新为 pos + k 之后的部分（右侧字符串，跳过分隔用的 k 个空格）。
+     *        e. k++，下次寻找更长的连续空格。
+     *   4. 循环结束后，输出当前剩余的 s（最后一次分割的右侧字符串，或原字符串）。
+     *
+     * 注意：字符串长度不超过 1000，直接暴力搜索连续空格即可。
+     */</span>
+
+    string s;                 <span class="hljs-comment">// s: 当前待分割的字符串</span>
+    <span class="hljs-built_in">getline</span>(cin, s);          <span class="hljs-comment">// 读入整行（可能包含空格）</span>
+
+    <span class="hljs-type">int</span> k = <span class="hljs-number">1</span>;                <span class="hljs-comment">// k: 本次需要寻找的连续空格个数</span>
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">int</span> pos = <span class="hljs-number">-1</span>;         <span class="hljs-comment">// pos: 连续 k 个空格的起始位置，-1 表示未找到</span>
+        <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();
+
+        <span class="hljs-comment">// 暴力搜索连续 k 个空格</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i + k &lt;= n; i++) {
+            <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;   <span class="hljs-comment">// ok: 从 i 开始是否连续 k 个都是空格</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; k; j++) {
+                <span class="hljs-keyword">if</span> (s[i + j] != <span class="hljs-string">&#x27; &#x27;</span>) {
+                    ok = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+            <span class="hljs-keyword">if</span> (ok) {
+                pos = i;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (pos == <span class="hljs-number">-1</span>) <span class="hljs-keyword">break</span>; <span class="hljs-comment">// 找不到连续 k 个空格，结束分割</span>
+
+        <span class="hljs-comment">// 输出左侧部分</span>
+        cout &lt;&lt; s.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, pos) &lt;&lt; endl;
+
+        <span class="hljs-comment">// 更新 s 为右侧部分（跳过这 k 个空格）</span>
+        s = s.<span class="hljs-built_in">substr</span>(pos + k);
+
+        k++;                  <span class="hljs-comment">// 下次需要更长的连续空格</span>
+    }
+
+    <span class="hljs-comment">// 输出最后一次分割的右侧字符串（如果从未分割，则输出原字符串）</span>
+    cout &lt;&lt; s &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4578">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1586 扫地机器人 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Mike同学在为扫地机器人设计一个在矩形区域中行走的算法，Mike是这样设计的：先把机器人放在出发点 点上，机器人在每个点上都会沿用如下的规则来判断下一个该去的点是哪里。规则：优先向右，如果向右不能走（比如：右侧出了矩形或者右侧扫过了）则尝试向下，向下不能走则尝试向左，向左不能走则尝试向上；直到所…">
+<link rel="canonical" href="https://zymojblog.top/p/1586/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1586 扫地机器人 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Mike同学在为扫地机器人设计一个在矩形区域中行走的算法，Mike是这样设计的：先把机器人放在出发点 点上，机器人在每个点上都会沿用如下的规则来判断下一个该去的点是哪里。规则：优先向右，如果向右不能走（比如：右侧出了矩形或者右侧扫过了）则尝试向下，向下不能走则尝试向左，向左不能走则尝试向上；直到所…">
+<meta property="og:url" content="https://zymojblog.top/p/1586/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1586 扫地机器人 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Mike同学在为扫地机器人设计一个在矩形区域中行走的算法，Mike是这样设计的：先把机器人放在出发点 点上，机器人在每个点上都会沿用如下的规则来判断下一个该去的点是哪里。规则：优先向右，如果向右不能走（比如：右侧出了矩形或者右侧扫过了）则尝试向下，向下不能走则尝试向左，向左不能走则尝试向上；直到所…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1586 扫地机器人","headline":"1586 扫地机器人 题解","description":"Mike同学在为扫地机器人设计一个在矩形区域中行走的算法，Mike是这样设计的：先把机器人放在出发点 点上，机器人在每个点上都会沿用如下的规则来判断下一个该去的点是哪里。规则：优先向右，如果向右不能走（比如：右侧出了矩形或者右侧扫过了）则尝试向下，向下不能走则尝试向左，向左不能走则尝试向上；直到所…","url":"https://zymojblog.top/p/1586/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1586</span></div>
+  <h1 class="seo-title">1586 扫地机器人</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1586 - 扫地机器人</h1>
+<h2>题目描述</h2>
+<p>Mike同学在为扫地机器人设计一个在矩形区域中行走的算法，Mike是这样设计的：先把机器人放在出发点 $(1,1)$ 点上，机器人在每个点上都会沿用如下的规则来判断下一个该去的点是哪里。规则：优先向右，如果向右不能走（比如：右侧出了矩形或者右侧扫过了）则尝试向下，向下不能走则尝试向左，向左不能走则尝试向上；直到所有的点都扫过。  </p>
+<p>Mike为了验证自己设计的算法是否正确，打算先模拟一下这个算法，每当机器人走过一个单元格时，会在单元格内标记一个数字，这个数字从 $1$ 开始，每经过一个单元格数字会递增 $1$ ，直到所有的单元格都扫一遍，也就是所有的单元格都标记过数字，机器人会自动停止。  </p>
+<p>比如：如果机器人按照上面的规则，清扫一个 $3 \times 4$ 大小的矩形区域，那么标记数字的结果如下图所示。  </p>
+<p>再比如：如果机器人按照上面的规则，清扫一个 $5 \times 5$ 大小的矩形区域，那么标记数字的结果如下图所示。  </p>
+<p>请你帮助Mike设计一个程序，按照上面的规则，将一个 $n \times m$ 大小的矩形，标记一下数字，输出最终标记的结果。</p>
+<h2>输入</h2>
+<p>一行内有 $2$ 个两个整数 $n$ 和 $m$ ，用空格隔开，分别代表矩形区域的行数（高）和列数（宽）。</p>
+<p>$1 ＜ n,m ＜ 10$。</p>
+<h2>输出</h2>
+<p>输出按题意机器人走过每个点之后，标记数字的结果，每个数字输出时场宽设置为 $3$。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;bits/stdc++.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iomanip&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-type">int</span> a[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>];
+
+<span class="hljs-comment">//解法⼀：从出发点开始，探测每个点，标记数字，标记结束后，分别递归四个⽅向，如果探测的点满⾜要求，则访问该点!</span>
+<span class="hljs-comment">// 为x,y的点赋值为k</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> k)</span> </span>{
+    a[x][y] = k;
+    <span class="hljs-comment">// 按照右，下，左，上的顺序</span>
+    <span class="hljs-comment">// 递归的条件：不能出边界且该点未被赋值</span>
+    <span class="hljs-keyword">if</span>(y + <span class="hljs-number">1</span> &lt;= m &amp;&amp; a[x][y + <span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) <span class="hljs-built_in">dfs</span>(x, y + <span class="hljs-number">1</span>,k + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(x + <span class="hljs-number">1</span> &lt;= n &amp;&amp; a[x + <span class="hljs-number">1</span>][y] == <span class="hljs-number">0</span>) <span class="hljs-built_in">dfs</span>(x + <span class="hljs-number">1</span>, y,k + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(y - <span class="hljs-number">1</span> &gt;= <span class="hljs-number">1</span> &amp;&amp; a[x][y - <span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) <span class="hljs-built_in">dfs</span>(x, y - <span class="hljs-number">1</span>,k + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">if</span>(x - <span class="hljs-number">1</span> &gt;= <span class="hljs-number">1</span> &amp;&amp; a[x - <span class="hljs-number">1</span>][y] == <span class="hljs-number">0</span>) <span class="hljs-built_in">dfs</span>(x - <span class="hljs-number">1</span>, y,k + <span class="hljs-number">1</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++)
+            {
+                cout &lt;&lt; <span class="hljs-built_in">setw</span>(<span class="hljs-number">3</span>) &lt;&lt; a[i][j];
+            }
+        cout &lt;&lt; endl;	
+        }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1586">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

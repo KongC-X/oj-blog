@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1012 [NOIP 1998 提高组] 拼数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="设有 个正整数 ，请将它们连接成一排，相邻数字首尾相接，组成一个最大的整数。">
+<link rel="canonical" href="https://zymojblog.top/p/P1012/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1012 [NOIP 1998 提高组] 拼数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="设有 个正整数 ，请将它们连接成一排，相邻数字首尾相接，组成一个最大的整数。">
+<meta property="og:url" content="https://zymojblog.top/p/P1012/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1012 [NOIP 1998 提高组] 拼数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="设有 个正整数 ，请将它们连接成一排，相邻数字首尾相接，组成一个最大的整数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1012 [NOIP 1998 提高组] 拼数","headline":"P1012 [NOIP 1998 提高组] 拼数 题解","description":"设有 个正整数 ，请将它们连接成一排，相邻数字首尾相接，组成一个最大的整数。","url":"https://zymojblog.top/p/P1012/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"字符串、贪心、1998、NOIP 提高组、排序","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1012</span></div>
+  <h1 class="seo-title">P1012 [NOIP 1998 提高组] 拼数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">【算法1-5】贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/1998">1998</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1012 [NOIP 1998 提高组] 拼数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 提高| C++14 | 提交时间: 2025-08-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>贪心</code>、<code>1998</code>、<code>NOIP 提高组</code>、<code>排序</code></p>
+<h2>题目描述</h2>
+<p>设有 $n$ 个正整数 $a_1 \dots a_n$，请将它们连接成一排，相邻数字首尾相接，组成一个最大的整数。</p>
+<h2>输入格式</h2>
+<p>第一行有一个整数，表示数字个数 $n$。</p>
+<p>第二行有 $n$ 个整数，表示给出的 $n$ 个整数 $a_i$。</p>
+<h2>输出格式</h2>
+<p>一个正整数，表示最大的整数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">13</span> <span class="hljs-number">312</span> <span class="hljs-number">343</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">34331213</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">7</span> <span class="hljs-number">13</span> <span class="hljs-number">4</span> <span class="hljs-number">246</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>7424613```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 首先简化问题，根据观察，我们可以很容易发现，如果都是一位数字进行组合，那肯定是越大的数字在越前面得到的数字最大。我们可以想到如果两个数字进行组合，由于组合后的单个数字总个数不变，所以仍然遵循前面的原则，这时我们可以想到将两种拼接后的数字的字典序进行比较（因为字典序是根据 ASCLL 码一位一位从前往后比较的）。由此我们便可以得出的两个数字的拼接最优解。</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(string a,string b)</span></span>{
+    <span class="hljs-keyword">return</span> a+b&gt;b+a;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    string a[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i&lt;n;i++) cin &gt;&gt; a[i];
+    <span class="hljs-built_in">sort</span>(a,a+n,cmp);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i&lt;n;i++){
+        cout &lt;&lt; a[i];
+    }
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1012">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

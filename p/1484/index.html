@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1484 纪念品分组 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="元旦快到了，校学生会让乐乐负责新年晚会的纪念品发放工作。为使得参加晚会的同学所获得 的纪念品价值相对均衡，他要把购来的纪念品根据价格进行分组，但每组最多只能包括两件纪念品， 并且每组纪念品的价格之和不能超过一个给定的整数。为了保证在尽量短的时间内发完所有纪念品，乐乐希望分组的数目最少。 你的任务是…">
+<link rel="canonical" href="https://zymojblog.top/p/1484/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1484 纪念品分组 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="元旦快到了，校学生会让乐乐负责新年晚会的纪念品发放工作。为使得参加晚会的同学所获得 的纪念品价值相对均衡，他要把购来的纪念品根据价格进行分组，但每组最多只能包括两件纪念品， 并且每组纪念品的价格之和不能超过一个给定的整数。为了保证在尽量短的时间内发完所有纪念品，乐乐希望分组的数目最少。 你的任务是…">
+<meta property="og:url" content="https://zymojblog.top/p/1484/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1484 纪念品分组 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="元旦快到了，校学生会让乐乐负责新年晚会的纪念品发放工作。为使得参加晚会的同学所获得 的纪念品价值相对均衡，他要把购来的纪念品根据价格进行分组，但每组最多只能包括两件纪念品， 并且每组纪念品的价格之和不能超过一个给定的整数。为了保证在尽量短的时间内发完所有纪念品，乐乐希望分组的数目最少。 你的任务是…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1484 纪念品分组","headline":"1484 纪念品分组 题解","description":"元旦快到了，校学生会让乐乐负责新年晚会的纪念品发放工作。为使得参加晚会的同学所获得 的纪念品价值相对均衡，他要把购来的纪念品根据价格进行分组，但每组最多只能包括两件纪念品， 并且每组纪念品的价格之和不能超过一个给定的整数。为了保证在尽量短的时间内发完所有纪念品，乐乐希望分组的数目最少。 你的任务是…","url":"https://zymojblog.top/p/1484/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"noip复赛、双指针","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1484</span></div>
+  <h1 class="seo-title">1484 纪念品分组</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88">双指针</a></div>
+  <article class="markdown-body seo-article">
+<h1>1484 - 纪念品分组</h1>
+<h2>题目描述</h2>
+<p>元旦快到了，校学生会让乐乐负责新年晚会的纪念品发放工作。为使得参加晚会的同学所获得 的纪念品价值相对均衡，他要把购来的纪念品根据价格进行分组，但每组最多只能包括两件纪念品， 并且每组纪念品的价格之和不能超过一个给定的整数。为了保证在尽量短的时间内发完所有纪念品，乐乐希望分组的数目最少。</p>
+<p>你的任务是写一个程序，找出所有分组方案中分组数最少的一种，输出最少的分组数目。</p>
+<h2>输入</h2>
+<p>共 $n+2$ 行：</p>
+<p>第一行包括一个整数 $w$，为每组纪念品价格之和的上限。</p>
+<p>第二行为一个整数 $n$，表示购来的纪念品的总件数 $G$。</p>
+<p>第 $3\sim n+2$ 行每行包含一个正整数 $P_i$ 表示所对应纪念品的价格。</p>
+<h2>输出</h2>
+<p>一个整数，即最少的分组数目。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&quot;bits/stdc++.h&quot;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,m,i,k,s=<span class="hljs-number">0</span>,a[<span class="hljs-number">50010</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;m&gt;&gt;n;
+    <span class="hljs-type">int</span> x=<span class="hljs-number">1</span>,y=n;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">while</span>(x&lt;=y){
+        <span class="hljs-keyword">if</span>(a[y]+a[x]&lt;=m){
+            s++;
+            y--;
+            x++;
+        }<span class="hljs-keyword">else</span>{
+            s++;
+            y--;
+        }
+    }cout&lt;&lt;s &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1484">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2895 [USACO08FEB] Meteor Shower S 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Bessie hears that an extraordinary meteor shower is coming; reports say that these meteors will crash into earth and destroy anything they hit. Anxio…">
+<link rel="canonical" href="https://zymojblog.top/p/P2895/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2895 [USACO08FEB] Meteor Shower S 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Bessie hears that an extraordinary meteor shower is coming; reports say that these meteors will crash into earth and destroy anything they hit. Anxio…">
+<meta property="og:url" content="https://zymojblog.top/p/P2895/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2895 [USACO08FEB] Meteor Shower S 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Bessie hears that an extraordinary meteor shower is coming; reports say that these meteors will crash into earth and destroy anything they hit. Anxio…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2895 [USACO08FEB] Meteor Shower S","headline":"P2895 [USACO08FEB] Meteor Shower S 题解","description":"Bessie hears that an extraordinary meteor shower is coming; reports say that these meteors will crash into earth and destroy anything they hit. Anxio…","url":"https://zymojblog.top/p/P2895/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、2008、USACO、广度优先搜索 BFS","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2895</span></div>
+  <h1 class="seo-title">P2895 [USACO08FEB] Meteor Shower S</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-7】搜索</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/2008">2008</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2895 [USACO08FEB] Meteor Shower S</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>2008</code>、<code>USACO</code>、<code>广度优先搜索 BFS</code></p>
+<h2>题目描述</h2>
+<p>Bessie hears that an extraordinary meteor shower is coming; reports say that these meteors will crash into earth and destroy anything they hit. Anxious for her safety, she vows to find her way to a safe location (one that is never destroyed by a meteor) . She is currently grazing at the origin in the coordinate plane and wants to move to a new, safer location while avoiding being destroyed by meteors along her way.</p>
+<p>The reports say that M meteors (1 ≤ M ≤ 50,000) will strike, with meteor i will striking point (Xi, Yi) (0 ≤ Xi ≤ 300; 0 ≤ Yi ≤ 300) at time Ti (0 ≤ Ti  ≤ 1,000). Each meteor destroys the point that it strikes and also the four rectilinearly adjacent lattice points.</p>
+<p>Bessie leaves the origin at time 0 and can travel in the first quadrant and parallel to the axes at the rate of one distance unit per second to any of the (often 4) adjacent rectilinear points that are not yet destroyed by a meteor. She cannot be located on a point at any time greater than or equal to the time it is destroyed).</p>
+<p>Determine the minimum time it takes Bessie to get to a safe place.</p>
+<h2>输入格式</h2>
+<p>* Line 1: A single integer: M</p>
+<p>* Lines 2..M+1: Line i+1 contains three space-separated integers: Xi, Yi, and Ti</p>
+<h2>输出格式</h2>
+<p>* Line 1: The minimum time it takes Bessie to get to a safe place or -1 if it is impossible.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">305</span>;      <span class="hljs-comment">// 因为流星坐标范围 0~300，再往外扩一些保证安全区</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> INF = <span class="hljs-number">1e9</span>;
+
+<span class="hljs-type">int</span> boom[MAXN][MAXN];     <span class="hljs-comment">// 每个格子被摧毁的最早时间，INF表示永不摧毁</span>
+<span class="hljs-type">int</span> dist[MAXN][MAXN];     <span class="hljs-comment">// 到达该格子的最短时间，-1表示未访问</span>
+
+<span class="hljs-type">int</span> dx[<span class="hljs-number">4</span>] = {<span class="hljs-number">1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+<span class="hljs-type">int</span> dy[<span class="hljs-number">4</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>};
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> x, y, time;
+};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-literal">nullptr</span>);
+
+    <span class="hljs-type">int</span> M;
+    cin &gt;&gt; M;
+
+    <span class="hljs-comment">// 初始化：所有格子初始为永远不会被摧毁</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXN; ++i)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; MAXN; ++j)
+            boom[i][j] = INF;
+
+    <span class="hljs-comment">// 读入流星，更新格子被摧毁的最早时间（流星本身 + 四邻域）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; M; ++i) {
+        <span class="hljs-type">int</span> x, y, t;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; t;
+        <span class="hljs-keyword">if</span> (t &lt; boom[x][y]) boom[x][y] = t;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; ++d) {
+            <span class="hljs-type">int</span> nx = x + dx[d];
+            <span class="hljs-type">int</span> ny = y + dy[d];
+            <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; MAXN &amp;&amp; ny &lt; MAXN) {
+                <span class="hljs-keyword">if</span> (t &lt; boom[nx][ny]) boom[nx][ny] = t;
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 起点一开始就被摧毁 → 不可能</span>
+    <span class="hljs-keyword">if</span> (boom[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>) {
+        cout &lt;&lt; <span class="hljs-number">-1</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-built_in">memset</span>(dist, <span class="hljs-number">-1</span>, <span class="hljs-built_in">sizeof</span>(dist));
+    queue&lt;Node&gt; q;
+    q.<span class="hljs-built_in">push</span>({<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) {
+        Node cur = q.<span class="hljs-built_in">front</span>(); q.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-type">int</span> x = cur.x, y = cur.y, t = cur.time;
+
+        <span class="hljs-comment">// 当前格子永远不会被摧毁 → 安全，直接输出</span>
+        <span class="hljs-keyword">if</span> (boom[x][y] == INF) {
+            cout &lt;&lt; t &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; ++d) {
+            <span class="hljs-type">int</span> nx = x + dx[d];
+            <span class="hljs-type">int</span> ny = y + dy[d];
+            <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; MAXN &amp;&amp; ny &lt; MAXN) {
+                <span class="hljs-type">int</span> nt = t + <span class="hljs-number">1</span>;
+                <span class="hljs-comment">// 必须在被摧毁之前到达，并且未访问过</span>
+                <span class="hljs-keyword">if</span> (nt &lt; boom[nx][ny] &amp;&amp; dist[nx][ny] == <span class="hljs-number">-1</span>) {
+                    dist[nx][ny] = nt;
+                    q.<span class="hljs-built_in">push</span>({nx, ny, nt});
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; <span class="hljs-number">-1</span> &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2895">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

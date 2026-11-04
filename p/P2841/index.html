@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2841 A*B Problem 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出一个数 ，你需要给出一个最小的数 ，使得 的结果只含有 和 。">
+<link rel="canonical" href="https://zymojblog.top/p/P2841/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2841 A*B Problem 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出一个数 ，你需要给出一个最小的数 ，使得 的结果只含有 和 。">
+<meta property="og:url" content="https://zymojblog.top/p/P2841/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2841 A*B Problem 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出一个数 ，你需要给出一个最小的数 ，使得 的结果只含有 和 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2841 A*B Problem","headline":"P2841 A*B Problem 题解","description":"给出一个数 ，你需要给出一个最小的数 ，使得 的结果只含有 和 。","url":"https://zymojblog.top/p/P2841/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"数学、高精度、递推、进制","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2841</span></div>
+  <h1 class="seo-title">P2841 A*B Problem</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">提高</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6">高精度</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2841 A*B Problem</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 提高| C++14 | 提交时间: 2026-07-27</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>高精度</code>、<code>递推</code>、<code>进制</code></p>
+<h2>题目描述</h2>
+<p>给出一个数 $A$ ，你需要给出一个最小的数 $B$ ，使得 $A\times B$ 的结果只含有 $0$ 和 $1$ 。</p>
+<h2>输出格式</h2>
+<p>正整数 $B$ 和 $A\times B$ 的结果，两数之间用一个空格隔开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>185 1110</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXA = <span class="hljs-number">10005</span>;                 <span class="hljs-comment">// A 的最大值 10000</span>
+
+<span class="hljs-type">int</span> pre[MAXA];                          <span class="hljs-comment">// pre[r]：记录状态 r 的前驱信息。低 1 位表示最后添加的数字（0 或 1），高位表示前驱余数</span>
+<span class="hljs-type">bool</span> vis[MAXA];                         <span class="hljs-comment">// 标记余数是否已访问过</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：
+      要找最小的 B，使得 A * B = C，且 C 只由数字 0 和 1 组成。
+      即找最小的只含 0/1 的正整数 C，且 C 是 A 的倍数。
+      然后输出 B = C / A 和 C。
+
+      方法：BFS 构造 C。
+      从数字 1 开始（因为 C 不能有前导零，第一位必须是 1）。
+      维护当前 C 除以 A 的余数。每次在 C 的末尾添加 &#x27;0&#x27; 或 &#x27;1&#x27;，
+      相当于余数变为 (原余数 * 10 + 0/1) % A。
+      用 BFS 遍历不同余数，第一次到达余数 0 时所构造的 C 就是最小的 C。
+      
+      回溯路径得到 C，再做一次高精度除以低精度得到 B。
+    */</span>
+
+    <span class="hljs-type">int</span> A;                              <span class="hljs-comment">// 输入的正整数 A</span>
+    cin &gt;&gt; A;
+
+    <span class="hljs-keyword">if</span> (A == <span class="hljs-number">1</span>) {                       <span class="hljs-comment">// 特判：A=1，最小的 C=1，B=1</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;1 1\n&quot;</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    queue&lt;<span class="hljs-type">int</span>&gt; q;                       <span class="hljs-comment">// BFS 队列，存储余数</span>
+    <span class="hljs-type">int</span> start = <span class="hljs-number">1</span> % A;                  <span class="hljs-comment">// C 的第一位是 1，余数为 1 % A</span>
+    vis[start] = <span class="hljs-literal">true</span>;
+    pre[start] = <span class="hljs-number">-1</span>;                    <span class="hljs-comment">// 特殊标记，表示这是起点，数字是 1</span>
+    q.<span class="hljs-built_in">push</span>(start);
+
+    <span class="hljs-comment">// BFS</span>
+    <span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) {
+        <span class="hljs-type">int</span> u = q.<span class="hljs-built_in">front</span>(); q.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-keyword">if</span> (u == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;              <span class="hljs-comment">// 找到了余数为 0 的状态，即 C % A == 0</span>
+
+        <span class="hljs-comment">// 在末尾添加 0 和 1</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt;= <span class="hljs-number">1</span>; d++) {
+            <span class="hljs-type">int</span> v = (u * <span class="hljs-number">10</span> + d) % A;
+            <span class="hljs-keyword">if</span> (!vis[v]) {
+                vis[v] = <span class="hljs-literal">true</span>;
+                pre[v] = (u &lt;&lt; <span class="hljs-number">1</span>) | d;   <span class="hljs-comment">// 把前驱 u 和新数字 d 打包存储</span>
+                q.<span class="hljs-built_in">push</span>(v);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 回溯构造只含 0/1 的字符串 C</span>
+    string C;
+    <span class="hljs-type">int</span> cur = <span class="hljs-number">0</span>;                         <span class="hljs-comment">// 从终点（余数 0）开始</span>
+    <span class="hljs-keyword">while</span> (cur != <span class="hljs-number">-1</span>) {
+        <span class="hljs-keyword">if</span> (cur == start) {              <span class="hljs-comment">// 到达起点，数字是 1</span>
+            C.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&#x27;1&#x27;</span>);
+            <span class="hljs-keyword">break</span>;
+        }
+        <span class="hljs-type">int</span> d = pre[cur] &amp; <span class="hljs-number">1</span>;            <span class="hljs-comment">// 取出最后添加的数字</span>
+        C.<span class="hljs-built_in">push_back</span>(<span class="hljs-string">&#x27;0&#x27;</span> + d);
+        cur = pre[cur] &gt;&gt; <span class="hljs-number">1</span>;             <span class="hljs-comment">// 取出前驱余数</span>
+    }
+    <span class="hljs-built_in">reverse</span>(C.<span class="hljs-built_in">begin</span>(), C.<span class="hljs-built_in">end</span>());         <span class="hljs-comment">// 翻转得到正序的 C</span>
+
+    <span class="hljs-comment">// 高精度除法：计算 B = C / A</span>
+    string B;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> r = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 当前余数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; C.<span class="hljs-built_in">size</span>(); i++) {
+        r = r * <span class="hljs-number">10</span> + (C[i] - <span class="hljs-string">&#x27;0&#x27;</span>);
+        B.<span class="hljs-built_in">push_back</span>(r / A + <span class="hljs-string">&#x27;0&#x27;</span>);
+        r %= A;
+    }
+    <span class="hljs-comment">// 去掉 B 的前导零</span>
+    <span class="hljs-type">int</span> pos = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (pos + <span class="hljs-number">1</span> &lt; B.<span class="hljs-built_in">size</span>() &amp;&amp; B[pos] == <span class="hljs-string">&#x27;0&#x27;</span>) pos++;
+    B = B.<span class="hljs-built_in">substr</span>(pos);
+
+    cout &lt;&lt; B &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; C &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2841">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

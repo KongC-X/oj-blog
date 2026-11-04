@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1200 [USACO1.1] Your Ride Is Here 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="It is a well-known fact that behind every good comet is a UFO. These UFOs often come to collect loyal supporters from here on Earth. Unfortunately, t…">
+<link rel="canonical" href="https://zymojblog.top/p/P1200/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1200 [USACO1.1] Your Ride Is Here 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="It is a well-known fact that behind every good comet is a UFO. These UFOs often come to collect loyal supporters from here on Earth. Unfortunately, t…">
+<meta property="og:url" content="https://zymojblog.top/p/P1200/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1200 [USACO1.1] Your Ride Is Here 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="It is a well-known fact that behind every good comet is a UFO. These UFOs often come to collect loyal supporters from here on Earth. Unfortunately, t…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1200 [USACO1.1] Your Ride Is Here","headline":"P1200 [USACO1.1] Your Ride Is Here 题解","description":"It is a well-known fact that behind every good comet is a UFO. These UFOs often come to collect loyal supporters from here on Earth. Unfortunately, t…","url":"https://zymojblog.top/p/P1200/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串、数学、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1200</span></div>
+  <h1 class="seo-title">P1200 [USACO1.1] Your Ride Is Here</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门5】字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1200 [USACO1.1] Your Ride Is Here</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>数学</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>It is a well-known fact that behind every good comet is a UFO. These UFOs often come to collect loyal supporters from here on Earth. Unfortunately, they only have room to pick up one group of followers on each trip. They do, however, let the groups know ahead of time which will be picked up for each comet by a clever scheme: they pick a name for the comet which, along with the name of the group, can be used to determine if it is a particular group&#39;s turn to go. The details of the matching scheme are given below; your job is to write a program which takes the names of a group and a comet and then determines whether the group should go with the UFO behind that comet.</p>
+<p>Both the name of the group and the name of the comet are converted into a number in the following manner: the final number is just the product of all the letters in the name, where <code>A</code> is $1$ and <code>Z</code> is $26$. For instance, the group <code>USACO</code> would be $21 * 19 * 1 * 3 * 15 = 17955$. If the group&#39;s number mod $47$ is the same as the comet&#39;s number mod $47$, then you need to tell the group to get ready. Remember that &quot;a mod b&quot; is the remainder left over after dividing $a$ by $b$; $34$ mod $10$ is $4$.</p>
+<p>Write a program which reads in the name of the comet and the name of the group and figures out whether according to the above scheme the names are a match, printing <code>GO</code> if they match and <code>STAY</code> if not. The names of the groups and the comets will be a string of capital letters with no spaces or punctuation, up to $6$ characters long.</p>
+<h2>输入格式</h2>
+<ul>
+<li>Line 1: An upper case character string of length $1..6$ that is the name of the comet.</li>
+<li>Line 2: An upper case character string of length $1..6$ that is the name of the group.</li>
+</ul>
+<p><strong>Note</strong>: The input file has a newline at the end of each line but does not have a &quot;return&quot;. Sometimes, programmers code for the Windows paradigm of &quot;return&quot; followed by &quot;newline&quot;; do not do that. Use simple input routines like <code>readln</code> (for Pascal) and, for C/C++, <code>fscanf</code> and <code>fid&gt;&gt;string</code>.</p>
+<p><strong>Note 2</strong>: Because of the extra characters, be sure to leave enough room for a <code>newline</code> (also notated as <code>\n</code>) and an end of string character (<code>\0</code>) if your language uses it (as C and C++ do). This means you need eight characters of room instead of six.</p>
+<h2>输出格式</h2>
+<p>A single line containing either the word <code>GO</code> or the word <code>STAY</code>.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">COMETQ
+HVNGAT```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>GO```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">ABSTAR
+USACO```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>STAY```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+string a,b;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin&gt;&gt;a&gt;&gt;b;
+    <span class="hljs-type">int</span> lena=a.<span class="hljs-built_in">size</span>(),lenb=b.<span class="hljs-built_in">size</span>();
+    <span class="hljs-type">int</span> cnta=<span class="hljs-number">1</span>,cntb=<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;lena;i++)
+        cnta*=a[i]-<span class="hljs-string">&#x27;A&#x27;</span>+<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;lenb;i++)
+        cntb*=b[i]-<span class="hljs-string">&#x27;A&#x27;</span>+<span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(cnta%<span class="hljs-number">47</span>==cntb%<span class="hljs-number">47</span>)
+        cout&lt;&lt;<span class="hljs-string">&quot;GO&quot;</span>&lt;&lt;endl;
+    <span class="hljs-keyword">else</span>
+        cout&lt;&lt;<span class="hljs-string">&quot;STAY&quot;</span>&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1200">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

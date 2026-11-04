@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1333 兴趣班的排班 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="暑假来了，有n名同学都参加了暑假兴趣班（ ），不同的兴趣班都是从同一天开始上课， 个同学的上课频率（每隔几天上一次课，如每隔 天上一次课，上课频率就是 ）不同，请问除了第一天，最少要等到第几天这 个同学会在同一天一起上课？ 比如：有 位同学，同学甲 天上 次课，同学乙 天上一次课，他们的上课时间分…">
+<link rel="canonical" href="https://zymojblog.top/p/1333/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1333 兴趣班的排班 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="暑假来了，有n名同学都参加了暑假兴趣班（ ），不同的兴趣班都是从同一天开始上课， 个同学的上课频率（每隔几天上一次课，如每隔 天上一次课，上课频率就是 ）不同，请问除了第一天，最少要等到第几天这 个同学会在同一天一起上课？ 比如：有 位同学，同学甲 天上 次课，同学乙 天上一次课，他们的上课时间分…">
+<meta property="og:url" content="https://zymojblog.top/p/1333/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1333 兴趣班的排班 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="暑假来了，有n名同学都参加了暑假兴趣班（ ），不同的兴趣班都是从同一天开始上课， 个同学的上课频率（每隔几天上一次课，如每隔 天上一次课，上课频率就是 ）不同，请问除了第一天，最少要等到第几天这 个同学会在同一天一起上课？ 比如：有 位同学，同学甲 天上 次课，同学乙 天上一次课，他们的上课时间分…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1333 兴趣班的排班","headline":"1333 兴趣班的排班 题解","description":"暑假来了，有n名同学都参加了暑假兴趣班（ ），不同的兴趣班都是从同一天开始上课， 个同学的上课频率（每隔几天上一次课，如每隔 天上一次课，上课频率就是 ）不同，请问除了第一天，最少要等到第几天这 个同学会在同一天一起上课？ 比如：有 位同学，同学甲 天上 次课，同学乙 天上一次课，他们的上课时间分…","url":"https://zymojblog.top/p/1333/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1333</span></div>
+  <h1 class="seo-title">1333 兴趣班的排班</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1333 - 兴趣班的排班</h1>
+<h2>题目描述</h2>
+<p>暑假来了，有n名同学都参加了暑假兴趣班（ $n \lt 10$ ），不同的兴趣班都是从同一天开始上课， $n$ 个同学的上课频率（每隔几天上一次课，如每隔 $3$ 天上一次课，上课频率就是 $3$ ）不同，请问除了第一天，最少要等到第几天这 $n$ 个同学会在同一天一起上课？</p>
+<p>比如：有 $2$ 位同学，同学甲 $3$ 天上 $1$ 次课，同学乙 $2$ 天上一次课，他们的上课时间分布就如下表所示， $2$ 位同学除了第 $1$ 天，至少要等到第 $7$ 天才能一起上课。</p>
+<pre><code class="hljs language-cpp">`第一天  第二天  第三天  第四天  第五天  第六天  第七天
+ 甲                     甲                      甲
+ 乙              乙              乙             乙
+`</code></pre><h2>输入</h2>
+<p>第一行一个整数 $n$ 代表学生的数量;</p>
+<p>第二行 $n$ 个数代表每位同学的上课频率。</p>
+<h2>输出</h2>
+<p>接下来到第几天所有人会在同一天上课。（本题测试数据确保答案 $ \le 10^5$ ）</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-type">int</span> n,a[<span class="hljs-number">10</span>],d=<span class="hljs-number">1</span>;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        cin &gt;&gt; a[i];
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">999999</span>;i++)
+    {
+        d=<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=n;j++)
+        {
+            <span class="hljs-keyword">if</span>(i%a[j]!=<span class="hljs-number">0</span>)
+            {
+                d=<span class="hljs-number">0</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span>(d==<span class="hljs-number">1</span>)
+        {
+            cout &lt;&lt; i+<span class="hljs-number">1</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1333">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

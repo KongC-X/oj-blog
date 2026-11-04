@@ -29,9 +29,27 @@ const app = express();
 const PORT = process.env.PORT || 8766;
 
 // ========== 安全头（helmet） ==========
+// 说明：站点仍依赖内联 script/style（47 处内联 style、5 处内联 onclick），
+// 因此 script-src/style-src 保留 'unsafe-inline'，其余指令全部收紧。
+// 生产环境（Cloudflare Pages）由 _headers 文件下同样的策略。
 app.use(helmet({
-  contentSecurityPolicy: false, // SPA 需要内联脚本，关闭 CSP
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      fontSrc: ["'self'"],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      frameAncestors: ["'none'"],
+    },
+  },
   crossOriginEmbedderPolicy: false,
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+  xFrameOptions: { action: 'deny' },
 }));
 
 // ========== 账户配置 ==========
@@ -238,6 +256,14 @@ function finishTask(task, status) {
     });
     sseListeners.delete(task.id);
   }
+
+  // 结束后保留 10 分钟供前端查询日志，超时释放
+  // 否则 tasks Map 只增不减，长期运行会持续堆积日志
+  const RETENTION_MS = 10 * 60 * 1000;
+  const timer = setTimeout(() => {
+    tasks.delete(task.id);
+  }, RETENTION_MS);
+  if (typeof timer.unref === 'function') timer.unref();
 }
 
 // ========== FTP 自动同步（已废弃，改由 Git + Cloudflare Pages 自动部署） ==========

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2692 覆盖 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="操场可以看成是 行 列的方格矩阵，如下图 (1) 是一个 行 列的方格矩阵。每个男生负责打扫一些连续的行，每个女生负责打扫一些连续的列。比如有两个男生，第一个男生负责第 两行、第二个男生负责第 行，如图 (2) 的蓝色。打扫的区域可能重复，比如，又有两个女生，第一个女生负责打扫第 两列，第二个女生…">
+<link rel="canonical" href="https://zymojblog.top/p/P2692/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2692 覆盖 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="操场可以看成是 行 列的方格矩阵，如下图 (1) 是一个 行 列的方格矩阵。每个男生负责打扫一些连续的行，每个女生负责打扫一些连续的列。比如有两个男生，第一个男生负责第 两行、第二个男生负责第 行，如图 (2) 的蓝色。打扫的区域可能重复，比如，又有两个女生，第一个女生负责打扫第 两列，第二个女生…">
+<meta property="og:url" content="https://zymojblog.top/p/P2692/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2692 覆盖 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="操场可以看成是 行 列的方格矩阵，如下图 (1) 是一个 行 列的方格矩阵。每个男生负责打扫一些连续的行，每个女生负责打扫一些连续的列。比如有两个男生，第一个男生负责第 两行、第二个男生负责第 行，如图 (2) 的蓝色。打扫的区域可能重复，比如，又有两个女生，第一个女生负责打扫第 两列，第二个女生…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2692 覆盖","headline":"P2692 覆盖 题解","description":"操场可以看成是 行 列的方格矩阵，如下图 (1) 是一个 行 列的方格矩阵。每个男生负责打扫一些连续的行，每个女生负责打扫一些连续的列。比如有两个男生，第一个男生负责第 两行、第二个男生负责第 行，如图 (2) 的蓝色。打扫的区域可能重复，比如，又有两个女生，第一个女生负责打扫第 两列，第二个女生…","url":"https://zymojblog.top/p/P2692/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2692</span></div>
+  <h1 class="seo-title">P2692 覆盖</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2692 覆盖</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-05</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code></p>
+<h2>题目背景</h2>
+<p>WSR 的学校有 $B$ 个男生和 $G$ 个女生都来到一个巨大的操场上扫地。</p>
+<h2>题目描述</h2>
+<p>操场可以看成是 $N$ 行 $M$ 列的方格矩阵，如下图 (1) 是一个 $4$ 行 $5$ 列的方格矩阵。每个男生负责打扫一些连续的行，每个女生负责打扫一些连续的列。比如有两个男生，第一个男生负责第 $1, 2$ 两行、第二个男生负责第 $4$ 行，如图 (2) 的蓝色。打扫的区域可能重复，比如，又有两个女生，第一个女生负责打扫第 $3, 4$ 两列，第二个女生负责打扫第 $4, 5$ 两列，如图 (3) 的红色。从图 (3) 可以容易看出，有颜色覆盖的方格数为 $18$，即这 $4$ 名学生总共打扫了 $18$ 个方格。</p>
+<p><img src="https://cdn.luogu.com.cn/upload/pic/1474.png" alt=""> </p>
+<p>老师要 WSR 在学校给出打扫安排的数据后快速计算出这些学生总共打扫了多少方格。</p>
+<h2>输入格式</h2>
+<p>第一行 $4$ 个正整数：$N, M, B, G$。其中 $N$ 表示方阵行数，$M$ 表示方阵列数，$B$ 表示男生数，$G$ 表示女生数。</p>
+<p>接下来 $B$ 行，每行两个整数 $x, y$。表示相应某个男生负责打扫从第 $x$ 行到第 $y$ 行（共 $y - x + 1$ 行），保证 $1 \le x \le y \le N$。</p>
+<p>再接下来 $G$ 行，每行两个整数 $x, y$。表示相应某个女生负责打扫从第 $x$ 列到第 $y$ 列（共 $y - x + 1$ 列），保证 $1 \le x \le y \le M$。</p>
+<h2>输出格式</h2>
+<p>一个整数，表示所打扫的面积。（即格子的总数）</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">4</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>18```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】简单覆盖统计（容斥原理）
+     * 【核心思路】
+     * 1. 用布尔数组 row[i] 标记第 i 行是否被至少一个男生覆盖。
+     * 2. 用布尔数组 col[j] 标记第 j 列是否被至少一个女生覆盖。
+     * 3. 统计被覆盖的行数 rowCnt 和被覆盖的列数 colCnt。
+     * 4. 总面积 = 男生覆盖面积 + 女生覆盖面积 - 重叠面积
+     *          = rowCnt * M + colCnt * N - rowCnt * colCnt
+     *    解释：男生覆盖所有行 rowCnt 中的每一行与所有 M 列的交点；
+     *         女生覆盖所有列 colCnt 中的每一列与所有 N 行的交点；
+     *         两者重叠部分正好是 rowCnt * colCnt，需要减去。
+     */</span>
+
+    <span class="hljs-type">int</span> N, M, B, G;          <span class="hljs-comment">// N: 行数, M: 列数, B: 男生数, G: 女生数</span>
+    cin &gt;&gt; N &gt;&gt; M &gt;&gt; B &gt;&gt; G;
+
+    <span class="hljs-type">bool</span> row[<span class="hljs-number">5005</span>] = {<span class="hljs-literal">false</span>}; <span class="hljs-comment">// row[i] 第 i 行是否被男生覆盖</span>
+    <span class="hljs-type">bool</span> col[<span class="hljs-number">5005</span>] = {<span class="hljs-literal">false</span>}; <span class="hljs-comment">// col[j] 第 j 列是否被女生覆盖</span>
+
+    <span class="hljs-comment">// 读入男生的行区间并标记</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; B; i++) {
+        <span class="hljs-type">int</span> x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = x; r &lt;= y; r++) {
+            row[r] = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 读入女生的列区间并标记</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; G; i++) {
+        <span class="hljs-type">int</span> x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> c = x; c &lt;= y; c++) {
+            col[c] = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 统计被覆盖的行数和列数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> rowCnt = <span class="hljs-number">0</span>, colCnt = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= N; i++) {
+        <span class="hljs-keyword">if</span> (row[i]) rowCnt++;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= M; j++) {
+        <span class="hljs-keyword">if</span> (col[j]) colCnt++;
+    }
+
+    <span class="hljs-comment">// 计算总面积 = 并集面积</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = rowCnt * M + colCnt * N - rowCnt * colCnt;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2692">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10415 [蓝桥杯 2023 国 A] 切割 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个 的长方形，两边长度均为整数。小蓝想把它切割为很多个边长为整数的小正方形。假设切割没有任何损耗，正方形的边长至少为 ，不允许出现余料，要求所有正方形的大小相等，请问最多能切割出多少个?">
+<link rel="canonical" href="https://zymojblog.top/p/P10415/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10415 [蓝桥杯 2023 国 A] 切割 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个 的长方形，两边长度均为整数。小蓝想把它切割为很多个边长为整数的小正方形。假设切割没有任何损耗，正方形的边长至少为 ，不允许出现余料，要求所有正方形的大小相等，请问最多能切割出多少个?">
+<meta property="og:url" content="https://zymojblog.top/p/P10415/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10415 [蓝桥杯 2023 国 A] 切割 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个 的长方形，两边长度均为整数。小蓝想把它切割为很多个边长为整数的小正方形。假设切割没有任何损耗，正方形的边长至少为 ，不允许出现余料，要求所有正方形的大小相等，请问最多能切割出多少个?">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10415 [蓝桥杯 2023 国 A] 切割","headline":"P10415 [蓝桥杯 2023 国 A] 切割 题解","description":"给定一个 的长方形，两边长度均为整数。小蓝想把它切割为很多个边长为整数的小正方形。假设切割没有任何损耗，正方形的边长至少为 ，不允许出现余料，要求所有正方形的大小相等，请问最多能切割出多少个?","url":"https://zymojblog.top/p/P10415/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、2023、数论、蓝桥杯国赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10415</span></div>
+  <h1 class="seo-title">P10415 [蓝桥杯 2023 国 A] 切割</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E8%AE%BA">数论</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E5%9B%BD%E8%B5%9B">蓝桥杯国赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10415 [蓝桥杯 2023 国 A] 切割</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-10-10</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2023</code>、<code>数论</code>、<code>蓝桥杯国赛</code></p>
+<h2>题目背景</h2>
+<p>数据提供：<a href="https://www.luogu.com.cn/discuss/838792">https://www.luogu.com.cn/discuss/838792</a></p>
+<h2>题目描述</h2>
+<p>给定一个 $W\times H$ 的长方形，两边长度均为整数。小蓝想把它切割为很多个边长为整数的小正方形。假设切割没有任何损耗，正方形的边长至少为 $2$，不允许出现余料，要求所有正方形的大小相等，请问最多能切割出多少个?</p>
+<h2>输入格式</h2>
+<p>输入一行，包含两个整数 $W, H$，用一个空格分隔。</p>
+<h2>输出格式</h2>
+<p>输出一行包含一个整数表示答案。如果不存在满足要求的方案，输出 $0$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>50```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> <span class="hljs-number">9</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>6```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span> <span class="hljs-number">13</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P10415 [蓝桥杯 2023 国 A] 切割
+     * 题意：给定 W×H 的长方形，要切成若干个边长相等的小正方形，
+     *       要求正方形边长至少为 2，不能有剩余，求最多能切出多少个。
+     *
+     * 思路：
+     *   1. 设正方形边长为 d，则必须满足 d 能整除 W 和 d 能整除 H，
+     *      即 d 是 W 和 H 的公约数。
+     *   2. 为了让切出的正方形数量最多，边长 d 应该尽可能小。
+     *      但题目要求 d ≥ 2，所以我们要找到 W 和 H 的最小公约数（≥2）。
+     *   3. 其实所有公约数都是最大公约数 g = gcd(W, H) 的约数。
+     *      因此如果 g &lt; 2（即 g = 1），说明没有任何公约数 ≥ 2，输出 0。
+     *      否则，最小的可行边长就是 g 的最小质因数（≥2）。
+     *   4. 但我们可以直接取 d = g（最大公约数）吗？
+     *      注意：d 越小，切出的数量 (W/d) * (H/d) 越大。
+     *      所以我们应该取 g 的最小约数（≥2）作为边长，而不是 g 本身。
+     *   5. 不过，题目要求的是“最多能切割出多少个”，即最大化 (W/d)*(H/d)。
+     *      这等价于最小化 d（d ≥ 2 且 d|W, d|H）。
+     *      所以我们需要找到 W 和 H 的最小公约数 d ≥ 2。
+     *   6. 如何求最小公约数？可以枚举 d 从 2 到 min(W,H)，
+     *      但 W,H ≤ 10^9，直接枚举会超时。
+     *      更好的方法：d 一定是 g = gcd(W,H) 的约数。
+     *      我们只需要找到 g 的最小质因数即可（若 g ≥ 2）。
+     *      如果 g 本身是质数，则 d = g；否则 d = g 的最小质因数。
+     *   7. 但还有一种更简单的情况：如果 g ≥ 2，那么 d = g 的任意约数都可行。
+     *      为了最小化 d，我们可以从 2 开始试除 g，找到 g 的最小约数（≥2），
+     *      这个约数就是最小的可行边长 d。
+     *   8. 最后答案 = (W/d) * (H/d)。
+     *
+     * 时间复杂度：求 gcd O(log min(W,H))，找最小约数最多 O(sqrt(g)) ≤ O(sqrt(10^9))。
+     */</span>
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> W, H;
+    cin &gt;&gt; W &gt;&gt; H;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> g = __gcd(W, H);   <span class="hljs-comment">// g: W 和 H 的最大公约数</span>
+
+    <span class="hljs-comment">// 如果最大公约数小于 2，说明不存在边长 ≥ 2 的正方形</span>
+    <span class="hljs-keyword">if</span> (g &lt; <span class="hljs-number">2</span>) {
+        cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 寻找 g 的最小约数（≥2），即最小的可行边长 d</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> d = g;   <span class="hljs-comment">// d: 边长，初始为 g</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> <span class="hljs-type">long</span> i = <span class="hljs-number">2</span>; i * i &lt;= g; i++) {
+        <span class="hljs-keyword">if</span> (g % i == <span class="hljs-number">0</span>) {
+            d = i;     <span class="hljs-comment">// 找到最小约数</span>
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-comment">// 如果循环结束没有找到约数，说明 g 是质数，d 保持为 g</span>
+
+    <span class="hljs-comment">// 计算能切出的正方形数量</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = (W / d) * (H / d);
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10415">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

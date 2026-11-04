@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1101 单词方阵 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给一 的字母方阵，内可能蕴含多个 yizhong 单词。单词在方阵中是沿着同一方向连续摆放的。摆放可沿着 个方向的任一方向，同一单词摆放时不再改变方向，单词与单词之间可以交叉，因此有可能共用字母。输出时，将不是单词的字母用 代替，以突出显示单词。">
+<link rel="canonical" href="https://zymojblog.top/p/P1101/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1101 单词方阵 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给一 的字母方阵，内可能蕴含多个 yizhong 单词。单词在方阵中是沿着同一方向连续摆放的。摆放可沿着 个方向的任一方向，同一单词摆放时不再改变方向，单词与单词之间可以交叉，因此有可能共用字母。输出时，将不是单词的字母用 代替，以突出显示单词。">
+<meta property="og:url" content="https://zymojblog.top/p/P1101/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1101 单词方阵 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给一 的字母方阵，内可能蕴含多个 yizhong 单词。单词在方阵中是沿着同一方向连续摆放的。摆放可沿着 个方向的任一方向，同一单词摆放时不再改变方向，单词与单词之间可以交叉，因此有可能共用字母。输出时，将不是单词的字母用 代替，以突出显示单词。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1101 单词方阵","headline":"P1101 单词方阵 题解","description":"给一 的字母方阵，内可能蕴含多个 yizhong 单词。单词在方阵中是沿着同一方向连续摆放的。摆放可沿着 个方向的任一方向，同一单词摆放时不再改变方向，单词与单词之间可以交叉，因此有可能共用字母。输出时，将不是单词的字母用 代替，以突出显示单词。","url":"https://zymojblog.top/p/P1101/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、搜索、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1101</span></div>
+  <h1 class="seo-title">P1101 单词方阵</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-7】搜索</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1101 单词方阵</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>搜索</code>、<code>枚举</code></p>
+<h2>题目描述</h2>
+<p>给一 $n \times n$ 的字母方阵，内可能蕴含多个 <code>yizhong</code> 单词。单词在方阵中是沿着同一方向连续摆放的。摆放可沿着 $8$ 个方向的任一方向，同一单词摆放时不再改变方向，单词与单词之间可以交叉，因此有可能共用字母。输出时，将不是单词的字母用 <code>*</code> 代替，以突出显示单词。</p>
+<h2>输入格式</h2>
+<p>第一行输入一个数 $n$。$(7 \le n \le 100)$。</p>
+<p>第二行开始输入 $n \times n$ 的字母矩阵。</p>
+<h2>输出格式</h2>
+<p>突出显示单词的 $n \times n$ 矩阵。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+aaaaaaa
+aaaaaaa
+aaaaaaa
+aaaaaaa
+aaaaaaa
+aaaaaaa
+aaaaaaa</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">*******
+*******
+*******
+*******
+*******
+*******
+*******</code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span>
+qyizhong
+gydthkjy
+nwidghji
+orbzsfgz
+hhgrhwth
+zzzzzozo
+iwdfrgng
+yyyygggg```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p><em>yizhong<br>gy</em>*****<br>n<em>i</em>****<br>o<strong>z</strong>**<br>h<em><strong>h</strong></em><br>z<strong><strong>o</strong><br>i<strong><strong><em>n</em><br>y</strong></strong></strong>g```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">105</span>;
+<span class="hljs-type">char</span> grid[MAXN][MAXN];
+<span class="hljs-type">bool</span> isWord[MAXN][MAXN];  <span class="hljs-comment">// 标记该位置是否属于某个&quot;yizhong&quot;单词</span>
+
+<span class="hljs-comment">// 方向向量： 8个方向 (行偏移, 列偏移)</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> dx[<span class="hljs-number">8</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>};
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> dy[<span class="hljs-number">8</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>};
+<span class="hljs-type">const</span> <span class="hljs-type">char</span> target[] = <span class="hljs-string">&quot;yizhong&quot;</span>;  <span class="hljs-comment">// 目标单词</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        cin &gt;&gt; grid[i];
+    }
+
+    <span class="hljs-comment">// 初始化标记数组</span>
+    <span class="hljs-built_in">memset</span>(isWord, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(isWord));
+
+    <span class="hljs-comment">// 遍历每个格子作为起点</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; ++j) {
+            <span class="hljs-comment">// 检查8个方向</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">8</span>; ++d) {
+                <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;
+                <span class="hljs-comment">// 检查该方向上是否能构成&quot;yizhong&quot;</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">7</span>; ++k) {
+                    <span class="hljs-type">int</span> nx = i + dx[d] * k;
+                    <span class="hljs-type">int</span> ny = j + dy[d] * k;
+                    <span class="hljs-keyword">if</span> (nx &lt; <span class="hljs-number">0</span> || nx &gt;= n || ny &lt; <span class="hljs-number">0</span> || ny &gt;= n) {
+                        ok = <span class="hljs-literal">false</span>;
+                        <span class="hljs-keyword">break</span>;
+                    }
+                    <span class="hljs-keyword">if</span> (grid[nx][ny] != target[k]) {
+                        ok = <span class="hljs-literal">false</span>;
+                        <span class="hljs-keyword">break</span>;
+                    }
+                }
+                <span class="hljs-comment">// 如果成功，标记该方向上的7个位置</span>
+                <span class="hljs-keyword">if</span> (ok) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>; k &lt; <span class="hljs-number">7</span>; ++k) {
+                        <span class="hljs-type">int</span> nx = i + dx[d] * k;
+                        <span class="hljs-type">int</span> ny = j + dy[d] * k;
+                        isWord[nx][ny] = <span class="hljs-literal">true</span>;
+                    }
+                }
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 输出</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; ++j) {
+            <span class="hljs-keyword">if</span> (isWord[i][j]) {
+                cout &lt;&lt; grid[i][j];
+            } <span class="hljs-keyword">else</span> {
+                cout &lt;&lt; <span class="hljs-string">&#x27;*&#x27;</span>;
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1101">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

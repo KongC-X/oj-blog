@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1814 卖苹果的最大利润 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="阿凡提批发了 斤苹果准备出售，批发价是 元/斤。假设他能知道未来 天每天苹果的市场单价，请问他在第几天出售利润最高（如果有多天都能使得他的利润最高，那么他会尽早卖出），最高利润是多少钱？ 比如：假设阿凡提批发了 斤苹果，批发价是 元/斤；未来 天市场上每天苹果的单价是 ，那么第 天和第 天都是能让…">
+<link rel="canonical" href="https://zymojblog.top/p/1814/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1814 卖苹果的最大利润 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="阿凡提批发了 斤苹果准备出售，批发价是 元/斤。假设他能知道未来 天每天苹果的市场单价，请问他在第几天出售利润最高（如果有多天都能使得他的利润最高，那么他会尽早卖出），最高利润是多少钱？ 比如：假设阿凡提批发了 斤苹果，批发价是 元/斤；未来 天市场上每天苹果的单价是 ，那么第 天和第 天都是能让…">
+<meta property="og:url" content="https://zymojblog.top/p/1814/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1814 卖苹果的最大利润 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="阿凡提批发了 斤苹果准备出售，批发价是 元/斤。假设他能知道未来 天每天苹果的市场单价，请问他在第几天出售利润最高（如果有多天都能使得他的利润最高，那么他会尽早卖出），最高利润是多少钱？ 比如：假设阿凡提批发了 斤苹果，批发价是 元/斤；未来 天市场上每天苹果的单价是 ，那么第 天和第 天都是能让…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1814 卖苹果的最大利润","headline":"1814 卖苹果的最大利润 题解","description":"阿凡提批发了 斤苹果准备出售，批发价是 元/斤。假设他能知道未来 天每天苹果的市场单价，请问他在第几天出售利润最高（如果有多天都能使得他的利润最高，那么他会尽早卖出），最高利润是多少钱？ 比如：假设阿凡提批发了 斤苹果，批发价是 元/斤；未来 天市场上每天苹果的单价是 ，那么第 天和第 天都是能让…","url":"https://zymojblog.top/p/1814/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1814</span></div>
+  <h1 class="seo-title">1814 卖苹果的最大利润</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1814 - 卖苹果的最大利润</h1>
+<h2>题目描述</h2>
+<p>阿凡提批发了 $m$ 斤苹果准备出售，批发价是 $x$ 元/斤。假设他能知道未来 $n$ 天每天苹果的市场单价，请问他在第几天出售利润最高（如果有多天都能使得他的利润最高，那么他会尽早卖出），最高利润是多少钱？</p>
+<p>比如：假设阿凡提批发了 $100$ 斤苹果，批发价是 $5$ 元/斤；未来 $8$ 天市场上每天苹果的单价是 $4$  $6$  $5$  $3$  $1$  $5$  $6$  $5$ ，那么第 $2$ 天和第 $7$ 天都是能让他利润最高的时间，他会选择第 $2$ 天出售，能够获得$100$ 元的利润（利润 = 出售总价 - 批发总价）。</p>
+<h2>输入</h2>
+<p>第 $1$ 行读入 $3$ 个整数 $m$ 、$x$ 、$n$ ；（$m$ 、$ x$ 都是 $1 \sim 1000$ 之间的整数，$n$ 是 $5 \sim 100$ 之间的整数）</p>
+<p>第 $2$ 行有 $n$ 个整数，用空格隔开，代表未来 $n$ 天苹果的单价。（数据保证 $n$ 天中一定会出现苹果的销售价&gt;阿凡提的批发价的情况）</p>
+<h2>输出</h2>
+<p>输出 $2$ 个整数，用空格隔开；</p>
+<p>第 $1$ 个整数代表阿凡提在第几天出售苹果，第 $2$ 个整数代表阿凡提获得的总利润。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> a[<span class="hljs-number">110</span>],j,m,x,n;
+<span class="hljs-type">int</span> ma=<span class="hljs-number">1</span>;<span class="hljs-comment">//假设下标为1的数是最大数 </span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;m&gt;&gt;x&gt;&gt;n;
+    <span class="hljs-comment">//由于本题问位置，因此我们下标从1开始，比较方便求位置 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=n; i++) {
+        cin&gt;&gt;a[i];
+        <span class="hljs-comment">//打擂台找最大数下标</span>
+        <span class="hljs-keyword">if</span>(a[i]&gt;a[ma]) ma=i;
+    }
+    
+    <span class="hljs-comment">//输出结果 </span>
+    cout&lt;&lt;ma&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;(a[ma]-x)*m;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1814">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1790 回文字符串 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="回文字符串的判断。回文，正读反读都都相同的字符序列成为回文。例如：abcba就是回文。写程序使用栈判断给定的字符串序列是否是回文。">
+<link rel="canonical" href="https://zymojblog.top/p/1790/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1790 回文字符串 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="回文字符串的判断。回文，正读反读都都相同的字符序列成为回文。例如：abcba就是回文。写程序使用栈判断给定的字符串序列是否是回文。">
+<meta property="og:url" content="https://zymojblog.top/p/1790/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1790 回文字符串 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="回文字符串的判断。回文，正读反读都都相同的字符序列成为回文。例如：abcba就是回文。写程序使用栈判断给定的字符串序列是否是回文。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1790 回文字符串","headline":"1790 回文字符串 题解","description":"回文字符串的判断。回文，正读反读都都相同的字符序列成为回文。例如：abcba就是回文。写程序使用栈判断给定的字符串序列是否是回文。","url":"https://zymojblog.top/p/1790/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"容器、stack","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1790</span></div>
+  <h1 class="seo-title">1790 回文字符串</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AE%B9%E5%99%A8">容器</a><a class="seo-tag" href="/#/tag/stack">stack</a></div>
+  <article class="markdown-body seo-article">
+<h1>1790 - 回文字符串</h1>
+<h2>题目描述</h2>
+<p>回文字符串的判断。回文，正读反读都都相同的字符序列成为回文。例如：abcba就是回文。写程序使用栈判断给定的字符串序列是否是回文。</p>
+<h2>输入</h2>
+<p>第一行：输入整数n代表字符串字符个数（字符个数不超过1000个）。</p>
+<p>第二行：输入n个字符的字符串。</p>
+<h2>输出</h2>
+<p>如果字符串是回文字符串，请输出“Yes”，否则输出“No”。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;stack&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    
+    stack&lt;<span class="hljs-type">char</span>&gt; s;
+    string str;
+    cin &gt;&gt; str;
+    
+    <span class="hljs-comment">// 将前半部分字符入栈</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n/<span class="hljs-number">2</span>; i++) {
+        s.<span class="hljs-built_in">push</span>(str[i]);
+    }
+    
+    <span class="hljs-comment">// 比较后半部分字符</span>
+    <span class="hljs-type">int</span> start = (n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) ? n/<span class="hljs-number">2</span> : n/<span class="hljs-number">2</span> + <span class="hljs-number">1</span>;
+    <span class="hljs-type">bool</span> is_palindrome = <span class="hljs-literal">true</span>;
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (s.<span class="hljs-built_in">top</span>() != str[i]) {
+            is_palindrome = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+        s.<span class="hljs-built_in">pop</span>();
+    }
+    
+    cout &lt;&lt; (is_palindrome ? <span class="hljs-string">&quot;Yes&quot;</span> : <span class="hljs-string">&quot;No&quot;</span>) &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1790">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

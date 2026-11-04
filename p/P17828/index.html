@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P17828 [CSP-J 2026] 回文串 / string（民间数据） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 R 有一个长度为 的字符串 ，其中只包含小写英文字母。小 R 发现，虽然 可能很长，但它可以分成 个连续的段，其中第 段由 个小写英文字母 构成。把这 段依次拼接起来便得到 ，因此 。相邻两段中的字符可以相同。 小 X 喜欢回文串。若一个字符串反转后与原字符串相同，就称它是回文串，例如 aba…">
+<link rel="canonical" href="https://zymojblog.top/p/P17828/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P17828 [CSP-J 2026] 回文串 / string（民间数据） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 R 有一个长度为 的字符串 ，其中只包含小写英文字母。小 R 发现，虽然 可能很长，但它可以分成 个连续的段，其中第 段由 个小写英文字母 构成。把这 段依次拼接起来便得到 ，因此 。相邻两段中的字符可以相同。 小 X 喜欢回文串。若一个字符串反转后与原字符串相同，就称它是回文串，例如 aba…">
+<meta property="og:url" content="https://zymojblog.top/p/P17828/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P17828 [CSP-J 2026] 回文串 / string（民间数据） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 R 有一个长度为 的字符串 ，其中只包含小写英文字母。小 R 发现，虽然 可能很长，但它可以分成 个连续的段，其中第 段由 个小写英文字母 构成。把这 段依次拼接起来便得到 ，因此 。相邻两段中的字符可以相同。 小 X 喜欢回文串。若一个字符串反转后与原字符串相同，就称它是回文串，例如 aba…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P17828 [CSP-J 2026] 回文串 / string（民间数据）","headline":"P17828 [CSP-J 2026] 回文串 / string（民间数据） 题解","description":"小 R 有一个长度为 的字符串 ，其中只包含小写英文字母。小 R 发现，虽然 可能很长，但它可以分成 个连续的段，其中第 段由 个小写英文字母 构成。把这 段依次拼接起来便得到 ，因此 。相邻两段中的字符可以相同。 小 X 喜欢回文串。若一个字符串反转后与原字符串相同，就称它是回文串，例如 aba…","url":"https://zymojblog.top/p/P17828/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"O2优化、2026、CSP-J 入门级","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P17828</span></div>
+  <h1 class="seo-title">P17828 [CSP-J 2026] 回文串 / string（民间数据）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/CSP-J%20%E5%85%A5%E9%97%A8%E7%BA%A7">CSP-J 入门级</a></div>
+  <article class="markdown-body seo-article">
+<h1>P17828 [CSP-J 2026] 回文串 / string（民间数据）</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-11-01</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>O2优化</code>、<code>2026</code>、<code>CSP-J 入门级</code></p>
+<h2>题目描述</h2>
+<p>小 R 有一个长度为 $L$ 的字符串 $S=s_1\ldots s_L$，其中只包含小写英文字母。小 R 发现，虽然 $S$ 可能很长，但它可以分成 $n$ 个连续的段，其中第 $i\ (1\le i\le n)$ 段由 $a_i$ 个小写英文字母 $c_i$ 构成。把这 $n$ 段依次拼接起来便得到 $S$，因此 $L=\sum_{i=1}^{n}a_i$。相邻两段中的字符可以相同。</p>
+<p>小 X 喜欢回文串。若一个字符串反转后与原字符串相同，就称它是回文串，例如 <code>aba</code>、<code>abba</code> 都是回文串，而 <code>aabbc</code> 不是。也就是说，字符串 $S$ 是回文串，当且仅当对于所有 $i\ (1\le i\le L)$，均有 $s_i=s_{L+1-i}$。</p>
+<p>小 X 想让小 R 把 $S$ 改成回文串。小 R 可以将 $S$ 中任意一个位置的字符修改成任意小写英文字母。他想用尽量少的修改满足小 X 的要求。</p>
+<p>你需要帮助小 R 求出，他最少需要修改多少个位置的字符，才能将 $S$ 改成回文串。</p>
+<h2>输入格式</h2>
+<p>从文件 <code>string.in</code> 中读入数据。</p>
+<p>输入的第一行包含一个正整数 $n$。</p>
+<p>输入的第 $i+1\ (1\le i\le n)$ 行包含一个正整数 $a_i$ 和一个小写英文字母 $c_i$。</p>
+<h2>输出格式</h2>
+<p>输出到文件 <code>string.out</code> 中。</p>
+<p>输出一行一个整数，表示小 R 最少需要修改多少个位置的字符，才能将 $S$ 改成回文串。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">2</span> a
+<span class="hljs-number">2</span> b
+<span class="hljs-number">1</span> c```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">2</span> a
+<span class="hljs-number">3</span> a```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>0```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">1000000000</span> a
+<span class="hljs-number">1000000000</span> a
+<span class="hljs-number">1000000000</span> a
+<span class="hljs-number">1000000000</span> b
+<span class="hljs-number">1000000000</span> b
+<span class="hljs-number">1000000000</span> b```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>3000000000```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">200005</span>];     <span class="hljs-comment">// a[i]: 第 i 段的长度</span>
+<span class="hljs-type">char</span> c[<span class="hljs-number">200005</span>];          <span class="hljs-comment">// c[i]: 第 i 段的字符</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i] &gt;&gt; c[i];
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n;                  <span class="hljs-comment">// 左段编号、右段编号</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> cl = a[<span class="hljs-number">1</span>], cr = a[n];    <span class="hljs-comment">// 左右两段当前还没配对完的字符个数</span>
+
+    <span class="hljs-keyword">while</span> (l &lt; r) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> t = <span class="hljs-built_in">min</span>(cl, cr);     <span class="hljs-comment">// 这一次能批量配对 t 对</span>
+        <span class="hljs-keyword">if</span> (c[l] != c[r]) ans += t;    <span class="hljs-comment">// 字符不同，这 t 对每对都得改一个位置</span>
+        cl -= t;
+        cr -= t;
+        <span class="hljs-keyword">if</span> (cl == <span class="hljs-number">0</span>) { l++; cl = a[l]; }   <span class="hljs-comment">// 左段用完，换下一段</span>
+        <span class="hljs-keyword">if</span> (cr == <span class="hljs-number">0</span>) { r--; cr = a[r]; }   <span class="hljs-comment">// 右段用完，换上一段</span>
+    }
+    <span class="hljs-comment">// 结束时若 l == r，中间剩下的都属于同一段，字符全相同，不用改</span>
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P17828">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

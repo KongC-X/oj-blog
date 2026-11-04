@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3678 [语言月赛202211] Gold-Purple-Blue-Green-White 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="扶苏在游戏中的角色有一个被称为「精神力」的属性，初始时，这一属性为 。 扶苏的仓库里有 件挂件，对于第 件挂件，只有当人物的精神力不低于 时才能装备该挂件，装备该挂件后，人物的精神力会增加 。 现在，扶苏希望按照从 到 的顺序依次尝试装备每件挂件。策略是：当尝试装备某件挂件时，如果满足装备该挂件的…">
+<link rel="canonical" href="https://zymojblog.top/p/B3678/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3678 [语言月赛202211] Gold-Purple-Blue-Green-White 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="扶苏在游戏中的角色有一个被称为「精神力」的属性，初始时，这一属性为 。 扶苏的仓库里有 件挂件，对于第 件挂件，只有当人物的精神力不低于 时才能装备该挂件，装备该挂件后，人物的精神力会增加 。 现在，扶苏希望按照从 到 的顺序依次尝试装备每件挂件。策略是：当尝试装备某件挂件时，如果满足装备该挂件的…">
+<meta property="og:url" content="https://zymojblog.top/p/B3678/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3678 [语言月赛202211] Gold-Purple-Blue-Green-White 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="扶苏在游戏中的角色有一个被称为「精神力」的属性，初始时，这一属性为 。 扶苏的仓库里有 件挂件，对于第 件挂件，只有当人物的精神力不低于 时才能装备该挂件，装备该挂件后，人物的精神力会增加 。 现在，扶苏希望按照从 到 的顺序依次尝试装备每件挂件。策略是：当尝试装备某件挂件时，如果满足装备该挂件的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3678 [语言月赛202211] Gold-Purple-Blue-Green-White","headline":"B3678 [语言月赛202211] Gold-Purple-Blue-Green-White 题解","description":"扶苏在游戏中的角色有一个被称为「精神力」的属性，初始时，这一属性为 。 扶苏的仓库里有 件挂件，对于第 件挂件，只有当人物的精神力不低于 时才能装备该挂件，装备该挂件后，人物的精神力会增加 。 现在，扶苏希望按照从 到 的顺序依次尝试装备每件挂件。策略是：当尝试装备某件挂件时，如果满足装备该挂件的…","url":"https://zymojblog.top/p/B3678/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2022、O2优化、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3678</span></div>
+  <h1 class="seo-title">B3678 [语言月赛202211] Gold-Purple-Blue-Green-White</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3678 [语言月赛202211] Gold-Purple-Blue-Green-White</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-09-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>O2优化</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目背景</h2>
+<p>扶苏在玩一款名叫第五暖暖的游戏。</p>
+<h2>题目描述</h2>
+<p>扶苏在游戏中的角色有一个被称为「精神力」的属性，初始时，这一属性为 $x_0$。</p>
+<p>扶苏的仓库里有 $n$ 件挂件，对于第 $i$ 件挂件，只有当人物的精神力<strong>不低于</strong> $a_i$ 时才能装备该挂件，装备该挂件后，人物的精神力会<strong>增加</strong> $b_i$。</p>
+<p>现在，扶苏希望按照<strong>从 $1$ 到 $n$</strong> 的顺序<strong>依次</strong>尝试装备每件挂件。策略是：当尝试装备某件挂件时，如果满足装备该挂件的条件（也就是人物的精神力不低于 $a_i$），则装备该挂件（此时人物的精神力会增加 $b_i$）；否则不装备该挂件，以后也不再考虑该挂件。</p>
+<p>请你求出，扶苏一共装备了几件挂件。</p>
+<h2>输入格式</h2>
+<p>第一行是两个整数，表示挂件数量 $n$ 和初始的精神力 $x_0$。<br>第二行有 $n$ 个整数，第 $i$ 个整数表示装备挂件 $i$ 最少需要的精神力值 $a_i$。<br>第三行有 $n$ 个整数，第 $i$ 个整数表示装备挂件 $i$ 后增加的精神力值 $b_i$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示扶苏装备的挂件数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3678 [语言月赛202211] Gold-Purple-Blue-Green-White
+     * 题意：初始精神力为 x，有 n 件挂件，按顺序依次尝试装备。
+     *       若当前精神力 &gt;= a[i]，则装备，精神力增加 b[i]，答案+1；
+     *       否则跳过，以后不再考虑。
+     * 思路：直接 for 循环模拟，O(n)。
+     */</span>
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> x;
+    cin &gt;&gt; n &gt;&gt; x;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">100005</span>], b[<span class="hljs-number">100005</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; b[i];
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (x &gt;= a[i]) {
+            x += b[i];
+            ans++;
+        }
+        <span class="hljs-comment">// 否则跳过，不修改 x</span>
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3678">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

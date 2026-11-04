@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2074 货币问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
+<link rel="canonical" href="https://zymojblog.top/p/2074/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2074 货币问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
+<meta property="og:url" content="https://zymojblog.top/p/2074/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2074 货币问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2074 货币问题","headline":"2074 货币问题 题解","description":"某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？","url":"https://zymojblog.top/p/2074/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2074</span></div>
+  <h1 class="seo-title">2074 货币问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85">背包</a></div>
+  <article class="markdown-body seo-article">
+<h1>2074 - 货币问题</h1>
+<h2>题目描述</h2>
+<p>某国家有 $n$ 种不同面值的货币，第 $i$ 种货币价值 $a_i$ 元。</p>
+<p>请问：如果每种货币都提供任意多的数量的情况下，如果需要 $m$ 元金额的货币，有多少种不同的方案？</p>
+<h2>输入</h2>
+<p>第一行两个整数 $n$，$m$（$m \le 5000，n \le 100$)；</p>
+<p>以下 $n$ 行，每行一个整数，第 $i+1$ 行为第 $i$ 种货币的面值。</p>
+<h2>输出</h2>
+<p>一个整数，为方案数（方案数$ \le 10$$18$）。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+ 
+<span class="hljs-comment">//完全背包 </span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> f[<span class="hljs-number">5010</span>];
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n,m,v;
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    f[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//边界，组成0元有1种方案 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;v;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = v;j &lt;= m;j++){
+            f[j] = f[j] + f[j-v];
+        }
+    }
+     
+    cout&lt;&lt;f[m];
+     
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2074">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

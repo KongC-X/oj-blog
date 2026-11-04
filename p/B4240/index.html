@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4240 [海淀区小学组 2024] 最短字符串 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个仅由大小写字母构成的长度为 的字符串 ，求字符串 的一个子串 ，使得字符串 中包含字符串 中所有种类的字母（区分大小写），输出子串 的最小长度。例如，如果 ，则 中包含的不同种类的字母有 ， ， ， ， ，要子串中包含全部的这五类字母，则子串的索引区间为 ，即 中的第 个字符到第 个字符，…">
+<link rel="canonical" href="https://zymojblog.top/p/B4240/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4240 [海淀区小学组 2024] 最短字符串 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个仅由大小写字母构成的长度为 的字符串 ，求字符串 的一个子串 ，使得字符串 中包含字符串 中所有种类的字母（区分大小写），输出子串 的最小长度。例如，如果 ，则 中包含的不同种类的字母有 ， ， ， ， ，要子串中包含全部的这五类字母，则子串的索引区间为 ，即 中的第 个字符到第 个字符，…">
+<meta property="og:url" content="https://zymojblog.top/p/B4240/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4240 [海淀区小学组 2024] 最短字符串 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个仅由大小写字母构成的长度为 的字符串 ，求字符串 的一个子串 ，使得字符串 中包含字符串 中所有种类的字母（区分大小写），输出子串 的最小长度。例如，如果 ，则 中包含的不同种类的字母有 ， ， ， ， ，要子串中包含全部的这五类字母，则子串的索引区间为 ，即 中的第 个字符到第 个字符，…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4240 [海淀区小学组 2024] 最短字符串","headline":"B4240 [海淀区小学组 2024] 最短字符串 题解","description":"给定一个仅由大小写字母构成的长度为 的字符串 ，求字符串 的一个子串 ，使得字符串 中包含字符串 中所有种类的字母（区分大小写），输出子串 的最小长度。例如，如果 ，则 中包含的不同种类的字母有 ， ， ， ， ，要子串中包含全部的这五类字母，则子串的索引区间为 ，即 中的第 个字符到第 个字符，…","url":"https://zymojblog.top/p/B4240/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2025、北京、双指针 two-pointer、科创活动、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4240</span></div>
+  <h1 class="seo-title">B4240 [海淀区小学组 2024] 最短字符串</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%8C%97%E4%BA%AC">北京</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88%20two-pointer">双指针 two-pointer</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4240 [海淀区小学组 2024] 最短字符串</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-27</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>北京</code>、<code>双指针 two-pointer</code>、<code>科创活动</code>、<code>小学活动</code></p>
+<h2>题目背景</h2>
+<p>2024 年海淀区中小学生信息学竞赛小学组复赛题目，数据为洛谷自造。</p>
+<h2>题目描述</h2>
+<p>给定一个仅由大小写字母构成的长度为 $n$ 的字符串 $S$，求字符串 $S$ 的一个子串 $T$，使得字符串 $T$ 中包含字符串 $S$ 中所有种类的字母（区分大小写），输出子串 $T$ 的最小长度。例如，如果 $S = \tt{aabCce}$，则 $S$ 中包含的不同种类的字母有 $\tt a$，$\tt b$，$\tt C$，$\tt c$，$\tt e$，要子串中包含全部的这五类字母，则子串的索引区间为 $[2, 6]$，即 $S$ 中的第 $2$ 个字符到第 $6$ 个字符，即字符串 $\tt{abCce}$。</p>
+<h2>输入格式</h2>
+<p>第一行仅有一个整数 $n$，第二行包含一个符合题目要求的长度为 $n$ 的字符串 $S$。</p>
+<h2>输出格式</h2>
+<p>仅有一个不超过 $n$ 的正整数，表示符合题目要求的子串的最小长度。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+AaA```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+bcAAcbc```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+aaBCCe```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>5```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：
+      1. 读入字符串长度 n 和字符串 S。
+      2. 统计 S 中不同字母的总数 total（大小写区分，共52种可能）。
+      3. 使用滑动窗口（双指针）求最短子串长度：
+         - 右指针 r 向右移动，将 S[r] 加入窗口，更新计数。
+         - 当窗口内包含了全部 total 种字母时，尝试右移左指针 l 缩小窗口，
+           更新最短长度，直到窗口不再包含全部字母。
+         - 重复直到 r 遍历完整个字符串。
+      4. 输出最短子串长度。
+    */</span>
+
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// 字符串长度（其实用不到，但读入）</span>
+    string s;                  <span class="hljs-comment">// 输入的字符串</span>
+    cin &gt;&gt; n &gt;&gt; s;
+
+    <span class="hljs-comment">// 统计不同字母总数</span>
+    <span class="hljs-type">bool</span> vis[<span class="hljs-number">52</span>] = {<span class="hljs-literal">false</span>};    <span class="hljs-comment">// 标记每种字母是否出现过（0-25大写，26-51小写）</span>
+    <span class="hljs-type">int</span> total = <span class="hljs-number">0</span>;             <span class="hljs-comment">// 不同字母的总类数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> id;                <span class="hljs-comment">// 字母对应的索引</span>
+        <span class="hljs-keyword">if</span> (s[i] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; s[i] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>)
+            id = s[i] - <span class="hljs-string">&#x27;A&#x27;</span>;          <span class="hljs-comment">// 大写字母 0~25</span>
+        <span class="hljs-keyword">else</span>
+            id = <span class="hljs-number">26</span> + (s[i] - <span class="hljs-string">&#x27;a&#x27;</span>);   <span class="hljs-comment">// 小写字母 26~51</span>
+        <span class="hljs-keyword">if</span> (!vis[id]) {
+            vis[id] = <span class="hljs-literal">true</span>;
+            total++;
+        }
+    }
+
+    <span class="hljs-type">int</span> cnt[<span class="hljs-number">52</span>] = {<span class="hljs-number">0</span>};         <span class="hljs-comment">// 当前窗口内各字母的数量</span>
+    <span class="hljs-type">int</span> l = <span class="hljs-number">0</span>;                 <span class="hljs-comment">// 窗口左边界</span>
+    <span class="hljs-type">int</span> kind = <span class="hljs-number">0</span>;              <span class="hljs-comment">// 当前窗口内不同字母的种数</span>
+    <span class="hljs-type">int</span> ans = n;               <span class="hljs-comment">// 最短长度，初始最大可能值</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>; r &lt; n; r++) {
+        <span class="hljs-comment">// 将 s[r] 加入窗口</span>
+        <span class="hljs-type">int</span> id;
+        <span class="hljs-keyword">if</span> (s[r] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; s[r] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>)
+            id = s[r] - <span class="hljs-string">&#x27;A&#x27;</span>;
+        <span class="hljs-keyword">else</span>
+            id = <span class="hljs-number">26</span> + (s[r] - <span class="hljs-string">&#x27;a&#x27;</span>);
+
+        <span class="hljs-keyword">if</span> (cnt[id] == <span class="hljs-number">0</span>) kind++;   <span class="hljs-comment">// 新出现一种字母</span>
+        cnt[id]++;
+
+        <span class="hljs-comment">// 当窗口包含了全部种类，尝试缩小左边界</span>
+        <span class="hljs-keyword">while</span> (kind == total) {
+            <span class="hljs-comment">// 更新最短长度</span>
+            <span class="hljs-keyword">if</span> (r - l + <span class="hljs-number">1</span> &lt; ans) ans = r - l + <span class="hljs-number">1</span>;
+            <span class="hljs-comment">// 移动左边界，将 s[l] 移出窗口</span>
+            <span class="hljs-type">int</span> lid;
+            <span class="hljs-keyword">if</span> (s[l] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; s[l] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>)
+                lid = s[l] - <span class="hljs-string">&#x27;A&#x27;</span>;
+            <span class="hljs-keyword">else</span>
+                lid = <span class="hljs-number">26</span> + (s[l] - <span class="hljs-string">&#x27;a&#x27;</span>);
+            cnt[lid]--;
+            <span class="hljs-keyword">if</span> (cnt[lid] == <span class="hljs-number">0</span>) kind--; <span class="hljs-comment">// 该字母在窗口中消失</span>
+            l++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4240">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

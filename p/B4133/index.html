@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4133 [信息与未来 2014] 最大连续部分和 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个整数排成一排，求其中的最大连续部分和。 至少要选一个数。">
+<link rel="canonical" href="https://zymojblog.top/p/B4133/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4133 [信息与未来 2014] 最大连续部分和 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个整数排成一排，求其中的最大连续部分和。 至少要选一个数。">
+<meta property="og:url" content="https://zymojblog.top/p/B4133/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4133 [信息与未来 2014] 最大连续部分和 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个整数排成一排，求其中的最大连续部分和。 至少要选一个数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4133 [信息与未来 2014] 最大连续部分和","headline":"B4133 [信息与未来 2014] 最大连续部分和 题解","description":"有 个整数排成一排，求其中的最大连续部分和。 至少要选一个数。","url":"https://zymojblog.top/p/B4133/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、递推、2014、江苏、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4133</span></div>
+  <h1 class="seo-title">B4133 [信息与未来 2014] 最大连续部分和</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/2014">2014</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4133 [信息与未来 2014] 最大连续部分和</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-04-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>递推</code>、<code>2014</code>、<code>江苏</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>有 $n$ 个整数排成一排，求其中的最大连续部分和。</p>
+<p><strong>至少要选一个数。</strong></p>
+<h2>输入格式</h2>
+<p>第一行一个整数，表示 $n$。</p>
+<p>第二行 $n$ 个整数 $x_1,x_2,\cdots,x_n$，相邻两数之间有一个空格。</p>
+<h2>输出格式</h2>
+<p>一个整数（即最大的连续的部分和）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span>
+<span class="hljs-number">-2</span> <span class="hljs-number">13</span> <span class="hljs-number">12</span> <span class="hljs-number">9</span> <span class="hljs-number">14</span> <span class="hljs-number">-10</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>48```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span>    <span class="hljs-comment">// 使用 scanf 和 printf 快速读入输出</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;n);   <span class="hljs-comment">// 读入数字个数</span>
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> cur, ans;
+    <span class="hljs-type">int</span> x;
+
+    <span class="hljs-comment">// 先读入第一个数，作为初始值</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;x);
+    cur = ans = x;
+
+    <span class="hljs-comment">// 处理剩下的 n-1 个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;x);
+        <span class="hljs-comment">// 如果之前的和加上 x 比 x 本身大，就接上；否则从 x 重新开始</span>
+        <span class="hljs-keyword">if</span> (cur + x &gt; x) {
+            cur = cur + x;
+        } <span class="hljs-keyword">else</span> {
+            cur = x;
+        }
+        <span class="hljs-comment">// 更新最大和</span>
+        <span class="hljs-keyword">if</span> (cur &gt; ans) {
+            ans = cur;
+        }
+    }
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lld\n&quot;</span>, ans);  <span class="hljs-comment">// 输出 long long 用 %lld</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4133">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

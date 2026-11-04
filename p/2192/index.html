@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2192 哈夫曼树（2） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="哈夫曼树的定义是：一棵具有n个带权叶结点的二叉树，是的所有叶结点的带权路径长度（叶结点×叶结点到根结点的路径长度）之和最小，这样的二叉树被称为最优二叉树，也称哈夫曼树。 比如：有4个结点的权值是5 4 2 9，可以构建出如下三颗不同的二叉树，第2棵二叉树的带权路径长度是最小的。 请读入一个整数n，…">
+<link rel="canonical" href="https://zymojblog.top/p/2192/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2192 哈夫曼树（2） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="哈夫曼树的定义是：一棵具有n个带权叶结点的二叉树，是的所有叶结点的带权路径长度（叶结点×叶结点到根结点的路径长度）之和最小，这样的二叉树被称为最优二叉树，也称哈夫曼树。 比如：有4个结点的权值是5 4 2 9，可以构建出如下三颗不同的二叉树，第2棵二叉树的带权路径长度是最小的。 请读入一个整数n，…">
+<meta property="og:url" content="https://zymojblog.top/p/2192/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2192 哈夫曼树（2） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="哈夫曼树的定义是：一棵具有n个带权叶结点的二叉树，是的所有叶结点的带权路径长度（叶结点×叶结点到根结点的路径长度）之和最小，这样的二叉树被称为最优二叉树，也称哈夫曼树。 比如：有4个结点的权值是5 4 2 9，可以构建出如下三颗不同的二叉树，第2棵二叉树的带权路径长度是最小的。 请读入一个整数n，…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2192 哈夫曼树（2）","headline":"2192 哈夫曼树（2） 题解","description":"哈夫曼树的定义是：一棵具有n个带权叶结点的二叉树，是的所有叶结点的带权路径长度（叶结点×叶结点到根结点的路径长度）之和最小，这样的二叉树被称为最优二叉树，也称哈夫曼树。 比如：有4个结点的权值是5 4 2 9，可以构建出如下三颗不同的二叉树，第2棵二叉树的带权路径长度是最小的。 请读入一个整数n，…","url":"https://zymojblog.top/p/2192/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二叉树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2192</span></div>
+  <h1 class="seo-title">2192 哈夫曼树（2）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2192 - 哈夫曼树（2）</h1>
+<h2>题目描述</h2>
+<p>哈夫曼树的定义是：一棵具有n个带权叶结点的二叉树，是的所有叶结点的带权路径长度（叶结点×叶结点到根结点的路径长度）之和最小，这样的二叉树被称为最优二叉树，也称哈夫曼树。</p>
+<p>比如：有4个结点的权值是5 4 2 9，可以构建出如下三颗不同的二叉树，第2棵二叉树的带权路径长度是最小的。</p>
+<p>请读入一个整数n，代表叶结点的数量，再读入n个整数，代表叶结点的权值，请求出对应哈夫曼树的带权路径长度。</p>
+<h2>输入</h2>
+<p>第1行有一个整数m（m≤20），表示有m组测试数据。</p>
+<p>每组第一行输入一个数n，接着输入n个叶节点的权值（叶节点权值不超过100，2&lt;=n&lt;=1000）。</p>
+<h2>输出</h2>
+<p>输出每组数据对应哈夫曼树的带权路径长度，每行一个。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span>   <span class="hljs-comment">// priority_queue 需要</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span>  <span class="hljs-comment">// priority_queue 的底层容器</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> m;          <span class="hljs-comment">// 测试数据组数</span>
+    cin &gt;&gt; m;
+    
+    <span class="hljs-keyword">while</span> (m--){
+        <span class="hljs-type">int</span> n;      <span class="hljs-comment">// 叶结点个数</span>
+        cin &gt;&gt; n;
+        
+        <span class="hljs-comment">// 小顶堆：priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt;</span>
+        <span class="hljs-comment">// 默认是大顶堆（最大元素在堆顶），加 greater&lt;int&gt; 就变成小顶堆</span>
+        priority_queue&lt;<span class="hljs-type">int</span>, vector&lt;<span class="hljs-type">int</span>&gt;, greater&lt;<span class="hljs-type">int</span>&gt; &gt; pq;
+        
+        <span class="hljs-comment">// 读入 n 个叶结点的权值，放入小顶堆</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++){
+            <span class="hljs-type">int</span> x;  <span class="hljs-comment">// 临时存每个权值</span>
+            cin &gt;&gt; x;
+            pq.<span class="hljs-built_in">push</span>(x);
+        }
+        
+        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 存最终答案（带权路径长度 WPL）</span>
+        
+        <span class="hljs-comment">// 当堆中还有多于 1 个元素时，继续合并</span>
+        <span class="hljs-comment">// 只剩 1 个元素说明哈夫曼树已构建完成</span>
+        <span class="hljs-keyword">while</span> (pq.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">1</span>){
+            <span class="hljs-comment">// 取出当前最小的两个结点</span>
+            <span class="hljs-type">int</span> a = pq.<span class="hljs-built_in">top</span>(); pq.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> b = pq.<span class="hljs-built_in">top</span>(); pq.<span class="hljs-built_in">pop</span>();
+            
+            <span class="hljs-type">int</span> sum = a + b;   <span class="hljs-comment">// 合并后的新结点权值</span>
+            ans += sum;        <span class="hljs-comment">// ★ 关键：累加合并权值到答案中</span>
+            pq.<span class="hljs-built_in">push</span>(sum);      <span class="hljs-comment">// 新结点放回堆中</span>
+        }
+        
+        cout &lt;&lt; ans &lt;&lt; endl;   <span class="hljs-comment">// 输出每组的结果</span>
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2192">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

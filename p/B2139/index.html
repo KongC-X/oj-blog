@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2139 区间内的真素数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="找出正整数 和 之间（ ）的所有真素数。 真素数的定义：如果一个正整数 为素数，且其反序也为素数，那么 就为真素数。 例如， ， 均为真素数。因为 的反序还是 ，而 是素数； 的反序是 ，而 和 均为素数。">
+<link rel="canonical" href="https://zymojblog.top/p/B2139/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2139 区间内的真素数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="找出正整数 和 之间（ ）的所有真素数。 真素数的定义：如果一个正整数 为素数，且其反序也为素数，那么 就为真素数。 例如， ， 均为真素数。因为 的反序还是 ，而 是素数； 的反序是 ，而 和 均为素数。">
+<meta property="og:url" content="https://zymojblog.top/p/B2139/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2139 区间内的真素数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="找出正整数 和 之间（ ）的所有真素数。 真素数的定义：如果一个正整数 为素数，且其反序也为素数，那么 就为真素数。 例如， ， 均为真素数。因为 的反序还是 ，而 是素数； 的反序是 ，而 和 均为素数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2139 区间内的真素数","headline":"B2139 区间内的真素数 题解","description":"找出正整数 和 之间（ ）的所有真素数。 真素数的定义：如果一个正整数 为素数，且其反序也为素数，那么 就为真素数。 例如， ， 均为真素数。因为 的反序还是 ，而 是素数； 的反序是 ，而 和 均为素数。","url":"https://zymojblog.top/p/B2139/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2139</span></div>
+  <h1 class="seo-title">B2139 区间内的真素数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2139 区间内的真素数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>找出正整数 $M$ 和 $N$ 之间（$M\le N$）的所有真素数。</p>
+<p>真素数的定义：如果一个正整数 $P$ 为素数，且其反序也为素数，那么 $P$ 就为真素数。</p>
+<p>例如，$11$，$13$ 均为真素数。因为 $11$ 的反序还是 $11$，而 $11$ 是素数；$13$ 的反序是 $31$，而 $13$ 和 $31$ 均为素数。</p>
+<h2>输入格式</h2>
+<p>输入两个数 $M$ 和 $N$，空格间隔。</p>
+<h2>输出格式</h2>
+<p>按从小到大输出 $M$ 和 $N$ 之间（包括 $M$ 和 $N$）的真素数，逗号间隔。如果之间没有真素数，则输出 <code>No</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">35</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>11,13,17,31```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断一个数是否为素数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) {
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-comment">// 返回整数 x 的反序数（例如 13 -&gt; 31）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">revNum</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (x &gt; <span class="hljs-number">0</span>) {
+        r = r * <span class="hljs-number">10</span> + x % <span class="hljs-number">10</span>;
+        x /= <span class="hljs-number">10</span>;
+    }
+    <span class="hljs-keyword">return</span> r;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> M, N;
+    cin &gt;&gt; M &gt;&gt; N;
+
+    <span class="hljs-type">bool</span> first = <span class="hljs-literal">true</span>;               <span class="hljs-comment">// 控制是否输出逗号</span>
+    <span class="hljs-type">bool</span> found = <span class="hljs-literal">false</span>;              <span class="hljs-comment">// 是否找到至少一个真素数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = M; i &lt;= N; i++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isPrime</span>(i) &amp;&amp; <span class="hljs-built_in">isPrime</span>(<span class="hljs-built_in">revNum</span>(i))) {
+            <span class="hljs-keyword">if</span> (!first) cout &lt;&lt; <span class="hljs-string">&#x27;,&#x27;</span>;
+            cout &lt;&lt; i;
+            first = <span class="hljs-literal">false</span>;
+            found = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-keyword">if</span> (!found) cout &lt;&lt; <span class="hljs-string">&quot;No&quot;</span>;
+    cout &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2139">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

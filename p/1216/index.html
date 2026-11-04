@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1216 数塔问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有如下所示的数塔，要求从底层走到顶层，若每一步只能走到相邻的结点，则经过的结点的数字之和最大是多少？">
+<link rel="canonical" href="https://zymojblog.top/p/1216/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1216 数塔问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有如下所示的数塔，要求从底层走到顶层，若每一步只能走到相邻的结点，则经过的结点的数字之和最大是多少？">
+<meta property="og:url" content="https://zymojblog.top/p/1216/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1216 数塔问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有如下所示的数塔，要求从底层走到顶层，若每一步只能走到相邻的结点，则经过的结点的数字之和最大是多少？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1216 数塔问题","headline":"1216 数塔问题 题解","description":"有如下所示的数塔，要求从底层走到顶层，若每一步只能走到相邻的结点，则经过的结点的数字之和最大是多少？","url":"https://zymojblog.top/p/1216/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"递推、动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1216</span></div>
+  <h1 class="seo-title">1216 数塔问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">递推</span><span class="seo-badge seo-badge-soft">动态规划-DP</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>1216 - 数塔问题</h1>
+<h2>题目描述</h2>
+<p>有如下所示的数塔，要求从底层走到顶层，若每一步只能走到相邻的结点，则经过的结点的数字之和最大是多少？</p>
+<h2>输入</h2>
+<p>输入数据首先包括一个整数整数 $N$ ($1 \le N \le 100$)，表示数塔的高度，接下来用 $N$ 行数字表示数塔，其中第 $i$ 行有个 $i$ 个整数，且所有的整数均在区间 $[0,99]$ 内。</p>
+<h2>输出</h2>
+<p>从底层走到顶层经过的数字的最大和是多少？</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,a[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>],ma;
+<span class="hljs-type">int</span> d[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>]; 
+
+<span class="hljs-comment">// 深搜：从(1,1)开始，每次向下或向右走，求出所有路径和的最大值</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> sum)</span> </span>{
+    ma = <span class="hljs-built_in">max</span>(sum,ma);
+    <span class="hljs-comment">// 递归出口：当x &gt; n时，说明已经遍历完所有点</span>
+    <span class="hljs-keyword">if</span>(x &lt;= n) {
+        <span class="hljs-comment">// cout &lt;&lt; x &lt;&lt; &quot; &quot; &lt;&lt; y &lt;&lt; &quot; &quot; &lt;&lt; sum &lt;&lt; endl;</span>
+        <span class="hljs-comment">// 递归走：x+1,y 和 x+1,y+1</span>
+        <span class="hljs-built_in">dfs</span>(x+<span class="hljs-number">1</span>,y,sum+a[x+<span class="hljs-number">1</span>][y]);
+        <span class="hljs-built_in">dfs</span>(x+<span class="hljs-number">1</span>,y+<span class="hljs-number">1</span>,sum+a[x+<span class="hljs-number">1</span>][y+<span class="hljs-number">1</span>]);
+    }
+}
+
+<span class="hljs-comment">// d(x,y): 表示x,y点到底层经过的数字和的最大值</span>
+<span class="hljs-comment">// d(x,y) = a[x][y] + max(d(x+1,y),d(x+1,y+1))</span>
+
+<span class="hljs-comment">// 动态规划：递推求解</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun1</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> i,j;
+    <span class="hljs-comment">// 最后一层d[x][y] = a[x][y], 是问题的边界</span>
+    <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= n;j++) {
+        d[n][j] = a[n][j]; <span class="hljs-comment">// 赋值最后一层</span>
+    }
+    <span class="hljs-comment">// 从倒数第二层开始递推</span>
+    <span class="hljs-keyword">for</span>(i = n - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">1</span>;i--) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= i;j++) {
+            d[i][j] = a[i][j] + <span class="hljs-built_in">max</span>(d[i+<span class="hljs-number">1</span>][j],d[i+<span class="hljs-number">1</span>][j+<span class="hljs-number">1</span>]);
+        }
+    }
+}
+
+<span class="hljs-comment">// d(x,y) = a[x][y] + max(d(x+1,y),d(x+1,y+1))</span>
+<span class="hljs-comment">// 动态规划：递归求解</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fun2</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-comment">// 递归停止条件（出口）</span>
+    <span class="hljs-keyword">if</span>(x &lt; n) {
+        <span class="hljs-keyword">return</span> a[x][y] + <span class="hljs-built_in">max</span>(<span class="hljs-built_in">fun2</span>(x+<span class="hljs-number">1</span>,y),<span class="hljs-built_in">fun2</span>(x+<span class="hljs-number">1</span>,y+<span class="hljs-number">1</span>));
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// x == n 最后一层的解就是自己</span>
+        <span class="hljs-keyword">return</span> a[x][y];
+    }
+}
+
+<span class="hljs-comment">// 动态规划：递归求解+记忆化搜索</span>
+<span class="hljs-comment">// 求解每个点的值，先判断该点的值是否已经计算过，如果计算过，直接拿曾经计算的结果</span>
+<span class="hljs-comment">// 如果没有求解过，递归求解，并将结果保存到数组中</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">fun3</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-comment">// 最后一行的值就是自己，不需要递归</span>
+    <span class="hljs-keyword">if</span>(x == n) {
+        <span class="hljs-keyword">return</span> a[x][y];
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 如果该点的值已经计算过，直接拿</span>
+        <span class="hljs-keyword">if</span>(d[x][y] != <span class="hljs-number">-1</span>) {
+            <span class="hljs-keyword">return</span> d[x][y];
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 如果该点的值没有计算过，递归求解，并将结果保存到数组中</span>
+            d[x][y] = a[x][y] + <span class="hljs-built_in">max</span>(<span class="hljs-built_in">fun3</span>(x+<span class="hljs-number">1</span>,y),<span class="hljs-built_in">fun3</span>(x+<span class="hljs-number">1</span>,y+<span class="hljs-number">1</span>));
+            <span class="hljs-keyword">return</span> d[x][y];
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> i,j;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= i;j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-comment">// 方法一：深搜</span>
+    <span class="hljs-comment">// dfs(1,1,a[1][1]);</span>
+    <span class="hljs-comment">// cout &lt;&lt; ma &lt;&lt; endl;</span>
+
+    <span class="hljs-comment">// 方法二：动态规划(递推)</span>
+    <span class="hljs-comment">// fun1();</span>
+    <span class="hljs-comment">// cout &lt;&lt; d[1][1] &lt;&lt; endl;</span>
+
+    <span class="hljs-comment">// 方法三：动态规划(递归)</span>
+    <span class="hljs-comment">// cout &lt;&lt; fun2(1,1) &lt;&lt; endl;</span>
+
+    <span class="hljs-comment">// 方法四：动态规划(递归+记忆化搜索)</span>
+    <span class="hljs-comment">// 将d数组初始化为-1，方便判断是否已经计算过</span>
+    <span class="hljs-comment">// memset(数组，初始化的值，数组大小)：</span>
+    <span class="hljs-comment">// 将数组的值初始化，初始化的值只能是0或-1</span>
+    <span class="hljs-built_in">memset</span>(d,<span class="hljs-number">-1</span>,<span class="hljs-built_in">sizeof</span>(d));
+    <span class="hljs-comment">// for(i = 1;i &lt;= n;i++) {</span>
+    <span class="hljs-comment">//     for(j = 1;j &lt;= i;j++) {</span>
+    <span class="hljs-comment">//         cout &lt;&lt; d[i][j] &lt;&lt; &quot; &quot;;</span>
+    <span class="hljs-comment">//     }</span>
+    <span class="hljs-comment">//     cout &lt;&lt; endl;</span>
+    <span class="hljs-comment">// }</span>
+    cout &lt;&lt; <span class="hljs-built_in">fun3</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>) &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1216">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

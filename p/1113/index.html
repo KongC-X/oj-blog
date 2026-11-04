@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1113 隐藏的最大整数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="今天是个好日子，整数小伙伴们又一起出来聚会了。大家商议决定：今天玩捉迷藏！ 玩法很简单，就是把藏在一个长长的字符串中（任何两个人都不会并排藏在一起）数字伙伴找出来。而且，因为伙伴们太多，只找到此次藏起来的最大的那个伙伴就可以了。并且，大家一致同意，让 “ ” 做第一个找人的人——当然，事先，他并不…">
+<link rel="canonical" href="https://zymojblog.top/p/1113/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1113 隐藏的最大整数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="今天是个好日子，整数小伙伴们又一起出来聚会了。大家商议决定：今天玩捉迷藏！ 玩法很简单，就是把藏在一个长长的字符串中（任何两个人都不会并排藏在一起）数字伙伴找出来。而且，因为伙伴们太多，只找到此次藏起来的最大的那个伙伴就可以了。并且，大家一致同意，让 “ ” 做第一个找人的人——当然，事先，他并不…">
+<meta property="og:url" content="https://zymojblog.top/p/1113/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1113 隐藏的最大整数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="今天是个好日子，整数小伙伴们又一起出来聚会了。大家商议决定：今天玩捉迷藏！ 玩法很简单，就是把藏在一个长长的字符串中（任何两个人都不会并排藏在一起）数字伙伴找出来。而且，因为伙伴们太多，只找到此次藏起来的最大的那个伙伴就可以了。并且，大家一致同意，让 “ ” 做第一个找人的人——当然，事先，他并不…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1113 隐藏的最大整数","headline":"1113 隐藏的最大整数 题解","description":"今天是个好日子，整数小伙伴们又一起出来聚会了。大家商议决定：今天玩捉迷藏！ 玩法很简单，就是把藏在一个长长的字符串中（任何两个人都不会并排藏在一起）数字伙伴找出来。而且，因为伙伴们太多，只找到此次藏起来的最大的那个伙伴就可以了。并且，大家一致同意，让 “ ” 做第一个找人的人——当然，事先，他并不…","url":"https://zymojblog.top/p/1113/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1113</span></div>
+  <h1 class="seo-title">1113 隐藏的最大整数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1113 - 隐藏的最大整数</h1>
+<h2>题目描述</h2>
+<p>今天是个好日子，整数小伙伴们又一起出来聚会了。大家商议决定：今天玩捉迷藏！ 玩法很简单，就是把藏在一个长长的字符串中（任何两个人都不会并排藏在一起）数字伙伴找出来。而且，因为伙伴们太多，只找到此次藏起来的最大的那个伙伴就可以了。并且，大家一致同意，让 “$1$” 做第一个找人的人——当然，事先，他并不知道到底有哪些伙伴藏起来了…… 游戏开始了。</p>
+<p>“$1$” 是一个很聪明的人，很快，他就把最大的那个伙伴找出来了…… 如果你是 “$1$” ，你能写个程序来解决这件事情么？</p>
+<p>请注意：隐藏在字符串中的整数不会以$0$开头，也就是不存在这种字符串 $<em>a032AB342$ ，且读入的字符串*<em>不含空格</em></em>。</p>
+<h2>输入</h2>
+<p>只有一个字符串，这里面藏有很多的整数小伙伴。（字符串长度$≤100$，且<strong>不含空格</strong>）</p>
+<p>测试数据中不存在多个一样大的整数，且测试数据中包含的整数<strong>可能超过 $20$ 位</strong>。</p>
+<h2>输出</h2>
+<p>只有一个整数，表示藏在其中的最大的那个整数小伙伴的位置（整数第一个数字在原串中的位置）。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s,s1,max;
+    <span class="hljs-type">int</span> p = <span class="hljs-number">0</span>,i;
+    <span class="hljs-type">bool</span> flag = <span class="hljs-literal">false</span>;
+    <span class="hljs-built_in">getline</span>(cin,s);
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; s.<span class="hljs-built_in">size</span>();i++) {
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">isdigit</span>(s[i])) {
+            s1 += s[i];
+            <span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isdigit</span>(s[i+<span class="hljs-number">1</span>])) {
+                <span class="hljs-comment">// cout &lt;&lt; s1 &lt;&lt; endl;</span>
+                <span class="hljs-keyword">if</span>(s1.<span class="hljs-built_in">size</span>() &gt; max.<span class="hljs-built_in">size</span>()) {
+                    max = s1;
+                    p = i + <span class="hljs-number">1</span> - max.<span class="hljs-built_in">size</span>();
+                }
+                s1 = <span class="hljs-string">&quot;&quot;</span>;
+            }
+        }
+    }
+    cout &lt;&lt; p + <span class="hljs-number">1</span> &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1113">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

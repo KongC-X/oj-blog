@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1678 烦恼的高考志愿 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="现有 所学校，其中第 所学校的预计分数线为 。有 位学生，其中第 位学生的估分为 。 根据 位学生的估分情况，分别给每位学生推荐一所学校，要求学校的预计分数线和学生的估分相差最小（可高可低，毕竟是估分嘛），这个最小值为这位学生的不满意度。求所有学生的不满意度的和。">
+<link rel="canonical" href="https://zymojblog.top/p/P1678/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1678 烦恼的高考志愿 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="现有 所学校，其中第 所学校的预计分数线为 。有 位学生，其中第 位学生的估分为 。 根据 位学生的估分情况，分别给每位学生推荐一所学校，要求学校的预计分数线和学生的估分相差最小（可高可低，毕竟是估分嘛），这个最小值为这位学生的不满意度。求所有学生的不满意度的和。">
+<meta property="og:url" content="https://zymojblog.top/p/P1678/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1678 烦恼的高考志愿 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="现有 所学校，其中第 所学校的预计分数线为 。有 位学生，其中第 位学生的估分为 。 根据 位学生的估分情况，分别给每位学生推荐一所学校，要求学校的预计分数线和学生的估分相差最小（可高可低，毕竟是估分嘛），这个最小值为这位学生的不满意度。求所有学生的不满意度的和。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1678 烦恼的高考志愿","headline":"P1678 烦恼的高考志愿 题解","description":"现有 所学校，其中第 所学校的预计分数线为 。有 位学生，其中第 位学生的估分为 。 根据 位学生的估分情况，分别给每位学生推荐一所学校，要求学校的预计分数线和学生的估分相差最小（可高可低，毕竟是估分嘛），这个最小值为这位学生的不满意度。求所有学生的不满意度的和。","url":"https://zymojblog.top/p/P1678/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、贪心、二分、排序","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1678</span></div>
+  <h1 class="seo-title">P1678 烦恼的高考志愿</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-6】二分查找与二分答案</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1678 烦恼的高考志愿</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>贪心</code>、<code>二分</code>、<code>排序</code></p>
+<h2>题目背景</h2>
+<p>计算机竞赛小组的神牛 V 神终于结束了高考，然而作为班长的他还不能闲下来，班主任老 t 给了他一个艰巨的任务：帮同学找出最合理的大学填报方案。可是 V 神太忙了，身后还有一群小姑娘等着和他约会，于是他想到了同为计算机竞赛小组的你，请你帮他完成这个艰巨的任务。</p>
+<h2>题目描述</h2>
+<p>现有 $m$ 所学校，其中第 $i$ 所学校的预计分数线为 $a_i$。有 $n$ 位学生，其中第 $i$ 位学生的估分为 $b_i$。</p>
+<p>根据 $n$ 位学生的估分情况，分别给每位学生推荐一所学校，要求学校的预计分数线和学生的估分相差最小（可高可低，毕竟是估分嘛），这个最小值为这位学生的不满意度。求所有学生的不满意度的和。</p>
+<h2>输入格式</h2>
+<p>第一行包含两个正整数 $m,n$，分别表示学校数和学生数。</p>
+<p>第二行包含 $m$ 个非负整数 $a_1,a_2,\dots,a_m$，分别表示 $m$ 所学校的预计分数线。</p>
+<p>第三行包含 $n$ 个非负整数 $b_1,b_2,\dots,b_n$，分别表示 $n$ 位学生的估分。</p>
+<h2>输出格式</h2>
+<p>输出一行一个非负整数，表示所有学生的不满意度的和。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">3</span>
+<span class="hljs-number">513</span> <span class="hljs-number">598</span> <span class="hljs-number">567</span> <span class="hljs-number">689</span>
+<span class="hljs-number">500</span> <span class="hljs-number">600</span> <span class="hljs-number">550</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">32</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// lower_bound(开始查询的位置【闭区间】，结束查询的位置【开区间】，查询的数)-数组指针; 可以返回查询到的数的数组下标。</span>
+<span class="hljs-comment">// 如果没有大于等于待查元素的值,函数会输出结束查询的位置.</span>
+
+<span class="hljs-type">int</span> a,b,c[<span class="hljs-number">100010</span>],d,e,f,g,h,i,j,k,l;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;a&gt;&gt;b;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=a;i++){
+        cin&gt;&gt;c[i];
+    }
+    <span class="hljs-built_in">sort</span>(c+<span class="hljs-number">1</span>,c+a+<span class="hljs-number">1</span>); <span class="hljs-comment">// 先排序</span>
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=b;i++) {
+        cin&gt;&gt;d;
+        e=<span class="hljs-built_in">lower_bound</span>(c+<span class="hljs-number">1</span>,c+a+<span class="hljs-number">1</span>,d)-c;<span class="hljs-comment">//返回查询到的位置</span>
+        <span class="hljs-keyword">if</span>(e==a+<span class="hljs-number">1</span>){
+            ans+=d-c[a];<span class="hljs-comment">//特判比所有数都大的情况</span>
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(e==<span class="hljs-number">1</span>){<span class="hljs-comment">//特判比所有数都小的情况</span>
+            ans+=c[<span class="hljs-number">1</span>]-d;
+        } <span class="hljs-keyword">else</span> {
+            ans+=<span class="hljs-built_in">min</span>(<span class="hljs-built_in">abs</span>(c[e]-d),<span class="hljs-built_in">abs</span>(d-c[e<span class="hljs-number">-1</span>]));
+        }
+    }
+    cout&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1678">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

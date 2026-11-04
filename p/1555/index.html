@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1555 洗牌 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小明把 ( 为偶数)张牌按编号顺序 排成一堆，然后开始洗牌。一次洗牌的过程如下: 1.对于一堆牌编号为 ，首先将牌分成均匀的两堆: 和 , , (其中 ) 2.然后按顺序交叉插入: , , , , 洗牌过程总共重复了 次，请你编程帮助小明模拟洗牌的过程。 例如 ，初始时牌堆中牌的编号为 。 首次洗…">
+<link rel="canonical" href="https://zymojblog.top/p/1555/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1555 洗牌 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小明把 ( 为偶数)张牌按编号顺序 排成一堆，然后开始洗牌。一次洗牌的过程如下: 1.对于一堆牌编号为 ，首先将牌分成均匀的两堆: 和 , , (其中 ) 2.然后按顺序交叉插入: , , , , 洗牌过程总共重复了 次，请你编程帮助小明模拟洗牌的过程。 例如 ，初始时牌堆中牌的编号为 。 首次洗…">
+<meta property="og:url" content="https://zymojblog.top/p/1555/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1555 洗牌 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小明把 ( 为偶数)张牌按编号顺序 排成一堆，然后开始洗牌。一次洗牌的过程如下: 1.对于一堆牌编号为 ，首先将牌分成均匀的两堆: 和 , , (其中 ) 2.然后按顺序交叉插入: , , , , 洗牌过程总共重复了 次，请你编程帮助小明模拟洗牌的过程。 例如 ，初始时牌堆中牌的编号为 。 首次洗…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1555 洗牌","headline":"1555 洗牌 题解","description":"小明把 ( 为偶数)张牌按编号顺序 排成一堆，然后开始洗牌。一次洗牌的过程如下: 1.对于一堆牌编号为 ，首先将牌分成均匀的两堆: 和 , , (其中 ) 2.然后按顺序交叉插入: , , , , 洗牌过程总共重复了 次，请你编程帮助小明模拟洗牌的过程。 例如 ，初始时牌堆中牌的编号为 。 首次洗…","url":"https://zymojblog.top/p/1555/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"省赛、数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1555</span></div>
+  <h1 class="seo-title">1555 洗牌</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1555 - 洗牌</h1>
+<h2>题目描述</h2>
+<p>小明把 $n$ ($n$ 为偶数)张牌按编号顺序 $1, 2, 3, ..., n$ 排成一堆，然后开始洗牌。一次洗牌的过程如下:</p>
+<p>1.对于一堆牌编号为 $a_1, a_2, ..., a_n$，首先将牌分成均匀的两堆:</p>
+<p>$a_1, a_2, ..., a_m$ 和 $a$$m+1$, $a$$m+2$, $...$, $a_n$ (其中$m=n/2$)</p>
+<p>2.然后按顺序交叉插入:</p>
+<p>$a_1$,$a$$m+1$,$a_2$,$a$$m+2$,$...$,$a_m$,$a_n$</p>
+<p>洗牌过程总共重复了 $k$ 次，请你编程帮助小明模拟洗牌的过程。</p>
+<p>例如 $n = 6$，初始时牌堆中牌的编号为 $1, 2, 3, 4, 5, 6$。</p>
+<p>首次洗牌时，会将牌分成 $1, 2, 3$ 和 $4, 5, 6$ 两堆，交叉插入后的结果为 $1, 4, 2, 5, 3, 6$。</p>
+<p>再次洗牌，会将牌分成 $1, 4, 2$ 和 $5, 3, 6$ 两堆。交叉插入后得到 $1, 5, 4, 3, 2, 6$。</p>
+<h2>输入</h2>
+<p>正整数 $n$ (牌的数量), $k$ (洗牌的次数), $x$ (牌的位置)。$1 ≤ n, k ≤ 1,000$，$1 ≤ x ≤ n$， 保证 $n$ 是偶数。</p>
+<h2>输出</h2>
+<p>$n$ 张牌洗牌 $k$ 次后，牌堆中第 $x$ 张牌的编号。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n, k, p, a[<span class="hljs-number">1010</span>], t[<span class="hljs-number">1010</span>], x;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin &gt;&gt; n &gt;&gt; k &gt;&gt; p;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    {
+        a[i] = i;
+    } 
+    <span class="hljs-comment">//洗牌k次</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++)
+    {
+        <span class="hljs-comment">//前半部分，从后往前依次插入奇数位</span>
+        x = n - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = n / <span class="hljs-number">2</span>; j &gt;= <span class="hljs-number">1</span>; j--)
+        {
+            t[x] = a[j];
+            x -= <span class="hljs-number">2</span>;
+        }
+        <span class="hljs-comment">//后半部分，从前往后依次插入偶数位</span>
+        x = <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = n / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>; j &lt;= n; j++)
+        {
+            t[x] = a[j];
+            x += <span class="hljs-number">2</span>;
+        }
+        <span class="hljs-comment">//将洗好的牌，更新到a数组中</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++)
+        {
+            a[j] = t[j];
+        }
+    }
+    cout &lt;&lt; a[p];
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1555">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

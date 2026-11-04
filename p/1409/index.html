@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1409 棋盘里的麦子 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="传说西塔发明了国际象棋而使国王十分高兴，他决定要重赏西塔，西塔说：“我不要你的重赏 ，陛下，只要你在我的棋盘上赏一些麦子就行了。 在棋盘的第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，依此类推，以后每一个格子里放的麦粒数都是前一个格子里放的麦粒数的 倍，直到…">
+<link rel="canonical" href="https://zymojblog.top/p/1409/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1409 棋盘里的麦子 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="传说西塔发明了国际象棋而使国王十分高兴，他决定要重赏西塔，西塔说：“我不要你的重赏 ，陛下，只要你在我的棋盘上赏一些麦子就行了。 在棋盘的第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，依此类推，以后每一个格子里放的麦粒数都是前一个格子里放的麦粒数的 倍，直到…">
+<meta property="og:url" content="https://zymojblog.top/p/1409/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1409 棋盘里的麦子 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="传说西塔发明了国际象棋而使国王十分高兴，他决定要重赏西塔，西塔说：“我不要你的重赏 ，陛下，只要你在我的棋盘上赏一些麦子就行了。 在棋盘的第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，依此类推，以后每一个格子里放的麦粒数都是前一个格子里放的麦粒数的 倍，直到…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1409 棋盘里的麦子","headline":"1409 棋盘里的麦子 题解","description":"传说西塔发明了国际象棋而使国王十分高兴，他决定要重赏西塔，西塔说：“我不要你的重赏 ，陛下，只要你在我的棋盘上赏一些麦子就行了。 在棋盘的第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，在第 个格子里放 粒，依此类推，以后每一个格子里放的麦粒数都是前一个格子里放的麦粒数的 倍，直到…","url":"https://zymojblog.top/p/1409/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"高精度算法","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1409</span></div>
+  <h1 class="seo-title">1409 棋盘里的麦子</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%AE%97%E6%B3%95">高精度算法</a></div>
+  <article class="markdown-body seo-article">
+<h1>1409 - 棋盘里的麦子</h1>
+<h2>题目描述</h2>
+<p>传说西塔发明了国际象棋而使国王十分高兴，他决定要重赏西塔，西塔说：“我不要你的重赏 ，陛下，只要你在我的棋盘上赏一些麦子就行了。</p>
+<p>在棋盘的第 $1$ 个格子里放 $1$ 粒，在第 $2$ 个格子里放$2$ 粒，在第 $3$ 个格子里放 $4$ 粒，在第 $4$ 个格子里放 $8$ 粒，依此类推，以后每一个格子里放的麦粒数都是前一个格子里放的麦粒数的 $2$ 倍，直到放满第 $64$ 个格子就行了”。</p>
+<p>“区区小数，几粒麦子，这有何难，来人”，国王令人如数付给西塔。</p>
+<p>计数麦粒的工作开始了，第一格内放 $1$ 粒，第二格内放 $2$ 粒第三格内放 $4$粒，$ \dots $ 还没有到第二十格，一袋麦子已经空了。</p>
+<p>一袋又一袋的麦子被扛到国王面前来。但是，麦粒数一格接一格飞快增长着，国王很快就看出，即便拿出全国的粮食，也兑现不了他对西塔的诺言。</p>
+<p>请你编程帮助国王计算出，第 $n$ 个棋盘格子中需要放多少粒麦子？</p>
+<h2>输入</h2>
+<p>一个整数 $n$ 代表第 $n$ 格棋盘（$n \le 100$ ）</p>
+<h2>输出</h2>
+<p>一个整数，代表第 $n$ 格棋盘中麦子的总数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">100</span>] = {<span class="hljs-number">1</span>};
+<span class="hljs-type">int</span> n,k = <span class="hljs-number">1</span>,i,j;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>; j &lt; k; j++) {
+            a[j] = a[j] * <span class="hljs-number">2</span>;
+        }
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; k;j++) {
+            <span class="hljs-keyword">if</span>(a[j] &gt;= <span class="hljs-number">10</span>) {
+                a[j+<span class="hljs-number">1</span>] += a[j] / <span class="hljs-number">10</span>;
+                a[j] = a[j] % <span class="hljs-number">10</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span>(a[k] != <span class="hljs-number">0</span>) {
+            k++;
+        }
+    }
+    <span class="hljs-keyword">for</span>(i = k - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--) {
+        cout &lt;&lt; a[i];
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1409">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

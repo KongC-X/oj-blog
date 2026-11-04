@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10709 [NOISG 2024 Prelim] Party 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="James 有 个朋友，他想选择其中的 个或者更多朋友来参加他的聚会。第 个朋友如果参加了他的聚会，会产生 点快乐值。注意：有些朋友并不想参加聚会，所以他们的 会是负的。 然而，他家只有一排 个座位，而且因为社交距离，两个人不能坐在相邻的座位上。现在 James 想知道，如果他按照最优方案邀请朋友…">
+<link rel="canonical" href="https://zymojblog.top/p/P10709/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10709 [NOISG 2024 Prelim] Party 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="James 有 个朋友，他想选择其中的 个或者更多朋友来参加他的聚会。第 个朋友如果参加了他的聚会，会产生 点快乐值。注意：有些朋友并不想参加聚会，所以他们的 会是负的。 然而，他家只有一排 个座位，而且因为社交距离，两个人不能坐在相邻的座位上。现在 James 想知道，如果他按照最优方案邀请朋友…">
+<meta property="og:url" content="https://zymojblog.top/p/P10709/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10709 [NOISG 2024 Prelim] Party 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="James 有 个朋友，他想选择其中的 个或者更多朋友来参加他的聚会。第 个朋友如果参加了他的聚会，会产生 点快乐值。注意：有些朋友并不想参加聚会，所以他们的 会是负的。 然而，他家只有一排 个座位，而且因为社交距离，两个人不能坐在相邻的座位上。现在 James 想知道，如果他按照最优方案邀请朋友…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10709 [NOISG 2024 Prelim] Party","headline":"P10709 [NOISG 2024 Prelim] Party 题解","description":"James 有 个朋友，他想选择其中的 个或者更多朋友来参加他的聚会。第 个朋友如果参加了他的聚会，会产生 点快乐值。注意：有些朋友并不想参加聚会，所以他们的 会是负的。 然而，他家只有一排 个座位，而且因为社交距离，两个人不能坐在相邻的座位上。现在 James 想知道，如果他按照最优方案邀请朋友…","url":"https://zymojblog.top/p/P10709/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、贪心、2024、排序、NOISG（新加坡）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10709</span></div>
+  <h1 class="seo-title">P10709 [NOISG 2024 Prelim] Party</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/NOISG%EF%BC%88%E6%96%B0%E5%8A%A0%E5%9D%A1%EF%BC%89">NOISG（新加坡）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10709 [NOISG 2024 Prelim] Party</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-05</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>贪心</code>、<code>2024</code>、<code>排序</code>、<code>NOISG（新加坡）</code></p>
+<h2>题目背景</h2>
+<p>翻译自 <a href="https://github.com/noisg/noi-2024-prelim">NOI SG 2024 Prelim B.Party</a>。</p>
+<h2>题目描述</h2>
+<p>James 有 $n$ 个朋友，他想选择其中的 $0$ 个或者更多朋友来参加他的聚会。第 $i$ 个朋友如果参加了他的聚会，会产生 $a_i$ 点快乐值。注意：有些朋友并不想参加聚会，所以他们的 $a_i$ 会是负的。</p>
+<p>然而，他家只有一排 $n$ 个座位，而且因为社交距离，两个人不能坐在相邻的座位上。现在 James 想知道，如果他按照最优方案邀请朋友，这些朋友的快乐值的和最大为多少。</p>
+<h2>输入格式</h2>
+<p>第一行，一个整数 $n$。</p>
+<p>第二行 $n$ 个整数，表示 $a$。</p>
+<h2>输出格式</h2>
+<p>一行一个整数，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">-1</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>12```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>
+<span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>10```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">-3</span> <span class="hljs-number">2</span> <span class="hljs-number">10</span> <span class="hljs-number">-4</span> <span class="hljs-number">9</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>21```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 比较函数：用于降序排序（从大到小）</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> p, <span class="hljs-type">long</span> <span class="hljs-type">long</span> q)</span> </span>{
+    <span class="hljs-keyword">return</span> p &gt; q;   <span class="hljs-comment">// 如果 p &gt; q 返回 true，说明 p 排在 q 前面</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】贪心 + 排序
+     * 【核心思路】
+     * 1. 因为两个人不能坐相邻座位，所以最多能邀请的人数 = (n + 1) / 2（即 ceil(n/2)）。
+     * 2. 我们只关心快乐值，座位可以任意分配，因此可以从所有朋友中任选不超过最大人数的朋友。
+     * 3. 为了让快乐值和最大，肯定只会选正数（负数会降低总和），而且选最大的若干正数。
+     * 4. 步骤：
+     *    - 读入每个数，如果是正数就存入数组 pos 中，同时记录正数个数 cnt。
+     *    - 如果 cnt &lt;= 最大可坐人数，则全部正数相加即为答案。
+     *    - 否则，将 pos 数组降序排序，取前 maxPeople 个正数相加。
+     * 5. 如果没有任何正数，答案就是 0（因为可以选择 0 个朋友）。
+     *
+     * 【时间复杂度】O(n log n)（最坏情况所有数都是正数，需要排序）
+     * 【空间复杂度】O(n)
+     */</span>
+
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> pos[<span class="hljs-number">200005</span>];   <span class="hljs-comment">// 存放所有正数（最多 n 个）</span>
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;             <span class="hljs-comment">// cnt: 正数的个数</span>
+
+    <span class="hljs-comment">// 读入所有快乐值，只保留正数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> x;
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">if</span> (x &gt; <span class="hljs-number">0</span>) {
+            pos[cnt] = x;
+            cnt++;
+        }
+    }
+
+    <span class="hljs-comment">// 最多能邀请的人数</span>
+    <span class="hljs-type">int</span> maxPeople = (n + <span class="hljs-number">1</span>) / <span class="hljs-number">2</span>;   <span class="hljs-comment">// 相当于 ceil(n/2)</span>
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 最终答案</span>
+
+    <span class="hljs-keyword">if</span> (cnt &lt;= maxPeople) {
+        <span class="hljs-comment">// 所有正数都能邀请，直接求和</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cnt; i++) {
+            ans += pos[i];
+        }
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 正数太多，只能选最大的 maxPeople 个</span>
+        <span class="hljs-built_in">sort</span>(pos, pos + cnt, cmp);   <span class="hljs-comment">// 降序排序</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; maxPeople; i++) {
+            ans += pos[i];
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10709">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

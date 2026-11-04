@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11376 [GESP202412 六级] 运送物资 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨管理着 辆货车，每辆货车每天需要向 A 市和 B 市运送若干次物资。小杨同时拥有 个运输站点，这些站点位于 A 市和 B 市之间。 每次运送物资时，货车从初始运输站点出发，前往 A 市或 B 市，之后返回初始运输站点。A 市、B 市和运输站点的位置可以视作数轴上的三个点，其中 A 市的坐标为 …">
+<link rel="canonical" href="https://zymojblog.top/p/P11376/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11376 [GESP202412 六级] 运送物资 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨管理着 辆货车，每辆货车每天需要向 A 市和 B 市运送若干次物资。小杨同时拥有 个运输站点，这些站点位于 A 市和 B 市之间。 每次运送物资时，货车从初始运输站点出发，前往 A 市或 B 市，之后返回初始运输站点。A 市、B 市和运输站点的位置可以视作数轴上的三个点，其中 A 市的坐标为 …">
+<meta property="og:url" content="https://zymojblog.top/p/P11376/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11376 [GESP202412 六级] 运送物资 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨管理着 辆货车，每辆货车每天需要向 A 市和 B 市运送若干次物资。小杨同时拥有 个运输站点，这些站点位于 A 市和 B 市之间。 每次运送物资时，货车从初始运输站点出发，前往 A 市或 B 市，之后返回初始运输站点。A 市、B 市和运输站点的位置可以视作数轴上的三个点，其中 A 市的坐标为 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11376 [GESP202412 六级] 运送物资","headline":"P11376 [GESP202412 六级] 运送物资 题解","description":"小杨管理着 辆货车，每辆货车每天需要向 A 市和 B 市运送若干次物资。小杨同时拥有 个运输站点，这些站点位于 A 市和 B 市之间。 每次运送物资时，货车从初始运输站点出发，前往 A 市或 B 市，之后返回初始运输站点。A 市、B 市和运输站点的位置可以视作数轴上的三个点，其中 A 市的坐标为 …","url":"https://zymojblog.top/p/P11376/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、2024、排序、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11376</span></div>
+  <h1 class="seo-title">P11376 [GESP202412 六级] 运送物资</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11376 [GESP202412 六级] 运送物资</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-17</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2024</code>、<code>排序</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1170">https://ti.luogu.com.cn/problemset/1170</a></p>
+<h2>题目描述</h2>
+<p>小杨管理着 $m$ 辆货车，每辆货车每天需要向 A 市和 B 市运送若干次物资。小杨同时拥有 $n$ 个运输站点，这些站点位于 A 市和 B 市之间。</p>
+<p>每次运送物资时，货车从初始运输站点出发，前往 A 市或 B 市，之后返回初始运输站点。A 市、B 市和运输站点的位置可以视作数轴上的三个点，其中 A 市的坐标为 $0$，B 市的坐标为 $x$，运输站点的坐标为 $p$ 且有 $0 \lt p \lt x$。货车每次去 A 市运送物资的总行驶路程为 $2p$，去 B 市运送物资的总行驶路程为 $2(x - p)$。</p>
+<p>对于第 $i$ 个运输站点，其位置为 $p_i$ 且至多作为 $c_i$ 辆车的初始运输站点。小杨想知道，在最优分配每辆货车的初始运输站点的情况下，所有货车每天的最短总行驶路程是多少。</p>
+<h2>输入格式</h2>
+<p>第一行包含三个正整数 $n,m,x$，代表运输站点数量、货车数量和两市距离。</p>
+<p>之后 $n$ 行，每行包含两个正整数 $p_i$ 和 $c_i$，代表第 $i$ 个运输站点的位置和最多容纳车辆数。</p>
+<p>之后 $m$ 行，每行包含两个正整数 $a_i$ 和 $b_i$，代表第 $i$ 辆货车每天需要向 A 市运送 $a_i$ 次物资，向 B 市运送 $b_i$ 次物资。</p>
+<h2>输出格式</h2>
+<p>输出一个正整数，代表所有货车每天的最短总行驶路程。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">10</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">8</span> <span class="hljs-number">3</span>
+<span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">7</span> <span class="hljs-number">2</span>
+<span class="hljs-number">9</span> <span class="hljs-number">0</span>
+<span class="hljs-number">1</span> <span class="hljs-number">10000</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>40186```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100005</span>;
+
+<span class="hljs-comment">// 结构体复用：站点和车辆都用此结构体</span>
+<span class="hljs-comment">// 站点：p 为位置，c 为容量</span>
+<span class="hljs-comment">// 车辆：p 为去 A 市的次数 a_i，c 为去 B 市的次数 b_i</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    ll p;
+    <span class="hljs-type">int</span> c;
+} a[MAXN], b[MAXN];               <span class="hljs-comment">// a[] 站点，b[] 货车</span>
+
+<span class="hljs-comment">// 排序比较函数1：站点按位置 p 从小到大排序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp1</span><span class="hljs-params">(Node u, Node v)</span> </span>{
+    <span class="hljs-keyword">return</span> u.p &lt; v.p;
+}
+
+<span class="hljs-comment">// 排序比较函数2：车辆按 |a_i - b_i| 从大到小排序</span>
+<span class="hljs-comment">// 绝对值越大，说明对站点位置的敏感度越高，应优先分配极值站点</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp2</span><span class="hljs-params">(Node u, Node v)</span> </span>{
+    ll du = <span class="hljs-built_in">abs</span>(u.p - u.c);       <span class="hljs-comment">// |a_i - b_i|，u.p 为 a_i，u.c 为 b_i</span>
+    ll dv = <span class="hljs-built_in">abs</span>(v.p - v.c);
+    <span class="hljs-keyword">return</span> du &gt; dv;               <span class="hljs-comment">// 降序排列</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, m;
+    ll x;                         <span class="hljs-comment">// A、B两市距离</span>
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; x;
+
+    <span class="hljs-comment">// 读入 n 个运输站点</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; a[i].p &gt;&gt; a[i].c;  <span class="hljs-comment">// 位置、容量</span>
+    }
+
+    <span class="hljs-comment">// 读入 m 辆车的运输需求</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        cin &gt;&gt; b[i].p &gt;&gt; b[i].c;  <span class="hljs-comment">// a_i, b_i</span>
+    }
+
+    <span class="hljs-comment">// ==================== 解题思路 ====================</span>
+    <span class="hljs-comment">// 设第 i 辆车分配给位置为 p 的站点，去 A 市 a_i 次，去 B 市 b_i 次。</span>
+    <span class="hljs-comment">// 总路程 = Σ [2*a_i*p + 2*b_i*(x-p)] = 2 * [ Σ (a_i - b_i)*p + x*Σ b_i ]。</span>
+    <span class="hljs-comment">// 常数项 x*Σ b_i 不变，因此只需最小化 S = Σ w_i * p_i，其中 w_i = a_i - b_i。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 贪心策略：</span>
+    <span class="hljs-comment">// 1. 站点按位置 p 升序排列。</span>
+    <span class="hljs-comment">// 2. 车辆按 |w_i| 从大到小排序（即对路程影响越大的车越优先挑选站点）。</span>
+    <span class="hljs-comment">// 3. 对于 w_i &gt; 0（去 A 次数多），应分配最小的 p，使 w_i*p 尽量小（正权配小值）。</span>
+    <span class="hljs-comment">//    对于 w_i &lt; 0（去 B 次数多），应分配最大的 p，因为 w_i 为负，配大 p 会使乘积更负，从而 S 更小。</span>
+    <span class="hljs-comment">//    对于 w_i = 0，p 无所谓，总路程贡献恒为 2*x*b_i。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 具体实现：</span>
+    <span class="hljs-comment">// - 用双指针 l=1（最左，最小 p）和 r=n（最右，最大 p）。</span>
+    <span class="hljs-comment">// - 遍历排序后的车辆，若 w_i &gt; 0 则从左指针取站点（跳过容量已满的站点）；</span>
+    <span class="hljs-comment">//   若 w_i &lt; 0 则从右指针取站点；若 w_i = 0 则不需要站点位置（直接加常数项）。</span>
+    <span class="hljs-comment">// - 每次取站点时，容量减 1，并累加该车产生的路程（此处先累加一半，最后再乘 2）。</span>
+    <span class="hljs-comment">// ================================================</span>
+
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + n + <span class="hljs-number">1</span>, cmp1);        <span class="hljs-comment">// 站点按位置升序</span>
+    <span class="hljs-built_in">sort</span>(b + <span class="hljs-number">1</span>, b + m + <span class="hljs-number">1</span>, cmp2);        <span class="hljs-comment">// 车辆按 |a-b| 降序</span>
+
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n;                    <span class="hljs-comment">// 左右指针</span>
+    ll ans = <span class="hljs-number">0</span>;                          <span class="hljs-comment">// 累加未乘2的总路程</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        ll ai = b[i].p;                  <span class="hljs-comment">// 去A次数</span>
+        ll bi = b[i].c;                  <span class="hljs-comment">// 去B次数</span>
+
+        <span class="hljs-keyword">if</span> (ai == bi) {                  <span class="hljs-comment">// 权重为0，位置无影响</span>
+            <span class="hljs-comment">// 贡献为 2 * bi * x，先加 bi * x，最后统一乘2</span>
+            ans += bi * x;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ai &gt; bi) {            <span class="hljs-comment">// w_i &gt; 0，需配最小 p</span>
+            <span class="hljs-comment">// 跳过容量已用完的左侧站点</span>
+            <span class="hljs-keyword">while</span> (l &lt;= r &amp;&amp; a[l].c == <span class="hljs-number">0</span>) l++;
+            a[l].c--;                    <span class="hljs-comment">// 占用一个容量</span>
+            <span class="hljs-comment">// 总路程（一半）= bi*x + (ai-bi)*p</span>
+            ans += bi * x + (ai - bi) * a[l].p;
+        } <span class="hljs-keyword">else</span> {                         <span class="hljs-comment">// ai &lt; bi，w_i &lt; 0，需配最大 p</span>
+            <span class="hljs-comment">// 跳过容量已用完的右侧站点</span>
+            <span class="hljs-keyword">while</span> (l &lt;= r &amp;&amp; a[r].c == <span class="hljs-number">0</span>) r--;
+            a[r].c--;
+            <span class="hljs-comment">// 这里 (ai-bi) 为负，加负数即相当于减去</span>
+            ans += bi * x + (ai - bi) * a[r].p;
+        }
+    }
+
+    <span class="hljs-comment">// 之前计算的是实际路程的一半，输出时乘2</span>
+    cout &lt;&lt; ans * <span class="hljs-number">2</span> &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11376">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

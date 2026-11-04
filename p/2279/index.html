@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2279 数字变换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个包含 个数字（ ）的字符串，例如 ，请将 变换到它。 你可以采取 种操作进行变换 交换相邻的两个数字。 将一个数字加 。如果加 后大于 ，则变为 。 将一个数字加倍。如果加倍后大于 ,则将其变为加倍后的结果除以 的余数。 最多只能用第 种操作 次，第 种操作 次 求最少经过多少次操作可以完…">
+<link rel="canonical" href="https://zymojblog.top/p/2279/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2279 数字变换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个包含 个数字（ ）的字符串，例如 ，请将 变换到它。 你可以采取 种操作进行变换 交换相邻的两个数字。 将一个数字加 。如果加 后大于 ，则变为 。 将一个数字加倍。如果加倍后大于 ,则将其变为加倍后的结果除以 的余数。 最多只能用第 种操作 次，第 种操作 次 求最少经过多少次操作可以完…">
+<meta property="og:url" content="https://zymojblog.top/p/2279/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2279 数字变换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个包含 个数字（ ）的字符串，例如 ，请将 变换到它。 你可以采取 种操作进行变换 交换相邻的两个数字。 将一个数字加 。如果加 后大于 ，则变为 。 将一个数字加倍。如果加倍后大于 ,则将其变为加倍后的结果除以 的余数。 最多只能用第 种操作 次，第 种操作 次 求最少经过多少次操作可以完…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2279 数字变换","headline":"2279 数字变换 题解","description":"给定一个包含 个数字（ ）的字符串，例如 ，请将 变换到它。 你可以采取 种操作进行变换 交换相邻的两个数字。 将一个数字加 。如果加 后大于 ，则变为 。 将一个数字加倍。如果加倍后大于 ,则将其变为加倍后的结果除以 的余数。 最多只能用第 种操作 次，第 种操作 次 求最少经过多少次操作可以完…","url":"https://zymojblog.top/p/2279/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2279</span></div>
+  <h1 class="seo-title">2279 数字变换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2279 - 数字变换</h1>
+<h2>题目描述</h2>
+<p>给定一个包含 $5$ 个数字（$0 \sim 9$）的字符串，例如 $02943$ ，请将 $12345$ 变换到它。 你可以采取 $3$ 种操作进行变换 </p>
+<ul>
+<li><p>交换相邻的两个数字。</p>
+</li>
+<li><p>将一个数字加 $1$ 。如果加 $1$ 后大于 $9$ ，则变为 $0$ 。 </p>
+</li>
+<li><p>将一个数字加倍。如果加倍后大于 $9$ ,则将其变为加倍后的结果除以 $10$ 的余数。</p>
+</li>
+</ul>
+<p>最多只能用第 $2$ 种操作 $3$ 次，第 $3$ 种操作 $2$ 次 求最少经过多少次操作可以完成变换。</p>
+<h2>输入</h2>
+<p>有最多 $100000$ 组数据，每组数据就是包含 $5$ 个数字的字符串。</p>
+<h2>输出</h2>
+<p>对每组数据，输出将 $12345$ 变换到给定字符串所需要的最少操作步数。如果无法变换成功，输出 $-1$。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXS = <span class="hljs-number">100000</span>;          <span class="hljs-comment">// 状态总数 00000~99999</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXA = <span class="hljs-number">4</span>;               <span class="hljs-comment">// 操作2最多使用3次，数组维0..3</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXB = <span class="hljs-number">3</span>;               <span class="hljs-comment">// 操作3最多使用2次，数组维0..2</span>
+<span class="hljs-type">int</span> dist[MAXS][MAXA][MAXB];       <span class="hljs-comment">// -1 表示不可达</span>
+
+<span class="hljs-comment">// 五个位置的权值：万位到个位</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> p[<span class="hljs-number">5</span>] = {<span class="hljs-number">10000</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">100</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>};
+
+<span class="hljs-comment">// BFS队列（可用三个数组或结构体）</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> s;     <span class="hljs-comment">// 数字状态 0~99999</span>
+    <span class="hljs-type">int</span> a;     <span class="hljs-comment">// 已使用操作2的次数</span>
+    <span class="hljs-type">int</span> b;     <span class="hljs-comment">// 已使用操作3的次数</span>
+};
+Node q[MAXS * MAXA * MAXB];       <span class="hljs-comment">// 队列大小足够</span>
+<span class="hljs-type">int</span> head, tail;
+
+<span class="hljs-comment">// 辅助函数：获取数 s 的第 i 位数字（i=0..4 万位到个位）</span>
+<span class="hljs-function"><span class="hljs-keyword">inline</span> <span class="hljs-type">int</span> <span class="hljs-title">get_digit</span><span class="hljs-params">(<span class="hljs-type">int</span> s, <span class="hljs-type">int</span> i)</span> </span>{
+    <span class="hljs-keyword">return</span> (s / p[i]) % <span class="hljs-number">10</span>;
+}
+
+<span class="hljs-comment">// 将新状态尝试加入队列</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">try_push</span><span class="hljs-params">(<span class="hljs-type">int</span> s, <span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b, <span class="hljs-type">int</span> d)</span> </span>{
+    <span class="hljs-keyword">if</span> (dist[s][a][b] == <span class="hljs-number">-1</span>) {
+        dist[s][a][b] = d;
+        q[tail++] = {s, a, b};
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// 初始化 dist 为 -1</span>
+    <span class="hljs-built_in">memset</span>(dist, <span class="hljs-number">-1</span>, <span class="hljs-built_in">sizeof</span>(dist));
+
+    <span class="hljs-comment">// 初始状态：12345，未使用操作2和3</span>
+    <span class="hljs-type">int</span> start = <span class="hljs-number">12345</span>;
+    dist[start][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    head = tail = <span class="hljs-number">0</span>;
+    q[tail++] = {start, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+
+    <span class="hljs-comment">// BFS</span>
+    <span class="hljs-keyword">while</span> (head &lt; tail) {
+        Node cur = q[head++];
+        <span class="hljs-type">int</span> s = cur.s, a = cur.a, b = cur.b;
+        <span class="hljs-type">int</span> d = dist[s][a][b];
+
+        <span class="hljs-comment">// 操作1：交换相邻两位（i 和 i+1，i=0..3）</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-type">int</span> d1 = <span class="hljs-built_in">get_digit</span>(s, i);
+            <span class="hljs-type">int</span> d2 = <span class="hljs-built_in">get_digit</span>(s, i + <span class="hljs-number">1</span>);
+            <span class="hljs-comment">// 计算新状态：交换两个数字</span>
+            <span class="hljs-type">int</span> s2 = s - d1 * p[i] - d2 * p[i + <span class="hljs-number">1</span>] + d1 * p[i + <span class="hljs-number">1</span>] + d2 * p[i];
+            <span class="hljs-built_in">try_push</span>(s2, a, b, d + <span class="hljs-number">1</span>);
+        }
+
+        <span class="hljs-comment">// 操作2：某一位数字加1模10，最多还能用3-a次</span>
+        <span class="hljs-keyword">if</span> (a &lt; <span class="hljs-number">3</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+                <span class="hljs-type">int</span> cur_d = <span class="hljs-built_in">get_digit</span>(s, i);
+                <span class="hljs-type">int</span> nxt_d = (cur_d + <span class="hljs-number">1</span>) % <span class="hljs-number">10</span>;
+                <span class="hljs-type">int</span> s2 = s - cur_d * p[i] + nxt_d * p[i];
+                <span class="hljs-built_in">try_push</span>(s2, a + <span class="hljs-number">1</span>, b, d + <span class="hljs-number">1</span>);
+            }
+        }
+
+        <span class="hljs-comment">// 操作3：某一位数字加倍模10，最多还能用2-b次</span>
+        <span class="hljs-keyword">if</span> (b &lt; <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+                <span class="hljs-type">int</span> cur_d = <span class="hljs-built_in">get_digit</span>(s, i);
+                <span class="hljs-type">int</span> nxt_d = (cur_d * <span class="hljs-number">2</span>) % <span class="hljs-number">10</span>;
+                <span class="hljs-type">int</span> s2 = s - cur_d * p[i] + nxt_d * p[i];
+                <span class="hljs-built_in">try_push</span>(s2, a, b + <span class="hljs-number">1</span>, d + <span class="hljs-number">1</span>);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 处理查询</span>
+    string target;
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; target) {
+        <span class="hljs-comment">// 将目标字符串转为整数（自动忽略前导零，与状态表示兼容）</span>
+        <span class="hljs-type">int</span> t = <span class="hljs-built_in">stoi</span>(target);
+        <span class="hljs-type">int</span> ans = <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a = <span class="hljs-number">0</span>; a &lt;= <span class="hljs-number">3</span>; a++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> b = <span class="hljs-number">0</span>; b &lt;= <span class="hljs-number">2</span>; b++) {
+                <span class="hljs-keyword">if</span> (dist[t][a][b] != <span class="hljs-number">-1</span>) {
+                    <span class="hljs-keyword">if</span> (ans == <span class="hljs-number">-1</span> || dist[t][a][b] &lt; ans) {
+                        ans = dist[t][a][b];
+                    }
+                }
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2279">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

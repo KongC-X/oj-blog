@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2183 求二叉树的深度及遍历结果 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="从键盘读入一棵二叉树，请问这棵二叉树的深度是多少？这棵二叉树如果后序遍历的结果是什么？">
+<link rel="canonical" href="https://zymojblog.top/p/2183/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2183 求二叉树的深度及遍历结果 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="从键盘读入一棵二叉树，请问这棵二叉树的深度是多少？这棵二叉树如果后序遍历的结果是什么？">
+<meta property="og:url" content="https://zymojblog.top/p/2183/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2183 求二叉树的深度及遍历结果 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="从键盘读入一棵二叉树，请问这棵二叉树的深度是多少？这棵二叉树如果后序遍历的结果是什么？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2183 求二叉树的深度及遍历结果","headline":"2183 求二叉树的深度及遍历结果 题解","description":"从键盘读入一棵二叉树，请问这棵二叉树的深度是多少？这棵二叉树如果后序遍历的结果是什么？","url":"https://zymojblog.top/p/2183/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二叉树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2183</span></div>
+  <h1 class="seo-title">2183 求二叉树的深度及遍历结果</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2183 - 求二叉树的深度及遍历结果</h1>
+<h2>题目描述</h2>
+<p>从键盘读入一棵二叉树，请问这棵二叉树的深度是多少？这棵二叉树如果后序遍历的结果是什么？</p>
+<h2>输入</h2>
+<p>第 $1$ 行输入一个整数 $n$ ，代表读入的数据数量。（$n≤100$）</p>
+<p>第 $2$ 行读入 $n$ 个非负整数，代表读入的数据，读入的整数中，如果值大于 $0$ ，代表的是二叉树的结点，如果值等于$0$ ，代表当前结点为空。（根结点的深度为 $1$ ）</p>
+<p>二叉树的构造按照层次顺序（即第 $1$ 层 $1$ 个整数，第 $2$ 层 $2$ 个，第 $3$ 层 $4$ 个，第 $4$ 层有 $8$ 个$...$，如果某个结点不存在以 $0$ 代替）。</p>
+<p>样例数据确保读入的第 $n$ 个整数 $&gt;0$。</p>
+<h2>输出</h2>
+<p>输出有 $2$ 行；</p>
+<p>第 $1$ 行输出该二叉树的深度；</p>
+<p>第 $2$ 行输出后序遍历二叉树得到的序列，数字之间用空格隔开；</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+用数组读入二叉树
+i号结点的左孩子一定是：2*i
+i号结点的有孩子一定是：2*i+1 
+*/</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">110</span>;
+<span class="hljs-type">int</span> a[N];
+<span class="hljs-type">int</span> n; 
+
+<span class="hljs-comment">//后序遍历</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-keyword">if</span>(x*<span class="hljs-number">2</span>&lt;=n&amp;&amp;a[x*<span class="hljs-number">2</span>]) <span class="hljs-built_in">dfs</span>(x*<span class="hljs-number">2</span>);
+    <span class="hljs-keyword">if</span>(x*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>&lt;=n&amp;&amp;a[x*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>]) <span class="hljs-built_in">dfs</span>(x*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>);
+    cout&lt;&lt;a[x]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;<span class="hljs-comment">//左右根 </span>
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    
+    <span class="hljs-comment">//int(log2(n)) + 1</span>
+    cout&lt;&lt;(<span class="hljs-type">int</span>)<span class="hljs-built_in">log2</span>(n) + <span class="hljs-number">1</span>&lt;&lt;endl;
+    <span class="hljs-comment">//后序遍历的结果 </span>
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>);<span class="hljs-comment">//从下标（编号）为1的点开始深搜 </span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2183">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

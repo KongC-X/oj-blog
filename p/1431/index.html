@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1431 迷宫的第一条出路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="已知一 的迷宫，允许往上、下、左、右四个方向行走，现请你按照左、上、右、下顺序进行搜索，找出第一条从左上角到右下角的路径。">
+<link rel="canonical" href="https://zymojblog.top/p/1431/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1431 迷宫的第一条出路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="已知一 的迷宫，允许往上、下、左、右四个方向行走，现请你按照左、上、右、下顺序进行搜索，找出第一条从左上角到右下角的路径。">
+<meta property="og:url" content="https://zymojblog.top/p/1431/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1431 迷宫的第一条出路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="已知一 的迷宫，允许往上、下、左、右四个方向行走，现请你按照左、上、右、下顺序进行搜索，找出第一条从左上角到右下角的路径。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1431 迷宫的第一条出路","headline":"1431 迷宫的第一条出路 题解","description":"已知一 的迷宫，允许往上、下、左、右四个方向行走，现请你按照左、上、右、下顺序进行搜索，找出第一条从左上角到右下角的路径。","url":"https://zymojblog.top/p/1431/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜、递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1431</span></div>
+  <h1 class="seo-title">1431 迷宫的第一条出路</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>1431 - 迷宫的第一条出路</h1>
+<h2>题目描述</h2>
+<p>已知一 $N \times N$ 的迷宫，允许往上、下、左、右四个方向行走，现请你<strong>按照左、上、右、下顺序</strong>进行搜索，找出第一条从左上角到右下角的路径。</p>
+<h2>输入</h2>
+<p>输入数据有若干行，第一行有一个自然数 $N$（$N≤20$），表示迷宫的大小；</p>
+<p>其后有 $N$ 行数据，每行有 $N$ 个 $0$ 或 $1$（<strong>数字之间没有空格</strong>，$0$ 表示可以通过，$1$ 表示不能通过），用以描述迷宫地图。入口在左上角 $(1,1) $处，出口在右下角$(N,N)$ 处。</p>
+<p>所有迷宫保证存在从入口到出口的可行路径。</p>
+<h2>输出</h2>
+<p>输出数据仅一行，为按照要求的搜索顺序找到的从入口到出口的第一条路径（搜索顺序：左、上、右、下）。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-type">char</span> a[<span class="hljs-number">50</span>][<span class="hljs-number">50</span>]; <span class="hljs-comment">// 初值为\0，存地图</span>
+<span class="hljs-type">int</span> r[<span class="hljs-number">410</span>][<span class="hljs-number">3</span>]; <span class="hljs-comment">// 记录正确的第一条路径</span>
+
+<span class="hljs-comment">// 本题按照左上右下顺序</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">// k是路径数组的下标</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> k)</span> </span>{
+    r[k][<span class="hljs-number">1</span>] = x;
+    r[k][<span class="hljs-number">2</span>] = y;
+    a[x][y] = <span class="hljs-string">&#x27;1&#x27;</span>; <span class="hljs-comment">// 访问过的点标记为1</span>
+    <span class="hljs-comment">// 如果x,y是终点，则输出</span>
+    <span class="hljs-keyword">if</span>(x == n &amp;&amp; y == n) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) {
+            cout &lt;&lt; <span class="hljs-string">&quot;(&quot;</span> &lt;&lt;  r[i][<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-string">&quot;,&quot;</span> &lt;&lt; r[i][<span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-string">&quot;)&quot;</span>;
+            <span class="hljs-keyword">if</span>(i != k) cout &lt;&lt; <span class="hljs-string">&quot;-&gt;&quot;</span>;
+        }
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-type">int</span> tx,ty;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">4</span>; i++) {
+        tx = x + fx[i];
+        ty = y + fy[i];
+        <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-string">&#x27;0&#x27;</span>) {
+            <span class="hljs-built_in">dfs</span>(tx,ty,k+<span class="hljs-number">1</span>);
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1431">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

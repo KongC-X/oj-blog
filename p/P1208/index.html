@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1208 [USACO1.3] Mixing Milk 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores s…">
+<link rel="canonical" href="https://zymojblog.top/p/P1208/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1208 [USACO1.3] Mixing Milk 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores s…">
+<meta property="og:url" content="https://zymojblog.top/p/P1208/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1208 [USACO1.3] Mixing Milk 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores s…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1208 [USACO1.3] Mixing Milk","headline":"P1208 [USACO1.3] Mixing Milk 题解","description":"The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores s…","url":"https://zymojblog.top/p/P1208/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1208</span></div>
+  <h1 class="seo-title">P1208 [USACO1.3] Mixing Milk</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-5】贪心</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1208 [USACO1.3] Mixing Milk</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>The Merry Milk Makers company buys milk from farmers, packages it into attractive 1- and 2-Unit bottles, and then sells that milk to grocery stores so we can each start our day with delicious cereal and milk.</p>
+<p>Since milk packaging is such a difficult business in which to make money, it is important to keep the costs as low as possible. Help Merry Milk Makers purchase the farmers&#39; milk in the cheapest possible manner. The MMM company has an extraordinarily talented marketing department and knows precisely how much milk they need each day to package for their customers.</p>
+<p>The company has contracts with several farmers from whom they may purchase milk, and each farmer has a different price at which they sell milk to the packing plant. A herd of cows can only produce so much milk each day, so the farmers already know how much milk they will have available.</p>
+<p>Each day, Merry Milk Makers can purchase an integer number of units of milk from each farmer, a number that is always less than or equal to the farmer&#39;s limit. This might be the entire production from that farmer, none of the production, or any integer in between.</p>
+<p>Given:</p>
+<ul>
+<li>the Merry Milk Makers&#39; daily requirement of milk,</li>
+<li>the cost per unit for milk from each farmer,</li>
+<li>the amount of milk available from each farmer,</li>
+</ul>
+<p>Calculate the minimum amount of money that Merry Milk Makers must spend to meet their daily need for milk.</p>
+<p>Note: The total milk produced per day by the farmers will always be sufficient to meet the demands of the Merry Milk Makers even if the prices are high.</p>
+<h2>输入格式</h2>
+<ul>
+<li>Line 1: Two integers, $N$ and $M$.</li>
+</ul>
+<p>The first value, $N$ ($0 \le N \le 2000000$) is the amount of milk that Merry Milk Makers wants per day.</p>
+<p>The second, $M$ ($0 \le M \le 5000$) is the number of farmers that they may buy from.</p>
+<ul>
+<li>Lines 2 through $M+1$: The next $M$ lines each contain two integers: $P_i$ and $A_i$.</li>
+</ul>
+<p>$P_i$ ($0 \le P_i \le 1000$) is price in cents that farmer $i$ charges.</p>
+<p>$A_i$ ($0 \le A_i \le 2000000$) is the amount of milk that farmer $i$ can sell to Merry Milk Makers per day.</p>
+<h2>输出格式</h2>
+<p>A single line with a single integer that is the minimum cost that Merry Milk Makers must pay for one day&#39;s milk.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">100</span> <span class="hljs-number">5</span>
+<span class="hljs-number">5</span> <span class="hljs-number">20</span>
+<span class="hljs-number">9</span> <span class="hljs-number">40</span>
+<span class="hljs-number">3</span> <span class="hljs-number">10</span>
+<span class="hljs-number">8</span> <span class="hljs-number">80</span>
+<span class="hljs-number">6</span> <span class="hljs-number">30</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">630</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 奶农结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Farmer</span> {
+    <span class="hljs-type">int</span> p;  <span class="hljs-comment">// 单价</span>
+    <span class="hljs-type">int</span> a;  <span class="hljs-comment">// 供应量</span>
+};
+
+<span class="hljs-comment">// 比较函数：按单价升序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Farmer f1, Farmer f2)</span> </span>{
+    <span class="hljs-keyword">return</span> f1.p &lt; f2.p;  <span class="hljs-comment">// 单价低的排前面</span>
+}
+
+Farmer f[<span class="hljs-number">5005</span>];  <span class="hljs-comment">// 最多5000个奶农</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m;  <span class="hljs-comment">// n: 需要总量, m: 奶农数</span>
+    cin &gt;&gt; n &gt;&gt; m;
+    
+    <span class="hljs-comment">// 读入奶农信息</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        cin &gt;&gt; f[i].p &gt;&gt; f[i].a;
+    }
+    
+    <span class="hljs-comment">// 按牛奶单价升序排序（贪心：先买便宜的）</span>
+    <span class="hljs-built_in">sort</span>(f, f + m, cmp);
+    
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;     <span class="hljs-comment">// 总花费</span>
+    <span class="hljs-type">int</span> need = n;    <span class="hljs-comment">// 还需要多少牛奶</span>
+    
+    <span class="hljs-comment">// 贪心购买：从单价最低的开始买</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m &amp;&amp; need &gt; <span class="hljs-number">0</span>; i++) {
+        <span class="hljs-keyword">if</span> (f[i].a &lt;= need) {
+            <span class="hljs-comment">// 买光这个奶农的所有牛奶</span>
+            ans += f[i].p * f[i].a;
+            need -= f[i].a;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 只需要买部分就够用了</span>
+            ans += f[i].p * need;
+            need = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 需求已满足</span>
+        }
+    }
+    
+    cout &lt;&lt; ans &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1208">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

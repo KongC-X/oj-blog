@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5391 最长连续段 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="对于 个整数构成的数组 ，如果对 都有 ，那么称数组 是一个连续段。 给定由 个整数构成的数组 ，你可以任意重排数组 中元素顺序。请问在重排顺序之后， 所有是连续段的子数组中，最长的子数组长度是多少？ 例如，对于数组 ，可以将其重排为 ，有以下 个子数组： 其中除 以外的子数组均是连续段，因此是连…">
+<link rel="canonical" href="https://zymojblog.top/p/5391/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="5391 最长连续段 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="对于 个整数构成的数组 ，如果对 都有 ，那么称数组 是一个连续段。 给定由 个整数构成的数组 ，你可以任意重排数组 中元素顺序。请问在重排顺序之后， 所有是连续段的子数组中，最长的子数组长度是多少？ 例如，对于数组 ，可以将其重排为 ，有以下 个子数组： 其中除 以外的子数组均是连续段，因此是连…">
+<meta property="og:url" content="https://zymojblog.top/p/5391/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5391 最长连续段 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="对于 个整数构成的数组 ，如果对 都有 ，那么称数组 是一个连续段。 给定由 个整数构成的数组 ，你可以任意重排数组 中元素顺序。请问在重排顺序之后， 所有是连续段的子数组中，最长的子数组长度是多少？ 例如，对于数组 ，可以将其重排为 ，有以下 个子数组： 其中除 以外的子数组均是连续段，因此是连…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"5391 最长连续段","headline":"5391 最长连续段 题解","description":"对于 个整数构成的数组 ，如果对 都有 ，那么称数组 是一个连续段。 给定由 个整数构成的数组 ，你可以任意重排数组 中元素顺序。请问在重排顺序之后， 所有是连续段的子数组中，最长的子数组长度是多少？ 例如，对于数组 ，可以将其重排为 ，有以下 个子数组： 其中除 以外的子数组均是连续段，因此是连…","url":"https://zymojblog.top/p/5391/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP四级、贪心、25年9月","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>5391</span></div>
+  <h1 class="seo-title">5391 最长连续段</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E5%9B%9B%E7%BA%A7">GESP四级</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/25%E5%B9%B49%E6%9C%88">25年9月</a></div>
+  <article class="markdown-body seo-article">
+<h1>5391 - 最长连续段</h1>
+<h2>题目描述</h2>
+<p>对于 $k$ 个整数构成的数组 $[b_1, b_2, \ldots, b_k]$，如果对  都有 $b_{i+1} = b_i + 1$，那么称数组 $b$ 是一个连续段。</p>
+<p>给定由 $n$ 个整数构成的数组 $[a_1, a_2, \ldots, a_n]$，你可以任意重排数组 $a$ 中元素顺序。请问在重排顺序之后，$a$ 所有是连续段的子数组中，最长的子数组长度是多少？</p>
+<p>例如，对于数组 $[1, 0, 2, 4]$，可以将其重排为 $[4, 0, 1, 2]$，有以下 $10$ 个子数组：</p>
+<p>其中除 $[4, 0], [4, 0, 1], [4, 0, 1, 2]$ 以外的子数组均是连续段，因此是连续段的子数组中，最长子数组长度为 3。</p>
+<h2>输入</h2>
+<p>第一行，一个正整数 $n$，表示数组长度。</p>
+<p>第二行， $n$个整数 $a_1，a_2，...a_n$，表示数组中的整数。</p>
+<h2>输出</h2>
+<p>一行，一个整数，表示数组 $a$ 重排顺序后，所有是连续段的子数组的最长长度。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">100010</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    
+    <span class="hljs-comment">// 读取数组</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+    }
+    
+    <span class="hljs-comment">// 对数组进行排序</span>
+    <span class="hljs-built_in">sort</span>(a, a + n);
+    
+    <span class="hljs-type">int</span> maxLen = <span class="hljs-number">1</span>;      <span class="hljs-comment">// 记录最长连续段的长度，至少为1</span>
+    <span class="hljs-type">int</span> currentLen = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 当前连续段的长度</span>
+    
+    <span class="hljs-comment">// 遍历排序后的数组，寻找最长连续整数段</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-comment">// 如果当前数字与前一个相同，跳过重复数字</span>
+        <span class="hljs-keyword">if</span> (a[i] == a[i - <span class="hljs-number">1</span>]) {
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 如果当前数字正好是前一个数字+1，说明连续</span>
+        <span class="hljs-keyword">if</span> (a[i] == a[i - <span class="hljs-number">1</span>] + <span class="hljs-number">1</span>) {
+            currentLen++;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 连续中断，更新最大值并重置当前长度</span>
+            <span class="hljs-keyword">if</span> (currentLen &gt; maxLen) {
+                maxLen = currentLen;
+            }
+            currentLen = <span class="hljs-number">1</span>;
+        }
+    }
+    
+    <span class="hljs-comment">// 检查最后一段连续序列</span>
+    <span class="hljs-keyword">if</span> (currentLen &gt; maxLen) {
+        maxLen = currentLen;
+    }
+    
+    <span class="hljs-comment">// 输出最长连续段的长度</span>
+    cout &lt;&lt; maxLen &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/5391">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

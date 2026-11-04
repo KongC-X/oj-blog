@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2143 进制转换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="用递归算法将一个十进制整数 （ ）转换成任意进制数 （ ， 为整数）。">
+<link rel="canonical" href="https://zymojblog.top/p/B2143/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2143 进制转换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="用递归算法将一个十进制整数 （ ）转换成任意进制数 （ ， 为整数）。">
+<meta property="og:url" content="https://zymojblog.top/p/B2143/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2143 进制转换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="用递归算法将一个十进制整数 （ ）转换成任意进制数 （ ， 为整数）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2143 进制转换","headline":"B2143 进制转换 题解","description":"用递归算法将一个十进制整数 （ ）转换成任意进制数 （ ， 为整数）。","url":"https://zymojblog.top/p/B2143/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2143</span></div>
+  <h1 class="seo-title">B2143 进制转换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2143 进制转换</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>用递归算法将一个十进制整数 $X$（$1 \le X \le 10^9$）转换成任意进制数 $M$（$2\le M\le16$，$M$ 为整数）。</p>
+<h2>输入格式</h2>
+<p>一行两个数，第一个十进制整数 $X$，第二个为进制 $M$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">31</span> <span class="hljs-number">16</span> ```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1F```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 递归函数：将 x 转换为 m 进制并输出</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">convert</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> m)</span> </span>{
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;              <span class="hljs-comment">// 递归边界：x为0时结束</span>
+    <span class="hljs-built_in">convert</span>(x / m, m);               <span class="hljs-comment">// 先处理高位</span>
+    <span class="hljs-type">int</span> r = x % m;                   <span class="hljs-comment">// 当前位的值</span>
+    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">10</span>) cout &lt;&lt; r;           <span class="hljs-comment">// 0~9 直接输出数字</span>
+    <span class="hljs-keyword">else</span>        cout &lt;&lt; <span class="hljs-built_in">char</span>(<span class="hljs-string">&#x27;A&#x27;</span> + r - <span class="hljs-number">10</span>); <span class="hljs-comment">// 10~15 转为字母 A~F</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> X, M;                        <span class="hljs-comment">// X: 十进制数, M: 目标进制</span>
+    cin &gt;&gt; X &gt;&gt; M;
+    <span class="hljs-built_in">convert</span>(X, M);
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2143">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

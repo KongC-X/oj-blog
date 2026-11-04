@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2241 计算两个日期之间的天数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定两个日期，计算相差的天数。比如2010-1-1和2010-1-3相差2天。">
+<link rel="canonical" href="https://zymojblog.top/p/2241/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2241 计算两个日期之间的天数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定两个日期，计算相差的天数。比如2010-1-1和2010-1-3相差2天。">
+<meta property="og:url" content="https://zymojblog.top/p/2241/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2241 计算两个日期之间的天数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定两个日期，计算相差的天数。比如2010-1-1和2010-1-3相差2天。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2241 计算两个日期之间的天数","headline":"2241 计算两个日期之间的天数 题解","description":"给定两个日期，计算相差的天数。比如2010-1-1和2010-1-3相差2天。","url":"https://zymojblog.top/p/2241/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2241</span></div>
+  <h1 class="seo-title">2241 计算两个日期之间的天数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">电子学会考级考试</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a></div>
+  <article class="markdown-body seo-article">
+<h1>2241 - 计算两个日期之间的天数</h1>
+<h2>题目描述</h2>
+<p>给定两个日期，计算相差的天数。比如2010-1-1和2010-1-3相差2天。</p>
+<h2>输入</h2>
+<p>共两行： 第一行包含三个整数startYear，startMonth，startDay，分别是起始年、月、日。 第二行包含三个整数endYear，endMonth，endDay，分别是结束年、月、日。 相邻两个整数之间用单个空格隔开。 年份范围在1~3000。保证日期正确且结束日期不早于起始日期。</p>
+<h2>输出</h2>
+<p>输出一个整数，即是两个日期相差的天数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+2008-5-20 ~ 2021-2-18
+1.2009~2020年之间是完整，算出完整的年份对应的天数
+年数*365+闰年出现的次数
+2.计算2008-5-20~2008-12-31天数
+6~12月完整的天数求和 + 5月份剩余的天数
+3.计算2021-1-1~2021-2-18天数
+1~1月份完整的天数求和 + 2月份的天数
+*/</span>
+
+<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;<span class="hljs-comment">//天数差</span>
+<span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;<span class="hljs-comment">//完整的年份中闰年出现的次数</span>
+<span class="hljs-type">int</span> d[<span class="hljs-number">13</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">31</span>,<span class="hljs-number">28</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>,<span class="hljs-number">30</span>,<span class="hljs-number">31</span>};
+
+<span class="hljs-comment">//判断闰年</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">leap</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span></span>{
+  <span class="hljs-keyword">if</span>(n%<span class="hljs-number">4</span>==<span class="hljs-number">0</span>&amp;&amp;n%<span class="hljs-number">100</span>!=<span class="hljs-number">0</span> || n%<span class="hljs-number">400</span>==<span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-comment">//确定y年的2月份的天数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">change</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span></span>{
+  <span class="hljs-keyword">if</span>(<span class="hljs-built_in">leap</span>(y)) d[<span class="hljs-number">2</span>] = <span class="hljs-number">29</span>;
+  <span class="hljs-keyword">else</span> d[<span class="hljs-number">2</span>] = <span class="hljs-number">28</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+  <span class="hljs-type">int</span> y1,m1,d1,y2,m2,d2;<span class="hljs-comment">//起止日期</span>
+  cin&gt;&gt;y1&gt;&gt;m1&gt;&gt;d1&gt;&gt;y2&gt;&gt;m2&gt;&gt;d2;
+  
+  <span class="hljs-comment">//1.算完整的年份对应的天数</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=y1+<span class="hljs-number">1</span>;i&lt;=y2<span class="hljs-number">-1</span>;i++){
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">leap</span>(i)) c++;
+  }
+  
+  r = (y2 - y1 - <span class="hljs-number">1</span>) * <span class="hljs-number">365</span> + c;
+  
+  <span class="hljs-comment">//2.计算y1年对应的天数</span>
+  <span class="hljs-built_in">change</span>(y1);
+  <span class="hljs-comment">//循环完整的月份对应的天数</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = m1 + <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">12</span>;i++){
+    r = r + d[i];
+  }
+  <span class="hljs-comment">//加上m1月对应的天数</span>
+  r = r + (d[m1] - d1 + <span class="hljs-number">1</span>);
+  
+  <span class="hljs-comment">//3.计算出y2年对应的天数</span>
+  <span class="hljs-built_in">change</span>(y2);
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt; m2;i++){
+    r = r + d[i];
+  }
+  r = r + d2;<span class="hljs-comment">//m2月对应的天数</span>
+  
+  cout&lt;&lt;r - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2241">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

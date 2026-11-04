@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5387 数组清零 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 有一个由 个非负整数构成的数组 。他会对数组 重复进行以下操作，直到数组 只包含 。在一次操作中，小 会依次完成以下三个步骤： 在数组 中找到最大的整数，记其下标为 。如果有多个最大值，那么选择其中下标最大的。 从数组 所有不为零的整数中找到最小的整数 。 将第一步找出的 减去 。 例如，数组…">
+<link rel="canonical" href="https://zymojblog.top/p/5387/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="5387 数组清零 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 有一个由 个非负整数构成的数组 。他会对数组 重复进行以下操作，直到数组 只包含 。在一次操作中，小 会依次完成以下三个步骤： 在数组 中找到最大的整数，记其下标为 。如果有多个最大值，那么选择其中下标最大的。 从数组 所有不为零的整数中找到最小的整数 。 将第一步找出的 减去 。 例如，数组…">
+<meta property="og:url" content="https://zymojblog.top/p/5387/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5387 数组清零 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 有一个由 个非负整数构成的数组 。他会对数组 重复进行以下操作，直到数组 只包含 。在一次操作中，小 会依次完成以下三个步骤： 在数组 中找到最大的整数，记其下标为 。如果有多个最大值，那么选择其中下标最大的。 从数组 所有不为零的整数中找到最小的整数 。 将第一步找出的 减去 。 例如，数组…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"5387 数组清零","headline":"5387 数组清零 题解","description":"小 有一个由 个非负整数构成的数组 。他会对数组 重复进行以下操作，直到数组 只包含 。在一次操作中，小 会依次完成以下三个步骤： 在数组 中找到最大的整数，记其下标为 。如果有多个最大值，那么选择其中下标最大的。 从数组 所有不为零的整数中找到最小的整数 。 将第一步找出的 减去 。 例如，数组…","url":"https://zymojblog.top/p/5387/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP三级、数组、模拟、25年9月","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>5387</span></div>
+  <h1 class="seo-title">5387 数组清零</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E4%B8%89%E7%BA%A7">GESP三级</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/25%E5%B9%B49%E6%9C%88">25年9月</a></div>
+  <article class="markdown-body seo-article">
+<h1>5387 - 数组清零</h1>
+<h2>题目描述</h2>
+<p>小 $A$ 有一个由 $n$ 个非负整数构成的数组 $a=[a_1, a_2, ..., a_n]$。他会对数组 $a$ 重复进行以下操作，直到数组 $a$ 只包含 $0$。在一次操作中，小 $A$ 会依次完成以下三个步骤：</p>
+<ul>
+<li><p>在数组 $a$  中找到最大的整数，记其下标为  $k$ 。如果有多个最大值，那么选择其中下标最大的。</p>
+</li>
+<li><p>从数组 $a$ 所有不为零的整数中找到最小的整数 $a_j$。</p>
+</li>
+<li><p>将第一步找出的 $a_k$ 减去 $a_j$。</p>
+</li>
+</ul>
+<p>例如，数组 $a=[2, 3, 4]$ 需要 $7$ 次操作变成 $ [0, 0, 0]$。</p>
+<p>$ [2, 3, 4]→[2, 3, 2]→[2, 1, 2]→[2, 1, 1]→[1, 1, 1]→[1, 1, 0]→[1, 0, 0]→[0, 0, 0]$。</p>
+<p>小 $A$  想知道，对于给定的数组 $a$，需要多少次操作才能使得 $a$ 中的整数全部变成 $0$ 。可以证明， $a$ 中整数必然可以在有限次操作后全部变成 $0$。你能帮他计算出答案吗？</p>
+<h2>输入</h2>
+<p>第一行，一个正整数 $n$ ，表示数组  $a$ 的长度。</p>
+<p>第二行，$n$ 个非负整数 $a_1, a_2, ..., a_n$，表示数组 $a$ 中的整数。</p>
+<h2>输出</h2>
+<p>一行，一个正整数，表示 $a$ 中整数全部变成 $0$ 所需要的操作次数。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,s;
+<span class="hljs-type">int</span> a[<span class="hljs-number">110</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++){
+        cin &gt;&gt; a[i];
+    }
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">int</span> ma = n;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (a[i] &gt;= a[ma]) ma = i;
+        }
+        <span class="hljs-keyword">if</span> (a[ma] == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;
+        <span class="hljs-type">int</span> mi = a[ma];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (a[i] &gt; <span class="hljs-number">0</span>){
+                mi = <span class="hljs-built_in">min</span>(mi, a[i]);
+            }
+        }
+        a[ma] -= mi;
+        s++;
+    }
+    cout &lt;&lt; s &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/5387">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

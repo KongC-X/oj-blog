@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5714 【深基3.例7】肥胖问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 ，其中 是指体重（千克）， 是指身高（米）。不同体型范围与判定结果如下： 小于 ：体重过轻，输出 Underweight； 大于等于 且小于 ：正常体重，输出 Normal； 大于等于 ：肥胖，不仅要输出 BMI 值（使用 cout …">
+<link rel="canonical" href="https://zymojblog.top/p/P5714/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5714 【深基3.例7】肥胖问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 ，其中 是指体重（千克）， 是指身高（米）。不同体型范围与判定结果如下： 小于 ：体重过轻，输出 Underweight； 大于等于 且小于 ：正常体重，输出 Normal； 大于等于 ：肥胖，不仅要输出 BMI 值（使用 cout …">
+<meta property="og:url" content="https://zymojblog.top/p/P5714/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5714 【深基3.例7】肥胖问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 ，其中 是指体重（千克）， 是指身高（米）。不同体型范围与判定结果如下： 小于 ：体重过轻，输出 Underweight； 大于等于 且小于 ：正常体重，输出 Normal； 大于等于 ：肥胖，不仅要输出 BMI 值（使用 cout …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5714 【深基3.例7】肥胖问题","headline":"P5714 【深基3.例7】肥胖问题 题解","description":"BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 ，其中 是指体重（千克）， 是指身高（米）。不同体型范围与判定结果如下： 小于 ：体重过轻，输出 Underweight； 大于等于 且小于 ：正常体重，输出 Normal； 大于等于 ：肥胖，不仅要输出 BMI 值（使用 cout …","url":"https://zymojblog.top/p/P5714/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"洛谷","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5714</span></div>
+  <h1 class="seo-title">P5714 【深基3.例7】肥胖问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门2】分支结构</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7">洛谷</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5714 【深基3.例7】肥胖问题</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-01</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>BMI 指数是国际上常用的衡量人体胖瘦程度的一个标准，其算法是 $\dfrac{m}{h^2}$，其中 $m$ 是指体重（千克），$h$ 是指身高（米）。不同体型范围与判定结果如下：</p>
+<ul>
+<li>小于 $18.5$：体重过轻，输出 <code>Underweight</code>；</li>
+<li>大于等于 $18.5$ 且小于 $24$：正常体重，输出 <code>Normal</code>；</li>
+<li>大于等于 $24$：肥胖，不仅要输出 BMI 值（使用 <code>cout</code> 的默认精度），然后换行，还要输出 <code>Overweight</code>；</li>
+</ul>
+<p>现在给出体重和身高数据，需要根据 BMI 指数判断体型状态并输出对应的判断。</p>
+<p>对于非 C++ 语言，在输出时，请四舍五入保留六位<strong>有效数字</strong>输出，如果小数部分存在后缀 $0$，不要输出后缀 $0$。</p>
+<p>请注意，保留六位<strong>有效数字</strong>不是保留六位小数。例如 $123.4567$ 应该输出为 $123.457$，$5432.10$ 应该输出为 $5432.1$。</p>
+<h2>输入格式</h2>
+<p>共一行。</p>
+<p>第一行，共 $2$ 个浮点数，$m, h$，分别表示体重（单位为 kg），身高（单位为 m）。</p>
+<h2>输出格式</h2>
+<p>输出一行一个字符串，表示根据 BMI 的对应判断。特别地，对于 <code>Overweight</code> 情况的特别处理请参照题目所述。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">70</span> <span class="hljs-number">1.72</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Normal```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">100</span> <span class="hljs-number">1.68</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>35.4308<br>Overweight```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">double</span> z,m,h;
+    cin &gt;&gt; m &gt;&gt; h;
+    z = (m /(h * h));
+    <span class="hljs-keyword">if</span> (z &lt; <span class="hljs-number">18.5</span>) cout &lt;&lt; <span class="hljs-string">&quot;Underweight&quot;</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (z &gt;= <span class="hljs-number">18.5</span> &amp;&amp; z &lt; <span class="hljs-number">24</span>) cout &lt;&lt; <span class="hljs-string">&quot;Normal&quot;</span>;
+    <span class="hljs-keyword">else</span> cout &lt;&lt; z &lt;&lt; endl &lt;&lt; <span class="hljs-string">&quot;Overweight&quot;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5714">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

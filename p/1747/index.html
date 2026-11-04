@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1747 连续递增或递减数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="请问 中连续递增或者连续递减的 位数有总和是多少，有多少个？ 连续递递增或递减指的是三位数相邻的两位之间都是递增的或者是递减的。 比如： ，三位数就是连续递增的，因为 ， ； 再比如： ，三位数就是连续递减的，因为 ， ；">
+<link rel="canonical" href="https://zymojblog.top/p/1747/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1747 连续递增或递减数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="请问 中连续递增或者连续递减的 位数有总和是多少，有多少个？ 连续递递增或递减指的是三位数相邻的两位之间都是递增的或者是递减的。 比如： ，三位数就是连续递增的，因为 ， ； 再比如： ，三位数就是连续递减的，因为 ， ；">
+<meta property="og:url" content="https://zymojblog.top/p/1747/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1747 连续递增或递减数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="请问 中连续递增或者连续递减的 位数有总和是多少，有多少个？ 连续递递增或递减指的是三位数相邻的两位之间都是递增的或者是递减的。 比如： ，三位数就是连续递增的，因为 ， ； 再比如： ，三位数就是连续递减的，因为 ， ；">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1747 连续递增或递减数","headline":"1747 连续递增或递减数 题解","description":"请问 中连续递增或者连续递减的 位数有总和是多少，有多少个？ 连续递递增或递减指的是三位数相邻的两位之间都是递增的或者是递减的。 比如： ，三位数就是连续递增的，因为 ， ； 再比如： ，三位数就是连续递减的，因为 ， ；","url":"https://zymojblog.top/p/1747/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"简单循环","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1747</span></div>
+  <h1 class="seo-title">1747 连续递增或递减数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">循环</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%AE%80%E5%8D%95%E5%BE%AA%E7%8E%AF">简单循环</a></div>
+  <article class="markdown-body seo-article">
+<h1>1747 - 连续递增或递减数</h1>
+<h2>题目描述</h2>
+<p>请问 $100 \sim n$ 中连续递增或者连续递减的 $3$ 位数有总和是多少，有多少个？</p>
+<p>连续递递增或递减指的是三位数相邻的两位之间都是递增的或者是递减的。</p>
+<p>比如：$139$ ，三位数就是连续递增的，因为 $1 \lt 3$ ， $3 \lt 9$；</p>
+<p>再比如：$931$，三位数就是连续递减的，因为 $9 \gt 3$ ， $3 \gt 1$；</p>
+<h2>输入</h2>
+<p>一个三位的整数 $n$ 。</p>
+<h2>输出</h2>
+<p>第 $1$ 行输出满足条件的数的总和是多少。</p>
+<p>第 $2$ 行输出满足条件的数有多少个。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n,i,sum=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>,b,s,g;
+    cin&gt;&gt;n;
+    <span class="hljs-comment">//遍历100到n的所有三位数 </span>
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">100</span>;i&lt;=n;i++){
+        b=i/<span class="hljs-number">100</span>;
+        s=i/<span class="hljs-number">10</span>%<span class="hljs-number">10</span>;
+        g=i%<span class="hljs-number">10</span>;
+        <span class="hljs-comment">//连续递增或者连续递减</span>
+        <span class="hljs-keyword">if</span>((b&lt;s&amp;&amp;s&lt;g)||(b&gt;s&amp;&amp;s&gt;g)){
+            sum=sum+i;
+            y++;
+        }
+    }
+    cout&lt;&lt;sum&lt;&lt;endl&lt;&lt;y;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1747">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

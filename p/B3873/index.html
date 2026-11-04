@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3873 [GESP202309 六级] 小杨买饮料 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨来到了一家商店，打算购买一些饮料。这家商店总共出售 种饮料，编号从 至 ，其中编号为 的饮料售价 元，容量 毫升。 小杨的需求有如下几点： 1. 小杨想要尽可能尝试不同种类的饮料，因此他希望每种饮料至多购买 瓶； 2. 小杨很渴，所以他想要购买总容量不低于 的饮料； 3. 小杨勤俭节约，所以在…">
+<link rel="canonical" href="https://zymojblog.top/p/B3873/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3873 [GESP202309 六级] 小杨买饮料 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨来到了一家商店，打算购买一些饮料。这家商店总共出售 种饮料，编号从 至 ，其中编号为 的饮料售价 元，容量 毫升。 小杨的需求有如下几点： 1. 小杨想要尽可能尝试不同种类的饮料，因此他希望每种饮料至多购买 瓶； 2. 小杨很渴，所以他想要购买总容量不低于 的饮料； 3. 小杨勤俭节约，所以在…">
+<meta property="og:url" content="https://zymojblog.top/p/B3873/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3873 [GESP202309 六级] 小杨买饮料 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨来到了一家商店，打算购买一些饮料。这家商店总共出售 种饮料，编号从 至 ，其中编号为 的饮料售价 元，容量 毫升。 小杨的需求有如下几点： 1. 小杨想要尽可能尝试不同种类的饮料，因此他希望每种饮料至多购买 瓶； 2. 小杨很渴，所以他想要购买总容量不低于 的饮料； 3. 小杨勤俭节约，所以在…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3873 [GESP202309 六级] 小杨买饮料","headline":"B3873 [GESP202309 六级] 小杨买饮料 题解","description":"小杨来到了一家商店，打算购买一些饮料。这家商店总共出售 种饮料，编号从 至 ，其中编号为 的饮料售价 元，容量 毫升。 小杨的需求有如下几点： 1. 小杨想要尽可能尝试不同种类的饮料，因此他希望每种饮料至多购买 瓶； 2. 小杨很渴，所以他想要购买总容量不低于 的饮料； 3. 小杨勤俭节约，所以在…","url":"https://zymojblog.top/p/B3873/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"动态规划 DP、2023、背包 DP、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3873</span></div>
+  <h1 class="seo-title">B3873 [GESP202309 六级] 小杨买饮料</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3873 [GESP202309 六级] 小杨买饮料</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2023</code>、<code>背包 DP</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1132">https://ti.luogu.com.cn/problemset/1132</a></p>
+<h2>题目描述</h2>
+<p>小杨来到了一家商店，打算购买一些饮料。这家商店总共出售 $N$ 种饮料，编号从 $0$ 至 $N-1$，其中编号为 $i$ 的饮料售价 $c_i$ 元，容量 $l_i$ 毫升。</p>
+<p>小杨的需求有如下几点：</p>
+<ol>
+<li><p>小杨想要尽可能尝试不同种类的饮料，因此他希望每种饮料至多购买 $1$ 瓶；</p>
+</li>
+<li><p>小杨很渴，所以他想要购买总容量不低于 $L$ 的饮料；</p>
+</li>
+<li><p>小杨勤俭节约，所以在 $1$ 和 $2$ 的前提下，他希望使用尽可能少的费用。</p>
+</li>
+</ol>
+<p>方便起见，你只需要输出最少花费的费用即可。特别地，如果不能满足小杨的要求，则输出 <code>no solution</code>。</p>
+<h2>输入格式</h2>
+<p>第一行两个整数 $N,L$。</p>
+<p>接下来 $N$行，依次描述第 $i=0,1,\cdots,N-1$ 种饮料：每行两个整数 $c_i,l_i$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，表示最少需要花费多少钱，才能满足小杨的要求。特别地，如果不能满足要求，则输出 <code>no solution</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">100</span>
+<span class="hljs-number">100</span> <span class="hljs-number">2000</span>
+<span class="hljs-number">2</span> <span class="hljs-number">50</span>
+<span class="hljs-number">4</span> <span class="hljs-number">40</span>
+<span class="hljs-number">5</span> <span class="hljs-number">30</span>
+<span class="hljs-number">3</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>9```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">141</span>
+<span class="hljs-number">100</span> <span class="hljs-number">2000</span>
+<span class="hljs-number">2</span> <span class="hljs-number">50</span>
+<span class="hljs-number">4</span> <span class="hljs-number">40</span>
+<span class="hljs-number">5</span> <span class="hljs-number">30</span>
+<span class="hljs-number">3</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>100```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">141</span>
+<span class="hljs-number">2</span> <span class="hljs-number">50</span>
+<span class="hljs-number">4</span> <span class="hljs-number">40</span>
+<span class="hljs-number">5</span> <span class="hljs-number">30</span>
+<span class="hljs-number">3</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>no solution```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+ 
+<span class="hljs-comment">/*
+ *
+ * 解题思路：
+ *   这是一个 0-1 背包的变种问题。
+ *   每种饮料只有&quot;选&quot;(1瓶)或&quot;不选&quot;(0瓶)两种可能，
+ *   目标不是&quot;容量不超过L&quot;，而是&quot;容量至少达到L&quot;，花费最小。
+ *
+ *   用 dp[j] 表示凑出容量 j 所需的最小花费（j = 0 ~ L）。
+ *   对于每种饮料 (c, l)，从大到小更新：
+ *     新的容量 = min(当前容量 + l, L)   ← 超过 L 的按 L 算
+ *     lᵢ 可能远大于 L，所以 k = min(j + l, L) 是必须的。
+ *     不截断会导致数组越界，或者 dp 数组开太大浪费空间。
+ *     dp[新容量] = min(dp[新容量], dp[当前容量] + c)
+ *     dp[k] = min(dp[k], dp[j] + c)
+ *
+ *   最后看 dp[L]：如果是 INF 说明凑不够，输出 &quot;no solution&quot;，
+ *   否则输出 dp[L]。
+ *
+ * 时间复杂度：O(N·L) = 500 × 2000 = 1e6，完全可行
+ * 空间复杂度：O(L)
+ */</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> INF = <span class="hljs-number">1e18</span>; <span class="hljs-comment">// 一个很大的数，表示&quot;不可达&quot;,</span>
+<span class="hljs-type">int</span> c[<span class="hljs-number">510</span>], l[<span class="hljs-number">510</span>];      <span class="hljs-comment">// c[i]：第 i 种饮料的价格，l[i]：第 i 种饮料的容量</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> dp[<span class="hljs-number">2010</span>];     <span class="hljs-comment">// dp[j]：凑出容量 j 的最小花费</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-literal">nullptr</span>);
+
+    <span class="hljs-comment">// ---------- 输入 ----------</span>
+    <span class="hljs-type">int</span> n;  <span class="hljs-comment">// 饮料种类数</span>
+    <span class="hljs-type">int</span> L;  <span class="hljs-comment">// 小杨需要的最低容量</span>
+    cin &gt;&gt; n &gt;&gt; L;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {  <span class="hljs-comment">// 下标从 1 开始</span>
+        cin &gt;&gt; c[i] &gt;&gt; l[i];
+    }
+
+    <span class="hljs-comment">// ---------- DP 初始化 ----------</span>
+    <span class="hljs-comment">// 把所有容量都设为&quot;不可达&quot;</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= L; j++) {
+        dp[j] = INF;
+    }
+    dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 容量 0 不需要花钱</span>
+
+    <span class="hljs-comment">// ---------- 核心 DP ----------</span>
+    <span class="hljs-comment">// 遍历每种饮料</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> cost = c[i];   <span class="hljs-comment">// 当前饮料的价格</span>
+        <span class="hljs-type">int</span> vol  = l[i];   <span class="hljs-comment">// 当前饮料的容量</span>
+
+        <span class="hljs-comment">// 倒序遍历容量，保证每种饮料只用一次</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = L; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-keyword">if</span> (dp[j] == INF) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// 当前容量不可达，跳过</span>
+
+            <span class="hljs-comment">// 买了这瓶后，新的容量（超过 L 就算 L）</span>
+            <span class="hljs-type">int</span> k = <span class="hljs-built_in">min</span>(j + vol, L);
+
+            <span class="hljs-comment">// 更新 dp：看看买这瓶会不会更便宜</span>
+            dp[k] = <span class="hljs-built_in">min</span>(dp[k], dp[j] + cost);
+        }
+    }
+
+    <span class="hljs-comment">// ---------- 输出 ----------</span>
+    <span class="hljs-keyword">if</span> (dp[L] == INF) {
+        cout &lt;&lt; <span class="hljs-string">&quot;no solution&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; dp[L] &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3873">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

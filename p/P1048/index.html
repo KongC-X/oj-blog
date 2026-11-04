@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1048 [NOIP 2005 普及组] 采药 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可…">
+<link rel="canonical" href="https://zymojblog.top/p/P1048/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1048 [NOIP 2005 普及组] 采药 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可…">
+<meta property="og:url" content="https://zymojblog.top/p/P1048/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1048 [NOIP 2005 普及组] 采药 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1048 [NOIP 2005 普及组] 采药","headline":"P1048 [NOIP 2005 普及组] 采药 题解","description":"辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可…","url":"https://zymojblog.top/p/P1048/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、2005、NOIP 普及组、背包 DP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1048</span></div>
+  <h1 class="seo-title">P1048 [NOIP 2005 普及组] 采药</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2005">2005</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1048 [NOIP 2005 普及组] 采药</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2005</code>、<code>NOIP 普及组</code>、<code>背包 DP</code></p>
+<h2>题目描述</h2>
+<p>辰辰是个天资聪颖的孩子，他的梦想是成为世界上最伟大的医师。为此，他想拜附近最有威望的医师为师。医师为了判断他的资质，给他出了一个难题。医师把他带到一个到处都是草药的山洞里对他说：“孩子，这个山洞里有一些不同的草药，采每一株都需要一些时间，每一株也有它自身的价值。我会给你一段时间，在这段时间里，你可以采到一些草药。如果你是一个聪明的孩子，你应该可以让采到的草药的总价值最大。”</p>
+<p>如果你是辰辰，你能完成这个任务吗？</p>
+<h2>输入格式</h2>
+<p>第一行有 $2$ 个整数 $T$（$1 \le T \le 1000$）和 $M$（$1 \le  M \le 100$），用一个空格隔开，$T$ 代表总共能够用来采药的时间，$M$ 代表山洞里的草药的数目。</p>
+<p>接下来的 $M$ 行每行包括两个在 $1$ 到 $100$ 之间（包括 $1$ 和 $100$）的整数，分别表示采摘某株草药的时间和这株草药的价值。</p>
+<h2>输出格式</h2>
+<p>输出在规定的时间内可以采到的草药的最大总价值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">70</span> <span class="hljs-number">3</span>
+<span class="hljs-number">71</span> <span class="hljs-number">100</span>
+<span class="hljs-number">69</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+dp[i][j]：代表有i个物品，背包容量为j时，能够存储的最大价值
+对于第i个物品：
+情况一：背包容量j&lt;物品重量w[j]，放不下，能够存放的价值dp[i-1][j]
+情况二：背包容量j&gt;=物品重量w[j]，放得下
+能够得到的最大价值 = max(dp[i-1][j],v[i]+dp[i-1][j-w[i]])
+*/</span> 
+<span class="hljs-type">int</span> dp[<span class="hljs-number">110</span>][<span class="hljs-number">20010</span>];
+<span class="hljs-type">int</span> n,w[<span class="hljs-number">110</span>],v[<span class="hljs-number">110</span>],maxw,i,j;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;maxw&gt;&gt;n;
+    <span class="hljs-comment">//读入每个物品的重量和价值</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;w[i]&gt;&gt;v[i];
+    } 
+    <span class="hljs-comment">// 递推求dp数组</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-comment">//循环背包容量从1~maxw</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= maxw;j++){
+            <span class="hljs-comment">//如果放不下:背包容量&lt;物品重量 </span>
+            <span class="hljs-keyword">if</span>(j &lt; w[i]){
+                dp[i][j] = dp[i<span class="hljs-number">-1</span>][j]; 
+            }<span class="hljs-keyword">else</span>{
+                <span class="hljs-comment">//放得下，就看放进来价值高，还是不放价值高</span>
+                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i<span class="hljs-number">-1</span>][j],v[i]+dp[i<span class="hljs-number">-1</span>][j-w[i]]);
+            } 
+        } 
+    } 	
+    <span class="hljs-comment">//输出n个物品，背包容量为maxw的情况下最大价值 </span>
+    cout&lt;&lt;dp[n][maxw];
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1048">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

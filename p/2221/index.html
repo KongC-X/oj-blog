@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2221 晒衣服 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="熊大妈决定给每个牛宝宝都穿上可爱的婴儿装 。但是由于衣服很湿，为牛宝宝晒衣服就成了很不爽的事情。于是，熊大妈请你（奶牛）帮助她完成这个重任。 一件衣服在自然条件下用一秒的时间可以晒干 点湿度。抠门的熊大妈只买了一台烘衣机 。使用用一秒烘衣机可以让一件衣服额外烘干 点湿度（一秒晒干 湿度），但在同一…">
+<link rel="canonical" href="https://zymojblog.top/p/2221/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2221 晒衣服 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="熊大妈决定给每个牛宝宝都穿上可爱的婴儿装 。但是由于衣服很湿，为牛宝宝晒衣服就成了很不爽的事情。于是，熊大妈请你（奶牛）帮助她完成这个重任。 一件衣服在自然条件下用一秒的时间可以晒干 点湿度。抠门的熊大妈只买了一台烘衣机 。使用用一秒烘衣机可以让一件衣服额外烘干 点湿度（一秒晒干 湿度），但在同一…">
+<meta property="og:url" content="https://zymojblog.top/p/2221/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2221 晒衣服 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="熊大妈决定给每个牛宝宝都穿上可爱的婴儿装 。但是由于衣服很湿，为牛宝宝晒衣服就成了很不爽的事情。于是，熊大妈请你（奶牛）帮助她完成这个重任。 一件衣服在自然条件下用一秒的时间可以晒干 点湿度。抠门的熊大妈只买了一台烘衣机 。使用用一秒烘衣机可以让一件衣服额外烘干 点湿度（一秒晒干 湿度），但在同一…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2221 晒衣服","headline":"2221 晒衣服 题解","description":"熊大妈决定给每个牛宝宝都穿上可爱的婴儿装 。但是由于衣服很湿，为牛宝宝晒衣服就成了很不爽的事情。于是，熊大妈请你（奶牛）帮助她完成这个重任。 一件衣服在自然条件下用一秒的时间可以晒干 点湿度。抠门的熊大妈只买了一台烘衣机 。使用用一秒烘衣机可以让一件衣服额外烘干 点湿度（一秒晒干 湿度），但在同一…","url":"https://zymojblog.top/p/2221/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二分答案","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2221</span></div>
+  <h1 class="seo-title">2221 晒衣服</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86%E7%AD%94%E6%A1%88">二分答案</a></div>
+  <article class="markdown-body seo-article">
+<h1>2221 - 晒衣服</h1>
+<h2>题目描述</h2>
+<p>熊大妈决定给每个牛宝宝都穿上可爱的婴儿装 。但是由于衣服很湿，为牛宝宝晒衣服就成了很不爽的事情。于是，熊大妈请你（奶牛）帮助她完成这个重任。 </p>
+<p>一件衣服在自然条件下用一秒的时间可以晒干 $a$ 点湿度。抠门的熊大妈只买了一台烘衣机 。使用用一秒烘衣机可以让一件衣服额外烘干 $b$ 点湿度（一秒晒干 $a+b$ 湿度），但在同一时间内只能烘一件衣服。现在有 $n$ 件衣服，第 $i$ 衣服的湿度为 $w_i$ （保证互不相同），要你求出弄干所有衣服的最少时间（湿度为 $0$ 为干 ）。</p>
+<h2>输入</h2>
+<p>第一行三个整数，分别为 $n,a,b$。 </p>
+<p>接下来 $2$ 到 $n+1$ 行，第 $i$ 行输入 $w_i$ 。（$1≤w_i,a,b,n≤5\times10^5$）</p>
+<h2>输出</h2>
+<p>一行，弄干所有衣服的最少时间。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std; 
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">5e5</span> + <span class="hljs-number">10</span>;
+<span class="hljs-type">int</span> n,a,b,w[N];
+<span class="hljs-type">int</span> l = <span class="hljs-number">1</span>,r = <span class="hljs-number">0</span>,mid;
+
+<span class="hljs-comment">//检验，如果给定mid秒，能否弄干所有的衣服</span>
+<span class="hljs-comment">//思路：先晒，晒不干的烘</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> mid)</span></span>{
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;<span class="hljs-comment">//烘干湿度比较大的衣服的总时间</span>
+    <span class="hljs-type">int</span> t;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">if</span>(w[i] &gt; mid * a){
+            t = w[i] - mid * a;<span class="hljs-comment">//剩余湿度</span>
+            <span class="hljs-keyword">if</span>(t % b == <span class="hljs-number">0</span>) sum += t / b;
+            <span class="hljs-keyword">else</span> sum += t / b + <span class="hljs-number">1</span>;	
+        }
+    } 
+    
+    <span class="hljs-keyword">return</span> sum &lt;= mid;
+} 
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d%d&quot;</span>,&amp;n,&amp;a,&amp;b);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;w[i]);
+        r = <span class="hljs-built_in">max</span>(r,w[i]);
+    }
+    
+    r = r / a + <span class="hljs-number">1</span>;<span class="hljs-comment">//最湿的衣服，晒干的时间</span>
+    
+    <span class="hljs-keyword">while</span>(l &lt;= r){
+        mid = l + r &gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-comment">//如果mid秒能弄干，减少时间尝试 </span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(mid)) r = mid - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> l = mid + <span class="hljs-number">1</span>; 
+    } 
+    
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>,l);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2221">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

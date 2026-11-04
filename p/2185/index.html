@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2185 子树的大小 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有如上图所示的完全二叉树，该二叉树有 个结点，编号从上向下、从左向右以此为 。请问，编号为 的结点所在的子树，包含了多少个结点？ 比如， ， ，则上图中的结点 ， ， 以及后面的结点都是不存在的，结点 所在子树中包括的结点有 ， ， ， ，因此结点 的所在子树中共有 个结点。">
+<link rel="canonical" href="https://zymojblog.top/p/2185/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2185 子树的大小 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有如上图所示的完全二叉树，该二叉树有 个结点，编号从上向下、从左向右以此为 。请问，编号为 的结点所在的子树，包含了多少个结点？ 比如， ， ，则上图中的结点 ， ， 以及后面的结点都是不存在的，结点 所在子树中包括的结点有 ， ， ， ，因此结点 的所在子树中共有 个结点。">
+<meta property="og:url" content="https://zymojblog.top/p/2185/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2185 子树的大小 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有如上图所示的完全二叉树，该二叉树有 个结点，编号从上向下、从左向右以此为 。请问，编号为 的结点所在的子树，包含了多少个结点？ 比如， ， ，则上图中的结点 ， ， 以及后面的结点都是不存在的，结点 所在子树中包括的结点有 ， ， ， ，因此结点 的所在子树中共有 个结点。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2185 子树的大小","headline":"2185 子树的大小 题解","description":"有如上图所示的完全二叉树，该二叉树有 个结点，编号从上向下、从左向右以此为 。请问，编号为 的结点所在的子树，包含了多少个结点？ 比如， ， ，则上图中的结点 ， ， 以及后面的结点都是不存在的，结点 所在子树中包括的结点有 ， ， ， ，因此结点 的所在子树中共有 个结点。","url":"https://zymojblog.top/p/2185/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二叉树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2185</span></div>
+  <h1 class="seo-title">2185 子树的大小</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2185 - 子树的大小</h1>
+<h2>题目描述</h2>
+<p>有如上图所示的完全二叉树，该二叉树有 $n$ 个结点，编号从上向下、从左向右以此为 $1 \sim n$。请问，编号为 $m$ 的结点所在的子树，包含了多少个结点？</p>
+<p>比如，$n = 12$，$m = 3$，则上图中的结点 $13$，$14$，$15$ 以及后面的结点都是不存在的，结点 $m=3$ 所在子树中包括的结点有 $3$，$6$，$7$，$12$，因此结点 $m$ 的所在子树中共有 $4$ 个结点。</p>
+<h2>输入</h2>
+<p>输入两个整数 $m$，$n$。 ($1 \le m \le n \le 10^9$)</p>
+<h2>输出</h2>
+<p>输出结点 $m$ 所在子树中包含的结点的数目。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+1.从结点m开始求该结点的右孩子的编号，如果该编号存在，每层满的二叉树的深度+1
+从而可以求出除了最后一层以外的每层满的部分的二叉树有多少个结点
+2.计算最后一层第1个结点的编号，判断最后一层（不满）是否存在
+如果存在，加上最后一层的结点数量 
+*/</span>
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;<span class="hljs-comment">//每层都满的二叉树的层数</span>
+<span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;<span class="hljs-comment">//结点的总数量 </span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;m&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = m;i &lt;= n;i = i * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>){
+        cnt++;
+    }
+    
+    ans = (<span class="hljs-number">1</span>&lt;&lt;cnt) - <span class="hljs-number">1</span>;<span class="hljs-comment">//2^cnt - 1</span>
+    <span class="hljs-comment">//求出最后一层不满的（假设存在）第1个结点的编号</span>
+    <span class="hljs-type">int</span> s = m * (<span class="hljs-number">1</span>&lt;&lt;cnt);
+    <span class="hljs-keyword">if</span>(s &lt;= n) ans += n - s + <span class="hljs-number">1</span>;
+    
+    cout&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2185">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

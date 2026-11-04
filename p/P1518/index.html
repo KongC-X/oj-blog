@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="两只牛逃跑到了森林里。Farmer John 开始用他的专家技术追捕这两头牛。你的任务是模拟他们的行为（牛和 John）。 追击在 的平面网格内进行。一个格子可以是：空地，一个障碍物，两头牛（它们总在一起），或者 Farmer John。两头牛和 Farmer John 可以在同一个格子内（当他们…">
+<link rel="canonical" href="https://zymojblog.top/p/P1518/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="两只牛逃跑到了森林里。Farmer John 开始用他的专家技术追捕这两头牛。你的任务是模拟他们的行为（牛和 John）。 追击在 的平面网格内进行。一个格子可以是：空地，一个障碍物，两头牛（它们总在一起），或者 Farmer John。两头牛和 Farmer John 可以在同一个格子内（当他们…">
+<meta property="og:url" content="https://zymojblog.top/p/P1518/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="两只牛逃跑到了森林里。Farmer John 开始用他的专家技术追捕这两头牛。你的任务是模拟他们的行为（牛和 John）。 追击在 的平面网格内进行。一个格子可以是：空地，一个障碍物，两头牛（它们总在一起），或者 Farmer John。两头牛和 Farmer John 可以在同一个格子内（当他们…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two","headline":"P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two 题解","description":"两只牛逃跑到了森林里。Farmer John 开始用他的专家技术追捕这两头牛。你的任务是模拟他们的行为（牛和 John）。 追击在 的平面网格内进行。一个格子可以是：空地，一个障碍物，两头牛（它们总在一起），或者 Farmer John。两头牛和 Farmer John 可以在同一个格子内（当他们…","url":"https://zymojblog.top/p/P1518/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1518</span></div>
+  <h1 class="seo-title">P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-1】模拟与高精度</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1518 [USACO2.4] 两只塔姆沃斯牛 The Tamworth Two</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-10</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>两只牛逃跑到了森林里。Farmer John 开始用他的专家技术追捕这两头牛。你的任务是模拟他们的行为（牛和 John）。</p>
+<p>追击在 $10 \times 10$ 的平面网格内进行。一个格子可以是：空地，一个障碍物，两头牛（它们总在一起），或者 Farmer John。两头牛和 Farmer John 可以在同一个格子内（当他们相遇时），但是他们都不能进入有障碍的格子。</p>
+<p>一个格子可以是：</p>
+<ul>
+<li><code>.</code> 空地；</li>
+<li><code>*</code> 障碍物；</li>
+<li><code>C</code> 两头牛；</li>
+<li><code>F</code> Farmer John。</li>
+</ul>
+<p>这里有一个地图的例子：</p>
+<pre><code class="hljs language-cpp">*...*.....
+......*...
+...*...*..
+..........
+...*.F....
+*.....*...
+...*......
+..C......*
+...*.*....
+.*.*......</code></pre><p>牛在地图里以固定的方式游荡。每分钟，它们可以向前移动或是转弯。如果前方无障碍（地图边沿也是障碍），它们会按照原来的方向前进一步。否则它们会用这一分钟顺时针转 $90$ 度。 同时，它们不会离开地图。</p>
+<p>Farmer John 深知牛的移动方法，他也这么移动。</p>
+<p>每次（每分钟）Farmer John 和两头牛的移动是同时的。如果他们在移动的时候穿过对方，但是没有在同一格相遇，我们不认为他们相遇了。当他们在某分钟末在某格子相遇，那么追捕结束。</p>
+<p>读入十行表示地图。每行都只包含 $10$ 个字符，表示的含义和上面所说的相同。保证地图中只有一个 <code>F</code> 和一个 <code>C</code>。<code>F</code> 和 <code>C</code> 一开始不会处于同一个格子中。</p>
+<p>计算 Farmer John 需要多少分钟来抓住他的牛，假设牛和 Farmer John 一开始的行动方向都是正北（即上）。 如果 John 和牛永远不会相遇，输出 $0$。</p>
+<h2>输入格式</h2>
+<p>输入共十行，每行 $10$ 个字符，表示如上文描述的地图。</p>
+<h2>输出格式</h2>
+<p>输出一个数字，表示 John 需要多少时间才能抓住牛们。如果 John 无法抓住牛，则输出 $0$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">*...*.....
+......*...
+...*...*..
+..........
+...*.F....
+*.....*...
+...*......
+..C......*
+...*.*....
+.*.*......```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>49```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 方向数组，上右下左</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>};
+
+<span class="hljs-type">char</span> a[<span class="hljs-number">20</span>][<span class="hljs-number">20</span>];
+
+<span class="hljs-comment">// 位置和方向结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">State</span> {
+    <span class="hljs-type">int</span> x, y, d;  <span class="hljs-comment">// 坐标和方向</span>
+};
+
+<span class="hljs-comment">// 移动函数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">move</span><span class="hljs-params">(State &amp;s)</span> </span>{
+    <span class="hljs-type">int</span> nx = s.x + fx[s.d];
+    <span class="hljs-type">int</span> ny = s.y + fy[s.d];
+    
+    <span class="hljs-comment">// 检查是否可以前进（不是障碍且不越界）</span>
+    <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">1</span> &amp;&amp; nx &lt;= <span class="hljs-number">10</span> &amp;&amp; ny &gt;= <span class="hljs-number">1</span> &amp;&amp; ny &lt;= <span class="hljs-number">10</span> &amp;&amp; a[nx][ny] != <span class="hljs-string">&#x27;#&#x27;</span>) {
+        s.x = nx;
+        s.y = ny;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// 不能前进，顺时针转90度</span>
+        s.d = (s.d + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    State farmer, cow;  <span class="hljs-comment">// 农夫和牛的初始状态</span>
+    
+    <span class="hljs-comment">// 读入地图</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">10</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">10</span>; j++) {
+            cin &gt;&gt; a[i][j];
+            <span class="hljs-comment">// 记录初始位置</span>
+            <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;F&#x27;</span>) {
+                farmer.x = i;
+                farmer.y = j;
+                farmer.d = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 初始方向向北</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;C&#x27;</span>) {
+                cow.x = i;
+                cow.y = j;
+                cow.d = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 初始方向向北</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;*&#x27;</span>) {
+                a[i][j] = <span class="hljs-string">&#x27;#&#x27;</span>;  <span class="hljs-comment">// 将障碍物标记为&#x27;#&#x27;</span>
+            } <span class="hljs-keyword">else</span> {
+                a[i][j] = <span class="hljs-string">&#x27;.&#x27;</span>;  <span class="hljs-comment">// 其他位置标记为&#x27;.&#x27;</span>
+            }
+        }
+    }
+    
+    <span class="hljs-type">int</span> minutes = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-comment">// 模拟移动，最多模拟160000分钟（状态数上限：10*10*4 * 10*10*4 = 160000）</span>
+    <span class="hljs-keyword">while</span> (minutes &lt;= <span class="hljs-number">160000</span>) {
+        <span class="hljs-comment">// 检查是否相遇</span>
+        <span class="hljs-keyword">if</span> (farmer.x == cow.x &amp;&amp; farmer.y == cow.y) {
+            cout &lt;&lt; minutes &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        
+        <span class="hljs-comment">// 农夫和牛同时移动</span>
+        <span class="hljs-built_in">move</span>(farmer);
+        <span class="hljs-built_in">move</span>(cow);
+        
+        minutes++;
+    }
+    
+    <span class="hljs-comment">// 如果超过最大模拟时间仍未相遇，说明永远不会相遇</span>
+    cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1518">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

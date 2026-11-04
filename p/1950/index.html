@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1950 蓝桥杯赛迷宫 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…">
+<link rel="canonical" href="https://zymojblog.top/p/1950/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1950 蓝桥杯赛迷宫 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…">
+<meta property="og:url" content="https://zymojblog.top/p/1950/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1950 蓝桥杯赛迷宫 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1950 蓝桥杯赛迷宫","headline":"1950 蓝桥杯赛迷宫 题解","description":"把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…","url":"https://zymojblog.top/p/1950/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1950</span></div>
+  <h1 class="seo-title">1950 蓝桥杯赛迷宫</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a></div>
+  <article class="markdown-body seo-article">
+<h1>1950 - 蓝桥杯赛迷宫</h1>
+<h2>题目描述</h2>
+<p>把一个 $n$ 行 $m$ 列的字符阵列看做一个迷宫，迷宫仅包含 <code>L</code>、<code>Q</code>、<code>B</code>、<code>S</code> 中的大写字母（蓝桥杯赛的汉语拼音首字母）。</p>
+<p>初始时，你可以从任意一个 <code>L</code> 字母开始，移向相邻的 <code>Q</code> 字母，然后从此 <code>Q</code> 字母出发，移向相邻的 <code>B</code> 字母，然后从此 <code>B</code> 字母出发，移向相邻的 <code>S</code> 字母……。这样，你就算是走过了一个 <code>LQBS</code> 字符序列。</p>
+<p>接下来，仍然可以从此 <code>S</code> 字母出发，移向相邻的 <code>L</code> 字母……，重复上述的动作，你就可以不断地走过 <code>LQBS</code> 序列。</p>
+<p>请注意，所谓相邻仅包含上、下、左、右 $4$ 个方向，且只能从 <code>L-&gt;Q</code>，从 <code>Q-&gt;B</code>，从 <code>B-&gt;S</code>，从 <code>S-&gt;L</code>。</p>
+<p>可以想像，由于选择的出发点不同，我们有可能在迷宫中走过无数次的 <code>LQBS</code> ，或者是有限次的 <code>LQBS</code> ，或者一次也走不了。</p>
+<p>编程实现：请你编写程序，求出在给定的迷宫中，我们最多可以走过多少次 <code>LQBS</code>?</p>
+<h2>输入</h2>
+<p>第一行：正整数 $n,m$，表示迷宫的规模为 $n$ 行 $m$ 列，。</p>
+<p>接下来的 $n$ 行：每行 $m$ 个符合题意的字母，字母间无空格。</p>
+<h2>输出</h2>
+<p>一个整数。</p>
+<p>即：如果在迷宫中可以无限次的走过 <code>LQBS</code>，输出 $-1$，否则，输出可以走过 <code>LQBS</code> 的最多次数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+  LQBS 迷宫 - 正确做法
+  
+  关键：只能从 L 开始走！
+  如果图中存在从某个 L 可达的环，输出 -1（能无限走）
+  否则，答案是 max(dp[L]) / 4 over all L
+  
+  用 DFS + 三色标记检测环
+  vis[u] = 0(白), 1(灰,在递归栈中), 2(黑,已算完)
+  dp[u] = 从u出发最多能经过的节点数（包括u）
+*/</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">110</span>;  <span class="hljs-comment">// n,m &lt; 100</span>
+<span class="hljs-type">char</span> g[MAXN][MAXN];
+<span class="hljs-type">int</span> dp[MAXN*MAXN];
+<span class="hljs-type">int</span> vis[MAXN*MAXN];
+<span class="hljs-type">int</span> n, m;
+<span class="hljs-type">int</span> dx[<span class="hljs-number">4</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> dy[<span class="hljs-number">4</span>] = {<span class="hljs-number">1</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">// 获取当前字符的下一个应该走的字符</span>
+<span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">getNext</span><span class="hljs-params">(<span class="hljs-type">char</span> c)</span> </span>{
+    <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;L&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;Q&#x27;</span>;
+    <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;Q&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;B&#x27;</span>;
+    <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;B&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;S&#x27;</span>;
+    <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;S&#x27;</span>) <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;L&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;?&#x27;</span>;  <span class="hljs-comment">// 不会执行到这里</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getId</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-keyword">return</span> x * m + y;
+}
+
+<span class="hljs-comment">// DFS返回值：</span>
+<span class="hljs-comment">//   &gt;= 0: 从u出发最多能经过的节点数</span>
+<span class="hljs-comment">//   -1: 检测到环（从当前路径可达）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span> </span>{
+    <span class="hljs-keyword">if</span>(vis[u] == <span class="hljs-number">1</span>) {
+        <span class="hljs-comment">// 遇到灰色节点 = 发现环！</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+    }
+    <span class="hljs-keyword">if</span>(vis[u] == <span class="hljs-number">2</span>) {
+        <span class="hljs-comment">// 已计算过</span>
+        <span class="hljs-keyword">return</span> dp[u];
+    }
+    
+    vis[u] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 标灰</span>
+    dp[u] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// 至少包含自己</span>
+    
+    <span class="hljs-type">int</span> x = u / m, y = u % m;
+    <span class="hljs-type">char</span> nextChar = <span class="hljs-built_in">getNext</span>(g[x][y]);
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> d = <span class="hljs-number">0</span>; d &lt; <span class="hljs-number">4</span>; d++) {
+        <span class="hljs-type">int</span> nx = x + dx[d], ny = y + dy[d];
+        <span class="hljs-keyword">if</span>(nx &lt; <span class="hljs-number">0</span> || nx &gt;= n || ny &lt; <span class="hljs-number">0</span> || ny &gt;= m) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">if</span>(g[nx][ny] != nextChar) <span class="hljs-keyword">continue</span>;
+        
+        <span class="hljs-type">int</span> v = <span class="hljs-built_in">getId</span>(nx, ny);
+        <span class="hljs-type">int</span> res = <span class="hljs-built_in">dfs</span>(v);
+        <span class="hljs-keyword">if</span>(res == <span class="hljs-number">-1</span>) {
+            <span class="hljs-comment">// 从u出发能走到环，向上传播</span>
+            vis[u] = <span class="hljs-number">2</span>;
+            dp[u] = <span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        }
+        <span class="hljs-keyword">if</span>(<span class="hljs-number">1</span> + res &gt; dp[u]) {
+            dp[u] = <span class="hljs-number">1</span> + res;
+        }
+    }
+    
+    vis[u] = <span class="hljs-number">2</span>;  <span class="hljs-comment">// 标黑</span>
+    <span class="hljs-keyword">return</span> dp[u];
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            cin &gt;&gt; g[i][j];
+        }
+    }
+    
+    <span class="hljs-comment">// 初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n*m; i++) {
+        vis[i] = <span class="hljs-number">0</span>;
+        dp[i] = <span class="hljs-number">0</span>;
+    }
+    
+    <span class="hljs-type">bool</span> hasCycle = <span class="hljs-literal">false</span>;
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-comment">// 只对 L 调用 DFS（题目说可以从任意 L 开始）</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            <span class="hljs-keyword">if</span>(g[i][j] != <span class="hljs-string">&#x27;L&#x27;</span>) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// 只从 L 开始</span>
+            <span class="hljs-type">int</span> id = <span class="hljs-built_in">getId</span>(i, j);
+            <span class="hljs-keyword">if</span>(vis[id] == <span class="hljs-number">0</span>) {
+                <span class="hljs-type">int</span> res = <span class="hljs-built_in">dfs</span>(id);
+                <span class="hljs-keyword">if</span>(res == <span class="hljs-number">-1</span>) {
+                    hasCycle = <span class="hljs-literal">true</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+                <span class="hljs-comment">// 更新答案：从当前 L 出发能完成的最多 LQBS 序列数</span>
+                <span class="hljs-keyword">if</span>(res / <span class="hljs-number">4</span> &gt; ans) {
+                    ans = res / <span class="hljs-number">4</span>;
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(vis[id] == <span class="hljs-number">2</span>) {
+                <span class="hljs-comment">// 已计算过，直接取结果</span>
+                <span class="hljs-keyword">if</span>(dp[id] / <span class="hljs-number">4</span> &gt; ans) {
+                    ans = dp[id] / <span class="hljs-number">4</span>;
+                }
+            }
+        }
+        <span class="hljs-keyword">if</span>(hasCycle) <span class="hljs-keyword">break</span>;
+    }
+    
+    <span class="hljs-keyword">if</span>(hasCycle) {
+        cout &lt;&lt; <span class="hljs-number">-1</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1950">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

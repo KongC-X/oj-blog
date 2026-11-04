@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2280 表达式求值 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。">
+<link rel="canonical" href="https://zymojblog.top/p/2280/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2280 表达式求值 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。">
+<meta property="og:url" content="https://zymojblog.top/p/2280/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2280 表达式求值 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2280 表达式求值","headline":"2280 表达式求值 题解","description":"求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。","url":"https://zymojblog.top/p/2280/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2280</span></div>
+  <h1 class="seo-title">2280 表达式求值</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">电子学会考级考试</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2280 - 表达式求值</h1>
+<h2>题目描述</h2>
+<p>求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。<br>在计算机中，我们常用栈来解决这一问题。</p>
+<p>首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。</p>
+<p>加、减、乘、除、乘方分别用 <code>+</code>，<code>-</code>，<code>*</code>, <code>/</code>, <code>^</code> 来表示。表达式可以有圆括号()。</p>
+<h2>输入</h2>
+<p>第一行为测试数据的组数 $N$ 。</p>
+<p>接下来的 $N$ 行，每行是一个中缀表达式。 每个表达式中，圆括号、运算符和运算数相互之间都用空格分隔，运算数是整数。一般运算数可正可负（负数的符号和数字之间无空格），指数一定为自然数($0$ 和正整数)。</p>
+<p>不必考虑除 $0$ 的情况。每个运算数均可由 $int$ 放下。不必考虑溢出。中缀表达式的字符串长度不超过 $600$ 。乘方的优先级比乘除都高，结合性是向左结合，如 <code>2 ^ 3 ^ 4</code> 表示 <code>( 2 ^ 3 ) ^ 4 = 4096</code>。 除法的商向下取整。</p>
+<h2>输出</h2>
+<p>对每一组测试数据输出一行，为表达式的值</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;
+string s;
+<span class="hljs-comment">//运算符栈，用于辅助中缀转后缀</span>
+stack&lt;<span class="hljs-type">char</span>&gt; op;
+<span class="hljs-comment">//运算数栈，用于辅助后缀表达式计算</span>
+stack&lt;<span class="hljs-type">int</span>&gt; st;
+vector&lt;string&gt; v;<span class="hljs-comment">//存储后缀表达式</span>
+string t1 = <span class="hljs-string">&quot;*/^&quot;</span>;<span class="hljs-comment">//优先级高的运算符</span>
+string t2 = <span class="hljs-string">&quot;+-*/^&quot;</span>;<span class="hljs-comment">//所有运算符</span>
+
+<span class="hljs-comment">//计算y的x次方</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">cf</span><span class="hljs-params">(<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> r = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= x; i++) r *= y;
+    <span class="hljs-keyword">return</span> r;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">getline</span>(cin,s);
+    n = <span class="hljs-built_in">stoi</span>(s);
+    <span class="hljs-keyword">while</span>(n--) {
+        <span class="hljs-built_in">getline</span>(cin,s);
+
+        <span class="hljs-comment">//将中缀转后缀</span>
+        <span class="hljs-type">int</span> len = s.<span class="hljs-built_in">size</span>();
+        string w = <span class="hljs-string">&quot;&quot;</span>;<span class="hljs-comment">//存储运算数</span>
+        string tt = <span class="hljs-string">&quot; &quot;</span>;<span class="hljs-comment">//运算符字符串</span>
+        v.<span class="hljs-built_in">clear</span>();
+        <span class="hljs-type">char</span> f = <span class="hljs-string">&#x27;+&#x27;</span>;<span class="hljs-comment">//标记负数，默认不是负数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-comment">//遇到运算数存入后缀表达式</span>
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">isdigit</span>(s[i])) {
+                <span class="hljs-comment">//如果是第一个数字，且上一个是负号</span>
+                <span class="hljs-keyword">if</span>(i != <span class="hljs-number">0</span> &amp;&amp; s[i<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;-&#x27;</span>) f = <span class="hljs-string">&#x27;-&#x27;</span>;
+                w = w + s[i];
+                <span class="hljs-comment">//到运算数结尾</span>
+                <span class="hljs-keyword">if</span>(i==len<span class="hljs-number">-1</span> || !<span class="hljs-built_in">isdigit</span>(s[i+<span class="hljs-number">1</span>])) {
+                    <span class="hljs-keyword">if</span>(f == <span class="hljs-string">&#x27;-&#x27;</span>) w = <span class="hljs-string">&quot;-&quot;</span> + w;
+                    v.<span class="hljs-built_in">push_back</span>(w);
+                    w = <span class="hljs-string">&quot;&quot;</span>;
+                    f = <span class="hljs-string">&#x27;+&#x27;</span>;
+                }
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s[i] == <span class="hljs-string">&#x27;(&#x27;</span>) op.<span class="hljs-built_in">push</span>(s[i]); <span class="hljs-comment">//左括号入栈</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s[i] == <span class="hljs-string">&#x27;)&#x27;</span>) {
+                <span class="hljs-comment">//右括号弹出栈中元素直到遇到左括号</span>
+                <span class="hljs-keyword">while</span>(!op.<span class="hljs-built_in">empty</span>() &amp;&amp; op.<span class="hljs-built_in">top</span>() != <span class="hljs-string">&#x27;(&#x27;</span>) {
+                    tt[<span class="hljs-number">0</span>] = op.<span class="hljs-built_in">top</span>();
+                    v.<span class="hljs-built_in">push_back</span>(tt);
+                    op.<span class="hljs-built_in">pop</span>();
+                }
+                op.<span class="hljs-built_in">pop</span>();<span class="hljs-comment">//左括号弹出</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(s[i] == <span class="hljs-string">&#x27;^&#x27;</span>) { <span class="hljs-comment">//^ 优先级最高</span>
+                <span class="hljs-comment">//弹出栈中运算符直到遇到更低优先级的元素</span>
+                <span class="hljs-keyword">while</span>(!op.<span class="hljs-built_in">empty</span>()&amp;&amp;(op.<span class="hljs-built_in">top</span>() == <span class="hljs-string">&#x27;^&#x27;</span>)) {
+                    tt[<span class="hljs-number">0</span>] = op.<span class="hljs-built_in">top</span>();
+                    v.<span class="hljs-built_in">push_back</span>(tt);
+                    op.<span class="hljs-built_in">pop</span>();
+                }
+                op.<span class="hljs-built_in">push</span>(s[i]);<span class="hljs-comment">//当前运算符入栈</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(t1.<span class="hljs-built_in">find</span>(s[i])!=<span class="hljs-number">-1</span>) { <span class="hljs-comment">//*/</span>
+                <span class="hljs-comment">//弹出栈中运算符直到遇到更低优先级的元素</span>
+                <span class="hljs-keyword">while</span>(!op.<span class="hljs-built_in">empty</span>()&amp;&amp;(t1.<span class="hljs-built_in">find</span>(op.<span class="hljs-built_in">top</span>())!=<span class="hljs-number">-1</span>)) {
+                    tt[<span class="hljs-number">0</span>] = op.<span class="hljs-built_in">top</span>();
+                    v.<span class="hljs-built_in">push_back</span>(tt);
+                    op.<span class="hljs-built_in">pop</span>();
+                }
+                op.<span class="hljs-built_in">push</span>(s[i]);<span class="hljs-comment">//当前运算符入栈</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(t2.<span class="hljs-built_in">find</span>(s[i])!=<span class="hljs-number">-1</span>) { <span class="hljs-comment">//优先级较低的运算符</span>
+                <span class="hljs-comment">//紧挨着数字的-是负号，不是-</span>
+                <span class="hljs-keyword">if</span>(i != len <span class="hljs-number">-1</span> &amp;&amp; s[i] == <span class="hljs-string">&#x27;-&#x27;</span> &amp;&amp; <span class="hljs-built_in">isdigit</span>(s[i+<span class="hljs-number">1</span>])) <span class="hljs-keyword">continue</span>;
+                <span class="hljs-comment">//弹出栈中所有运算符</span>
+                <span class="hljs-keyword">while</span>(!op.<span class="hljs-built_in">empty</span>()&amp;&amp;(t2.<span class="hljs-built_in">find</span>(op.<span class="hljs-built_in">top</span>())!=<span class="hljs-number">-1</span>)) {
+                    tt[<span class="hljs-number">0</span>] = op.<span class="hljs-built_in">top</span>();
+                    v.<span class="hljs-built_in">push_back</span>(tt);
+                    op.<span class="hljs-built_in">pop</span>();
+                }
+                op.<span class="hljs-built_in">push</span>(s[i]);
+            }
+        }
+
+        <span class="hljs-comment">//弹出运算符栈中的剩余元素</span>
+        <span class="hljs-keyword">while</span>(!op.<span class="hljs-built_in">empty</span>()) {
+            tt[<span class="hljs-number">0</span>] = op.<span class="hljs-built_in">top</span>();
+            v.<span class="hljs-built_in">push_back</span>(tt);
+            op.<span class="hljs-built_in">pop</span>();
+        }
+
+        <span class="hljs-comment">//后缀表达式计算</span>
+        len = v.<span class="hljs-built_in">size</span>();
+        <span class="hljs-type">int</span> x,y;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; i++) {
+            <span class="hljs-comment">//运算数入栈</span>
+            <span class="hljs-keyword">if</span>(t2.<span class="hljs-built_in">find</span>(v[i]) == <span class="hljs-number">-1</span>) {
+                st.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">stoi</span>(v[i]));
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">//运算符：取出次顶和栈顶运算，结果入栈</span>
+                x = st.<span class="hljs-built_in">top</span>();
+                st.<span class="hljs-built_in">pop</span>();
+                y = st.<span class="hljs-built_in">top</span>();
+                st.<span class="hljs-built_in">pop</span>();
+<span class="hljs-comment">//                cout&lt;&lt;y&lt;&lt;v[i]&lt;&lt;x&lt;&lt;endl;</span>
+                <span class="hljs-keyword">if</span>(v[i] == <span class="hljs-string">&quot;+&quot;</span>) st.<span class="hljs-built_in">push</span>(y+x);
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(v[i] == <span class="hljs-string">&quot;-&quot;</span>) st.<span class="hljs-built_in">push</span>(y-x);
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(v[i] == <span class="hljs-string">&quot;*&quot;</span>) st.<span class="hljs-built_in">push</span>(y*x);
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(v[i] == <span class="hljs-string">&quot;/&quot;</span>) st.<span class="hljs-built_in">push</span>(y/x);
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(v[i] == <span class="hljs-string">&quot;^&quot;</span>) st.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">cf</span>(y,x));
+            }
+        }
+
+        cout&lt;&lt;st.<span class="hljs-built_in">top</span>()&lt;&lt;endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2280">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

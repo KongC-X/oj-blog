@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P17011 [GESP202606 五级] 晚宴 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小明去参加晚宴。晚宴中有 个菜肴，每个菜肴都有一个美味度，第 个菜肴的美味度为 。 晚宴规定小明只能恰好选取两道菜肴，并且这两道菜肴的美味度必须要互质（即最大公约数为 ）。 请帮助小明选取两道菜肴，使得两道菜肴美味度之和最大。">
+<link rel="canonical" href="https://zymojblog.top/p/P17011/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P17011 [GESP202606 五级] 晚宴 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小明去参加晚宴。晚宴中有 个菜肴，每个菜肴都有一个美味度，第 个菜肴的美味度为 。 晚宴规定小明只能恰好选取两道菜肴，并且这两道菜肴的美味度必须要互质（即最大公约数为 ）。 请帮助小明选取两道菜肴，使得两道菜肴美味度之和最大。">
+<meta property="og:url" content="https://zymojblog.top/p/P17011/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P17011 [GESP202606 五级] 晚宴 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小明去参加晚宴。晚宴中有 个菜肴，每个菜肴都有一个美味度，第 个菜肴的美味度为 。 晚宴规定小明只能恰好选取两道菜肴，并且这两道菜肴的美味度必须要互质（即最大公约数为 ）。 请帮助小明选取两道菜肴，使得两道菜肴美味度之和最大。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P17011 [GESP202606 五级] 晚宴","headline":"P17011 [GESP202606 五级] 晚宴 题解","description":"小明去参加晚宴。晚宴中有 个菜肴，每个菜肴都有一个美味度，第 个菜肴的美味度为 。 晚宴规定小明只能恰好选取两道菜肴，并且这两道菜肴的美味度必须要互质（即最大公约数为 ）。 请帮助小明选取两道菜肴，使得两道菜肴美味度之和最大。","url":"https://zymojblog.top/p/P17011/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、枚举、最大公约数 gcd、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P17011</span></div>
+  <h1 class="seo-title">P17011 [GESP202606 五级] 晚宴</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%20gcd">最大公约数 gcd</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P17011 [GESP202606 五级] 晚宴</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>枚举</code>、<code>最大公约数 gcd</code>、<code>2026</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>小明去参加晚宴。晚宴中有 $n$ 个菜肴，每个菜肴都有一个美味度，第 $i$ 个菜肴的美味度为 $v_i$。</p>
+<p>晚宴规定小明只能<strong>恰好</strong>选取两道菜肴，并且这两道菜肴的美味度必须要互质（即最大公约数为 $1$）。</p>
+<p>请帮助小明选取两道菜肴，使得两道菜肴美味度之和最大。</p>
+<h2>输入格式</h2>
+<p>输入 $2$ 行，</p>
+<p>第一行为一个正整数 $n$，表示菜肴的个数；</p>
+<p>第二行为 $n$ 个整数 $v_1, v_2, \cdots, v_n$ 表示菜肴的美味度，整数之间以空格分隔。</p>
+<h2>输出格式</h2>
+<p>输出一个整数，表示两道互质菜肴美味度之和的最大值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">7</span> <span class="hljs-number">35</span> <span class="hljs-number">105</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>38```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                         <span class="hljs-comment">// n：菜肴个数</span>
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1005</span>];                   <span class="hljs-comment">// a：存储美味度，下标从0开始</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+    }
+
+    <span class="hljs-comment">// 思路：枚举所有菜肴对(i, j)，若美味度互质（gcd==1），则用它们的和更新答案。</span>
+    <span class="hljs-comment">// 数据保证至少有一对互质，n ≤ 1000，双重循环O(n^2)完全可行。</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// ans：最大美味度之和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (__gcd(a[i], a[j]) == <span class="hljs-number">1</span>) {
+                <span class="hljs-type">int</span> sum = a[i] + a[j];
+                <span class="hljs-keyword">if</span> (sum &gt; ans) ans = sum;
+            }
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P17011">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

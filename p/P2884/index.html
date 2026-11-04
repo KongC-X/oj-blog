@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2884 [USACO07MAR] Monthly Expense S 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个 项的正整数序列 ，请找出满足以下条件的最小的正整数 ：存在一种将 划分成 段的方案，使得每一段中所有数字的和都不大于 。">
+<link rel="canonical" href="https://zymojblog.top/p/P2884/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2884 [USACO07MAR] Monthly Expense S 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个 项的正整数序列 ，请找出满足以下条件的最小的正整数 ：存在一种将 划分成 段的方案，使得每一段中所有数字的和都不大于 。">
+<meta property="og:url" content="https://zymojblog.top/p/P2884/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2884 [USACO07MAR] Monthly Expense S 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个 项的正整数序列 ，请找出满足以下条件的最小的正整数 ：存在一种将 划分成 段的方案，使得每一段中所有数字的和都不大于 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2884 [USACO07MAR] Monthly Expense S","headline":"P2884 [USACO07MAR] Monthly Expense S 题解","description":"给定一个 项的正整数序列 ，请找出满足以下条件的最小的正整数 ：存在一种将 划分成 段的方案，使得每一段中所有数字的和都不大于 。","url":"https://zymojblog.top/p/P2884/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"2007、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2884</span></div>
+  <h1 class="seo-title">P2884 [USACO07MAR] Monthly Expense S</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2007">2007</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2884 [USACO07MAR] Monthly Expense S</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2007</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>给定一个 $n$ 项的正整数序列 ${a_n}$，请找出满足以下条件的最小的正整数 $S$：存在一种将 ${a_n}$ 划分成 $m$ 段的方案，使得每一段中所有数字的和都不大于 $S$。</p>
+<h2>输入格式</h2>
+<p>第一行两个正整数 $n,m$。</p>
+<p>下面 $n$ 行，每行一个正整数 $a_i$。</p>
+<h2>输出格式</h2>
+<p>一行一个正整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span> <span class="hljs-number">5</span>
+<span class="hljs-number">100</span>
+<span class="hljs-number">400</span>
+<span class="hljs-number">300</span>
+<span class="hljs-number">100</span>
+<span class="hljs-number">500</span>
+<span class="hljs-number">101</span>
+<span class="hljs-number">400</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>500```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100010</span>;          <span class="hljs-comment">// n 最大 1e5，多开10</span>
+<span class="hljs-type">int</span> a[MAXN];                      <span class="hljs-comment">// 存储每天的花费</span>
+<span class="hljs-type">int</span> n, m;                         <span class="hljs-comment">// n:天数, m:段数</span>
+
+<span class="hljs-comment">// 判断当每段上限为 S 时，能否在 m 段内完成划分</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> S)</span> </span>{
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">1</span>;                  <span class="hljs-comment">// 当前段数，至少1段</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;            <span class="hljs-comment">// 当前段的和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (sum + a[i] &gt; S) {     <span class="hljs-comment">// 当前段装不下，另起一段</span>
+            cnt++;
+            sum = a[i];
+            <span class="hljs-keyword">if</span> (cnt &gt; m) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 段数超标，不可行</span>
+        } <span class="hljs-keyword">else</span> {
+            sum += a[i];
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-comment">/*
+      思路：二分答案 + 贪心检验
+      要求最大段和的最小值，这是典型的二分答案模型。
+      对答案 S 进行二分：
+        - 下界 L = max(a[i])，因为至少要把最大的元素单独放一段
+        - 上界 R = sum(a[i])，全部放一段的极端情况
+      每次取 mid = (L+R)/2，用贪心检验能否在 m 段内使每段和 &lt;= mid
+      贪心策略：从头累加，超过 mid 就新开一段。
+      若段数 &lt;= m，说明 mid 可行，尝试更小的（R = mid - 1），并记录答案；
+      否则 L = mid + 1。
+      最后输出答案 ans。
+      时间复杂度 O(n log sum(a))，n=1e5 可行。
+    */</span>
+    
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-type">int</span> L = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// 二分下界：最大单个元素</span>
+    <span class="hljs-type">int</span> R = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// 二分上界：总和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+        <span class="hljs-keyword">if</span> (a[i] &gt; L) L = a[i];
+        R += a[i];
+    }
+    
+    <span class="hljs-type">int</span> ans = R;                  <span class="hljs-comment">// 答案初始化为上界</span>
+    <span class="hljs-keyword">while</span> (L &lt;= R) {
+        <span class="hljs-type">int</span> mid = L + (R - L) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid)) {
+            ans = mid;            <span class="hljs-comment">// 可行，记录答案，尝试更小</span>
+            R = mid - <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            L = mid + <span class="hljs-number">1</span>;          <span class="hljs-comment">// 不可行，需要更大</span>
+        }
+    }
+    
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2884">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

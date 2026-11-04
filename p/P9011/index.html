@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9011 [USACO23JAN] Air Cownditioning II B 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="With the hottest recorded summer ever at Farmer John's farm, he needs a way to cool down his cows. Thus, he decides to invest in some air conditioner…">
+<link rel="canonical" href="https://zymojblog.top/p/P9011/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9011 [USACO23JAN] Air Cownditioning II B 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="With the hottest recorded summer ever at Farmer John's farm, he needs a way to cool down his cows. Thus, he decides to invest in some air conditioner…">
+<meta property="og:url" content="https://zymojblog.top/p/P9011/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9011 [USACO23JAN] Air Cownditioning II B 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="With the hottest recorded summer ever at Farmer John's farm, he needs a way to cool down his cows. Thus, he decides to invest in some air conditioner…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9011 [USACO23JAN] Air Cownditioning II B","headline":"P9011 [USACO23JAN] Air Cownditioning II B 题解","description":"With the hottest recorded summer ever at Farmer John's farm, he needs a way to cool down his cows. Thus, he decides to invest in some air conditioner…","url":"https://zymojblog.top/p/P9011/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"USACO、2023、深度优先搜索 DFS、差分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9011</span></div>
+  <h1 class="seo-title">P9011 [USACO23JAN] Air Cownditioning II B</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E5%B7%AE%E5%88%86">差分</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9011 [USACO23JAN] Air Cownditioning II B</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>USACO</code>、<code>2023</code>、<code>深度优先搜索 DFS</code>、<code>差分</code></p>
+<h2>题目描述</h2>
+<p>With the hottest recorded summer ever at Farmer John&#39;s farm, he needs a way to cool down his cows. Thus, he decides to invest in some air conditioners.</p>
+<p>Farmer John&#39;s $N$ cows $(1 \le N \le 20)$ live in a barn that contains a sequence of stalls in a row, numbered $1 \cdots 100$. Cow $i$ occupies a range of these stalls, starting from stall $s_i$ and ending with stall $t_i$. The ranges of stalls occupied by different cows are all disjoint from each-other. Cows have different cooling requirements. Cow $i$ must be cooled by an amount $c_i$, meaning every stall occupied by cow $i$ must have its temperature reduced by at least $c_i$ units.</p>
+<p>The barn contains $M$ air conditioners, labeled $1 \cdots M (1 \le M \le 10)$. The $i$-th air conditioner costs $m_i$ units of money to operate $(1 \le m_i \le 1000)$ and cools the range of stalls starting from stall $a_i$ and ending with stall $b_i$. If running, the $i$-th air conditioner reduces the temperature of all the stalls in this range by $p_i (1 \le p_i \le 10^6)$. Ranges of stalls covered by air conditioners may potentially overlap.</p>
+<p>Running a farm is no easy business, so FJ has a tight budget. Please determine the minimum amount of money he needs to spend to keep all of his cows comfortable. It is guaranteed that if FJ uses all of his conditioners, then all cows will be comfortable.</p>
+<h2>输入格式</h2>
+<p>The first line of input contains $N$ and $M$.</p>
+<p>The next $N$ lines describe cows. The ith of these lines contains $s_i, t_i$, and $c_i$.</p>
+<p>The next $M$ lines describe air conditioners. The ith of these lines contains $a_i, b_i, p_i$, and $m_i$.</p>
+<p>For every input other than the sample, you can assume that $M=10$.</p>
+<h2>输出格式</h2>
+<p>Output a single integer telling the minimum amount of money FJ needs to spend to operate enough air conditioners to satisfy all his cows (with the conditions listed above).</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span>
+<span class="hljs-number">7</span> <span class="hljs-number">9</span> <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">9</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">2</span> <span class="hljs-number">8</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+<span class="hljs-number">6</span> <span class="hljs-number">9</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>10```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目类型：枚举子集（状态压缩）
+     * 思路：
+     * 1. 读入 N, M，奶牛信息 (s, t, c)，空调信息 (a, b, p, m)。
+     * 2. 枚举所有空调选择方案 mask（0 ~ (1&lt;&lt;M)-1）：
+     *    - 清空冷却数组 cool[101] = {0}。
+     *    - 若空调 i 被选中（mask &amp; (1&lt;&lt;i)），对区间 [a_i, b_i] 每个位置加上 p_i。
+     *    - 累加费用 cost。
+     *    - 检查所有奶牛：对于每个奶牛 i，检查其区间 [s_i, t_i] 中每个位置 j，
+     *      若 cool[j] &lt; c_i，则该方案无效。
+     *    - 若有效，更新最小费用 ans。
+     * 3. 输出 ans。
+     */</span>
+
+    <span class="hljs-type">int</span> n, m;          <span class="hljs-comment">// n: 奶牛数, m: 空调数</span>
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-type">int</span> s[<span class="hljs-number">25</span>], t[<span class="hljs-number">25</span>], c[<span class="hljs-number">25</span>];    <span class="hljs-comment">// 奶牛区间和需求</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; s[i] &gt;&gt; t[i] &gt;&gt; c[i];
+    }
+
+    <span class="hljs-type">int</span> a[<span class="hljs-number">15</span>], b[<span class="hljs-number">15</span>], p[<span class="hljs-number">15</span>], cost[<span class="hljs-number">15</span>];   <span class="hljs-comment">// 空调参数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        cin &gt;&gt; a[i] &gt;&gt; b[i] &gt;&gt; p[i] &gt;&gt; cost[i];
+    }
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">1e9</span>;   <span class="hljs-comment">// 最小费用，初始为较大值</span>
+
+    <span class="hljs-comment">// 枚举所有方案</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> mask = <span class="hljs-number">0</span>; mask &lt; (<span class="hljs-number">1</span> &lt;&lt; m); mask++) {
+        <span class="hljs-type">int</span> cool[<span class="hljs-number">105</span>] = {<span class="hljs-number">0</span>};    <span class="hljs-comment">// 每个位置的降温总量，坐标最大100</span>
+        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;            <span class="hljs-comment">// 当前方案总费用</span>
+
+        <span class="hljs-comment">// 应用选中的空调</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-keyword">if</span> (mask &amp; (<span class="hljs-number">1</span> &lt;&lt; i)) {
+                sum += cost[i];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = a[i]; j &lt;= b[i]; j++) {
+                    cool[j] += p[i];
+                }
+            }
+        }
+
+        <span class="hljs-comment">// 检查是否满足所有奶牛</span>
+        <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n &amp;&amp; ok; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = s[i]; j &lt;= t[i]; j++) {
+                <span class="hljs-keyword">if</span> (cool[j] &lt; c[i]) {
+                    ok = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+
+        <span class="hljs-keyword">if</span> (ok) {
+            <span class="hljs-keyword">if</span> (sum &lt; ans) ans = sum;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9011">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

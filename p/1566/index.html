@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1566 图书管理员（librarian） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小D刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序…">
+<link rel="canonical" href="https://zymojblog.top/p/1566/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1566 图书管理员（librarian） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小D刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序…">
+<meta property="og:url" content="https://zymojblog.top/p/1566/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1566 图书管理员（librarian） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小D刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1566 图书管理员（librarian）","headline":"1566 图书管理员（librarian） 题解","description":"图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小D刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序…","url":"https://zymojblog.top/p/1566/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"noip复赛、函数问题、数组问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1566</span></div>
+  <h1 class="seo-title">1566 图书管理员（librarian）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E9%97%AE%E9%A2%98">函数问题</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1566 - 图书管理员（librarian）</h1>
+<h2>题目描述</h2>
+<p>图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 </p>
+<p>每位借书的读者手中有一个需求码，这个需求码也是一个正整数。如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 </p>
+<p>小D刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序，对于每一位读者，求出他所需要的书中图书编码最小的那本书，如果没有他需要的书，请输出 $-1$ 。</p>
+<h2>输入</h2>
+<p>第一行，包含两个正整数 $n , q$，以一个空格分开，分别代表图书馆里 书的数量和读者的数量。</p>
+<p>接下来的 $n$ 行，每行包含一个正整数，代表图书馆里某本书的图书编码。</p>
+<p>接下来的 $q$ 行，每行包含两个正整数，以一个空格分开，第一个正整数代表图书馆 里读者的需求码的长度，第二个正整数代表读者的需求码。</p>
+<h2>输出</h2>
+<p>$ q$ 行，每行包含一个整数，如果存在第 $i$ 个读者所需要的书，则在第 $i$ 行输出第 $i$ 个读者所需要的书中图书编码最小的那本书的图书编码，否则输出$-1$。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">/*
+需要的书中图书编码最小的那本书，
+如果没有他需要的书，请输出-1
+
+如果需求码的长度为len，用图书编码%10的len次方取余数，得到最后的len位
+判断是否是需求码 
+*/</span> 
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1010</span>;
+<span class="hljs-type">int</span> a[N],n,q,len,x;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;q;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    
+    <span class="hljs-comment">//读入需求码</span>
+    <span class="hljs-type">int</span> mi;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= q;i++){
+        cin&gt;&gt;len&gt;&gt;x;
+        <span class="hljs-comment">//遍历所有的图书编码，找满足条件的最小的编码 </span>
+        mi = INT_MAX;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= n;j++){
+            <span class="hljs-type">int</span> t = <span class="hljs-built_in">pow</span>(<span class="hljs-number">10</span>,len);<span class="hljs-comment">//10的len次方 </span>
+            <span class="hljs-keyword">if</span>(a[j] % t == x &amp;&amp; a[j] &lt; mi){
+                mi = a[j];
+            }
+        }
+        
+        <span class="hljs-keyword">if</span>(mi == INT_MAX) cout&lt;&lt;<span class="hljs-number">-1</span>&lt;&lt;endl;
+        <span class="hljs-keyword">else</span> cout&lt;&lt;mi&lt;&lt;endl;
+    } 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1566">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

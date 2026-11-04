@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1825 [USACO11OPEN] Corn Maze S 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="This past fall, Farmer John took the cows to visit a corn maze. But this wasn't just any corn maze: it featured several gravity-powered teleporter sl…">
+<link rel="canonical" href="https://zymojblog.top/p/P1825/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1825 [USACO11OPEN] Corn Maze S 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="This past fall, Farmer John took the cows to visit a corn maze. But this wasn't just any corn maze: it featured several gravity-powered teleporter sl…">
+<meta property="og:url" content="https://zymojblog.top/p/P1825/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1825 [USACO11OPEN] Corn Maze S 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="This past fall, Farmer John took the cows to visit a corn maze. But this wasn't just any corn maze: it featured several gravity-powered teleporter sl…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1825 [USACO11OPEN] Corn Maze S","headline":"P1825 [USACO11OPEN] Corn Maze S 题解","description":"This past fall, Farmer John took the cows to visit a corn maze. But this wasn't just any corn maze: it featured several gravity-powered teleporter sl…","url":"https://zymojblog.top/p/P1825/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、搜索、2011、USACO、广度优先搜索 BFS、最短路","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1825</span></div>
+  <h1 class="seo-title">P1825 [USACO11OPEN] Corn Maze S</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/2011">2011</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E7%9F%AD%E8%B7%AF">最短路</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1825 [USACO11OPEN] Corn Maze S</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>搜索</code>、<code>2011</code>、<code>USACO</code>、<code>广度优先搜索 BFS</code>、<code>最短路</code></p>
+<h2>题目描述</h2>
+<p>This past fall, Farmer John took the cows to visit a corn maze. But this wasn&#39;t just any corn maze: it featured several gravity-powered teleporter slides, which cause cows to teleport instantly from one point in the maze to another. The slides work in both directions: a cow can slide from the slide&#39;s start to the end instantly, or from the end to the start. If a cow steps on a space that hosts either end of a slide, she must use the slide.</p>
+<p>The outside of the corn maze is entirely corn except for a single exit.</p>
+<p>The maze can be represented by an N x M (2 &lt;= N &lt;= 300; 2 &lt;= M &lt;= 300) grid. Each grid element contains one of these items:</p>
+<p>* Corn (corn grid elements are impassable) </p>
+<p>* Grass (easy to pass through!) </p>
+<p>* A slide endpoint (which will transport a cow to the other endpoint) </p>
+<p>* The exit</p>
+<p>A cow can only move from one space to the next if they are adjacent and neither contains corn. Each grassy space has four potential neighbors to which a cow can travel. It takes 1 unit of time to move from a grassy space to an adjacent space; it takes 0 units of time to move from one slide endpoint to the other.</p>
+<p>Corn-filled spaces are denoted with an octothorpe (#). Grassy spaces are denoted with a period (.). Pairs of slide endpoints are denoted with the same uppercase letter (A-Z), and no two different slides have endpoints denoted with the same letter. The exit is denoted with the equals sign (=).</p>
+<p>Bessie got lost. She knows where she is on the grid, and marked her current grassy space with the &#39;at&#39; symbol (@). What is the minimum time she needs to move to the exit space?</p>
+<h2>输入格式</h2>
+<p>Line 1: Two space separated integers: N and M</p>
+<p>Lines 2..N+1: Line i+1 describes row i of the maze: M characters (no spaces)</p>
+<h2>输出格式</h2>
+<p>Line 1: An integer, corresponding to the shortest time that Bessie needs to exit the maze.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">6</span>
+###=##
+#.W.##
+#.####
+#.@W##
+######</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n, m;
+<span class="hljs-type">char</span> a[<span class="hljs-number">305</span>][<span class="hljs-number">305</span>];        <span class="hljs-comment">// 地图</span>
+<span class="hljs-type">int</span> dist[<span class="hljs-number">305</span>][<span class="hljs-number">305</span>];      <span class="hljs-comment">// 最短时间，-1表示未访问</span>
+<span class="hljs-type">int</span> sx, sy, ex, ey;      <span class="hljs-comment">// 起点和出口坐标</span>
+
+<span class="hljs-comment">// 传送门配对：first[ch]和second[ch]分别存字母ch的两个坐标</span>
+<span class="hljs-type">int</span> firstX[<span class="hljs-number">26</span>], firstY[<span class="hljs-number">26</span>];
+<span class="hljs-type">int</span> secondX[<span class="hljs-number">26</span>], secondY[<span class="hljs-number">26</span>];
+<span class="hljs-type">bool</span> hasFirst[<span class="hljs-number">26</span>];       <span class="hljs-comment">// 标记是否已经记录了第一个</span>
+
+<span class="hljs-comment">// 四个方向</span>
+<span class="hljs-type">int</span> dx[<span class="hljs-number">4</span>] = {<span class="hljs-number">-1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>};
+<span class="hljs-type">int</span> dy[<span class="hljs-number">4</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">1</span>};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">()</span> </span>{
+    queue&lt;<span class="hljs-type">int</span>&gt; qx, qy;
+    qx.<span class="hljs-built_in">push</span>(sx); qy.<span class="hljs-built_in">push</span>(sy);
+    dist[sx][sy] = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">while</span> (!qx.<span class="hljs-built_in">empty</span>()) {
+        <span class="hljs-type">int</span> x = qx.<span class="hljs-built_in">front</span>(), y = qy.<span class="hljs-built_in">front</span>();
+        qx.<span class="hljs-built_in">pop</span>(); qy.<span class="hljs-built_in">pop</span>();
+
+        <span class="hljs-comment">// 到达出口，立即返回</span>
+        <span class="hljs-keyword">if</span> (x == ex &amp;&amp; y == ey) <span class="hljs-keyword">return</span> dist[x][y];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-type">int</span> nx = x + dx[i], ny = y + dy[i];
+            <span class="hljs-keyword">if</span> (nx &lt; <span class="hljs-number">0</span> || nx &gt;= n || ny &lt; <span class="hljs-number">0</span> || ny &gt;= m) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// 出界</span>
+            <span class="hljs-keyword">if</span> (a[nx][ny] == <span class="hljs-string">&#x27;#&#x27;</span>) <span class="hljs-keyword">continue</span>;                      <span class="hljs-comment">// 障碍</span>
+
+            <span class="hljs-keyword">if</span> (a[nx][ny] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; a[nx][ny] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>) {          <span class="hljs-comment">// 传送门</span>
+                <span class="hljs-type">int</span> ch = a[nx][ny] - <span class="hljs-string">&#x27;A&#x27;</span>;
+                <span class="hljs-comment">// 找到对应的另一端</span>
+                <span class="hljs-type">int</span> tx, ty;
+                <span class="hljs-keyword">if</span> (firstX[ch] == nx &amp;&amp; firstY[ch] == ny) {
+                    tx = secondX[ch];
+                    ty = secondY[ch];
+                } <span class="hljs-keyword">else</span> {
+                    tx = firstX[ch];
+                    ty = firstY[ch];
+                }
+                <span class="hljs-comment">// 传送：从当前格子走到传送门花费1，传送0，总花费+1</span>
+                <span class="hljs-keyword">if</span> (dist[tx][ty] == <span class="hljs-number">-1</span>) {
+                    dist[tx][ty] = dist[x][y] + <span class="hljs-number">1</span>;
+                    qx.<span class="hljs-built_in">push</span>(tx);
+                    qy.<span class="hljs-built_in">push</span>(ty);
+                }
+            } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// 草地或出口</span>
+                <span class="hljs-keyword">if</span> (dist[nx][ny] == <span class="hljs-number">-1</span>) {
+                    dist[nx][ny] = dist[x][y] + <span class="hljs-number">1</span>;
+                    qx.<span class="hljs-built_in">push</span>(nx);
+                    qy.<span class="hljs-built_in">push</span>(ny);
+                }
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; <span class="hljs-comment">// 无法到达（题目保证有解）</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">memset</span>(dist, <span class="hljs-number">-1</span>, <span class="hljs-built_in">sizeof</span>(dist));
+    <span class="hljs-built_in">memset</span>(hasFirst, <span class="hljs-literal">false</span>, <span class="hljs-built_in">sizeof</span>(hasFirst));
+
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            cin &gt;&gt; a[i][j];
+            <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;@&#x27;</span>) { sx = i; sy = j; }
+            <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-string">&#x27;=&#x27;</span>) { ex = i; ey = j; }
+            <span class="hljs-keyword">if</span> (a[i][j] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; a[i][j] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>) {
+                <span class="hljs-type">int</span> ch = a[i][j] - <span class="hljs-string">&#x27;A&#x27;</span>;
+                <span class="hljs-keyword">if</span> (!hasFirst[ch]) {
+                    firstX[ch] = i; firstY[ch] = j;
+                    hasFirst[ch] = <span class="hljs-literal">true</span>;
+                } <span class="hljs-keyword">else</span> {
+                    secondX[ch] = i; secondY[ch] = j;
+                }
+            }
+        }
+    }
+
+    cout &lt;&lt; <span class="hljs-built_in">bfs</span>() &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1825">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

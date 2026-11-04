@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1913 拯救指挥部 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="指挥部被突来的洪水淹没了，还好指挥部有在某些重要的地方起一些围墙，用 号表示，而一个封闭的 号 区域洪水是进不去的…… 现在给出指挥部的围墙建设图，问指挥部没被淹到的重要区域（由 0 表示）有多少。">
+<link rel="canonical" href="https://zymojblog.top/p/1913/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1913 拯救指挥部 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="指挥部被突来的洪水淹没了，还好指挥部有在某些重要的地方起一些围墙，用 号表示，而一个封闭的 号 区域洪水是进不去的…… 现在给出指挥部的围墙建设图，问指挥部没被淹到的重要区域（由 0 表示）有多少。">
+<meta property="og:url" content="https://zymojblog.top/p/1913/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1913 拯救指挥部 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="指挥部被突来的洪水淹没了，还好指挥部有在某些重要的地方起一些围墙，用 号表示，而一个封闭的 号 区域洪水是进不去的…… 现在给出指挥部的围墙建设图，问指挥部没被淹到的重要区域（由 0 表示）有多少。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1913 拯救指挥部","headline":"1913 拯救指挥部 题解","description":"指挥部被突来的洪水淹没了，还好指挥部有在某些重要的地方起一些围墙，用 号表示，而一个封闭的 号 区域洪水是进不去的…… 现在给出指挥部的围墙建设图，问指挥部没被淹到的重要区域（由 0 表示）有多少。","url":"https://zymojblog.top/p/1913/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"深搜、广搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1913</span></div>
+  <h1 class="seo-title">1913 拯救指挥部</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span><span class="seo-badge seo-badge-soft">广度优先搜索-BFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E6%90%9C">广搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1913 - 拯救指挥部</h1>
+<h2>题目描述</h2>
+<p>指挥部被突来的洪水淹没了，还好指挥部有在某些重要的地方起一些围墙，用 <code>*</code> 号表示，而一个封闭的 <code>*</code>号 区域洪水是进不去的……</p>
+<p>现在给出指挥部的围墙建设图，问指挥部没被淹到的重要区域（由 <code>0</code> 表示）有多少。</p>
+<h2>输入</h2>
+<p>第一行是两个数，$x$ 和 $y$（$x,y \le 500$）。</p>
+<p>第二行及以下是一个由 <code>*</code> 和 <code>0</code> 组成的 $x \times y$ 的图。</p>
+<h2>输出</h2>
+<p>输出没被水淹没的指挥部的 <code>0</code> 的数量（计算被 <code>*</code> 围住的 <code>0</code> 的个数）。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">char</span> a[<span class="hljs-number">510</span>][<span class="hljs-number">510</span>];
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-comment">//方向的变化 </span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>]= {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>]= {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-comment">//深搜值为&#x27;0&#x27;的连通块，将其标记为&#x27;*&#x27;</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    a[x][y] = <span class="hljs-string">&#x27;*&#x27;</span>;
+    <span class="hljs-type">int</span> tx,ty;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++){
+        tx = x + fx[i];
+        ty = y + fy[i];
+        <span class="hljs-comment">//在迷宫内，且为&#x27;0&#x27;（为了迷宫不可能是&#x27;0&#x27;，值是&#x27;\0&#x27;也就是整数0） </span>
+        <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-string">&#x27;0&#x27;</span>){
+            <span class="hljs-built_in">dfs</span>(tx,ty);
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+            cin&gt;&gt;a[i][j];
+        }
+    }
+    
+    <span class="hljs-comment">//沿着外层的一圈，找到&#x27;0&#x27;从该点深搜</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-comment">//如果是第1行，或者最后一行，遍历列</span>
+        <span class="hljs-keyword">if</span>(i == <span class="hljs-number">1</span> || i == n){
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+                <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-string">&#x27;0&#x27;</span>){
+                    <span class="hljs-built_in">dfs</span>(i,j);
+                }
+            }
+        }<span class="hljs-keyword">else</span>{
+            <span class="hljs-comment">//如果是该行的第1个元素、最后一个元素</span>
+            <span class="hljs-keyword">if</span>(a[i][<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-built_in">dfs</span>(i,<span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span>(a[i][m] == <span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-built_in">dfs</span>(i,m);
+        } 
+    } 
+    
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+            <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-string">&#x27;0&#x27;</span>) c++;
+        }
+    } 
+    
+    cout&lt;&lt;c;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1913">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

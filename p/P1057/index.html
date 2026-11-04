@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1057 [NOIP 2008 普及组] 传球游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="上体育课的时候，小蛮的老师经常带着同学们一起做游戏。这次，老师带着同学们一起做传球游戏。 游戏规则是这样的： 个同学站成一个圆圈，其中的一个同学手里拿着一个球，当老师吹哨子时开始传球，每个同学可以把球传给自己左右的两个同学中的一个（左右任意），当老师再次吹哨子时，传球停止，此时，拿着球没有传出去的…">
+<link rel="canonical" href="https://zymojblog.top/p/P1057/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1057 [NOIP 2008 普及组] 传球游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="上体育课的时候，小蛮的老师经常带着同学们一起做游戏。这次，老师带着同学们一起做传球游戏。 游戏规则是这样的： 个同学站成一个圆圈，其中的一个同学手里拿着一个球，当老师吹哨子时开始传球，每个同学可以把球传给自己左右的两个同学中的一个（左右任意），当老师再次吹哨子时，传球停止，此时，拿着球没有传出去的…">
+<meta property="og:url" content="https://zymojblog.top/p/P1057/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1057 [NOIP 2008 普及组] 传球游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="上体育课的时候，小蛮的老师经常带着同学们一起做游戏。这次，老师带着同学们一起做传球游戏。 游戏规则是这样的： 个同学站成一个圆圈，其中的一个同学手里拿着一个球，当老师吹哨子时开始传球，每个同学可以把球传给自己左右的两个同学中的一个（左右任意），当老师再次吹哨子时，传球停止，此时，拿着球没有传出去的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1057 [NOIP 2008 普及组] 传球游戏","headline":"P1057 [NOIP 2008 普及组] 传球游戏 题解","description":"上体育课的时候，小蛮的老师经常带着同学们一起做游戏。这次，老师带着同学们一起做传球游戏。 游戏规则是这样的： 个同学站成一个圆圈，其中的一个同学手里拿着一个球，当老师吹哨子时开始传球，每个同学可以把球传给自己左右的两个同学中的一个（左右任意），当老师再次吹哨子时，传球停止，此时，拿着球没有传出去的…","url":"https://zymojblog.top/p/P1057/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、动态规划 DP、递推、2008、NOIP 普及组、记忆化搜索","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1057</span></div>
+  <h1 class="seo-title">P1057 [NOIP 2008 普及组] 传球游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/2008">2008</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2">记忆化搜索</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1057 [NOIP 2008 普及组] 传球游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-11-03</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>动态规划 DP</code>、<code>递推</code>、<code>2008</code>、<code>NOIP 普及组</code>、<code>记忆化搜索</code></p>
+<h2>题目描述</h2>
+<p>上体育课的时候，小蛮的老师经常带着同学们一起做游戏。这次，老师带着同学们一起做传球游戏。</p>
+<p>游戏规则是这样的：$n$ 个同学站成一个圆圈，其中的一个同学手里拿着一个球，当老师吹哨子时开始传球，每个同学可以把球传给自己左右的两个同学中的一个（左右任意），当老师再次吹哨子时，传球停止，此时，拿着球没有传出去的那个同学就是败者，要给大家表演一个节目。</p>
+<p>聪明的小蛮提出一个有趣的问题：有多少种不同的传球方法可以使得从小蛮手里开始传的球，传了 $m$ 次以后，又回到小蛮手里。两种传球方法被视作不同的方法，当且仅当这两种方法中，接到球的同学按接球顺序组成的序列是不同的。比如有三个同学 $1$ 号、$2$ 号、$3$ 号，并假设小蛮为 $1$ 号，球传了 $3$ 次回到小蛮手里的方式有 $1 \rightarrow 2 \rightarrow 3 \rightarrow 1$ 和 $1 \rightarrow 3 \rightarrow 2 \rightarrow 1$，共 $2$ 种。</p>
+<h2>输入格式</h2>
+<p>一行，有两个用空格隔开的整数 $n,m(3 \le n \le 30,1 \le m \le 30)$。</p>
+<h2>输出格式</h2>
+<p>$1$ 个整数，表示符合题意的方法数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+  传球游戏（NOIP 2008 普及组 T3）
+
+  题目：n 个同学围成一圈，球开始在小蛮（1 号）手里。
+        每次可以把球传给左边或右边的相邻同学。
+        问传了 m 次后，球回到 1 号手里的方案数。
+
+  思路：动态规划（路径计数）
+    阶段：传球次数 i（从 0 推到 m）
+    状态：dp[i][j] = 传了 i 次球后，球在 j 号同学手里的方案数
+    转移：第 i-1 次结束时，球一定在 j 的左边(j-1)或右边(j+1)，
+          所以 dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1]（两类方案互不重叠，直接相加）
+    边界：dp[0][1] = 1（传 0 次球，球在 1 号手里，只有这一种初始情况）
+    注意：同学围成圆圈，所以 j=1 时左边是 n，j=n 时右边是 1（绕圈处理）
+    答案：dp[m][1]（传 m 次后回到 1 号的方案数）
+*/</span>
+
+<span class="hljs-type">int</span> n, m;                 <span class="hljs-comment">// n: 同学数, m: 传球次数</span>
+<span class="hljs-type">int</span> dp[<span class="hljs-number">40</span>][<span class="hljs-number">40</span>];           <span class="hljs-comment">// dp[i][j]: 传 i 次后球在 j 号手里的方案数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-comment">// 边界：传 0 次球，球在小蛮（1 号）手里，方案数为 1</span>
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">// 按传球次数逐层递推</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            <span class="hljs-keyword">if</span> (j == <span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// 1 号同学：左边是 n 号，右边是 2 号</span>
+                dp[i][j] = dp[i<span class="hljs-number">-1</span>][j+<span class="hljs-number">1</span>] + dp[i<span class="hljs-number">-1</span>][n];
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j == n) {
+                <span class="hljs-comment">// n 号同学：左边是 n-1 号，右边是 1 号</span>
+                dp[i][j] = dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] + dp[i<span class="hljs-number">-1</span>][<span class="hljs-number">1</span>];
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 中间同学：左右分别是 j-1 和 j+1</span>
+                dp[i][j] = dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>] + dp[i<span class="hljs-number">-1</span>][j+<span class="hljs-number">1</span>];
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 传 m 次后，球回到 1 号手里的方案数</span>
+    cout &lt;&lt; dp[m][<span class="hljs-number">1</span>] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1057">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

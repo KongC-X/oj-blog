@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5732 【深基5.习7】杨辉三角 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出 ，输出杨辉三角的前 行。 如果你不知道什么是杨辉三角，可以观察样例找找规律。">
+<link rel="canonical" href="https://zymojblog.top/p/P5732/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5732 【深基5.习7】杨辉三角 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出 ，输出杨辉三角的前 行。 如果你不知道什么是杨辉三角，可以观察样例找找规律。">
+<meta property="og:url" content="https://zymojblog.top/p/P5732/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5732 【深基5.习7】杨辉三角 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出 ，输出杨辉三角的前 行。 如果你不知道什么是杨辉三角，可以观察样例找找规律。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5732 【深基5.习7】杨辉三角","headline":"P5732 【深基5.习7】杨辉三角 题解","description":"给出 ，输出杨辉三角的前 行。 如果你不知道什么是杨辉三角，可以观察样例找找规律。","url":"https://zymojblog.top/p/P5732/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"洛谷","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5732</span></div>
+  <h1 class="seo-title">P5732 【深基5.习7】杨辉三角</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门4】数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7">洛谷</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5732 【深基5.习7】杨辉三角</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-02</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给出 $n(1\le n\le20)$，输出杨辉三角的前 $n$ 行。</p>
+<p>如果你不知道什么是杨辉三角，可以观察样例找找规律。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1<br>1 1<br>1 2 1<br>1 3 3 1<br>1 4 6 4 1<br>1 5 10 10 5 1</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,a[<span class="hljs-number">21</span>][<span class="hljs-number">21</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;n);
+    a[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]=<span class="hljs-number">1</span>;<span class="hljs-comment">//初始化</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>;i&lt;=n;i++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=i;j++)
+            a[i][j]=a[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>]+a[i<span class="hljs-number">-1</span>][j];<span class="hljs-comment">//进行计算</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=i;j++)<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d &quot;</span>,a[i][j]);<span class="hljs-comment">//输出</span>
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<span class="hljs-comment">//换行</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5732">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

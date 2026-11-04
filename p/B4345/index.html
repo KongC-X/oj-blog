@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4345 [语言月赛 202506] 卷积画图 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一张 的画布（每个格子里有一个数字），以及一个 的“模板”。我们要把这个模板放在画布的左上角，然后一点一点向右、向下移动。每次移动的时候，把模板里的数字和画布上对应的数字相乘，然后加起来，得到一个新数字。这样，我们就会得到一张新的、稍小的画布。这个过程叫“卷积”。 例如，假设我们有这样一张 的…">
+<link rel="canonical" href="https://zymojblog.top/p/B4345/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4345 [语言月赛 202506] 卷积画图 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一张 的画布（每个格子里有一个数字），以及一个 的“模板”。我们要把这个模板放在画布的左上角，然后一点一点向右、向下移动。每次移动的时候，把模板里的数字和画布上对应的数字相乘，然后加起来，得到一个新数字。这样，我们就会得到一张新的、稍小的画布。这个过程叫“卷积”。 例如，假设我们有这样一张 的…">
+<meta property="og:url" content="https://zymojblog.top/p/B4345/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4345 [语言月赛 202506] 卷积画图 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一张 的画布（每个格子里有一个数字），以及一个 的“模板”。我们要把这个模板放在画布的左上角，然后一点一点向右、向下移动。每次移动的时候，把模板里的数字和画布上对应的数字相乘，然后加起来，得到一个新数字。这样，我们就会得到一张新的、稍小的画布。这个过程叫“卷积”。 例如，假设我们有这样一张 的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4345 [语言月赛 202506] 卷积画图","headline":"B4345 [语言月赛 202506] 卷积画图 题解","description":"给定一张 的画布（每个格子里有一个数字），以及一个 的“模板”。我们要把这个模板放在画布的左上角，然后一点一点向右、向下移动。每次移动的时候，把模板里的数字和画布上对应的数字相乘，然后加起来，得到一个新数字。这样，我们就会得到一张新的、稍小的画布。这个过程叫“卷积”。 例如，假设我们有这样一张 的…","url":"https://zymojblog.top/p/B4345/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2025、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4345</span></div>
+  <h1 class="seo-title">B4345 [语言月赛 202506] 卷积画图</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4345 [语言月赛 202506] 卷积画图</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-06-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>给定一张 $n \times m$ 的画布（每个格子里有一个数字），以及一个 $k \times k$ 的“模板”。我们要把这个模板放在画布的左上角，然后一点一点向右、向下移动。每次移动的时候，把模板里的数字和画布上对应的数字相乘，然后加起来，得到一个新数字。这样，我们就会得到一张新的、稍小的画布。这个过程叫“卷积”。</p>
+<p>例如，假设我们有这样一张 $3 \times 3$ 的画布：<br>$$<br>\begin{bmatrix}<br>1 &amp; 2 &amp; 3 \<br>4 &amp; 5 &amp; 6 \<br>7 &amp; 8 &amp; 9<br>\end{bmatrix},<br>$$<br>及这样一张 $2 \times 2$ 的模板：<br>$$<br>\begin{bmatrix}<br>3 &amp; 2\<br>1 &amp; 5 \<br>\end{bmatrix},<br>$$<br>执行“卷积”后，我们可以得到以下结果：<br>$$<br>\begin{bmatrix}<br>a &amp; b \<br>c &amp; d \<br>\end{bmatrix}</p>
+<p>= </p>
+<p>\begin{bmatrix}<br>36 &amp; 47 \<br>69 &amp; 80 \<br>\end{bmatrix}<br>,<br>$$<br>其中：</p>
+<table>
+<thead>
+<tr>
+<th align="center">结果变量</th>
+<th align="center">对应画布位置</th>
+<th align="center">模板</th>
+<th align="center">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$a$</td>
+<td align="center">$\begin{bmatrix} \color{red}{1} &amp; \color{orange}{2} &amp; 3 \ \color{green}{4} &amp; \color{blue}{5} &amp; 6 \ 7 &amp; 8 &amp; 9 \end{bmatrix}$</td>
+<td align="center">$\begin{bmatrix} \color{red}{3} &amp; \color{orange}{2} \ \color{green}{1} &amp; \color{blue}{5} \end{bmatrix}$</td>
+<td align="center">${\color{red}{1}} \times {\color{red}{3}} + {\color{orange}{2}} \times {\color{orange}{2}} + {\color{green}{4}} \times {\color{green}{1}} + {\color{blue}{5}} \times {\color{blue}{5}} = 36$</td>
+</tr>
+<tr>
+<td align="center">$b$</td>
+<td align="center">$\begin{bmatrix} 1 &amp; \color{red}{2} &amp; \color{orange}{3} \ 4 &amp; \color{green}{5} &amp; \color{blue}{6} \ 7 &amp; 8 &amp; 9 \end{bmatrix}$</td>
+<td align="center">$\begin{bmatrix} \color{red}{3} &amp; \color{orange}{2} \ \color{green}{1} &amp; \color{blue}{5} \end{bmatrix}$</td>
+<td align="center">${\color{red}{2}} \times {\color{red}{3}} + {\color{orange}{3}} \times {\color{orange}{2}} + {\color{green}{5}} \times {\color{green}{1}} + {\color{blue}{6}} \times {\color{blue}{5}} = 47$</td>
+</tr>
+<tr>
+<td align="center">$c$</td>
+<td align="center">$\begin{bmatrix} 1 &amp; 2 &amp; 3 \ \color{red}{4} &amp; \color{orange}{5} &amp; 6 \ \color{green}{7} &amp; \color{blue}{8} &amp; 9 \end{bmatrix}$</td>
+<td align="center">$\begin{bmatrix} \color{red}{3} &amp; \color{orange}{2} \ \color{green}{1} &amp; \color{blue}{5} \end{bmatrix}$</td>
+<td align="center">${\color{red}{4}} \times {\color{red}{3}} + {\color{orange}{5}} \times {\color{orange}{2}} + {\color{green}{7}} \times {\color{green}{1}} + {\color{blue}{8}} \times {\color{blue}{5}} = 69$</td>
+</tr>
+<tr>
+<td align="center">$d$</td>
+<td align="center">$\begin{bmatrix} 1 &amp; 2 &amp; 3 \ 4 &amp; \color{red}{5} &amp; \color{orange}{6} \ 7 &amp; \color{green}{8} &amp; \color{blue}{9} \end{bmatrix}$</td>
+<td align="center">$\begin{bmatrix} \color{red}{3} &amp; \color{orange}{2} \ \color{green}{1} &amp; \color{blue}{5} \end{bmatrix}$</td>
+<td align="center">${\color{red}{5}} \times {\color{red}{3}} + {\color{orange}{6}} \times {\color{orange}{2}} + {\color{green}{8}} \times {\color{green}{1}} + {\color{blue}{9}} \times {\color{blue}{5}} = 80$</td>
+</tr>
+</tbody></table>
+<p>现在给定画布和模板，请你算出卷积之后的画布内容。</p>
+<h2>输入格式</h2>
+<p>输入共 $n + k + 1$ 行。</p>
+<p>第一行三个整数 $n, m, k$，分别表示画布的大小和模板的大小；<br>接下来 $n$ 行，每行 $m$ 个整数，表示原始画布；<br>接下来 $k$ 行，每行 $k$ 个整数，表示模板内容。</p>
+<h2>输出格式</h2>
+<p>输出 $n - k + 1$ 行，每行 $m - k + 1$ 个整数，代表一张大小为 $(n - k + 1) \times (m - k + 1)$ 的卷积结果。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">36</span> <span class="hljs-number">47</span>
+<span class="hljs-number">69</span> <span class="hljs-number">80</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">10</span> <span class="hljs-number">10</span>
+<span class="hljs-number">18</span> <span class="hljs-number">18</span> <span class="hljs-number">18</span>
+<span class="hljs-number">26</span> <span class="hljs-number">26</span> <span class="hljs-number">26</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span> <span class="hljs-number">10</span> <span class="hljs-number">3</span>
+<span class="hljs-number">9</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">8</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">9</span> <span class="hljs-number">10</span> <span class="hljs-number">5</span>
+<span class="hljs-number">5</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">10</span> <span class="hljs-number">9</span> <span class="hljs-number">5</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">8</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span>
+<span class="hljs-number">10</span> <span class="hljs-number">1</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">8</span> <span class="hljs-number">5</span>
+<span class="hljs-number">7</span> <span class="hljs-number">9</span> <span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>
+<span class="hljs-number">5</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">9</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">7</span> <span class="hljs-number">10</span> <span class="hljs-number">7</span> <span class="hljs-number">10</span>
+<span class="hljs-number">10</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">10</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span> <span class="hljs-number">9</span>
+<span class="hljs-number">1</span> <span class="hljs-number">7</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">9</span> <span class="hljs-number">5</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">9</span></code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">201</span> <span class="hljs-number">173</span> <span class="hljs-number">165</span> <span class="hljs-number">135</span> <span class="hljs-number">112</span> <span class="hljs-number">120</span> <span class="hljs-number">153</span> <span class="hljs-number">133</span>
+<span class="hljs-number">242</span> <span class="hljs-number">249</span> <span class="hljs-number">126</span> <span class="hljs-number">116</span> <span class="hljs-number">83</span> <span class="hljs-number">79</span> <span class="hljs-number">187</span> <span class="hljs-number">140</span>
+<span class="hljs-number">183</span> <span class="hljs-number">231</span> <span class="hljs-number">200</span> <span class="hljs-number">119</span> <span class="hljs-number">70</span> <span class="hljs-number">50</span> <span class="hljs-number">125</span> <span class="hljs-number">161</span>
+<span class="hljs-number">149</span> <span class="hljs-number">200</span> <span class="hljs-number">167</span> <span class="hljs-number">97</span> <span class="hljs-number">131</span> <span class="hljs-number">129</span> <span class="hljs-number">112</span> <span class="hljs-number">185</span>
+<span class="hljs-number">231</span> <span class="hljs-number">133</span> <span class="hljs-number">144</span> <span class="hljs-number">186</span> <span class="hljs-number">98</span> <span class="hljs-number">191</span> <span class="hljs-number">164</span> <span class="hljs-number">230</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAX = <span class="hljs-number">105</span>;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[MAX][MAX], b[MAX][MAX];  <span class="hljs-comment">// 使用long long防止溢出</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, m, k;
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+    
+    <span class="hljs-comment">// 读取画布数据（0-based索引）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; m; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    
+    <span class="hljs-comment">// 读取模板数据（0-based索引）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; k; j++) {
+            cin &gt;&gt; b[i][j];
+        }
+    }
+    
+    <span class="hljs-comment">// 计算并输出卷积结果</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= n - k; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= m - k; j++) {
+            <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;  <span class="hljs-comment">// 必须使用long long</span>
+            
+            <span class="hljs-comment">// 计算卷积</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x = <span class="hljs-number">0</span>; x &lt; k; x++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> y = <span class="hljs-number">0</span>; y &lt; k; y++) {
+                    sum += a[i + x][j + y] * b[x][y];
+                }
+            }
+            
+            cout &lt;&lt; sum;
+            <span class="hljs-comment">// 行内元素间加空格，行末不加空格</span>
+            <span class="hljs-keyword">if</span> (j &lt; m - k) {
+                cout &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+            }
+        }
+        cout &lt;&lt; endl;  <span class="hljs-comment">// 每行结束换行</span>
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4345">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

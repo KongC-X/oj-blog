@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5946 优先购买 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<link rel="canonical" href="https://zymojblog.top/p/5946/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="5946 优先购买 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<meta property="og:url" content="https://zymojblog.top/p/5946/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5946 优先购买 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"5946 优先购买","headline":"5946 优先购买 题解","description":"小 A 有 元预算。商店有 个商品，每个商品有商品名 、价格 和优先级 三种属性，其中 为正整数，且 越小代表商品的优先级越高。 小 A 的购物策略为： 总是优先买优先级最高的东西； 如果有多个最高优先级商品，购买价格最低的； 如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。 小 A…","url":"https://zymojblog.top/p/5946/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP四级、25年12月、结构体","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>5946</span></div>
+  <h1 class="seo-title">5946 优先购买</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E5%9B%9B%E7%BA%A7">GESP四级</a><a class="seo-tag" href="/#/tag/25%E5%B9%B412%E6%9C%88">25年12月</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a></div>
+  <article class="markdown-body seo-article">
+<h1>5946 - 优先购买</h1>
+<h2>题目描述</h2>
+<p>小 A 有 $M$ 元预算。商店有 $N$ 个商品，每个商品有商品名 $S$、价格 $P$ 和优先级 $V$ 三种属性，其中 $V$ 为正整数，且 $V$ 越小代表商品的优先级越高。</p>
+<p>小 A 的购物策略为：</p>
+<ul>
+<li><p>总是优先买优先级最高的东西；</p>
+</li>
+<li><p>如果有多个最高优先级商品，购买价格最低的；</p>
+</li>
+<li><p>如果有多个优先级最高且价格最低的商品，购买商品名字典序最小的。</p>
+</li>
+</ul>
+<p>小 A 想知道能购买哪些商品。</p>
+<h2>输入</h2>
+<p>第一行两个正整数 $M,N$，代表预算和商品数。</p>
+<p>之后 $N$ 行，每行一个商品，依次为 $S_iP_iV_i$，代表第 $i$ 个商品的商品名、价格、优先级。</p>
+<p>数据保证不存在两个名字相同的商品。</p>
+<h2>输出</h2>
+<p>按照字典序从小到大的顺序，输出所有购买商品的商品名。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;assert.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Item</span> {
+    string name;
+    <span class="hljs-type">int</span> price;
+    <span class="hljs-type">int</span> priority;
+};
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">const</span> Item &amp;a, <span class="hljs-type">const</span> Item &amp;b)</span> </span>{
+    <span class="hljs-keyword">if</span> (a.priority != b.priority) <span class="hljs-keyword">return</span> a.priority &lt; b.priority;
+    <span class="hljs-keyword">if</span> (a.price != b.price) <span class="hljs-keyword">return</span> a.price &lt; b.price;
+    <span class="hljs-keyword">return</span> a.name &lt; b.name;
+}
+
+string s[<span class="hljs-number">1005</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> M, N;
+    cin &gt;&gt; M &gt;&gt; N;
+    Item items[N];
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) {
+        cin &gt;&gt; items[i].name &gt;&gt; items[i].price &gt;&gt; items[i].priority;
+    }
+    
+    <span class="hljs-built_in">sort</span>(items, items + N, cmp);
+    
+    <span class="hljs-type">int</span> budget = M;
+    <span class="hljs-type">int</span> count = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; N; ++i) {
+        <span class="hljs-keyword">if</span> (items[i].price &lt;= budget) {
+            budget -= items[i].price;
+            s[count++] = items[i].name;
+        }
+    }
+    
+    <span class="hljs-built_in">sort</span>(s, s + count);
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i) {
+        cout &lt;&lt; s[i] &lt;&lt; endl;
+    }
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/5946">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

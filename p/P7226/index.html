@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P7226 [COCI 2015/2016 #3] POT 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="老师给同学们发了一封电子邮件，任务如下。 写一个程序，给你 个数，输出 。 ， ， ， 都是整数， ， ， ， 都是一位数。 但是出现了一些玄学错误，使得 变成了： 注： 。 例如，原来的 为 ，但现在变成了 。请帮助老师编写一个程序，输出原来 的值。">
+<link rel="canonical" href="https://zymojblog.top/p/P7226/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P7226 [COCI 2015/2016 #3] POT 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="老师给同学们发了一封电子邮件，任务如下。 写一个程序，给你 个数，输出 。 ， ， ， 都是整数， ， ， ， 都是一位数。 但是出现了一些玄学错误，使得 变成了： 注： 。 例如，原来的 为 ，但现在变成了 。请帮助老师编写一个程序，输出原来 的值。">
+<meta property="og:url" content="https://zymojblog.top/p/P7226/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P7226 [COCI 2015/2016 #3] POT 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="老师给同学们发了一封电子邮件，任务如下。 写一个程序，给你 个数，输出 。 ， ， ， 都是整数， ， ， ， 都是一位数。 但是出现了一些玄学错误，使得 变成了： 注： 。 例如，原来的 为 ，但现在变成了 。请帮助老师编写一个程序，输出原来 的值。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P7226 [COCI 2015/2016 #3] POT","headline":"P7226 [COCI 2015/2016 #3] POT 题解","description":"老师给同学们发了一封电子邮件，任务如下。 写一个程序，给你 个数，输出 。 ， ， ， 都是整数， ， ， ， 都是一位数。 但是出现了一些玄学错误，使得 变成了： 注： 。 例如，原来的 为 ，但现在变成了 。请帮助老师编写一个程序，输出原来 的值。","url":"https://zymojblog.top/p/P7226/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、数学、2015、COCI（克罗地亚）","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P7226</span></div>
+  <h1 class="seo-title">P7226 [COCI 2015/2016 #3] POT</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2015">2015</a><a class="seo-tag" href="/#/tag/COCI%EF%BC%88%E5%85%8B%E7%BD%97%E5%9C%B0%E4%BA%9A%EF%BC%89">COCI（克罗地亚）</a></div>
+  <article class="markdown-body seo-article">
+<h1>P7226 [COCI 2015/2016 #3] POT</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>数学</code>、<code>2015</code>、<code>COCI（克罗地亚）</code></p>
+<h2>题目描述</h2>
+<p>老师给同学们发了一封电子邮件，任务如下。</p>
+<blockquote>
+<p>写一个程序，给你 $n$ 个数，输出 $X$。<br>$$X = num_1^{p_1} + num_2^{p_2} + \cdots + num_n^{p_n}$$<br>$num_1$，$num_2$，$\cdots$，$num_n$ 都是整数，$p_1$，$p_2$，$\cdots$，$p_n$ 都是一位数。    </p>
+</blockquote>
+<p>但是出现了一些玄学错误，使得 $X$ 变成了：<br>$$X = q_1 + q_2 +... + q_n$$</p>
+<p>注：$q_i = num_i \times 10 + p_i$。</p>
+<p>例如，原来的 $X$ 为 $21^2+125^3$，但现在变成了 $212+1253$。请帮助老师编写一个程序，输出原来 $X$ 的值。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$。</p>
+<p>接下来 $n$ 行，每行一个整数 $q_i$。</p>
+<h2>输出格式</h2>
+<p>仅一行一个整数，$X$ 的值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">212</span>
+<span class="hljs-number">1253</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1953566</span>```
+
+**样例输入 #<span class="hljs-number">2</span>**</code></pre><p>5<br>23<br>17<br>43<br>52<br>22</p>
+<pre><code class="hljs language-cpp">
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>102```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">213</span>
+<span class="hljs-number">102</span>
+<span class="hljs-number">45</span></code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10385</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 每个输入 q_i = num_i * 10 + p_i，其中 p_i 是 0~9 的个位数。</span>
+    <span class="hljs-comment">// 所以 num_i = q_i / 10，p_i = q_i % 10。</span>
+    <span class="hljs-comment">// 计算 num_i ^ p_i 并累加即可。</span>
+    <span class="hljs-comment">// 注意 p_i 可能为 0，此时 num_i^0 = 1（题目保证 num_i &gt;= 1）。</span>
+
+    <span class="hljs-type">int</span> n;                   <span class="hljs-comment">// n: 数的个数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;       <span class="hljs-comment">// sum: 最终累加结果，用 long long 防溢出</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> q;               <span class="hljs-comment">// q: 输入的 q_i</span>
+        cin &gt;&gt; q;
+
+        <span class="hljs-type">int</span> p = q % <span class="hljs-number">10</span>;      <span class="hljs-comment">// p_i: 个位数（指数）</span>
+        <span class="hljs-type">int</span> num = q / <span class="hljs-number">10</span>;    <span class="hljs-comment">// num_i: 去掉个位后的底数</span>
+
+        <span class="hljs-comment">// 计算 num 的 p 次幂（简单循环，p ≤ 9 很小）</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> val = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; p; j++) {
+            val *= num;
+        }
+
+        sum += val;
+    }
+
+    cout &lt;&lt; sum &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P7226">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1781 乌龟棋 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="乌龟棋的棋盘是一行 个格子，每个格子上一个分数（非负整数）。棋盘第 格是唯一的起点，第 格是终点，游戏要求玩家控制一个乌龟棋子从起点出发走到终点。 乌龟棋中 张爬行卡片，分成 种不同的类型（ 张卡片中不一定包含所有 种类型的卡片，见样例），每种类型的卡片上分别标有 四个数字之一，表示使用这种卡片后…">
+<link rel="canonical" href="https://zymojblog.top/p/1781/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1781 乌龟棋 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="乌龟棋的棋盘是一行 个格子，每个格子上一个分数（非负整数）。棋盘第 格是唯一的起点，第 格是终点，游戏要求玩家控制一个乌龟棋子从起点出发走到终点。 乌龟棋中 张爬行卡片，分成 种不同的类型（ 张卡片中不一定包含所有 种类型的卡片，见样例），每种类型的卡片上分别标有 四个数字之一，表示使用这种卡片后…">
+<meta property="og:url" content="https://zymojblog.top/p/1781/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1781 乌龟棋 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="乌龟棋的棋盘是一行 个格子，每个格子上一个分数（非负整数）。棋盘第 格是唯一的起点，第 格是终点，游戏要求玩家控制一个乌龟棋子从起点出发走到终点。 乌龟棋中 张爬行卡片，分成 种不同的类型（ 张卡片中不一定包含所有 种类型的卡片，见样例），每种类型的卡片上分别标有 四个数字之一，表示使用这种卡片后…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1781 乌龟棋","headline":"1781 乌龟棋 题解","description":"乌龟棋的棋盘是一行 个格子，每个格子上一个分数（非负整数）。棋盘第 格是唯一的起点，第 格是终点，游戏要求玩家控制一个乌龟棋子从起点出发走到终点。 乌龟棋中 张爬行卡片，分成 种不同的类型（ 张卡片中不一定包含所有 种类型的卡片，见样例），每种类型的卡片上分别标有 四个数字之一，表示使用这种卡片后…","url":"https://zymojblog.top/p/1781/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、noip","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1781</span></div>
+  <h1 class="seo-title">1781 乌龟棋</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/noip">noip</a></div>
+  <article class="markdown-body seo-article">
+<h1>1781 - 乌龟棋</h1>
+<h2>题目描述</h2>
+<p>乌龟棋的棋盘是一行 $N$ 个格子，每个格子上一个分数（非负整数）。棋盘第 $1$ 格是唯一的起点，第 $N$ 格是终点，游戏要求玩家控制一个乌龟棋子从起点出发走到终点。</p>
+<p>乌龟棋中 $M$ 张爬行卡片，分成 $4$ 种不同的类型（$M$ 张卡片中不一定包含所有 $4$ 种类型的卡片，见样例），每种类型的卡片上分别标有 $1,2,3,4$ 四个数字之一，表示使用这种卡片后，乌龟棋子将向前爬行相应的格子数。游戏中，玩家每次需要从所有的爬行卡片中选择一张之前没有使用过的爬行卡片，控制乌龟棋子前进相应的格子数，每张卡片只能使用一次。</p>
+<p>游戏中，乌龟棋子自动获得起点格子的分数，并且在后续的爬行中每到达一个格子，就得到该格子相应的分数。玩家最终游戏得分就是乌龟棋子从起点到终点过程中到过的所有格子的分数总和。</p>
+<p>很明显，用不同的爬行卡片使用顺序会使得最终游戏的得分不同，小明想要找到一种卡片使用顺序使得最终游戏得分最多。</p>
+<p>现在，告诉你棋盘上每个格子的分数和所有的爬行卡片，你能告诉小明，他最多能得到多少分吗？</p>
+<h2>输入</h2>
+<p>每行中两个数之间用一个空格隔开。</p>
+<p>第 $1$ 行 $2$ 个正整数 $N,M$ ，分别表示棋盘格子数和爬行卡片数。</p>
+<p>第 $2$ 行 $N$ 个非负整数，$a_1,a_2,…,a_N$，其中 $a_i$ 表示棋盘第 $i$ 个格子上的分数。</p>
+<p>第 $3$ 行 $M$ 个整数，$b_1,b_2,…,b_M$，表示 $M$ 张爬行卡片上的数字。</p>
+<p>输入数据保证到达终点时刚好用光 $M$ 张爬行卡片。</p>
+<h2>输出</h2>
+<p>$1$个整数，表示小明最多能得到的分数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// dp[a][b][c][d]:表示你出了a张爬行牌1，b张爬行牌2，c张爬行牌3，d张爬行牌4时的得分。  </span>
+<span class="hljs-comment">// 起始状态dp[0][0][0][0]=num[1]，即不出任何爬行卡;之后对于每一张卡片，我都可以选择放与不放， 设当前放的卡1数量为a，卡2数量为b，卡3数量为c，卡4数量为d（以下出现a~d均为这个意思），则对于卡一:  </span>
+<span class="hljs-comment">// 比较卡一的放与不放,只需决策卡一的放与不放，即取dp[a][b][c][d],dp[a-1][b][c][d]+num[r]的最大值。又由于a有一定数量,所以我们可以得出关于a的转移方程:  </span>
+<span class="hljs-comment">// dp[a][b][c][d]=max(dp[a][b][c][d],F[a-1][b][c][d]+num[r])  </span>
+<span class="hljs-comment">// 对于bcd以此类推</span>
+
+<span class="hljs-type">int</span> dp[<span class="hljs-number">41</span>][<span class="hljs-number">41</span>][<span class="hljs-number">41</span>][<span class="hljs-number">41</span>],num[<span class="hljs-number">351</span>],g[<span class="hljs-number">5</span>],n,m,x;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++) cin&gt;&gt;num[i];
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]=num[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=m;i++)
+    {
+        cin&gt;&gt;x;
+        g[x]++;
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> a=<span class="hljs-number">0</span>;a&lt;=g[<span class="hljs-number">1</span>];a++)
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> b=<span class="hljs-number">0</span>;b&lt;=g[<span class="hljs-number">2</span>];b++)
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> c=<span class="hljs-number">0</span>;c&lt;=g[<span class="hljs-number">3</span>];c++)
+                <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> d=<span class="hljs-number">0</span>;d&lt;=g[<span class="hljs-number">4</span>];d++)
+                {
+                    <span class="hljs-type">int</span> r=<span class="hljs-number">1</span>+a+b*<span class="hljs-number">2</span>+c*<span class="hljs-number">3</span>+d*<span class="hljs-number">4</span>;
+                    <span class="hljs-keyword">if</span>(a!=<span class="hljs-number">0</span>)    dp[a][b][c][d]=<span class="hljs-built_in">max</span>(dp[a][b][c][d],dp[a<span class="hljs-number">-1</span>][b][c][d]+num[r]);
+                    <span class="hljs-keyword">if</span>(b!=<span class="hljs-number">0</span>)    dp[a][b][c][d]=<span class="hljs-built_in">max</span>(dp[a][b][c][d],dp[a][b<span class="hljs-number">-1</span>][c][d]+num[r]);
+                    <span class="hljs-keyword">if</span>(c!=<span class="hljs-number">0</span>)    dp[a][b][c][d]=<span class="hljs-built_in">max</span>(dp[a][b][c][d],dp[a][b][c<span class="hljs-number">-1</span>][d]+num[r]);
+                    <span class="hljs-keyword">if</span>(d!=<span class="hljs-number">0</span>)    dp[a][b][c][d]=<span class="hljs-built_in">max</span>(dp[a][b][c][d],dp[a][b][c][d<span class="hljs-number">-1</span>]+num[r]);
+                }   
+    cout&lt;&lt;dp[g[<span class="hljs-number">1</span>]][g[<span class="hljs-number">2</span>]][g[<span class="hljs-number">3</span>]][g[<span class="hljs-number">4</span>]];
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1781">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

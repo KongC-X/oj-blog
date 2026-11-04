@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2822 [NOIP 2016 提高组] 组合数问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="组合数 表示的是从 个物品中选出 个物品的方案数。举个例子，从 三个物品中选择两个物品可以有 这三种选择方法。根据组合数的定义，我们可以给出计算组合数 的一般公式： 其中 ；特别地，定义 。 小葱想知道如果给定 和 ，对于所有的 有多少对 满足 。">
+<link rel="canonical" href="https://zymojblog.top/p/P2822/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2822 [NOIP 2016 提高组] 组合数问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="组合数 表示的是从 个物品中选出 个物品的方案数。举个例子，从 三个物品中选择两个物品可以有 这三种选择方法。根据组合数的定义，我们可以给出计算组合数 的一般公式： 其中 ；特别地，定义 。 小葱想知道如果给定 和 ，对于所有的 有多少对 满足 。">
+<meta property="og:url" content="https://zymojblog.top/p/P2822/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2822 [NOIP 2016 提高组] 组合数问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="组合数 表示的是从 个物品中选出 个物品的方案数。举个例子，从 三个物品中选择两个物品可以有 这三种选择方法。根据组合数的定义，我们可以给出计算组合数 的一般公式： 其中 ；特别地，定义 。 小葱想知道如果给定 和 ，对于所有的 有多少对 满足 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2822 [NOIP 2016 提高组] 组合数问题","headline":"P2822 [NOIP 2016 提高组] 组合数问题 题解","description":"组合数 表示的是从 个物品中选出 个物品的方案数。举个例子，从 三个物品中选择两个物品可以有 这三种选择方法。根据组合数的定义，我们可以给出计算组合数 的一般公式： 其中 ；特别地，定义 。 小葱想知道如果给定 和 ，对于所有的 有多少对 满足 。","url":"https://zymojblog.top/p/P2822/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"数学、2016、NOIP 提高组、组合数学、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2822</span></div>
+  <h1 class="seo-title">P2822 [NOIP 2016 提高组] 组合数问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2016">2016</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6">组合数学</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2822 [NOIP 2016 提高组] 组合数问题</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2016</code>、<code>NOIP 提高组</code>、<code>组合数学</code>、<code>前缀和</code></p>
+<h2>题目背景</h2>
+<p>NOIP2016 提高组 D2T1</p>
+<h2>题目描述</h2>
+<p>组合数 $\binom{n}{m}$ 表示的是从 $n$ 个物品中选出 $m$ 个物品的方案数。举个例子，从 $(1,2,3)$ 三个物品中选择两个物品可以有 $(1,2),(1,3),(2,3)$ 这三种选择方法。根据组合数的定义，我们可以给出计算组合数 $\binom{n}{m}$ 的一般公式：</p>
+<p>$$\binom{n}{m}=\frac{n!}{m!(n-m)!}$$</p>
+<p>其中 $n!=1\times2\times\cdots\times n$；特别地，定义 $0!=1$。</p>
+<p>小葱想知道如果给定 $n,m$ 和 $k$，对于所有的 $0\leq i\leq n,0\leq j\leq \min \left ( i, m \right )$ 有多少对 $(i,j)$ 满足 $k\mid\binom{i}{j}$。</p>
+<h2>输入格式</h2>
+<p>第一行有两个整数 $t,k$，其中 $t$ 代表该测试点总共有多少组测试数据，$k$ 的意义见问题描述。</p>
+<p>接下来 $t$ 行每行两个整数 $n,m$，其中 $n,m$ 的意义见问题描述。</p>
+<h2>输出格式</h2>
+<p>共 $t$ 行，每行一个整数代表所有的 $0\leq i\leq n,0\leq j\leq \min \left ( i, m \right )$ 中有多少对 $(i,j)$ 满足 $k\mid\binom{i}{j}$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">3</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">5</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span>
+<span class="hljs-number">6</span> <span class="hljs-number">7</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>0<br>7</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">2000</span>;               <span class="hljs-comment">// 最大 n,m 范围</span>
+<span class="hljs-type">int</span> c[N + <span class="hljs-number">5</span>][N + <span class="hljs-number">5</span>];              <span class="hljs-comment">// c[i][j]: 组合数 C(i,j) 模 k 的结果</span>
+<span class="hljs-type">int</span> s[N + <span class="hljs-number">5</span>][N + <span class="hljs-number">5</span>];              <span class="hljs-comment">// s[i][j]: 满足条件的对数前缀和</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 1. 利用递推公式预处理所有 C(i,j) 模 k 的值：</span>
+    <span class="hljs-comment">//    C(i,j) = C(i-1,j-1) + C(i-1,j)  (模 k 意义下)</span>
+    <span class="hljs-comment">//    初始 C(i,0) = C(i,i) = 1 % k</span>
+    <span class="hljs-comment">// 2. 若 C(i,j) % k == 0，则标记 b[i][j] = 1，否则 0</span>
+    <span class="hljs-comment">// 3. 对标记数组做二维前缀和 s[i][j]，</span>
+    <span class="hljs-comment">//    表示 0&lt;=x&lt;=i, 0&lt;=y&lt;=j 且 y&lt;=x 的范围内满足条件的个数</span>
+    <span class="hljs-comment">//    注意 j 不能超过 i，因此对于 j&gt;i 的部分，s[i][j] 保持为 s[i][i]</span>
+    <span class="hljs-comment">//    实际询问时，若 m &gt; n 则取 m = n，直接使用 s[n][m]</span>
+    <span class="hljs-comment">// 4. 每组询问 O(1) 输出 s[n][min(n,m)]</span>
+    <span class="hljs-comment">// -------------------------</span>
+
+    <span class="hljs-type">int</span> t, k;
+    cin &gt;&gt; t &gt;&gt; k;
+
+    <span class="hljs-comment">// 预处理组合数模 k</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= N; ++i) {
+        c[i][<span class="hljs-number">0</span>] = c[i][i] = <span class="hljs-number">1</span> % k;          <span class="hljs-comment">// 边界赋值</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; i; ++j) {
+            c[i][j] = (c[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + c[i - <span class="hljs-number">1</span>][j]) % k;
+        }
+    }
+
+    <span class="hljs-comment">// 构建前缀和 s[i][j]</span>
+    <span class="hljs-comment">// s[i][j] 表示所有 x&lt;=i, y&lt;=j 且 y&lt;=x 的范围内 (C(x,y) % k == 0) 的个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= N; ++i) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= i; ++j) {
+            <span class="hljs-comment">// 当前点是否满足条件</span>
+            <span class="hljs-type">int</span> val = (c[i][j] == <span class="hljs-number">0</span>) ? <span class="hljs-number">1</span> : <span class="hljs-number">0</span>;
+            <span class="hljs-comment">// 二维前缀和递推</span>
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> &amp;&amp; j == <span class="hljs-number">0</span>)
+                s[i][j] = val;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>)
+                s[i][j] = s[i][j - <span class="hljs-number">1</span>] + val;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j == <span class="hljs-number">0</span>)
+                s[i][j] = s[i - <span class="hljs-number">1</span>][j] + val;
+            <span class="hljs-keyword">else</span>
+                s[i][j] = s[i - <span class="hljs-number">1</span>][j] + s[i][j - <span class="hljs-number">1</span>] - s[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + val;
+        }
+        <span class="hljs-comment">// 对于 j &gt; i 的部分，用 s[i][i] 填充，方便询问时直接取 min(n,m)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + <span class="hljs-number">1</span>; j &lt;= N; ++j) {
+            s[i][j] = s[i][i];
+        }
+    }
+
+    <span class="hljs-comment">// 处理询问</span>
+    <span class="hljs-keyword">while</span> (t--) {
+        <span class="hljs-type">int</span> n, m;
+        cin &gt;&gt; n &gt;&gt; m;
+        <span class="hljs-keyword">if</span> (m &gt; n) m = n;           <span class="hljs-comment">// j 最大不超过 i</span>
+        cout &lt;&lt; s[n][m] &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2822">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

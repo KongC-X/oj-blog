@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9586 「MXOI Round 2」游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 C 和小 D 正在玩一款蒸蒸日上的游戏。 这款游戏共有 种手牌：杀、闪、斩。他们的用途分别如下： 杀：对对方使用，对方需要使用一张闪，否则对方输掉游戏；或回应对方的斩； 闪：回应对方的杀； 斩：对对方使用，对方需要使用一张杀，否则对方输掉游戏。 玩家在每使用一张牌后，都需要弃掉该使用的牌。 从…">
+<link rel="canonical" href="https://zymojblog.top/p/P9586/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9586 「MXOI Round 2」游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 C 和小 D 正在玩一款蒸蒸日上的游戏。 这款游戏共有 种手牌：杀、闪、斩。他们的用途分别如下： 杀：对对方使用，对方需要使用一张闪，否则对方输掉游戏；或回应对方的斩； 闪：回应对方的杀； 斩：对对方使用，对方需要使用一张杀，否则对方输掉游戏。 玩家在每使用一张牌后，都需要弃掉该使用的牌。 从…">
+<meta property="og:url" content="https://zymojblog.top/p/P9586/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9586 「MXOI Round 2」游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 C 和小 D 正在玩一款蒸蒸日上的游戏。 这款游戏共有 种手牌：杀、闪、斩。他们的用途分别如下： 杀：对对方使用，对方需要使用一张闪，否则对方输掉游戏；或回应对方的斩； 闪：回应对方的杀； 斩：对对方使用，对方需要使用一张杀，否则对方输掉游戏。 玩家在每使用一张牌后，都需要弃掉该使用的牌。 从…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9586 「MXOI Round 2」游戏","headline":"P9586 「MXOI Round 2」游戏 题解","description":"小 C 和小 D 正在玩一款蒸蒸日上的游戏。 这款游戏共有 种手牌：杀、闪、斩。他们的用途分别如下： 杀：对对方使用，对方需要使用一张闪，否则对方输掉游戏；或回应对方的斩； 闪：回应对方的杀； 斩：对对方使用，对方需要使用一张杀，否则对方输掉游戏。 玩家在每使用一张牌后，都需要弃掉该使用的牌。 从…","url":"https://zymojblog.top/p/P9586/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、数学、贪心、洛谷原创、O2优化、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9586</span></div>
+  <h1 class="seo-title">P9586 「MXOI Round 2」游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9586 「MXOI Round 2」游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-31</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>数学</code>、<code>贪心</code>、<code>洛谷原创</code>、<code>O2优化</code>、<code>洛谷月赛</code></p>
+<h2>题目描述</h2>
+<p>小 C 和小 D 正在玩一款蒸蒸日上的游戏。</p>
+<p>这款游戏共有 $3$ 种手牌：杀、闪、斩。他们的用途分别如下：</p>
+<ul>
+<li>杀：对对方使用，对方需要使用一张<strong>闪</strong>，否则对方输掉游戏；<strong>或</strong>回应对方的<strong>斩</strong>；</li>
+<li>闪：回应对方的<strong>杀</strong>；</li>
+<li>斩：对对方使用，对方需要使用一张<strong>杀</strong>，否则对方输掉游戏。</li>
+</ul>
+<p>玩家在每使用一张牌后，都需要弃掉该使用的牌。</p>
+<p>从小 C 开始，每个回合依次属于小 C 和小 D。在玩家的回合内，该玩家可以出<strong>任意</strong>张<strong>杀</strong>和<strong>斩</strong>，对方需要做出对应的回应。当然，玩家也可以不出牌，直接进入对方的回合。</p>
+<p>现在，小 C 共有 $c_1$ 张杀、$c_2$ 张闪、$c_3$ 张斩，小 D 共有 $d_1$ 张杀、$d_2$ 张闪、$d_3$ 张斩，<strong>双方都知道对方的手牌</strong>。你需要求出，双方在都进行最优策略的情况下，游戏的结果会如何。</p>
+<h2>输入格式</h2>
+<p><strong>本题有多组测试数据。</strong></p>
+<p>第一行输入一个整数 $T$，表示测试数据组数。</p>
+<p>接下来依次输入每组测试数据，对于每组测试数据，输入一行六个整数 $c_1,c_2,c_3,d_1,d_2,d_3$。</p>
+<h2>输出格式</h2>
+<p>对于每组测试数据，输出一行：</p>
+<ul>
+<li>若双方在都进行最优策略的情况下，小 C 可以获胜，则输出 <code>C</code>；</li>
+<li>若双方在都进行最优策略的情况下，小 D 可以获胜，则输出 <code>D</code>；</li>
+<li>若双方在都进行最优策略的情况下，游戏会平局，即谁也无法获胜，则输出 <code>E</code>。</li>
+</ul>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">9</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">4</span>
+<span class="hljs-number">5</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">6</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>C<br>D<br>E```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">/*
+     * 题目：P9586 「MXOI Round 2」游戏
+     * 题意：小C先手，双方手牌为杀、闪、斩。杀需闪回应，斩需杀回应。
+     *       每回合可出任意张杀和斩，对方必须回应，否则攻击方胜。
+     *       求最优策略下胜负结果（C/D/E）。
+     *
+     * 核心思路（博弈分析）：
+     * 1. 小C先手，若他有某种攻击牌数量严格大于对方对应防御牌数量，
+     *    则他可以直接出该种牌全部，立即获胜。
+     *    即：c1 &gt; d2（杀&gt;闪） 或 c3 &gt; d1（斩&gt;杀） → C胜。
+     *
+     * 2. 若小C不能直接赢，则他必须考虑能否阻止小D获胜。
+     *    小D获胜方式只有两种：
+     *       a) 用斩赢：若 d3 &gt; c1，则小D斩数 &gt; 小C杀数，小C无法防御，
+     *          小D可以在自己回合直接出斩获胜 → D胜。
+     *       b) 用杀赢：若 d1 &gt; c2，则小D杀数 &gt; 小C闪数。
+     *          但小C可以通过出斩来消耗小D的杀，从而削弱小D的杀攻击。
+     *          小C最多能消耗的杀数为 c3（因为出斩需要消耗自己的斩）。
+     *          如果 c3 &gt;= d1 - c2，则小C能够将小D的杀数消耗至 ≤ c2，
+     *          从而小D无法用杀获胜，此时双方都无法直接赢，平局 E。
+     *          否则，小D杀数仍大于小C闪数，小D胜。
+     *
+     * 3. 其他情况（小D既不能斩赢也不能杀赢，或小C能阻止杀赢），平局 E。
+     *
+     * 时间复杂度：O(T)，T ≤ 1e5
+     */</span>
+
+    <span class="hljs-type">int</span> T;
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> c1, c2, c3, d1, d2, d3;
+        cin &gt;&gt; c1 &gt;&gt; c2 &gt;&gt; c3 &gt;&gt; d1 &gt;&gt; d2 &gt;&gt; d3;
+
+        <span class="hljs-comment">// 小C直接获胜</span>
+        <span class="hljs-keyword">if</span> (c1 &gt; d2 || c3 &gt; d1) {
+            cout &lt;&lt; <span class="hljs-string">&quot;C\n&quot;</span>;
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-comment">// 小D用斩获胜（无法阻止）</span>
+        <span class="hljs-keyword">if</span> (d3 &gt; c1) {
+            cout &lt;&lt; <span class="hljs-string">&quot;D\n&quot;</span>;
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-comment">// 小D用杀获胜，小C尝试用斩消耗</span>
+        <span class="hljs-keyword">if</span> (d1 &gt; c2) {
+            <span class="hljs-keyword">if</span> (c3 &gt;= d1 - c2) {
+                cout &lt;&lt; <span class="hljs-string">&quot;E\n&quot;</span>;   <span class="hljs-comment">// 小C消耗足够，平局</span>
+            } <span class="hljs-keyword">else</span> {
+                cout &lt;&lt; <span class="hljs-string">&quot;D\n&quot;</span>;   <span class="hljs-comment">// 小C消耗不足，小D胜</span>
+            }
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-comment">// 小D也无法获胜，平局</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;E\n&quot;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9586">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

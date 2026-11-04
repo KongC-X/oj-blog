@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1241 括号序列 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="定义如下规则： 1. 空串是「平衡括号序列」 2. 若字符串 是「平衡括号序列」，那么 和 也都是「平衡括号序列」 3. 若字符串 和 都是「平衡括号序列」，那么 （两字符串拼接起来）也是「平衡括号序列」。 例如，下面的字符串都是平衡括号序列： ()，[]，(())，([])，()[]，()[()…">
+<link rel="canonical" href="https://zymojblog.top/p/P1241/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1241 括号序列 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="定义如下规则： 1. 空串是「平衡括号序列」 2. 若字符串 是「平衡括号序列」，那么 和 也都是「平衡括号序列」 3. 若字符串 和 都是「平衡括号序列」，那么 （两字符串拼接起来）也是「平衡括号序列」。 例如，下面的字符串都是平衡括号序列： ()，[]，(())，([])，()[]，()[()…">
+<meta property="og:url" content="https://zymojblog.top/p/P1241/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1241 括号序列 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="定义如下规则： 1. 空串是「平衡括号序列」 2. 若字符串 是「平衡括号序列」，那么 和 也都是「平衡括号序列」 3. 若字符串 和 都是「平衡括号序列」，那么 （两字符串拼接起来）也是「平衡括号序列」。 例如，下面的字符串都是平衡括号序列： ()，[]，(())，([])，()[]，()[()…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1241 括号序列","headline":"P1241 括号序列 题解","description":"定义如下规则： 1. 空串是「平衡括号序列」 2. 若字符串 是「平衡括号序列」，那么 和 也都是「平衡括号序列」 3. 若字符串 和 都是「平衡括号序列」，那么 （两字符串拼接起来）也是「平衡括号序列」。 例如，下面的字符串都是平衡括号序列： ()，[]，(())，([])，()[]，()[()…","url":"https://zymojblog.top/p/P1241/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"O2优化、栈","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1241</span></div>
+  <h1 class="seo-title">P1241 括号序列</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1241 括号序列</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>O2优化</code>、<code>栈</code></p>
+<h2>题目描述</h2>
+<p>定义如下规则：</p>
+<ol>
+<li>空串是「平衡括号序列」</li>
+<li>若字符串 $S$ 是「平衡括号序列」，那么 $\texttt{[}S\texttt]$ 和 $\texttt{(}S\texttt)$ 也都是「平衡括号序列」</li>
+<li>若字符串 $A$ 和 $B$ 都是「平衡括号序列」，那么 $AB$（两字符串拼接起来）也是「平衡括号序列」。</li>
+</ol>
+<p>例如，下面的字符串都是平衡括号序列：</p>
+<ul>
+<li><code>()</code>，<code>[]</code>，<code>(())</code>，<code>([])</code>，<code>()[]</code>，<code>()[()]</code></li>
+</ul>
+<p>而以下几个则不是：</p>
+<ul>
+<li><code>(</code>，<code>[</code>，<code>]</code>，<code>)(</code>，<code>())</code>，<code>([()</code></li>
+</ul>
+<p>现在，给定一个仅由 <code>(</code>，<code>)</code>，<code>[</code>，<code>]</code>构成的字符串 $s$，请你按照如下的方式给字符串中每个字符配对：</p>
+<ol>
+<li>从左到右扫描整个字符串。</li>
+<li>对于当前的字符，如果它是一个右括号，考察它与它左侧离它<strong>最近</strong>的<strong>未匹配</strong>的的左括号。如果该括号与之对应（即小括号匹配小括号，中括号匹配中括号），则将二者配对。如果左侧未匹配的左括号不存在或与之不对应，则其配对失败。</li>
+</ol>
+<p>配对结束后，对于 $s$ 中全部未配对的括号，请你在其旁边添加一个字符，使得该括号和新加的括号匹配。</p>
+<h2>输入格式</h2>
+<p>输入只有一行一个字符串，表示 $s$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个字符串表示你的答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">([()</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">()[]()</code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">([)```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>()<a href=""></a>```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+【题目思路与解题过程】
+题意：给定一个括号串，按规则匹配后，对未匹配的括号进行补全，
+      输出补全后的合法括号序列。
+
+匹配规则：
+- 从左到右扫描，遇到右括号时，找左边最近的未匹配左括号。
+- 若该左括号与右括号类型匹配，则配对；否则配对失败。
+- 扫描结束后，剩下的括号都是未匹配的。
+
+补全规则（根据样例反推）：
+- 未匹配的左括号：在它右边补上对应的右括号。
+- 未匹配的右括号：在它左边补上对应的左括号。
+- 已匹配的括号原样输出。
+
+实现步骤：
+1. 用栈 stk 存储左括号的下标。
+2. 用数组 match[i] 记录每个位置匹配的括号下标（-1 表示未匹配）。
+3. 扫描字符串 s：
+   - 左括号：下标入栈。
+   - 右括号：如果栈非空且栈顶左括号与当前右括号类型相同，则配对成功，
+     记录 match 信息并弹栈；否则该右括号未匹配，忽略。
+4. 扫描结束后，栈中剩余下标均为未匹配的左括号。
+5. 遍历原串，按字符和 match 信息构造答案：
+   - 已匹配：直接输出该字符。
+   - 未匹配左括号 &#x27;(&#x27; 输出 &quot;()&quot;，&#x27;[&#x27; 输出 &quot;[]&quot;。
+   - 未匹配右括号 &#x27;)&#x27; 输出 &quot;()&quot;，&#x27;]&#x27; 输出 &quot;[]&quot;。
+*/</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    string s;                     <span class="hljs-comment">// s: 输入的括号序列</span>
+    cin &gt;&gt; s;
+
+    <span class="hljs-type">int</span> n = s.<span class="hljs-built_in">size</span>();
+    stack&lt;<span class="hljs-type">int</span>&gt; stk;               <span class="hljs-comment">// stk: 存左括号的下标</span>
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">match</span><span class="hljs-params">(n, <span class="hljs-number">-1</span>)</span></span>;     <span class="hljs-comment">// match[i]: i 位置匹配的括号下标，-1 表示未匹配</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-type">char</span> c = s[i];
+        <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;(&#x27;</span> || c == <span class="hljs-string">&#x27;[&#x27;</span>) {
+            stk.<span class="hljs-built_in">push</span>(i);          <span class="hljs-comment">// 左括号入栈</span>
+        } <span class="hljs-keyword">else</span> {                  <span class="hljs-comment">// 右括号 ) 或 ]</span>
+            <span class="hljs-keyword">if</span> (!stk.<span class="hljs-built_in">empty</span>()) {
+                <span class="hljs-type">int</span> j = stk.<span class="hljs-built_in">top</span>(); <span class="hljs-comment">// j: 左侧最近的未匹配左括号下标</span>
+                <span class="hljs-comment">// 检查类型是否匹配</span>
+                <span class="hljs-keyword">if</span> ((s[j] == <span class="hljs-string">&#x27;(&#x27;</span> &amp;&amp; c == <span class="hljs-string">&#x27;)&#x27;</span>) || (s[j] == <span class="hljs-string">&#x27;[&#x27;</span> &amp;&amp; c == <span class="hljs-string">&#x27;]&#x27;</span>)) {
+                    match[j] = i; <span class="hljs-comment">// 记录配对</span>
+                    match[i] = j;
+                    stk.<span class="hljs-built_in">pop</span>();    <span class="hljs-comment">// 匹配成功，移除该左括号</span>
+                }
+                <span class="hljs-comment">// 不匹配则什么也不做，该右括号保持未匹配</span>
+            }
+            <span class="hljs-comment">// 栈空则该右括号未匹配，忽略</span>
+        }
+    }
+
+    string ans;                   <span class="hljs-comment">// ans: 补全后的结果字符串</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">if</span> (match[i] != <span class="hljs-number">-1</span>) {     <span class="hljs-comment">// 已配对，直接输出原字符</span>
+            ans.<span class="hljs-built_in">push_back</span>(s[i]);
+        } <span class="hljs-keyword">else</span> {                  <span class="hljs-comment">// 未配对，补全一对</span>
+            <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;(&#x27;</span>) {
+                ans += <span class="hljs-string">&quot;()&quot;</span>;      <span class="hljs-comment">// 左小括号补右小括号</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;[&#x27;</span>) {
+                ans += <span class="hljs-string">&quot;[]&quot;</span>;      <span class="hljs-comment">// 左中括号补右中括号</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;)&#x27;</span>) {
+                ans += <span class="hljs-string">&quot;()&quot;</span>;      <span class="hljs-comment">// 右小括号补左小括号（整体为一对）</span>
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;]&#x27;</span>) {
+                ans += <span class="hljs-string">&quot;[]&quot;</span>;      <span class="hljs-comment">// 右中括号补左中括号</span>
+            }
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1241">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

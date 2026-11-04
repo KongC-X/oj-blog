@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2452 最长子区间 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 个整数，在这 个整数中任意的取连续区间中的数字求和，请问：满足区间和是 的倍数的最长的区间长度是多少？">
+<link rel="canonical" href="https://zymojblog.top/p/2452/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2452 最长子区间 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 个整数，在这 个整数中任意的取连续区间中的数字求和，请问：满足区间和是 的倍数的最长的区间长度是多少？">
+<meta property="og:url" content="https://zymojblog.top/p/2452/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2452 最长子区间 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 个整数，在这 个整数中任意的取连续区间中的数字求和，请问：满足区间和是 的倍数的最长的区间长度是多少？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2452 最长子区间","headline":"2452 最长子区间 题解","description":"给定 个整数，在这 个整数中任意的取连续区间中的数字求和，请问：满足区间和是 的倍数的最长的区间长度是多少？","url":"https://zymojblog.top/p/2452/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"前缀和、数学","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2452</span></div>
+  <h1 class="seo-title">2452 最长子区间</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a></div>
+  <article class="markdown-body seo-article">
+<h1>2452 - 最长子区间</h1>
+<h2>题目描述</h2>
+<p>给定 $n$ 个整数，在这 $n$ 个整数中任意的取连续区间中的数字求和，请问：满足区间和是 $7$ 的倍数的最长的区间长度是多少？</p>
+<h2>输入</h2>
+<p>第$1$行输入一个整数 $N$（$1≤N≤50,000$）  </p>
+<p>第$2$行输入$n$个整数（整数范围在$0…1,000,000$之间）</p>
+<h2>输出</h2>
+<p>输出满足题意的最长子区间的长度，如果找不到符合题意的子区间，请输出 <code>0</code>。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 同余定理：</span>
+<span class="hljs-comment">// 如果两个前缀和对7取模的余数相同，那么这两个位置之间的子区间和一定是7的倍数</span>
+<span class="hljs-comment">// 数学表达：如果 sum[i] % 7 == sum[j] % 7，那么 (sum[i] - sum[j]) % 7 == 0，即区间 [j+1, i] 的和是7的倍数</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, num, first[<span class="hljs-number">7</span>] = {<span class="hljs-number">0</span>}, max_len = <span class="hljs-number">0</span>;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;
+    
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; num;
+        sum += num;
+        <span class="hljs-type">int</span> r = sum % <span class="hljs-number">7</span>;
+        <span class="hljs-comment">// 当余数为0时，说明从头到当前位置的和是7的倍数，长度就是当前位置 i</span>
+        <span class="hljs-comment">// 当余数不为0时，如果余数已记录，则计算当前位置与首次出现位置的差值，否则记录该余数的首次出现位置</span>
+        <span class="hljs-keyword">if</span> (r == <span class="hljs-number">0</span>) {
+            <span class="hljs-comment">// 情况1：当前前缀和本身就是7的倍数</span>
+            <span class="hljs-comment">// 这意味着从数组开头到当前位置的和是7的倍数</span>
+            max_len = <span class="hljs-built_in">max</span>(max_len, i);  <span class="hljs-comment">// 从头到当前的和是7的倍数</span>
+        }
+        <span class="hljs-comment">// 使用 first[r] 的值判断是否已记录（0表示未记录）</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (first[r]) {
+            <span class="hljs-comment">// 情况2：之前出现过相同的余数</span>
+            <span class="hljs-comment">// 这意味着两个位置之间的区间和是7的倍数</span>
+            max_len = <span class="hljs-built_in">max</span>(max_len, i - first[r]);  <span class="hljs-comment">// 区间[first[r]+1, i]满足条件</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 情况3：首次出现这个余数</span>
+            <span class="hljs-comment">// 记录这个余数第一次出现的位置</span>
+            first[r] = i;  <span class="hljs-comment">// 首次出现该余数</span>
+        }
+    }
+    
+    cout &lt;&lt; max_len;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2452">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

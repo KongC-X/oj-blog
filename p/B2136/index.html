@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2136 素数回文数的个数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="求 到 之间（包括 ），既是素数又是回文数的整数有多少个。">
+<link rel="canonical" href="https://zymojblog.top/p/B2136/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2136 素数回文数的个数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="求 到 之间（包括 ），既是素数又是回文数的整数有多少个。">
+<meta property="og:url" content="https://zymojblog.top/p/B2136/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2136 素数回文数的个数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="求 到 之间（包括 ），既是素数又是回文数的整数有多少个。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2136 素数回文数的个数","headline":"B2136 素数回文数的个数 题解","description":"求 到 之间（包括 ），既是素数又是回文数的整数有多少个。","url":"https://zymojblog.top/p/B2136/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2136</span></div>
+  <h1 class="seo-title">B2136 素数回文数的个数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2136 素数回文数的个数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>求 $11$ 到 $n$ 之间（包括 $n$），既是素数又是回文数的整数有多少个。</p>
+<h2>输入格式</h2>
+<p>一个大于 $11$ 小于 $10000$ 的整数 $n$。</p>
+<h2>输出格式</h2>
+<p>$11$ 到 $n$ 之间的素数回文数个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">23</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断一个数是否为素数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;           <span class="hljs-comment">// 小于2不是素数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) {
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 能被整除，不是素数</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-comment">// 判断一个数是否为回文数（左右对称）</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPalindrome</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-type">int</span> t = x, rev = <span class="hljs-number">0</span>;               <span class="hljs-comment">// t: 临时变量，rev: 逆序后的数</span>
+    <span class="hljs-keyword">while</span> (t &gt; <span class="hljs-number">0</span>) {
+        rev = rev * <span class="hljs-number">10</span> + t % <span class="hljs-number">10</span>;
+        t /= <span class="hljs-number">10</span>;
+    }
+    <span class="hljs-keyword">return</span> rev == x;                  <span class="hljs-comment">// 逆序后与原数相等则为回文数</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;                            <span class="hljs-comment">// n: 范围上限</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;                      <span class="hljs-comment">// cnt: 素数回文数的个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">11</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isPrime</span>(i) &amp;&amp; <span class="hljs-built_in">isPalindrome</span>(i)) {
+            cnt++;
+        }
+    }
+
+    cout &lt;&lt; cnt &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2136">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

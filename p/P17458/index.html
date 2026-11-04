@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P17458 [GESP202609 六级] 分树规划 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="老师有一棵有 个结点的树，结点依次以 编号。 老师想将这棵树作为奖品分给两位同学。具体而言，老师会选择一条边并从树上删去它，从而将这棵树分为两个连通块。两位同学分别可以得到其中一个连通块。 如果有同学拿到的连通块结点数明显小于另一位同学，那么这位同学会不太高兴。为了避免这种情况出现，老师想知道两个…">
+<link rel="canonical" href="https://zymojblog.top/p/P17458/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P17458 [GESP202609 六级] 分树规划 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="老师有一棵有 个结点的树，结点依次以 编号。 老师想将这棵树作为奖品分给两位同学。具体而言，老师会选择一条边并从树上删去它，从而将这棵树分为两个连通块。两位同学分别可以得到其中一个连通块。 如果有同学拿到的连通块结点数明显小于另一位同学，那么这位同学会不太高兴。为了避免这种情况出现，老师想知道两个…">
+<meta property="og:url" content="https://zymojblog.top/p/P17458/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P17458 [GESP202609 六级] 分树规划 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="老师有一棵有 个结点的树，结点依次以 编号。 老师想将这棵树作为奖品分给两位同学。具体而言，老师会选择一条边并从树上删去它，从而将这棵树分为两个连通块。两位同学分别可以得到其中一个连通块。 如果有同学拿到的连通块结点数明显小于另一位同学，那么这位同学会不太高兴。为了避免这种情况出现，老师想知道两个…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P17458 [GESP202609 六级] 分树规划","headline":"P17458 [GESP202609 六级] 分树规划 题解","description":"老师有一棵有 个结点的树，结点依次以 编号。 老师想将这棵树作为奖品分给两位同学。具体而言，老师会选择一条边并从树上删去它，从而将这棵树分为两个连通块。两位同学分别可以得到其中一个连通块。 如果有同学拿到的连通块结点数明显小于另一位同学，那么这位同学会不太高兴。为了避免这种情况出现，老师想知道两个…","url":"https://zymojblog.top/p/P17458/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"树的遍历、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P17458</span></div>
+  <h1 class="seo-title">P17458 [GESP202609 六级] 分树规划</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">树的遍历</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P17458 [GESP202609 六级] 分树规划</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-18</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>老师有一棵有 $n$ 个结点的树，结点依次以 $1,2,\ldots,n$ 编号。</p>
+<p>老师想将这棵树作为奖品分给两位同学。具体而言，老师会选择一条边并从树上删去它，从而将这棵树分为两个连通块。两位同学分别可以得到其中一个连通块。</p>
+<p>如果有同学拿到的连通块结点数明显小于另一位同学，那么这位同学会不太高兴。为了避免这种情况出现，老师想知道两个连通块结点数之差的绝对值最小是多少。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示结点数量。</p>
+<p>接下来 $n-1$ 行，每行两个正整数 $u_i,v_i$，表示一条连接结点 $u_i$ 和结点 $v_i$ 的边。</p>
+<h2>输出格式</h2>
+<p>输出一行，一个整数，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>0```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n, c = <span class="hljs-number">0</span>;            <span class="hljs-comment">// n: 结点数, c: 边计数器</span>
+<span class="hljs-type">int</span> h[<span class="hljs-number">20005</span>];            <span class="hljs-comment">// h[u]: 结点 u 的第一条边</span>
+<span class="hljs-type">int</span> e[<span class="hljs-number">40005</span>];            <span class="hljs-comment">// e[i]: 第 i 条边的终点</span>
+<span class="hljs-type">int</span> ne[<span class="hljs-number">40005</span>];           <span class="hljs-comment">// ne[i]: 第 i 条边的下一条边</span>
+<span class="hljs-type">int</span> s[<span class="hljs-number">20005</span>];            <span class="hljs-comment">// s[u]: 以 u 为根的子树大小</span>
+
+<span class="hljs-comment">// 添加一条从 u 到 v 的边</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> v)</span> </span>{
+    e[++c] = v;
+    ne[c] = h[u];
+    h[u] = c;
+}
+
+<span class="hljs-comment">// 深度优先搜索，计算子树大小</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> f)</span> </span>{
+    s[u] = <span class="hljs-number">1</span>;            <span class="hljs-comment">// 自身算一个结点</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = h[u]; i; i = ne[i]) {
+        <span class="hljs-type">int</span> v = e[i];
+        <span class="hljs-keyword">if</span> (v == f) <span class="hljs-keyword">continue</span>;   <span class="hljs-comment">// 不往回走</span>
+        <span class="hljs-built_in">dfs</span>(v, u);
+        s[u] += s[v];           <span class="hljs-comment">// 累加子树的结点数</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P17458 [GESP202609 六级] 分树规划
+     * 题意：一棵 n 个结点的树，删去一条边分成两个连通块，
+     *       求两个连通块结点数之差的最小绝对值。
+     *
+     * 思路：
+     * 1. 任选 1 为根，DFS 求出每个结点的子树大小 s[u]。
+     * 2. 对于每个非根结点 u（u=2..n），它与父结点之间的边被删除后，
+     *    一个连通块是 u 的子树（大小 s[u]），另一个是剩余部分（大小 n - s[u]）。
+     *    差值绝对值为 |n - 2 * s[u]|。
+     * 3. 遍历所有非根结点，取差值绝对值的最小值即为答案。
+     *
+     * 时间复杂度：O(n)，n ≤ 20000，完全可行。
+     */</span>
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> u, v;
+        cin &gt;&gt; u &gt;&gt; v;
+        <span class="hljs-built_in">add</span>(u, v);
+        <span class="hljs-built_in">add</span>(v, u);
+    }
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);               <span class="hljs-comment">// 从 1 开始 DFS，父结点为 0</span>
+
+    <span class="hljs-type">int</span> ans = n;             <span class="hljs-comment">// 答案初始为 n（最大差值）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> d = <span class="hljs-built_in">abs</span>(n - <span class="hljs-number">2</span> * s[i]);   <span class="hljs-comment">// 差值绝对值</span>
+        <span class="hljs-keyword">if</span> (d &lt; ans) ans = d;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P17458">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1561 买木头 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个木材供应商，每个供货商有长度相同一定数量的木头。长木头可以锯短，但短木头不能接长。有一个客人要求 根长度相同的木头。要求计算出，此时供货商提供的木头满足客人要求的最长的长度是多少。 例如 ，两个供货商的木头为 第 个供货商的木头长度为 ，共有 根； 第 个供货商的木头长度为 ，共有 根。 计…">
+<link rel="canonical" href="https://zymojblog.top/p/1561/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1561 买木头 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个木材供应商，每个供货商有长度相同一定数量的木头。长木头可以锯短，但短木头不能接长。有一个客人要求 根长度相同的木头。要求计算出，此时供货商提供的木头满足客人要求的最长的长度是多少。 例如 ，两个供货商的木头为 第 个供货商的木头长度为 ，共有 根； 第 个供货商的木头长度为 ，共有 根。 计…">
+<meta property="og:url" content="https://zymojblog.top/p/1561/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1561 买木头 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个木材供应商，每个供货商有长度相同一定数量的木头。长木头可以锯短，但短木头不能接长。有一个客人要求 根长度相同的木头。要求计算出，此时供货商提供的木头满足客人要求的最长的长度是多少。 例如 ，两个供货商的木头为 第 个供货商的木头长度为 ，共有 根； 第 个供货商的木头长度为 ，共有 根。 计…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1561 买木头","headline":"1561 买木头 题解","description":"有 个木材供应商，每个供货商有长度相同一定数量的木头。长木头可以锯短，但短木头不能接长。有一个客人要求 根长度相同的木头。要求计算出，此时供货商提供的木头满足客人要求的最长的长度是多少。 例如 ，两个供货商的木头为 第 个供货商的木头长度为 ，共有 根； 第 个供货商的木头长度为 ，共有 根。 计…","url":"https://zymojblog.top/p/1561/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"省赛、数组问题、二分答案、贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1561</span></div>
+  <h1 class="seo-title">1561 买木头</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">一维数组</span><span class="seo-badge seo-badge-soft">贪心</span><span class="seo-badge seo-badge-soft">二分</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84%E9%97%AE%E9%A2%98">数组问题</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86%E7%AD%94%E6%A1%88">二分答案</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>1561 - 买木头</h1>
+<h2>题目描述</h2>
+<p>有 $n$ 个木材供应商，每个供货商有长度相同一定数量的木头。长木头可以锯短，但短木头不能接长。有一个客人要求 $m$ 根长度相同的木头。要求计算出，此时供货商提供的木头满足客人要求的最长的长度是多少。</p>
+<p>例如 $n=2,m=30$，两个供货商的木头为</p>
+<p>$12,10$  第 $1$ 个供货商的木头长度为 $12$ ，共有 $10$ 根；</p>
+<p>$5,10$  第 $2$ 个供货商的木头长度为 $5$ ，共有 $10$ 根。</p>
+<p>计算的结果为 $5$ ，即长度为 $12$ 的木头一根可锯出两根长度为 $5$ 的木头，多余的无用，长度为 $5$ 的木头不动，此时可得到 $30$ 根长度为 $5$ 的木头。</p>
+<h2>输入</h2>
+<p>整数 $n,m,L_1,S_1$ （$1≤n≤10000,1≤m≤1000000,1≤L_1≤10000,1≤S_1≤100$）</p>
+<p>其中 $L_1$ 是第一个供货商木头的长，$S_1$ 是第一个供货商木头数量。其他供货商木头的长度和数量 $L_i$ 和 $S_i$（$i≥2$），由下面的公式给出：</p>
+<p>$L_i=((L$$i-1$$ \times 37011+10193)  \mod 10000)+1$</p>
+<p>$S_i=((S$$i-1$$ \times 73011+24793)  \mod 100)+1$</p>
+<h2>输出</h2>
+<p>一个整数，即满足要求的 $m$ 根长度相同的木头的最大长度。</p>
+<p>本题测试数据保证一定有解。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">10010</span>;
+<span class="hljs-type">int</span> n,m,i,j;
+<span class="hljs-type">int</span> len[N],cnt[N];
+
+<span class="hljs-comment">// 检验切割长度为mid，是否能够切除m根以上的木头</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> mid)</span> </span>{
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        c += len[i] / mid * cnt[i];
+    }
+    <span class="hljs-keyword">return</span> c &gt;= m;
+}
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; len[<span class="hljs-number">1</span>] &gt;&gt; cnt[<span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>,r = len[<span class="hljs-number">1</span>],mid;
+    <span class="hljs-comment">// 生成</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= n;i++) {
+        len[i] = (len[i - <span class="hljs-number">1</span>] * <span class="hljs-number">37011</span> + <span class="hljs-number">10193</span>) % <span class="hljs-number">10000</span> + <span class="hljs-number">1</span>;
+        cnt[i] = (cnt[i - <span class="hljs-number">1</span>] * <span class="hljs-number">73011</span> + <span class="hljs-number">24793</span>) % <span class="hljs-number">100</span> + <span class="hljs-number">1</span>;
+        r = <span class="hljs-built_in">max</span>(len[i],r);
+    }
+    <span class="hljs-keyword">while</span>(l &lt;= r) {
+        mid = (l + r) &gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(mid)) {
+            l = mid + <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            r = mid - <span class="hljs-number">1</span>;
+        }
+    }
+    cout &lt;&lt; r &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1561">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

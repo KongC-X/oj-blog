@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4239 [海淀区小学组 2024] 拜访朋友 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="陶陶有 个好朋友，他们的住所都分布在同一条笔直的街道旁，如果把这条街道看作一个数轴，选定一个点作为坐标原点（坐标为 ），则这 个好朋友的住所的坐标分别为 。一天，陶陶要去朋友们的住所去拜访朋友们，陶陶初始位置的坐标为 ，他希望至少拜访到 个好朋友，请你确定陶陶要最少要行走的总距离。">
+<link rel="canonical" href="https://zymojblog.top/p/B4239/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4239 [海淀区小学组 2024] 拜访朋友 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="陶陶有 个好朋友，他们的住所都分布在同一条笔直的街道旁，如果把这条街道看作一个数轴，选定一个点作为坐标原点（坐标为 ），则这 个好朋友的住所的坐标分别为 。一天，陶陶要去朋友们的住所去拜访朋友们，陶陶初始位置的坐标为 ，他希望至少拜访到 个好朋友，请你确定陶陶要最少要行走的总距离。">
+<meta property="og:url" content="https://zymojblog.top/p/B4239/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4239 [海淀区小学组 2024] 拜访朋友 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="陶陶有 个好朋友，他们的住所都分布在同一条笔直的街道旁，如果把这条街道看作一个数轴，选定一个点作为坐标原点（坐标为 ），则这 个好朋友的住所的坐标分别为 。一天，陶陶要去朋友们的住所去拜访朋友们，陶陶初始位置的坐标为 ，他希望至少拜访到 个好朋友，请你确定陶陶要最少要行走的总距离。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4239 [海淀区小学组 2024] 拜访朋友","headline":"B4239 [海淀区小学组 2024] 拜访朋友 题解","description":"陶陶有 个好朋友，他们的住所都分布在同一条笔直的街道旁，如果把这条街道看作一个数轴，选定一个点作为坐标原点（坐标为 ），则这 个好朋友的住所的坐标分别为 。一天，陶陶要去朋友们的住所去拜访朋友们，陶陶初始位置的坐标为 ，他希望至少拜访到 个好朋友，请你确定陶陶要最少要行走的总距离。","url":"https://zymojblog.top/p/B4239/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2025、北京、排序、科创活动、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4239</span></div>
+  <h1 class="seo-title">B4239 [海淀区小学组 2024] 拜访朋友</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%8C%97%E4%BA%AC">北京</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E7%A7%91%E5%88%9B%E6%B4%BB%E5%8A%A8">科创活动</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4239 [海淀区小学组 2024] 拜访朋友</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-27</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2025</code>、<code>北京</code>、<code>排序</code>、<code>科创活动</code>、<code>小学活动</code></p>
+<h2>题目背景</h2>
+<p>2024 年海淀区中小学生信息学竞赛小学组复赛题目，数据为洛谷自造。</p>
+<h2>题目描述</h2>
+<p>陶陶有 $n$ 个好朋友，他们的住所都分布在同一条笔直的街道旁，如果把这条街道看作一个数轴，选定一个点作为坐标原点（坐标为 $0$），则这 $n$ 个好朋友的住所的坐标分别为 $x_1, x_2, \dots, x_n$。一天，陶陶要去朋友们的住所去拜访朋友们，陶陶初始位置的坐标为 $x_0$，他希望至少拜访到 $n - 1$ 个好朋友，请你确定陶陶要最少要行走的总距离。</p>
+<h2>输入格式</h2>
+<p>第一行包含两个整数 $n$ 和 $x_0$，第二行包含 $n$ 个整数 $x_1, x_2, \dots, x_n$。</p>
+<h2>输出格式</h2>
+<p>仅有一个正整数，表示最小的总行走距离。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">10</span>
+<span class="hljs-number">1</span> <span class="hljs-number">7</span> <span class="hljs-number">12</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">0</span>
+<span class="hljs-number">11</span> <span class="hljs-number">-10</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>10```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1000</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100005</span>;
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> x[MAXN];
+
+<span class="hljs-comment">// 计算从起点 x0 出发，访问坐标在 [L, R] 区间内所有点的最短总距离</span>
+<span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-title">dist</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> x0, <span class="hljs-type">long</span> <span class="hljs-type">long</span> L, <span class="hljs-type">long</span> <span class="hljs-type">long</span> R)</span> </span>{
+    <span class="hljs-keyword">if</span> (x0 &lt;= L) <span class="hljs-keyword">return</span> R - x0;          <span class="hljs-comment">// 起点在区间左侧，一路向右走到 R</span>
+    <span class="hljs-keyword">if</span> (x0 &gt;= R) <span class="hljs-keyword">return</span> x0 - L;          <span class="hljs-comment">// 起点在区间右侧，一路向左走到 L</span>
+    <span class="hljs-comment">// 起点在区间内部，先走到较近的一端，再走完整段区间</span>
+    <span class="hljs-keyword">return</span> (R - L) + <span class="hljs-built_in">min</span>(x0 - L, R - x0);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：
+      所有朋友在数轴上，需要访问至少 n-1 个朋友。
+      将坐标排序后，选择的 n-1 个朋友一定是连续的一段（跳过最左或最右的一个点，或者不跳过）。
+      因此答案只有三种可能：
+        1. 访问全部 n 个点；
+        2. 跳过最左边的点，访问其余 n-1 个；
+        3. 跳过最右边的点，访问其余 n-1 个。
+      计算这三种情况的最短路径，取最小值即可。
+      特别地，当 n=1 时，至少访问 0 个点，距离为 0。
+    */</span>
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> x0;
+    cin &gt;&gt; n &gt;&gt; x0;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        cin &gt;&gt; x[i];
+    }
+    <span class="hljs-built_in">sort</span>(x, x + n);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+        ans = <span class="hljs-number">0</span>;                      <span class="hljs-comment">// 只有一个朋友，至少访问0个，可以不去</span>
+    } <span class="hljs-keyword">else</span> {
+        ans = <span class="hljs-built_in">dist</span>(x0, x[<span class="hljs-number">0</span>], x[n<span class="hljs-number">-1</span>]);                <span class="hljs-comment">// 情况1：访问全部</span>
+        ans = <span class="hljs-built_in">min</span>(ans, <span class="hljs-built_in">dist</span>(x0, x[<span class="hljs-number">1</span>], x[n<span class="hljs-number">-1</span>]));      <span class="hljs-comment">// 情况2：跳过最左</span>
+        ans = <span class="hljs-built_in">min</span>(ans, <span class="hljs-built_in">dist</span>(x0, x[<span class="hljs-number">0</span>], x[n<span class="hljs-number">-2</span>]));      <span class="hljs-comment">// 情况3：跳过最右</span>
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4239">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

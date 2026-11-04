@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1570 KC 喝咖啡 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="话说 KC 和 SH 在福州的时候常常跑去 85°C 喝咖啡或者其他的一些什么东西。 这天，KC 想要喝一杯咖啡，服务员告诉他，现在有 种调料，这杯咖啡只可以加入其中的 种（当然 KC 一定会加入 种，不会加入少于 种的调料），根据加入的调料不同，制成这杯咖啡要用的时间也不同，得到的咖啡的美味度也…">
+<link rel="canonical" href="https://zymojblog.top/p/P1570/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1570 KC 喝咖啡 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="话说 KC 和 SH 在福州的时候常常跑去 85°C 喝咖啡或者其他的一些什么东西。 这天，KC 想要喝一杯咖啡，服务员告诉他，现在有 种调料，这杯咖啡只可以加入其中的 种（当然 KC 一定会加入 种，不会加入少于 种的调料），根据加入的调料不同，制成这杯咖啡要用的时间也不同，得到的咖啡的美味度也…">
+<meta property="og:url" content="https://zymojblog.top/p/P1570/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1570 KC 喝咖啡 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="话说 KC 和 SH 在福州的时候常常跑去 85°C 喝咖啡或者其他的一些什么东西。 这天，KC 想要喝一杯咖啡，服务员告诉他，现在有 种调料，这杯咖啡只可以加入其中的 种（当然 KC 一定会加入 种，不会加入少于 种的调料），根据加入的调料不同，制成这杯咖啡要用的时间也不同，得到的咖啡的美味度也…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1570 KC 喝咖啡","headline":"P1570 KC 喝咖啡 题解","description":"话说 KC 和 SH 在福州的时候常常跑去 85°C 喝咖啡或者其他的一些什么东西。 这天，KC 想要喝一杯咖啡，服务员告诉他，现在有 种调料，这杯咖啡只可以加入其中的 种（当然 KC 一定会加入 种，不会加入少于 种的调料），根据加入的调料不同，制成这杯咖啡要用的时间也不同，得到的咖啡的美味度也…","url":"https://zymojblog.top/p/P1570/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"二分、洛谷原创、分数规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1570</span></div>
+  <h1 class="seo-title">P1570 KC 喝咖啡</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%95%B0%E8%A7%84%E5%88%92">分数规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1570 KC 喝咖啡</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>二分</code>、<code>洛谷原创</code>、<code>分数规划</code></p>
+<h2>题目描述</h2>
+<p>话说 KC 和 SH 在福州的时候常常跑去 85°C 喝咖啡或者其他的一些什么东西。</p>
+<p>这天，KC 想要喝一杯咖啡，服务员告诉他，现在有 $n$ 种调料，这杯咖啡只可以加入其中的 $m$ 种（当然 KC 一定会加入 $m$ 种，不会加入少于 $m$ 种的调料），根据加入的调料不同，制成这杯咖啡要用的时间也不同，得到的咖啡的美味度也不同。</p>
+<p>KC 在得知所有的 $n$ 种调料后，作为曾经的化竞之神的他，马上就知道了所有调料消耗的时间 $c _ i$ 以及调料的美味度 $v _ i$。由于 KC 急着回去刷题，所以他想尽快喝到这杯咖啡，但他又想喝到美味的咖啡，所以他想出了一个办法，他要喝到 $\dfrac{\sum v _ i}{\sum c _ i}$ 最大的咖啡，也就是单位时间的美味度最大的咖啡。</p>
+<p>现在，KC 把调料信息告诉了 SH，要 SH 帮他算出喝到的咖啡的 $\dfrac{\sum v _ i}{\sum c _ i}$，但 SH 不想帮 KC 算这东西，于是 KC 就只能拜托你来算了。</p>
+<p>注释：$\sum$ 表示求和，所以 $\dfrac{\sum v _ i}{\sum c _ i}$ 表示美味度的总和除以消耗时间的总和。</p>
+<h2>输入格式</h2>
+<p>输入数据共三行。</p>
+<p>第一行为一个整数 $n, m$，表示调料种数和能加入的调料数。</p>
+<p>接下来两行，每行为 $n$ 个数，第一行第 $i$ 个整数表示调料 $i$ 的美味度 $v _ i$，第二行第 $i$ 个整数表示调料 $i$ 消耗的时间 $c _ i$。</p>
+<h2>输出格式</h2>
+<p>一个实数 $T$，表示 KC 喝的咖啡的最大 $\dfrac{\sum v _ i}{\sum c _ i}$，保留三位小数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1.667</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">205</span>;
+<span class="hljs-type">int</span> n, m;
+<span class="hljs-type">double</span> v[MAXN], c[MAXN];   <span class="hljs-comment">// v[i] 美味度，c[i] 消耗时间</span>
+<span class="hljs-type">double</span> d[MAXN];            <span class="hljs-comment">// 权值 v[i] - mid * c[i]</span>
+
+<span class="hljs-comment">// 检查比值 mid 是否可行：存在 m 种调料使得 ∑v_i / ∑c_i &gt;= mid</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">double</span> mid)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        d[i] = v[i] - mid * c[i];
+    }
+    <span class="hljs-comment">// 从大到小排序</span>
+    <span class="hljs-built_in">sort</span>(d, d + n, <span class="hljs-built_in">greater</span>&lt;<span class="hljs-type">double</span>&gt;());
+    <span class="hljs-type">double</span> sum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        sum += d[i];
+    }
+    <span class="hljs-keyword">return</span> sum &gt;= <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：0/1 分数规划 + 二分答案
+      最大化 (∑v) / (∑c)，经典二分法。
+      对于给定的 mid，判断是否存在方案使 ∑(v - mid*c) ≥ 0。
+      若最大的 m 个权值之和 ≥ 0，则 mid 可行，尝试更大的 mid；
+      否则 mid 不可行，减小 mid。
+      二分直到精度足够，输出保留三位小数。
+    */</span>
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; v[i];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; c[i];
+
+    <span class="hljs-type">double</span> L = <span class="hljs-number">0</span>, R = <span class="hljs-number">100000</span>;     <span class="hljs-comment">// 比值上限足够大</span>
+    <span class="hljs-comment">// 循环 60 次，精度满足 1e-6</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> t = <span class="hljs-number">0</span>; t &lt; <span class="hljs-number">60</span>; t++) {
+        <span class="hljs-type">double</span> mid = (L + R) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">check</span>(mid))
+            L = mid;
+        <span class="hljs-keyword">else</span>
+            R = mid;
+    }
+
+    cout &lt;&lt; fixed &lt;&lt; <span class="hljs-built_in">setprecision</span>(<span class="hljs-number">3</span>) &lt;&lt; L &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1570">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1796 奶牛沙盘队 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Farmer Han开始玩飞盘之后，YDS也打算让奶牛们享受飞盘的乐趣。 他要组建一只奶牛飞盘队，他的 ( )只奶牛，每只奶牛有一个飞盘水准指数 ( )。 YDS要选出 只或多于 只奶牛来参加他的飞盘队。由于YDS的幸运数字是 ( )，他希望所有奶牛的飞盘水准指数之和是幸运数字的倍数。 帮YDS算…">
+<link rel="canonical" href="https://zymojblog.top/p/1796/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1796 奶牛沙盘队 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Farmer Han开始玩飞盘之后，YDS也打算让奶牛们享受飞盘的乐趣。 他要组建一只奶牛飞盘队，他的 ( )只奶牛，每只奶牛有一个飞盘水准指数 ( )。 YDS要选出 只或多于 只奶牛来参加他的飞盘队。由于YDS的幸运数字是 ( )，他希望所有奶牛的飞盘水准指数之和是幸运数字的倍数。 帮YDS算…">
+<meta property="og:url" content="https://zymojblog.top/p/1796/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1796 奶牛沙盘队 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Farmer Han开始玩飞盘之后，YDS也打算让奶牛们享受飞盘的乐趣。 他要组建一只奶牛飞盘队，他的 ( )只奶牛，每只奶牛有一个飞盘水准指数 ( )。 YDS要选出 只或多于 只奶牛来参加他的飞盘队。由于YDS的幸运数字是 ( )，他希望所有奶牛的飞盘水准指数之和是幸运数字的倍数。 帮YDS算…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1796 奶牛沙盘队","headline":"1796 奶牛沙盘队 题解","description":"Farmer Han开始玩飞盘之后，YDS也打算让奶牛们享受飞盘的乐趣。 他要组建一只奶牛飞盘队，他的 ( )只奶牛，每只奶牛有一个飞盘水准指数 ( )。 YDS要选出 只或多于 只奶牛来参加他的飞盘队。由于YDS的幸运数字是 ( )，他希望所有奶牛的飞盘水准指数之和是幸运数字的倍数。 帮YDS算…","url":"https://zymojblog.top/p/1796/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1796</span></div>
+  <h1 class="seo-title">1796 奶牛沙盘队</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>1796 - 奶牛沙盘队</h1>
+<h2>题目描述</h2>
+<p>Farmer Han开始玩飞盘之后，YDS也打算让奶牛们享受飞盘的乐趣。</p>
+<p>他要组建一只奶牛飞盘队，他的 $N$ ($1≤N≤2000$)只奶牛，每只奶牛有一个飞盘水准指数 $R_i$($1≤R_i≤100000$)。</p>
+<p>YDS要选出 $1$ 只或多于 $1$ 只奶牛来参加他的飞盘队。由于YDS的幸运数字是 $F$ ($1≤F≤1000$)，他希望所有奶牛的飞盘水准指数之和是幸运数字的倍数。</p>
+<p>帮YDS算算一共有多少种组队方式，组队方式数模 $10^8$ 取余的结果。</p>
+<h2>输入</h2>
+<p>第 $1$ 行输入 $N$ 和 $F$ ，之后 $N$ 行输入 $R_i$。</p>
+<h2>输出</h2>
+<p>组队方式数模 $10^8$ 取余的结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MOD = <span class="hljs-number">100000000</span>; <span class="hljs-comment">//余数</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">2010</span>;
+<span class="hljs-comment">/*
+1. 状态定义
+dp[i][j]：前i个数，取若干求和后 % F 为j的方案数
+
+2. 状态转移
+第i个数有2种选择，要或者不要，方案数为两者叠加
+dp[i][j] = ((dp[i][j] + dp[i - 1][j]) % MOD + dp[i - 1][(j - a[i] + f) % f]) % MOD;
+
+3. 最终答案
+dp[n][0]
+*/</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[N], dp[N][N]; <span class="hljs-comment">//cow[i]指第i头奶牛的能力，</span>
+<span class="hljs-type">int</span> n, f;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>, &amp;n, &amp;f);
+
+    <span class="hljs-comment">//读入每个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;a[i]);
+        a[i] %= f;<span class="hljs-comment">//提前取余</span>
+    }
+
+    <span class="hljs-comment">//边界条件</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        dp[i][a[i]] = <span class="hljs-number">1</span>;
+    }
+
+    <span class="hljs-comment">//01背包求方案数</span>
+    <span class="hljs-comment">//枚举每个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-comment">//枚举余数</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= f - <span class="hljs-number">1</span>; j++) {
+            dp[i][j] = ((dp[i][j] + dp[i - <span class="hljs-number">1</span>][j]) % MOD + dp[i - <span class="hljs-number">1</span>][(j - a[i] + f) % f]) % MOD;
+        }
+    }
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, dp[n][<span class="hljs-number">0</span>]);
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1796">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

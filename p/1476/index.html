@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1476 字符串编辑 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="从键盘输入一个字符串（长度 个字符），并以字符 . 结束。 例如：This is a book. 现对该字符串进行编辑，编辑功能有： 操作一：删除字符。 D：删除一个字符，命令的格式为：D a。其中 a为被删除的字符。 例如：D s 表示删除字符 s ，若字符串中有多个 s，则删除第一次出现的。 …">
+<link rel="canonical" href="https://zymojblog.top/p/1476/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1476 字符串编辑 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="从键盘输入一个字符串（长度 个字符），并以字符 . 结束。 例如：This is a book. 现对该字符串进行编辑，编辑功能有： 操作一：删除字符。 D：删除一个字符，命令的格式为：D a。其中 a为被删除的字符。 例如：D s 表示删除字符 s ，若字符串中有多个 s，则删除第一次出现的。 …">
+<meta property="og:url" content="https://zymojblog.top/p/1476/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1476 字符串编辑 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="从键盘输入一个字符串（长度 个字符），并以字符 . 结束。 例如：This is a book. 现对该字符串进行编辑，编辑功能有： 操作一：删除字符。 D：删除一个字符，命令的格式为：D a。其中 a为被删除的字符。 例如：D s 表示删除字符 s ，若字符串中有多个 s，则删除第一次出现的。 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1476 字符串编辑","headline":"1476 字符串编辑 题解","description":"从键盘输入一个字符串（长度 个字符），并以字符 . 结束。 例如：This is a book. 现对该字符串进行编辑，编辑功能有： 操作一：删除字符。 D：删除一个字符，命令的格式为：D a。其中 a为被删除的字符。 例如：D s 表示删除字符 s ，若字符串中有多个 s，则删除第一次出现的。 …","url":"https://zymojblog.top/p/1476/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1476</span></div>
+  <h1 class="seo-title">1476 字符串编辑</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1476 - 字符串编辑</h1>
+<h2>题目描述</h2>
+<p>从键盘输入一个字符串（长度 $ \le 40$ 个字符），并以字符 <code>.</code> 结束。</p>
+<p>例如：<code>This is a book.</code> 现对该字符串进行编辑，编辑功能有：</p>
+<p><strong>操作一：删除字符。</strong></p>
+<p><code>D</code>：删除一个字符，命令的格式为：<code>D a</code>。其中 <code>a</code>为被删除的字符。</p>
+<p>例如：<code>D s</code>  表示删除字符 <code>s</code> ，若字符串中有多个 <code>s</code>，则删除第一次出现的。</p>
+<p>如上例中删除的结果为： <code>Thi is a book.</code></p>
+<p><strong>操作二：插入字符。</strong></p>
+<p><code>I</code>：插入一个字符，命令的格式为：<code>I a1 a2</code>。其中 <code>a1</code> 表示插入到指定字符前面，<code>a2</code> 表示将要插入的字符。</p>
+<p>例如：<code>I s d</code> 表示在指定字符 <code>s</code> 的前面插入字符 <code>d</code> ，若原串中有多个 <code>s</code> ，则插入在最后一个字符的前面。</p>
+<p>如上例中，原串：<code>This is a book.</code>，插入后：<code>This ids a book.</code>。</p>
+<p><strong>操作三：替换字符。</strong></p>
+<p><code>R</code>：替换一个字符，命令格式为：<code>R a1 a2</code>。其中 <code>a1</code> 为被替换的字符，<code>a2</code> 为替换的字符，若在原串中有多个 <code>a1</code> 则应全部替换。</p>
+<p>例如，原串： <code>This is a book.</code>，输入命令：<code>R o e</code>，替换后的字符串为：<code>This is a beek.</code>。</p>
+<p><strong>特殊情况：</strong></p>
+<p>在编辑过程中，若出现被改的字符不存在时，则给出提示信息 <code>Not exist</code>。</p>
+<h2>输入</h2>
+<p>每个测试文件只包含一组测试数据，每组输入数据包含两行：</p>
+<p>第一行，输入一个字符串，表示原串；</p>
+<p>第二行，输入一个字符串，表示命令，数据保证命令不会出错，也就是命令一定严格按照题目要求输入。</p>
+<h2>输出</h2>
+<p>对于每组输入数据，输出编辑后的字符串，如果被改的字符不存在，则输出 <code>Not exist</code> （引号不输出）。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s,x;
+    <span class="hljs-type">char</span> order,c;
+    <span class="hljs-built_in">getline</span>(cin ,s);
+    cin &gt;&gt; order &gt;&gt; c;
+    <span class="hljs-type">int</span> p = s.<span class="hljs-built_in">find</span>(c);
+    <span class="hljs-keyword">if</span>(p == <span class="hljs-number">-1</span>) {
+        cout &lt;&lt; <span class="hljs-string">&quot;Not exist&quot;</span>;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(order == <span class="hljs-string">&#x27;D&#x27;</span>) {
+        s.<span class="hljs-built_in">erase</span>(p,<span class="hljs-number">1</span>);
+        cout &lt;&lt; s;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(order == <span class="hljs-string">&#x27;I&#x27;</span>) {
+        cin &gt;&gt; x;
+        <span class="hljs-type">int</span> k;
+        <span class="hljs-comment">// 循环找到最后一个c的位置</span>
+        <span class="hljs-keyword">while</span>(p != <span class="hljs-number">-1</span>) {
+            k = p;
+            p = s.<span class="hljs-built_in">find</span>(c,p+<span class="hljs-number">1</span>);
+        } 
+        s.<span class="hljs-built_in">insert</span>(k,x); <span class="hljs-comment">// 插入</span>
+        cout &lt;&lt; s;
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(order == <span class="hljs-string">&#x27;R&#x27;</span>) {
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">while</span>(p != <span class="hljs-number">-1</span>) {
+            s.<span class="hljs-built_in">replace</span>(p,<span class="hljs-number">1</span>,x);
+            p = s.<span class="hljs-built_in">find</span>(c,p+<span class="hljs-number">1</span>);
+        }
+        cout &lt;&lt; s;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1476">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

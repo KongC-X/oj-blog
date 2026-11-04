@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3664 [语言月赛202209] 零食售卖点 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="洛咕公司有一条无限长的大道，可以被视为一个数轴。在这条大道上，一共有 个零食售卖点，第 个零食售卖点的坐标为 。 Aya 非常热爱零食，他想知道，相邻两个零食售卖点之间的距离最大为多少。第 个零食售卖点和第 个零食售卖点之间的距离为 。 代表 的绝对值。即，当 ， ；当 ， 。例如， 。">
+<link rel="canonical" href="https://zymojblog.top/p/B3664/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3664 [语言月赛202209] 零食售卖点 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="洛咕公司有一条无限长的大道，可以被视为一个数轴。在这条大道上，一共有 个零食售卖点，第 个零食售卖点的坐标为 。 Aya 非常热爱零食，他想知道，相邻两个零食售卖点之间的距离最大为多少。第 个零食售卖点和第 个零食售卖点之间的距离为 。 代表 的绝对值。即，当 ， ；当 ， 。例如， 。">
+<meta property="og:url" content="https://zymojblog.top/p/B3664/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3664 [语言月赛202209] 零食售卖点 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="洛咕公司有一条无限长的大道，可以被视为一个数轴。在这条大道上，一共有 个零食售卖点，第 个零食售卖点的坐标为 。 Aya 非常热爱零食，他想知道，相邻两个零食售卖点之间的距离最大为多少。第 个零食售卖点和第 个零食售卖点之间的距离为 。 代表 的绝对值。即，当 ， ；当 ， 。例如， 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3664 [语言月赛202209] 零食售卖点","headline":"B3664 [语言月赛202209] 零食售卖点 题解","description":"洛咕公司有一条无限长的大道，可以被视为一个数轴。在这条大道上，一共有 个零食售卖点，第 个零食售卖点的坐标为 。 Aya 非常热爱零食，他想知道，相邻两个零食售卖点之间的距离最大为多少。第 个零食售卖点和第 个零食售卖点之间的距离为 。 代表 的绝对值。即，当 ， ；当 ， 。例如， 。","url":"https://zymojblog.top/p/B3664/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2022、O2优化、排序、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3664</span></div>
+  <h1 class="seo-title">B3664 [语言月赛202209] 零食售卖点</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3664 [语言月赛202209] 零食售卖点</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-25</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>O2优化</code>、<code>排序</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>洛咕公司有一条无限长的大道，可以被视为一个数轴。在这条大道上，一共有 $k$ 个零食售卖点，第 $i$ 个零食售卖点的坐标为 $a_i$。</p>
+<p>Aya 非常热爱零食，他想知道，<strong>相邻</strong>两个零食售卖点之间的距离最大为多少。第 $i$ 个零食售卖点和第 $j$ 个零食售卖点之间的距离为 $|a_i-a_j|$。</p>
+<p>$|x|$ 代表 $x$ 的绝对值。即，当 $x\ge0$，$|x|=x$；当 $x&lt;0$，$|x|=-x$。例如，$|4|=4,|0|=0,|-1|=1$。</p>
+<h2>输入格式</h2>
+<p>输入的第一行为一个整数 $k$。</p>
+<p>输入的第二行为 $k$ 个整数，第 $i$ 个为 $a_i$。</p>
+<p><strong>请注意，$a_i$ 不保证按照升序给出。</strong></p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表<strong>相邻</strong>两个零食售卖点之间的距离最大为多少。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">1</span> <span class="hljs-number">20</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>15```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3664 [语言月赛202209] 零食售卖点
+     * 题意：给定 k 个坐标，求排序后相邻两个点的最大距离。
+     * 思路：排序，依次计算相邻差，取最大值。
+     */</span>
+    <span class="hljs-type">int</span> k;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;k);
+    <span class="hljs-type">int</span> a[<span class="hljs-number">5005</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;a[i]);
+    <span class="hljs-built_in">sort</span>(a, a + k);
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; k; i++) {
+        ans = <span class="hljs-built_in">max</span>(ans, a[i] - a[i - <span class="hljs-number">1</span>]);
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, ans);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3664">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

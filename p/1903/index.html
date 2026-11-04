@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1903 自然数的拆分方案总数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个自然数 ，要求把 拆分成若干个正整数相加的形式，参与加法运算的数可以重复。 注意: 拆分方案不考虑顺序，也就是 和 算作相同的方案； 至少拆分成 个数的和。 求拆分的方案数 的结果。">
+<link rel="canonical" href="https://zymojblog.top/p/1903/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1903 自然数的拆分方案总数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个自然数 ，要求把 拆分成若干个正整数相加的形式，参与加法运算的数可以重复。 注意: 拆分方案不考虑顺序，也就是 和 算作相同的方案； 至少拆分成 个数的和。 求拆分的方案数 的结果。">
+<meta property="og:url" content="https://zymojblog.top/p/1903/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1903 自然数的拆分方案总数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个自然数 ，要求把 拆分成若干个正整数相加的形式，参与加法运算的数可以重复。 注意: 拆分方案不考虑顺序，也就是 和 算作相同的方案； 至少拆分成 个数的和。 求拆分的方案数 的结果。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1903 自然数的拆分方案总数","headline":"1903 自然数的拆分方案总数 题解","description":"给定一个自然数 ，要求把 拆分成若干个正整数相加的形式，参与加法运算的数可以重复。 注意: 拆分方案不考虑顺序，也就是 和 算作相同的方案； 至少拆分成 个数的和。 求拆分的方案数 的结果。","url":"https://zymojblog.top/p/1903/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1903</span></div>
+  <h1 class="seo-title">1903 自然数的拆分方案总数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1903 - 自然数的拆分方案总数</h1>
+<h2>题目描述</h2>
+<p>给定一个自然数 $N$ ，要求把 $N$ 拆分成若干个正整数相加的形式，参与加法运算的数可以重复。</p>
+<p><strong>注意:</strong></p>
+<ul>
+<li><p>拆分方案不考虑顺序，也就是 $3=1+2$ 和 $3=2+1$ 算作相同的方案；</p>
+</li>
+<li><p>至少拆分成 $2$ 个数的和。</p>
+</li>
+<li><p>求拆分的方案数 $\mod 2147483648$ 的结果。</p>
+</li>
+</ul>
+<h2>输入</h2>
+<p>一个自然数 $N$。（$1≤N≤4000$）</p>
+<h2>输出</h2>
+<p>输入一个整数，表示结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+背包容量是：N
+相当于：
+1.有N-1个物品，他们的体积是1~N-1
+2.选出若干物品，体积的和为N
+3.每个物品的使用次数没有限制
+完全背包的问题！
+f(i,j) = f(i-1,j) + f(i-1,j-i)
+第i种数不用，用i-1种数凑出j；第i种数用，用i-1种数凑出j-i
+*/</span>
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> f[<span class="hljs-number">4010</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    f[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//边界</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt; n;i++){
+        <span class="hljs-comment">//完全背包</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = i;j &lt;= n;j++){
+            <span class="hljs-comment">//u代表unsigned，否则大整数输出在非C99的环境会有警告</span>
+            f[j] = (f[j] + f[j-i]) % <span class="hljs-number">2147483648u</span>;
+        } 
+    } 
+    cout&lt;&lt;f[n];
+    
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1903">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

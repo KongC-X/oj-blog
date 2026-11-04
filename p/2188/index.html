@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2188 找树根 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一棵树有 个结点，已知树上所有的父子结点关系，请问该树的根是几号结点，哪个结点的子结点最多，该结点有哪些子结点。">
+<link rel="canonical" href="https://zymojblog.top/p/2188/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2188 找树根 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一棵树有 个结点，已知树上所有的父子结点关系，请问该树的根是几号结点，哪个结点的子结点最多，该结点有哪些子结点。">
+<meta property="og:url" content="https://zymojblog.top/p/2188/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2188 找树根 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一棵树有 个结点，已知树上所有的父子结点关系，请问该树的根是几号结点，哪个结点的子结点最多，该结点有哪些子结点。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2188 找树根","headline":"2188 找树根 题解","description":"一棵树有 个结点，已知树上所有的父子结点关系，请问该树的根是几号结点，哪个结点的子结点最多，该结点有哪些子结点。","url":"https://zymojblog.top/p/2188/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2188</span></div>
+  <h1 class="seo-title">2188 找树根</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91">树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2188 - 找树根</h1>
+<h2>题目描述</h2>
+<p>一棵树有 $n$ 个结点，已知树上所有的父子结点关系，请问该树的根是几号结点，哪个结点的子结点最多，该结点有哪些子结点。</p>
+<h2>输入</h2>
+<p>第一行，有 $1$ 个整数 $n$ 代表结点数量（） </p>
+<p>接下来若干行；每行两个结点 $x$ 和 $y$，表示 $y$ 是 $x$ 的孩子($1≤x,y≤1000$)</p>
+<p>请注意：树上结点的编号不一定是连续的。</p>
+<h2>输出</h2>
+<p>第一行输出树根的编号。</p>
+<p>第二行输出孩子最多的结点编号（如果有多个结点的子结点都是最多的，则输出编号最大的那个）。 </p>
+<p>第三行输出第二行求出的孩子最多的结点，有哪些孩子，按照编号从小到大，输出这些孩子的编号，用空格隔开。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+树上结点的编号不一定是连续的
+如果有多个结点的子结点都是最多的，则输出编号最大的那个
+按照编号从小到大，输出这些孩子的编号
+*/</span>
+<span class="hljs-type">int</span> fa[<span class="hljs-number">1010</span>];<span class="hljs-comment">//存储每个结点的父结点编号</span>
+vector&lt;<span class="hljs-type">int</span>&gt; a[<span class="hljs-number">1010</span>];<span class="hljs-comment">//存储每个结点的子结点</span>
+<span class="hljs-type">int</span> n,ma = <span class="hljs-number">0</span>;<span class="hljs-comment">//ma表示子结点最多的结点的编号 </span>
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-comment">//读入n-1个父子关系 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n - <span class="hljs-number">1</span>;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        fa[y] = x;<span class="hljs-comment">//维护父子关系 </span>
+        <span class="hljs-comment">//存储每个结点的子结点</span>
+        a[x].<span class="hljs-built_in">push_back</span>(y);
+        <span class="hljs-comment">//打擂台求子结点最多的结点编号</span>
+        <span class="hljs-keyword">if</span>(a[x].<span class="hljs-built_in">size</span>()&gt;a[ma].<span class="hljs-built_in">size</span>()||(a[x].<span class="hljs-built_in">size</span>()==a[ma].<span class="hljs-built_in">size</span>()&amp;&amp;x&gt;ma)){
+            ma = x;
+        } 
+    } 
+    
+    <span class="hljs-type">int</span> root = x;<span class="hljs-comment">//从一个存在的结点向上找根</span>
+    <span class="hljs-keyword">while</span>(fa[root] != <span class="hljs-number">0</span>) root = fa[root];
+    cout&lt;&lt;root&lt;&lt;endl; 
+    cout&lt;&lt;ma&lt;&lt;endl;
+    <span class="hljs-comment">//对ma的子结点排序</span>
+    <span class="hljs-built_in">sort</span>(a[ma].<span class="hljs-built_in">begin</span>(),a[ma].<span class="hljs-built_in">end</span>());
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; a[ma].<span class="hljs-built_in">size</span>();i++){
+        cout&lt;&lt;a[ma][i]&lt;&lt;<span class="hljs-string">&quot; &quot;</span>;
+    } 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2188">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

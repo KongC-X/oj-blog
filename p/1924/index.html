@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1924 集合 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="现在给你一些连续的整数，它们是从A到B的整数。一开始每个整数都属于各自的集合，然后你需要进行以下的操作： 每次选择两个属于不同集合的整数，如果这两个整数拥有大于等于P的公共质因数，那么把它们所在的集合合并。 反复如上操作，直到没有可以合并的集合为止。 现在请编程计算，最后有多少个集合。">
+<link rel="canonical" href="https://zymojblog.top/p/1924/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1924 集合 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="现在给你一些连续的整数，它们是从A到B的整数。一开始每个整数都属于各自的集合，然后你需要进行以下的操作： 每次选择两个属于不同集合的整数，如果这两个整数拥有大于等于P的公共质因数，那么把它们所在的集合合并。 反复如上操作，直到没有可以合并的集合为止。 现在请编程计算，最后有多少个集合。">
+<meta property="og:url" content="https://zymojblog.top/p/1924/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1924 集合 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="现在给你一些连续的整数，它们是从A到B的整数。一开始每个整数都属于各自的集合，然后你需要进行以下的操作： 每次选择两个属于不同集合的整数，如果这两个整数拥有大于等于P的公共质因数，那么把它们所在的集合合并。 反复如上操作，直到没有可以合并的集合为止。 现在请编程计算，最后有多少个集合。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1924 集合","headline":"1924 集合 题解","description":"现在给你一些连续的整数，它们是从A到B的整数。一开始每个整数都属于各自的集合，然后你需要进行以下的操作： 每次选择两个属于不同集合的整数，如果这两个整数拥有大于等于P的公共质因数，那么把它们所在的集合合并。 反复如上操作，直到没有可以合并的集合为止。 现在请编程计算，最后有多少个集合。","url":"https://zymojblog.top/p/1924/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1924</span></div>
+  <h1 class="seo-title">1924 集合</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>1924 - 集合</h1>
+<h2>题目描述</h2>
+<p>现在给你一些连续的整数，它们是从A到B的整数。一开始每个整数都属于各自的集合，然后你需要进行以下的操作：</p>
+<p>每次选择两个属于不同集合的整数，如果这两个整数拥有大于等于P的公共质因数，那么把它们所在的集合合并。</p>
+<p>反复如上操作，直到没有可以合并的集合为止。</p>
+<p>现在请编程计算，最后有多少个集合。</p>
+<h2>输入</h2>
+<p>一行，三个整数A,B,P。</p>
+<p>A≤B≤100000；</p>
+<p>2≤P≤B。</p>
+<h2>输出</h2>
+<p>一个数，表示最终集合的个数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXB = <span class="hljs-number">100010</span>;             <span class="hljs-comment">// B 最大 100000，多开10个</span>
+<span class="hljs-type">int</span> fa[MAXB];                        <span class="hljs-comment">// 并查集数组</span>
+
+<span class="hljs-comment">// 查找根节点，路径压缩</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">return</span> x == fa[x] ? x : fa[x] = <span class="hljs-built_in">find</span>(fa[x]);
+}
+
+<span class="hljs-comment">// 合并两个集合</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+    <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+    <span class="hljs-keyword">if</span> (fx != fy) {
+        fa[fx] = fy;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> A, B, P;                     <span class="hljs-comment">// A,B:整数区间，P:公共质因数下限</span>
+    cin &gt;&gt; A &gt;&gt; B &gt;&gt; P;
+
+    <span class="hljs-comment">// 初始化并查集，编号从 1 到 B（包括不在区间内的也没关系）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= B; i++) {
+        fa[i] = i;
+    }
+
+    <span class="hljs-comment">// 线性筛找出 2~B 的所有质数</span>
+    vector&lt;<span class="hljs-type">int</span>&gt; primes;              <span class="hljs-comment">// 存放质数</span>
+    <span class="hljs-type">bool</span> isComp[MAXB] = {<span class="hljs-literal">false</span>};     <span class="hljs-comment">// 标记合数</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= B; i++) {
+        <span class="hljs-keyword">if</span> (!isComp[i]) {
+            primes.<span class="hljs-built_in">push_back</span>(i);     <span class="hljs-comment">// i 是质数</span>
+        }
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; primes.<span class="hljs-built_in">size</span>() &amp;&amp; (<span class="hljs-type">long</span> <span class="hljs-type">long</span>)i * primes[j] &lt;= B; j++) {
+            isComp[i * primes[j]] = <span class="hljs-literal">true</span>;
+            <span class="hljs-keyword">if</span> (i % primes[j] == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 遍历每个质数，如果 &gt;= P，则将它的倍数合并</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; primes.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-type">int</span> p = primes[i];           <span class="hljs-comment">// p: 当前质数</span>
+        <span class="hljs-keyword">if</span> (p &lt; P) <span class="hljs-keyword">continue</span>;         <span class="hljs-comment">// 小于 P 的质数不参与合并</span>
+
+        <span class="hljs-comment">// 找到区间 [A, B] 内第一个 p 的倍数</span>
+        <span class="hljs-type">int</span> start = (A + p - <span class="hljs-number">1</span>) / p * p;
+        <span class="hljs-keyword">if</span> (start &gt; B) <span class="hljs-keyword">continue</span>;     <span class="hljs-comment">// 没有倍数在区间内</span>
+
+        <span class="hljs-comment">// 将 start 与其它的 p 的倍数合并</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = start + p; j &lt;= B; j += p) {
+            <span class="hljs-built_in">merge</span>(start, j);
+        }
+    }
+
+    <span class="hljs-comment">// 统计 [A, B] 中不同集合的数量</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = A; i &lt;= B; i++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">find</span>(i) == i) {          <span class="hljs-comment">// i 是所在集合的根</span>
+            ans++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1924">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P14920 [GESP202512 六级] 道具商店 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="道具商店里有 件道具可供挑选。第 件道具可为玩家提升 点攻击力，需要 枚金币才能购买，每件道具只能购买一次。现在你有 枚金币，请问你最多可以提升多少点攻击力？">
+<link rel="canonical" href="https://zymojblog.top/p/P14920/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P14920 [GESP202512 六级] 道具商店 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="道具商店里有 件道具可供挑选。第 件道具可为玩家提升 点攻击力，需要 枚金币才能购买，每件道具只能购买一次。现在你有 枚金币，请问你最多可以提升多少点攻击力？">
+<meta property="og:url" content="https://zymojblog.top/p/P14920/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P14920 [GESP202512 六级] 道具商店 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="道具商店里有 件道具可供挑选。第 件道具可为玩家提升 点攻击力，需要 枚金币才能购买，每件道具只能购买一次。现在你有 枚金币，请问你最多可以提升多少点攻击力？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P14920 [GESP202512 六级] 道具商店","headline":"P14920 [GESP202512 六级] 道具商店 题解","description":"道具商店里有 件道具可供挑选。第 件道具可为玩家提升 点攻击力，需要 枚金币才能购买，每件道具只能购买一次。现在你有 枚金币，请问你最多可以提升多少点攻击力？","url":"https://zymojblog.top/p/P14920/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"动态规划 DP、2025、背包 DP、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P14920</span></div>
+  <h1 class="seo-title">P14920 [GESP202512 六级] 道具商店</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P14920 [GESP202512 六级] 道具商店</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2025</code>、<code>背包 DP</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1202">https://ti.luogu.com.cn/problemset/1202</a></p>
+<h2>题目描述</h2>
+<p>道具商店里有 $n$ 件道具可供挑选。第 $i$ 件道具可为玩家提升 $a_i$ 点攻击力，需要 $c_i$ 枚金币才能购买，每件道具只能购买一次。现在你有 $k$ 枚金币，请问你最多可以提升多少点攻击力？</p>
+<h2>输入格式</h2>
+<p>第一行，两个正整数 $n,k$，表示道具数量以及你所拥有的金币数量。</p>
+<p>接下来 $n$ 行，每行两个正整数 $a_i,c_i$，表示道具所提升的攻击力点数，以及购买所需的金币数量。</p>
+<h2>输出格式</h2>
+<p>输出一行，一个整数，表示最多可以提升的攻击力点数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">5</span>
+<span class="hljs-number">99</span> <span class="hljs-number">1</span>
+<span class="hljs-number">33</span> <span class="hljs-number">2</span>
+<span class="hljs-number">11</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>132```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">100</span>
+<span class="hljs-number">10</span> <span class="hljs-number">1</span>
+<span class="hljs-number">20</span> <span class="hljs-number">11</span>
+<span class="hljs-number">40</span> <span class="hljs-number">33</span>
+<span class="hljs-number">100</span> <span class="hljs-number">99</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>110```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXV = <span class="hljs-number">250010</span>;         <span class="hljs-comment">// 最大总攻击力 = 500 * 500 = 250000，多开一点</span>
+<span class="hljs-type">const</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> INF = <span class="hljs-number">1e18</span>;
+
+<span class="hljs-type">int</span> n;                          <span class="hljs-comment">// n: 道具数量</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> k;                           <span class="hljs-comment">// k: 拥有的金币数</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> dp[MAXV];                    <span class="hljs-comment">// dp[j]: 获得 j 点攻击力所需的最少金币数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    cin &gt;&gt; n &gt;&gt; k;
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 问题：0/1 背包，但金币上限 k 和物品费用 c_i 都很大（可达 1e9），</span>
+    <span class="hljs-comment">// 而攻击力 a_i 很小（&lt;=500），n &lt;= 500，因此总攻击力最多 250000。</span>
+    <span class="hljs-comment">// 若用传统的 dp[i][w] 表示前 i 件花费 w 金币的最大攻击力，</span>
+    <span class="hljs-comment">// 则 w 可达 1e9，数组开不下。</span>
+    <span class="hljs-comment">// 这里采用“价值背包”转换：</span>
+    <span class="hljs-comment">// dp[j] 表示获得 j 点攻击力所需的最小金币数。</span>
+    <span class="hljs-comment">// 对每件物品（攻击力 a，费用 c），做 0/1 背包更新：</span>
+    <span class="hljs-comment">//   dp[j + a] = min(dp[j + a], dp[j] + c)</span>
+    <span class="hljs-comment">// 最后从大到小找满足 dp[j] &lt;= k 的最大 j 即为答案。</span>
+    <span class="hljs-comment">// 时间复杂度 O(n * 总攻击力) ≈ 500 * 250000 = 1.25e8，可接受。</span>
+    <span class="hljs-comment">// 空间 O(总攻击力) ≈ 250010。</span>
+
+    <span class="hljs-comment">// 初始化 dp</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; MAXV; j++) dp[j] = INF;
+    dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// 0 攻击力不需要金币</span>
+
+    <span class="hljs-type">int</span> max_sum = <span class="hljs-number">0</span>;              <span class="hljs-comment">// 记录当前能达到的最大攻击力，用于优化循环上限</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">int</span> a, c;                 <span class="hljs-comment">// a: 攻击力提升值, c: 金币花费</span>
+        cin &gt;&gt; a &gt;&gt; c;
+
+        <span class="hljs-comment">// 0/1 背包，倒序更新</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = max_sum; j &gt;= <span class="hljs-number">0</span>; j--) {
+            <span class="hljs-keyword">if</span> (dp[j] == INF) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// 跳过无效状态</span>
+            dp[j + a] = <span class="hljs-built_in">min</span>(dp[j + a], dp[j] + c); 
+        }
+        max_sum += a;             <span class="hljs-comment">// 更新总攻击力上限</span>
+        <span class="hljs-keyword">if</span> (max_sum &gt; <span class="hljs-number">250000</span>) max_sum = <span class="hljs-number">250000</span>; <span class="hljs-comment">// 防止超过数组大小</span>
+    }
+
+    <span class="hljs-comment">// 从大到小寻找第一个花费不超过 k 的攻击力</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = max_sum; j &gt;= <span class="hljs-number">0</span>; j--) {
+        <span class="hljs-keyword">if</span> (dp[j] &lt;= k) {
+            ans = j;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P14920">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

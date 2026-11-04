@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2217 找数字的位置 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个 个数的数组 （保证 个数互不相同），再给定 次询问，每次询问一个整数 在数组 中出现的位置，如果存在输出该数在 数组中出现的位置，不存在输出 。">
+<link rel="canonical" href="https://zymojblog.top/p/2217/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2217 找数字的位置 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个 个数的数组 （保证 个数互不相同），再给定 次询问，每次询问一个整数 在数组 中出现的位置，如果存在输出该数在 数组中出现的位置，不存在输出 。">
+<meta property="og:url" content="https://zymojblog.top/p/2217/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2217 找数字的位置 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个 个数的数组 （保证 个数互不相同），再给定 次询问，每次询问一个整数 在数组 中出现的位置，如果存在输出该数在 数组中出现的位置，不存在输出 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2217 找数字的位置","headline":"2217 找数字的位置 题解","description":"给定一个 个数的数组 （保证 个数互不相同），再给定 次询问，每次询问一个整数 在数组 中出现的位置，如果存在输出该数在 数组中出现的位置，不存在输出 。","url":"https://zymojblog.top/p/2217/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二分","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2217</span></div>
+  <h1 class="seo-title">2217 找数字的位置</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a></div>
+  <article class="markdown-body seo-article">
+<h1>2217 - 找数字的位置</h1>
+<h2>题目描述</h2>
+<p>给定一个 $n$ 个数的数组 $a$ （保证 $n$ 个数互不相同），再给定 $m$ 次询问，每次询问一个整数 $x$ 在数组 $a$ 中出现的位置，如果存在输出该数在 $a$ 数组中出现的位置，不存在输出 $0$ 。</p>
+<h2>输入</h2>
+<p>第 $1$ 行是一个整数 $n$（$5≤n≤10^5$）。</p>
+<p>第 $2$ 行有 $n$ 个整数，数与数之间用空格隔开。</p>
+<p>第 $3$ 行有一个整数 $m$（$5≤m≤10^5$）。</p>
+<p>接下来 $m$ 行，每行有一个整数。</p>
+<h2>输出</h2>
+<p>输出 $m$ 行，每行输出每次查询的整数在 $a$ 数组中的位置，如果该数不存在，输出 $0$。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,m,x;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Num</span>
+{
+    <span class="hljs-type">int</span> num,loc;<span class="hljs-comment">//num是当前数字,loc是该数字的位置</span>
+} a[<span class="hljs-number">100010</span>];
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Num a,Num b)</span><span class="hljs-comment">//sort判断函数</span>
+</span>{
+    <span class="hljs-keyword">if</span>(a.num&lt;b.num)<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span><span class="hljs-comment">//二分找数函数</span>
+</span>{
+    <span class="hljs-type">int</span> l=<span class="hljs-number">1</span>,r=n,mid;
+    <span class="hljs-keyword">while</span>(l&lt;=r)
+    {
+        mid=l+r&gt;&gt;<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(a[mid].num&lt;x)<span class="hljs-comment">//通过分治来缩小二分左右边界</span>
+        {
+            l=mid+<span class="hljs-number">1</span>;
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[mid].num&gt;x)
+        {
+            r=mid<span class="hljs-number">-1</span>;
+        }
+        <span class="hljs-keyword">else</span>
+        {
+            <span class="hljs-keyword">return</span> a[mid].loc;<span class="hljs-comment">//找到了直接返回它的位置</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<span class="hljs-comment">//否则返回0</span>
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;n);<span class="hljs-comment">//scanf运行效率较高,cin可能会超时</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;a[i].num);
+        a[i].loc=i;
+    }
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+n+<span class="hljs-number">1</span>,cmp);<span class="hljs-comment">//自定义排序</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;m);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++)
+    {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;x);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,<span class="hljs-built_in">find</span>(x));
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2217">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

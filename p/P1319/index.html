@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1319 压缩技术 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="设某汉字由 的 和 的点阵图案组成。 我们依照以下规则生成压缩码。连续一组数值：从汉字点阵图案的第一行第一个符号开始计算，按书写顺序从左到右，由上至下。第一个数表示连续有几个 ，第二个数表示接下来连续有几个 ，第三个数再接下来连续有几个 ，第四个数接着连续几个 ，以此类推…… 例如: 以下汉字点阵…">
+<link rel="canonical" href="https://zymojblog.top/p/P1319/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1319 压缩技术 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="设某汉字由 的 和 的点阵图案组成。 我们依照以下规则生成压缩码。连续一组数值：从汉字点阵图案的第一行第一个符号开始计算，按书写顺序从左到右，由上至下。第一个数表示连续有几个 ，第二个数表示接下来连续有几个 ，第三个数再接下来连续有几个 ，第四个数接着连续几个 ，以此类推…… 例如: 以下汉字点阵…">
+<meta property="og:url" content="https://zymojblog.top/p/P1319/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1319 压缩技术 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="设某汉字由 的 和 的点阵图案组成。 我们依照以下规则生成压缩码。连续一组数值：从汉字点阵图案的第一行第一个符号开始计算，按书写顺序从左到右，由上至下。第一个数表示连续有几个 ，第二个数表示接下来连续有几个 ，第三个数再接下来连续有几个 ，第四个数接着连续几个 ，以此类推…… 例如: 以下汉字点阵…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1319 压缩技术","headline":"P1319 压缩技术 题解","description":"设某汉字由 的 和 的点阵图案组成。 我们依照以下规则生成压缩码。连续一组数值：从汉字点阵图案的第一行第一个符号开始计算，按书写顺序从左到右，由上至下。第一个数表示连续有几个 ，第二个数表示接下来连续有几个 ，第三个数再接下来连续有几个 ，第四个数接着连续几个 ，以此类推…… 例如: 以下汉字点阵…","url":"https://zymojblog.top/p/P1319/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、字符串、洛谷原创","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1319</span></div>
+  <h1 class="seo-title">P1319 压缩技术</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">【入门4】数组</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1319 压缩技术</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-08-02</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>洛谷原创</code></p>
+<h2>题目描述</h2>
+<p>设某汉字由 $N \times N$ 的 $\texttt 0$ 和 $\texttt 1$ 的点阵图案组成。</p>
+<p>我们依照以下规则生成压缩码。连续一组数值：从汉字点阵图案的第一行第一个符号开始计算，按书写顺序从左到右，由上至下。第一个数表示连续有几个 $\texttt 0$，第二个数表示接下来连续有几个 $\texttt 1$，第三个数再接下来连续有几个 $\texttt 0$，第四个数接着连续几个 $\texttt 1$，以此类推……</p>
+<p>例如: 以下汉字点阵图案：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0001000</span>
+<span class="hljs-number">0001000</span>
+<span class="hljs-number">0001111</span>
+<span class="hljs-number">0001000</span>
+<span class="hljs-number">0001000</span>
+<span class="hljs-number">0001000</span>
+<span class="hljs-number">1111111</span></code></pre><p>对应的压缩码是： $\texttt {7 3 1 6 1 6 4 3 1 6 1 6 1 3 7}$ （第一个数是 $N$ ,其余各位表示交替表示0和1 的个数，压缩码保证 $N \times N=$ 交替的各位数之和）</p>
+<h2>输入格式</h2>
+<p>数据输入一行，由空格隔开的若干个整数，表示压缩码。</p>
+<p>其中，压缩码的第一个数字就是 $N$，表示这个点阵应当是 $N\times N$ 的大小。</p>
+<p>接下来的若干个数字，含义如题目描述所述。</p>
+<h2>输出格式</h2>
+<p>输出一个 $N\times N$ 的 01 矩阵，表示最后的汉字点阵图（点阵符号之间不留空格）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">7</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>0001000<br>0001000<br>0001111<br>0001000<br>0001000<br>0001000<br>1111111</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,sum,cnt,ct,ans;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    sum=n*n;
+    <span class="hljs-keyword">while</span>(ans&lt;sum){
+        cin&gt;&gt;ct;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;ct;i++){
+            cout&lt;&lt;cnt;
+            ans++;
+            <span class="hljs-keyword">if</span>(ans%n==<span class="hljs-number">0</span>){
+                cout&lt;&lt;endl;
+            }
+        }
+        cnt=<span class="hljs-number">1</span>-cnt;<span class="hljs-comment">// 切换 0 和 1。</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1319">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

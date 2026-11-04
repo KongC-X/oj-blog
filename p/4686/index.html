@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4686 环线 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小A喜欢坐地铁。地铁环线有 个车站，依次以 标号。车站 （）的下一个车站是车站 。特殊地，车站 的下一个车站是车站 。 小A会从某个车站出发，乘坐地铁环线到某个车站结束行程，这意味着小A至少会经过一个车站。小A不会经过一个车站多次。当小A乘坐地铁环线经过车站 时，小A会获得 点快乐值。请你安排小A…">
+<link rel="canonical" href="https://zymojblog.top/p/4686/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="4686 环线 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小A喜欢坐地铁。地铁环线有 个车站，依次以 标号。车站 （）的下一个车站是车站 。特殊地，车站 的下一个车站是车站 。 小A会从某个车站出发，乘坐地铁环线到某个车站结束行程，这意味着小A至少会经过一个车站。小A不会经过一个车站多次。当小A乘坐地铁环线经过车站 时，小A会获得 点快乐值。请你安排小A…">
+<meta property="og:url" content="https://zymojblog.top/p/4686/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4686 环线 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小A喜欢坐地铁。地铁环线有 个车站，依次以 标号。车站 （）的下一个车站是车站 。特殊地，车站 的下一个车站是车站 。 小A会从某个车站出发，乘坐地铁环线到某个车站结束行程，这意味着小A至少会经过一个车站。小A不会经过一个车站多次。当小A乘坐地铁环线经过车站 时，小A会获得 点快乐值。请你安排小A…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"4686 环线","headline":"4686 环线 题解","description":"小A喜欢坐地铁。地铁环线有 个车站，依次以 标号。车站 （）的下一个车站是车站 。特殊地，车站 的下一个车站是车站 。 小A会从某个车站出发，乘坐地铁环线到某个车站结束行程，这意味着小A至少会经过一个车站。小A不会经过一个车站多次。当小A乘坐地铁环线经过车站 时，小A会获得 点快乐值。请你安排小A…","url":"https://zymojblog.top/p/4686/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP六级、动态规划、单调队列、25年3月","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>4686</span></div>
+  <h1 class="seo-title">4686 环线</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E5%85%AD%E7%BA%A7">GESP六级</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97">单调队列</a><a class="seo-tag" href="/#/tag/25%E5%B9%B43%E6%9C%88">25年3月</a></div>
+  <article class="markdown-body seo-article">
+<h1>4686 - 环线</h1>
+<h2>题目描述</h2>
+<p>小A喜欢坐地铁。地铁环线有 $ n $ 个车站，依次以 $ 1, 2, \ldots, n $ 标号。车站 $ i $（）的下一个车站是车站 $ i + 1 $。特殊地，车站 $ n $ 的下一个车站是车站 $ 1 $。</p>
+<p>小A会从某个车站出发，乘坐地铁环线到某个车站结束行程，这意味着小A至少会经过一个车站。小A不会经过一个车站多次。当小A乘坐地铁环线经过车站 $ i $ 时，小A会获得 $ a_i $ 点快乐值。请你安排小A的行程，选择出发车站与结束车站，使得获得的快乐值总和最大。</p>
+<h2>输入</h2>
+<p>第一行，一个正整数 $ n $，表示车站的数量。</p>
+<p>第二行，$ n $ 个整数 $ a_1, a_2, \ldots, a_n $，分别表示经过每个车站时获得的快乐值。</p>
+<h2>输出</h2>
+<p>一行，一个整数，表示小A能获得的最大快乐值。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n;                        <span class="hljs-comment">// n: 车站数量</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> a[<span class="hljs-number">200010</span>];          <span class="hljs-comment">// a[i]: 经过车站 i 获得的快乐值</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;            <span class="hljs-comment">// 所有快乐值的总和</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; a[i];
+        sum += a[i];
+    }
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 问题：求环形数组的最大子段和（至少包含一个元素）。</span>
+    <span class="hljs-comment">// </span>
+    <span class="hljs-comment">// 经典做法：</span>
+    <span class="hljs-comment">//   情况1：答案不跨越环的首尾，等价于普通数组的最大子段和。</span>
+    <span class="hljs-comment">//   情况2：答案跨越首尾，等价于总和减去普通数组的最小子段和。</span>
+    <span class="hljs-comment">//   在此解释一下情况2: 假设我们把数组画在一个圆上，如果答案跨越了首尾，答案 = 整个圆的总和 — 中间没选的那一段，</span>
+    <span class="hljs-comment">//   中间没选的那一段一定是一段连续的子数组，而且因为我们想要答案最大，所以没选的那段应该尽可能小。</span>
+    <span class="hljs-comment">//   因此：跨越首尾的最大和 = 总和 - 最小子段和</span>
+    <span class="hljs-comment">//   特殊情况：如果所有数都是负数，那么情况2会得到空段（和为0），</span>
+    <span class="hljs-comment">//   此时应直接取情况1的结果（即最大的那个负数）。</span>
+    <span class="hljs-comment">// 最终答案 = max(普通最大子段和, sum - 普通最小子段和)，</span>
+    <span class="hljs-comment">// 但要特判全负数的情况。</span>
+
+    <span class="hljs-comment">// 1. 计算普通最大子段和 ma</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ma = a[<span class="hljs-number">1</span>];
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> t = a[<span class="hljs-number">1</span>]; <span class="hljs-comment">// 当前子段和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (t &gt; <span class="hljs-number">0</span>) t += a[i];   <span class="hljs-comment">// 继续扩展</span>
+        <span class="hljs-keyword">else</span>       t = a[i];    <span class="hljs-comment">// 另起一段</span>
+        ma = <span class="hljs-built_in">max</span>(ma, t);
+    }
+
+    <span class="hljs-comment">// 2. 计算普通最小子段和 mi</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> mi = a[<span class="hljs-number">1</span>];
+    t = a[<span class="hljs-number">1</span>]; <span class="hljs-comment">// 当前子段和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (t &lt; <span class="hljs-number">0</span>) t += a[i];   <span class="hljs-comment">// 继续扩展</span>
+        <span class="hljs-keyword">else</span>       t = a[i];    <span class="hljs-comment">// 另起一段</span>
+        mi = <span class="hljs-built_in">min</span>(mi, t);
+    }
+
+    <span class="hljs-comment">// 3. 环形最大子段和</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> s = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span> (ma &lt; <span class="hljs-number">0</span>) {           <span class="hljs-comment">// 全为负数，此时 mi 也是负数，sum - mi 可能为0或更大</span>
+        s = ma;           <span class="hljs-comment">// 直接取最大负数</span>
+    } <span class="hljs-keyword">else</span> {
+        s = <span class="hljs-built_in">max</span>(ma, sum - mi);
+    }
+
+    cout &lt;&lt; s &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/4686">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

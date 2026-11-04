@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4534 [信息与未来 2026] 桌面游戏 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Dr. X 设计了一个双人桌面游戏，在一个 的方格中轮流填入数字 。现在，方格中已经填好了一部分数字，Dr. X 和 Dr. Y 按如下规则交替填入数字 (Dr. X 先填)： 1. 每一轮，从当前剩余未使用的数字中，找到最小的一个数字。 2. 选择方格中的任意一个空位，将该数字填入。 3. 换另…">
+<link rel="canonical" href="https://zymojblog.top/p/B4534/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4534 [信息与未来 2026] 桌面游戏 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Dr. X 设计了一个双人桌面游戏，在一个 的方格中轮流填入数字 。现在，方格中已经填好了一部分数字，Dr. X 和 Dr. Y 按如下规则交替填入数字 (Dr. X 先填)： 1. 每一轮，从当前剩余未使用的数字中，找到最小的一个数字。 2. 选择方格中的任意一个空位，将该数字填入。 3. 换另…">
+<meta property="og:url" content="https://zymojblog.top/p/B4534/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4534 [信息与未来 2026] 桌面游戏 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Dr. X 设计了一个双人桌面游戏，在一个 的方格中轮流填入数字 。现在，方格中已经填好了一部分数字，Dr. X 和 Dr. Y 按如下规则交替填入数字 (Dr. X 先填)： 1. 每一轮，从当前剩余未使用的数字中，找到最小的一个数字。 2. 选择方格中的任意一个空位，将该数字填入。 3. 换另…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4534 [信息与未来 2026] 桌面游戏","headline":"B4534 [信息与未来 2026] 桌面游戏 题解","description":"Dr. X 设计了一个双人桌面游戏，在一个 的方格中轮流填入数字 。现在，方格中已经填好了一部分数字，Dr. X 和 Dr. Y 按如下规则交替填入数字 (Dr. X 先填)： 1. 每一轮，从当前剩余未使用的数字中，找到最小的一个数字。 2. 选择方格中的任意一个空位，将该数字填入。 3. 换另…","url":"https://zymojblog.top/p/B4534/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"搜索、博弈论、江苏、2026、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4534</span></div>
+  <h1 class="seo-title">B4534 [信息与未来 2026] 桌面游戏</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/%E5%8D%9A%E5%BC%88%E8%AE%BA">博弈论</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4534 [信息与未来 2026] 桌面游戏</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-05-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>博弈论</code>、<code>江苏</code>、<code>2026</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>Dr. X 设计了一个双人桌面游戏，在一个 $3 \times 3$ 的方格中轮流填入数字 $1, 2, \ldots, 9$。现在，方格中已经填好了一部分数字，Dr. X 和 Dr. Y 按如下规则交替填入数字 (Dr. X 先填)：</p>
+<ol>
+<li>每一轮，从当前剩余未使用的数字中，找到最小的一个数字。</li>
+<li>选择方格中的任意一个空位，将该数字填入。</li>
+<li>换另一个人重复这一过程，当方格被填满时，游戏结束。</li>
+</ol>
+<p>游戏结束后，双方计算分数的规则：</p>
+<ul>
+<li>Dr. X 的分数 $x$ 等于三行数字乘积之和。</li>
+<li>Dr. Y 的分数 $y$ 等于三列数字乘积之和。</li>
+</ul>
+<p>Dr. X 和 Dr. Y 都希望拉开和对方分数的差距：Dr. X 希望最大化 $x - y$，而 Dr. Y 希望最小化 $x - y$。他们都互相知道对方都是绝顶聪明的人，一定会采取对自己最有利的策略。请你写程序预判游戏的最终结果：</p>
+<ul>
+<li>若 Dr. X 的分数更高，输出 $\texttt{first}$；</li>
+<li>若 Dr. Y 的分数更高，输出 $\texttt{second}$；</li>
+<li>若两人分数相同，输出 $\texttt{tie}$。</li>
+</ul>
+<h2>输入格式</h2>
+<p>第一行输入一个整数 $T$，表示数据组数。</p>
+<p>接下来包含 $T$ 组数据。每组数据包含 $3$ 行，每行 $3$ 个整数，表示当前的 $3 \times 3$ 方格，其中 $0$ 表示该位置为空。输入数据保证初始方格中所有非零数字互不相同，且都在 $1$ 到 $9$ 之间。</p>
+<h2>输出格式</h2>
+<p>对于每组数据，输出一行字符串，表示最终结果。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">0</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>
+<span class="hljs-number">3</span> <span class="hljs-number">6</span> <span class="hljs-number">0</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>
+<span class="hljs-number">0</span> <span class="hljs-number">6</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>first<br>second<br>second```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span>
+<span class="hljs-number">7</span> <span class="hljs-number">0</span> <span class="hljs-number">9</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>tie```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// ---------- 全局变量 ----------</span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">3</span>][<span class="hljs-number">3</span>];               <span class="hljs-comment">// 当前棋盘，0 表示空位</span>
+<span class="hljs-type">int</span> rest[<span class="hljs-number">9</span>];               <span class="hljs-comment">// 剩余未使用的数字（从小到大排序）</span>
+<span class="hljs-type">int</span> m;                     <span class="hljs-comment">// 空位数量 = 剩余数字的个数</span>
+<span class="hljs-type">int</span> empty_r[<span class="hljs-number">9</span>], empty_c[<span class="hljs-number">9</span>];<span class="hljs-comment">// 空位的行列坐标</span>
+
+<span class="hljs-comment">// ---------- 计算 x - y ----------</span>
+<span class="hljs-comment">// x = 三行乘积之和, y = 三列乘积之和</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">calc</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>, y = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+        x += a[i][<span class="hljs-number">0</span>] * a[i][<span class="hljs-number">1</span>] * a[i][<span class="hljs-number">2</span>];  <span class="hljs-comment">// 第 i 行乘积</span>
+        y += a[<span class="hljs-number">0</span>][i] * a[<span class="hljs-number">1</span>][i] * a[<span class="hljs-number">2</span>][i];  <span class="hljs-comment">// 第 i 列乘积</span>
+    }
+    <span class="hljs-keyword">return</span> x - y;  <span class="hljs-comment">// Dr.X 希望这个值越大越好</span>
+}
+
+<span class="hljs-comment">// ---------- Minimax + Alpha-Beta 剪枝 ----------</span>
+<span class="hljs-comment">// step : 当前是第几步（0-based），即将填入 rest[step]</span>
+<span class="hljs-comment">// alpha: 当前玩家（Max节点）已知能保证的最差值（下界）</span>
+<span class="hljs-comment">// beta : 对手（Min节点）已知能保证的最差值（上界）</span>
+<span class="hljs-comment">// 返回值: 在当前局面下，双方都按最优策略博弈后的最终 x-y 值</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> step, <span class="hljs-type">int</span> alpha, <span class="hljs-type">int</span> beta)</span> </span>{
+    <span class="hljs-comment">// 终止条件：所有空位都已填满</span>
+    <span class="hljs-keyword">if</span> (step == m) <span class="hljs-keyword">return</span> <span class="hljs-built_in">calc</span>();
+
+    <span class="hljs-comment">// ---- Dr.X 的回合（step 为偶数）：最大化 ----</span>
+    <span class="hljs-keyword">if</span> (step % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+        <span class="hljs-type">int</span> best = <span class="hljs-number">-1000000</span>;  <span class="hljs-comment">// 初始化为极小值</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-type">int</span> r = empty_r[i], c = empty_c[i];
+            <span class="hljs-keyword">if</span> (a[r][c] != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;     <span class="hljs-comment">// 这个位置已经被填了</span>
+
+            a[r][c] = rest[step];            <span class="hljs-comment">// 填入当前数字</span>
+            <span class="hljs-type">int</span> v = <span class="hljs-built_in">dfs</span>(step + <span class="hljs-number">1</span>, alpha, beta);
+            <span class="hljs-keyword">if</span> (v &gt; best) best = v;          <span class="hljs-comment">// 取最大值</span>
+            <span class="hljs-keyword">if</span> (best &gt; alpha) alpha = best;  <span class="hljs-comment">// 更新 alpha</span>
+            a[r][c] = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 回溯</span>
+
+            <span class="hljs-keyword">if</span> (alpha &gt;= beta) <span class="hljs-keyword">break</span>;        <span class="hljs-comment">// Beta 剪枝：对手不会让这个分支发生</span>
+        }
+        <span class="hljs-keyword">return</span> best;
+
+    <span class="hljs-comment">// ---- Dr.Y 的回合（step 为奇数）：最小化 ----</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-type">int</span> best = <span class="hljs-number">1000000</span>;   <span class="hljs-comment">// 初始化为极大值</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+            <span class="hljs-type">int</span> r = empty_r[i], c = empty_c[i];
+            <span class="hljs-keyword">if</span> (a[r][c] != <span class="hljs-number">0</span>) <span class="hljs-keyword">continue</span>;
+
+            a[r][c] = rest[step];
+            <span class="hljs-type">int</span> v = <span class="hljs-built_in">dfs</span>(step + <span class="hljs-number">1</span>, alpha, beta);
+            <span class="hljs-keyword">if</span> (v &lt; best) best = v;          <span class="hljs-comment">// 取最小值</span>
+            <span class="hljs-keyword">if</span> (best &lt; beta) beta = best;    <span class="hljs-comment">// 更新 beta</span>
+            a[r][c] = <span class="hljs-number">0</span>;
+
+            <span class="hljs-keyword">if</span> (alpha &gt;= beta) <span class="hljs-keyword">break</span>;        <span class="hljs-comment">// Alpha 剪枝：自己不会让这个分支发生</span>
+        }
+        <span class="hljs-keyword">return</span> best;
+    }
+}
+
+<span class="hljs-comment">// ---------- 主函数 ----------</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-literal">nullptr</span>);
+
+    <span class="hljs-type">int</span> T;
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        <span class="hljs-comment">// 1. 读入棋盘，记录哪些数字已被使用</span>
+        <span class="hljs-type">bool</span> used[<span class="hljs-number">10</span>] = {<span class="hljs-literal">false</span>};  <span class="hljs-comment">// used[d] = true 表示数字 d 已在棋盘上</span>
+        m = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// 空位计数</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">3</span>; j++) {
+                cin &gt;&gt; a[i][j];
+                <span class="hljs-keyword">if</span> (a[i][j] == <span class="hljs-number">0</span>) {
+                    empty_r[m] = i;      <span class="hljs-comment">// 记录空位坐标</span>
+                    empty_c[m] = j;
+                    m++;
+                } <span class="hljs-keyword">else</span> {
+                    used[a[i][j]] = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// 标记已使用</span>
+                }
+            }
+        }
+
+        <span class="hljs-comment">// 2. 收集剩余数字（1~9 中未使用的），自动从小到大</span>
+        <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> d = <span class="hljs-number">1</span>; d &lt;= <span class="hljs-number">9</span>; d++) {
+            <span class="hljs-keyword">if</span> (!used[d]) {
+                rest[cnt++] = d;  <span class="hljs-comment">// 因为 d 是从小到大遍历的，rest 自然有序</span>
+            }
+        }
+        <span class="hljs-comment">// cnt 应该等于 m</span>
+
+        <span class="hljs-comment">// 3. 如果棋盘已满，直接计算</span>
+        <span class="hljs-keyword">if</span> (m == <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> diff = <span class="hljs-built_in">calc</span>();
+            <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&quot;first\n&quot;</span>;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (diff &lt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&quot;second\n&quot;</span>;
+            <span class="hljs-keyword">else</span> cout &lt;&lt; <span class="hljs-string">&quot;tie\n&quot;</span>;
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-comment">// 4. Minimax 搜索（alpha-beta 剪枝）</span>
+        <span class="hljs-type">int</span> diff = <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>, <span class="hljs-number">-1000000</span>, <span class="hljs-number">1000000</span>);
+
+        <span class="hljs-comment">// 5. 输出结果</span>
+        <span class="hljs-keyword">if</span> (diff &gt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&quot;first\n&quot;</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (diff &lt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&quot;second\n&quot;</span>;
+        <span class="hljs-keyword">else</span> cout &lt;&lt; <span class="hljs-string">&quot;tie\n&quot;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4534">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

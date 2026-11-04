@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1017 [NOIP 2000 提高组] 进制转换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="我们可以用这样的方式来表示一个十进制数：将每个阿拉伯数字乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。例如， 可表示为 。 与之相似，对二进制数来说，也可表示成每个二进制数码乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。 一般说来，任何一个正整数 或一个负整数 …">
+<link rel="canonical" href="https://zymojblog.top/p/P1017/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1017 [NOIP 2000 提高组] 进制转换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="我们可以用这样的方式来表示一个十进制数：将每个阿拉伯数字乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。例如， 可表示为 。 与之相似，对二进制数来说，也可表示成每个二进制数码乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。 一般说来，任何一个正整数 或一个负整数 …">
+<meta property="og:url" content="https://zymojblog.top/p/P1017/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1017 [NOIP 2000 提高组] 进制转换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="我们可以用这样的方式来表示一个十进制数：将每个阿拉伯数字乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。例如， 可表示为 。 与之相似，对二进制数来说，也可表示成每个二进制数码乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。 一般说来，任何一个正整数 或一个负整数 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1017 [NOIP 2000 提高组] 进制转换","headline":"P1017 [NOIP 2000 提高组] 进制转换 题解","description":"我们可以用这样的方式来表示一个十进制数：将每个阿拉伯数字乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。例如， 可表示为 。 与之相似，对二进制数来说，也可表示成每个二进制数码乘以一个以该数字所处位置为指数，以 为底数的幂，再将这些项相加。 一般说来，任何一个正整数 或一个负整数 …","url":"https://zymojblog.top/p/P1017/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、数学、2000、NOIP 提高组、进制","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1017</span></div>
+  <h1 class="seo-title">P1017 [NOIP 2000 提高组] 进制转换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2000">2000</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1017 [NOIP 2000 提高组] 进制转换</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>数学</code>、<code>2000</code>、<code>NOIP 提高组</code>、<code>进制</code></p>
+<h2>题目背景</h2>
+<p>NOIP 2000 提高组 T1。</p>
+<h2>题目描述</h2>
+<p>我们可以用这样的方式来表示一个十进制数：将每个阿拉伯数字乘以一个以该数字所处位置为指数，以 $10$ 为底数的幂，再将这些项相加。例如，$123$ 可表示为 $1 \times 10^2+2\times 10^1+3\times 10^0$。</p>
+<p>与之相似，对二进制数来说，也可表示成每个二进制数码乘以一个以该数字所处位置为指数，以 $2$ 为底数的幂，再将这些项相加。</p>
+<p>一般说来，任何一个正整数 $R$ 或一个负整数 $-R$ 都可以被选来作为一个数制系统的基数。如果是以 $R$ 或 $-R$ 为基数，则需要用到的数码为 $0,1,\dots,R-1$。</p>
+<p>例如，当 $R=7$ 时，所需用到的数码是 $0,1,2,3,4,5,6$，这与其是 $R$ 或 $-R$ 无关。如果作为基数的数绝对值超过 $10$，则为了表示这些数码，通常使用英文字母来表示那些大于 $9$ 的数码。例如，对 $16$ 进制数来说，用 $A$ 表示 $10$，用 $B$ 表示 $11$，用 $C$ 表示 $12$，以此类推。</p>
+<p>在负进制数中是用 $-R$ 作为基数。例如，$-15$（十进制）相当于 $(110001)_{-2}$（$-2$ 进制），并且它可以被表示为 $2$ 的幂级数之和：</p>
+<p>$$(110001)_{-2}=1\times (-2)^5+1\times (-2)^4+0\times (-2)^3+0\times (-2)^2+0\times (-2)^1+1\times (-2)^0$$</p>
+<p>设计一个程序，读入一个十进制数和一个负进制数的基数，并将此十进制数转换为此负进制下的数。</p>
+<h2>输入格式</h2>
+<p>输入共一行，包含两个整数 $n,R$，分别表示十进制数和负进制数的基数。</p>
+<h2>输出格式</h2>
+<p>输出转换后的负进制数及其基数。若此基数的绝对值超过 $10$，则参照 $16$ 进制的方式处理。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">30000</span> <span class="hljs-number">-2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>30000=11011010101110000(base-2)```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">-20000</span> <span class="hljs-number">-2</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>-20000=1111011000100000(base-2)```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">28800</span> <span class="hljs-number">-16</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>28800=19180(base-16)```</p>
+<p><strong>样例输入 #4</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">-25000</span> <span class="hljs-number">-16</span>```
+
+**样例输出 #<span class="hljs-number">4</span>**</code></pre><p>-25000=7FB8(base-16)```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span>     <span class="hljs-comment">// 使用 string 类型</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 把十进制整数 n 转换成负基数 R（R 是负数，如 -2, -16）。</span>
+    <span class="hljs-comment">// 核心：除 R 取余，但要求余数 r 必须在 0 ~ |R|-1 范围内（非负）。</span>
+    <span class="hljs-comment">// 如果直接 n % R 在 C++ 中可能会得到负数余数，</span>
+    <span class="hljs-comment">// 这时我们通过&quot;借位&quot;来修正：r += |R|，同时商 +1。</span>
+    <span class="hljs-comment">// 这样每一步的 n = R * q + r 依然成立，且数码合法。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 方法：循环</span>
+    <span class="hljs-comment">//   r = n % R;       // 可能有负</span>
+    <span class="hljs-comment">//   n = n / R;       // 向零取整的商</span>
+    <span class="hljs-comment">//   if (r &lt; 0) {</span>
+    <span class="hljs-comment">//       r -= R;      // R 是负数，减 R 相当于加上 |R|</span>
+    <span class="hljs-comment">//       n++;         // 商加 1（补偿）</span>
+    <span class="hljs-comment">//   }</span>
+    <span class="hljs-comment">//   把 r 转成字符追加到 string 尾部。</span>
+    <span class="hljs-comment">// 直到 n == 0 结束。</span>
+    <span class="hljs-comment">// 最后逆序输出 string 中的字符。</span>
+    <span class="hljs-comment">// 特例：初始 n == 0 则直接存 &quot;0&quot;。</span>
+    <span class="hljs-comment">// -------------------------</span>
+
+    <span class="hljs-type">int</span> n, R;                 <span class="hljs-comment">// n: 待转换的十进制数，R: 负进制基数（-20~-2）</span>
+    cin &gt;&gt; n &gt;&gt; R;
+    <span class="hljs-type">int</span> orig = n;             <span class="hljs-comment">// 保存原始 n 供最后输出</span>
+
+    string res;               <span class="hljs-comment">// 存放结果的每一位字符（低位在前）</span>
+
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) {
+        res += <span class="hljs-string">&#x27;0&#x27;</span>;           <span class="hljs-comment">// 特殊情况：原数为 0</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">while</span> (n != <span class="hljs-number">0</span>) {
+            <span class="hljs-type">int</span> r = n % R;    <span class="hljs-comment">// 尝试求余，C++ 中可能为负数（向零取整）</span>
+            n = n / R;        <span class="hljs-comment">// 对应的商</span>
+
+            <span class="hljs-comment">// 如果余数是负数，调整为合法数码（0 ~ |R|-1）</span>
+            <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span>) {
+                r -= R;       <span class="hljs-comment">// 相当于 r += |R|，因为 R 是负数</span>
+                n++;          <span class="hljs-comment">// 商进一，保证等式 n_原 = R*商 + 余数 成立</span>
+            }
+
+            <span class="hljs-comment">// 将数码 r 转成字符追加到结果字符串尾部</span>
+            <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">10</span>)
+                res += <span class="hljs-string">&#x27;0&#x27;</span> + r;
+            <span class="hljs-keyword">else</span>
+                res += <span class="hljs-string">&#x27;A&#x27;</span> + r - <span class="hljs-number">10</span>;   <span class="hljs-comment">// 超过 9 用大写字母</span>
+        }
+    }
+
+    <span class="hljs-comment">// 输出格式：原始十进制数 = 结果 (baseR)</span>
+    cout &lt;&lt; orig &lt;&lt; <span class="hljs-string">&quot;=&quot;</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = res.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; --i)   <span class="hljs-comment">// 逆序输出</span>
+        cout &lt;&lt; res[i];
+    cout &lt;&lt; <span class="hljs-string">&quot;(base&quot;</span> &lt;&lt; R &lt;&lt; <span class="hljs-string">&quot;)&quot;</span> &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1017">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

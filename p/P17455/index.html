@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P17455 [GESP202609 五级] 哥德巴赫猜想 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="众所周知，哥德巴赫猜想是说，任何大于 的偶数都能写成两个质数（素数）之和。例如： 聪明的你肯定想知道，对于大于 的偶数 ，它有多少种写成两个质数之和的方法。例如 、 和 都只有一种方法， 有两种方法。请你编写程序计算这个问题的答案。 在本题中，我们认为两种方案不同，当且仅当两种分解方案包含的素数互…">
+<link rel="canonical" href="https://zymojblog.top/p/P17455/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P17455 [GESP202609 五级] 哥德巴赫猜想 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="众所周知，哥德巴赫猜想是说，任何大于 的偶数都能写成两个质数（素数）之和。例如： 聪明的你肯定想知道，对于大于 的偶数 ，它有多少种写成两个质数之和的方法。例如 、 和 都只有一种方法， 有两种方法。请你编写程序计算这个问题的答案。 在本题中，我们认为两种方案不同，当且仅当两种分解方案包含的素数互…">
+<meta property="og:url" content="https://zymojblog.top/p/P17455/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P17455 [GESP202609 五级] 哥德巴赫猜想 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="众所周知，哥德巴赫猜想是说，任何大于 的偶数都能写成两个质数（素数）之和。例如： 聪明的你肯定想知道，对于大于 的偶数 ，它有多少种写成两个质数之和的方法。例如 、 和 都只有一种方法， 有两种方法。请你编写程序计算这个问题的答案。 在本题中，我们认为两种方案不同，当且仅当两种分解方案包含的素数互…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P17455 [GESP202609 五级] 哥德巴赫猜想","headline":"P17455 [GESP202609 五级] 哥德巴赫猜想 题解","description":"众所周知，哥德巴赫猜想是说，任何大于 的偶数都能写成两个质数（素数）之和。例如： 聪明的你肯定想知道，对于大于 的偶数 ，它有多少种写成两个质数之和的方法。例如 、 和 都只有一种方法， 有两种方法。请你编写程序计算这个问题的答案。 在本题中，我们认为两种方案不同，当且仅当两种分解方案包含的素数互…","url":"https://zymojblog.top/p/P17455/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数论、枚举、素数判断、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P17455</span></div>
+  <h1 class="seo-title">P17455 [GESP202609 五级] 哥德巴赫猜想</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E8%AE%BA">数论</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E7%B4%A0%E6%95%B0%E5%88%A4%E6%96%AD">素数判断</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P17455 [GESP202609 五级] 哥德巴赫猜想</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数论</code>、<code>枚举</code>、<code>素数判断</code>、<code>2026</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>众所周知，哥德巴赫猜想是说，任何大于 $2$ 的偶数都能写成两个质数（素数）之和。例如：</p>
+<ul>
+<li>$4=2+2$</li>
+<li>$6=3+3$</li>
+<li>$8=3+5$</li>
+<li>$10=3+7=5+5$</li>
+</ul>
+<p>聪明的你肯定想知道，对于大于 $2$ 的偶数 $n$，它有多少种写成两个质数之和的方法。例如 $4$、$6$ 和 $8$ 都只有一种方法，$10$ 有两种方法。请你编写程序计算这个问题的答案。</p>
+<p>在本题中，我们认为两种方案不同，当且仅当两种分解方案包含的素数互不相同；即 $10=3+7$ 和 $10=7+3$ 是同一种方案，不能重复计数。</p>
+<h2>输入格式</h2>
+<p>一行，一个大于 $2$ 的偶数 $n$。</p>
+<h2>输出格式</h2>
+<p>一行，一个整数，表示将 $n$ 写成两个质数之和的方法数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P17455 [GESP202609 五级] 哥德巴赫猜想
+     * 题意：给定大于 2 的偶数 n，求将 n 写成两个质数之和的方案数（不计顺序）。
+     * 数据范围：n ≤ 10^6。
+     *
+     * 思路：
+     * 1. 用埃氏筛预处理 2 到 n 的所有质数，存入 isPrime 数组。
+     * 2. 枚举第一个质数 i 从 2 到 n/2（保证 i ≤ n-i，避免重复计数）。
+     * 3. 若 i 和 n-i 都是质数，则方案数加 1。
+     * 4. 输出方案数。
+     *
+     * 时间复杂度：O(n log log n) 筛法 + O(n) 枚举，n ≤ 10^6，完全可行。
+     */</span>
+
+    <span class="hljs-type">int</span> n;                      <span class="hljs-comment">// n: 输入的偶数</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// isPrime[i] 表示 i 是否为质数</span>
+    <span class="hljs-type">bool</span> isPrime[<span class="hljs-number">1000005</span>];
+
+    <span class="hljs-comment">// 初始化：先全部假设为质数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) {
+        isPrime[i] = <span class="hljs-literal">true</span>;
+    }
+    isPrime[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>;         <span class="hljs-comment">// 0 不是质数</span>
+    isPrime[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>;         <span class="hljs-comment">// 1 不是质数</span>
+
+    <span class="hljs-comment">// 埃氏筛</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (isPrime[i]) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i * i; j &lt;= n; j += i) {
+                isPrime[j] = <span class="hljs-literal">false</span>;
+            }
+        }
+    }
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                <span class="hljs-comment">// ans: 方案数</span>
+
+    <span class="hljs-comment">// 枚举第一个质数 i，只需到 n/2，避免 (i, n-i) 与 (n-i, i) 重复</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n / <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span> (isPrime[i] &amp;&amp; isPrime[n - i]) {
+            ans++;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;        <span class="hljs-comment">// 输出方案数</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P17455">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

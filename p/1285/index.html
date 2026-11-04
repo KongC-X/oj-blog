@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1285 计算N的阶乘 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="请计算 的阶乘（ ） 的阶乘计算公式为： ，如： 。">
+<link rel="canonical" href="https://zymojblog.top/p/1285/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1285 计算N的阶乘 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="请计算 的阶乘（ ） 的阶乘计算公式为： ，如： 。">
+<meta property="og:url" content="https://zymojblog.top/p/1285/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1285 计算N的阶乘 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="请计算 的阶乘（ ） 的阶乘计算公式为： ，如： 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1285 计算N的阶乘","headline":"1285 计算N的阶乘 题解","description":"请计算 的阶乘（ ） 的阶乘计算公式为： ，如： 。","url":"https://zymojblog.top/p/1285/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"高精度算法","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1285</span></div>
+  <h1 class="seo-title">1285 计算N的阶乘</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%AB%98%E7%B2%BE%E5%BA%A6%E7%AE%97%E6%B3%95">高精度算法</a></div>
+  <article class="markdown-body seo-article">
+<h1>1285 - 计算N的阶乘</h1>
+<h2>题目描述</h2>
+<p>请计算 $n$ 的阶乘（$1 \le n \le 100$）  </p>
+<p>$n$ 的阶乘计算公式为：$n!=n \times (n-1) \times (n-2) \times \dots  \times 1$，如：$5!=5 \times 4 \times 3 \times 2 \times 1=120$。</p>
+<h2>输入</h2>
+<p>一个整数 $n$($1 \le n \le 100$)。</p>
+<h2>输出</h2>
+<p>$n$ 的阶乘。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span> </span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">1000</span>] = {<span class="hljs-number">1</span>};
+<span class="hljs-type">int</span> n,i,j,k = <span class="hljs-number">1</span>;<span class="hljs-comment">// k代表数组当前长度</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+    <span class="hljs-comment">// 第一层循环是用来控制循环的次数</span>
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-comment">// 第二层循环是有几位要乘i</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; k;j++) {
+            a[j] = a[j] * i;
+        }
+        <span class="hljs-comment">// 处理进位,由于i可能是两位数，所以要加2</span>
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt; k + <span class="hljs-number">2</span>;j++) {
+            <span class="hljs-keyword">if</span>(a[j] &gt;= <span class="hljs-number">10</span>) {
+                a[j + <span class="hljs-number">1</span>] = a[j + <span class="hljs-number">1</span>] + a[j] / <span class="hljs-number">10</span>; <span class="hljs-comment">// 进位</span>
+                a[j] = a[j] % <span class="hljs-number">10</span>;
+            }
+        }
+        <span class="hljs-comment">// 如果有进位，增加数组长度</span>
+        <span class="hljs-keyword">if</span>(a[k + <span class="hljs-number">1</span>] != <span class="hljs-number">0</span>) {
+            k += <span class="hljs-number">2</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[k] != <span class="hljs-number">0</span>) {
+            k++;
+        }
+    }
+    <span class="hljs-comment">// 输出结果</span>
+    <span class="hljs-keyword">for</span>(i = k - <span class="hljs-number">1</span>;i &gt;= <span class="hljs-number">0</span>;i--) {
+        cout &lt;&lt; a[i];
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1285">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

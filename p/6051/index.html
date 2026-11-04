@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6051 定制架子问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="李莳花要做一个架子，把她喜欢的摆件叠放起来，她的每个摆件的位置顺序是固定的。这个架子的宽度是 ，每层排放的摆件不能超过这个宽度，每层架子的高度不能低于最高的摆件的高度。 假设，给出排列好的每个摆件的宽度 ，和高度 ，请计算需要最少多高的架子。">
+<link rel="canonical" href="https://zymojblog.top/p/6051/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="6051 定制架子问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="李莳花要做一个架子，把她喜欢的摆件叠放起来，她的每个摆件的位置顺序是固定的。这个架子的宽度是 ，每层排放的摆件不能超过这个宽度，每层架子的高度不能低于最高的摆件的高度。 假设，给出排列好的每个摆件的宽度 ，和高度 ，请计算需要最少多高的架子。">
+<meta property="og:url" content="https://zymojblog.top/p/6051/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6051 定制架子问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="李莳花要做一个架子，把她喜欢的摆件叠放起来，她的每个摆件的位置顺序是固定的。这个架子的宽度是 ，每层排放的摆件不能超过这个宽度，每层架子的高度不能低于最高的摆件的高度。 假设，给出排列好的每个摆件的宽度 ，和高度 ，请计算需要最少多高的架子。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"6051 定制架子问题","headline":"6051 定制架子问题 题解","description":"李莳花要做一个架子，把她喜欢的摆件叠放起来，她的每个摆件的位置顺序是固定的。这个架子的宽度是 ，每层排放的摆件不能超过这个宽度，每层架子的高度不能低于最高的摆件的高度。 假设，给出排列好的每个摆件的宽度 ，和高度 ，请计算需要最少多高的架子。","url":"https://zymojblog.top/p/6051/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"信息素养大赛、23年小学组复赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>6051</span></div>
+  <h1 class="seo-title">6051 定制架子问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E7%B4%A0%E5%85%BB%E5%A4%A7%E8%B5%9B">信息素养大赛</a><a class="seo-tag" href="/#/tag/23%E5%B9%B4%E5%B0%8F%E5%AD%A6%E7%BB%84%E5%A4%8D%E8%B5%9B">23年小学组复赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>6051 - 定制架子问题</h1>
+<h2>题目描述</h2>
+<p>李莳花要做一个架子，把她喜欢的摆件叠放起来，她的每个摆件的位置顺序是固定的。这个架子的宽度是 $W$，每层排放的摆件不能超过这个宽度，每层架子的高度不能低于最高的摆件的高度。</p>
+<p>假设，给出排列好的每个摆件的宽度 $W_i$ ，和高度 $H_i$ ，请计算需要最少多高的架子。</p>
+<h2>输入</h2>
+<p>输入的第一行有 $2$ 个数字，一个是摆件的个数 $n$，和架子的宽度 $W$。 </p>
+<p>以下摆件个数 $n$ 行，每行的第一个数是摆件的宽度 $W_i$ 和高度 $H_i$。</p>
+<h2>输出</h2>
+<p>输出放置摆件架子的最低高度。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, W;                    <span class="hljs-comment">// n: 摆件个数, W: 架子宽度</span>
+    cin &gt;&gt; n &gt;&gt; W;
+
+    <span class="hljs-type">int</span> w[<span class="hljs-number">1005</span>], h[<span class="hljs-number">1005</span>];        <span class="hljs-comment">// w[i]: 第i个摆件宽度, h[i]: 高度 (1‑based)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; w[i] &gt;&gt; h[i];
+    }
+
+    <span class="hljs-comment">// ---------- DP 思路 ----------</span>
+    <span class="hljs-comment">// 问题类型：线性划分DP（类似于分段使各段最大值之和最小）</span>
+    <span class="hljs-comment">// 状态定义：dp[i] 表示前 i 个摆件所需的最小架子总高度。</span>
+    <span class="hljs-comment">// 初始化：dp[0] = 0，dp[1..n] 初值设为大数。</span>
+    <span class="hljs-comment">// 转移：枚举最后一层的起始位置 j+1 (j &lt; i)，</span>
+    <span class="hljs-comment">//       要求第 j+1 到 i 的摆件总宽度 &lt;= W，</span>
+    <span class="hljs-comment">//       该层高度为 max(h[j+1]..h[i])，</span>
+    <span class="hljs-comment">//       则 dp[i] = min(dp[j] + 该层最大高度)。</span>
+    <span class="hljs-comment">// 复杂度 O(n^2)，n ≤ 1000 可行。</span>
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> dp[<span class="hljs-number">1005</span>];          <span class="hljs-comment">// 用 long long 防止溢出，总高可达 1e7</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) dp[i] = <span class="hljs-number">1e18</span>;
+    dp[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> sumW = <span class="hljs-number">0</span>;      <span class="hljs-comment">// 当前层从 j+1 到 i 的宽度累计</span>
+        <span class="hljs-type">int</span> mxH = <span class="hljs-number">0</span>;             <span class="hljs-comment">// 当前层的最大高度</span>
+        <span class="hljs-comment">// 从 i 向前枚举 j，代表最后一层的左端点前一个位置</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i; j &gt;= <span class="hljs-number">1</span>; j--) {
+            sumW += w[j];
+            <span class="hljs-keyword">if</span> (sumW &gt; W) <span class="hljs-keyword">break</span>; <span class="hljs-comment">// 宽度超标，不能再向左扩展</span>
+            <span class="hljs-keyword">if</span> (h[j] &gt; mxH) mxH = h[j];
+            <span class="hljs-comment">// 此时最后一层为 j..i，前 j-1 个的最优解为 dp[j-1]</span>
+            <span class="hljs-keyword">if</span> (dp[j - <span class="hljs-number">1</span>] + mxH &lt; dp[i]) {
+                dp[i] = dp[j - <span class="hljs-number">1</span>] + mxH;
+            }
+        }
+    }
+
+    cout &lt;&lt; dp[n] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/6051">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

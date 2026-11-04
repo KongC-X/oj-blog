@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1007 独木桥 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="突然，你收到从指挥部发来的信息，敌军的轰炸机正朝着你所在的独木桥飞来！为了安全，你的部队必须撤下独木桥。独木桥的长度为 ，士兵们只能呆在坐标为整数的地方。所有士兵的速度都为 ，但一个士兵某一时刻来到了坐标为 或 的位置，他就离开了独木桥。 每个士兵都有一个初始面对的方向，他们会以匀速朝着这个方向行…">
+<link rel="canonical" href="https://zymojblog.top/p/P1007/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1007 独木桥 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="突然，你收到从指挥部发来的信息，敌军的轰炸机正朝着你所在的独木桥飞来！为了安全，你的部队必须撤下独木桥。独木桥的长度为 ，士兵们只能呆在坐标为整数的地方。所有士兵的速度都为 ，但一个士兵某一时刻来到了坐标为 或 的位置，他就离开了独木桥。 每个士兵都有一个初始面对的方向，他们会以匀速朝着这个方向行…">
+<meta property="og:url" content="https://zymojblog.top/p/P1007/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1007 独木桥 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="突然，你收到从指挥部发来的信息，敌军的轰炸机正朝着你所在的独木桥飞来！为了安全，你的部队必须撤下独木桥。独木桥的长度为 ，士兵们只能呆在坐标为整数的地方。所有士兵的速度都为 ，但一个士兵某一时刻来到了坐标为 或 的位置，他就离开了独木桥。 每个士兵都有一个初始面对的方向，他们会以匀速朝着这个方向行…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1007 独木桥","headline":"P1007 独木桥 题解","description":"突然，你收到从指挥部发来的信息，敌军的轰炸机正朝着你所在的独木桥飞来！为了安全，你的部队必须撤下独木桥。独木桥的长度为 ，士兵们只能呆在坐标为整数的地方。所有士兵的速度都为 ，但一个士兵某一时刻来到了坐标为 或 的位置，他就离开了独木桥。 每个士兵都有一个初始面对的方向，他们会以匀速朝着这个方向行…","url":"https://zymojblog.top/p/P1007/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1007</span></div>
+  <h1 class="seo-title">P1007 独木桥</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1007 独木桥</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>贪心</code></p>
+<h2>题目背景</h2>
+<p>战争已经进入到紧要时间。你是运输小队长，正在率领运输部队向前线运送物资。运输任务像做题一样的无聊。你希望找些刺激，于是命令你的士兵们到前方的一座独木桥上欣赏风景，而你留在桥下欣赏士兵们。士兵们十分愤怒，因为这座独木桥十分狭窄，只能容纳 $1$ 个人通过。假如有 $2$ 个人相向而行在桥上相遇，那么他们 $2$ 个人将无法绕过对方，只能有 $1$ 个人回头下桥，让另一个人先通过。但是，可以有多个人同时呆在同一个位置。</p>
+<h2>题目描述</h2>
+<p>突然，你收到从指挥部发来的信息，敌军的轰炸机正朝着你所在的独木桥飞来！为了安全，你的部队必须撤下独木桥。独木桥的长度为 $L$，士兵们只能呆在坐标为整数的地方。所有士兵的速度都为 $1$，但一个士兵某一时刻来到了坐标为 $0$ 或 $L+1$ 的位置，他就离开了独木桥。</p>
+<p>每个士兵都有一个初始面对的方向，他们会以匀速朝着这个方向行走，中途不会自己改变方向。但是，如果两个士兵面对面相遇，他们无法彼此通过对方，于是就分别转身，继续行走。转身不需要任何的时间。</p>
+<p>由于先前的愤怒，你已不能控制你的士兵。甚至，你连每个士兵初始面对的方向都不知道。因此，你想要知道你的部队最少需要多少时间就可能全部撤离独木桥。另外，总部也在安排阻拦敌人的进攻，因此你还需要知道你的部队最多需要多少时间才能全部撤离独木桥。</p>
+<h2>输入格式</h2>
+<p>第一行共一个整数 $L$，表示独木桥的长度。桥上的坐标为 $1, 2, \cdots, L$。</p>
+<p>第二行共一个整数 $N$，表示初始时留在桥上的士兵数目。</p>
+<p>第三行共有 $N$ 个整数，分别表示每个士兵的初始坐标。</p>
+<h2>输出格式</h2>
+<p>共一行，输出 $2$ 个整数，分别表示部队撤离独木桥的最小时间和最大时间。$2$ 个整数由一个空格符分开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">4</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：每个士兵独立选择方向，彼此相遇等价于互相穿过（因为转向不耗时），</span>
+    <span class="hljs-comment">// 所以每个士兵离开桥的最短时间是走到较近一端的时间，最长时间是走到较远一端的时间。</span>
+    <span class="hljs-comment">// 整体最小撤离时间 = max(每个士兵的最短离开时间)</span>
+    <span class="hljs-comment">// 整体最大撤离时间 = max(每个士兵的最长离开时间)</span>
+
+    <span class="hljs-type">int</span> L, n;                     <span class="hljs-comment">// L: 桥长, n: 士兵数</span>
+    cin &gt;&gt; L &gt;&gt; n;
+
+    <span class="hljs-type">int</span> mn = <span class="hljs-number">0</span>, mx = <span class="hljs-number">0</span>;           <span class="hljs-comment">// mn: 最小撤离时间, mx: 最大撤离时间</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> p;                    <span class="hljs-comment">// p: 当前士兵位置</span>
+        cin &gt;&gt; p;
+
+        <span class="hljs-type">int</span> l = p;                <span class="hljs-comment">// 向左走的时间</span>
+        <span class="hljs-type">int</span> r = L + <span class="hljs-number">1</span> - p;        <span class="hljs-comment">// 向右走的时间</span>
+
+        <span class="hljs-comment">// 更新最小时间：每个士兵选近端，整体取最大值（最后一人撤离时间）</span>
+        <span class="hljs-type">int</span> a = <span class="hljs-built_in">min</span>(l, r);
+        <span class="hljs-keyword">if</span> (a &gt; mn) mn = a;
+
+        <span class="hljs-comment">// 更新最大时间：每个士兵选远端，整体取最大值</span>
+        <span class="hljs-type">int</span> b = <span class="hljs-built_in">max</span>(l, r);
+        <span class="hljs-keyword">if</span> (b &gt; mx) mx = b;
+    }
+
+    cout &lt;&lt; mn &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span> &lt;&lt; mx &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1007">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

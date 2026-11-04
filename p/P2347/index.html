@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2347 [NOIP 1996 提高组] 砝码称重 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="设有 、 、 、 、 、 的砝码各若干枚（其总重 ），可以表示成多少种重量？">
+<link rel="canonical" href="https://zymojblog.top/p/P2347/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2347 [NOIP 1996 提高组] 砝码称重 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="设有 、 、 、 、 、 的砝码各若干枚（其总重 ），可以表示成多少种重量？">
+<meta property="og:url" content="https://zymojblog.top/p/P2347/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2347 [NOIP 1996 提高组] 砝码称重 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="设有 、 、 、 、 、 的砝码各若干枚（其总重 ），可以表示成多少种重量？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2347 [NOIP 1996 提高组] 砝码称重","headline":"P2347 [NOIP 1996 提高组] 砝码称重 题解","description":"设有 、 、 、 、 、 的砝码各若干枚（其总重 ），可以表示成多少种重量？","url":"https://zymojblog.top/p/P2347/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"动态规划 DP、NOIP 提高组、枚举、深度优先搜索 DFS、背包 DP、1996、bitset","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2347</span></div>
+  <h1 class="seo-title">P2347 [NOIP 1996 提高组] 砝码称重</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a><a class="seo-tag" href="/#/tag/1996">1996</a><a class="seo-tag" href="/#/tag/bitset">bitset</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2347 [NOIP 1996 提高组] 砝码称重</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-10-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>NOIP 提高组</code>、<code>枚举</code>、<code>深度优先搜索 DFS</code>、<code>背包 DP</code>、<code>1996</code>、<code>bitset</code></p>
+<h2>题目描述</h2>
+<p>设有 $1\mathrm{g}$、$2\mathrm{g}$、$3\mathrm{g}$、$5\mathrm{g}$、$10\mathrm{g}$、$20\mathrm{g}$ 的砝码各若干枚（其总重 $ \le 1000$），可以表示成多少种重量？</p>
+<h2>输入格式</h2>
+<p>输入方式：$a_1 , a_2  ,a_3 , a_4 , a_5 ,a_6$</p>
+<p>（表示 $1\mathrm{g}$ 砝码有 $a_1$ 个，$2\mathrm{g}$ 砝码有 $a_2$ 个，$\dots$，$20\mathrm{g}$ 砝码有 $a_6$ 个）</p>
+<h2>输出格式</h2>
+<p>输出方式：<code>Total=N</code></p>
+<p>（$N$ 表示用这些砝码能称出的不同重量的个数，但不包括一个砝码也不用的情况）</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Total=3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+有6种数字：1 2 3 5 10 20，每种有若干个
+问：能组合出多少种不同的数字
+多重背包问题：直接存入背包转换为01背包求解
+
+举例：有1g 1个，2g 0个，3g 2个
+转换01背包问题：1 3 3
+能组合出1~7中的哪些数：1 3 4 6 7
+*/</span> 
+<span class="hljs-type">int</span> a[<span class="hljs-number">10</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">10</span>,<span class="hljs-number">20</span>};
+<span class="hljs-type">int</span> maxn;<span class="hljs-comment">//背包容量：能够称出的最大重量（所有砝码的重量和）</span>
+<span class="hljs-type">int</span> f[<span class="hljs-number">1010</span>];
+<span class="hljs-type">int</span> w[<span class="hljs-number">1010</span>];<span class="hljs-comment">//存储每个砝码 </span>
+<span class="hljs-type">int</span> k = <span class="hljs-number">0</span>;<span class="hljs-comment">//表示w数组的下标 </span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">6</span>;i++){
+        cin&gt;&gt;c;
+        <span class="hljs-comment">//直接存入背包</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= c;j++){
+            k++;
+            w[k] = a[i];
+            maxn = maxn + a[i];<span class="hljs-comment">//砝码重量求和 </span>
+        } 
+    } 
+    
+    <span class="hljs-comment">//背包方案数求解</span>
+    f[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= k;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = maxn;j &gt;= w[i];j--){
+            f[j] = f[j] + f[j-w[i]];
+        }
+    } 
+    
+    <span class="hljs-comment">//求解能够称出多少种不同的重量</span>
+    <span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= maxn;i++){
+        <span class="hljs-keyword">if</span>(f[i] != <span class="hljs-number">0</span>) r++;
+    } 
+    cout&lt;&lt; <span class="hljs-string">&quot;Total=&quot;</span> &lt;&lt;r;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2347">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

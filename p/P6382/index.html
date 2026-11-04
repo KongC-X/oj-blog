@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P6382 『MdOI R2』Car 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在 MdOI 市，为了推行环保，在城区内将限制某些车辆的通行，简称限行。一辆车是否被限行的依据是车牌号和当天的日期。 车牌号的编码方式是这样的： 前三位均为大写字母，表示所在的地区。 后五位为大写字母或数字，为识别码。保证至少有一个数字。 车牌号的尾号是从右往左的第一个数字。 MdOI 市在本题的…">
+<link rel="canonical" href="https://zymojblog.top/p/P6382/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P6382 『MdOI R2』Car 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在 MdOI 市，为了推行环保，在城区内将限制某些车辆的通行，简称限行。一辆车是否被限行的依据是车牌号和当天的日期。 车牌号的编码方式是这样的： 前三位均为大写字母，表示所在的地区。 后五位为大写字母或数字，为识别码。保证至少有一个数字。 车牌号的尾号是从右往左的第一个数字。 MdOI 市在本题的…">
+<meta property="og:url" content="https://zymojblog.top/p/P6382/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P6382 『MdOI R2』Car 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在 MdOI 市，为了推行环保，在城区内将限制某些车辆的通行，简称限行。一辆车是否被限行的依据是车牌号和当天的日期。 车牌号的编码方式是这样的： 前三位均为大写字母，表示所在的地区。 后五位为大写字母或数字，为识别码。保证至少有一个数字。 车牌号的尾号是从右往左的第一个数字。 MdOI 市在本题的…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P6382 『MdOI R2』Car","headline":"P6382 『MdOI R2』Car 题解","description":"在 MdOI 市，为了推行环保，在城区内将限制某些车辆的通行，简称限行。一辆车是否被限行的依据是车牌号和当天的日期。 车牌号的编码方式是这样的： 前三位均为大写字母，表示所在的地区。 后五位为大写字母或数字，为识别码。保证至少有一个数字。 车牌号的尾号是从右往左的第一个数字。 MdOI 市在本题的…","url":"https://zymojblog.top/p/P6382/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、字符串、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P6382</span></div>
+  <h1 class="seo-title">P6382 『MdOI R2』Car</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P6382 『MdOI R2』Car</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>洛谷月赛</code></p>
+<h2>题目描述</h2>
+<p>在 MdOI 市，为了推行环保，在城区内将限制某些车辆的通行，简称限行。一辆车是否被限行的依据是车牌号和当天的日期。</p>
+<p>车牌号的编码方式是这样的：</p>
+<ul>
+<li><p>前三位均为大写字母，表示所在的地区。</p>
+</li>
+<li><p>后五位为大写字母或数字，为识别码。<strong>保证至少有一个数字</strong>。</p>
+</li>
+<li><p>车牌号的尾号是从右往左的第一个数字。</p>
+</li>
+</ul>
+<p>MdOI 市在本题的编码方式下前三位是 <code>MDA</code>。例如，MdOI 市有一辆识别码为 <code>6780P</code> 的车，它的车牌号就是 <code>MDA6780P</code>，尾号是 $0$。</p>
+<p>在 MdOI 市，限行规则如下：</p>
+<ol>
+<li>对于外来车（即前三位编号非 <code>MDA</code>），工作日（星期一至星期五）均限行。</li>
+<li>对于其他本地车，每天会限行某些尾号的汽车。星期一至星期五的限行尾号如下：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">日期</th>
+<th align="center">星期一</th>
+<th align="center">星期二</th>
+<th align="center">星期三</th>
+<th align="center">星期四</th>
+<th align="center">星期五</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">限行尾号</td>
+<td align="center">$1$ 和 $9$</td>
+<td align="center">$2$ 和 $8$</td>
+<td align="center">$3$ 和 $7$</td>
+<td align="center">$4$ 和 $6$</td>
+<td align="center">$5$ 和 $0$</td>
+</tr>
+</tbody></table>
+<p>小 C 告诉了你她的车牌号，她想知道，她的车在星期一到星期五中的哪些日期会被限行。请你帮帮她。</p>
+<h2>输入格式</h2>
+<p>一行一个长度为 $8$ 的字符串，表示小 C 的车牌号。</p>
+<h2>输出格式</h2>
+<p>输出 $5$ 个数字，每个数字为 $0$ 或 $1$，分别表示星期一至星期五小 C 的车是否被限行。$1$ 表示限行，$0$ 表示不限行。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">MDA7U16D</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp">ZJOI2020```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>1 1 1 1 1</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：
+      1. 读入8位车牌号字符串 s。
+      2. 判断前三位是否为 &quot;MDA&quot;：
+         - 若不是外地车，工作日全限行，输出 &quot;1 1 1 1 1&quot; 并结束。
+         - 若是本地车，继续。
+      3. 找尾号（从右往左第一个数字）：
+         从字符串末尾开始向前扫描，遇到第一个数字就停止，并记录该数字。
+      4. 根据限行规则逐天判断：
+         星期一限 1,9；星期二限 2,8；星期三限 3,7；
+         星期四限 4,6；星期五限 5,0。
+    */</span>
+
+    string s;                     <span class="hljs-comment">// s：车牌号</span>
+    cin &gt;&gt; s;
+
+    <span class="hljs-comment">// 判断是否为外地车牌（前三位不是 MDA）</span>
+    <span class="hljs-keyword">if</span> (!(s[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;M&#x27;</span> &amp;&amp; s[<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;D&#x27;</span> &amp;&amp; s[<span class="hljs-number">2</span>] == <span class="hljs-string">&#x27;A&#x27;</span>)) {
+        cout &lt;&lt; <span class="hljs-string">&quot;1 1 1 1 1&quot;</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 找尾号：从右往左第一个数字</span>
+    <span class="hljs-type">int</span> t = <span class="hljs-number">-1</span>;                   <span class="hljs-comment">// t：尾号数字</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">7</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span> (s[i] &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; s[i] &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) {
+            t = s[i] - <span class="hljs-string">&#x27;0&#x27;</span>;       <span class="hljs-comment">// 字符转数字</span>
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 根据尾号判断周一到周五是否限行</span>
+    <span class="hljs-comment">// 周一（1,9）限行</span>
+    cout &lt;&lt; (t == <span class="hljs-number">1</span> || t == <span class="hljs-number">9</span>) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-comment">// 周二（2,8）限行</span>
+    cout &lt;&lt; (t == <span class="hljs-number">2</span> || t == <span class="hljs-number">8</span>) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-comment">// 周三（3,7）限行</span>
+    cout &lt;&lt; (t == <span class="hljs-number">3</span> || t == <span class="hljs-number">7</span>) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-comment">// 周四（4,6）限行</span>
+    cout &lt;&lt; (t == <span class="hljs-number">4</span> || t == <span class="hljs-number">6</span>) &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    <span class="hljs-comment">// 周五（5,0）限行</span>
+    cout &lt;&lt; (t == <span class="hljs-number">5</span> || t == <span class="hljs-number">0</span>) &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P6382">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

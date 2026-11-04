@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3730 [信息与未来 2017] 密码锁 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="乌龟给自己的贵重物品上了密码锁。密码锁上有 个数字拨盘。每个数字拨盘每次向上拨使数字增加 （ 向上拨得到 ），向下拨使数字减少 （ 向下拨得到 ）。 拨盘上的数字组成一个 位数。只要拨盘上的数字变为素数，密码锁就会被解开。素数 (又称质数) 是只能被 和它自身整除的大于 的自然数。因为乌龟动作实在…">
+<link rel="canonical" href="https://zymojblog.top/p/B3730/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3730 [信息与未来 2017] 密码锁 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="乌龟给自己的贵重物品上了密码锁。密码锁上有 个数字拨盘。每个数字拨盘每次向上拨使数字增加 （ 向上拨得到 ），向下拨使数字减少 （ 向下拨得到 ）。 拨盘上的数字组成一个 位数。只要拨盘上的数字变为素数，密码锁就会被解开。素数 (又称质数) 是只能被 和它自身整除的大于 的自然数。因为乌龟动作实在…">
+<meta property="og:url" content="https://zymojblog.top/p/B3730/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3730 [信息与未来 2017] 密码锁 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="乌龟给自己的贵重物品上了密码锁。密码锁上有 个数字拨盘。每个数字拨盘每次向上拨使数字增加 （ 向上拨得到 ），向下拨使数字减少 （ 向下拨得到 ）。 拨盘上的数字组成一个 位数。只要拨盘上的数字变为素数，密码锁就会被解开。素数 (又称质数) 是只能被 和它自身整除的大于 的自然数。因为乌龟动作实在…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3730 [信息与未来 2017] 密码锁","headline":"B3730 [信息与未来 2017] 密码锁 题解","description":"乌龟给自己的贵重物品上了密码锁。密码锁上有 个数字拨盘。每个数字拨盘每次向上拨使数字增加 （ 向上拨得到 ），向下拨使数字减少 （ 向下拨得到 ）。 拨盘上的数字组成一个 位数。只要拨盘上的数字变为素数，密码锁就会被解开。素数 (又称质数) 是只能被 和它自身整除的大于 的自然数。因为乌龟动作实在…","url":"https://zymojblog.top/p/B3730/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、2017、江苏、枚举、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3730</span></div>
+  <h1 class="seo-title">B3730 [信息与未来 2017] 密码锁</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">信息与未来普及-</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2017">2017</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3730 [信息与未来 2017] 密码锁</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-04-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2017</code>、<code>江苏</code>、<code>枚举</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>乌龟给自己的贵重物品上了密码锁。密码锁上有 $5$ 个数字拨盘。每个数字拨盘每次向上拨使数字增加 $1$ （$9$ 向上拨得到 $0$），向下拨使数字减少 $1$ （$0$ 向下拨得到 $9$）。</p>
+<p>拨盘上的数字组成一个 $5$ 位数。只要拨盘上的数字变为素数，密码锁就会被解开。素数 (又称质数) 是只能被 $1$ 和它自身整除的大于 $1$ 的自然数。因为乌龟动作实在太慢，他希望你帮他计算如何开锁，使得拨动的总次数最少。</p>
+<h2>输入格式</h2>
+<p>一个 $5$ 位数，表示拨盘的初始数字。</p>
+<h2>输出格式</h2>
+<p>一个 $5$ 位素数，表示开启密码锁使用的素数（拨动次数最少）。如有多组解，输出满足条件的最大数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">01210</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>01319```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断一个数是不是质数（素数）</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;          <span class="hljs-comment">// 小于2的不是质数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) { <span class="hljs-comment">// 从2检查到根号x</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 如果能整除，就不是质数</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;                       <span class="hljs-comment">// 否则是质数</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// s: 初始密码（字符串读入，保留前导0）</span>
+    string s;
+    cin &gt;&gt; s;
+
+    <span class="hljs-comment">// a[0]~a[4]: 把初始密码的每一位数字存到数组里</span>
+    <span class="hljs-type">int</span> a[<span class="hljs-number">5</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+        a[i] = s[i] - <span class="hljs-string">&#x27;0&#x27;</span>;  <span class="hljs-comment">// 字符转成数字</span>
+    }
+
+    <span class="hljs-type">int</span> best = <span class="hljs-number">-1</span>;      <span class="hljs-comment">// 最终答案的质数（数值）</span>
+    <span class="hljs-type">int</span> minMove = <span class="hljs-number">9999</span>; <span class="hljs-comment">// 最少的拨动次数，先设一个很大的值</span>
+
+    <span class="hljs-comment">// 从2到99999检查每个数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p = <span class="hljs-number">2</span>; p &lt;= <span class="hljs-number">99999</span>; p++) {
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">isPrime</span>(p)) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// 不是质数就跳过</span>
+
+        <span class="hljs-comment">// 把质数p转成5位字符串，前面补0</span>
+        string t = <span class="hljs-built_in">to_string</span>(p);
+        <span class="hljs-keyword">while</span> (t.<span class="hljs-built_in">length</span>() &lt; <span class="hljs-number">5</span>) t = <span class="hljs-string">&quot;0&quot;</span> + t;
+
+        <span class="hljs-comment">// 计算拨动总次数</span>
+        <span class="hljs-type">int</span> move = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) {
+            <span class="hljs-type">int</span> b = t[i] - <span class="hljs-string">&#x27;0&#x27;</span>;           <span class="hljs-comment">// 目标数字</span>
+            <span class="hljs-type">int</span> d = <span class="hljs-built_in">abs</span>(a[i] - b);        <span class="hljs-comment">// 直接差</span>
+            <span class="hljs-keyword">if</span> (d &gt; <span class="hljs-number">5</span>) d = <span class="hljs-number">10</span> - d;        <span class="hljs-comment">// 如果超过5，反向转更短</span>
+            move += d;
+        }
+
+        <span class="hljs-comment">// 比较是否更优</span>
+        <span class="hljs-keyword">if</span> (move &lt; minMove) {
+            minMove = move;
+            best = p;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (move == minMove &amp;&amp; p &gt; best) {
+            best = p;  <span class="hljs-comment">// 次数相同时取更大的质数</span>
+        }
+    }
+
+    <span class="hljs-comment">// 输出答案，要保证5位（前面补0）</span>
+    string ans = <span class="hljs-built_in">to_string</span>(best);
+    <span class="hljs-keyword">while</span> (ans.<span class="hljs-built_in">length</span>() &lt; <span class="hljs-number">5</span>) ans = <span class="hljs-string">&quot;0&quot;</span> + ans;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3730">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

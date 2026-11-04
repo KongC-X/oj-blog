@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P8651 [蓝桥杯 2017 省 B] 日期问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小明正在整理一批历史文献。这些历史文献中出现了很多日期。小明知道这些日期都在 1960 年 1 月 1 日至 2059 年 12 月 31 日。令小明头疼的是，这些日期采用的格式非常不统一，有采用年/月/日的，有采用月/日/年的，还有采用日/月/年的。更加麻烦的是，年份也都省略了前两位，使得文献上…">
+<link rel="canonical" href="https://zymojblog.top/p/P8651/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P8651 [蓝桥杯 2017 省 B] 日期问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小明正在整理一批历史文献。这些历史文献中出现了很多日期。小明知道这些日期都在 1960 年 1 月 1 日至 2059 年 12 月 31 日。令小明头疼的是，这些日期采用的格式非常不统一，有采用年/月/日的，有采用月/日/年的，还有采用日/月/年的。更加麻烦的是，年份也都省略了前两位，使得文献上…">
+<meta property="og:url" content="https://zymojblog.top/p/P8651/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P8651 [蓝桥杯 2017 省 B] 日期问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小明正在整理一批历史文献。这些历史文献中出现了很多日期。小明知道这些日期都在 1960 年 1 月 1 日至 2059 年 12 月 31 日。令小明头疼的是，这些日期采用的格式非常不统一，有采用年/月/日的，有采用月/日/年的，还有采用日/月/年的。更加麻烦的是，年份也都省略了前两位，使得文献上…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P8651 [蓝桥杯 2017 省 B] 日期问题","headline":"P8651 [蓝桥杯 2017 省 B] 日期问题 题解","description":"小明正在整理一批历史文献。这些历史文献中出现了很多日期。小明知道这些日期都在 1960 年 1 月 1 日至 2059 年 12 月 31 日。令小明头疼的是，这些日期采用的格式非常不统一，有采用年/月/日的，有采用月/日/年的，还有采用日/月/年的。更加麻烦的是，年份也都省略了前两位，使得文献上…","url":"https://zymojblog.top/p/P8651/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2017、枚举、蓝桥杯省赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P8651</span></div>
+  <h1 class="seo-title">P8651 [蓝桥杯 2017 省 B] 日期问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2017">2017</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E7%9C%81%E8%B5%9B">蓝桥杯省赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P8651 [蓝桥杯 2017 省 B] 日期问题</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-10-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2017</code>、<code>枚举</code>、<code>蓝桥杯省赛</code></p>
+<h2>题目描述</h2>
+<p>小明正在整理一批历史文献。这些历史文献中出现了很多日期。小明知道这些日期都在 1960 年 1 月 1 日至 2059 年 12 月 31 日。令小明头疼的是，这些日期采用的格式非常不统一，有采用<code>年/月/日</code>的，有采用<code>月/日/年</code>的，还有采用<code>日/月/年</code>的。更加麻烦的是，年份也都省略了前两位，使得文献上的一个日期，存在很多可能的日期与其对应。  </p>
+<p>比如 <code>02/03/04</code>，可能是 2002 年 03 月 04 日、2004 年 02 月 03 日或 2004 年 03 月 02 日。  </p>
+<p>给出一个文献上的日期，你能帮助小明判断有哪些可能的日期对其对应吗？</p>
+<h2>输入格式</h2>
+<p>一个日期，格式是 <code>AA/BB/CC</code>。($0\le A, B, C\le 9$)</p>
+<h2>输出格式</h2>
+<p>输出若干个不相同的日期，每个日期一行，格式是 <code>yyyy-MM-dd</code>。多个日期按从早到晚排列。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">02</span>/<span class="hljs-number">03</span>/<span class="hljs-number">04</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2002-03-04<br>2004-02-03<br>2004-03-02  ```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> d[<span class="hljs-number">13</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">31</span>, <span class="hljs-number">28</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, <span class="hljs-number">31</span>, <span class="hljs-number">30</span>, <span class="hljs-number">31</span>};  <span class="hljs-comment">// 每月天数</span>
+
+<span class="hljs-comment">// 判断闰年</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">leap</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-keyword">return</span> (y % <span class="hljs-number">4</span> == <span class="hljs-number">0</span> &amp;&amp; y % <span class="hljs-number">100</span> != <span class="hljs-number">0</span>) || (y % <span class="hljs-number">400</span> == <span class="hljs-number">0</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P8651 [蓝桥杯 2017 省 B] 日期问题
+     * 题意：给定 AA/BB/CC 格式的日期，可能是年/月/日、月/日/年、日/月/年三种格式之一。
+     *       年份省略前两位，范围在 1960~2059。求所有可能的合法日期，按从早到晚输出。
+     *
+     * 题解思路：
+     *   不枚举三种排列再排序去重，而是直接枚举 1960~2059 年之间的每一个合法日期
+     *   (year, month, day)，检查它是否与输入的 AA, BB, CC 匹配。
+     *   匹配条件（满足任一即可）：
+     *     - AA == year % 100 且 BB == month 且 CC == day   （年/月/日）
+     *     - AA == month 且 BB == day 且 CC == year % 100   （月/日/年）
+     *     - AA == day 且 BB == month 且 CC == year % 100   （日/月/年）
+     *
+     *   这样做的好处：
+     *     1. 年份从 1960 到 2059 递增枚举，月份和日期也递增，输出顺序天然有序。
+     *     2. 每个日期只被访问一次，不会重复。
+     *     3. 不需要排序和去重。
+     *
+     * 时间复杂度：O(100 * 12 * 31) ≈ O(4e4)，常数时间。
+     */</span>
+
+    <span class="hljs-type">int</span> a, b, c;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d/%d/%d&quot;</span>, &amp;a, &amp;b, &amp;c);
+
+    <span class="hljs-comment">// 枚举 1960 到 2059 年</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> y = <span class="hljs-number">1960</span>; y &lt;= <span class="hljs-number">2059</span>; y++) {
+        d[<span class="hljs-number">2</span>] = <span class="hljs-built_in">leap</span>(y) ? <span class="hljs-number">29</span> : <span class="hljs-number">28</span>;   <span class="hljs-comment">// 根据闰年调整二月天数</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> m = <span class="hljs-number">1</span>; m &lt;= <span class="hljs-number">12</span>; m++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> day = <span class="hljs-number">1</span>; day &lt;= d[m]; day++) {
+                <span class="hljs-comment">// 判断三种格式是否匹配</span>
+                <span class="hljs-keyword">if</span> ((a == y % <span class="hljs-number">100</span> &amp;&amp; b == m &amp;&amp; c == day) ||
+                    (a == m &amp;&amp; b == day &amp;&amp; c == y % <span class="hljs-number">100</span>) ||
+                    (a == day &amp;&amp; b == m &amp;&amp; c == y % <span class="hljs-number">100</span>)) {
+                    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d-%02d-%02d\n&quot;</span>, y, m, day);
+                }
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P8651">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

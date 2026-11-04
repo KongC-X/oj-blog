@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1449 后缀表达式 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…">
+<link rel="canonical" href="https://zymojblog.top/p/P1449/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1449 后缀表达式 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…">
+<meta property="og:url" content="https://zymojblog.top/p/P1449/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1449 后缀表达式 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1449 后缀表达式","headline":"P1449 后缀表达式 题解","description":"所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…","url":"https://zymojblog.top/p/P1449/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、线性数据结构、栈","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1449</span></div>
+  <h1 class="seo-title">P1449 后缀表达式</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E7%BA%BF%E6%80%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">线性数据结构</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1449 后缀表达式</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>线性数据结构</code>、<code>栈</code></p>
+<h2>题目描述</h2>
+<p>所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。</p>
+<p>本题中运算符仅包含 $\texttt{+-<em>/}$。保证对于 $\texttt{/}$ 运算除数不为 0。特别地，其中 $\texttt{/}$ 运算的结果需要*<em>向 0 取整</em></em>（即与 C++ <code>/</code> 运算的规则一致）。</p>
+<p>如：$\texttt{3*(5-2)+7}$ 对应的后缀表达式为：$\texttt{3.5.2.-*7.+@}$。在该式中，<code>@</code> 为表达式的结束符号。<code>.</code> 为操作数的结束符号。</p>
+<h2>输入格式</h2>
+<p>输入一行一个字符串 $s$，表示后缀表达式。</p>
+<h2>输出格式</h2>
+<p>输出一个整数，表示表达式的值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3.5</span><span class="hljs-number">.2</span>.-*<span class="hljs-number">7.</span>+@```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>16```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10.28</span><span class="hljs-number">.30</span>.<span class="hljs-comment">/*7.-@```
+
+**样例输出 #2**</span></code></pre><p>-7```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    string s;
+    cin &gt;&gt; s;
+    
+    stack&lt;<span class="hljs-type">int</span>&gt; stk;               <span class="hljs-comment">// 栈，存放操作数</span>
+    <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// 当前累积的数字</span>
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; s[i] != <span class="hljs-string">&#x27;@&#x27;</span>; i++) {
+        <span class="hljs-type">char</span> c = s[i];
+        <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) {
+            x = x * <span class="hljs-number">10</span> + (c - <span class="hljs-string">&#x27;0&#x27;</span>);
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;.&#x27;</span>) {
+            stk.<span class="hljs-built_in">push</span>(x);          <span class="hljs-comment">// 遇到 . 直接把 x 入栈</span>
+            x = <span class="hljs-number">0</span>;                <span class="hljs-comment">// 清空，准备读下一个数</span>
+        } <span class="hljs-keyword">else</span> {                  <span class="hljs-comment">// 运算符</span>
+            <span class="hljs-type">int</span> b = stk.<span class="hljs-built_in">top</span>(); stk.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-type">int</span> a = stk.<span class="hljs-built_in">top</span>(); stk.<span class="hljs-built_in">pop</span>();
+            <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;+&#x27;</span>) stk.<span class="hljs-built_in">push</span>(a + b);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;-&#x27;</span>) stk.<span class="hljs-built_in">push</span>(a - b);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;*&#x27;</span>) stk.<span class="hljs-built_in">push</span>(a * b);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;/&#x27;</span>) stk.<span class="hljs-built_in">push</span>(a / b);
+        }
+    }
+    
+    cout &lt;&lt; stk.<span class="hljs-built_in">top</span>() &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1449">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

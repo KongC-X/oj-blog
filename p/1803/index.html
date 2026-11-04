@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1803 01迷宫 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<link rel="canonical" href="https://zymojblog.top/p/1803/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1803 01迷宫 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<meta property="og:url" content="https://zymojblog.top/p/1803/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1803 01迷宫 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1803 01迷宫","headline":"1803 01迷宫 题解","description":"有一个仅由数字 与 组成的 格迷宫。若你位于一格 上，那么你可以移动到相邻 格中的某一格 上，同样若你位于一格 上，那么你可以移动到相邻 格中的某一格 上。 你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。","url":"https://zymojblog.top/p/1803/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"广搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1803</span></div>
+  <h1 class="seo-title">1803 01迷宫</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">广度优先搜索-BFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%BF%E6%90%9C">广搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1803 - 01迷宫</h1>
+<h2>题目描述</h2>
+<p>有一个仅由数字 $0$ 与 $1$ 组成的 $n \times n$ 格迷宫。若你位于一格 $0$ 上，那么你可以移动到相邻 $4$ 格中的某一格 $1$ 上，同样若你位于一格 $1$ 上，那么你可以移动到相邻 $4$ 格中的某一格 $0$ 上。</p>
+<p>你的任务是：对于给定的迷宫，询问从某一格开始能移动到多少个格子（包含自身）。</p>
+<h2>输入</h2>
+<p>第 $1$ 行为两个正整数 $n,m$ 。  </p>
+<p>下面 $n$ 行，每行 $n$ 个字符，字符只可能是 $0$ 或者 $1$ ，字符之间没有空格。  </p>
+<p>接下来 $m$ 行，每行 $2$ 个用空格分隔的正整数 $i,j$ ，对应了迷宫中第 $i$ 行第 $j$ 列的一个格子，询问从这一格开始能移动到多少格。</p>
+<h2>输出</h2>
+<p>$m$ 行，对于每个询问输出相应答案。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+求解原理：从连通块中的每个点出发，最多能走到的点的数量都是一样的
+*/</span>
+<span class="hljs-type">char</span> a[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>];
+<span class="hljs-type">int</span> q[<span class="hljs-number">1000010</span>][<span class="hljs-number">3</span>],h,t;<span class="hljs-comment">//存储走过的点</span>
+<span class="hljs-type">int</span> d[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>];<span class="hljs-comment">//存储从每个点出发最多能走到几个点</span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>];
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+<span class="hljs-type">int</span> n,m;<span class="hljs-comment">//n*n的迷宫，m次询问</span>
+
+<span class="hljs-comment">//求：从某个点出发能走到几个点，同时将连通块中从每个点出发能走到几个点，都记录好</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    <span class="hljs-comment">//初始化</span>
+    h = <span class="hljs-number">1</span>,t = <span class="hljs-number">1</span>;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = x;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>] = y;
+    f[x][y] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//走过标记</span>
+
+    <span class="hljs-type">int</span> tx,ty;
+    <span class="hljs-keyword">while</span>(h &lt;= t){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++){
+            tx = q[h][<span class="hljs-number">1</span>] + fx[i];
+            ty = q[h][<span class="hljs-number">2</span>] + fy[i];
+            <span class="hljs-comment">//不能出迷宫，没有走过，且值不一样</span>
+            <span class="hljs-keyword">if</span>(tx&gt;=<span class="hljs-number">1</span>&amp;&amp;tx&lt;=n&amp;&amp;ty&gt;=<span class="hljs-number">1</span>&amp;&amp;ty&lt;=n&amp;&amp;f[tx][ty]==<span class="hljs-literal">false</span>&amp;&amp;a[tx][ty]!=a[q[h][<span class="hljs-number">1</span>]][q[h][<span class="hljs-number">2</span>]]){
+                <span class="hljs-comment">//入队，标记</span>
+                t++;
+                q[t][<span class="hljs-number">1</span>] = tx;
+                q[t][<span class="hljs-number">2</span>] = ty;
+
+                f[tx][ty] = <span class="hljs-literal">true</span>;
+            }
+        }
+
+        h++;
+    }
+
+    <span class="hljs-comment">//循环队列，设置从队列中每个点出发能走到的点的数量都是队列长度</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= t;i++){
+        d[q[i][<span class="hljs-number">1</span>]][q[i][<span class="hljs-number">2</span>]] = t;
+    }
+
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-comment">//读入地图</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%s&quot;</span>,a[i]+<span class="hljs-number">1</span>);
+    }
+
+    <span class="hljs-comment">//读入m次询问</span>
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>,&amp;x,&amp;y);
+        <span class="hljs-comment">//判断从xy出发能走到几个点，是否求过</span>
+        <span class="hljs-keyword">if</span>(d[x][y] == <span class="hljs-number">0</span>) <span class="hljs-built_in">bfs</span>(x,y);
+
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>,d[x][y]);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1803">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

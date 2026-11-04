@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1857 数的划分 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="将整数 分成 份，且每份不能为空，任意两个划分方案不能相同(不考虑顺序)。 例如： ， ，下面三种分法被认为是相同的。 问有多少种不同的分法。 ， 有 种不同的分法，分别是：">
+<link rel="canonical" href="https://zymojblog.top/p/1857/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1857 数的划分 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="将整数 分成 份，且每份不能为空，任意两个划分方案不能相同(不考虑顺序)。 例如： ， ，下面三种分法被认为是相同的。 问有多少种不同的分法。 ， 有 种不同的分法，分别是：">
+<meta property="og:url" content="https://zymojblog.top/p/1857/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1857 数的划分 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="将整数 分成 份，且每份不能为空，任意两个划分方案不能相同(不考虑顺序)。 例如： ， ，下面三种分法被认为是相同的。 问有多少种不同的分法。 ， 有 种不同的分法，分别是：">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1857 数的划分","headline":"1857 数的划分 题解","description":"将整数 分成 份，且每份不能为空，任意两个划分方案不能相同(不考虑顺序)。 例如： ， ，下面三种分法被认为是相同的。 问有多少种不同的分法。 ， 有 种不同的分法，分别是：","url":"https://zymojblog.top/p/1857/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1857</span></div>
+  <h1 class="seo-title">1857 数的划分</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
+  <article class="markdown-body seo-article">
+<h1>1857 - 数的划分</h1>
+<h2>题目描述</h2>
+<p>将整数 $n$ 分成 $k$ 份，且每份不能为空，任意两个划分方案不能相同(不考虑顺序)。</p>
+<p>例如：$n=7$，$k=3$，下面三种分法被认为是相同的。</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">1</span>，<span class="hljs-number">1</span>，<span class="hljs-number">5</span>;
+<span class="hljs-number">1</span>，<span class="hljs-number">5</span>，<span class="hljs-number">1</span>;
+<span class="hljs-number">5</span>，<span class="hljs-number">1</span>，<span class="hljs-number">1</span>;
+`</code></pre><p>问有多少种不同的分法。</p>
+<p>$n=7$，$k=3$ 有 $4$ 种不同的分法，分别是：</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-number">1</span>，<span class="hljs-number">1</span>，<span class="hljs-number">5</span>;
+<span class="hljs-number">1</span>，<span class="hljs-number">2</span>，<span class="hljs-number">4</span>;
+<span class="hljs-number">1</span>，<span class="hljs-number">3</span>，<span class="hljs-number">3</span>;
+<span class="hljs-number">2</span>，<span class="hljs-number">2</span>，<span class="hljs-number">3</span>;
+`</code></pre><h2>输入</h2>
+<p>两个整数 $n$，$k$ 用空格隔开。（$6 \lt n \le 200$，$2 \le k \le 6$）</p>
+<h2>输出</h2>
+<p>一个整数，即不同的分法。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, k;                       <span class="hljs-comment">// n: 被划分的数，k: 份数</span>
+    cin &gt;&gt; n &gt;&gt; k;
+
+    <span class="hljs-comment">// ========== DP 思路 ==========</span>
+    <span class="hljs-comment">// 问题：将 n 分成 k 个正整数之和，且不考虑顺序（即组合）。</span>
+    <span class="hljs-comment">// 要求所有份非空，即每份至少为 1。</span>
+    <span class="hljs-comment">// 为了保证不计顺序，我们强制划分出的 k 个数为非递减排列。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 状态定义：</span>
+    <span class="hljs-comment">//   dp[i][j] 表示将整数 i 划分为 j 份（每份 &gt;= 1）的不同方案数。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 状态转移：</span>
+    <span class="hljs-comment">//   考虑划分中的最小值是否为 1：</span>
+    <span class="hljs-comment">//   - 若至少有一份是 1，则去掉这一份，剩下的 i-1 要分成 j-1 份，</span>
+    <span class="hljs-comment">//     方案数 = dp[i-1][j-1]。</span>
+    <span class="hljs-comment">//   - 若所有份都至少为 2，那么我们将每一份都减去 1，则 i-j 分成 j 份，</span>
+    <span class="hljs-comment">//     方案数 = dp[i-j][j]（需满足 i &gt;= j）。</span>
+    <span class="hljs-comment">//   因此 dp[i][j] = dp[i-1][j-1] + (i &gt;= j ? dp[i-j][j] : 0)</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 边界条件：</span>
+    <span class="hljs-comment">//   dp[0][0] = 1   (0 分成 0 份有一种方案)</span>
+    <span class="hljs-comment">//   dp[0][j] = 0   (j &gt; 0 时 0 不能分成 j 份)</span>
+    <span class="hljs-comment">//   dp[i][0] = 0   (i &gt; 0 时无法分成 0 份)</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 答案：dp[n][k]</span>
+    <span class="hljs-comment">// 复杂度 O(n*k)，n≤200, k≤6，完全可行。</span>
+
+    <span class="hljs-type">int</span> dp[<span class="hljs-number">205</span>][<span class="hljs-number">10</span>] = {<span class="hljs-number">0</span>};         <span class="hljs-comment">// 多开一点空间</span>
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;                  <span class="hljs-comment">// 初始状态</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= k; j++) {
+            dp[i][j] = dp[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>];          <span class="hljs-comment">// 至少有一份为 1</span>
+            <span class="hljs-keyword">if</span> (i &gt;= j) {
+                dp[i][j] += dp[i-j][j];       <span class="hljs-comment">// 所有份都 &gt;= 2</span>
+            }
+        }
+    }
+
+    cout &lt;&lt; dp[n][k] &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1857">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

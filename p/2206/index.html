@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2206 树的宽高及两点的距离 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵树的边的关系，结点 为该树的根，请问该树的宽度（同一层最多的结点数）、高度（根结点的高度为 ），以及树中两个结点 和 之间的最短距离是多少？ 比如：下图所示的树，深度为 ，宽度为 ，结点 到结点 的最短距离为 。">
+<link rel="canonical" href="https://zymojblog.top/p/2206/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2206 树的宽高及两点的距离 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵树的边的关系，结点 为该树的根，请问该树的宽度（同一层最多的结点数）、高度（根结点的高度为 ），以及树中两个结点 和 之间的最短距离是多少？ 比如：下图所示的树，深度为 ，宽度为 ，结点 到结点 的最短距离为 。">
+<meta property="og:url" content="https://zymojblog.top/p/2206/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2206 树的宽高及两点的距离 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵树的边的关系，结点 为该树的根，请问该树的宽度（同一层最多的结点数）、高度（根结点的高度为 ），以及树中两个结点 和 之间的最短距离是多少？ 比如：下图所示的树，深度为 ，宽度为 ，结点 到结点 的最短距离为 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2206 树的宽高及两点的距离","headline":"2206 树的宽高及两点的距离 题解","description":"给定一棵树的边的关系，结点 为该树的根，请问该树的宽度（同一层最多的结点数）、高度（根结点的高度为 ），以及树中两个结点 和 之间的最短距离是多少？ 比如：下图所示的树，深度为 ，宽度为 ，结点 到结点 的最短距离为 。","url":"https://zymojblog.top/p/2206/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2206</span></div>
+  <h1 class="seo-title">2206 树的宽高及两点的距离</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91">树</a></div>
+  <article class="markdown-body seo-article">
+<h1>2206 - 树的宽高及两点的距离</h1>
+<h2>题目描述</h2>
+<p>给定一棵树的边的关系，结点 $1$ 为该树的根，请问该树的宽度（同一层最多的结点数）、高度（根结点的高度为 $1$ ），以及树中两个结点 $u$ 和 $v$ 之间的最短距离是多少？</p>
+<p>比如：下图所示的树，深度为 $5$，宽度为 $3$，结点 $7$ 到结点 $9$ 的最短距离为 $5$。</p>
+<h2>输入</h2>
+<p>第 $1$ 行输入一个整数 $n$（$n≤1000$）；</p>
+<p>接下来 $n-1$ 行，每行有 $2$ 个整数 $x$ 和 $y$，表示结点 $x$ 和 $y$ 之间有一条边（$1≤x,y≤n$）。</p>
+<p>最后一行有 $2$ 个整数 $u$ 和 $v$ ，表示求 $u$ 和 $v$ 之间最短距离。</p>
+<h2>输出</h2>
+<p>第 $1$ 行输出该树的高度；</p>
+<p>第 $2$ 行输出该树的宽度；</p>
+<p>第 $3$ 行输出该树从结点 $u$ 到结点 $v$ 之间最短距离；</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1010</span>;
+<span class="hljs-comment">//width：每层的结点的数量 </span>
+<span class="hljs-type">int</span> fa[N],dep[N],width[N];
+<span class="hljs-type">int</span> a[N][N];<span class="hljs-comment">//邻接矩阵 </span>
+<span class="hljs-type">bool</span> vis[N];<span class="hljs-comment">//标记哪些点访问过 </span>
+<span class="hljs-type">int</span> maxd,maxw;
+<span class="hljs-type">int</span> n;
+
+<span class="hljs-comment">//求每个结点的父元素，深度，每一层的结点数量</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> f)</span></span>{
+    dep[x] = dep[f] + <span class="hljs-number">1</span>;
+    width[dep[x]]++;
+    fa[x] = f;<span class="hljs-comment">//存储每个元素的父 </span>
+    maxd = <span class="hljs-built_in">max</span>(maxd,dep[x]);<span class="hljs-comment">//求最大深度</span>
+    maxw = <span class="hljs-built_in">max</span>(maxw,width[dep[x]]);<span class="hljs-comment">//求最大宽度</span>
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">if</span>(a[x][i] &amp;&amp; i != f){
+            <span class="hljs-built_in">dfs</span>(i,x);
+        }
+    } 
+    
+    
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n - <span class="hljs-number">1</span>;i++){
+        cin&gt;&gt;x&gt;&gt;y;
+        a[x][y] = <span class="hljs-number">1</span>;
+        a[y][x] = <span class="hljs-number">1</span>;
+    }
+    cin&gt;&gt;x&gt;&gt;y; 
+    
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>);<span class="hljs-comment">//深搜每个结点 </span>
+    cout&lt;&lt;maxd&lt;&lt;endl&lt;&lt;maxw&lt;&lt;endl; 
+    
+    <span class="hljs-comment">//求x和y的公共祖先</span>
+    <span class="hljs-comment">//从其中一个点向根爬树</span>
+    <span class="hljs-type">int</span> u = x,v = y,r;<span class="hljs-comment">//r表示最近的公共祖先的编号 </span>
+    vis[x] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">while</span>(fa[x] != <span class="hljs-number">0</span>){
+        x = fa[x];
+        vis[x] = <span class="hljs-literal">true</span>;
+    } 
+    
+    <span class="hljs-comment">//从y向上求最近的公共祖先 </span>
+    r = y;
+    <span class="hljs-keyword">while</span>(vis[r] != <span class="hljs-literal">true</span>){
+        r = fa[r];
+    } 
+    
+    cout&lt;&lt;dep[u]-dep[r]+(dep[v]-dep[r]);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2206">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

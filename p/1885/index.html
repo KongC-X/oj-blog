@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1885 钱币兑换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在一个国家仅有 分， 分， 分硬币，将钱 分 () 兑换成硬币有很多种兑法。 请你编程序计算出共有多少种兑法。">
+<link rel="canonical" href="https://zymojblog.top/p/1885/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1885 钱币兑换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在一个国家仅有 分， 分， 分硬币，将钱 分 () 兑换成硬币有很多种兑法。 请你编程序计算出共有多少种兑法。">
+<meta property="og:url" content="https://zymojblog.top/p/1885/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1885 钱币兑换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在一个国家仅有 分， 分， 分硬币，将钱 分 () 兑换成硬币有很多种兑法。 请你编程序计算出共有多少种兑法。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1885 钱币兑换","headline":"1885 钱币兑换 题解","description":"在一个国家仅有 分， 分， 分硬币，将钱 分 () 兑换成硬币有很多种兑法。 请你编程序计算出共有多少种兑法。","url":"https://zymojblog.top/p/1885/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1885</span></div>
+  <h1 class="seo-title">1885 钱币兑换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1885 - 钱币兑换</h1>
+<h2>题目描述</h2>
+<p>在一个国家仅有 $1$ 分，$2$ 分，$3$ 分硬币，将钱 $N$ 分 () 兑换成硬币有很多种兑法。</p>
+<p>请你编程序计算出共有多少种兑法。</p>
+<h2>输入</h2>
+<p>输入一个正整数 $N$，$N$ 小于 $32768$。</p>
+<h2>输出</h2>
+<p>输出兑换的方法数。（本题数据的计算结果在int范围内）</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 解法一：找出状态转移方程，二维数组求解</span>
+<span class="hljs-comment">// 要凑n分：令dp[i][j]==x 表示用前i种硬币构造j 美分共有x种方法。</span>
+<span class="hljs-comment">// 初始化:  dp为全0且dp[0][0]==1。</span>
+<span class="hljs-comment">// 状态转移: dp[i][j] = sum(dp[i-1][j] , dp[i][j-val[i]])</span>
+<span class="hljs-comment">// sum是求和, val[i]是第i种硬币的面值。</span>
+<span class="hljs-comment">// 上述方程 前者是指第i值硬币一个都不选, 后者是指至少选1个第i种硬币。</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,i,j,dp[<span class="hljs-number">4</span>][<span class="hljs-number">40000</span>];
+ 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin&gt;&gt;n;
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">3</span>;i++){
+        dp[i][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<span class="hljs-comment">//初始化 </span>
+        <span class="hljs-comment">//j从i开始循环，防止背包容量不够 </span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= n;j++){
+            <span class="hljs-keyword">if</span>(j &lt; i){
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j];
+            } <span class="hljs-keyword">else</span>{
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j] + dp[i][j - i]; 	
+            }
+        }
+    }
+    
+    cout&lt;&lt;dp[<span class="hljs-number">3</span>][n];
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1885">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

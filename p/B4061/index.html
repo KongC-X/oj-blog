@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4061 位运算 2 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定正整数 和整数 。我们定义正整数 的 二进制的第 位 为将 转化为二进制后，从右往左数的第 位，且规定最右侧位是第 位。 例如，假设 ，则对应表如下，此时我们称 的二进制的第 位为 。 | 位数 | | | | | | | :----------: | :----------: | :----…">
+<link rel="canonical" href="https://zymojblog.top/p/B4061/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4061 位运算 2 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定正整数 和整数 。我们定义正整数 的 二进制的第 位 为将 转化为二进制后，从右往左数的第 位，且规定最右侧位是第 位。 例如，假设 ，则对应表如下，此时我们称 的二进制的第 位为 。 | 位数 | | | | | | | :----------: | :----------: | :----…">
+<meta property="og:url" content="https://zymojblog.top/p/B4061/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4061 位运算 2 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定正整数 和整数 。我们定义正整数 的 二进制的第 位 为将 转化为二进制后，从右往左数的第 位，且规定最右侧位是第 位。 例如，假设 ，则对应表如下，此时我们称 的二进制的第 位为 。 | 位数 | | | | | | | :----------: | :----------: | :----…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4061 位运算 2","headline":"B4061 位运算 2 题解","description":"给定正整数 和整数 。我们定义正整数 的 二进制的第 位 为将 转化为二进制后，从右往左数的第 位，且规定最右侧位是第 位。 例如，假设 ，则对应表如下，此时我们称 的二进制的第 位为 。 | 位数 | | | | | | | :----------: | :----------: | :----…","url":"https://zymojblog.top/p/B4061/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"位运算","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4061</span></div>
+  <h1 class="seo-title">B4061 位运算 2</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E4%BD%8D%E8%BF%90%E7%AE%97">位运算</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4061 位运算 2</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-28</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给定正整数 $a$ 和整数 $b$。我们定义正整数 $a$ 的 <strong>二进制的第 $b$ 位</strong> 为将 $a$ 转化为二进制后，从右往左数的第 $b$ 位，且规定最右侧位是第 $0$ 位。</p>
+<p>例如，假设 $a=11$，则对应表如下，此时我们称 $11$ 的二进制的第 $2$ 位为 $0$。</p>
+<table>
+<thead>
+<tr>
+<th align="center">位数</th>
+<th align="center">$4$</th>
+<th align="center">$3$</th>
+<th align="center">$2$</th>
+<th align="center">$1$</th>
+<th align="center">$0$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">对应数位</td>
+<td align="center">$0$</td>
+<td align="center">$1$</td>
+<td align="center">$0$</td>
+<td align="center">$1$</td>
+<td align="center">$1$</td>
+</tr>
+</tbody></table>
+<p>现在需要你依次输出下列 $6$ 个计算结果，一行输出一个整数：</p>
+<ul>
+<li>$a\times 2^b$；</li>
+<li>$a\div 2^b$，除法向下取整；</li>
+<li>$a$ 的二进制的第 $b$ 位；</li>
+<li>将 $a$ 的二进制的第 $b$ 位设置为 $0$ 后得到的十进制结果；</li>
+<li>将 $a$ 的二进制的第 $b$ 位设置为 $1$ 后得到的十进制结果；</li>
+<li>将 $a$ 的二进制的第 $b$ 位取反后得到的十进制结果；</li>
+</ul>
+<h2>输入格式</h2>
+<p>输入正整数 $a$ 和整数 $b$。</p>
+<h2>输出格式</h2>
+<p>输出六行，一行一个整数表示一个问题的答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">11</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>44<br>2<br>0<br>11<br>15<br>15```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B4061 位运算 2
+     * 题意：给定 a 和 b，输出六种位运算结果：
+     *   1. a * 2^b  （即 a 左移 b 位）
+     *   2. a / 2^b 向下取整（即 a 右移 b 位）
+     *   3. a 的二进制第 b 位（0 或 1）
+     *   4. 将 a 的第 b 位设置为 0
+     *   5. 将 a 的第 b 位设置为 1
+     *   6. 将 a 的第 b 位取反
+     *
+     * 数据范围：1 ≤ a ≤ 2^20，1 ≤ 2^b ≤ a，所以 b 是非负整数。
+     * a * 2^b 最大约 2^40，需要用 long long。
+     */</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a;   <span class="hljs-comment">// a: 正整数</span>
+    <span class="hljs-type">int</span> b;         <span class="hljs-comment">// b: 位编号（从 0 开始）</span>
+    cin &gt;&gt; a &gt;&gt; b;
+
+    cout &lt;&lt; (a &lt;&lt; b) &lt;&lt; endl;              <span class="hljs-comment">// 1. 左移 b 位，相当于乘 2^b</span>
+    cout &lt;&lt; (a &gt;&gt; b) &lt;&lt; endl;              <span class="hljs-comment">// 2. 右移 b 位，相当于除以 2^b 向下取整</span>
+    cout &lt;&lt; ((a &gt;&gt; b) &amp; <span class="hljs-number">1</span>) &lt;&lt; endl;        <span class="hljs-comment">// 3. 取第 b 位</span>
+    cout &lt;&lt; (a &amp; ~(<span class="hljs-number">1LL</span> &lt;&lt; b)) &lt;&lt; endl;     <span class="hljs-comment">// 4. 第 b 位清零</span>
+    cout &lt;&lt; (a | (<span class="hljs-number">1LL</span> &lt;&lt; b)) &lt;&lt; endl;      <span class="hljs-comment">// 5. 第 b 位置 1</span>
+    cout &lt;&lt; (a ^ (<span class="hljs-number">1LL</span> &lt;&lt; b)) &lt;&lt; endl;      <span class="hljs-comment">// 6. 第 b 位取反</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4061">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

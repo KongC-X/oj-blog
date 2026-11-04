@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3682 [语言月赛202211] Jewellery 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="第五人格抽奖宝箱被称为珍宝。某一赛季珍宝池中共有 件道具。道具不可以重复获得。因此，第一次抽出某道具，可以将该道具放入仓库。之后抽出该道具，不会将该道具放入仓库，而是给予一定的碎片补偿。 道具共有五种品质，分别为金色、紫色、蓝色、绿色与白色，不同品质道具给予的碎片补偿数量不同，具体数量如下表所示。…">
+<link rel="canonical" href="https://zymojblog.top/p/B3682/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3682 [语言月赛202211] Jewellery 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="第五人格抽奖宝箱被称为珍宝。某一赛季珍宝池中共有 件道具。道具不可以重复获得。因此，第一次抽出某道具，可以将该道具放入仓库。之后抽出该道具，不会将该道具放入仓库，而是给予一定的碎片补偿。 道具共有五种品质，分别为金色、紫色、蓝色、绿色与白色，不同品质道具给予的碎片补偿数量不同，具体数量如下表所示。…">
+<meta property="og:url" content="https://zymojblog.top/p/B3682/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3682 [语言月赛202211] Jewellery 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="第五人格抽奖宝箱被称为珍宝。某一赛季珍宝池中共有 件道具。道具不可以重复获得。因此，第一次抽出某道具，可以将该道具放入仓库。之后抽出该道具，不会将该道具放入仓库，而是给予一定的碎片补偿。 道具共有五种品质，分别为金色、紫色、蓝色、绿色与白色，不同品质道具给予的碎片补偿数量不同，具体数量如下表所示。…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3682 [语言月赛202211] Jewellery","headline":"B3682 [语言月赛202211] Jewellery 题解","description":"第五人格抽奖宝箱被称为珍宝。某一赛季珍宝池中共有 件道具。道具不可以重复获得。因此，第一次抽出某道具，可以将该道具放入仓库。之后抽出该道具，不会将该道具放入仓库，而是给予一定的碎片补偿。 道具共有五种品质，分别为金色、紫色、蓝色、绿色与白色，不同品质道具给予的碎片补偿数量不同，具体数量如下表所示。…","url":"https://zymojblog.top/p/B3682/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、2022、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3682</span></div>
+  <h1 class="seo-title">B3682 [语言月赛202211] Jewellery</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3682 [语言月赛202211] Jewellery</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2022</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>第五人格抽奖宝箱被称为珍宝。某一赛季珍宝池中共有 $n$ 件道具。道具不可以重复获得。因此，第一次抽出某道具，可以将该道具放入仓库。之后抽出该道具，不会将该道具放入仓库，而是给予一定的碎片补偿。</p>
+<p>道具共有五种品质，分别为金色、紫色、蓝色、绿色与白色，不同品质道具给予的碎片补偿数量不同，具体数量如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th align="center">品质</th>
+<th align="center">碎片补偿数量</th>
+<th align="center">品质代号</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">金色</td>
+<td align="center">$2000$</td>
+<td align="center">$1$</td>
+</tr>
+<tr>
+<td align="center">紫色</td>
+<td align="center">$1000$</td>
+<td align="center">$2$</td>
+</tr>
+<tr>
+<td align="center">蓝色</td>
+<td align="center">$200$</td>
+<td align="center">$3$</td>
+</tr>
+<tr>
+<td align="center">绿色</td>
+<td align="center">$36$</td>
+<td align="center">$4$</td>
+</tr>
+<tr>
+<td align="center">白色</td>
+<td align="center">$6$</td>
+<td align="center">$5$</td>
+</tr>
+</tbody></table>
+<p>某 E 一共抽了 $k$ 次珍宝。现在告诉你珍宝池和某 E 的抽出道具情况，请问某 E 一共得到了多少碎片。</p>
+<h2>输入格式</h2>
+<p>输入共 $n+k+1$ 行。</p>
+<p>输入的第一行为两个正整数 $n,k$，分别代表珍宝池中道具的数量和某 E 抽珍宝次数。</p>
+<p>接下来 $n$ 行，每行一个字符串和一个整数，分别代表道具的名称和品质代号。</p>
+<p>接下来 $k$ 行，每行一个字符串，代表某 E 抽到的道具的名称。数据保证对应名称的道具在上面的 $n$ 个道具中出现过。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表可以获得的碎片数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">10</span>
+Legendary <span class="hljs-number">1</span>
+Epic <span class="hljs-number">2</span>
+Rare <span class="hljs-number">3</span>
+Uncommon <span class="hljs-number">4</span>
+Common <span class="hljs-number">5</span>
+Common
+Uncommon
+Common
+Common
+Uncommon
+Legendary
+Uncommon
+Common
+Uncommon
+Rare</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">126</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B3682 [语言月赛202211] Jewellery
+     * 题意：n件道具，每件有品质代号，重复抽取到同一件道具时给予碎片补偿。
+     *       碎片补偿根据品质：1-&gt;2000, 2-&gt;1000, 3-&gt;200, 4-&gt;36, 5-&gt;6。
+     *       计算总碎片。
+     * 思路：记录每件道具是否已抽到过，若已抽到则累加对应碎片，否则标记已拥有。
+     */</span>
+    <span class="hljs-type">int</span> n, k;          <span class="hljs-comment">// n: 道具数, k: 抽奖次数</span>
+    cin &gt;&gt; n &gt;&gt; k;
+
+    string s[<span class="hljs-number">1005</span>];    <span class="hljs-comment">// s: 道具名称</span>
+    <span class="hljs-type">int</span> q[<span class="hljs-number">1005</span>];       <span class="hljs-comment">// q: 品质代号 (1~5)</span>
+    <span class="hljs-type">bool</span> o[<span class="hljs-number">1005</span>] = {<span class="hljs-literal">false</span>}; <span class="hljs-comment">// o: 是否已拥有</span>
+    <span class="hljs-type">int</span> v[<span class="hljs-number">6</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">2000</span>, <span class="hljs-number">1000</span>, <span class="hljs-number">200</span>, <span class="hljs-number">36</span>, <span class="hljs-number">6</span>}; <span class="hljs-comment">// v[i]: 品质i对应的碎片</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; s[i] &gt;&gt; q[i];
+    }
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> r = <span class="hljs-number">0</span>;   <span class="hljs-comment">// r: 总碎片</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        string t;      <span class="hljs-comment">// t: 本次抽到的道具名称</span>
+        cin &gt;&gt; t;
+        <span class="hljs-type">int</span> p = <span class="hljs-number">-1</span>;    <span class="hljs-comment">// p: 道具下标</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (s[j] == t) {
+                p = j;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (o[p]) {
+            r += v[q[p]];   <span class="hljs-comment">// 重复获得，给碎片</span>
+        } <span class="hljs-keyword">else</span> {
+            o[p] = <span class="hljs-literal">true</span>;    <span class="hljs-comment">// 首次获得，标记拥有</span>
+        }
+    }
+
+    cout &lt;&lt; r &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3682">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

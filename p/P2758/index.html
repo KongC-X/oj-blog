@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2758 编辑距离 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="设 和 是两个字符串。我们要用最少的字符操作次数，将字符串 转换为字符串 。这里所说的字符操作共有三种： 1. 删除一个字符； 2. 插入一个字符； 3. 将一个字符改为另一个字符。 均只包含小写字母。">
+<link rel="canonical" href="https://zymojblog.top/p/P2758/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2758 编辑距离 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="设 和 是两个字符串。我们要用最少的字符操作次数，将字符串 转换为字符串 。这里所说的字符操作共有三种： 1. 删除一个字符； 2. 插入一个字符； 3. 将一个字符改为另一个字符。 均只包含小写字母。">
+<meta property="og:url" content="https://zymojblog.top/p/P2758/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2758 编辑距离 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="设 和 是两个字符串。我们要用最少的字符操作次数，将字符串 转换为字符串 。这里所说的字符操作共有三种： 1. 删除一个字符； 2. 插入一个字符； 3. 将一个字符改为另一个字符。 均只包含小写字母。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2758 编辑距离","headline":"P2758 编辑距离 题解","description":"设 和 是两个字符串。我们要用最少的字符操作次数，将字符串 转换为字符串 。这里所说的字符操作共有三种： 1. 删除一个字符； 2. 插入一个字符； 3. 将一个字符改为另一个字符。 均只包含小写字母。","url":"https://zymojblog.top/p/P2758/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"字符串、动态规划 DP、数学","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2758</span></div>
+  <h1 class="seo-title">P2758 编辑距离</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2758 编辑距离</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>动态规划 DP</code>、<code>数学</code></p>
+<h2>题目描述</h2>
+<p>设 $A$ 和 $B$ 是两个字符串。我们要用最少的字符操作次数，将字符串 $A$ 转换为字符串 $B$。这里所说的字符操作共有三种：</p>
+<ol>
+<li>删除一个字符；</li>
+<li>插入一个字符；</li>
+<li>将一个字符改为另一个字符。</li>
+</ol>
+<p>$A, B$ 均只包含小写字母。</p>
+<h2>输入格式</h2>
+<p>第一行为字符串 $A$；第二行为字符串 $B$；字符串 $A, B$ 的长度均小于 $2000$。</p>
+<h2>输出格式</h2>
+<p>只有一个正整数，为最少字符操作次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">sfdqxbw
+gfdgw</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string A, B;
+    cin &gt;&gt; A &gt;&gt; B;
+    <span class="hljs-type">int</span> n = A.<span class="hljs-built_in">size</span>(), m = B.<span class="hljs-built_in">size</span>();
+
+    <span class="hljs-comment">/*
+      DP 思路：
+      状态定义：dp[i][j] 表示将 A 的前 i 个字符（下标0..i-1）转换成 B 的前 j 个字符
+                所需的最少操作次数。
+      初始化：
+        - dp[i][0] = i   (把A的前i个字符全部删除，变成空串)
+        - dp[0][j] = j   (把空串插入j次变成B的前j个字符)
+      状态转移（i&gt;0, j&gt;0）：
+        若 A[i-1] == B[j-1]，则这一位不需要操作，dp[i][j] = dp[i-1][j-1]。
+        否则，考虑三种操作，取最小值：
+          1. 删除 A 的第 i 个字符：dp[i][j] = dp[i-1][j] + 1
+          2. 插入 B 的第 j 个字符：dp[i][j] = dp[i][j-1] + 1
+          3. 替换 A 的第 i 个字符为 B 的第 j 个字符：dp[i][j] = dp[i-1][j-1] + 1
+      最终答案：dp[n][m]
+    */</span>
+    <span class="hljs-type">int</span> dp[<span class="hljs-number">2005</span>][<span class="hljs-number">2005</span>];
+    <span class="hljs-comment">// 初始化边界</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= n; i++) dp[i][<span class="hljs-number">0</span>] = i; <span class="hljs-comment">// 删除 i 次</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= m; j++) dp[<span class="hljs-number">0</span>][j] = j; <span class="hljs-comment">// 插入 j 次</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            <span class="hljs-keyword">if</span> (A[i - <span class="hljs-number">1</span>] == B[j - <span class="hljs-number">1</span>]) {
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>];      <span class="hljs-comment">// 字符相同，无需操作</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 三种操作：删除、插入、替换，取最小值</span>
+                <span class="hljs-type">int</span> t = <span class="hljs-built_in">min</span>(dp[i - <span class="hljs-number">1</span>][j], dp[i][j - <span class="hljs-number">1</span>]);
+                dp[i][j] = <span class="hljs-built_in">min</span>(t, dp[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>]) + <span class="hljs-number">1</span>;
+            }
+        }
+    }
+    cout &lt;&lt; dp[n][m] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2758">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

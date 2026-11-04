@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1336 分数计算 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="从键盘读入一个分数算式，为 个分数做加法或者减法，请输出分数算式的结果，结果也用分数表达，且约分到最简形式。（请注意：做减法可能得到负的分数，如果是负数要输出负号 - ，如 1/15-4/15 结果为 -1/5 ）（5.1.76）">
+<link rel="canonical" href="https://zymojblog.top/p/1336/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1336 分数计算 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="从键盘读入一个分数算式，为 个分数做加法或者减法，请输出分数算式的结果，结果也用分数表达，且约分到最简形式。（请注意：做减法可能得到负的分数，如果是负数要输出负号 - ，如 1/15-4/15 结果为 -1/5 ）（5.1.76）">
+<meta property="og:url" content="https://zymojblog.top/p/1336/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1336 分数计算 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="从键盘读入一个分数算式，为 个分数做加法或者减法，请输出分数算式的结果，结果也用分数表达，且约分到最简形式。（请注意：做减法可能得到负的分数，如果是负数要输出负号 - ，如 1/15-4/15 结果为 -1/5 ）（5.1.76）">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1336 分数计算","headline":"1336 分数计算 题解","description":"从键盘读入一个分数算式，为 个分数做加法或者减法，请输出分数算式的结果，结果也用分数表达，且约分到最简形式。（请注意：做减法可能得到负的分数，如果是负数要输出负号 - ，如 1/15-4/15 结果为 -1/5 ）（5.1.76）","url":"https://zymojblog.top/p/1336/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1336</span></div>
+  <h1 class="seo-title">1336 分数计算</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1336 - 分数计算</h1>
+<h2>题目描述</h2>
+<p>从键盘读入一个分数算式，为 $2$ 个分数做加法或者减法，请输出分数算式的结果，结果也用分数表达，且约分到最简形式。（请注意：做减法可能得到负的分数，如果是负数要输出负号 <code>-</code> ，如 <code>1/15-4/15</code> 结果为 <code>-1/5</code> ）（5.1.76）</p>
+<h2>输入</h2>
+<p>分数表达式；分数表达式中，每个分数的分子和分母都是正整数（不超过 $1000$ ），两个分数中的运算符，可能是加号，也可能是减号，且分数表达式不含空格。</p>
+<h2>输出</h2>
+<p>分数表达式计算的结果。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">gys</span><span class="hljs-params">(<span class="hljs-type">int</span> a,<span class="hljs-type">int</span> b)</span> </span>{
+    <span class="hljs-type">int</span> t;
+    <span class="hljs-keyword">while</span>(a % b != <span class="hljs-number">0</span>) {
+        t = a % b;
+        a = b;
+        b = t;
+    }
+    <span class="hljs-keyword">return</span> b;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s,s1,s2,fz1,fm1,fz2,fm2;
+    <span class="hljs-type">int</span> p,x1,x2,y1,y2,r1,r2,t;
+    cin &gt;&gt; s;
+    p = s.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;+&#x27;</span>);
+    <span class="hljs-keyword">if</span>(p == <span class="hljs-number">-1</span>) {
+        p = s.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;-&#x27;</span>);
+    }
+    s1 = s.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>,p);
+    s2 = s.<span class="hljs-built_in">substr</span>(p+<span class="hljs-number">1</span>);
+    <span class="hljs-comment">// cout &lt;&lt; s1 &lt;&lt; &quot; &quot; &lt;&lt; s2 &lt;&lt; endl;</span>
+
+    fz1 = s1.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>,s1.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;/&#x27;</span>));
+    fm1 = s1.<span class="hljs-built_in">substr</span>(s1.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;/&#x27;</span>)+<span class="hljs-number">1</span>);
+    fz2 = s2.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>,s2.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;/&#x27;</span>));
+    fm2 = s2.<span class="hljs-built_in">substr</span>(s2.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;/&#x27;</span>)+<span class="hljs-number">1</span>);
+    <span class="hljs-comment">// cout &lt;&lt; fz1 &lt;&lt; &quot; &quot; &lt;&lt; fm1 &lt;&lt; &quot; &quot; &lt;&lt; fz2 &lt;&lt; &quot; &quot; &lt;&lt; fm2 &lt;&lt; endl;</span>
+
+    x1 = <span class="hljs-built_in">stoi</span>(fz1);
+    y1 = <span class="hljs-built_in">stoi</span>(fm1);
+    x2 = <span class="hljs-built_in">stoi</span>(fz2);
+    y2 = <span class="hljs-built_in">stoi</span>(fm2);
+
+    r2 = y1 * y2; <span class="hljs-comment">// 计算结果的分母</span>
+    <span class="hljs-keyword">if</span>(s.<span class="hljs-built_in">find</span>(<span class="hljs-string">&#x27;+&#x27;</span>) != <span class="hljs-number">-1</span>) {
+        r1 = x1 * y2 + x2 * y1; <span class="hljs-comment">// 计算结果的分子</span>
+    } <span class="hljs-keyword">else</span> {
+        r1 = x1 * y2 - x2 * y1; <span class="hljs-comment">// 计算结果的分子</span>
+        <span class="hljs-keyword">if</span>(r1 &lt; <span class="hljs-number">0</span>) {
+            cout &lt;&lt; <span class="hljs-string">&quot;-&quot;</span>;
+            r1 = r1 * <span class="hljs-number">-1</span>;
+        }
+    }
+    <span class="hljs-comment">// cout &lt;&lt; r1 &lt;&lt; &quot;/&quot; &lt;&lt; r2 &lt;&lt; endl;</span>
+    t = <span class="hljs-built_in">gys</span>(r1,r2);
+
+    <span class="hljs-comment">// 如果分子是分母的倍数则直接除掉</span>
+    <span class="hljs-keyword">if</span>(r1 % r2 == <span class="hljs-number">0</span>) {
+        cout &lt;&lt; r1 / r2 &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; r1 / t &lt;&lt; <span class="hljs-string">&quot;/&quot;</span> &lt;&lt; r2 / t &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1336">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

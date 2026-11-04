@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3891 [语言月赛 202311] 基因 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个长度为 的字符串 。其只包含有大写字母。 小 A 将 进行翻转后，得到另一个字符串 。两个字符串 与 对应配对。例如说，对于 ，则有 ， 与 进行配对。 对于两个字符串 的第 （ ）个字母，配对规则如下： 定义 与 ， 与 为可以配对的字母。 如果 与 为可以配对的字母，那么该字符串的稳定性…">
+<link rel="canonical" href="https://zymojblog.top/p/B3891/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3891 [语言月赛 202311] 基因 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个长度为 的字符串 。其只包含有大写字母。 小 A 将 进行翻转后，得到另一个字符串 。两个字符串 与 对应配对。例如说，对于 ，则有 ， 与 进行配对。 对于两个字符串 的第 （ ）个字母，配对规则如下： 定义 与 ， 与 为可以配对的字母。 如果 与 为可以配对的字母，那么该字符串的稳定性…">
+<meta property="og:url" content="https://zymojblog.top/p/B3891/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3891 [语言月赛 202311] 基因 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个长度为 的字符串 。其只包含有大写字母。 小 A 将 进行翻转后，得到另一个字符串 。两个字符串 与 对应配对。例如说，对于 ，则有 ， 与 进行配对。 对于两个字符串 的第 （ ）个字母，配对规则如下： 定义 与 ， 与 为可以配对的字母。 如果 与 为可以配对的字母，那么该字符串的稳定性…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3891 [语言月赛 202311] 基因","headline":"B3891 [语言月赛 202311] 基因 题解","description":"有一个长度为 的字符串 。其只包含有大写字母。 小 A 将 进行翻转后，得到另一个字符串 。两个字符串 与 对应配对。例如说，对于 ，则有 ， 与 进行配对。 对于两个字符串 的第 （ ）个字母，配对规则如下： 定义 与 ， 与 为可以配对的字母。 如果 与 为可以配对的字母，那么该字符串的稳定性…","url":"https://zymojblog.top/p/B3891/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2023、O2优化、字符串（入门）、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3891</span></div>
+  <h1 class="seo-title">B3891 [语言月赛 202311] 基因</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3891 [语言月赛 202311] 基因</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>O2优化</code>、<code>字符串（入门）</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>有一个长度为 $n$ 的字符串 $S$。其只包含有大写字母。</p>
+<p>小 A 将 $S$ 进行翻转后，得到另一个字符串 $S&#39;$。两个字符串 $S$ 与 $S&#39;$ 对应配对。例如说，对于 $S=\tt{ATCGT}$，则有 $S&#39;=\tt{TGCTA}$，$S$ 与 $S&#39;$ 进行配对。</p>
+<p>对于两个字符串 $S,S&#39;$ 的第 $i$（$1 \leq i \leq n$）个字母，配对规则如下：</p>
+<ul>
+<li>定义 $\tt A$ 与 $\tt T$，$\tt C$ 与 $\tt G$ 为可以配对的字母。</li>
+<li>如果 $S_i$ 与 $S_i&#39;$ 为可以配对的字母，那么该字符串的稳定性增加 $i$。</li>
+<li>如果 $S_i$ 或者 $S_i&#39;$ 中任意一方出现非 $\tt A,\tt T,\tt C,\tt G$ 的字母，则整个字符串的稳定性将直接为 $0$。</li>
+</ul>
+<p>现在给定 $T$ 个字符串 $S$，对每一个字符串，询问若用其翻转再进行配对，其稳定性将如何。</p>
+<h2>输入格式</h2>
+<p>第一行输入一个正整数 $T$，表示给定多少个字符串。对于每一个字符串：</p>
+<ul>
+<li>第一行输入一个正整数 $n$，表示字符串的长度；</li>
+<li>第二行输入一个字符串 $S$，表示该字符串。</li>
+</ul>
+<h2>输出格式</h2>
+<p>对于每个字符串，输出一行一个整数，表示若用其翻转再进行配对，其稳定性将如何。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">5</span>
+ATCGT
+<span class="hljs-number">6</span>
+ACATGT
+<span class="hljs-number">5</span>
+ATCGU```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>6<br>21<br>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断两个字符是否为可配对的碱基对 (A-T 或 C-G)</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">match</span><span class="hljs-params">(<span class="hljs-type">char</span> x, <span class="hljs-type">char</span> y)</span> </span>{
+    <span class="hljs-keyword">return</span> (x == <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; y == <span class="hljs-string">&#x27;T&#x27;</span>) || (x == <span class="hljs-string">&#x27;T&#x27;</span> &amp;&amp; y == <span class="hljs-string">&#x27;A&#x27;</span>) ||
+           (x == <span class="hljs-string">&#x27;C&#x27;</span> &amp;&amp; y == <span class="hljs-string">&#x27;G&#x27;</span>) || (x == <span class="hljs-string">&#x27;G&#x27;</span> &amp;&amp; y == <span class="hljs-string">&#x27;C&#x27;</span>);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> T;                    <span class="hljs-comment">// T: 测试数据组数</span>
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        <span class="hljs-type">int</span> n;                <span class="hljs-comment">// n: 字符串长度</span>
+        string s;             <span class="hljs-comment">// s: 输入的字符串</span>
+        cin &gt;&gt; n &gt;&gt; s;
+
+        <span class="hljs-comment">// 检查是否含有非法字符（非 A,T,C,G）</span>
+        <span class="hljs-type">bool</span> ok = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-type">char</span> c = s[i];
+            <span class="hljs-keyword">if</span> (c != <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; c != <span class="hljs-string">&#x27;T&#x27;</span> &amp;&amp; c != <span class="hljs-string">&#x27;C&#x27;</span> &amp;&amp; c != <span class="hljs-string">&#x27;G&#x27;</span>) {
+                ok = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span> (!ok) {
+            cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 稳定性总和，可能超过 int，用 long long</span>
+        <span class="hljs-comment">// 遍历每个位置 i（1‑based），检查 s[i-1] 与 s[n-i] 是否配对</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">match</span>(s[i - <span class="hljs-number">1</span>], s[n - i])) {
+                ans += i;
+            }
+        }
+
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3891">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

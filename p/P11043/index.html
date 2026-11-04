@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11043 [蓝桥杯 2024 省 Java B] 分布式队列 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小蓝最近学习了一种神奇的队列：分布式队列。简单来说，分布式队列包含 个节点（编号为 至 ，其中 号为主节点），其中只有一个主节点，其余为副节点。主、副节点中都各自维护着一个队列，当往分布式队列中添加元素时都是由主节点完成的（每次都会添加元素到队列尾部）；副节点只负责同步主节点中的队列。可以认为主/…">
+<link rel="canonical" href="https://zymojblog.top/p/P11043/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11043 [蓝桥杯 2024 省 Java B] 分布式队列 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小蓝最近学习了一种神奇的队列：分布式队列。简单来说，分布式队列包含 个节点（编号为 至 ，其中 号为主节点），其中只有一个主节点，其余为副节点。主、副节点中都各自维护着一个队列，当往分布式队列中添加元素时都是由主节点完成的（每次都会添加元素到队列尾部）；副节点只负责同步主节点中的队列。可以认为主/…">
+<meta property="og:url" content="https://zymojblog.top/p/P11043/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11043 [蓝桥杯 2024 省 Java B] 分布式队列 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小蓝最近学习了一种神奇的队列：分布式队列。简单来说，分布式队列包含 个节点（编号为 至 ，其中 号为主节点），其中只有一个主节点，其余为副节点。主、副节点中都各自维护着一个队列，当往分布式队列中添加元素时都是由主节点完成的（每次都会添加元素到队列尾部）；副节点只负责同步主节点中的队列。可以认为主/…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11043 [蓝桥杯 2024 省 Java B] 分布式队列","headline":"P11043 [蓝桥杯 2024 省 Java B] 分布式队列 题解","description":"小蓝最近学习了一种神奇的队列：分布式队列。简单来说，分布式队列包含 个节点（编号为 至 ，其中 号为主节点），其中只有一个主节点，其余为副节点。主、副节点中都各自维护着一个队列，当往分布式队列中添加元素时都是由主节点完成的（每次都会添加元素到队列尾部）；副节点只负责同步主节点中的队列。可以认为主/…","url":"https://zymojblog.top/p/P11043/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2024、队列、蓝桥杯省赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11043</span></div>
+  <h1 class="seo-title">P11043 [蓝桥杯 2024 省 Java B] 分布式队列</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E9%98%9F%E5%88%97">队列</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E7%9C%81%E8%B5%9B">蓝桥杯省赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11043 [蓝桥杯 2024 省 Java B] 分布式队列</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2024</code>、<code>队列</code>、<code>蓝桥杯省赛</code></p>
+<h2>题目描述</h2>
+<p>小蓝最近学习了一种神奇的队列：分布式队列。简单来说，分布式队列包含 $N$ 个节点（编号为 $0$ 至 $N−1$，其中 $0$ 号为主节点），其中只有一个主节点，其余为副节点。主、副节点中都各自维护着一个队列，当往分布式队列中添加元素时都是由主节点完成的（每次都会添加元素到队列尾部）；副节点只负责同步主节点中的队列。可以认为主/副节点中的队列是一个长度无限的一维数组，下标为 $0,1,2,3,\dots$，同时副节点中的元素的同步顺序和主节点中的元素添加顺序保持一致。</p>
+<p>由于副本的同步速度各异，因此为了保障数据的一致性，元素添加到主节点后，需要同步到所有的副节点后，才具有可见性。</p>
+<p>给出一个分布式队列的运行状态，所有的操作都按输入顺序执行。你需要回答在某个时刻，队列中有多少个元素具有可见性。</p>
+<h2>输入格式</h2>
+<p>第一行包含一个整数 $N$，表示节点个数。</p>
+<p>接下来包含多行输入，每一行包含一个操作，操作类型共有以下三个：add、sync 和 query，各自的输入格式如下：</p>
+<ol>
+<li><p><code>add element</code>：表示这是一个添加操作，将元素 $element$ 添加到队列中；</p>
+</li>
+<li><p><code>sync follower_id</code>：表示这是一个同步操作，$follower_id$ 号副节点会从主节点中同步下一个自己缺失的元素；</p>
+</li>
+<li><p><code>query</code>：查询操作，询问当前分布式队列中有多少个元素具有可见性。</p>
+</li>
+</ol>
+<h2>输出格式</h2>
+<p>对于每一个 query 操作，输出一行，包含一个整数表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+add <span class="hljs-number">1</span>
+add <span class="hljs-number">2</span>
+query
+add <span class="hljs-number">1</span>
+sync <span class="hljs-number">1</span>
+sync <span class="hljs-number">1</span>
+sync <span class="hljs-number">2</span>
+query
+sync <span class="hljs-number">1</span>
+query
+sync <span class="hljs-number">2</span>
+sync <span class="hljs-number">2</span>
+sync <span class="hljs-number">1</span>
+query```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>0<br>1<br>1<br>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * ======================================================================
+     * 题目：P11043 [蓝桥杯 2024 省 Java B] 分布式队列
+     * 题意：模拟主节点添加元素，副节点同步，查询有多少元素已被所有节点同步。
+     *
+     * 核心思想：
+     *   1. 主节点队列 q 存储所有已添加的元素（顺序不变）。
+     *   2. 每个副节点 i 有一个指针 p[i]，表示它已经同步到了主队列的哪个下标（0-based）。
+     *      初始 p[i] = 0。
+     *   3. add x：q.push_back(x)。
+     *   4. sync i：p[i]++（同步下一个元素）。
+     *   5. query：答案 = min(p[1], p[2], ..., p[N-1])。
+     *      因为可见元素 = 所有副节点都至少同步到的元素数量。
+     *
+     * 数据范围：N≤10，q≤2000，完全可以直接模拟。
+     * ======================================================================
+     */</span>
+
+    <span class="hljs-type">int</span> N;          <span class="hljs-comment">// N: 节点总数</span>
+    cin &gt;&gt; N;
+
+    vector&lt;<span class="hljs-type">int</span>&gt; q;          <span class="hljs-comment">// q: 主队列存储所有添加的元素</span>
+    <span class="hljs-function">vector&lt;<span class="hljs-type">int</span>&gt; <span class="hljs-title">p</span><span class="hljs-params">(N, <span class="hljs-number">0</span>)</span></span>;    <span class="hljs-comment">// p[i]: 第 i 个副节点已同步的元素个数（下标位置）</span>
+
+    string op;              <span class="hljs-comment">// op: 操作类型（add / sync / query）</span>
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; op) {
+        <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&quot;add&quot;</span>) {
+            <span class="hljs-type">int</span> x;          <span class="hljs-comment">// x: 要添加的元素值（实际用不到，只需要知道添加了一个元素）</span>
+            cin &gt;&gt; x;
+            q.<span class="hljs-built_in">push_back</span>(x);
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&quot;sync&quot;</span>) {
+            <span class="hljs-type">int</span> id;         <span class="hljs-comment">// id: 副节点编号（1 ~ N-1）</span>
+            cin &gt;&gt; id;
+            p[id]++;        <span class="hljs-comment">// 该副节点同步下一个元素（题目保证它一定缺失元素）</span>
+        }
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (op == <span class="hljs-string">&quot;query&quot;</span>) {
+            <span class="hljs-comment">// 找到所有副节点中同步进度最小的值</span>
+            <span class="hljs-type">int</span> mn = p[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt; N; i++) {
+                <span class="hljs-keyword">if</span> (p[i] &lt; mn) mn = p[i];
+            }
+            cout &lt;&lt; mn &lt;&lt; endl;   <span class="hljs-comment">// 这个值就是可见元素的数量</span>
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11043">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

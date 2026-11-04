@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1282 简单背包问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个背包能装的重量 (正整数， )，同时有 件物品( )，每件物品有一个重量 (正整数)和一个价值 (正整数)。要求从这 件物品中任取若干件装入背包内，使背包的物品价值最大。">
+<link rel="canonical" href="https://zymojblog.top/p/1282/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1282 简单背包问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个背包能装的重量 (正整数， )，同时有 件物品( )，每件物品有一个重量 (正整数)和一个价值 (正整数)。要求从这 件物品中任取若干件装入背包内，使背包的物品价值最大。">
+<meta property="og:url" content="https://zymojblog.top/p/1282/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1282 简单背包问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个背包能装的重量 (正整数， )，同时有 件物品( )，每件物品有一个重量 (正整数)和一个价值 (正整数)。要求从这 件物品中任取若干件装入背包内，使背包的物品价值最大。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1282 简单背包问题","headline":"1282 简单背包问题 题解","description":"有一个背包能装的重量 (正整数， )，同时有 件物品( )，每件物品有一个重量 (正整数)和一个价值 (正整数)。要求从这 件物品中任取若干件装入背包内，使背包的物品价值最大。","url":"https://zymojblog.top/p/1282/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1282</span></div>
+  <h1 class="seo-title">1282 简单背包问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">动态规划-DP</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98">背包问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1282 - 简单背包问题</h1>
+<h2>题目描述</h2>
+<p>有一个背包能装的重量 $maxw$ (正整数，$0 \le maxw \le 20000$)，同时有 $n$ 件物品($1 \le n \le 100$)，每件物品有一个重量 $w_i$ (正整数)和一个价值 $p_i$ (正整数)。要求从这 $n$ 件物品中任取若干件装入背包内，使背包的物品价值最大。</p>
+<h2>输入</h2>
+<p>第 $1$ 行：背包最大载重 $maxw$，物品总数 $n$ ；</p>
+<p>第 $2$ 行到第 $n+1$ 行：每个物品的重量和价值；</p>
+<h2>输出</h2>
+<p>一个数字即背包内物品最大价值；</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 这是一个经典的0-1背包问题，我们使用动态规划的方法来解决</span>
+<span class="hljs-comment">// 思路：</span>
+<span class="hljs-comment">// 1. 定义一个二维数组dp，dp[i][j]表示前i个物品放入容量为j的背包中所能获得的最大价值</span>
+<span class="hljs-comment">// 2. 初始化dp数组，dp[0][j] = 0，表示没有物品时，无论背包容量是多少，价值都为0</span>
+<span class="hljs-comment">// 3. 对于每个物品i，我们遍历背包容量j从0到maxw</span>
+<span class="hljs-comment">//    - 如果物品i的重量大于当前背包容量j，那么不能放入该物品，dp[i][j] = dp[i - 1][j]</span>
+<span class="hljs-comment">//    - 否则，我们有两种选择：放入物品i或者不放入物品i，取两者中价值较大的情况</span>
+<span class="hljs-comment">//      dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - w[i]] + p[i])</span>
+<span class="hljs-comment">// 4. 最终dp[n][maxw]就是我们所求的结果，即前n个物品放入容量为maxw的背包中所能获得的最大价值</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> maxw, n;
+    cin &gt;&gt; maxw &gt;&gt; n;
+    <span class="hljs-type">int</span> w[<span class="hljs-number">101</span>], p[<span class="hljs-number">101</span>];
+    <span class="hljs-comment">// 读取每个物品的重量和价值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; w[i] &gt;&gt; p[i];
+    }
+    <span class="hljs-type">int</span> dp[<span class="hljs-number">101</span>][<span class="hljs-number">20001</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-comment">// 动态规划计算最大价值</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= maxw; j++) {
+            <span class="hljs-keyword">if</span> (w[i] &gt; j) {
+                dp[i][j] = dp[i - <span class="hljs-number">1</span>][j];
+            } <span class="hljs-keyword">else</span> {
+                dp[i][j] = <span class="hljs-built_in">max</span>(dp[i - <span class="hljs-number">1</span>][j], dp[i - <span class="hljs-number">1</span>][j - w[i]] + p[i]);
+            }
+        }
+    }
+    cout &lt;&lt; dp[n][maxw] &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1282">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

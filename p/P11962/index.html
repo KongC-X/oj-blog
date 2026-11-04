@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11962 [GESP202503 六级] 树上漫步 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有一棵 个结点的树，这些结点依次以 标号。 小 A 想在这棵树上漫步。具体来说，小 A 会从树上的某个结点出发，每一步可以移动到与当前结点相邻的结点，并且小 A 只会在偶数步（可以是零步）后结束漫步。 现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结…">
+<link rel="canonical" href="https://zymojblog.top/p/P11962/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11962 [GESP202503 六级] 树上漫步 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有一棵 个结点的树，这些结点依次以 标号。 小 A 想在这棵树上漫步。具体来说，小 A 会从树上的某个结点出发，每一步可以移动到与当前结点相邻的结点，并且小 A 只会在偶数步（可以是零步）后结束漫步。 现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结…">
+<meta property="og:url" content="https://zymojblog.top/p/P11962/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11962 [GESP202503 六级] 树上漫步 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有一棵 个结点的树，这些结点依次以 标号。 小 A 想在这棵树上漫步。具体来说，小 A 会从树上的某个结点出发，每一步可以移动到与当前结点相邻的结点，并且小 A 只会在偶数步（可以是零步）后结束漫步。 现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11962 [GESP202503 六级] 树上漫步","headline":"P11962 [GESP202503 六级] 树上漫步 题解","description":"小 A 有一棵 个结点的树，这些结点依次以 标号。 小 A 想在这棵树上漫步。具体来说，小 A 会从树上的某个结点出发，每一步可以移动到与当前结点相邻的结点，并且小 A 只会在偶数步（可以是零步）后结束漫步。 现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结…","url":"https://zymojblog.top/p/P11962/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2025、广度优先搜索 BFS、深度优先搜索 DFS、二分图、树的遍历、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11962</span></div>
+  <h1 class="seo-title">P11962 [GESP202503 六级] 树上漫步</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86%E5%9B%BE">二分图</a><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">树的遍历</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11962 [GESP202503 六级] 树上漫步</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>广度优先搜索 BFS</code>、<code>深度优先搜索 DFS</code>、<code>二分图</code>、<code>树的遍历</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1178">https://ti.luogu.com.cn/problemset/1178</a></p>
+<h2>题目描述</h2>
+<p>小 A 有一棵 $n$ 个结点的树，这些结点依次以 $1,2,\cdots,n$ 标号。</p>
+<p>小 A 想在这棵树上漫步。具体来说，小 A 会从树上的某个结点出发，每一步可以移动到与当前结点相邻的结点，并且小 A 只会在偶数步（可以是零步）后结束漫步。</p>
+<p>现在小 A 想知道，对于树上的每个结点，从这个结点出发开始漫步，经过偶数步能结束漫步的结点有多少个（可以经过重复的节点）。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$。</p>
+<p>接下来 $n-1$ 行，每行两个整数 $u_i,v_i$，表示树上有⼀条连接结点 $u_i$ 和结点 $v_i$ 的边。</p>
+<h2>输出格式</h2>
+<p>一行，$n$ 个整数。第 $i$ 个整数表示从结点 $i$ 出发开始漫步，能结束漫步的结点数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2 2 1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">4</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3 3 1 3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 问题核心就一句话：</span>
+<span class="hljs-comment">// 树上的结点可以分成 两组（像棋盘黑白格一样），相邻的结点必须不同组。</span>
+<span class="hljs-comment">// 在同一组里的任意两个结点之间，距离一定是偶数步（因为走一步就到另一组，再走一步就回到自己组，两步一个循环）。</span>
+<span class="hljs-comment">// 所以，从某个结点出发，偶数步能结束的地方，就是和它同组的所有结点（包括它自己）。</span>
+<span class="hljs-comment">// 做法：</span>
+<span class="hljs-comment">// 随便从1号结点开始，DFS 遍历整棵树。</span>
+<span class="hljs-comment">// 用一个变量 walk 记录当前走了多少步，偶数步的归为一组，奇数步的归为另一组。</span>
+<span class="hljs-comment">// 统计每组有多少人。</span>
+<span class="hljs-comment">// 最后每个结点的答案 = 它所在组的人数。</span>
+<span class="hljs-comment">// 复杂度: O(n) 时间，O(n) 空间。</span>
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">200010</span>;
+
+vector&lt;<span class="hljs-type">int</span>&gt; a[N];   <span class="hljs-comment">// 邻接表，a[u] 存储与 u 相连的所有结点</span>
+<span class="hljs-type">int</span> b[<span class="hljs-number">3</span>];         <span class="hljs-comment">// b[1] = 组1的结点数，b[2] = 组2的结点数</span>
+<span class="hljs-type">int</span> c[N];         <span class="hljs-comment">// c[u] = 1 或 2，表示结点 u 属于哪个组</span>
+
+<span class="hljs-comment">// 从 u 出发，已经走了 walk 步</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> walk)</span> </span>{
+    <span class="hljs-keyword">if</span> (walk % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) {
+        c[u] = <span class="hljs-number">2</span>;       <span class="hljs-comment">// 偶数步到达 → 组2</span>
+        b[<span class="hljs-number">2</span>]++;
+    } <span class="hljs-keyword">else</span> {
+        c[u] = <span class="hljs-number">1</span>;       <span class="hljs-comment">// 奇数步到达 → 组1</span>
+        b[<span class="hljs-number">1</span>]++;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; a[u].<span class="hljs-built_in">size</span>(); i ++) {
+        <span class="hljs-type">int</span> v = a[u][i];
+        <span class="hljs-keyword">if</span> (!c[v]) {            <span class="hljs-comment">// 没染色才继续走</span>
+            <span class="hljs-built_in">dfs</span>(v, walk + <span class="hljs-number">1</span>);     <span class="hljs-comment">// 步数 +1</span>
+        }
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 读入 n-1 条边，建双向邻接表</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; n; i ++) {
+        <span class="hljs-type">int</span> u, v;
+        cin &gt;&gt; u &gt;&gt; v;
+        a[u].<span class="hljs-built_in">push_back</span>(v);
+        a[v].<span class="hljs-built_in">push_back</span>(u);
+    }
+
+    <span class="hljs-comment">// 从结点1出发，步数0（偶数），开始DFS染色</span>
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// 输出：每个结点所属组的结点总数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i ++) {
+        cout &lt;&lt; b[c[i]] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11962">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

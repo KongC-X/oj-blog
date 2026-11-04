@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2276 求逆序对问题 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 个数的序列 ，定义一个数对 为 “重要逆序对” 的充要条件为 且 。 求给定序列中“重要逆序对”的个数。">
+<link rel="canonical" href="https://zymojblog.top/p/2276/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2276 求逆序对问题 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 个数的序列 ，定义一个数对 为 “重要逆序对” 的充要条件为 且 。 求给定序列中“重要逆序对”的个数。">
+<meta property="og:url" content="https://zymojblog.top/p/2276/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2276 求逆序对问题 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 个数的序列 ，定义一个数对 为 “重要逆序对” 的充要条件为 且 。 求给定序列中“重要逆序对”的个数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2276 求逆序对问题","headline":"2276 求逆序对问题 题解","description":"给定 个数的序列 ，定义一个数对 为 “重要逆序对” 的充要条件为 且 。 求给定序列中“重要逆序对”的个数。","url":"https://zymojblog.top/p/2276/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2276</span></div>
+  <h1 class="seo-title">2276 求逆序对问题</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2276 - 求逆序对问题</h1>
+<h2>题目描述</h2>
+<p>给定 $N$ 个数的序列 $a_1,a_2, \dots ,a_N$ ，定义一个数对 $(a_i, a_j)$ 为 “重要逆序对” 的充要条件为   且 $a_i &gt; 2 \times a_j$。</p>
+<p>求给定序列中“重要逆序对”的个数。</p>
+<h2>输入</h2>
+<p>本题有多个测试点，每个测试点分为两行：</p>
+<p>第一行为序列中数字的个数 $N$（$1 ≤ N ≤ 200000$）；</p>
+<p>第二行为序列 $a_1, a_2, \dots , a_N$ ($0 ≤a_i≤ 10000000$ )，由空格分开。</p>
+<p>$N=0$ 表示输入结束。</p>
+<h2>输出</h2>
+<p>每个测试点一行，输出一个整数，为给序列中“重要逆序对”的个数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">200005</span>;
+<span class="hljs-type">int</span> a[MAXN];                    <span class="hljs-comment">// 原始序列</span>
+<span class="hljs-type">int</span> tmp[MAXN];                  <span class="hljs-comment">// 归并临时数组</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> ans;                  <span class="hljs-comment">// 重要逆序对总数</span>
+
+<span class="hljs-comment">// 合并两个有序子数组 [l, mid] 和 [mid+1, r]，并统计重要逆序对</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> l, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> r)</span> </span>{
+    <span class="hljs-comment">// 统计重要逆序对：左区间元素 a[i]，右区间元素 a[j]，满足 a[i] &gt; 2 * a[j]</span>
+    <span class="hljs-type">int</span> ptr = mid + <span class="hljs-number">1</span>;                       <span class="hljs-comment">// 指向右区间第一个元素</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = l; i &lt;= mid; i++) {
+        <span class="hljs-comment">// 由于左右区间均升序，随着 i 增大，a[i] 增大，条件 a[i] &gt; 2 * a[ptr] 会持续满足，</span>
+        <span class="hljs-comment">// 所以 ptr 可以单调向右移动，直到条件不满足或越界</span>
+        <span class="hljs-keyword">while</span> (ptr &lt;= r &amp;&amp; a[i] &gt; <span class="hljs-number">2LL</span> * a[ptr]) {
+            ptr++;
+        }
+        <span class="hljs-comment">// ptr 之前（mid+1 到 ptr-1）的所有元素都与 a[i] 构成重要逆序对</span>
+        ans += (ptr - (mid + <span class="hljs-number">1</span>));
+    }
+
+    <span class="hljs-comment">// 普通归并合并（按升序）</span>
+    <span class="hljs-type">int</span> i = l, j = mid + <span class="hljs-number">1</span>, k = l;
+    <span class="hljs-keyword">while</span> (i &lt;= mid &amp;&amp; j &lt;= r) {
+        <span class="hljs-keyword">if</span> (a[i] &lt;= a[j]) tmp[k++] = a[i++];
+        <span class="hljs-keyword">else</span>              tmp[k++] = a[j++];
+    }
+    <span class="hljs-keyword">while</span> (i &lt;= mid) tmp[k++] = a[i++];
+    <span class="hljs-keyword">while</span> (j &lt;= r)   tmp[k++] = a[j++];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> p = l; p &lt;= r; p++) a[p] = tmp[p];
+}
+
+<span class="hljs-comment">// 归并排序递归函数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> </span>{
+    <span class="hljs-keyword">if</span> (l &gt;= r) <span class="hljs-keyword">return</span>;
+    <span class="hljs-type">int</span> mid = (l + r) / <span class="hljs-number">2</span>;
+    <span class="hljs-built_in">mergeSort</span>(l, mid);
+    <span class="hljs-built_in">mergeSort</span>(mid + <span class="hljs-number">1</span>, r);
+    <span class="hljs-built_in">merge</span>(l, mid, r);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n;                     <span class="hljs-comment">// 序列长度</span>
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; n &amp;&amp; n != <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i];
+
+        ans = <span class="hljs-number">0</span>;
+        <span class="hljs-built_in">mergeSort</span>(<span class="hljs-number">1</span>, n);
+        cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2276">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

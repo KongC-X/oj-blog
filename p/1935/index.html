@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1935 公交换乘（transfer） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="著名旅游城市 B 市为了鼓励大家采用公共交通方式出行，推出了一种地铁换乘公交车的优惠方案： 在搭乘一次地铁后可以获得一张优惠票，有效期为 45 分钟，在有效期内可以消耗这张优惠票，免费搭乘一次票价不超过地铁票价的公交车。在有效期内指开始乘公交车的时间与开始乘地铁的时间之差小于等于 45 分钟，即：…">
+<link rel="canonical" href="https://zymojblog.top/p/1935/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1935 公交换乘（transfer） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="著名旅游城市 B 市为了鼓励大家采用公共交通方式出行，推出了一种地铁换乘公交车的优惠方案： 在搭乘一次地铁后可以获得一张优惠票，有效期为 45 分钟，在有效期内可以消耗这张优惠票，免费搭乘一次票价不超过地铁票价的公交车。在有效期内指开始乘公交车的时间与开始乘地铁的时间之差小于等于 45 分钟，即：…">
+<meta property="og:url" content="https://zymojblog.top/p/1935/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1935 公交换乘（transfer） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="著名旅游城市 B 市为了鼓励大家采用公共交通方式出行，推出了一种地铁换乘公交车的优惠方案： 在搭乘一次地铁后可以获得一张优惠票，有效期为 45 分钟，在有效期内可以消耗这张优惠票，免费搭乘一次票价不超过地铁票价的公交车。在有效期内指开始乘公交车的时间与开始乘地铁的时间之差小于等于 45 分钟，即：…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1935 公交换乘（transfer）","headline":"1935 公交换乘（transfer） 题解","description":"著名旅游城市 B 市为了鼓励大家采用公共交通方式出行，推出了一种地铁换乘公交车的优惠方案： 在搭乘一次地铁后可以获得一张优惠票，有效期为 45 分钟，在有效期内可以消耗这张优惠票，免费搭乘一次票价不超过地铁票价的公交车。在有效期内指开始乘公交车的时间与开始乘地铁的时间之差小于等于 45 分钟，即：…","url":"https://zymojblog.top/p/1935/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"noip复赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1935</span></div>
+  <h1 class="seo-title">1935 公交换乘（transfer）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>1935 - 公交换乘（transfer）</h1>
+<h2>题目描述</h2>
+<p>著名旅游城市 B 市为了鼓励大家采用公共交通方式出行，推出了一种地铁换乘公交车的优惠方案：</p>
+<ul>
+<li><p>在搭乘一次地铁后可以获得一张优惠票，有效期为 45 分钟，在有效期内可以消耗这张优惠票，免费搭乘一次票价不超过地铁票价的公交车。在有效期内指开始乘公交车的时间与开始乘地铁的时间之差小于等于 45 分钟，即：<br>$t$$bus$ $-$ $t$$subway$ $\leq 45$</p>
+</li>
+<li><p>搭乘地铁获得的优惠票可以累积，即可以连续搭乘若干次地铁后再连续使用优惠票搭乘公交车。</p>
+</li>
+<li><p>搭乘公交车时，如果可以使用优惠票一定会使用优惠票；如果有多张优惠票满足条件，则优先消耗获得最早的优惠票。</p>
+</li>
+</ul>
+<p>现在你得到了小轩最近的公共交通出行记录，你能帮他算算他的花费吗?</p>
+<h2>输入</h2>
+<p>输入文件的第一行包含一个正整数 $n$，代表乘车记录的数量。</p>
+<p>接下来的 $n$ 行，每行包含 3 个整数，相邻两数之间以一个空格分隔。第 $i$ 行的第 1 个整数代表第 $i$ 条记录乘坐的交通工具，0 代表地铁，1 代表公交车；第 2 个整数代表第 $i$ 条记录乘车的票价 $price_i$ ；第三个整数代表第 $i$ 条记录开始乘车的时间 $t_i$（距 0 时刻的分钟数）。</p>
+<p>我们保证出行记录是按照开始乘车的时间顺序给出的，且不会有两次乘车记录出现在同一分钟。</p>
+<h2>输出</h2>
+<p>输出文件有一行，包含一个正整数，代表小轩出行的总花费。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 乘坐地铁时，花费价格直接加到总和,否则往前枚举.</span>
+<span class="hljs-comment">// 首先，如果时间相差超过 45 分钟，直接结束。</span>
+<span class="hljs-comment">// 之后判断：如果乘坐的是地铁，花费的价格更高，且优惠卷没被使用，那就使用优惠卷，否则原价购买。</span>
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n,ans,b[<span class="hljs-number">100005</span>],x;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> p,t;<span class="hljs-comment">// price 价格，time 时间</span>
+    <span class="hljs-type">bool</span> c;<span class="hljs-comment">//c 乘车种类</span>
+}a[<span class="hljs-number">100005</span>];
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        cin&gt;&gt;a[i].c&gt;&gt;a[i].p&gt;&gt;a[i].t;
+    } 
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">if</span>(a[i].c==<span class="hljs-number">0</span>) ans+=a[i].p;<span class="hljs-comment">//如果是地铁直接坐。</span>
+        <span class="hljs-keyword">else</span>{<span class="hljs-comment">//如果是公交车，考虑使用优惠卷。</span>
+            x=<span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=i<span class="hljs-number">-1</span>;j&gt;=<span class="hljs-number">1</span>;j--){<span class="hljs-comment">//枚举他前面的乘车记录。</span>
+                <span class="hljs-keyword">if</span>(a[i].t-a[j].t&gt;<span class="hljs-number">45</span>) <span class="hljs-keyword">break</span>;
+                <span class="hljs-keyword">if</span>(a[j].p&gt;=a[i].p&amp;&amp;a[j].c==<span class="hljs-number">0</span>&amp;&amp;b[j]==<span class="hljs-number">0</span>){
+                    x=j;
+                }<span class="hljs-comment">//满足要求。</span>
+            }
+            <span class="hljs-keyword">if</span>(x==<span class="hljs-number">-1</span>) ans+=a[i].p;
+            <span class="hljs-keyword">else</span> b[x]=<span class="hljs-number">1</span>;	<span class="hljs-comment">//记得标记已使用。</span>
+        }		
+    }
+    cout&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1935">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

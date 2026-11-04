@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2070 道路规划 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
+<link rel="canonical" href="https://zymojblog.top/p/2070/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2070 道路规划 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
+<meta property="og:url" content="https://zymojblog.top/p/2070/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2070 道路规划 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2070 道路规划","headline":"2070 道路规划 题解","description":"有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…","url":"https://zymojblog.top/p/2070/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2070</span></div>
+  <h1 class="seo-title">2070 道路规划</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>2070 - 道路规划</h1>
+<h2>题目描述</h2>
+<p>有 $N$ 个村庄，编号从 $1$ 到 $N$ ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 $A$ 和 $B$ 是相连的，当且仅当有一条公路在 $A$ 与 $B$之间，或存在一个村庄 $C$，有一条的道路连接着 $A$ 和 $C$ 之间,一条连接着 $B$ 和 $C$ 。</p>
+<p>我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造总和最低。</p>
+<h2>输入</h2>
+<p>第一行是一个整数 $N$ ($3 \le N \le 100$)，表示村庄的数量。</p>
+<p>接下来 $N$ 行，每行包含 $N$ 个整数，在这 $N$ 行中的第 $i$ 行的第 $j$ 个整数 $A$$ij$ 表示村庄 $i$ 到村庄 $j$ 建立道路的费用 ($1 \le A$$ij$$ \le 1000$)。</p>
+<p>然后有一个整数 $Q$ ($0 \le Q \le N \times (N + 1)/2$)。</p>
+<p>接下来再 $Q$ 行，每一行包含两个整数 $a$ 和 $b$ ($1 \le a \lt b \le N$)，即村庄 $a$ 和 $b$ 之间已经建成道路。</p>
+<h2>输出</h2>
+<p>你应该输出一行包含一个整数，表示所有村庄都连接所要建设道路的最小费用。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> f[<span class="hljs-number">110</span>];                      <span class="hljs-comment">// 并查集父节点数组</span>
+
+<span class="hljs-comment">// 边结构体</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> x, y, len;               <span class="hljs-comment">// x,y:村庄编号, len:修建费用</span>
+} a[<span class="hljs-number">10010</span>];                      <span class="hljs-comment">// 最多约4950条边，开10010足够</span>
+
+<span class="hljs-type">int</span> n, Q, k;                     <span class="hljs-comment">// n:村庄数, Q:已有道路数, k:边的总数</span>
+<span class="hljs-type">int</span> ans;                         <span class="hljs-comment">// 最终的最小费用</span>
+
+<span class="hljs-comment">// 排序比较函数：按边权从小到大</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Node a, Node b)</span> </span>{
+    <span class="hljs-keyword">return</span> a.len &lt; b.len;
+}
+
+<span class="hljs-comment">// 并查集查找根节点（路径压缩）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">return</span> x == f[x] ? x : f[x] = <span class="hljs-built_in">find</span>(f[x]);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 读入邻接矩阵，只存上三角（i &lt; j），避免重复边</span>
+    <span class="hljs-type">int</span> cost;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++) {
+            cin &gt;&gt; cost;
+            <span class="hljs-keyword">if</span> (i &lt; j) {
+                k++;             <span class="hljs-comment">// 边数加1</span>
+                a[k].x = i;
+                a[k].y = j;
+                a[k].len = cost;
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 初始化并查集</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) f[i] = i;
+
+    <span class="hljs-comment">// 读入已有道路数</span>
+    cin &gt;&gt; Q;
+    <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;                   <span class="hljs-comment">// 已经修好的道路数（包括已有道路和新修道路）</span>
+    <span class="hljs-comment">// 将已有道路直接合并（费用为0）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; Q; i++) {
+        <span class="hljs-type">int</span> x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+        <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+        <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+        <span class="hljs-keyword">if</span> (fx != fy) {
+            f[fx] = fy;
+            c++;                 <span class="hljs-comment">// 已经连通的道路数增加</span>
+        }
+    }
+
+    <span class="hljs-comment">// 如果已有道路已经使所有村庄连通，直接输出0</span>
+    <span class="hljs-keyword">if</span> (c == n - <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 将所有边按费用从小到大排序</span>
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + k + <span class="hljs-number">1</span>, cmp);
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                 <span class="hljs-comment">// 还需要花费的总费用</span>
+    <span class="hljs-comment">// 遍历排序后的边，执行Kruskal</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= k; i++) {
+        <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(a[i].x);
+        <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(a[i].y);
+        <span class="hljs-keyword">if</span> (fx != fy) {
+            f[fx] = fy;          <span class="hljs-comment">// 合并两个集合</span>
+            ans += a[i].len;     <span class="hljs-comment">// 累加修建费用</span>
+            c++;                 <span class="hljs-comment">// 修路数加1</span>
+        }
+        <span class="hljs-comment">// 当连通的道路数达到 n-1 时，所有村庄已连通</span>
+        <span class="hljs-keyword">if</span> (c == n - <span class="hljs-number">1</span>) {
+            cout &lt;&lt; ans &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2070">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

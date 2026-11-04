@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3899 小杨的武器 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨有 种不同的武器，他对第 种武器的初始熟练度为 。 小杨会依次参加 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第 种武器参加了第 场战斗，战斗前该武器的熟练度为 ，则战斗后小杨对该武器的熟练度会变为 。需要注意的是 ， 可能是正数， 或负数，这意味着小杨参加战斗后对武器的熟…">
+<link rel="canonical" href="https://zymojblog.top/p/3899/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="3899 小杨的武器 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨有 种不同的武器，他对第 种武器的初始熟练度为 。 小杨会依次参加 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第 种武器参加了第 场战斗，战斗前该武器的熟练度为 ，则战斗后小杨对该武器的熟练度会变为 。需要注意的是 ， 可能是正数， 或负数，这意味着小杨参加战斗后对武器的熟…">
+<meta property="og:url" content="https://zymojblog.top/p/3899/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3899 小杨的武器 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨有 种不同的武器，他对第 种武器的初始熟练度为 。 小杨会依次参加 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第 种武器参加了第 场战斗，战斗前该武器的熟练度为 ，则战斗后小杨对该武器的熟练度会变为 。需要注意的是 ， 可能是正数， 或负数，这意味着小杨参加战斗后对武器的熟…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"3899 小杨的武器","headline":"3899 小杨的武器 题解","description":"小杨有 种不同的武器，他对第 种武器的初始熟练度为 。 小杨会依次参加 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第 种武器参加了第 场战斗，战斗前该武器的熟练度为 ，则战斗后小杨对该武器的熟练度会变为 。需要注意的是 ， 可能是正数， 或负数，这意味着小杨参加战斗后对武器的熟…","url":"https://zymojblog.top/p/3899/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP五级、贪心、24年9月","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>3899</span></div>
+  <h1 class="seo-title">3899 小杨的武器</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/GESP%E4%BA%94%E7%BA%A7">GESP五级</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/24%E5%B9%B49%E6%9C%88">24年9月</a></div>
+  <article class="markdown-body seo-article">
+<h1>3899 - 小杨的武器</h1>
+<h2>题目描述</h2>
+<p>小杨有 $n$种不同的武器，他对第 $i$ 种武器的初始熟练度为 $c_i$ 。</p>
+<p>小杨会依次参加 $m$ 场战斗，每场战斗小杨只能且必须选择一种武器使用，假设小杨使用了第  $i$ 种武器参加了第 $j$ 场战斗，战斗前该武器的熟练度为 $c_i$ ，则战斗后小杨对该武器的熟练度会变为 $c_i+a_j$ 。需要注意的是 $a_j$， 可能是正数， $0$ 或负数，这意味着小杨参加战斗后对武器的熟练度可能会提高，也可能会不变，还有可能降低。</p>
+<p>小杨想请你编写程序帮他计算出如何选择武器才能使得 $m$ 场战斗后，自己对 $n$ 种武器的熟练度的<strong>最大值尽可能大</strong>。</p>
+<h2>输入</h2>
+<p>第一行包含两个正整数 $n，m$，含义如题面所示。</p>
+<p>第二行包含 $n$ 个正整数 $c_1,c_2,\dots,c_n,$代表小杨对武器的初始熟练度。</p>
+<p>第三行包含 $m$ 个正整数 $a_1,a_2,\dots,a_m,$代表每场战斗后武器熟练度的变化值。</p>
+<h2>输出</h2>
+<p>输出一个整数，代表 $m$场战斗后小杨对 $n$种武器的熟练度的最大值最大是多少。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n, m, maxn = INT_MIN;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>, tmp; i &lt;= n; i++){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;tmp);
+        maxn = <span class="hljs-built_in">max</span>(maxn, tmp); <span class="hljs-comment">// 找最大值</span>
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>, tmp; i &lt;= m; i++){
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;tmp);
+        <span class="hljs-keyword">if</span>(n == <span class="hljs-number">1</span>) maxn += tmp; <span class="hljs-comment">// 只有一个元素就全加</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(tmp &gt; <span class="hljs-number">0</span>) maxn += tmp; <span class="hljs-comment">// 否则只要正数</span>
+    }
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>, maxn);
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/3899">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

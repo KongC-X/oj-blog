@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4319 [语言月赛 202504] 礼堂预约 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 M 所在的学校有一个礼堂，礼堂里至多能同时进行一个活动，因此需要预约。每个活动占据某一天的上午、下午或者晚上。 礼堂负责人按照时间顺序接收到了 个活动预约，其中第 个活动预约描述了活动如下信息： 活动类型 ：一个大写字母，O 表示学校官方活动，C 表示社团活动，P 表示个人活动。 活动日期 ：…">
+<link rel="canonical" href="https://zymojblog.top/p/B4319/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4319 [语言月赛 202504] 礼堂预约 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 M 所在的学校有一个礼堂，礼堂里至多能同时进行一个活动，因此需要预约。每个活动占据某一天的上午、下午或者晚上。 礼堂负责人按照时间顺序接收到了 个活动预约，其中第 个活动预约描述了活动如下信息： 活动类型 ：一个大写字母，O 表示学校官方活动，C 表示社团活动，P 表示个人活动。 活动日期 ：…">
+<meta property="og:url" content="https://zymojblog.top/p/B4319/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4319 [语言月赛 202504] 礼堂预约 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 M 所在的学校有一个礼堂，礼堂里至多能同时进行一个活动，因此需要预约。每个活动占据某一天的上午、下午或者晚上。 礼堂负责人按照时间顺序接收到了 个活动预约，其中第 个活动预约描述了活动如下信息： 活动类型 ：一个大写字母，O 表示学校官方活动，C 表示社团活动，P 表示个人活动。 活动日期 ：…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4319 [语言月赛 202504] 礼堂预约","headline":"B4319 [语言月赛 202504] 礼堂预约 题解","description":"小 M 所在的学校有一个礼堂，礼堂里至多能同时进行一个活动，因此需要预约。每个活动占据某一天的上午、下午或者晚上。 礼堂负责人按照时间顺序接收到了 个活动预约，其中第 个活动预约描述了活动如下信息： 活动类型 ：一个大写字母，O 表示学校官方活动，C 表示社团活动，P 表示个人活动。 活动日期 ：…","url":"https://zymojblog.top/p/B4319/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、2025、排序、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4319</span></div>
+  <h1 class="seo-title">B4319 [语言月赛 202504] 礼堂预约</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4319 [语言月赛 202504] 礼堂预约</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2025</code>、<code>排序</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>小 M 所在的学校有一个礼堂，礼堂里至多能同时进行一个活动，因此需要预约。每个活动占据<strong>某一天</strong>的上午、下午或者晚上。</p>
+<p>礼堂负责人<strong>按照时间顺序</strong>接收到了 $n$ 个活动预约，其中第 $i$ 个活动预约描述了活动如下信息：</p>
+<ul>
+<li>活动类型 $type_i$：一个大写字母，<code>O</code> 表示学校官方活动，<code>C</code> 表示社团活动，<code>P</code> 表示个人活动。</li>
+<li>活动日期 $date_i$：使用 <code>YYYYMMDD</code> 格式表示，例如 <code>20250411</code> 表示 $2025$ 年 $4$ 月 $11$ 日。</li>
+<li>活动时间 $time_i$：一个大写字母，<code>M</code> 表示上午，<code>A</code> 表示下午，<code>E</code> 表示晚上。</li>
+</ul>
+<p>负责人每收到一个新的活动预约，会直接加入日程，接下来重复执行如下流程，直到日程里没有冲突：</p>
+<ul>
+<li>我们规定学校官方活动<strong>优先于</strong>社团活动<strong>优先于</strong>个人活动。如果冲突的两个活动预约类型不同，那么把优先程度更低的活动向后挪一天（活动时间不变）。</li>
+<li>如果冲突的两个活动类型相同，那么遵循先到先得的原则，把较后预约的活动向后挪一天。</li>
+<li>注意向后挪动一天可能引发新的冲突，此时对于新冲突的两个活动，仍然按照上述方案调整。</li>
+</ul>
+<p>给出这 $n$ 个活动预约的信息，请输出最终每个活动在日程里的活动日期，<strong>按照活动预约的提交顺序输出。</strong></p>
+<h2>输入格式</h2>
+<p>输入的第一行有一个正整数 $n$，表示活动个数。</p>
+<p>之后 $n$ 行，每行依次输入一个大写字母 $type_i$、一个八位数日期 $date_i$ 和一个大写字母 $time_i$，表示一个活动预约，具体含义同题目描述。</p>
+<h2>输出格式</h2>
+<p>输出 $n$ 行，每行一个八位数日期，其中第 $i$ 行表示的是第 $i$ 个提交的活动预约最终的日期。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+P <span class="hljs-number">20250419</span> A
+O <span class="hljs-number">20250419</span> A
+C <span class="hljs-number">20250419</span> A
+C <span class="hljs-number">20250419</span> E
+C <span class="hljs-number">20250420</span> A</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20250422</span>
+<span class="hljs-number">20250419</span>
+<span class="hljs-number">20250420</span>
+<span class="hljs-number">20250419</span>
+<span class="hljs-number">20250421</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+P <span class="hljs-number">20280228</span> M
+P <span class="hljs-number">20280228</span> M
+P <span class="hljs-number">20290228</span> A
+P <span class="hljs-number">20290228</span> A
+P <span class="hljs-number">20991231</span> E
+P <span class="hljs-number">20991231</span> E</code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20280228</span>
+<span class="hljs-number">20280229</span>
+<span class="hljs-number">20290228</span>
+<span class="hljs-number">20290301</span>
+<span class="hljs-number">20991231</span>
+<span class="hljs-number">21000101</span></code></pre><p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+C <span class="hljs-number">20250419</span> E
+C <span class="hljs-number">20250420</span> A
+P <span class="hljs-number">20250419</span> A
+O <span class="hljs-number">20250419</span> A
+C <span class="hljs-number">20250419</span> A</code></pre><p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20250419</span>
+<span class="hljs-number">20250420</span>
+<span class="hljs-number">20250422</span>
+<span class="hljs-number">20250419</span>
+<span class="hljs-number">20250421</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+ * 【题目类型】模拟 + 冲突解决（队列化插入）
+ * 【核心思路】
+ * 1. 按提交顺序逐个处理活动，但用队列来管理“待插入”的活动。
+ * 2. 用 map&lt;int,int&gt; occ 记录当前已占用的（日期+时间段）→ 活动编号。
+ * 3. 每次从队列取出一个活动 cur，尝试插入：
+ *    - 若位置空闲，直接插入并继续处理队列中下一个。
+ *    - 若位置已被活动 j 占用，则比较 cur 和 j 的优先级：
+ *      * 类型不同时，优先级低的（数字小）被挪动；
+ *      * 类型相同时，后提交的（id大）被挪动。
+ *    - 被挪动的活动日期+1，并重新加入队列（因为它需要重新找位置）。
+ *    - 另一个活动（未挪动的）也需重新加入队列，因为原位置可能已空。
+ * 4. 重复直到队列为空，所有活动都安置完毕。
+ * 5. 最后按原始提交顺序输出每个活动的最终日期。
+ *
+ * 【时间复杂度】每个活动被挪动的次数有限，总操作数远小于 O(n²)，n=5000 通过。
+ */</span>
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Date</span> {
+    <span class="hljs-type">int</span> y, m, d;   <span class="hljs-comment">// 年、月、日</span>
+};
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Act</span> {
+    <span class="hljs-type">int</span> id;         <span class="hljs-comment">// 提交顺序编号（从0开始）</span>
+    <span class="hljs-type">int</span> type;       <span class="hljs-comment">// 优先级：O=3, C=2, P=1</span>
+    Date date;      <span class="hljs-comment">// 当前日期</span>
+    <span class="hljs-type">int</span> time;       <span class="hljs-comment">// 时间段：M=0, A=1, E=2</span>
+};
+
+<span class="hljs-type">int</span> n;              <span class="hljs-comment">// 活动总数</span>
+Act a[<span class="hljs-number">5005</span>];        <span class="hljs-comment">// a[i] 存储第 i 个活动（按提交顺序）</span>
+
+<span class="hljs-comment">// 闰年判断</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isLeap</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-keyword">return</span> (y % <span class="hljs-number">4</span> == <span class="hljs-number">0</span> &amp;&amp; y % <span class="hljs-number">100</span> != <span class="hljs-number">0</span>) || (y % <span class="hljs-number">400</span> == <span class="hljs-number">0</span>);
+}
+
+<span class="hljs-comment">// 某年某月的天数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">daysInMonth</span><span class="hljs-params">(<span class="hljs-type">int</span> y, <span class="hljs-type">int</span> m)</span> </span>{
+    <span class="hljs-keyword">if</span> (m == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-built_in">isLeap</span>(y) ? <span class="hljs-number">29</span> : <span class="hljs-number">28</span>;
+    <span class="hljs-keyword">if</span> (m == <span class="hljs-number">4</span> || m == <span class="hljs-number">6</span> || m == <span class="hljs-number">9</span> || m == <span class="hljs-number">11</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">30</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">31</span>;
+}
+
+<span class="hljs-comment">// 日期加一天</span>
+<span class="hljs-function">Date <span class="hljs-title">nextDay</span><span class="hljs-params">(Date d)</span> </span>{
+    d.d++;
+    <span class="hljs-keyword">if</span> (d.d &gt; <span class="hljs-built_in">daysInMonth</span>(d.y, d.m)) {
+        d.d = <span class="hljs-number">1</span>;
+        d.m++;
+        <span class="hljs-keyword">if</span> (d.m &gt; <span class="hljs-number">12</span>) {
+            d.m = <span class="hljs-number">1</span>;
+            d.y++;
+        }
+    }
+    <span class="hljs-keyword">return</span> d;
+}
+
+<span class="hljs-comment">// 将日期和时间段转换为唯一整数 key（用于 map）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">getKey</span><span class="hljs-params">(Date d, <span class="hljs-type">int</span> t)</span> </span>{
+    <span class="hljs-type">int</span> dateInt = d.y * <span class="hljs-number">10000</span> + d.m * <span class="hljs-number">100</span> + d.d;  <span class="hljs-comment">// 如 20250419</span>
+    <span class="hljs-keyword">return</span> dateInt * <span class="hljs-number">3</span> + t;    <span class="hljs-comment">// *3 区分 M(0), A(1), E(2)</span>
+}
+
+<span class="hljs-comment">// 决定冲突双方谁该挪动，返回需要挪动的活动编号</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">decide</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> </span>{
+    <span class="hljs-comment">// 类型不同：优先级低的（数字小）挪动</span>
+    <span class="hljs-keyword">if</span> (a[i].type != a[j].type) {
+        <span class="hljs-keyword">return</span> (a[i].type &lt; a[j].type) ? i : j;
+    }
+    <span class="hljs-comment">// 类型相同：后提交的（id大）挪动</span>
+    <span class="hljs-keyword">return</span> (a[i].id &gt; a[j].id) ? i : j;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 读入活动数量</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-comment">// 读入每个活动的原始信息</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">char</span> typeChar, timeChar;
+        string dateStr;
+        cin &gt;&gt; typeChar &gt;&gt; dateStr &gt;&gt; timeChar;
+
+        a[i].id = i;
+
+        <span class="hljs-comment">// 类型转数字</span>
+        <span class="hljs-keyword">if</span> (typeChar == <span class="hljs-string">&#x27;O&#x27;</span>) a[i].type = <span class="hljs-number">3</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (typeChar == <span class="hljs-string">&#x27;C&#x27;</span>) a[i].type = <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">else</span> a[i].type = <span class="hljs-number">1</span>;   <span class="hljs-comment">// &#x27;P&#x27;</span>
+
+        <span class="hljs-comment">// 解析日期</span>
+        a[i].date.y = <span class="hljs-built_in">stoi</span>(dateStr.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, <span class="hljs-number">4</span>));
+        a[i].date.m = <span class="hljs-built_in">stoi</span>(dateStr.<span class="hljs-built_in">substr</span>(<span class="hljs-number">4</span>, <span class="hljs-number">2</span>));
+        a[i].date.d = <span class="hljs-built_in">stoi</span>(dateStr.<span class="hljs-built_in">substr</span>(<span class="hljs-number">6</span>, <span class="hljs-number">2</span>));
+
+        <span class="hljs-comment">// 时间段转数字</span>
+        <span class="hljs-keyword">if</span> (timeChar == <span class="hljs-string">&#x27;M&#x27;</span>) a[i].time = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (timeChar == <span class="hljs-string">&#x27;A&#x27;</span>) a[i].time = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> a[i].time = <span class="hljs-number">2</span>;   <span class="hljs-comment">// &#x27;E&#x27;</span>
+    }
+
+    map&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt; occ;   <span class="hljs-comment">// 当前已占用的 (key → 活动编号)</span>
+    queue&lt;<span class="hljs-type">int</span>&gt; q;        <span class="hljs-comment">// 待插入的活动队列</span>
+
+    <span class="hljs-comment">// 按提交顺序将每个活动加入队列</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        q.<span class="hljs-built_in">push</span>(i);
+
+        <span class="hljs-comment">// 处理队列中的所有待插入活动（包括因冲突被挪动的）</span>
+        <span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) {
+            <span class="hljs-type">int</span> cur = q.<span class="hljs-built_in">front</span>();
+            q.<span class="hljs-built_in">pop</span>();
+
+            <span class="hljs-type">int</span> key = <span class="hljs-built_in">getKey</span>(a[cur].date, a[cur].time);
+
+            <span class="hljs-keyword">if</span> (occ.<span class="hljs-built_in">find</span>(key) == occ.<span class="hljs-built_in">end</span>()) {
+                <span class="hljs-comment">// 无冲突，直接插入</span>
+                occ[key] = cur;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 冲突，取出已占用的活动编号</span>
+                <span class="hljs-type">int</span> j = occ[key];
+                <span class="hljs-type">int</span> moveId = <span class="hljs-built_in">decide</span>(cur, j);   <span class="hljs-comment">// 决定谁挪动</span>
+
+                <span class="hljs-keyword">if</span> (moveId == cur) {
+                    <span class="hljs-comment">// 挪动的是当前活动 cur（尚未插入）</span>
+                    a[cur].date = <span class="hljs-built_in">nextDay</span>(a[cur].date);
+                    q.<span class="hljs-built_in">push</span>(cur);   <span class="hljs-comment">// 重新尝试插入</span>
+                    <span class="hljs-comment">// 注意：occ 中仍然保留 j，因为 cur 被挪走，位置不变</span>
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-comment">// 挪动的是已存在的活动 j</span>
+                    occ.<span class="hljs-built_in">erase</span>(key);                <span class="hljs-comment">// 先删除原占用</span>
+                    a[j].date = <span class="hljs-built_in">nextDay</span>(a[j].date);
+                    q.<span class="hljs-built_in">push</span>(j);                    <span class="hljs-comment">// j 需要重新找位置</span>
+                    q.<span class="hljs-built_in">push</span>(cur);                  <span class="hljs-comment">// cur 也要重新尝试插入</span>
+                    <span class="hljs-comment">// 因为原位置空了，cur 可能可以插入，所以一起加回队列</span>
+                }
+            }
+        }
+    }
+
+    <span class="hljs-comment">// 按原始提交顺序输出最终日期</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cout &lt;&lt; <span class="hljs-built_in">setw</span>(<span class="hljs-number">4</span>) &lt;&lt; <span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>) &lt;&lt; a[i].date.y;
+        cout &lt;&lt; <span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>) &lt;&lt; a[i].date.m;
+        cout &lt;&lt; <span class="hljs-built_in">setw</span>(<span class="hljs-number">2</span>) &lt;&lt; <span class="hljs-built_in">setfill</span>(<span class="hljs-string">&#x27;0&#x27;</span>) &lt;&lt; a[i].date.d &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4319">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4106 [CSP-X2024 山东] 翻硬币 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="枚硬币从左到右依次排成一排，编号依次为 到 。硬币的正面朝上用 表示，背面朝上用 表示，一开始所有的硬币都是正面朝上。 现进行 次操作，每次操作是把一个区间内的所有硬币翻过来：原来正面朝上的变为反面朝上，原来反面朝上的变为正面朝上。 第 次操作的区间 ：表示把从第 到第 枚之间的所有硬币都翻过来。…">
+<link rel="canonical" href="https://zymojblog.top/p/B4106/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4106 [CSP-X2024 山东] 翻硬币 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="枚硬币从左到右依次排成一排，编号依次为 到 。硬币的正面朝上用 表示，背面朝上用 表示，一开始所有的硬币都是正面朝上。 现进行 次操作，每次操作是把一个区间内的所有硬币翻过来：原来正面朝上的变为反面朝上，原来反面朝上的变为正面朝上。 第 次操作的区间 ：表示把从第 到第 枚之间的所有硬币都翻过来。…">
+<meta property="og:url" content="https://zymojblog.top/p/B4106/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4106 [CSP-X2024 山东] 翻硬币 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="枚硬币从左到右依次排成一排，编号依次为 到 。硬币的正面朝上用 表示，背面朝上用 表示，一开始所有的硬币都是正面朝上。 现进行 次操作，每次操作是把一个区间内的所有硬币翻过来：原来正面朝上的变为反面朝上，原来反面朝上的变为正面朝上。 第 次操作的区间 ：表示把从第 到第 枚之间的所有硬币都翻过来。…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4106 [CSP-X2024 山东] 翻硬币","headline":"B4106 [CSP-X2024 山东] 翻硬币 题解","description":"枚硬币从左到右依次排成一排，编号依次为 到 。硬币的正面朝上用 表示，背面朝上用 表示，一开始所有的硬币都是正面朝上。 现进行 次操作，每次操作是把一个区间内的所有硬币翻过来：原来正面朝上的变为反面朝上，原来反面朝上的变为正面朝上。 第 次操作的区间 ：表示把从第 到第 枚之间的所有硬币都翻过来。…","url":"https://zymojblog.top/p/B4106/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2024、山东、差分、CSP-X 小学组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4106</span></div>
+  <h1 class="seo-title">B4106 [CSP-X2024 山东] 翻硬币</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E5%B1%B1%E4%B8%9C">山东</a><a class="seo-tag" href="/#/tag/%E5%B7%AE%E5%88%86">差分</a><a class="seo-tag" href="/#/tag/CSP-X%20%E5%B0%8F%E5%AD%A6%E7%BB%84">CSP-X 小学组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4106 [CSP-X2024 山东] 翻硬币</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2024</code>、<code>山东</code>、<code>差分</code>、<code>CSP-X 小学组</code></p>
+<h2>题目描述</h2>
+<p>$n$ 枚硬币从左到右依次排成一排，编号依次为 $1$ 到 $n$。硬币的正面朝上用 $0$ 表示，背面朝上用 $1$ 表示，一开始所有的硬币都是正面朝上。</p>
+<p>现进行 $m$ 次操作，每次操作是把一个区间内的所有硬币翻过来：原来正面朝上的变为反面朝上，原来反面朝上的变为正面朝上。</p>
+<p>第 $i$ 次操作的区间 $[l_i,r_i]$：表示把从第 $l_i$ 到第 $r_i$ 枚之间的所有硬币都翻过来。</p>
+<p>求 $m$ 次操作后所有硬币从左到右依次组成的 $01$ 数字序列。</p>
+<h2>输入格式</h2>
+<p>第一行整数 $n$ 和整数 $m$，表示一共有 $n$ 枚硬币和 $m$ 次操作。</p>
+<p>以下 $m$ 行，每行两个正数数 $l_i,r_i$，依次表示每次操作区间。</p>
+<h2>输出格式</h2>
+<p>$m$ 次操作结束后 $n$ 枚硬币从左到右依次组成的 $01$ 数字序列。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>10101```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">5</span>
+<span class="hljs-number">1</span> <span class="hljs-number">6</span>
+<span class="hljs-number">8</span> <span class="hljs-number">10</span>
+<span class="hljs-number">3</span> <span class="hljs-number">7</span>
+<span class="hljs-number">4</span> <span class="hljs-number">6</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>1010011111```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n, m;               <span class="hljs-comment">// n: 硬币数量, m: 操作次数</span>
+<span class="hljs-type">int</span> a[<span class="hljs-number">1000010</span>];         <span class="hljs-comment">// a[]: 差分数组，记录每个位置翻转次数的变化</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 核心思路：
+     * 1. 初始所有硬币都是正面（0）。
+     * 2. 每次区间翻转，等价于将该区间内每个位置被翻转的次数 +1。
+     * 3. 用差分数组 a[] 来记录区间加减操作：
+     *    - 对区间 [l, r] 翻转，执行 a[l] += 1，a[r+1] -= 1。
+     *    - 因为 a[l] 表示从 l 开始的翻转次数变化，a[r+1] 表示在 r+1 处减少。
+     *    - 这样，前缀和 sum 就能表示当前位置总共被翻转了多少次。
+     * 4. 最后从左到右计算前缀和 sum，sum%2 就是最终状态：
+     *    - sum%2 == 0 → 正面（0）
+     *    - sum%2 == 1 → 反面（1）
+     *
+     * 为什么不用异或？
+     * 用加减法同样有效，而且更符合差分数组的标准定义，容易理解。
+     * 因为每次翻转相当于“取反”，即奇数次翻转变反面，偶数次翻转变正面。
+     * 所以只需要统计每个位置被翻转的总次数，看奇偶性即可。
+     *
+     * 时间复杂度：O(n + m)，空间 O(n)。
+     * ======================================================================
+     */</span>
+
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-type">int</span> l, r;
+        cin &gt;&gt; l &gt;&gt; r;
+
+        <span class="hljs-comment">// 区间 [l, r] 整体翻转：从 l 开始多翻 1 次，从 r+1 开始少翻 1 次</span>
+        a[l]++;
+        <span class="hljs-keyword">if</span> (r + <span class="hljs-number">1</span> &lt;= n) {   <span class="hljs-comment">// 防止越界（因为 r 最大为 n，r+1 可能为 n+1）</span>
+            a[r + <span class="hljs-number">1</span>]--;
+        }
+    }
+
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;          <span class="hljs-comment">// 当前位置累积的翻转次数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        sum += a[i];      <span class="hljs-comment">// 前缀和，得到第 i 个硬币被翻转的总次数</span>
+        cout &lt;&lt; (sum % <span class="hljs-number">2</span>); <span class="hljs-comment">// 奇数次为 1（反面），偶数次为 0（正面）</span>
+    }
+
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4106">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

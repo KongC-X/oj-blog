@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1371 均分纸牌 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
+<link rel="canonical" href="https://zymojblog.top/p/1371/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1371 均分纸牌 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
+<meta property="og:url" content="https://zymojblog.top/p/1371/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1371 均分纸牌 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1371 均分纸牌","headline":"1371 均分纸牌 题解","description":"有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…","url":"https://zymojblog.top/p/1371/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1371</span></div>
+  <h1 class="seo-title">1371 均分纸牌</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>1371 - 均分纸牌</h1>
+<h2>题目描述</h2>
+<p>有 $n$ 堆纸牌（$2≤n≤200$），排成一行，编号分别为 $1,2,\dots,n$ 。</p>
+<p>已知每堆纸牌有一定的张数，且张数之和均为 $n$ 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。</p>
+<p><strong>移动规则：</strong></p>
+<p>每次可以移动任意的张数，第 $1$ 堆可以移向第 $2$ 堆，第 $2$ 堆可以移向第 $1$ 堆或第 $3$ 堆，$\dots$， 第 $n$ 堆只可以移向第 $n-1$ 堆。</p>
+<p>例如，当 $n=4$ 时：</p>
+<pre><code class="hljs language-cpp">`堆号      <span class="hljs-number">1</span>     <span class="hljs-number">2</span>     <span class="hljs-number">3</span>     <span class="hljs-number">4</span> 
+张数      <span class="hljs-number">3</span>     <span class="hljs-number">5</span>     <span class="hljs-number">4</span>     <span class="hljs-number">8</span>
+`</code></pre><p>移动的方法有许多种， 其中的一种方案：</p>
+<p>① 第 $2$ 堆向第 $1$ 堆移动 $2$ 张，成为：$5$ $3$ $4$ $8$。</p>
+<p>② 第 $4$ 堆向第 $3$ 堆移动 $3$ 张，成为：$5$ $3$ $7$ $5$。</p>
+<p>③ 第 $3$ 堆向第 $2$ 堆移动 $2$ 张，成为：$5$ $5$ $5$ $5$。</p>
+<p>经过三次移动，每堆都成为 $5$ 张。</p>
+<h2>输入</h2>
+<p>第一行一个整数 $n$ 。</p>
+<p>第二行 $n$ 个整数，用空格分隔。</p>
+<h2>输出</h2>
+<p>一个整数（表示最少移动次数）。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,a[<span class="hljs-number">105</span>],sum=<span class="hljs-number">0</span>,ave,ans=<span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+  cin&gt;&gt;n;
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=n; i++) { cin&gt;&gt;a[i]; sum+=a[i]; } <span class="hljs-comment">//读入数据，计算总和</span>
+  ave=sum/n; <span class="hljs-comment">//计算平均值</span>
+  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=n<span class="hljs-number">-1</span>; i++)
+  {
+    <span class="hljs-keyword">if</span>(a[i]==ave) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">//如果已经等于平均值，就跳过不处理。</span>
+    ans++; <span class="hljs-comment">//否则需要处理，答案+1</span>
+    <span class="hljs-keyword">if</span>(a[i]&gt;ave) <span class="hljs-comment">//大于平均值</span>
+    {
+      a[i+<span class="hljs-number">1</span>]=a[i+<span class="hljs-number">1</span>]+(a[i]-ave); <span class="hljs-comment">//将多余牌放到第i+1堆上</span>
+      a[i]=ave; <span class="hljs-comment">//当前牌堆数变为平均值</span>
+    }
+    <span class="hljs-keyword">if</span>(a[i]&lt;ave) <span class="hljs-comment">//小于平均值</span>
+    {
+      a[i+<span class="hljs-number">1</span>]=a[i+<span class="hljs-number">1</span>]-(ave-a[i]); <span class="hljs-comment">//这里不解释了，同上</span>
+      a[i]=ave;
+    }
+  }
+  cout&lt;&lt;ans&lt;&lt;endl; <span class="hljs-comment">//最后输出最少移动次数</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+} <span class="hljs-comment">//结束</span></code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1371">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

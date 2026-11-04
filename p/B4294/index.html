@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在一根电线上落有 只小鸟，每只小鸟的朝向要么向左（用 q 表示），要么向右（用 p 表示）。每只小鸟只能看到它视线方向上的相邻小鸟。给定 只小鸟的朝向序列，请计算： 有多少只小鸟没有被任何小鸟看到（被 只小鸟看到）； 有多少只小鸟被 只小鸟看到； 有多少只小鸟被 只小鸟看到。 例如：当 ，朝向序列…">
+<link rel="canonical" href="https://zymojblog.top/p/B4294/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在一根电线上落有 只小鸟，每只小鸟的朝向要么向左（用 q 表示），要么向右（用 p 表示）。每只小鸟只能看到它视线方向上的相邻小鸟。给定 只小鸟的朝向序列，请计算： 有多少只小鸟没有被任何小鸟看到（被 只小鸟看到）； 有多少只小鸟被 只小鸟看到； 有多少只小鸟被 只小鸟看到。 例如：当 ，朝向序列…">
+<meta property="og:url" content="https://zymojblog.top/p/B4294/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在一根电线上落有 只小鸟，每只小鸟的朝向要么向左（用 q 表示），要么向右（用 p 表示）。每只小鸟只能看到它视线方向上的相邻小鸟。给定 只小鸟的朝向序列，请计算： 有多少只小鸟没有被任何小鸟看到（被 只小鸟看到）； 有多少只小鸟被 只小鸟看到； 有多少只小鸟被 只小鸟看到。 例如：当 ，朝向序列…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟","headline":"B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟 题解","description":"在一根电线上落有 只小鸟，每只小鸟的朝向要么向左（用 q 表示），要么向右（用 p 表示）。每只小鸟只能看到它视线方向上的相邻小鸟。给定 只小鸟的朝向序列，请计算： 有多少只小鸟没有被任何小鸟看到（被 只小鸟看到）； 有多少只小鸟被 只小鸟看到； 有多少只小鸟被 只小鸟看到。 例如：当 ，朝向序列…","url":"https://zymojblog.top/p/B4294/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、字符串、2022、字符串（入门）、蓝桥杯青少年组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4294</span></div>
+  <h1 class="seo-title">B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E9%9D%92%E5%B0%91%E5%B9%B4%E7%BB%84">蓝桥杯青少年组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2022</code>、<code>字符串（入门）</code>、<code>蓝桥杯青少年组</code></p>
+<h2>题目描述</h2>
+<p>在一根电线上落有 $N$ 只小鸟，每只小鸟的朝向要么向左（用 <code>q</code> 表示），要么向右（用 <code>p</code> 表示）。每只小鸟只能看到它视线方向上的相邻小鸟。给定 $N$ 只小鸟的朝向序列，请计算：</p>
+<ul>
+<li>有多少只小鸟没有被任何小鸟看到（被 $0$ 只小鸟看到）；</li>
+<li>有多少只小鸟被 $1$ 只小鸟看到；</li>
+<li>有多少只小鸟被 $2$ 只小鸟看到。</li>
+</ul>
+<p>例如：当 $N=6$，朝向序列为 <code>p q p p q q</code> 时：</p>
+<ul>
+<li>有 $2$ 只小鸟被 $0$ 只小鸟看到（第 $3$ 只和第 $6$ 只）；</li>
+<li>有 $2$ 只小鸟被 $1$ 只小鸟看到（第 $1$ 只和第 $2$ 只）；</li>
+<li>有 $2$ 只小鸟被 $2$ 只小鸟看到（第 $4$ 只和第 $5$ 只）。</li>
+</ul>
+<h2>输入格式</h2>
+<p>输入共两行：</p>
+<ul>
+<li>第一行：一个正整数 $N$（$3 \leq N \leq 1000$），表示小鸟的数量；</li>
+<li>第二行：$N$ 个字符（每个字符为 <code>q</code> 或 <code>p</code>），表示小鸟的朝向序列，字符之间用一个空格隔开。</li>
+</ul>
+<h2>输出格式</h2>
+<p>输出三个整数，分别表示：</p>
+<ol>
+<li>被 $0$ 只小鸟看到的小鸟数量；</li>
+<li>被 $1$ 只小鸟看到的小鸟数量；</li>
+<li>被 $2$ 只小鸟看到的小鸟数量。</li>
+</ol>
+<p>三个整数之间用一个空格隔开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span>
+p q p p q q```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2 2 2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：B4294 [蓝桥杯青少年组国赛 2022] 电线上的小鸟
+     * 题意：每只小鸟朝左（q）或朝右（p），每只小鸟只能看到它朝向方向相邻的那只小鸟。
+     *       统计每只小鸟被多少只小鸟看到（0、1、2），输出个数。
+     *
+     * 核心思路：
+     * 1. 用数组 a[1..N] 存储每只小鸟的朝向，&#x27;p&#x27; 表示朝右，&#x27;q&#x27; 表示朝左。
+     * 2. 对于第 i 只小鸟，它可能被以下小鸟看到：
+     *    - 左邻居 i-1，如果 i-1 存在且 a[i-1] == &#x27;p&#x27;（朝右，能看到右边的小鸟）。
+     *    - 右邻居 i+1，如果 i+1 存在且 a[i+1] == &#x27;q&#x27;（朝左，能看到左边的小鸟）。
+     * 3. 因此，每只小鸟的被看到次数 = (i&gt;1 &amp;&amp; a[i-1]==&#x27;p&#x27;) + (i&lt;N &amp;&amp; a[i+1]==&#x27;q&#x27;)。
+     * 4. 统计每个次数的数量，输出。
+     *
+     * 时间复杂度：O(N)
+     */</span>
+
+    <span class="hljs-type">int</span> N;
+    cin &gt;&gt; N;
+
+    <span class="hljs-type">char</span> a[<span class="hljs-number">1005</span>];          <span class="hljs-comment">// 存储每只小鸟的朝向（1-based）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= N; i++) {
+        cin &gt;&gt; a[i];       <span class="hljs-comment">// 读入字符，空格会被 cin 自动跳过</span>
+    }
+
+    <span class="hljs-type">int</span> cnt0 = <span class="hljs-number">0</span>, cnt1 = <span class="hljs-number">0</span>, cnt2 = <span class="hljs-number">0</span>;   <span class="hljs-comment">// 分别记录被看到 0,1,2 次的数量</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= N; i++) {
+        <span class="hljs-type">int</span> vis = <span class="hljs-number">0</span>;       <span class="hljs-comment">// 第 i 只小鸟被看到的次数</span>
+
+        <span class="hljs-comment">// 左邻居能否看到 i？</span>
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">1</span> &amp;&amp; a[i<span class="hljs-number">-1</span>] == <span class="hljs-string">&#x27;p&#x27;</span>) vis++;
+
+        <span class="hljs-comment">// 右邻居能否看到 i？</span>
+        <span class="hljs-keyword">if</span> (i &lt; N &amp;&amp; a[i+<span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;q&#x27;</span>) vis++;
+
+        <span class="hljs-comment">// 根据次数累加</span>
+        <span class="hljs-keyword">if</span> (vis == <span class="hljs-number">0</span>) cnt0++;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (vis == <span class="hljs-number">1</span>) cnt1++;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (vis == <span class="hljs-number">2</span>) cnt2++;
+    }
+
+    cout &lt;&lt; cnt0 &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; cnt1 &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; cnt2 &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4294">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

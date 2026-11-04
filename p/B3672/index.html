@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3672 [语言月赛202210] 图书新编 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。 如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小 D 刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一…">
+<link rel="canonical" href="https://zymojblog.top/p/B3672/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3672 [语言月赛202210] 图书新编 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。 如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小 D 刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一…">
+<meta property="og:url" content="https://zymojblog.top/p/B3672/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3672 [语言月赛202210] 图书新编 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。 如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小 D 刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3672 [语言月赛202210] 图书新编","headline":"B3672 [语言月赛202210] 图书新编 题解","description":"图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。 如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。 小 D 刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一…","url":"https://zymojblog.top/p/B3672/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2022、O2优化、数组、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3672</span></div>
+  <h1 class="seo-title">B3672 [语言月赛202210] 图书新编</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2022">2022</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3672 [语言月赛202210] 图书新编</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-28</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2022</code>、<code>O2优化</code>、<code>数组</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>图书馆中每本书都有一个图书编码，可以用于快速检索图书，这个图书编码是一个正整数。 每位借书的读者手中有一个需求码，这个需求码也是一个正整数。</p>
+<p>如果一本书的图书编码恰好以读者的需求码结尾，那么这本书就是这位读者所需要的。</p>
+<p>小 D 刚刚当上图书馆的管理员，她知道图书馆里所有书的图书编码，她请你帮她写一个程序，对于每一位读者，求出有多少本书是他所需要的。</p>
+<h2>输入格式</h2>
+<p>第一行，包含两个正整数 $n , q$，以一个空格分开，分别代表图书馆里书的数量和读者的数量。</p>
+<p>接下来的 $n$ 行，每行包含一个正整数，代表图书馆里某本书的图书编码。</p>
+<p>接下来的 $q$ 行，每行包含两个正整数，以一个空格分开，第一个正整数代表图书馆 里读者的需求码的长度，第二个正整数代表读者的需求码。</p>
+<h2>输出格式</h2>
+<p>$ q$ 行，每行包含一个整数，如果存在第 $i$ 个读者所需要的书，则在第 $i$ 行输出有多少书是第 $i$ 个读者所需要的。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">5</span> 
+<span class="hljs-number">2123</span> 
+<span class="hljs-number">1123</span> 
+<span class="hljs-number">23</span> 
+<span class="hljs-number">24</span> 
+<span class="hljs-number">24</span> 
+<span class="hljs-number">2</span> <span class="hljs-number">23</span> 
+<span class="hljs-number">3</span> <span class="hljs-number">123</span> 
+<span class="hljs-number">3</span> <span class="hljs-number">124</span> 
+<span class="hljs-number">2</span> <span class="hljs-number">12</span> 
+<span class="hljs-number">2</span> <span class="hljs-number">12</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3<br>2<br>0<br>0<br>0</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题意：统计有多少图书编码以给定需求码结尾。
+     * 思路：对每个需求，枚举所有图书，用取模判断。
+     */</span>
+    <span class="hljs-type">int</span> n, q;
+    cin &gt;&gt; n &gt;&gt; q;
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1005</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; a[i];
+
+    <span class="hljs-keyword">while</span> (q--) {
+        <span class="hljs-type">int</span> l, x;          <span class="hljs-comment">// l: 需求码长度, x: 需求码</span>
+        cin &gt;&gt; l &gt;&gt; x;
+        <span class="hljs-type">int</span> m = <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; l; i++) m *= <span class="hljs-number">10</span>;
+        <span class="hljs-type">int</span> c = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (a[i] % m == x) c++;
+        }
+        cout &lt;&lt; c &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3672">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

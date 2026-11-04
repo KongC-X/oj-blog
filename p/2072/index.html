@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2072 公交乘车 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="A城市有一条非常特别的街道，该街道在每个公里的节点上都有一个公交车站，乘客可以在任意的公交站点上车，在任意的公交站点下车。乘客根据每次乘坐公交的公里数进行付费，比如，下表就是乘客乘坐不同的公里数要付的费用。（请注意：不一定公里数越高，费用越高，这也是这条街道特别的地方） 公里数 1 2 3 4 5…">
+<link rel="canonical" href="https://zymojblog.top/p/2072/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2072 公交乘车 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="A城市有一条非常特别的街道，该街道在每个公里的节点上都有一个公交车站，乘客可以在任意的公交站点上车，在任意的公交站点下车。乘客根据每次乘坐公交的公里数进行付费，比如，下表就是乘客乘坐不同的公里数要付的费用。（请注意：不一定公里数越高，费用越高，这也是这条街道特别的地方） 公里数 1 2 3 4 5…">
+<meta property="og:url" content="https://zymojblog.top/p/2072/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2072 公交乘车 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="A城市有一条非常特别的街道，该街道在每个公里的节点上都有一个公交车站，乘客可以在任意的公交站点上车，在任意的公交站点下车。乘客根据每次乘坐公交的公里数进行付费，比如，下表就是乘客乘坐不同的公里数要付的费用。（请注意：不一定公里数越高，费用越高，这也是这条街道特别的地方） 公里数 1 2 3 4 5…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2072 公交乘车","headline":"2072 公交乘车 题解","description":"A城市有一条非常特别的街道，该街道在每个公里的节点上都有一个公交车站，乘客可以在任意的公交站点上车，在任意的公交站点下车。乘客根据每次乘坐公交的公里数进行付费，比如，下表就是乘客乘坐不同的公里数要付的费用。（请注意：不一定公里数越高，费用越高，这也是这条街道特别的地方） 公里数 1 2 3 4 5…","url":"https://zymojblog.top/p/2072/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2072</span></div>
+  <h1 class="seo-title">2072 公交乘车</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85">背包</a></div>
+  <article class="markdown-body seo-article">
+<h1>2072 - 公交乘车</h1>
+<h2>题目描述</h2>
+<p>A城市有一条非常特别的街道，该街道在每个公里的节点上都有一个公交车站，乘客可以在任意的公交站点上车，在任意的公交站点下车。乘客根据每次乘坐公交的公里数进行付费，比如，下表就是乘客乘坐不同的公里数要付的费用。（请注意：不一定公里数越高，费用越高，这也是这条街道特别的地方）</p>
+<p>公里数</p>
+<p>1</p>
+<p>2</p>
+<p>3</p>
+<p>4</p>
+<p>5</p>
+<p>6</p>
+<p>7</p>
+<p>8</p>
+<p>9</p>
+<p>10</p>
+<p>付费金额</p>
+<p>12</p>
+<p>21</p>
+<p>31</p>
+<p>40</p>
+<p>49</p>
+<p>58</p>
+<p>69</p>
+<p>79</p>
+<p>90</p>
+<p>101</p>
+<p>一辆公交车单次行驶的公里数一定不超过 $10$ 公里，一个乘客如果打算乘坐公交车完成 $n$ 公里（$1 \le n \le 100$）的行程，他可以选择无限次的换车来完成行程。</p>
+<p>请问，他最少要花多少钱？</p>
+<h2>输入</h2>
+<p>第一行十个整数分别表示公交行走 $1$ 到 $10$ 公里的费用（$ \le 500$）。注意这些数并无实际的经济意义，即行驶 $10$ 公里费用可能比行驶一公里少。</p>
+<p>第二行一个整数 $n$ 表示，旅客的总路程数。（$1 \le n \le 100$）</p>
+<h2>输出</h2>
+<p>仅一个整数表示最少费用。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+背包容量是：n（总公里数，可以理解为背包的体积） 
+有：1~10公里，走不同的公里数，对应的费用
+转换为：
+有10个物品，第i个物品的体积就是i（wi），价值是vi（金额）
+问：如果要装满背包，最少要花多少钱？
+由于：可以无限次换车，因此是完全背包！
+
+求最小：
+（1）f（dp）数组要初始化为0x3f3f3f3f
+（2）边界：f[0] = 0 
+ 
+f[j] = min(f[j],f[j-w[i]]+v[i]) 
+*/</span>
+<span class="hljs-type">int</span> n;
+<span class="hljs-comment">//w:公里数（1~10）,v:不同公里数的价格</span>
+<span class="hljs-type">int</span> f[<span class="hljs-number">110</span>],w[<span class="hljs-number">20</span>],v[<span class="hljs-number">20</span>]; 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">10</span>;i++){
+        w[i] = i;<span class="hljs-comment">//走i公里 </span>
+        cin&gt;&gt;v[i];<span class="hljs-comment">//走i公里的价格 </span>
+    } 
+    cin&gt;&gt;n;
+    
+    <span class="hljs-comment">//背包计算，先将值设置无穷大，方便求最小 </span>
+    <span class="hljs-built_in">memset</span>(f,<span class="hljs-number">0x3f</span>,<span class="hljs-built_in">sizeof</span>(f));
+    <span class="hljs-comment">//边界</span>
+    f[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">10</span>;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = w[i];j &lt;= n;j++){
+            f[j] = <span class="hljs-built_in">min</span>(f[j],f[j-w[i]]+v[i]);
+        }
+    } 
+    
+    cout&lt;&lt;f[n];
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2072">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11961 [GESP202503 五级] 原根判断 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 知道，对于质数 而言， 的原根 是满足以下条件的正整数： ； ； 对于任意 均有 。 其中 表示 除以 的余数。 小 A 现在有一个整数 ，请你帮他判断 是不是 的原根。">
+<link rel="canonical" href="https://zymojblog.top/p/P11961/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11961 [GESP202503 五级] 原根判断 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 知道，对于质数 而言， 的原根 是满足以下条件的正整数： ； ； 对于任意 均有 。 其中 表示 除以 的余数。 小 A 现在有一个整数 ，请你帮他判断 是不是 的原根。">
+<meta property="og:url" content="https://zymojblog.top/p/P11961/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11961 [GESP202503 五级] 原根判断 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 知道，对于质数 而言， 的原根 是满足以下条件的正整数： ； ； 对于任意 均有 。 其中 表示 除以 的余数。 小 A 现在有一个整数 ，请你帮他判断 是不是 的原根。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11961 [GESP202503 五级] 原根判断","headline":"P11961 [GESP202503 五级] 原根判断 题解","description":"小 A 知道，对于质数 而言， 的原根 是满足以下条件的正整数： ； ； 对于任意 均有 。 其中 表示 除以 的余数。 小 A 现在有一个整数 ，请你帮他判断 是不是 的原根。","url":"https://zymojblog.top/p/P11961/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"2025、原根、数论、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11961</span></div>
+  <h1 class="seo-title">P11961 [GESP202503 五级] 原根判断</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 五级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%8E%9F%E6%A0%B9">原根</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E8%AE%BA">数论</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11961 [GESP202503 五级] 原根判断</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 提高| C++14 | 提交时间: 2025-06-27</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>原根</code>、<code>数论</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1177">https://ti.luogu.com.cn/problemset/1177</a></p>
+<p>截止 2025 年 3 月，本题可能超出了 GESP 考纲范围。在该时间点下，原根是 NOI 大纲 8 级知识点（NOI 级），而相对简单的无需原根知识的做法中，使用的费马小定理与欧拉定理也属于 NOI 大纲 7 级知识点（提高级），且均未写明于 GESP 大纲中。需要注意，GESP 大纲和 NOI 大纲是不同的大纲。</p>
+<p>若对题目中原根这一概念感兴趣，可以学习完成 <a href="https://www.luogu.com.cn/problem/P6091">【模板】原根</a>。</p>
+<h2>题目描述</h2>
+<p>小 A 知道，对于质数 $p$ 而言，$p$ 的原根 $g$ 是满足以下条件的正整数：</p>
+<ul>
+<li>$1&lt;g&lt;p$；</li>
+<li>$g^{p-1}\bmod{p}=1$；</li>
+<li>对于任意 $1\le i&lt;p-1$ 均有 $g^i\bmod{p}\neq1$。</li>
+</ul>
+<p>其中 $a\bmod{p}$ 表示 $a$ 除以 $p$ 的余数。</p>
+<p>小 A 现在有一个整数 $a$，请你帮他判断 $a$ 是不是 $p$ 的原根。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $T$，表示测试数据组数。</p>
+<p>每组测试数据包含一行，两个正整数 $a,p$。</p>
+<h2>输出格式</h2>
+<p>对于每组测试数据，输出一行，如果 $a$ 是 $p$ 的原根则输出 <code>Yes</code>，否则输出 <code>No</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">998244353</span>
+<span class="hljs-number">5</span> <span class="hljs-number">998244353</span>
+<span class="hljs-number">7</span> <span class="hljs-number">998244353</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Yes<br>Yes<br>No```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">//c++</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> ll long long</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+vector&lt;ll&gt;yin;       <span class="hljs-comment">//表示p-1的因数</span>
+<span class="hljs-function">ll <span class="hljs-title">fpow</span><span class="hljs-params">(ll a,ll b,ll p)</span></span>{<span class="hljs-comment">//快速幂</span>
+    a%=p;
+    <span class="hljs-keyword">if</span>(b==<span class="hljs-number">1</span>)<span class="hljs-keyword">return</span> a;
+    <span class="hljs-keyword">if</span>(b==<span class="hljs-number">0</span>)<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(b&amp;<span class="hljs-number">1</span>)<span class="hljs-keyword">return</span> a*<span class="hljs-built_in">fpow</span>(a*a%p,(b&gt;&gt;<span class="hljs-number">1</span>),p)%p;
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">fpow</span>(a*a%p,(b&gt;&gt;<span class="hljs-number">1</span>),p);
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">find_yin</span><span class="hljs-params">(ll x)</span></span>{	<span class="hljs-comment">//找因数</span>
+    <span class="hljs-keyword">while</span>(yin.<span class="hljs-built_in">size</span>())   <span class="hljs-comment">//清空</span>
+        yin.<span class="hljs-built_in">pop_back</span>();    
+    <span class="hljs-keyword">for</span>(ll i=<span class="hljs-number">2</span>;i*i&lt;=x;i++){
+        <span class="hljs-keyword">if</span>(x%i==<span class="hljs-number">0</span>){
+            yin.<span class="hljs-built_in">push_back</span>(i);
+            yin.<span class="hljs-built_in">push_back</span>(x/i);
+        }
+    }
+    <span class="hljs-keyword">return</span> ;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">doing</span><span class="hljs-params">()</span></span>{<span class="hljs-comment">//求出每次答案</span>
+    ll p,a;
+    cin&gt;&gt;a&gt;&gt;p;
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">fpow</span>(a,p<span class="hljs-number">-1</span>,p)!=<span class="hljs-number">1</span>){  <span class="hljs-comment">//条件2</span>
+        <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;No&quot;</span>);
+        <span class="hljs-keyword">return</span> ;
+    }
+    <span class="hljs-built_in">find_yin</span>(p<span class="hljs-number">-1</span>);         <span class="hljs-comment">//找p-1的因数</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;yin.<span class="hljs-built_in">size</span>();i++){
+        ll y=yin[i];       <span class="hljs-comment">//枚举每个因数</span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">fpow</span>(a,y,p)==<span class="hljs-number">1</span>){<span class="hljs-comment">//满足条件4(不满足条件3)</span>
+            <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;No&quot;</span>);
+            <span class="hljs-keyword">return</span> ;
+        }
+    }
+    <span class="hljs-built_in">puts</span>(<span class="hljs-string">&quot;Yes&quot;</span>);
+    <span class="hljs-keyword">return</span> ;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> t; 
+    cin&gt;&gt;t;
+    <span class="hljs-keyword">while</span>(t--){
+        <span class="hljs-built_in">doing</span>();
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11961">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

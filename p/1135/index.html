@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1135 歌德巴赫猜想 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="任一个大于等于 的偶数都可以拆分为两个素数之和。 从键盘读入一个整数 ，请将小于等于 的偶数拆分为 个质数之和，列出所有方案。">
+<link rel="canonical" href="https://zymojblog.top/p/1135/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1135 歌德巴赫猜想 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="任一个大于等于 的偶数都可以拆分为两个素数之和。 从键盘读入一个整数 ，请将小于等于 的偶数拆分为 个质数之和，列出所有方案。">
+<meta property="og:url" content="https://zymojblog.top/p/1135/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1135 歌德巴赫猜想 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="任一个大于等于 的偶数都可以拆分为两个素数之和。 从键盘读入一个整数 ，请将小于等于 的偶数拆分为 个质数之和，列出所有方案。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1135 歌德巴赫猜想","headline":"1135 歌德巴赫猜想 题解","description":"任一个大于等于 的偶数都可以拆分为两个素数之和。 从键盘读入一个整数 ，请将小于等于 的偶数拆分为 个质数之和，列出所有方案。","url":"https://zymojblog.top/p/1135/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1135</span></div>
+  <h1 class="seo-title">1135 歌德巴赫猜想</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E9%97%AE%E9%A2%98">函数问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1135 - 歌德巴赫猜想</h1>
+<h2>题目描述</h2>
+<p>任一个大于等于 $4$ 的偶数都可以拆分为两个素数之和。</p>
+<p>从键盘读入一个整数 $n$，请将小于等于 $n$ 的偶数拆分为 $2$ 个质数之和，列出所有方案。</p>
+<h2>输入</h2>
+<p>一个整数 $n$ ($4 \le n \le 200$）；</p>
+<h2>输出</h2>
+<p>将小于等于 $n$ 的偶数拆分为 $2$ 个质数之和，列出所有方案，输出格式请参考样例输出。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">//素数判断 </span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span></span>{
+    <span class="hljs-keyword">if</span>(n &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= <span class="hljs-built_in">sqrt</span>(n);i++){
+        <span class="hljs-keyword">if</span>(n % i == <span class="hljs-number">0</span>){
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        }
+    } 
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin&gt;&gt;n;
+    <span class="hljs-comment">//循环4~n之间的偶数</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">4</span>;i &lt;= n;i += <span class="hljs-number">2</span>){
+        <span class="hljs-comment">//将i拆成2个素数的和</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">2</span>;j &lt;= i / <span class="hljs-number">2</span>;j++){
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">prime</span>(j)==<span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-built_in">prime</span>(i-j)==<span class="hljs-literal">true</span>){
+                cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot;=&quot;</span>&lt;&lt;j&lt;&lt;<span class="hljs-string">&quot;+&quot;</span>&lt;&lt;i-j&lt;&lt;endl;
+            }
+        } 
+    } 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1135">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

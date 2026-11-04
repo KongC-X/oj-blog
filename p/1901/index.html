@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1901 骑士的拯救行动 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用 的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才…">
+<link rel="canonical" href="https://zymojblog.top/p/1901/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1901 骑士的拯救行动 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用 的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才…">
+<meta property="og:url" content="https://zymojblog.top/p/1901/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1901 骑士的拯救行动 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用 的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1901 骑士的拯救行动","headline":"1901 骑士的拯救行动 题解","description":"公主被恶人抓走，被关押在牢房的某个地方。牢房用 的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才…","url":"https://zymojblog.top/p/1901/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1901</span></div>
+  <h1 class="seo-title">1901 骑士的拯救行动</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1901 - 骑士的拯救行动</h1>
+<h2>题目描述</h2>
+<p>公主被恶人抓走，被关押在牢房的某个地方。牢房用 $N \times M$ 的矩阵来表示。矩阵中的每项可以代表道路（<code>@</code>）、墙壁（<code>#</code>）、和守卫（<code>x</code>）。</p>
+<p>英勇的骑士（<code>r</code>）决定孤身一人去拯救公主（<code>a</code>）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才能继续前进。</p>
+<p>现假设骑士可以向上、下、左、右四个方向移动，每移动一个位置需要 $1$ 个单位时间，杀死一个守卫需要花费<strong>额外的</strong> $1$ 个单位时间。同时假设骑士足够强壮，有能力杀死所有的守卫。</p>
+<p>给定牢房矩阵，公主、骑士和守卫在矩阵中的位置，请你计算拯救行动成功需要花费最短时间。</p>
+<h2>输入</h2>
+<p>第 $1$ 行有两个整数代表 $N$ 和 $M$； ( $1 ＜ N, M ≤ 40$ )</p>
+<p>随后 $N$ 行，每行有 $M$ 个字符。<code>@</code> 代表道路，<code>a</code> 代表公主，<code>r</code> 代表骑士，<code>x</code> 代表守卫, <code>#</code> 代表墙壁。</p>
+<h2>输出</h2>
+<p>如果拯救行动成功，输出一个整数，表示行动的最短时间。</p>
+<p>如果不可能成功，输出 <code>Impossible</code> 。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+最少步数问题，关键信息如下：
+1. 道路（@）、墙壁（#）、和守卫（x）
+   骑士（r）、公主（a）
+2. 移动一个位置，需要一个单位时间
+   杀死守卫，需要额外多一个单位的时间 
+3.不可能成功，输出&quot;Impossible&quot;
+*/</span>
+<span class="hljs-type">char</span> a[<span class="hljs-number">30</span>][<span class="hljs-number">30</span>];<span class="hljs-comment">//迷宫 </span>
+<span class="hljs-type">int</span> d[<span class="hljs-number">30</span>][<span class="hljs-number">30</span>];<span class="hljs-comment">//最少步数</span>
+<span class="hljs-type">int</span> n,m;
+<span class="hljs-type">int</span> s1,s2,e1,e2;<span class="hljs-comment">//起止点的坐标</span>
+
+<span class="hljs-comment">//方向</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>}; 
+
+<span class="hljs-comment">//求走到每个点的最少时间</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> sum)</span></span>{
+    d[x][y] = sum;
+    
+    <span class="hljs-comment">//尝试四方向</span>
+    <span class="hljs-type">int</span> tx,ty;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++){
+        tx = x + fx[i];
+        ty = y + fy[i];
+        
+        <span class="hljs-comment">//如果是@或者a，且时间更少（+1） </span>
+        <span class="hljs-keyword">if</span>((a[tx][ty]==<span class="hljs-string">&#x27;@&#x27;</span>||a[tx][ty]==<span class="hljs-string">&#x27;a&#x27;</span>) &amp;&amp; sum+<span class="hljs-number">1</span>&lt;d[tx][ty]){
+            <span class="hljs-built_in">dfs</span>(tx,ty,sum+<span class="hljs-number">1</span>); 
+            <span class="hljs-comment">//如果是x，且时间更少（+2） </span>
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[tx][ty]==<span class="hljs-string">&#x27;x&#x27;</span>&amp;&amp;sum+<span class="hljs-number">2</span>&lt;d[tx][ty]){
+            <span class="hljs-built_in">dfs</span>(tx,ty,sum+<span class="hljs-number">2</span>);
+        }
+    } 
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">//读入、初始化</span>
+    cin&gt;&gt;n&gt;&gt;m; 
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+            cin&gt;&gt;a[i][j];
+            
+            <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-string">&#x27;r&#x27;</span>){
+                s1 = i;
+                s2 = j; 
+            }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a[i][j] == <span class="hljs-string">&#x27;a&#x27;</span>){
+                e1 = i;
+                e2 = j;
+            }
+            
+            d[i][j] = INT_MAX;
+        }
+    }
+    
+    <span class="hljs-built_in">dfs</span>(s1,s2,<span class="hljs-number">0</span>);
+    
+    <span class="hljs-comment">//如果能走到</span>
+    <span class="hljs-keyword">if</span>(d[e1][e2]!=INT_MAX) cout&lt;&lt;d[e1][e2];
+    <span class="hljs-keyword">else</span> cout&lt;&lt;<span class="hljs-string">&quot;Impossible&quot;</span>; 
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1901">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

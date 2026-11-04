@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3907 [语言月赛 202312] NK 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定两个正整数 ，请你统计符合以下条件的正整数 的数量： 。 是 的倍数。 的个位是 。 代表 除以 的余数，例如 。">
+<link rel="canonical" href="https://zymojblog.top/p/B3907/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3907 [语言月赛 202312] NK 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定两个正整数 ，请你统计符合以下条件的正整数 的数量： 。 是 的倍数。 的个位是 。 代表 除以 的余数，例如 。">
+<meta property="og:url" content="https://zymojblog.top/p/B3907/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3907 [语言月赛 202312] NK 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定两个正整数 ，请你统计符合以下条件的正整数 的数量： 。 是 的倍数。 的个位是 。 代表 除以 的余数，例如 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3907 [语言月赛 202312] NK","headline":"B3907 [语言月赛 202312] NK 题解","description":"给定两个正整数 ，请你统计符合以下条件的正整数 的数量： 。 是 的倍数。 的个位是 。 代表 除以 的余数，例如 。","url":"https://zymojblog.top/p/B3907/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2023、O2优化、循环结构、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3907</span></div>
+  <h1 class="seo-title">B3907 [语言月赛 202312] NK</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3907 [语言月赛 202312] NK</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2023</code>、<code>O2优化</code>、<code>循环结构</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>给定两个正整数 $N, K$，请你统计符合以下条件的正整数 $x$ 的数量：</p>
+<ul>
+<li>$1 \leq x \leq N ^ N$。</li>
+<li>$(x \bmod K)$ 是 $N$ 的倍数。</li>
+<li>$x$ 的个位是 $N$。</li>
+</ul>
+<p>$x \bmod K$ 代表 $x$ 除以 $K$ 的余数，例如 $7 \bmod 3 = 1$。</p>
+<h2>输入格式</h2>
+<p>输入一行两个整数 $N, K$。</p>
+<h2>输出格式</h2>
+<p>输出一行一个整数，代表符合题干中所有条件的 $x$ 的数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>17```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7</span> <span class="hljs-number">6</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】数学 + 周期模拟
+     * 【核心思路】
+     * 1. x 的个位是 N，所以 x = N + 10*t (t &gt;= 0)。
+     * 2. x 的范围：1 &lt;= x &lt;= N^N，所以 t 最大为 (N^N - N) / 10。
+     * 3. 条件 (x mod K) % N == 0 只和 x mod K 有关。
+     * 4. x 每次加 10，余数序列 x mod K 的周期为 T = K / gcd(K, 10)。
+     * 5. 先模拟一个周期的余数，统计符合条件的个数 p。
+     * 6. 总项数 c = (N^N - N) / 10 + 1。
+     * 7. 完整周期数 f = c / T，剩余 r = c % T。
+     * 8. 再模拟前 r 个余数，统计符合条件的个数 q。
+     * 9. 答案 = f * p + q。
+     *
+     * 【时间复杂度】O(K / gcd(K, 10)) ≤ 10^6
+     */</span>
+
+    <span class="hljs-type">int</span> n, k;            <span class="hljs-comment">// n: 个位数（1~9）, k: 模数</span>
+    cin &gt;&gt; n &gt;&gt; k;
+
+    <span class="hljs-comment">// 计算 n^n（n 很小，直接循环乘）</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a = <span class="hljs-number">1</span>;     <span class="hljs-comment">// a: n^n，即 x 的上限</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        a *= n;
+    }
+
+    <span class="hljs-comment">// 如果 a &lt; n，说明没有符合个位是 n 的数（但实际 n&gt;=1 时不会发生，保留判断）</span>
+    <span class="hljs-keyword">if</span> (a &lt; n) {
+        cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+
+    <span class="hljs-comment">// 等差数列 x = n, n+10, n+20, ... 的总项数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> c = (a - n) / <span class="hljs-number">10</span> + <span class="hljs-number">1</span>;   <span class="hljs-comment">// c: 满足个位是 n 且 &lt;= n^n 的数字个数</span>
+
+    <span class="hljs-comment">// 计算余数序列的周期 T</span>
+    <span class="hljs-type">int</span> d = __gcd(k, <span class="hljs-number">10</span>);    <span class="hljs-comment">// d: k 和 10 的最大公约数</span>
+    <span class="hljs-type">int</span> t = k / d;           <span class="hljs-comment">// t: 余数序列周期长度</span>
+
+    <span class="hljs-comment">// 模拟一个周期内的余数，统计满足条件的个数</span>
+    <span class="hljs-type">int</span> p = <span class="hljs-number">0</span>;               <span class="hljs-comment">// p: 一个周期内符合 (余数 % n == 0) 的个数</span>
+    <span class="hljs-type">int</span> x = n % k;           <span class="hljs-comment">// x: 当前余数（从第一项 n%k 开始）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; t; i++) {
+        <span class="hljs-keyword">if</span> (x % n == <span class="hljs-number">0</span>) {    <span class="hljs-comment">// 检查 (x mod k) 是否是 n 的倍数</span>
+            p++;
+        }
+        x = (x + <span class="hljs-number">10</span>) % k;    <span class="hljs-comment">// 下一个余数（公差为 10）</span>
+    }
+
+    <span class="hljs-comment">// 计算完整周期数和剩余个数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> f = c / t;     <span class="hljs-comment">// f: 完整周期数</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> r = c % t;     <span class="hljs-comment">// r: 剩余项数</span>
+
+    <span class="hljs-comment">// 模拟前 r 个余数，统计满足条件的个数</span>
+    <span class="hljs-type">int</span> q = <span class="hljs-number">0</span>;               <span class="hljs-comment">// q: 剩余部分中符合条件的个数</span>
+    x = n % k;               <span class="hljs-comment">// 重新从第一项开始</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; r; i++) {
+        <span class="hljs-keyword">if</span> (x % n == <span class="hljs-number">0</span>) {
+            q++;
+        }
+        x = (x + <span class="hljs-number">10</span>) % k;
+    }
+
+    <span class="hljs-comment">// 最终答案</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = f * p + q;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3907">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

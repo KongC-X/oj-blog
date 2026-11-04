@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1075 [NOIP 2012 普及组] 质因数分解 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="已知正整数 是两个不同的质数的乘积，试求出两者中较大的那个质数。">
+<link rel="canonical" href="https://zymojblog.top/p/P1075/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1075 [NOIP 2012 普及组] 质因数分解 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="已知正整数 是两个不同的质数的乘积，试求出两者中较大的那个质数。">
+<meta property="og:url" content="https://zymojblog.top/p/P1075/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1075 [NOIP 2012 普及组] 质因数分解 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="已知正整数 是两个不同的质数的乘积，试求出两者中较大的那个质数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1075 [NOIP 2012 普及组] 质因数分解","headline":"P1075 [NOIP 2012 普及组] 质因数分解 题解","description":"已知正整数 是两个不同的质数的乘积，试求出两者中较大的那个质数。","url":"https://zymojblog.top/p/P1075/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、2012、NOIP 普及组、素数判断","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1075</span></div>
+  <h1 class="seo-title">P1075 [NOIP 2012 普及组] 质因数分解</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【入门6】函数与结构体</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2012">2012</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E7%B4%A0%E6%95%B0%E5%88%A4%E6%96%AD">素数判断</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1075 [NOIP 2012 普及组] 质因数分解</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-01</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>2012</code>、<code>NOIP 普及组</code>、<code>素数判断</code></p>
+<h2>题目描述</h2>
+<p>已知正整数 $n$ 是两个不同的质数的乘积，试求出两者中较大的那个质数。</p>
+<h2>输入格式</h2>
+<p>输入一个正整数 $n$。</p>
+<h2>输出格式</h2>
+<p>输出一个正整数 $p$，即较大的那个质数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">21</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">// 唯一分解定理:一个数能且只能分解为一组质数的乘积。可知，若输入的数满足题目条件，他就只能分解为两个质数的乘积。所以在比他小且大于1的自然数中，只有那两个数能整除它，之间不可能再有任何合数或质数能整除它了，因为最小的能整除它的合数已经是他本身了。</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> n;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;n);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">if</span>(n%i==<span class="hljs-number">0</span>){ <span class="hljs-comment">//如果 n%i==0，说明找到了 n 的因数，直接输出 n/i，退出循环。 </span>
+            <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d&quot;</span>,n/i); 
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+} 
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1075">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10457 占卜DIY 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="lyd 学会了使用扑克 DIY 占卜。方法如下：一副去掉大小王的扑克共 张，打乱后均分为 堆，编号 ，每堆 张，其中第 堆称作“生命牌”，也就是说你有 条命。这里边， 张 被称作死神。 初始状态下，所有的牌背面朝上扣下。 流程如下： 抽取生命牌中的最上面一张（第一张）。 把这张牌翻开，正面朝上，放…">
+<link rel="canonical" href="https://zymojblog.top/p/P10457/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10457 占卜DIY 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="lyd 学会了使用扑克 DIY 占卜。方法如下：一副去掉大小王的扑克共 张，打乱后均分为 堆，编号 ，每堆 张，其中第 堆称作“生命牌”，也就是说你有 条命。这里边， 张 被称作死神。 初始状态下，所有的牌背面朝上扣下。 流程如下： 抽取生命牌中的最上面一张（第一张）。 把这张牌翻开，正面朝上，放…">
+<meta property="og:url" content="https://zymojblog.top/p/P10457/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10457 占卜DIY 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="lyd 学会了使用扑克 DIY 占卜。方法如下：一副去掉大小王的扑克共 张，打乱后均分为 堆，编号 ，每堆 张，其中第 堆称作“生命牌”，也就是说你有 条命。这里边， 张 被称作死神。 初始状态下，所有的牌背面朝上扣下。 流程如下： 抽取生命牌中的最上面一张（第一张）。 把这张牌翻开，正面朝上，放…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10457 占卜DIY","headline":"P10457 占卜DIY 题解","description":"lyd 学会了使用扑克 DIY 占卜。方法如下：一副去掉大小王的扑克共 张，打乱后均分为 堆，编号 ，每堆 张，其中第 堆称作“生命牌”，也就是说你有 条命。这里边， 张 被称作死神。 初始状态下，所有的牌背面朝上扣下。 流程如下： 抽取生命牌中的最上面一张（第一张）。 把这张牌翻开，正面朝上，放…","url":"https://zymojblog.top/p/P10457/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、队列","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10457</span></div>
+  <h1 class="seo-title">P10457 占卜DIY</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E9%98%9F%E5%88%97">队列</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10457 占卜DIY</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>队列</code></p>
+<h2>题目描述</h2>
+<p>lyd 学会了使用扑克 DIY 占卜。方法如下：一副去掉大小王的扑克共 $52$ 张，打乱后均分为 $13$ 堆，编号 $1\sim 13$，每堆 $4$ 张，其中第 $13$ 堆称作“生命牌”，也就是说你有 $4$ 条命。这里边，$4$ 张 $K$ 被称作死神。</p>
+<p>初始状态下，所有的牌背面朝上扣下。</p>
+<p>流程如下：</p>
+<ul>
+<li>抽取生命牌中的最上面一张（第一张）。</li>
+<li>把这张牌翻开，正面朝上，放到牌上的数字所对应编号的堆的最上边。（例如抽到 $2$，正面朝上放到第 $2$ 堆牌最上面，又比如抽到 $J$，放到第 $11$ 堆牌最上边，注意是正面朝上放）</li>
+<li>从刚放了牌的那一堆最底下（最后一张）抽取一张牌，重复第 $2$ 步。（例如你上次抽了 $2$，放到了第二堆顶部，现在抽第二堆最后一张发现是 $8$，又放到第 $8$ 堆顶部……）</li>
+<li>在抽牌过程中如果抽到 $K$，则称死了一条命，就扔掉 $K$ 再从第 $1$ 步开始。</li>
+<li>当发现四条命都死了以后，统计现在每堆牌上边正面朝上的牌的数目，只要同一数字的牌出现 $4$ 张正面朝上的牌（比如 $4$ 个 $A$），则称“开了一对”，当然 $4$ 个 $K$ 是不算的。</li>
+<li>统计一共开了多少对，开了 $0$ 对称作“极凶”，$1\sim 2$ 对为“大凶”，$3$ 对为“凶”，$4\sim 5$ 对为“小凶”，$6$ 对为“中庸”，$7\sim 8$ 对“小吉”，$9$ 对为“吉”，$10\sim11$ 对为“大吉”，$12$ 对为“满堂开花，极吉”。</li>
+</ul>
+<p>如果还不明白，请参考样例。</p>
+<h2>输入格式</h2>
+<p>一共 $13$ 行，为每堆牌的具体牌是什么（不区分花色只区分数字），每堆输入的顺序为从上到下。</p>
+<p>为了便于读入，用 $0$ 代表 $10$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span> <span class="hljs-number">5</span> A A
+K <span class="hljs-number">5</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span>
+<span class="hljs-number">9</span> <span class="hljs-number">6</span> <span class="hljs-number">0</span> <span class="hljs-number">6</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>
+<span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">6</span>
+<span class="hljs-number">8</span> <span class="hljs-number">7</span> <span class="hljs-number">7</span> <span class="hljs-number">7</span>
+<span class="hljs-number">9</span> <span class="hljs-number">9</span> <span class="hljs-number">8</span> <span class="hljs-number">8</span>
+<span class="hljs-number">9</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>
+K J J J
+Q A Q K
+J Q <span class="hljs-number">2</span> <span class="hljs-number">2</span>
+A K Q <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>9```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span>        <span class="hljs-comment">// 万能头文件，包含所有常用库</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> int long long          <span class="hljs-comment">// 把 int 全部替换为 long long（防止数据溢出）</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;           <span class="hljs-comment">// 使用标准命名空间</span>
+
+deque&lt;<span class="hljs-type">int</span>&gt; a[<span class="hljs-number">20</span>];              <span class="hljs-comment">// 13堆牌（下标1~13），每堆用双端队列存储牌面值</span>
+<span class="hljs-type">int</span> b[<span class="hljs-number">20</span>];                     <span class="hljs-comment">// b[i] 表示第 i 堆已经正面朝上的牌的数量</span>
+<span class="hljs-type">int</span> sum;                       <span class="hljs-comment">// sum 记录已经“开对”的数量（即正面牌达到4张的堆数）</span>
+<span class="hljs-type">char</span> x;                        <span class="hljs-comment">// 临时变量，用于读入字符</span>
+
+<span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{                 <span class="hljs-comment">// 因为用了 #define int，这里用 signed 表示真正的 int 主函数</span>
+    <span class="hljs-comment">// ========== 读入 13 堆牌，每堆4张 ==========</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>; i&lt;=<span class="hljs-number">13</span>; i++) {          <span class="hljs-comment">// 遍历13堆</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>; j&lt;=<span class="hljs-number">4</span>; j++) {       <span class="hljs-comment">// 每堆4张</span>
+            cin &gt;&gt; x;                   <span class="hljs-comment">// 读入一个字符（牌面，如 &#x27;A&#x27;,&#x27;2&#x27;,&#x27;K&#x27;）</span>
+            <span class="hljs-comment">// 将字符转换为对应的数字</span>
+            <span class="hljs-keyword">if</span>(x &lt;= <span class="hljs-string">&#x27;9&#x27;</span> &amp;&amp; x &gt;= <span class="hljs-string">&#x27;1&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(x - <span class="hljs-string">&#x27;0&#x27;</span>);  <span class="hljs-comment">// &#x27;1&#x27;~&#x27;9&#x27; 转 1~9</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x == <span class="hljs-string">&#x27;0&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">10</span>);              <span class="hljs-comment">// &#x27;0&#x27; 代表 10</span>
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x == <span class="hljs-string">&#x27;J&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">11</span>);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x == <span class="hljs-string">&#x27;Q&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">12</span>);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x == <span class="hljs-string">&#x27;K&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">13</span>);
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(x == <span class="hljs-string">&#x27;A&#x27;</span>) a[i].<span class="hljs-built_in">push_back</span>(<span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-comment">// ========== 开始模拟占卜流程 ==========</span>
+    <span class="hljs-comment">// 注意：这个循环会一直执行，直到生命牌堆（第13堆）被抽空</span>
+    <span class="hljs-comment">// 每次循环对应“抽一条命”的过程（从生命牌堆顶部开始）</span>
+    <span class="hljs-keyword">while</span>(!a[<span class="hljs-number">13</span>].<span class="hljs-built_in">empty</span>()) {
+        <span class="hljs-type">int</span> t = a[<span class="hljs-number">13</span>].<span class="hljs-built_in">front</span>();    <span class="hljs-comment">// 从生命牌堆顶部取一张牌（数字 t）</span>
+        a[<span class="hljs-number">13</span>].<span class="hljs-built_in">pop_front</span>();        <span class="hljs-comment">// 移除这张牌（它被抽走了）</span>
+
+        <span class="hljs-comment">// 这是核心循环：只要没抽到 K（t != 13），就一直执行</span>
+        <span class="hljs-keyword">while</span>(t != <span class="hljs-number">13</span>) {
+            <span class="hljs-comment">// ====== 把刚抽到的牌（数字 t）放到第 t 堆顶部，并翻成正面 ======</span>
+            b[t]++;               <span class="hljs-comment">// 第 t 堆正面朝上的牌数量 +1</span>
+            <span class="hljs-keyword">if</span>(b[t] &gt;= <span class="hljs-number">4</span>) sum++;  <span class="hljs-comment">// 如果这一堆正面牌达到4张，就算“开了一对”</span>
+                                  <span class="hljs-comment">// 注意用 &gt;= 是因为之后还可能翻到这一堆，防止重复计数</span>
+
+            <span class="hljs-comment">// ====== 从第 t 堆的底部取一张牌（作为下一次要翻的牌） ======</span>
+            <span class="hljs-type">int</span> p = a[t].<span class="hljs-built_in">back</span>();  <span class="hljs-comment">// p: 第 t 堆最底下的牌面值</span>
+            a[t].<span class="hljs-built_in">pop_back</span>();      <span class="hljs-comment">// 移除这张底牌</span>
+
+            <span class="hljs-comment">// ====== 下一次循环将翻开的牌就是 p ======</span>
+            t = p;                <span class="hljs-comment">// 更新 t 为刚取的底牌，继续循环</span>
+        }
+        <span class="hljs-comment">// 当 t == 13 时跳出内层循环，代表抽到了 K，死了一条命</span>
+        <span class="hljs-comment">// 然后外层 while 会继续从生命牌堆取下一张牌，开始下一条命</span>
+    }
+
+    <span class="hljs-comment">// ========== 输出最终结果 ==========</span>
+    cout &lt;&lt; sum;    <span class="hljs-comment">// sum 就是总共开了多少对</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10457">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

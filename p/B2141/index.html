@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2141 确定进制 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="对于十进制来说是错误的，但是对于 进制来说是正确的。即 ，而 。 你的任务是写一段程序读入三个整数 和 ，然后确定一个进制 使得 。如果 有很多选择，则输出最小的一个。 例如： ，则有 ，因为 和 。对于进制 有 。这种情况下，应该输出 。如果没有合适的进制，则输出 。">
+<link rel="canonical" href="https://zymojblog.top/p/B2141/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2141 确定进制 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="对于十进制来说是错误的，但是对于 进制来说是正确的。即 ，而 。 你的任务是写一段程序读入三个整数 和 ，然后确定一个进制 使得 。如果 有很多选择，则输出最小的一个。 例如： ，则有 ，因为 和 。对于进制 有 。这种情况下，应该输出 。如果没有合适的进制，则输出 。">
+<meta property="og:url" content="https://zymojblog.top/p/B2141/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2141 确定进制 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="对于十进制来说是错误的，但是对于 进制来说是正确的。即 ，而 。 你的任务是写一段程序读入三个整数 和 ，然后确定一个进制 使得 。如果 有很多选择，则输出最小的一个。 例如： ，则有 ，因为 和 。对于进制 有 。这种情况下，应该输出 。如果没有合适的进制，则输出 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2141 确定进制","headline":"B2141 确定进制 题解","description":"对于十进制来说是错误的，但是对于 进制来说是正确的。即 ，而 。 你的任务是写一段程序读入三个整数 和 ，然后确定一个进制 使得 。如果 有很多选择，则输出最小的一个。 例如： ，则有 ，因为 和 。对于进制 有 。这种情况下，应该输出 。如果没有合适的进制，则输出 。","url":"https://zymojblog.top/p/B2141/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2141</span></div>
+  <h1 class="seo-title">B2141 确定进制</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2141 确定进制</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>$6 \times 9=42$ 对于十进制来说是错误的，但是对于 $13$ 进制来说是正确的。即 $6_{(13)} \times 9_{(13)}=42_{(13)}$，而 $42_{(13)}=4 \times 13^1+2 \times 13^0=54_{(10)}$。</p>
+<p>你的任务是写一段程序读入三个整数 $p,q$ 和 $r$，然后确定一个进制 $B(2 \le B \le 16)$ 使得 $p\times q=r$。如果 $B$ 有很多选择，则输出最小的一个。</p>
+<p>例如：$p=11,q=11,r=121$，则有 $11_{(3)} \times 11_{(3)}=121_{(3)}$，因为 $11_{(3)}=1 \times 3^1+1 \times 3^0=4_{(10)}$ 和 $121_{(3)}=1 \times 3^2+2 \times 3^1+1 \times 3^0=16_{(10)}$。对于进制 $10,$ 有 $11_{(10)} \times 11_{(10)}=121_{(10)}$。这种情况下，应该输出 $3$。如果没有合适的进制，则输出 $0$。</p>
+<h2>输入格式</h2>
+<p>一行，包含三个整数 $p,q,r$，相邻两个整数之间用单个空格隔开。</p>
+<h2>输出格式</h2>
+<p>一个整数：即使得 $p \times q=r$ 成立的最小的 $B$。如果没有合适的 $B$，则输出 $0$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> <span class="hljs-number">9</span> <span class="hljs-number">42</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>13```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 函数：将字符串 s 按进制 B 转换为十进制整数（long long）。若出现非法数字（&gt;= B）则返回 -1。</span>
+<span class="hljs-function"><span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-title">toDec</span><span class="hljs-params">(<span class="hljs-type">const</span> string &amp;s, <span class="hljs-type">int</span> B)</span> </span>{
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> res = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-type">int</span> d = s[i] - <span class="hljs-string">&#x27;0&#x27;</span>;
+        <span class="hljs-keyword">if</span> (d &gt;= B) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        res = res * B + d;
+    }
+    <span class="hljs-keyword">return</span> res;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string p, q, r;
+    cin &gt;&gt; p &gt;&gt; q &gt;&gt; r;
+
+    <span class="hljs-comment">// 枚举进制 B（2~16），找最小的合法进制</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> B = <span class="hljs-number">2</span>; B &lt;= <span class="hljs-number">16</span>; B++) {
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> x = <span class="hljs-built_in">toDec</span>(p, B);
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> y = <span class="hljs-built_in">toDec</span>(q, B);
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> z = <span class="hljs-built_in">toDec</span>(r, B);
+        <span class="hljs-keyword">if</span> (x != <span class="hljs-number">-1</span> &amp;&amp; y != <span class="hljs-number">-1</span> &amp;&amp; z != <span class="hljs-number">-1</span> &amp;&amp; x * y == z) {
+            cout &lt;&lt; B &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 没有合适的进制，输出 0</span>
+    cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2141">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

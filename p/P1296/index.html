@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1296 奶牛的耳语 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在你的养牛场，所有的奶牛都养在一排呈直线的牛栏中。一共有 头奶牛，其中第 头牛在直线上所处的位置可以用一个整数坐标 来表示。在无聊的日子里，奶牛们常常在自己的牛栏里与其它奶牛交流一些八卦新闻。每头奶牛发出的声音响度是一样的，而由于声波的能量衰减，某头奶牛发出的声音只能被与它距离不超过 的奶牛所听到…">
+<link rel="canonical" href="https://zymojblog.top/p/P1296/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1296 奶牛的耳语 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在你的养牛场，所有的奶牛都养在一排呈直线的牛栏中。一共有 头奶牛，其中第 头牛在直线上所处的位置可以用一个整数坐标 来表示。在无聊的日子里，奶牛们常常在自己的牛栏里与其它奶牛交流一些八卦新闻。每头奶牛发出的声音响度是一样的，而由于声波的能量衰减，某头奶牛发出的声音只能被与它距离不超过 的奶牛所听到…">
+<meta property="og:url" content="https://zymojblog.top/p/P1296/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1296 奶牛的耳语 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在你的养牛场，所有的奶牛都养在一排呈直线的牛栏中。一共有 头奶牛，其中第 头牛在直线上所处的位置可以用一个整数坐标 来表示。在无聊的日子里，奶牛们常常在自己的牛栏里与其它奶牛交流一些八卦新闻。每头奶牛发出的声音响度是一样的，而由于声波的能量衰减，某头奶牛发出的声音只能被与它距离不超过 的奶牛所听到…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1296 奶牛的耳语","headline":"P1296 奶牛的耳语 题解","description":"在你的养牛场，所有的奶牛都养在一排呈直线的牛栏中。一共有 头奶牛，其中第 头牛在直线上所处的位置可以用一个整数坐标 来表示。在无聊的日子里，奶牛们常常在自己的牛栏里与其它奶牛交流一些八卦新闻。每头奶牛发出的声音响度是一样的，而由于声波的能量衰减，某头奶牛发出的声音只能被与它距离不超过 的奶牛所听到…","url":"https://zymojblog.top/p/P1296/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、二分、排序、队列、双指针 two-pointer","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1296</span></div>
+  <h1 class="seo-title">P1296 奶牛的耳语</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/%E9%98%9F%E5%88%97">队列</a><a class="seo-tag" href="/#/tag/%E5%8F%8C%E6%8C%87%E9%92%88%20two-pointer">双指针 two-pointer</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1296 奶牛的耳语</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-06-17</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>二分</code>、<code>排序</code>、<code>队列</code>、<code>双指针 two-pointer</code></p>
+<h2>题目描述</h2>
+<p>在你的养牛场，所有的奶牛都养在一排呈直线的牛栏中。一共有 $n$ 头奶牛，其中第 $i$ 头牛在直线上所处的位置可以用一个整数坐标 $p_i(0\le p_i \le 10^8)$ 来表示。在无聊的日子里，奶牛们常常在自己的牛栏里与其它奶牛交流一些八卦新闻。每头奶牛发出的声音响度是一样的，而由于声波的能量衰减，某头奶牛发出的声音只能被与它距离不超过 $d(0 \le d \le 10^4)$ 的奶牛所听到，这样这对奶牛就称为可以相互交流的。现在给出所有奶牛的位置和声音所能传播的最远距离 $d$ ，请你编个程序来计算你的养牛场里究竟有多少对可以相互交流的奶牛。</p>
+<h2>输入格式</h2>
+<p>第一行包含两个整数 $n,d$。</p>
+<p>第二行包含 $n$ 个整数，每个整数都是一个坐标 $p_i$，描述一头奶牛在直线上的位置。</p>
+<h2>输出格式</h2>
+<p>一个数，表示养牛场中可以相互交流奶牛的对数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">10</span>
+<span class="hljs-number">10</span> <span class="hljs-number">12</span> <span class="hljs-number">16</span> <span class="hljs-number">37</span> <span class="hljs-number">40</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">1000005</span>;
+<span class="hljs-type">int</span> a[MAXN];                      <span class="hljs-comment">// 存储奶牛位置坐标</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, d;                     <span class="hljs-comment">// n: 奶牛数, d: 最大交流距离</span>
+    cin &gt;&gt; n &gt;&gt; d;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        cin &gt;&gt; a[i];
+    }
+
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 排序后，对于每头牛 i，用二分查找最右边满足 a[j] - a[i] &lt;= d 的位置 j。</span>
+    <span class="hljs-comment">// 那么牛 i 可以和 i+1 到 j 的所有牛交流，贡献 (j - i) 对。</span>
+    <span class="hljs-comment">// 由于坐标可能重复且区间可能为空，二分边界需处理。</span>
+    <span class="hljs-comment">// 复杂度 O(n log n)，n=1e6 时可行。</span>
+
+    <span class="hljs-built_in">sort</span>(a, a + n);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;            <span class="hljs-comment">// 答案可能很大，用 long long</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-comment">// 在 [i+1, n-1] 中找最后一个 &lt;= a[i] + d 的位置</span>
+        <span class="hljs-type">int</span> left = i + <span class="hljs-number">1</span>, right = n - <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> best = i;             <span class="hljs-comment">// best 记录最后一个满足条件的下标，初始化为 i 表示没有</span>
+        <span class="hljs-keyword">while</span> (left &lt;= right) {
+            <span class="hljs-type">int</span> mid = (left + right) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (a[mid] - a[i] &lt;= d) {
+                best = mid;       <span class="hljs-comment">// 满足条件，尝试向右扩展</span>
+                left = mid + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                right = mid - <span class="hljs-number">1</span>;
+            }
+        }
+        <span class="hljs-comment">// best 就是最远的可交流牛，贡献 best - i 对</span>
+        ans += (best - i);
+    }
+
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1296">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

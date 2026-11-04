@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1835 素数密度 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 ，请计算区间 中素数的个数。 ， 。">
+<link rel="canonical" href="https://zymojblog.top/p/P1835/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1835 素数密度 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 ，请计算区间 中素数的个数。 ， 。">
+<meta property="og:url" content="https://zymojblog.top/p/P1835/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1835 素数密度 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 ，请计算区间 中素数的个数。 ， 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1835 素数密度","headline":"P1835 素数密度 题解","description":"给定 ，请计算区间 中素数的个数。 ， 。","url":"https://zymojblog.top/p/P1835/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"数学、NOI 导刊、枚举、素数判断","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1835</span></div>
+  <h1 class="seo-title">P1835 素数密度</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/NOI%20%E5%AF%BC%E5%88%8A">NOI 导刊</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E7%B4%A0%E6%95%B0%E5%88%A4%E6%96%AD">素数判断</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1835 素数密度</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>NOI 导刊</code>、<code>枚举</code>、<code>素数判断</code></p>
+<h2>题目背景</h2>
+<p>UPD:</p>
+<ul>
+<li>2024.8.12：加入一组 Hack 数据。</li>
+</ul>
+<h2>题目描述</h2>
+<p>给定 $L,R$，请计算区间 $[L,R]$ 中素数的个数。</p>
+<p>   $1\leq L\leq R &lt; 2^{31}$，$R-L\leq 10^6$。</p>
+<h2>输入格式</h2>
+<p>第一行，两个正整数 $L$ 和 $R$。</p>
+<h2>输出格式</h2>
+<p>一行，一个整数，表示区间中素数的个数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">11</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>5```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span>   <span class="hljs-comment">// 万能头，包含需要的所有库</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXLEN = <span class="hljs-number">1000000</span>;      <span class="hljs-comment">// 区间最大长度 1e6</span>
+<span class="hljs-type">bool</span> isP[<span class="hljs-number">46341</span>];                 <span class="hljs-comment">// 标记 sqrt(R) 以内的数是否为素数（false 表示素数）</span>
+<span class="hljs-type">int</span> pr[<span class="hljs-number">5000</span>], cnt;               <span class="hljs-comment">// 存储 sqrt(R) 以内的素数（约 4792 个）</span>
+<span class="hljs-type">bool</span> seg[MAXLEN + <span class="hljs-number">5</span>];            <span class="hljs-comment">// 区间偏移数组，seg[idx]=false 表示 L+idx 可能是素数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);                  <span class="hljs-comment">// 加速输入输出</span>
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> L, R;
+    cin &gt;&gt; L &gt;&gt; R;
+
+    <span class="hljs-comment">// ---------- 详细思路 ----------</span>
+    <span class="hljs-comment">// 由于 L,R 可能很大（&lt;2^31），但区间长度 R-L &lt;= 1e6，</span>
+    <span class="hljs-comment">// 不能直接开长度为 R 的数组筛素数。</span>
+    <span class="hljs-comment">// 采用“区间筛”（分段筛）：</span>
+    <span class="hljs-comment">// 1. 先用普通筛求出 2 ~ sqrt(R) 的所有素数（sqrt(R) ≤ 46340）。</span>
+    <span class="hljs-comment">// 2. 对于每个小素数 p，将区间 [L,R] 内 p 的倍数标记为合数。</span>
+    <span class="hljs-comment">//    标记时采用偏移下标：对于数 x，在 seg 中的位置为 x - L。</span>
+    <span class="hljs-comment">// 3. 最后统计 seg 中未被标记的数的个数，注意 1 不是素数需跳过。</span>
+
+    <span class="hljs-comment">// ---------- 第 1 步：筛出 sqrt(R) 以内素数 ----------</span>
+    <span class="hljs-comment">// 使用埃氏筛，上限 U = 46340（46340^2 &gt; 2^31）</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= <span class="hljs-number">46340</span>; i++) {
+        <span class="hljs-keyword">if</span> (!isP[i]) {                       <span class="hljs-comment">// i 是素数</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i * i; j &lt;= <span class="hljs-number">46340</span>; j += i) {
+                isP[j] = <span class="hljs-literal">true</span>;               <span class="hljs-comment">// 标记 i 的倍数为合数</span>
+            }
+        }
+    }
+    <span class="hljs-comment">// 收集所有素数到 pr 数组，下标从 1 开始</span>
+    cnt = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= <span class="hljs-number">46340</span>; i++) {
+        <span class="hljs-keyword">if</span> (!isP[i]) {
+            pr[++cnt] = i;                   <span class="hljs-comment">// pr[1], pr[2], ..., pr[cnt] 存储素数</span>
+        }
+    }
+
+    <span class="hljs-comment">// ---------- 第 2 步：用这些小素数筛区间 [L, R] ----------</span>
+    <span class="hljs-comment">// 遍历每个小素数 p</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= cnt; i++) {
+        <span class="hljs-type">int</span> p = pr[i];                       <span class="hljs-comment">// 当前素数</span>
+
+        <span class="hljs-comment">// 计算区间 [L,R] 内第一个 p 的倍数，且至少为 2*p（避免把 p 本身筛掉）</span>
+        <span class="hljs-comment">// (L + p - 1) / p 是 ceil(L / p) 的整数计算，再乘 p 得到第一个 &gt;= L 的倍数</span>
+        <span class="hljs-comment">// 与 2*p 取最大值，保证不会标记素数 p 自己</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> start = <span class="hljs-built_in">max</span>((<span class="hljs-type">long</span> <span class="hljs-type">long</span>)p * <span class="hljs-number">2</span>, ((L + p - <span class="hljs-number">1</span>) / p) * p);
+
+        <span class="hljs-comment">// 从 start 开始，每次增加 p，将区间内 p 的倍数都标记为合数</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> <span class="hljs-type">long</span> j = start; j &lt;= R; j += p) {
+            <span class="hljs-comment">// 通过偏移量 j - L 定位到 seg 数组</span>
+            seg[j - L] = <span class="hljs-literal">true</span>;               <span class="hljs-comment">// true 表示该数是合数</span>
+        }
+    }
+
+    <span class="hljs-comment">// ---------- 第 3 步：统计区间内素数的个数 ----------</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                             <span class="hljs-comment">// 答案计数器</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> <span class="hljs-type">long</span> i = L; i &lt;= R; i++) {
+        <span class="hljs-comment">// 注意：1 不是素数，需要跳过</span>
+        <span class="hljs-comment">// seg[i - L] == false 表示没被筛掉，可能是素数</span>
+        <span class="hljs-keyword">if</span> (i &gt;= <span class="hljs-number">2</span> &amp;&amp; !seg[i - L]) {
+            ans++;
+        }
+    }
+
+    <span class="hljs-comment">// 输出结果</span>
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;                     <span class="hljs-comment">// 用 &#x27;\n&#x27; 换行比 endl 更快</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1835">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

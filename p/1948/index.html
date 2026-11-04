@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1948 评选最佳品牌 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="个评委投票，在 个商品中评选一个最佳品牌。 评选采用多轮淘汰制，即：每轮投票，淘汰掉得票最少的候选品牌（得票并列最少的品牌一起淘汰）。 如此一轮轮淘汰下去，如果最后只剩下一个品牌当选，即告评选成功。 但如果在某轮投票中，当时未被淘汰的所有候选品牌（大于等于两个品牌）都并列得票最少，即告评选失败。 …">
+<link rel="canonical" href="https://zymojblog.top/p/1948/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1948 评选最佳品牌 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="个评委投票，在 个商品中评选一个最佳品牌。 评选采用多轮淘汰制，即：每轮投票，淘汰掉得票最少的候选品牌（得票并列最少的品牌一起淘汰）。 如此一轮轮淘汰下去，如果最后只剩下一个品牌当选，即告评选成功。 但如果在某轮投票中，当时未被淘汰的所有候选品牌（大于等于两个品牌）都并列得票最少，即告评选失败。 …">
+<meta property="og:url" content="https://zymojblog.top/p/1948/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1948 评选最佳品牌 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="个评委投票，在 个商品中评选一个最佳品牌。 评选采用多轮淘汰制，即：每轮投票，淘汰掉得票最少的候选品牌（得票并列最少的品牌一起淘汰）。 如此一轮轮淘汰下去，如果最后只剩下一个品牌当选，即告评选成功。 但如果在某轮投票中，当时未被淘汰的所有候选品牌（大于等于两个品牌）都并列得票最少，即告评选失败。 …">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1948 评选最佳品牌","headline":"1948 评选最佳品牌 题解","description":"个评委投票，在 个商品中评选一个最佳品牌。 评选采用多轮淘汰制，即：每轮投票，淘汰掉得票最少的候选品牌（得票并列最少的品牌一起淘汰）。 如此一轮轮淘汰下去，如果最后只剩下一个品牌当选，即告评选成功。 但如果在某轮投票中，当时未被淘汰的所有候选品牌（大于等于两个品牌）都并列得票最少，即告评选失败。 …","url":"https://zymojblog.top/p/1948/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1948</span></div>
+  <h1 class="seo-title">1948 评选最佳品牌</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a></div>
+  <article class="markdown-body seo-article">
+<h1>1948 - 评选最佳品牌</h1>
+<h2>题目描述</h2>
+<p>$n$ 个评委投票，在 $m$ 个商品中评选一个最佳品牌。</p>
+<p>评选采用多轮淘汰制，即：每轮投票，淘汰掉得票最少的候选品牌（得票并列最少的品牌一起淘汰）。</p>
+<p>如此一轮轮淘汰下去，如果最后只剩下一个品牌当选，即告评选成功。</p>
+<p>但如果在某轮投票中，当时未被淘汰的所有候选品牌（大于等于两个品牌）都并列得票最少，即告评选失败。</p>
+<p>如果评选成功就输出当选品牌号。否则输出最后一轮评选时唯一选票数的相反数。</p>
+<p>在评选流程中，每个评委的态度都可用一个序列来表示；例如当 $m=5$ 时，某评委的评选态度序列为：$3$、$5$、$1$、$2$、$4$，则表示该评委：优先投 $3$ 号，当 $3$ 号被淘汰时投 $5$ 号，当 $3$ 和 $5$ 都被淘汰时投 $1$，当 $3$、$5$、$1$ 都被淘汰时投 $2$，仅剩 $4$ 号时才投 $4$ 号品牌的票。</p>
+<p>选票的序列中可以表示弃权，用 $0$ 来表示，例如当 $m=5$ 时，某评委的评选态度序列为：$3$、$5$、$0$，则表示该评委：优先投 $3$ 号，当 $3$ 号被淘汰时投 $5$ 号，其它情况下不投任何品牌的票。</p>
+<p>编程实现：请你编一个程序，模拟各轮投票的过程，得到评选结果。</p>
+<h2>输入</h2>
+<p>第一行：$m$ (，表示参加评选的品牌数)和  $n$ (，表示参加投票的评委数)，之间以空格分隔。</p>
+<p>接下来的 $n$ 行：每行都是长度不超 $m$ 的数字字符串，每个字符串表示一个评委的评选态度。</p>
+<h2>输出</h2>
+<p>评选结果。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+1. m个品牌，n个人。
+2. 投票进行多轮，每一轮至少淘汰1个品牌，但也可能淘汰多个。
+得票并列最少的都淘汰。
+3. 如果所有候选品牌，得票都是并列最少（一样多），评选失败。
+
+思路：
+1. 需要投最多m-1轮，每轮就算投掉1个品牌，有m-1轮，就可以结束。
+while(true) {  }  也可能某轮投掉了多个品牌。
+
+2. 每轮：
+(1) 统计每个品牌的得票：如果品牌被投出去了，看评委投的下一个品牌。
+(2) 统计：得票最多的品牌得到了ma票，得票最少的品牌得到了mi票。
+情况一：ma == mi，投票失败，输出：0-ma。
+情况二：将所有得到mi票的品牌，标记出局，判断还剩几个。
+        如果还剩1个，输出这个品牌的编号。
+*/</span>
+<span class="hljs-type">int</span> cnt[<span class="hljs-number">20</span>];<span class="hljs-comment">//每个品牌的得票数</span>
+string a[<span class="hljs-number">1010</span>];<span class="hljs-comment">//存储n个人的投票</span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">20</span>];<span class="hljs-comment">//标记淘汰</span>
+<span class="hljs-type">int</span> m, n;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; m &gt;&gt; n;<span class="hljs-comment">//m个品牌，n个人</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) cin &gt;&gt; a[i];
+
+    <span class="hljs-comment">//进行最多m-1轮投票</span>
+    <span class="hljs-type">int</span> x, mi, ma;
+    <span class="hljs-type">int</span> tot = m;<span class="hljs-comment">//默认有m个品牌</span>
+    <span class="hljs-keyword">while</span>(<span class="hljs-literal">true</span>) {
+        <span class="hljs-built_in">memset</span>(cnt, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(cnt));<span class="hljs-comment">//本轮投票和上一轮无关</span>
+
+        <span class="hljs-comment">//1. 统计每个品牌的得票数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            <span class="hljs-comment">//for(char c : a[i])</span>
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; a[i].<span class="hljs-built_in">size</span>(); j++) {
+                x = a[i][j] - <span class="hljs-string">&#x27;0&#x27;</span>;<span class="hljs-comment">//投票对象品牌</span>
+                <span class="hljs-keyword">if</span>(x == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<span class="hljs-comment">//弃权</span>
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(f[x] == <span class="hljs-literal">false</span>) { <span class="hljs-comment">//x没有被投掉，投给x，不看下一个</span>
+                    cnt[x]++;
+                    <span class="hljs-keyword">break</span>;
+                }
+            }
+        }
+
+        <span class="hljs-comment">//2. 统计：得票最多的品牌、得票最少的品牌分别得到了几票</span>
+        ma = <span class="hljs-number">0</span>, mi = INT_MAX;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+            <span class="hljs-keyword">if</span>(f[i] == <span class="hljs-literal">false</span>) {
+                ma = <span class="hljs-built_in">max</span>(ma, cnt[i]);
+                mi = <span class="hljs-built_in">min</span>(mi, cnt[i]);
+            }
+        }
+
+        <span class="hljs-comment">//3. 判断哪种情况发生</span>
+        <span class="hljs-keyword">if</span>(ma == mi) { <span class="hljs-comment">//没有被投出去的品牌，得票数都一样多</span>
+            cout &lt;&lt; <span class="hljs-number">0</span> - ma;
+            <span class="hljs-keyword">break</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">//将所有的票最少的品牌标记出局</span>
+            <span class="hljs-type">int</span> win = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+                <span class="hljs-keyword">if</span>(cnt[i] == mi) {
+                    f[i] = <span class="hljs-literal">true</span>;
+                    tot--;
+                }
+
+                <span class="hljs-keyword">if</span>(cnt[i] == ma) win = i;<span class="hljs-comment">//记录得票最多的品牌</span>
+            }
+
+            <span class="hljs-comment">//判断如果只剩1个品牌，输出品牌的编号</span>
+            <span class="hljs-keyword">if</span>(tot == <span class="hljs-number">1</span>) {
+                cout &lt;&lt; win;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1948">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

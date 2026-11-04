@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9644 [SNCPC2019] Turn It Off 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="It's already 21:30 now, and it's time for BaoBao to go to bed. To ensure his sleeping quality, BaoBao decides to turn all the lights in his bedroom o…">
+<link rel="canonical" href="https://zymojblog.top/p/P9644/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9644 [SNCPC2019] Turn It Off 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="It's already 21:30 now, and it's time for BaoBao to go to bed. To ensure his sleeping quality, BaoBao decides to turn all the lights in his bedroom o…">
+<meta property="og:url" content="https://zymojblog.top/p/P9644/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9644 [SNCPC2019] Turn It Off 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="It's already 21:30 now, and it's time for BaoBao to go to bed. To ensure his sleeping quality, BaoBao decides to turn all the lights in his bedroom o…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9644 [SNCPC2019] Turn It Off","headline":"P9644 [SNCPC2019] Turn It Off 题解","description":"It's already 21:30 now, and it's time for BaoBao to go to bed. To ensure his sleeping quality, BaoBao decides to turn all the lights in his bedroom o…","url":"https://zymojblog.top/p/P9644/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"2019、二分、O2优化、陕西、省赛/邀请赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9644</span></div>
+  <h1 class="seo-title">P9644 [SNCPC2019] Turn It Off</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2019">2019</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E9%99%95%E8%A5%BF">陕西</a><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B%2F%E9%82%80%E8%AF%B7%E8%B5%9B">省赛/邀请赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9644 [SNCPC2019] Turn It Off</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2019</code>、<code>二分</code>、<code>O2优化</code>、<code>陕西</code>、<code>省赛/邀请赛</code></p>
+<h2>题目描述</h2>
+<p>It&#39;s already 21:30 now, and it&#39;s time for BaoBao to go to bed. To ensure his sleeping quality, BaoBao decides to turn all the lights in his bedroom off.</p>
+<p>There are $n$ lights, numbered from 1 to $n$, arranged in a row in BaoBao&#39;s bedroom. Each time BaoBao can select an integer $i$ and turn all the lights numbered from $i$ to $(i+L-1)$ (both inclusive) off, where $L$ is a predefined positive integer. Note that each time the value of $L$ must be the same.</p>
+<p>Given the initial status of all the lights, please help BaoBao determine the smallest possible $L$ so that he can turn all the lights off within $k$ times.</p>
+<h2>输入格式</h2>
+<p>There are multiple test cases. The first line of the input contains an integer $T$, indicating the number of test cases. For each test case:</p>
+<p>The first line contains two integers $n$ and $k$ ($1 \le k \le n \le 2 \times 10^5$).</p>
+<p>The second line contains a string $s$ ($|s| = n$, $s \in {\text{<code>0&#39;}, \text{</code>1&#39;}}$) indicating the initial status of the lights. Let $s_i$ be the $i$-th character in $s$, if $s_i = \text{<code>1&#39;}$ then the $i$-th light is initially on, otherwise it&#39;s initially off. It&#39;s guaranteed that there is at least one </code>1· in $s$.</p>
+<p>It&#39;s guaranteed that the sum of $n$ of all test cases will not exceed $2 \times 10^6$.</p>
+<h2>输出格式</h2>
+<p>For each test case output one line containing one integer, indicating the smallest possible $L$.</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">10</span> <span class="hljs-number">4</span>
+<span class="hljs-number">0101011111</span>
+<span class="hljs-number">3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">010</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3<br>1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n, k;
+string s;
+
+<span class="hljs-comment">// 检查长度 L 是否可行，返回需要的区间数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> L)</span> </span>{
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;         <span class="hljs-comment">// 已使用操作次数</span>
+    <span class="hljs-type">int</span> pos = <span class="hljs-number">0</span>;         <span class="hljs-comment">// 当前扫描位置（0-based）</span>
+    <span class="hljs-keyword">while</span> (pos &lt; n) {
+        <span class="hljs-keyword">if</span> (s[pos] == <span class="hljs-string">&#x27;0&#x27;</span>) {
+            pos++;
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-comment">// 遇到亮灯，必须在这里开始一次操作</span>
+        cnt++;
+        <span class="hljs-keyword">if</span> (cnt &gt; k) <span class="hljs-keyword">return</span> cnt;   <span class="hljs-comment">// 已经超过 k 次，提前退出</span>
+        <span class="hljs-comment">// 这次操作覆盖了 [pos, pos+L-1]，直接跳到 pos+L</span>
+        pos += L;
+    }
+    <span class="hljs-keyword">return</span> cnt;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】二分答案 + 贪心覆盖
+     * 【核心思路】
+     * 1. 对于给定的 L，采用贪心：从左到右找到第一个亮灯，放置长度为 L 的区间覆盖它，
+     *    然后跳到此区间之后继续找下一个亮灯。
+     * 2. 如果覆盖所有亮灯需要的区间数 &lt;= k，则 L 可行。
+     * 3. 二分最小的可行 L。
+     *
+     * 【时间复杂度】O(Σ n log n)
+     */</span>
+
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> T;
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        cin &gt;&gt; n &gt;&gt; k;
+        cin &gt;&gt; s;
+
+        <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>, r = n, ans = n;
+        <span class="hljs-keyword">while</span> (l &lt;= r) {
+            <span class="hljs-type">int</span> mid = (l + r) / <span class="hljs-number">2</span>;
+            <span class="hljs-type">int</span> need = <span class="hljs-built_in">check</span>(mid);
+            <span class="hljs-keyword">if</span> (need &lt;= k) {
+                ans = mid;
+                r = mid - <span class="hljs-number">1</span>;      <span class="hljs-comment">// 尝试更小的 L</span>
+            } <span class="hljs-keyword">else</span> {
+                l = mid + <span class="hljs-number">1</span>;      <span class="hljs-comment">// L 太小，增大</span>
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9644">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

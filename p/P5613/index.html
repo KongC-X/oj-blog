@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5613 [MtOI2019] 黑蚊子多 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="Hikari 的面前有 级台阶，每 她可以向上跳 级台阶。（不在中间的台阶上停留） 台阶上有 个特殊的平台 ，Hikari 在该平台 停留 时会使得 增加 。 请问 Hikari 到达台阶顶部花费的时间。">
+<link rel="canonical" href="https://zymojblog.top/p/P5613/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5613 [MtOI2019] 黑蚊子多 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="Hikari 的面前有 级台阶，每 她可以向上跳 级台阶。（不在中间的台阶上停留） 台阶上有 个特殊的平台 ，Hikari 在该平台 停留 时会使得 增加 。 请问 Hikari 到达台阶顶部花费的时间。">
+<meta property="og:url" content="https://zymojblog.top/p/P5613/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5613 [MtOI2019] 黑蚊子多 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="Hikari 的面前有 级台阶，每 她可以向上跳 级台阶。（不在中间的台阶上停留） 台阶上有 个特殊的平台 ，Hikari 在该平台 停留 时会使得 增加 。 请问 Hikari 到达台阶顶部花费的时间。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5613 [MtOI2019] 黑蚊子多","headline":"P5613 [MtOI2019] 黑蚊子多 题解","description":"Hikari 的面前有 级台阶，每 她可以向上跳 级台阶。（不在中间的台阶上停留） 台阶上有 个特殊的平台 ，Hikari 在该平台 停留 时会使得 增加 。 请问 Hikari 到达台阶顶部花费的时间。","url":"https://zymojblog.top/p/P5613/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、2019、洛谷原创、O2优化、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5613</span></div>
+  <h1 class="seo-title">P5613 [MtOI2019] 黑蚊子多</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2019">2019</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5613 [MtOI2019] 黑蚊子多</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-24</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2019</code>、<code>洛谷原创</code>、<code>O2优化</code>、<code>洛谷月赛</code></p>
+<h2>题目描述</h2>
+<p>Hikari 的面前有 $n(1\leq n\leq 1000)$ 级台阶，每 $1s$ 她可以向上跳 $m(1\leq m\leq n)$ 级台阶。（不在中间的台阶上停留）</p>
+<p>台阶上有 $k(k\leq 10)$ 个特殊的平台 $a_i$，Hikari 在该平台 <strong>停留</strong> 时会使得 $m$ 增加 $1$。</p>
+<p>请问 Hikari 到达台阶顶部花费的时间。</p>
+<h2>输入格式</h2>
+<p>共 $2$ 行。</p>
+<p>第 $1$ 行输入 $3$ 个非负整数 $n,m,k$。</p>
+<p>第 $2$ 行输入 $k$ 个正整数，第 $i$ 个正整数表示 $a_i$，保证输入的 $a_i$ 单调递增。</p>
+<h2>输出格式</h2>
+<p>共 $1$ 行，输出 $1$ 个正整数表示花费的时间。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span> <span class="hljs-number">5</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">31</span> <span class="hljs-number">4</span> <span class="hljs-number">2</span>
+<span class="hljs-number">8</span> <span class="hljs-number">13</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>6```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】模拟
+     * 【核心思路】
+     * 1. 用 bool 数组 arr[1005] 记录哪些台阶是特殊平台。
+     * 2. pos 表示当前所在台阶（初始为 0），m 表示当前步长，ans 记录时间。
+     * 3. 循环模拟每一秒：
+     *    a. ans++
+     *    b. pos += m   (跳一次)
+     *    c. 如果 pos &gt;= n，说明到达顶部，输出 ans 结束。
+     *    d. 如果 pos 是特殊平台，则 m++（停留使步长增加）。
+     * 4. 由于 n 很小，直接模拟即可。
+     *
+     * 【时间复杂度】O(n)
+     */</span>
+
+    <span class="hljs-comment">// 变量定义</span>
+    <span class="hljs-type">int</span> n, m, k;          <span class="hljs-comment">// n: 台阶总数, m: 初始步长, k: 特殊平台个数</span>
+    cin &gt;&gt; n &gt;&gt; m &gt;&gt; k;
+
+    <span class="hljs-type">bool</span> arr[<span class="hljs-number">1005</span>] = {<span class="hljs-literal">false</span>};  <span class="hljs-comment">// arr[i]: 第 i 级台阶是否为特殊平台</span>
+
+    <span class="hljs-comment">// 读入 k 个特殊平台并标记</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; k; i++) {
+        <span class="hljs-type">int</span> a;   <span class="hljs-comment">// 临时变量 a: 特殊平台的编号</span>
+        cin &gt;&gt; a;
+        arr[a] = <span class="hljs-literal">true</span>;
+    }
+
+    <span class="hljs-type">int</span> pos = <span class="hljs-number">0</span>;   <span class="hljs-comment">// pos: 当前位置（初始在 0 级，即地面）</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;   <span class="hljs-comment">// ans: 花费的时间（秒数）</span>
+
+    <span class="hljs-comment">// 模拟跳跃过程</span>
+    <span class="hljs-keyword">while</span> (pos &lt; n) {
+        ans++;          <span class="hljs-comment">// 每 1 秒</span>
+        pos += m;       <span class="hljs-comment">// 向上跳 m 级</span>
+
+        <span class="hljs-keyword">if</span> (pos &gt;= n) {
+            <span class="hljs-keyword">break</span>;      <span class="hljs-comment">// 已经到达或超过顶部，结束</span>
+        }
+
+        <span class="hljs-comment">// 如果落在特殊平台上，步长增加 1</span>
+        <span class="hljs-keyword">if</span> (arr[pos]) {
+            m++;
+        }
+    }
+
+    <span class="hljs-comment">// 输出结果</span>
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5613">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

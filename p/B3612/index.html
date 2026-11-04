@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3612 【深进1.例1】求区间和 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 个正整数组成的数列 和 个区间 ，分别求这 个区间的区间和。">
+<link rel="canonical" href="https://zymojblog.top/p/B3612/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B3612 【深进1.例1】求区间和 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 个正整数组成的数列 和 个区间 ，分别求这 个区间的区间和。">
+<meta property="og:url" content="https://zymojblog.top/p/B3612/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B3612 【深进1.例1】求区间和 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 个正整数组成的数列 和 个区间 ，分别求这 个区间的区间和。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B3612 【深进1.例1】求区间和","headline":"B3612 【深进1.例1】求区间和 题解","description":"给定 个正整数组成的数列 和 个区间 ，分别求这 个区间的区间和。","url":"https://zymojblog.top/p/B3612/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"O2优化、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B3612</span></div>
+  <h1 class="seo-title">B3612 【深进1.例1】求区间和</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a></div>
+  <article class="markdown-body seo-article">
+<h1>B3612 【深进1.例1】求区间和</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>O2优化</code>、<code>前缀和</code></p>
+<h2>题目描述</h2>
+<p>给定 $n$ 个正整数组成的数列 $a_1, a_2, \cdots, a_n$ 和 $m$ 个区间 $[l_i,r_i]$，分别求这 $m$ 个区间的区间和。</p>
+<h2>输入格式</h2>
+<p>第一行包含一个正整数 $n$，表示序列的长度。</p>
+<p>第二行包含 $n$ 个正整数 $a_1,a_2, \cdots ,a_n$。</p>
+<p>第三行包含一个正整数 $m$，表示区间的数量。</p>
+<p>接下来 $m$ 行，每行包含两个正整数 $l_i,r_i$，满足 $1\le l_i\le r_i\le n$。</p>
+<h2>输出格式</h2>
+<p>共 $m$ 行，其中第 $i$ 行包含一个正整数，表示第 $i$ 组答案的询问。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">1</span> <span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>10<br>5```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100010</span>;  <span class="hljs-comment">// n 最大 1e5，多开 10 个</span>
+<span class="hljs-type">int</span> a[MAXN];              <span class="hljs-comment">// a[i]: 原序列第 i 个数</span>
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> s[MAXN];        <span class="hljs-comment">// s[i]: 前 i 个数的前缀和</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：前缀和模板题</span>
+    <span class="hljs-comment">// 预处理前缀和 s[i] = a[1] + a[2] + ... + a[i]</span>
+    <span class="hljs-comment">// 则区间 [l, r] 的和 = s[r] - s[l-1]，O(1) 回答每次询问</span>
+    <span class="hljs-comment">// 时间复杂度 O(n + m)，适合 n, m &lt;= 1e5</span>
+
+    <span class="hljs-type">int</span> n;                 <span class="hljs-comment">// n: 序列长度</span>
+    cin &gt;&gt; n;
+
+    s[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;              <span class="hljs-comment">// 前缀和初始值，方便处理 l=1 的情况</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; a[i];
+        s[i] = s[i - <span class="hljs-number">1</span>] + a[i];   <span class="hljs-comment">// 递推计算前缀和</span>
+    }
+
+    <span class="hljs-type">int</span> m;                 <span class="hljs-comment">// m: 询问次数</span>
+    cin &gt;&gt; m;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-type">int</span> l, r;          <span class="hljs-comment">// l, r: 询问区间的左右端点</span>
+        cin &gt;&gt; l &gt;&gt; r;
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = s[r] - s[l - <span class="hljs-number">1</span>];   <span class="hljs-comment">// 前缀和公式</span>
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B3612">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

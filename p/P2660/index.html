@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2660 zzc 种田 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="田地是一个巨大的矩形，然而 zzc 每次只能种一个正方形,而每种一个正方形时 zzc 所花的体力值是正方形的周长，种过的田不可以再种，zzc 很懒还要节约体力去泡妹子，想花最少的体力值去种完这块田地，问最小体力值。">
+<link rel="canonical" href="https://zymojblog.top/p/P2660/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2660 zzc 种田 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="田地是一个巨大的矩形，然而 zzc 每次只能种一个正方形,而每种一个正方形时 zzc 所花的体力值是正方形的周长，种过的田不可以再种，zzc 很懒还要节约体力去泡妹子，想花最少的体力值去种完这块田地，问最小体力值。">
+<meta property="og:url" content="https://zymojblog.top/p/P2660/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2660 zzc 种田 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="田地是一个巨大的矩形，然而 zzc 每次只能种一个正方形,而每种一个正方形时 zzc 所花的体力值是正方形的周长，种过的田不可以再种，zzc 很懒还要节约体力去泡妹子，想花最少的体力值去种完这块田地，问最小体力值。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2660 zzc 种田","headline":"P2660 zzc 种田 题解","description":"田地是一个巨大的矩形，然而 zzc 每次只能种一个正方形,而每种一个正方形时 zzc 所花的体力值是正方形的周长，种过的田不可以再种，zzc 很懒还要节约体力去泡妹子，想花最少的体力值去种完这块田地，问最小体力值。","url":"https://zymojblog.top/p/P2660/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"数学、贪心、递归、洛谷原创","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2660</span></div>
+  <h1 class="seo-title">P2660 zzc 种田</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E5%8E%9F%E5%88%9B">洛谷原创</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2660 zzc 种田</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-23</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>贪心</code>、<code>递归</code>、<code>洛谷原创</code></p>
+<h2>题目背景</h2>
+<p>可能以后 zzc 就去种田了。</p>
+<h2>题目描述</h2>
+<p>田地是一个巨大的矩形，然而 zzc 每次只能种一个正方形,而每种一个正方形时 zzc 所花的体力值是正方形的周长，种过的田不可以再种，zzc 很懒还要节约体力去泡妹子，想花最少的体力值去种完这块田地，问最小体力值。</p>
+<h2>输入格式</h2>
+<p>两个正整数 $x,y$，表示田地的长和宽。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>40```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">2</span> ```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>8```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a, b;          <span class="hljs-comment">// 田地的长和宽</span>
+    cin &gt;&gt; a &gt;&gt; b;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> sum = <span class="hljs-number">0</span>;       <span class="hljs-comment">// 所有正方形边长之和</span>
+
+    <span class="hljs-comment">// 辗转相切：每次从矩形中切出尽可能大的正方形</span>
+    <span class="hljs-keyword">while</span> (a &amp;&amp; b) {
+        <span class="hljs-keyword">if</span> (a &lt; b) <span class="hljs-built_in">swap</span>(a, b);        <span class="hljs-comment">// 保证 a 为长边</span>
+        <span class="hljs-type">long</span> <span class="hljs-type">long</span> k = a / b;          <span class="hljs-comment">// 能切出 k 个边长为 b 的正方形</span>
+        sum += k * b;                 <span class="hljs-comment">// 累加边长</span>
+        a %= b;                       <span class="hljs-comment">// 剩余部分的长</span>
+    }
+
+    <span class="hljs-comment">// 体力 = 边长之和 × 4</span>
+    cout &lt;&lt; sum * <span class="hljs-number">4</span> &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2660">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

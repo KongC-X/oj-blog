@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1079 [NOIP 2012 提高组] Vigenère 密码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="16 世纪法国外交家 Blaise de Vigenère 设计了一种多表密码加密算法 Vigenère 密码。Vigenère 密码的加密解密算法简单易用，且破译难度比较高，曾在美国南北战争中为南军所广泛使用。 在密码学中，我们称需要加密的信息为明文，用 表示；称加密后的信息为密文，用 表示；而…">
+<link rel="canonical" href="https://zymojblog.top/p/P1079/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1079 [NOIP 2012 提高组] Vigenère 密码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="16 世纪法国外交家 Blaise de Vigenère 设计了一种多表密码加密算法 Vigenère 密码。Vigenère 密码的加密解密算法简单易用，且破译难度比较高，曾在美国南北战争中为南军所广泛使用。 在密码学中，我们称需要加密的信息为明文，用 表示；称加密后的信息为密文，用 表示；而…">
+<meta property="og:url" content="https://zymojblog.top/p/P1079/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1079 [NOIP 2012 提高组] Vigenère 密码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="16 世纪法国外交家 Blaise de Vigenère 设计了一种多表密码加密算法 Vigenère 密码。Vigenère 密码的加密解密算法简单易用，且破译难度比较高，曾在美国南北战争中为南军所广泛使用。 在密码学中，我们称需要加密的信息为明文，用 表示；称加密后的信息为密文，用 表示；而…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1079 [NOIP 2012 提高组] Vigenère 密码","headline":"P1079 [NOIP 2012 提高组] Vigenère 密码 题解","description":"16 世纪法国外交家 Blaise de Vigenère 设计了一种多表密码加密算法 Vigenère 密码。Vigenère 密码的加密解密算法简单易用，且破译难度比较高，曾在美国南北战争中为南军所广泛使用。 在密码学中，我们称需要加密的信息为明文，用 表示；称加密后的信息为密文，用 表示；而…","url":"https://zymojblog.top/p/P1079/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2012、NOIP 提高组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1079</span></div>
+  <h1 class="seo-title">P1079 [NOIP 2012 提高组] Vigenère 密码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2012">2012</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1079 [NOIP 2012 提高组] Vigenère 密码</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2012</code>、<code>NOIP 提高组</code></p>
+<h2>题目描述</h2>
+<p>16 世纪法国外交家 Blaise de Vigenère 设计了一种多表密码加密算法 Vigenère 密码。Vigenère 密码的加密解密算法简单易用，且破译难度比较高，曾在美国南北战争中为南军所广泛使用。</p>
+<p>在密码学中，我们称需要加密的信息为明文，用 $M$ 表示；称加密后的信息为密文，用 $C$ 表示；而密钥是一种参数，是将明文转换为密文或将密文转换为明文的算法中输入的数据，记为 $k$。在 Vigenère 密码中，密钥 $k$ 是一个字母串，$k=k_1,k_2,…,k_n$。当明文 $M=m_1,m_2,…,m_n$ 时，得到的密文 $C=c_1,c_2,…,c_n$，其中 $c_i$=$m_i \operatorname{\circledR} k_i$，运算 $\circledR$ 的规则如下表所示：</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/ptr4yu7h.png" alt=""></p>
+<p>Vigenère 加密在操作时需要注意：</p>
+<ol>
+<li>$\circledR$ 运算忽略参与运算的字母的大小写，并保持字母在明文 $M$ 中的大小写形式；</li>
+<li>当明文 $M$ 的长度大于密钥 $k$ 的长度时，将密钥 $k$ 重复使用。</li>
+</ol>
+<p>例如，明文 $M=\texttt{Helloworld}$，密钥 $k=\texttt{abc}$ 时，密文 $C=\texttt{Hfnlpyosnd}$。</p>
+<p>$$<br>\def\arraystretch{1.5}<br>\begin{array}{|c|c|c|c|c|c|c|c|c|c|c|} \hline<br>\textsf{明文} &amp; \tt H &amp; \tt e &amp; \tt l &amp; \tt l &amp; \tt o &amp; \tt w &amp; \tt o &amp; \tt r &amp; \tt l &amp; \tt d \  \hline<br>\textsf{密钥} &amp; \tt a &amp; \tt b &amp; \tt c &amp; \tt a &amp; \tt b &amp; \tt c &amp; \tt a &amp; \tt b &amp; \tt c &amp; \tt a \  \hline<br>\textsf{密文} &amp; \tt H &amp; \tt f &amp; \tt n &amp; \tt l &amp; \tt p &amp; \tt y &amp; \tt o &amp; \tt s &amp; \tt n &amp; \tt d \  \hline<br>\end{array}<br>$$</p>
+<h2>输入格式</h2>
+<p>共 2 行。</p>
+<p>第一行为一个字符串，表示密钥 $k$，长度不超过 $100$，其中仅包含大小写字母。  </p>
+<p>第二行为一个字符串，表示经加密后的密文，长度不超过 $1000$，其中仅包含大小写字母。</p>
+<h2>输出格式</h2>
+<p>一个字符串，表示输入密钥和密文所对应的明文。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">CompleteVictory
+Yvqgpxaimmklongnzfwpvxmniytm```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>Wherethereisawillthereisaway```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 将字母转换为0-25的数字（A或a对应0）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">toNum</span><span class="hljs-params">(<span class="hljs-type">char</span> c)</span> </span>{
+    <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) <span class="hljs-keyword">return</span> c - <span class="hljs-string">&#x27;a&#x27;</span>;
+    <span class="hljs-keyword">return</span> c - <span class="hljs-string">&#x27;A&#x27;</span>;
+}
+
+<span class="hljs-comment">// 解密函数：给定密文字母 c、密钥字母 k，返回明文字母（保持大小写与 c 一致）</span>
+<span class="hljs-function"><span class="hljs-type">char</span> <span class="hljs-title">decode</span><span class="hljs-params">(<span class="hljs-type">char</span> c, <span class="hljs-type">char</span> k)</span> </span>{
+    <span class="hljs-type">int</span> cn = <span class="hljs-built_in">toNum</span>(c);           <span class="hljs-comment">// 密文的数字值</span>
+    <span class="hljs-type">int</span> kn = <span class="hljs-built_in">toNum</span>(k);           <span class="hljs-comment">// 密钥的数字值</span>
+    <span class="hljs-type">int</span> mn = (cn - kn + <span class="hljs-number">26</span>) % <span class="hljs-number">26</span>; <span class="hljs-comment">// 明文的数字值（解密：减回去，+26防负数）</span>
+    <span class="hljs-keyword">if</span> (c &gt;= <span class="hljs-string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>) {
+        <span class="hljs-keyword">return</span> mn + <span class="hljs-string">&#x27;a&#x27;</span>;          <span class="hljs-comment">// 小写明文</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> mn + <span class="hljs-string">&#x27;A&#x27;</span>;          <span class="hljs-comment">// 大写明文</span>
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    string key;                  <span class="hljs-comment">// 密钥</span>
+    string c;                    <span class="hljs-comment">// 密文</span>
+    cin &gt;&gt; key &gt;&gt; c;
+
+    <span class="hljs-type">int</span> kl = key.<span class="hljs-built_in">size</span>();         <span class="hljs-comment">// 密钥长度</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; c.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-comment">// 密钥循环使用：第 i 个密文字符用 key[i % kl] 解密</span>
+        cout &lt;&lt; <span class="hljs-built_in">decode</span>(c[i], key[i % kl]);
+    }
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1079">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

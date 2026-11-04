@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1925 团队数量 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="芝加哥组织了一场激烈的军事竞赛，很多国家的军人慕名而来，他们要么是队友，要么是敌人。 现建立如下规则： 我的队友的队友，是我的队友； 我的敌人的敌人也是我的队友； 两个人只要是队友，就认为他们属于同一团队，现给你若干参赛军人之间的关系，请问：最多有多少个团队？">
+<link rel="canonical" href="https://zymojblog.top/p/1925/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1925 团队数量 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="芝加哥组织了一场激烈的军事竞赛，很多国家的军人慕名而来，他们要么是队友，要么是敌人。 现建立如下规则： 我的队友的队友，是我的队友； 我的敌人的敌人也是我的队友； 两个人只要是队友，就认为他们属于同一团队，现给你若干参赛军人之间的关系，请问：最多有多少个团队？">
+<meta property="og:url" content="https://zymojblog.top/p/1925/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1925 团队数量 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="芝加哥组织了一场激烈的军事竞赛，很多国家的军人慕名而来，他们要么是队友，要么是敌人。 现建立如下规则： 我的队友的队友，是我的队友； 我的敌人的敌人也是我的队友； 两个人只要是队友，就认为他们属于同一团队，现给你若干参赛军人之间的关系，请问：最多有多少个团队？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1925 团队数量","headline":"1925 团队数量 题解","description":"芝加哥组织了一场激烈的军事竞赛，很多国家的军人慕名而来，他们要么是队友，要么是敌人。 现建立如下规则： 我的队友的队友，是我的队友； 我的敌人的敌人也是我的队友； 两个人只要是队友，就认为他们属于同一团队，现给你若干参赛军人之间的关系，请问：最多有多少个团队？","url":"https://zymojblog.top/p/1925/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1925</span></div>
+  <h1 class="seo-title">1925 团队数量</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
+  <article class="markdown-body seo-article">
+<h1>1925 - 团队数量</h1>
+<h2>题目描述</h2>
+<p>芝加哥组织了一场激烈的军事竞赛，很多国家的军人慕名而来，他们要么是队友，要么是敌人。</p>
+<p>现建立如下规则：</p>
+<ul>
+<li><p>我的队友的队友，是我的队友；</p>
+</li>
+<li><p>我的敌人的敌人也是我的队友；</p>
+</li>
+</ul>
+<p>两个人只要是队友，就认为他们属于同一团队，现给你若干参赛军人之间的关系，请问：最多有多少个团队？</p>
+<h2>输入</h2>
+<p>第一行是一个整数 $N$ ($2 \le N \le 1000$)，表示参赛的人数（从 $1$ 编号到 $N$ ）。 </p>
+<p>第二行 $M$ ($1 \le M \le 5000$)，表示关于参赛者的关系信息的条数。 </p>
+<p>以下 $M$ 行，每行可能是 $F$ $p$ $q$ 或是 $E$ $p$ $q$（$1 \le p,q  \le N$），$F$ 表示 $p$ 和 $q$ 是队友，$E$ 表示 $p$ 和 $q$ 是敌人。</p>
+<p>输入数据保证不会产生信息的矛盾。</p>
+<h2>输出</h2>
+<p>输出文件只有一行，表示最大可能的团队数。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">//f：存储每个节点的父节点，并查集数组，大小是2n</span>
+<span class="hljs-type">int</span> n,m,ans,f[<span class="hljs-number">2010</span>];
+<span class="hljs-type">char</span> c;
+
+<span class="hljs-comment">//压缩路径求解x的根</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-comment">//x的父直接指向x的根 </span>
+    <span class="hljs-keyword">return</span> x == f[x]?x:f[x]=<span class="hljs-built_in">find</span>(f[x]);
+} 
+
+<span class="hljs-comment">//将x和y合并到同一个集合 </span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">merge</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    <span class="hljs-type">int</span> fx = <span class="hljs-built_in">find</span>(x);
+    <span class="hljs-type">int</span> fy = <span class="hljs-built_in">find</span>(y);
+    <span class="hljs-comment">//如果x和y不在一个集合 </span>
+    <span class="hljs-keyword">if</span>(fx != fy){
+        f[fx] = fy;
+    } 
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-comment">// 初始化：每个人有两个节点，i 是本人的“朋友域”,i+n 是本人的“敌人域”</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++) f[i] = i;
+    <span class="hljs-type">int</span> x,y;
+    <span class="hljs-comment">//m个关系</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++){
+        cin&gt;&gt;c&gt;&gt;x&gt;&gt;y;
+        <span class="hljs-comment">//朋友关系直接合并 </span>
+        <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;F&#x27;</span>) <span class="hljs-built_in">merge</span>(x,y);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(c == <span class="hljs-string">&#x27;E&#x27;</span>){
+            <span class="hljs-comment">//敌人 </span>
+            <span class="hljs-built_in">merge</span>(x+n,y);<span class="hljs-comment">// x 的敌人域 和 y 的本人域 合并</span>
+            <span class="hljs-built_in">merge</span>(y+n,x);<span class="hljs-comment">// y 的敌人域 和 x 的本人域 合并</span>
+        }
+    } 
+    
+    <span class="hljs-comment">// 统计有多少个独立的团队（只看真身域）</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">if</span>(f[i] == i) ans++;
+    } 
+    
+    cout&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1925">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

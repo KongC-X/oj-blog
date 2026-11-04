@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2957 [USACO09OCT] Barn Echoes G 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…">
+<link rel="canonical" href="https://zymojblog.top/p/P2957/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2957 [USACO09OCT] Barn Echoes G 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…">
+<meta property="og:url" content="https://zymojblog.top/p/P2957/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2957 [USACO09OCT] Barn Echoes G 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2957 [USACO09OCT] Barn Echoes G","headline":"P2957 [USACO09OCT] Barn Echoes G 题解","description":"奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…","url":"https://zymojblog.top/p/P2957/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、2009、USACO、哈希 hashing、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2957</span></div>
+  <h1 class="seo-title">P2957 [USACO09OCT] Barn Echoes G</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2009">2009</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E5%93%88%E5%B8%8C%20hashing">哈希 hashing</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2957 [USACO09OCT] Barn Echoes G</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-08-07</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>2009</code>、<code>USACO</code>、<code>哈希 hashing</code>、<code>前缀和</code></p>
+<h2>题目描述</h2>
+<p>奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。</p>
+<p>输入两个字符串（长度为 $1$ 到 $80$ 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两个字符串的重复部分指的是同时是一个字符串的前缀和另一个字符串的后缀的字符串。</p>
+<p>我们通过一个例子来理解题目。考虑下面的两个哞声：</p>
+<pre><code class="hljs language-cpp">moyooyoxyzooo
+yzoooqyasdfljkamo</code></pre><p>第一个串的最后的部分 <code>yzooo</code> 跟第二个串的第一部分重复。第二个串的最后的部分 <code>mo</code> 跟第一个串的第一部分重复。所以 <code>yzooo</code> 跟 <code>mo</code> 都是这 $2$ 个串的重复部分。其中，<code>yzooo</code> 比较长，所以最长的重复部分的长度就是 $5$。</p>
+<h2>输入格式</h2>
+<p>两行字符串，表示一只奶牛的哞叫声及其回声。</p>
+<h2>输出格式</h2>
+<p>一行一个整数，表示两个声音的重复部分有多长。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">abcxxxxabcxabcd 
+abcdxabcxxxxabcx </code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">11</span> </code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】字符串匹配
+     * 【核心思路】
+     * 我们要求两个字符串的最长重复部分，重复部分定义为：
+     * 同时是“一个串的前缀”和“另一个串的后缀”的字符串。
+     * 有两种情况：
+     *   1. 第一个串的前缀 = 第二个串的后缀
+     *   2. 第一个串的后缀 = 第二个串的前缀
+     * 分别枚举可能的长度，找出最长的满足条件的长度。
+     * 由于字符串长度 ≤ 80，直接暴力枚举即可。
+     *
+     * 【时间复杂度】O(n^2)，n ≤ 80，非常快。
+     */</span>
+
+    string a, b;      <span class="hljs-comment">// a: 第一个哞声, b: 第二个哞声</span>
+    cin &gt;&gt; a &gt;&gt; b;
+
+    <span class="hljs-type">int</span> n = a.<span class="hljs-built_in">size</span>(), m = b.<span class="hljs-built_in">size</span>();
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;      <span class="hljs-comment">// 答案</span>
+
+    <span class="hljs-comment">// 情况1：a的前缀 == b的后缀</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> len = <span class="hljs-number">1</span>; len &lt;= <span class="hljs-built_in">min</span>(n, m); len++) {
+        <span class="hljs-comment">// 取a的前len个字符，b的后len个字符</span>
+        string pre = a.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, len);
+        string suf = b.<span class="hljs-built_in">substr</span>(m - len, len);
+        <span class="hljs-keyword">if</span> (pre == suf) {
+            <span class="hljs-keyword">if</span> (len &gt; ans) ans = len;
+        }
+    }
+
+    <span class="hljs-comment">// 情况2：a的后缀 == b的前缀</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> len = <span class="hljs-number">1</span>; len &lt;= <span class="hljs-built_in">min</span>(n, m); len++) {
+        string suf = a.<span class="hljs-built_in">substr</span>(n - len, len);
+        string pre = b.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, len);
+        <span class="hljs-keyword">if</span> (suf == pre) {
+            <span class="hljs-keyword">if</span> (len &gt; ans) ans = len;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2957">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

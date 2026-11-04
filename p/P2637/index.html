@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="因为奶牛们的节食运动给 FJ 余下了一大批干草无法处理，所以他准备要开一个拍卖会去出售他的干草。 他有 批干草。他的客户有 个，都是和他一样的农夫。第 名农夫会告诉 FJ 他会为 FJ 的每批干草付 的钱。每个农夫都想买（也只想买）FJ 的一批草料。 为了确保农夫们不会互相嫉妒，所以 FJ 决定要…">
+<link rel="canonical" href="https://zymojblog.top/p/P2637/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="因为奶牛们的节食运动给 FJ 余下了一大批干草无法处理，所以他准备要开一个拍卖会去出售他的干草。 他有 批干草。他的客户有 个，都是和他一样的农夫。第 名农夫会告诉 FJ 他会为 FJ 的每批干草付 的钱。每个农夫都想买（也只想买）FJ 的一批草料。 为了确保农夫们不会互相嫉妒，所以 FJ 决定要…">
+<meta property="og:url" content="https://zymojblog.top/p/P2637/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="因为奶牛们的节食运动给 FJ 余下了一大批干草无法处理，所以他准备要开一个拍卖会去出售他的干草。 他有 批干草。他的客户有 个，都是和他一样的农夫。第 名农夫会告诉 FJ 他会为 FJ 的每批干草付 的钱。每个农夫都想买（也只想买）FJ 的一批草料。 为了确保农夫们不会互相嫉妒，所以 FJ 决定要…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B","headline":"P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B 题解","description":"因为奶牛们的节食运动给 FJ 余下了一大批干草无法处理，所以他准备要开一个拍卖会去出售他的干草。 他有 批干草。他的客户有 个，都是和他一样的农夫。第 名农夫会告诉 FJ 他会为 FJ 的每批干草付 的钱。每个农夫都想买（也只想买）FJ 的一批草料。 为了确保农夫们不会互相嫉妒，所以 FJ 决定要…","url":"https://zymojblog.top/p/P2637/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"模拟、2008、USACO、枚举","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2637</span></div>
+  <h1 class="seo-title">P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2008">2008</a><a class="seo-tag" href="/#/tag/USACO">USACO</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2637 [USACO08NOV] 第一次，第二次，成交！Going Once, Going Twice, Gone! B</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-09</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2008</code>、<code>USACO</code>、<code>枚举</code></p>
+<h2>题目描述</h2>
+<p>因为奶牛们的节食运动给 FJ 余下了一大批干草无法处理，所以他准备要开一个拍卖会去出售他的干草。</p>
+<p>他有 $n$ 批干草。他的客户有 $m$ 个，都是和他一样的农夫。第 $i$ 名农夫会告诉 FJ 他会为 FJ 的每批干草付 $p_i$ 的钱。每个农夫都想买（也只想买）FJ 的一批草料。</p>
+<p>为了确保农夫们不会互相嫉妒，所以 FJ 决定要以一个固定的价格出售他的草料。每一个出价大于等于 FJ 的要价的农夫将会买到草料。</p>
+<p>请你帮助 FJ 找出能让他卖出最多的钱的最低的单批草料的售价。</p>
+<h2>输入格式</h2>
+<p>第一行：两个被空格隔开的整数 $n$ 和 $m$。</p>
+<p>第二行到第 $m+1$ 行：第 $i+1$ 行只包含一个整数 $p_i$。</p>
+<h2>输出格式</h2>
+<p>共一行，包含由空格隔开的两个整数：FJ 能出的每批草料的最低价格，以及他能赚到的最多的钱。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">4</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">10</span>
+<span class="hljs-number">7</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>7 21```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目类型：枚举 / 排序
+     * 核心思路：
+     * 1. 售价只能取农夫出价中的某个值，否则可以调整到下一个出价来提高收益或保持不变。
+     * 2. 将出价升序排序，枚举每个出价作为售价 p。
+     *    则出价 &gt;= p 的农夫数量 = m - i（从 i 到末尾）。
+     * 3. 收益 = 人数 * p，但不能超过干草批数 n（因为最多卖 n 批）。
+     * 4. 记录最大收益，如果收益相同则取较小的售价。
+     */</span>
+    <span class="hljs-type">int</span> n, m;          <span class="hljs-comment">// n: 干草批数, m: 农夫数</span>
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1005</span>];       <span class="hljs-comment">// a[]: 存储每个农夫的出价</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        cin &gt;&gt; a[i];   <span class="hljs-comment">// 读入出价</span>
+    }
+
+    <span class="hljs-built_in">sort</span>(a, a + m);    <span class="hljs-comment">// 升序排序，便于统计人数</span>
+
+    <span class="hljs-type">int</span> bp = <span class="hljs-number">0</span>, bm = <span class="hljs-number">0</span>;  <span class="hljs-comment">// bp: 最优售价, bm: 最大收益（初始0）</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-type">int</span> p = a[i];      <span class="hljs-comment">// 当前枚举的售价（第 i 个出价）</span>
+        <span class="hljs-type">int</span> c = m - i;     <span class="hljs-comment">// 出价 &gt;= p 的农夫数（因为排序后从 i 到末尾都 &gt;= p）</span>
+        <span class="hljs-type">int</span> mo = c * p;    <span class="hljs-comment">// 按当前售价和人数计算的收益</span>
+
+        <span class="hljs-keyword">if</span> (c &gt; n) {       <span class="hljs-comment">// 如果愿意买的农夫数超过干草批数，最多只能卖 n 批</span>
+            c = n;
+            mo = c * p;    <span class="hljs-comment">// 重新计算收益</span>
+        }
+
+        <span class="hljs-comment">// 如果当前收益更大，或收益相等但价格更低，则更新最优解</span>
+        <span class="hljs-keyword">if</span> (mo &gt; bm || (mo == bm &amp;&amp; p &lt; bp)) {
+            bm = mo;
+            bp = p;
+        }
+    }
+
+    <span class="hljs-comment">// 输出最优售价和最大收益</span>
+    cout &lt;&lt; bp &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; bm &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2637">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

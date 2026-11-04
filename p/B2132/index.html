@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2132 素数对 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="定义两个相差为 的素数称为素数对，如 和 和 等，要求找出所有两个数均不大于 的素数对。">
+<link rel="canonical" href="https://zymojblog.top/p/B2132/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2132 素数对 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="定义两个相差为 的素数称为素数对，如 和 和 等，要求找出所有两个数均不大于 的素数对。">
+<meta property="og:url" content="https://zymojblog.top/p/B2132/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2132 素数对 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="定义两个相差为 的素数称为素数对，如 和 和 等，要求找出所有两个数均不大于 的素数对。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2132 素数对","headline":"B2132 素数对 题解","description":"定义两个相差为 的素数称为素数对，如 和 和 等，要求找出所有两个数均不大于 的素数对。","url":"https://zymojblog.top/p/B2132/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2132</span></div>
+  <h1 class="seo-title">B2132 素数对</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2132 素数对</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>定义两个相差为 $2$ 的素数称为素数对，如 $5$ 和 $7,17$ 和 $19$ 等，要求找出所有两个数均不大于 $n$ 的素数对。</p>
+<h2>输入格式</h2>
+<p>一个正整数 $n$。$1 \le n \le 10000$。</p>
+<h2>输出格式</h2>
+<p>所有小于等于 $n$ 的素数对。每对素数对输出一行，中间用单个空格隔开。若没有找到任何素数对，输出 <code>empty</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">10</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3 5<br>5 7```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">100</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3 5<br>5 7<br>11 13<br>17 19<br>29 31<br>41 43<br>59 61<br>71 73```</p>
+<p><strong>样例输入 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">3</span>**</code></pre><p>empty```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 函数：判断一个数是否为素数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;            <span class="hljs-comment">// 小于2不是素数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) {  <span class="hljs-comment">// 试除到sqrt(x)</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;   <span class="hljs-comment">// 有因数，不是素数</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;                        <span class="hljs-comment">// 无因数，是素数</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 1. 读入 n。</span>
+    <span class="hljs-comment">// 2. 遍历 i 从 2 到 n-2，检查 i 和 i+2 是否都是素数（调用 isPrime 函数）。</span>
+    <span class="hljs-comment">// 3. 如果是，输出这一对，并标记找到了至少一对。</span>
+    <span class="hljs-comment">// 4. 若遍历完没找到，输出 empty。</span>
+    <span class="hljs-type">int</span> n;                              <span class="hljs-comment">// n: 范围上限</span>
+    cin &gt;&gt; n;
+
+    <span class="hljs-type">bool</span> found = <span class="hljs-literal">false</span>;                 <span class="hljs-comment">// found: 是否找到素数对</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i + <span class="hljs-number">2</span> &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isPrime</span>(i) &amp;&amp; <span class="hljs-built_in">isPrime</span>(i + <span class="hljs-number">2</span>)) {
+            cout &lt;&lt; i &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; i + <span class="hljs-number">2</span> &lt;&lt; endl;
+            found = <span class="hljs-literal">true</span>;
+        }
+    }
+
+    <span class="hljs-keyword">if</span> (!found) {                       <span class="hljs-comment">// 没找到任何素数对</span>
+        cout &lt;&lt; <span class="hljs-string">&quot;empty&quot;</span> &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2132">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

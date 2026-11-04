@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4457 [合肥市小学组 2025 T1] 整理书架 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 H 在大科学城开了一家书店，书架上都摆满了 本书，书的编号从 到 。由于读者经常将书的顺序弄乱，小 H 购置了一个机器人用来整理书架。机器人每次操作只能选取书架中相邻的两本书，然后交换它们的位置。注意：书架上的位置从左至右编号为 到 。 小 H 想知道机器人将编号为 的书移到书架的最左端，且将…">
+<link rel="canonical" href="https://zymojblog.top/p/B4457/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4457 [合肥市小学组 2025 T1] 整理书架 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 H 在大科学城开了一家书店，书架上都摆满了 本书，书的编号从 到 。由于读者经常将书的顺序弄乱，小 H 购置了一个机器人用来整理书架。机器人每次操作只能选取书架中相邻的两本书，然后交换它们的位置。注意：书架上的位置从左至右编号为 到 。 小 H 想知道机器人将编号为 的书移到书架的最左端，且将…">
+<meta property="og:url" content="https://zymojblog.top/p/B4457/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4457 [合肥市小学组 2025 T1] 整理书架 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 H 在大科学城开了一家书店，书架上都摆满了 本书，书的编号从 到 。由于读者经常将书的顺序弄乱，小 H 购置了一个机器人用来整理书架。机器人每次操作只能选取书架中相邻的两本书，然后交换它们的位置。注意：书架上的位置从左至右编号为 到 。 小 H 想知道机器人将编号为 的书移到书架的最左端，且将…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4457 [合肥市小学组 2025 T1] 整理书架","headline":"B4457 [合肥市小学组 2025 T1] 整理书架 题解","description":"小 H 在大科学城开了一家书店，书架上都摆满了 本书，书的编号从 到 。由于读者经常将书的顺序弄乱，小 H 购置了一个机器人用来整理书架。机器人每次操作只能选取书架中相邻的两本书，然后交换它们的位置。注意：书架上的位置从左至右编号为 到 。 小 H 想知道机器人将编号为 的书移到书架的最左端，且将…","url":"https://zymojblog.top/p/B4457/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2025、安徽、小学活动","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4457</span></div>
+  <h1 class="seo-title">B4457 [合肥市小学组 2025 T1] 整理书架</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%AE%89%E5%BE%BD">安徽</a><a class="seo-tag" href="/#/tag/%E5%B0%8F%E5%AD%A6%E6%B4%BB%E5%8A%A8">小学活动</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4457 [合肥市小学组 2025 T1] 整理书架</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-07-25</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2025</code>、<code>安徽</code>、<code>小学活动</code></p>
+<h2>题目描述</h2>
+<p>小 H 在大科学城开了一家书店，书架上都摆满了 $n$ 本书，书的编号从 $1$ 到 $n$。由于读者经常将书的顺序弄乱，小 H 购置了一个机器人用来整理书架。机器人每次操作只能选取书架中相邻的两本书，然后交换它们的位置。注意：书架上的位置从左至右编号为 $0$ 到 $n-1$。</p>
+<p>小 H 想知道机器人将编号为 $1$ 的书移到书架的最左端，且将编号为 $n$ 的书移到书架的最右端的最小操作次数。</p>
+<h2>输入格式</h2>
+<p>第一行包含一个正整数 $n$，表示书架上书的数量。</p>
+<p>第二行包含 $n$个互异的正整数：$x_0, x_1, x_2, ..., x_{n-1}$，其中 $x_i$ 表示书架的第 $i-1$ 个位置上放着编号为 $x_i$ 的书。</p>
+<h2>输出格式</h2>
+<p>输出一行一个非负整数，表示将编号为 $1$ 的书移到书架的最左端，且将编号为 $n$ 的书移到书架的最右端，机器人的最小操作次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> 
+<span class="hljs-number">1</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">5</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>0```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 找到 1 和 n 的位置 p1, pn（0‑based）。</span>
+    <span class="hljs-comment">// 将 1 移到最左端需要 p1 次交换，将 n 移到最右端需要 (n-1-pn) 次交换。</span>
+    <span class="hljs-comment">// 如果 p1 &gt; pn，说明移动 1 向左时会经过 n，相当于免费帮 n 向右移动了一次，</span>
+    <span class="hljs-comment">// 所以总次数要减 1。</span>
+    <span class="hljs-comment">// 如果 p1 &lt;= pn，则相互独立，直接相加即可。</span>
+
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-type">int</span> p1, pn;                  <span class="hljs-comment">// 记录 1 和 n 的初始位置</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> x;
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">if</span> (x == <span class="hljs-number">1</span>) p1 = i;
+        <span class="hljs-keyword">if</span> (x == n) pn = i;
+    }
+
+    <span class="hljs-type">int</span> ans = p1 + (n - <span class="hljs-number">1</span> - pn);
+    <span class="hljs-keyword">if</span> (p1 &gt; pn) ans--;          <span class="hljs-comment">// 一次免费的右移</span>
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4457">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

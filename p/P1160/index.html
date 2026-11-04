@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1160 队列安排 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个学校里老师要将班上 个同学排成一列，同学被编号为 ，他采取如下的方法： 1. 先将 号同学安排进队列，这时队列中只有他一个人； 2. 号同学依次入列，编号为 的同学入列方式为：老师指定编号为 的同学站在编号为 中某位同学（即之前已经入列的同学）的左边或右边； 3. 从队列中去掉 个同学，其他同…">
+<link rel="canonical" href="https://zymojblog.top/p/P1160/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1160 队列安排 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个学校里老师要将班上 个同学排成一列，同学被编号为 ，他采取如下的方法： 1. 先将 号同学安排进队列，这时队列中只有他一个人； 2. 号同学依次入列，编号为 的同学入列方式为：老师指定编号为 的同学站在编号为 中某位同学（即之前已经入列的同学）的左边或右边； 3. 从队列中去掉 个同学，其他同…">
+<meta property="og:url" content="https://zymojblog.top/p/P1160/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1160 队列安排 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个学校里老师要将班上 个同学排成一列，同学被编号为 ，他采取如下的方法： 1. 先将 号同学安排进队列，这时队列中只有他一个人； 2. 号同学依次入列，编号为 的同学入列方式为：老师指定编号为 的同学站在编号为 中某位同学（即之前已经入列的同学）的左边或右边； 3. 从队列中去掉 个同学，其他同…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1160 队列安排","headline":"P1160 队列安排 题解","description":"一个学校里老师要将班上 个同学排成一列，同学被编号为 ，他采取如下的方法： 1. 先将 号同学安排进队列，这时队列中只有他一个人； 2. 号同学依次入列，编号为 的同学入列方式为：老师指定编号为 的同学站在编号为 中某位同学（即之前已经入列的同学）的左边或右边； 3. 从队列中去掉 个同学，其他同…","url":"https://zymojblog.top/p/P1160/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、线性数据结构、构造、链表","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1160</span></div>
+  <h1 class="seo-title">P1160 队列安排</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E7%BA%BF%E6%80%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">线性数据结构</a><a class="seo-tag" href="/#/tag/%E6%9E%84%E9%80%A0">构造</a><a class="seo-tag" href="/#/tag/%E9%93%BE%E8%A1%A8">链表</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1160 队列安排</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>线性数据结构</code>、<code>构造</code>、<code>链表</code></p>
+<h2>题目描述</h2>
+<p>一个学校里老师要将班上 $N$ 个同学排成一列，同学被编号为 $1\sim N$，他采取如下的方法：</p>
+<ol>
+<li><p>先将 $1$ 号同学安排进队列，这时队列中只有他一个人；</p>
+</li>
+<li><p>$2\sim N$ 号同学依次入列，编号为 $i$ 的同学入列方式为：老师指定编号为 $i$ 的同学站在编号为 $1\sim(i-1)$ 中某位同学（即之前已经入列的同学）的左边或右边；</p>
+</li>
+<li><p>从队列中去掉 $M$ 个同学，其他同学位置顺序不变。</p>
+</li>
+</ol>
+<p>在所有同学按照上述方法队列排列完毕后，老师想知道从左到右所有同学的编号。</p>
+<h2>输入格式</h2>
+<p>第一行一个整数 $N$，表示了有 $N$ 个同学。</p>
+<p>第 $2\sim N$ 行，第 $i$ 行包含两个整数 $k,p$，其中 $k$ 为小于 $i$ 的正整数，$p$ 为 $0$ 或者 $1$。若 $p$ 为 $0$，则表示将 $i$ 号同学插入到 $k$ 号同学的左边，$p$ 为 $1$ 则表示插入到右边。</p>
+<p>第 $N+1$ 行为一个整数 $M$，表示去掉的同学数目。</p>
+<p>接下来 $M$ 行，每行一个正整数 $x$，表示将 $x$ 号同学从队列中移去，如果 $x$ 号同学已经不在队列中则忽略这一条指令。</p>
+<h2>输出格式</h2>
+<p>一行，包含最多 $N$ 个空格隔开的整数，表示了队列从左到右所有同学的编号。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span>
+<span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">3</span>
+<span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>2 4 1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+【题目思路与解题过程】
+题意：n 个同学，按规则插入到队列中，后续删除 m 个同学，输出最终队列。
+核心操作：在指定同学 k 的左边或右边插入新同学，以及根据编号删除同学。
+链表非常适合这种频繁的中间插入和删除。
+
+思路：
+- 使用 list（双向链表）模拟队列。
+- 用一个数组 pos[i] 保存编号 i 的同学在 list 中的迭代器（位置），
+  这样就能 O(1) 时间找到要操作的节点。
+- 插入时通过 pos[k] 直接定位，然后：
+  - p=0: 插入到 k 的左边，lst.insert(pos[k], i)。
+  - p=1: 插入到 k 的右边，先将迭代器后移一位（++it），再插入。
+- 删除时用一个标记数组 del，防止重复删除，然后 lst.erase(pos[x])。
+- 最后遍历 list 输出结果。
+*/</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-type">int</span> n;                           <span class="hljs-comment">// n: 同学总数</span>
+    cin &gt;&gt; n;
+    
+    list&lt;<span class="hljs-type">int</span>&gt; lst;                   <span class="hljs-comment">// lst: 模拟当前队列</span>
+    vector&lt;list&lt;<span class="hljs-type">int</span>&gt;::iterator&gt; <span class="hljs-built_in">pos</span>(n + <span class="hljs-number">1</span>); <span class="hljs-comment">// pos[i]: 编号 i 的同学在链表中的位置</span>
+    <span class="hljs-function">vector&lt;<span class="hljs-type">bool</span>&gt; <span class="hljs-title">del</span><span class="hljs-params">(n + <span class="hljs-number">1</span>, <span class="hljs-literal">false</span>)</span></span>;  <span class="hljs-comment">// del[i]: 标记 i 是否已被删除</span>
+    
+    <span class="hljs-comment">// 1 号同学初始化入队</span>
+    lst.<span class="hljs-built_in">push_back</span>(<span class="hljs-number">1</span>);
+    pos[<span class="hljs-number">1</span>] = lst.<span class="hljs-built_in">begin</span>();
+    
+    <span class="hljs-comment">// 依次插入 2 ~ n 号同学</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; ++i) {
+        <span class="hljs-type">int</span> k, p;                    <span class="hljs-comment">// k: 基准同学编号, p: 0 左 / 1 右</span>
+        cin &gt;&gt; k &gt;&gt; p;
+        <span class="hljs-keyword">if</span> (p == <span class="hljs-number">0</span>) {                <span class="hljs-comment">// 插入到 k 的左边</span>
+            pos[i] = lst.<span class="hljs-built_in">insert</span>(pos[k], i);
+        } <span class="hljs-keyword">else</span> {                     <span class="hljs-comment">// 插入到 k 的右边</span>
+            list&lt;<span class="hljs-type">int</span>&gt;::iterator it = pos[k]; <span class="hljs-comment">// 先拿到 k 的迭代器</span>
+            ++it;                            <span class="hljs-comment">// 向后移动一位，即 k 的右边位置</span>
+            pos[i] = lst.<span class="hljs-built_in">insert</span>(it, i);
+        }
+    }
+    
+    <span class="hljs-type">int</span> m;                           <span class="hljs-comment">// m: 删除次数</span>
+    cin &gt;&gt; m;
+    <span class="hljs-keyword">while</span> (m--) {
+        <span class="hljs-type">int</span> x;                       <span class="hljs-comment">// x: 要删除的同学编号</span>
+        cin &gt;&gt; x;
+        <span class="hljs-keyword">if</span> (del[x]) <span class="hljs-keyword">continue</span>;        <span class="hljs-comment">// 已删除则跳过</span>
+        del[x] = <span class="hljs-literal">true</span>;               <span class="hljs-comment">// 标记为已删除</span>
+        lst.<span class="hljs-built_in">erase</span>(pos[x]);           <span class="hljs-comment">// 从链表中移除</span>
+    }
+    
+    <span class="hljs-comment">// 输出最终队列，数字间空格分隔</span>
+    list&lt;<span class="hljs-type">int</span>&gt;::iterator it = lst.<span class="hljs-built_in">begin</span>();
+    <span class="hljs-keyword">while</span> (it != lst.<span class="hljs-built_in">end</span>()) {
+        cout &lt;&lt; *it;                 <span class="hljs-comment">// 输出当前同学编号</span>
+        ++it;                        <span class="hljs-comment">// 移动到下一位</span>
+        <span class="hljs-keyword">if</span> (it != lst.<span class="hljs-built_in">end</span>()) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>; <span class="hljs-comment">// 非末尾则输出空格</span>
+    }
+    cout &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1160">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

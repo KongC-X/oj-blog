@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2398 拯救行动 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用NM (N, M &lt;= 200)的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑…">
+<link rel="canonical" href="https://zymojblog.top/p/2398/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2398 拯救行动 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用NM (N, M &lt;= 200)的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑…">
+<meta property="og:url" content="https://zymojblog.top/p/2398/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2398 拯救行动 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="公主被恶人抓走，被关押在牢房的某个地方。牢房用NM (N, M &lt;= 200)的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2398 拯救行动","headline":"2398 拯救行动 题解","description":"公主被恶人抓走，被关押在牢房的某个地方。牢房用NM (N, M <= 200)的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。 英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑…","url":"https://zymojblog.top/p/2398/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"bfs、电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2398</span></div>
+  <h1 class="seo-title">2398 拯救行动</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/bfs">bfs</a><a class="seo-tag" href="/#/tag/%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BC%9A%E7%AD%89%E7%BA%A7%E8%80%83%E8%AF%95">电子学会等级考试</a></div>
+  <article class="markdown-body seo-article">
+<h1>2398 - 拯救行动</h1>
+<h2>题目描述</h2>
+<p>公主被恶人抓走，被关押在牢房的某个地方。牢房用N*M (N, M &lt;= 200)的矩阵来表示。矩阵中的每项可以代表道路（@）、墙壁（#）、和守卫（x）。</p>
+<p>英勇的骑士（r）决定孤身一人去拯救公主（a）。我们假设拯救成功的表示是“骑士到达了公主所在的位置”。由于在通往公主所在位置的道路中可能遇到守卫，骑士一旦遇到守卫，必须杀死守卫才能继续前进。</p>
+<p>现假设骑士可以向上、下、左、右四个方向移动，每移动一个位置需要1个单位时间，杀死一个守卫需要花费额外的1个单位时间。同时假设骑士足够强壮，有能力杀死所有的守卫。</p>
+<p>给定牢房矩阵，公主、骑士和守卫在矩阵中的位置，请你计算拯救行动成功需要花费最短时间。</p>
+<h2>输入</h2>
+<p>第一行为一个整数S，表示输入的数据的组数（多组输入） 随后有S组数据，每组数据按如下格式输入：</p>
+<p>1、两个整数代表N和M, (N, M &lt;= 200).</p>
+<p>2、随后N行，每行有M个字符。&quot;@&quot;代表道路，&quot;a&quot;代表公主，&quot;r&quot;代表骑士，&quot;x&quot;代表守卫, &quot;#&quot;代表墙壁。</p>
+<h2>输出</h2>
+<p>如果拯救行动成功，输出一个整数，表示行动的最短时间。 如果不可能成功，输出&quot;Impossible&quot;</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">205</span>;              <span class="hljs-comment">// 最大行列</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> dx[<span class="hljs-number">4</span>] = {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>};  <span class="hljs-comment">// 方向：右、下、左、上</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> dy[<span class="hljs-number">4</span>] = {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>, <span class="hljs-number">0</span>};
+
+<span class="hljs-type">int</span> n, m;                          <span class="hljs-comment">// 地图行数、列数</span>
+<span class="hljs-type">char</span> g[MAXN][MAXN];                <span class="hljs-comment">// 地图字符，下标从1开始</span>
+<span class="hljs-type">int</span> dis[MAXN][MAXN];               <span class="hljs-comment">// 最短时间，-1表示未访问</span>
+
+<span class="hljs-comment">// 优先队列的节点</span>
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> d, x, y;                   <span class="hljs-comment">// 花费时间，坐标</span>
+    <span class="hljs-type">bool</span> <span class="hljs-keyword">operator</span> &lt; (<span class="hljs-type">const</span> Node &amp;t) <span class="hljs-type">const</span> {
+        <span class="hljs-keyword">return</span> d &gt; t.d;            <span class="hljs-comment">// 小根堆：时间小的优先</span>
+    }
+};
+
+<span class="hljs-comment">// Dijkstra 求从(sx,sy)到(ex,ey)的最短时间</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span> sx, <span class="hljs-type">int</span> sy, <span class="hljs-type">int</span> ex, <span class="hljs-type">int</span> ey)</span> </span>{
+    <span class="hljs-built_in">memset</span>(dis, <span class="hljs-number">-1</span>, <span class="hljs-built_in">sizeof</span>(dis));
+    priority_queue&lt;Node&gt; q;
+    dis[sx][sy] = <span class="hljs-number">0</span>;
+    q.<span class="hljs-built_in">push</span>({<span class="hljs-number">0</span>, sx, sy});
+    <span class="hljs-keyword">while</span> (!q.<span class="hljs-built_in">empty</span>()) {
+        Node cur = q.<span class="hljs-built_in">top</span>(); q.<span class="hljs-built_in">pop</span>();
+        <span class="hljs-type">int</span> x = cur.x, y = cur.y, d = cur.d;
+        <span class="hljs-keyword">if</span> (d != dis[x][y]) <span class="hljs-keyword">continue</span>;       <span class="hljs-comment">// 旧节点跳过</span>
+        <span class="hljs-keyword">if</span> (x == ex &amp;&amp; y == ey) <span class="hljs-keyword">return</span> d;   <span class="hljs-comment">// 到达公主</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+            <span class="hljs-type">int</span> nx = x + dx[i], ny = y + dy[i];
+            <span class="hljs-keyword">if</span> (nx &lt; <span class="hljs-number">1</span> || nx &gt; n || ny &lt; <span class="hljs-number">1</span> || ny &gt; m) <span class="hljs-keyword">continue</span>;
+            <span class="hljs-keyword">if</span> (g[nx][ny] == <span class="hljs-string">&#x27;#&#x27;</span>) <span class="hljs-keyword">continue</span>;          <span class="hljs-comment">// 墙壁不可走</span>
+            <span class="hljs-type">int</span> cost = <span class="hljs-number">1</span>;                            <span class="hljs-comment">// 移动时间</span>
+            <span class="hljs-keyword">if</span> (g[nx][ny] == <span class="hljs-string">&#x27;x&#x27;</span>) cost = <span class="hljs-number">2</span>;          <span class="hljs-comment">// 守卫额外1，合计2</span>
+            <span class="hljs-type">int</span> nd = d + cost;
+            <span class="hljs-keyword">if</span> (dis[nx][ny] == <span class="hljs-number">-1</span> || nd &lt; dis[nx][ny]) {
+                dis[nx][ny] = nd;
+                q.<span class="hljs-built_in">push</span>({nd, nx, ny});
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;     <span class="hljs-comment">// 无法到达</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-type">int</span> T;             <span class="hljs-comment">// 数据组数</span>
+    cin &gt;&gt; T;
+    <span class="hljs-keyword">while</span> (T--) {
+        cin &gt;&gt; n &gt;&gt; m;
+        <span class="hljs-type">int</span> sx, sy, ex, ey;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+            cin &gt;&gt; (g[i] + <span class="hljs-number">1</span>);   <span class="hljs-comment">// 读入一行，下标从1开始</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+                <span class="hljs-keyword">if</span> (g[i][j] == <span class="hljs-string">&#x27;r&#x27;</span>) { sx = i; sy = j; }
+                <span class="hljs-keyword">if</span> (g[i][j] == <span class="hljs-string">&#x27;a&#x27;</span>) { ex = i; ey = j; }
+            }
+        }
+        <span class="hljs-type">int</span> ans = <span class="hljs-built_in">bfs</span>(sx, sy, ex, ey);
+        <span class="hljs-keyword">if</span> (ans == <span class="hljs-number">-1</span>) cout &lt;&lt; <span class="hljs-string">&quot;Impossible\n&quot;</span>;
+        <span class="hljs-keyword">else</span>           cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/2398">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

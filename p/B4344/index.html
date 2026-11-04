@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4344 [语言月赛 202506] 数字转转转 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一个“数字转转转”游戏，它的规则是这样的： 初始时给定一个正整数 ，我们可以把它每一位数字加起来，变成一个新的数。我们把这样变化一轮的过程，叫做一次“数字转转转”操作。 比如，如果初始时给定的 是 ，那么： “数字转转转”一次，会把 变成 ； “数字转转转”二次，会把 变成 ； “数字转转转”三…">
+<link rel="canonical" href="https://zymojblog.top/p/B4344/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4344 [语言月赛 202506] 数字转转转 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一个“数字转转转”游戏，它的规则是这样的： 初始时给定一个正整数 ，我们可以把它每一位数字加起来，变成一个新的数。我们把这样变化一轮的过程，叫做一次“数字转转转”操作。 比如，如果初始时给定的 是 ，那么： “数字转转转”一次，会把 变成 ； “数字转转转”二次，会把 变成 ； “数字转转转”三…">
+<meta property="og:url" content="https://zymojblog.top/p/B4344/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4344 [语言月赛 202506] 数字转转转 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一个“数字转转转”游戏，它的规则是这样的： 初始时给定一个正整数 ，我们可以把它每一位数字加起来，变成一个新的数。我们把这样变化一轮的过程，叫做一次“数字转转转”操作。 比如，如果初始时给定的 是 ，那么： “数字转转转”一次，会把 变成 ； “数字转转转”二次，会把 变成 ； “数字转转转”三…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4344 [语言月赛 202506] 数字转转转","headline":"B4344 [语言月赛 202506] 数字转转转 题解","description":"有一个“数字转转转”游戏，它的规则是这样的： 初始时给定一个正整数 ，我们可以把它每一位数字加起来，变成一个新的数。我们把这样变化一轮的过程，叫做一次“数字转转转”操作。 比如，如果初始时给定的 是 ，那么： “数字转转转”一次，会把 变成 ； “数字转转转”二次，会把 变成 ； “数字转转转”三…","url":"https://zymojblog.top/p/B4344/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2025、分支结构、循环结构、语言月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4344</span></div>
+  <h1 class="seo-title">B4344 [语言月赛 202506] 数字转转转</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84">分支结构</a><a class="seo-tag" href="/#/tag/%E5%BE%AA%E7%8E%AF%E7%BB%93%E6%9E%84">循环结构</a><a class="seo-tag" href="/#/tag/%E8%AF%AD%E8%A8%80%E6%9C%88%E8%B5%9B">语言月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4344 [语言月赛 202506] 数字转转转</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2025-06-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2025</code>、<code>分支结构</code>、<code>循环结构</code>、<code>语言月赛</code></p>
+<h2>题目描述</h2>
+<p>有一个“数字转转转”游戏，它的规则是这样的：</p>
+<p>初始时给定一个正整数 $x$，我们可以把它每一位数字加起来，变成一个新的数。我们把这样变化一轮的过程，叫做一次“数字转转转”操作。</p>
+<p>比如，如果初始时给定的 $x$ 是 $375$，那么：</p>
+<ul>
+<li>“数字转转转”一次，会把 $375$ 变成 $3 + 7 + 5 = 15$；</li>
+<li>“数字转转转”二次，会把 $15$ 变成 $1 + 5 = 6$；</li>
+<li>“数字转转转”三次，会把 $6$ 变成 $6 = 6$。</li>
+</ul>
+<p>现在，有 $n$ 个数，从 $1$ 到 $n$，每个数要做很多次“数字转转转”。请你帮忙算出，每个数在变化之后，最后变成了多少。</p>
+<h2>输入格式</h2>
+<p>输入共两行。</p>
+<p>第一行一个整数 $n$，表示你要处理 $1 \sim n$ 这 $n$ 个数；<br>第二行 $n$ 个整数 $a_1, a_2, \cdots, a_n$，第 $i$ 个表示数字 $i$ 要做多少次“数字转转转”。</p>
+<h2>输出格式</h2>
+<p>输出一行 $n$ 个整数，第 $i$ 个表示数字 $i$ 做 $a_i$ 次“数字转转转”后得到的结果。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">11</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">99</span> <span class="hljs-number">100</span> <span class="hljs-number">93</span> <span class="hljs-number">57</span> <span class="hljs-number">18</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">20</span>
+<span class="hljs-number">3</span> <span class="hljs-number">10</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">2</span> <span class="hljs-number">6</span> <span class="hljs-number">3</span> <span class="hljs-number">9</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">7</span> <span class="hljs-number">2</span> <span class="hljs-number">7</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">9</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,t;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; ++i) {
+        <span class="hljs-type">int</span> t;
+        cin &gt;&gt; t;
+        <span class="hljs-type">int</span> x = i; <span class="hljs-comment">// 初始值为i</span>
+        <span class="hljs-comment">// 进行转转转操作，最多t次，但只要x变为个位数就停止</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= t; ++j) {
+            <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;
+            <span class="hljs-comment">// 计算x的各位数字之和</span>
+            <span class="hljs-keyword">while</span> (x) {
+                sum += x % <span class="hljs-number">10</span>;
+                x /= <span class="hljs-number">10</span>;
+            }
+            x = sum; <span class="hljs-comment">// 更新x为各位数字之和</span>
+            <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">10</span>) {    <span class="hljs-comment">// 如果x已经是小于10的个位数，则后续操作结果不变</span>
+                <span class="hljs-keyword">break</span>;       <span class="hljs-comment">// 跳出内层循环</span>
+            }
+        }
+        cout &lt;&lt; x &lt;&lt; <span class="hljs-string">&quot; &quot;</span>; <span class="hljs-comment">// 输出最终结果</span>
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4344">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

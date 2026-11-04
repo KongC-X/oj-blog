@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1498 南蛮图腾 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个正整数 ，参考输出样例，输出图形。">
+<link rel="canonical" href="https://zymojblog.top/p/P1498/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1498 南蛮图腾 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个正整数 ，参考输出样例，输出图形。">
+<meta property="og:url" content="https://zymojblog.top/p/P1498/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1498 南蛮图腾 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个正整数 ，参考输出样例，输出图形。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1498 南蛮图腾","headline":"P1498 南蛮图腾 题解","description":"给定一个正整数 ，参考输出样例，输出图形。","url":"https://zymojblog.top/p/P1498/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"字符串、递归、湖南、分治、深度优先搜索 DFS","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1498</span></div>
+  <h1 class="seo-title">P1498 南蛮图腾</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">【算法1-4】递推与递归</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/%E6%B9%96%E5%8D%97">湖南</a><a class="seo-tag" href="/#/tag/%E5%88%86%E6%B2%BB">分治</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1498 南蛮图腾</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-02-12</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>递归</code>、<code>湖南</code>、<code>分治</code>、<code>深度优先搜索 DFS</code></p>
+<h2>题目背景</h2>
+<p>自从到了南蛮之地，孔明不仅把孟获收拾的服服帖帖，而且还发现了不少少数民族的智慧，他发现少数民族的图腾往往有着一种分形的效果，在得到了酋长的传授后，孔明掌握了不少绘图技术，但唯独不会画他们的图腾，于是他找上了你的爷爷的爷爷的爷爷的爷爷……帮忙，作为一个好孙子的孙子的孙子的孙子……你能做到吗？</p>
+<h2>题目描述</h2>
+<p>给定一个正整数 $n$，参考输出样例，输出图形。</p>
+<h2>输入格式</h2>
+<p>每个数据输入一个正整数 $n$，表示图腾的大小（此大小非彼大小）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>   /<br>  /<strong><br> /\  /<br>/</strong>/__\</p>
+<pre><code class="hljs language-cpp">
+**样例输入 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp">       /\
+      /__\
+     /\  /\
+    /__\/__\
+   /\      /\
+  /__\    /__\
+ /\  /\  /\  /\
+/__\/__\/__\/__\```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXH = <span class="hljs-number">1050</span>;   <span class="hljs-comment">// 2^10 = 1024，足够</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXW = <span class="hljs-number">2050</span>;   <span class="hljs-comment">// 2^11 = 2048</span>
+
+<span class="hljs-type">char</span> a[MAXH][MAXW]; <span class="hljs-comment">// 全局画布，初始化为空格</span>
+<span class="hljs-type">int</span> H, W;                <span class="hljs-comment">// 实际高度、宽度</span>
+
+<span class="hljs-comment">// n=1 的基础矩形，高2宽4</span>
+<span class="hljs-type">const</span> <span class="hljs-type">char</span> base[<span class="hljs-number">2</span>][<span class="hljs-number">4</span>] = {
+    {<span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>, <span class="hljs-string">&#x27; &#x27;</span>},
+    {<span class="hljs-string">&#x27;/&#x27;</span>, <span class="hljs-string">&#x27;_&#x27;</span>, <span class="hljs-string">&#x27;_&#x27;</span>, <span class="hljs-string">&#x27;\\&#x27;</span>}
+};
+
+<span class="hljs-comment">/**
+ * 递归绘制图腾
+ * @param n 当前层级
+ * @param x 左上角行坐标
+ * @param y 左上角列坐标
+ * 图形尺寸：高度 = 1&lt;&lt;n，宽度 = 1&lt;&lt;(n+1)
+ */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">draw</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+        <span class="hljs-comment">// 复制基础矩形到画布</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span>; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+                a[x + i][y + j] = base[i][j];
+            }
+        }
+        <span class="hljs-keyword">return</span>;
+    }
+
+    <span class="hljs-type">int</span> h2 = <span class="hljs-number">1</span> &lt;&lt; (n - <span class="hljs-number">1</span>);   <span class="hljs-comment">// 子图形高度</span>
+    <span class="hljs-type">int</span> w2 = <span class="hljs-number">1</span> &lt;&lt; n;         <span class="hljs-comment">// 子图形宽度</span>
+
+    <span class="hljs-comment">// 三个子图形的位置</span>
+    <span class="hljs-built_in">draw</span>(n - <span class="hljs-number">1</span>, x, y + w2 / <span class="hljs-number">2</span>); <span class="hljs-comment">// 上方居中</span>
+    <span class="hljs-built_in">draw</span>(n - <span class="hljs-number">1</span>, x + h2, y);           <span class="hljs-comment">// 左下</span>
+    <span class="hljs-built_in">draw</span>(n - <span class="hljs-number">1</span>, x + h2, y + w2);      <span class="hljs-comment">// 右下</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+
+    H = <span class="hljs-number">1</span> &lt;&lt; n;        <span class="hljs-comment">// 2^n</span>
+    W = <span class="hljs-number">1</span> &lt;&lt; (n + <span class="hljs-number">1</span>);  <span class="hljs-comment">// 2^(n+1)</span>
+
+    <span class="hljs-comment">// 画布初始化为空格</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; H; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; W; j++) {
+            a[i][j] = <span class="hljs-string">&#x27; &#x27;</span>;
+        }
+    }
+
+    <span class="hljs-comment">// 从左上角(0,0)开始绘制</span>
+    <span class="hljs-built_in">draw</span>(n, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// 输出，去掉每行末尾的空格</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; H; i++) {
+        <span class="hljs-comment">// 找到该行最后一个非空格字符</span>
+        <span class="hljs-type">int</span> last = W - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (last &gt;= <span class="hljs-number">0</span> &amp;&amp; a[i][last] == <span class="hljs-string">&#x27; &#x27;</span>) {
+            last--;
+        }
+        <span class="hljs-comment">// 输出从0到last的字符</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt;= last; j++) {
+            cout &lt;&lt; a[i][j];
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1498">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

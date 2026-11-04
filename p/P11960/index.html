@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11960 [GESP202503 五级] 平均分配 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 A 有 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 件物品，小 B 会以 的价格购买，而小 C 会以 的价格购买。为了平均分配这 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 件物品。你能帮小 A 求出他卖出这 件物品所能获得的最大收入吗？">
+<link rel="canonical" href="https://zymojblog.top/p/P11960/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P11960 [GESP202503 五级] 平均分配 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 A 有 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 件物品，小 B 会以 的价格购买，而小 C 会以 的价格购买。为了平均分配这 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 件物品。你能帮小 A 求出他卖出这 件物品所能获得的最大收入吗？">
+<meta property="og:url" content="https://zymojblog.top/p/P11960/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P11960 [GESP202503 五级] 平均分配 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 A 有 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 件物品，小 B 会以 的价格购买，而小 C 会以 的价格购买。为了平均分配这 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 件物品。你能帮小 A 求出他卖出这 件物品所能获得的最大收入吗？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P11960 [GESP202503 五级] 平均分配","headline":"P11960 [GESP202503 五级] 平均分配 题解","description":"小 A 有 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 件物品，小 B 会以 的价格购买，而小 C 会以 的价格购买。为了平均分配这 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 件物品。你能帮小 A 求出他卖出这 件物品所能获得的最大收入吗？","url":"https://zymojblog.top/p/P11960/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"贪心、2025、排序、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P11960</span></div>
+  <h1 class="seo-title">P11960 [GESP202503 五级] 平均分配</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 五级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P11960 [GESP202503 五级] 平均分配</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2025-06-20</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2025</code>、<code>排序</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1177">https://ti.luogu.com.cn/problemset/1177</a></p>
+<h2>题目描述</h2>
+<p>小 A 有 $2n$ 件物品，小 B 和小 C 想从小 A 手上买走这些物品。对于第 $i$ 件物品，小 B 会以 $b_i$ 的价格购买，而小 C 会以 $c_i$ 的价格购买。为了平均分配这 $2n$ 件物品，小 A 决定小 B 和小 C 各自只能买走恰好 $n$ 件物品。你能帮小 A 求出他卖出这 $2n$ 件物品所能获得的最大收入吗？</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$。</p>
+<p>第二行，$2n$ 个整数 $b_1,b_2,\dots,b_{2n}$。</p>
+<p>第三行，$2n$ 个整数 $c_1,c_2,\dots,c_{2n}$。</p>
+<h2>输出格式</h2>
+<p>一行，一个整数，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span> <span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span> <span class="hljs-number">11</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>36```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">6</span> <span class="hljs-number">7</span> <span class="hljs-number">9</span> <span class="hljs-number">9</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">10</span> <span class="hljs-number">12</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>35```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 这道题目要求我们从 2n 件物品中选择 n 件卖给小 B，剩下的 n 件卖给小 C。</span>
+<span class="hljs-comment">// 总收益是所有被卖给小 B 的物品的 bi 之和加上所有被卖给小 C 的物品的 ci 之和。</span>
+<span class="hljs-comment">// 对于每件物品，我们可以选择将其卖给小 B 或小 C。</span>
+<span class="hljs-comment">// 为了最大化总收入，我们应该优先选择那些在小 B 处价格比在小 C 处价格高的物品给小 B。</span>
+<span class="hljs-comment">// 定义每件物品在小 B 和小 C 处的收益差为 di。</span>
+<span class="hljs-comment">// 如果 di 为正，说明卖给小 B 更有利；如果为负，则卖给小 C 更有利。</span>
+<span class="hljs-comment">// 我们需要选择 di 最大的 n 件物品卖给小 B。</span>
+<span class="hljs-comment">// 我们可以先计算所有物品在小 C 处的总收益 sum_c，再计算出所有 di，对 di 进行降序排序。</span>
+<span class="hljs-comment">// 最后选择最大的 n 个 di ，将其加到 sum_c 上，得到最大总收入。</span>
+
+<span class="hljs-type">long</span> <span class="hljs-type">long</span> n,b[<span class="hljs-number">200005</span>],c[<span class="hljs-number">200005</span>],d[<span class="hljs-number">200005</span>],sum_c,sum_d;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++)
+        cin &gt;&gt; b[i];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++)
+        cin &gt;&gt; c[i];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++)
+        sum_c += c[i];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++)
+        d[i] = b[i] - c[i];
+    <span class="hljs-built_in">sort</span>(d + <span class="hljs-number">1</span>,d + <span class="hljs-number">2</span> * n + <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = n + <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">2</span> * n;i++)
+        sum_d += d[i];
+    cout&lt;&lt;sum_c + sum_d;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P11960">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

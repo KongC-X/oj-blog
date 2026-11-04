@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4502 [GESP202603 四级] 礼盒排序 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="商店推出了许多礼盒，每个礼盒中包含 件商品，每件商品都有一个价格。 现在需要对这些礼盒进行排序，排序规则如下： 1. 先按礼盒总价格从小到大排序； 2. 如果总价格相同，按礼盒中最贵商品的价格从小到大排序； 3. 如果仍然相同，按礼盒中最便宜商品的价格从小到大排序； 4. 如果仍然相同，按礼盒编号…">
+<link rel="canonical" href="https://zymojblog.top/p/B4502/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4502 [GESP202603 四级] 礼盒排序 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="商店推出了许多礼盒，每个礼盒中包含 件商品，每件商品都有一个价格。 现在需要对这些礼盒进行排序，排序规则如下： 1. 先按礼盒总价格从小到大排序； 2. 如果总价格相同，按礼盒中最贵商品的价格从小到大排序； 3. 如果仍然相同，按礼盒中最便宜商品的价格从小到大排序； 4. 如果仍然相同，按礼盒编号…">
+<meta property="og:url" content="https://zymojblog.top/p/B4502/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4502 [GESP202603 四级] 礼盒排序 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="商店推出了许多礼盒，每个礼盒中包含 件商品，每件商品都有一个价格。 现在需要对这些礼盒进行排序，排序规则如下： 1. 先按礼盒总价格从小到大排序； 2. 如果总价格相同，按礼盒中最贵商品的价格从小到大排序； 3. 如果仍然相同，按礼盒中最便宜商品的价格从小到大排序； 4. 如果仍然相同，按礼盒编号…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4502 [GESP202603 四级] 礼盒排序","headline":"B4502 [GESP202603 四级] 礼盒排序 题解","description":"商店推出了许多礼盒，每个礼盒中包含 件商品，每件商品都有一个价格。 现在需要对这些礼盒进行排序，排序规则如下： 1. 先按礼盒总价格从小到大排序； 2. 如果总价格相同，按礼盒中最贵商品的价格从小到大排序； 3. 如果仍然相同，按礼盒中最便宜商品的价格从小到大排序； 4. 如果仍然相同，按礼盒编号…","url":"https://zymojblog.top/p/B4502/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"排序、2026、结构体、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4502</span></div>
+  <h1 class="seo-title">B4502 [GESP202603 四级] 礼盒排序</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 四级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4502 [GESP202603 四级] 礼盒排序</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-03-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>排序</code>、<code>2026</code>、<code>结构体</code>、<code>GESP</code></p>
+<h2>题目描述</h2>
+<p>商店推出了许多礼盒，每个礼盒中包含 $k$ 件商品，每件商品都有一个价格。</p>
+<p>现在需要对这些礼盒进行排序，排序规则如下：</p>
+<ol>
+<li>先按<strong>礼盒总价格从小到大</strong>排序；</li>
+<li>如果总价格相同，按礼盒中<strong>最贵商品的价格从小到大</strong>排序；</li>
+<li>如果仍然相同，按礼盒中<strong>最便宜商品的价格从小到大</strong>排序；</li>
+<li>如果仍然相同，按<strong>礼盒编号从小到大</strong>排序。</li>
+</ol>
+<p>请输出排序后的礼盒编号。</p>
+<h2>输入格式</h2>
+<p>第一行包含两个整数 $n$ 和 $k$，分别表示礼盒数量和每个礼盒中商品的数量。</p>
+<p>接下来 $n$ 行，每行包含 $k$ 个整数，第 $i$ 行表示第 $i$ 个礼盒中各商品的价格。</p>
+<h2>输出格式</h2>
+<p>输出一行，包含排序后的礼盒编号（编号从 $1$ 开始），用空格分隔。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">3</span>
+<span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">2</span>
+<span class="hljs-number">4</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span>
+<span class="hljs-number">2</span> <span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3 4 2 1```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Box</span> {
+    <span class="hljs-type">int</span> id;
+    <span class="hljs-type">int</span> sum;
+    <span class="hljs-type">int</span> max;
+    <span class="hljs-type">int</span> min;
+};
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Box a, Box b)</span> </span>{
+    <span class="hljs-comment">// 按总价、最贵、最便宜、编号依次升序比较</span>
+    <span class="hljs-keyword">if</span> (a.sum &lt; b.sum ||
+        (a.sum == b.sum &amp;&amp; a.max &lt; b.max) ||
+        (a.sum == b.sum &amp;&amp; a.max == b.max &amp;&amp; a.min &lt; b.min) ||
+        (a.sum == b.sum &amp;&amp; a.max == b.max &amp;&amp; a.min == b.min &amp;&amp; a.id &lt; b.id))
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n, k;
+    cin &gt;&gt; n &gt;&gt; k;
+    Box a[<span class="hljs-number">1010</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        a[i].id = i + <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>, mx = <span class="hljs-number">0</span>, mn = <span class="hljs-number">10001</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; k; ++j) {
+            <span class="hljs-type">int</span> p;
+            cin &gt;&gt; p;
+            sum += p;
+            <span class="hljs-keyword">if</span> (p &gt; mx) mx = p;
+            <span class="hljs-keyword">if</span> (p &lt; mn) mn = p;
+        }
+        a[i].sum = sum;
+        a[i].max = mx;
+        a[i].min = mn;
+    }
+    <span class="hljs-built_in">sort</span>(a, a + n, cmp);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+        cout &lt;&lt; a[i].id;
+    }
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4502">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

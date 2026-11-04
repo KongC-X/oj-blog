@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2108 图像模糊处理 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定 行 列的图像各像素点的灰度值，要求用如下方法对其进行模糊化处理： 四周最外侧的像素点灰度值不变； 中间各像素点新灰度值为该像素点及其上下左右相邻四个像素点原灰度值的平均（舍入到最接近的整数）。">
+<link rel="canonical" href="https://zymojblog.top/p/B2108/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2108 图像模糊处理 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定 行 列的图像各像素点的灰度值，要求用如下方法对其进行模糊化处理： 四周最外侧的像素点灰度值不变； 中间各像素点新灰度值为该像素点及其上下左右相邻四个像素点原灰度值的平均（舍入到最接近的整数）。">
+<meta property="og:url" content="https://zymojblog.top/p/B2108/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2108 图像模糊处理 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定 行 列的图像各像素点的灰度值，要求用如下方法对其进行模糊化处理： 四周最外侧的像素点灰度值不变； 中间各像素点新灰度值为该像素点及其上下左右相邻四个像素点原灰度值的平均（舍入到最接近的整数）。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2108 图像模糊处理","headline":"B2108 图像模糊处理 题解","description":"给定 行 列的图像各像素点的灰度值，要求用如下方法对其进行模糊化处理： 四周最外侧的像素点灰度值不变； 中间各像素点新灰度值为该像素点及其上下左右相邻四个像素点原灰度值的平均（舍入到最接近的整数）。","url":"https://zymojblog.top/p/B2108/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2108</span></div>
+  <h1 class="seo-title">B2108 图像模糊处理</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E7%BB%84">数组</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2108 图像模糊处理</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-09</p>
+</blockquote>
+<h2>题目描述</h2>
+<p>给定 $n$ 行 $m$ 列的图像各像素点的灰度值，要求用如下方法对其进行模糊化处理：</p>
+<p>$1.$ 四周最外侧的像素点灰度值不变；</p>
+<p>$2.$ 中间各像素点新灰度值为该像素点及其上下左右相邻四个像素点原灰度值的平均（舍入到最接近的整数）。</p>
+<h2>输入格式</h2>
+<p>第一行包含两个整数 $n$ 和 $m$，表示图像包含像素点的行数和列数。$1 \le n \le 100$，$1 \le m \le 100$。</p>
+<p>接下来 $n$ 行，每行 $m$ 个整数，表示图像的每个像素点灰度。相邻两个整数之间用单个空格隔开，每个元素均在 $0$ ∼ $255$ 之间。</p>
+<h2>输出格式</h2>
+<p>$n$ 行，每行 $m$ 个整数，为模糊处理后的图像。相邻两个整数之间用单个空格隔开。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span> <span class="hljs-number">5</span>
+<span class="hljs-number">100</span> <span class="hljs-number">0</span> <span class="hljs-number">100</span> <span class="hljs-number">0</span> <span class="hljs-number">50</span>
+<span class="hljs-number">50</span> <span class="hljs-number">100</span> <span class="hljs-number">200</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">50</span> <span class="hljs-number">50</span> <span class="hljs-number">100</span> <span class="hljs-number">100</span> <span class="hljs-number">200</span>
+<span class="hljs-number">100</span> <span class="hljs-number">100</span> <span class="hljs-number">50</span> <span class="hljs-number">50</span> <span class="hljs-number">100</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>100 0 100 0 50<br>50 80 100 60 0<br>50 80 100 90 200<br>100 100 50 50 100```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：</span>
+    <span class="hljs-comment">// 对图像进行模糊处理：</span>
+    <span class="hljs-comment">// - 四周边界的像素灰度值保持不变；</span>
+    <span class="hljs-comment">// - 内部像素的新灰度值为其本身及上下左右相邻共5个像素原灰度值的平均值，结果四舍五入取整。</span>
+    <span class="hljs-comment">// 可用整数运算实现四舍五入：(总和 + 2) / 5 即可。</span>
+    <span class="hljs-comment">// 边读边处理：读入原始矩阵到二维数组，然后按规则输出。</span>
+    
+    <span class="hljs-type">int</span> n, m;                          <span class="hljs-comment">// n: 行数, m: 列数</span>
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-type">int</span> a[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>];                   <span class="hljs-comment">// 存储原始灰度值，多开10个</span>
+
+    <span class="hljs-comment">// 读入原始图像</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+
+    <span class="hljs-comment">// 输出模糊处理后的图像</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= m; j++) {
+            <span class="hljs-comment">// 判断是否为边界</span>
+            <span class="hljs-keyword">if</span> (i == <span class="hljs-number">1</span> || i == n || j == <span class="hljs-number">1</span> || j == m) {
+                cout &lt;&lt; a[i][j];       <span class="hljs-comment">// 边界不变</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// 计算自身和上下左右五个像素的总和</span>
+                <span class="hljs-type">int</span> sum = a[i][j] + a[i<span class="hljs-number">-1</span>][j] + a[i+<span class="hljs-number">1</span>][j] + a[i][j<span class="hljs-number">-1</span>] + a[i][j+<span class="hljs-number">1</span>];
+                <span class="hljs-comment">// 四舍五入到最接近的整数，等价于 (sum + 2) / 5</span>
+                cout &lt;&lt; (sum + <span class="hljs-number">2</span>) / <span class="hljs-number">5</span>;
+            }
+            <span class="hljs-comment">// 控制空格的输出：不是每行最后一个数就输出空格</span>
+            <span class="hljs-keyword">if</span> (j &lt; m) cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+        }
+        cout &lt;&lt; endl;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2108">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

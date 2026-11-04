@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P10387 [蓝桥杯 2024 省 A] 训练士兵 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在蓝桥王国中，有 名士兵，这些士兵需要接受一系列特殊的训练，以提升他们的战斗技能。对于第 名士兵来说，进行一次训练所需的成本为 枚金币，而要想成为顶尖战士，他至少需要进行 次训练。 为了确保训练的高效性，王国推出了一种组团训练的方案。该方案包含每位士兵所需的一次训练，且总共只需支付 枚金币（组团训…">
+<link rel="canonical" href="https://zymojblog.top/p/P10387/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P10387 [蓝桥杯 2024 省 A] 训练士兵 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在蓝桥王国中，有 名士兵，这些士兵需要接受一系列特殊的训练，以提升他们的战斗技能。对于第 名士兵来说，进行一次训练所需的成本为 枚金币，而要想成为顶尖战士，他至少需要进行 次训练。 为了确保训练的高效性，王国推出了一种组团训练的方案。该方案包含每位士兵所需的一次训练，且总共只需支付 枚金币（组团训…">
+<meta property="og:url" content="https://zymojblog.top/p/P10387/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P10387 [蓝桥杯 2024 省 A] 训练士兵 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在蓝桥王国中，有 名士兵，这些士兵需要接受一系列特殊的训练，以提升他们的战斗技能。对于第 名士兵来说，进行一次训练所需的成本为 枚金币，而要想成为顶尖战士，他至少需要进行 次训练。 为了确保训练的高效性，王国推出了一种组团训练的方案。该方案包含每位士兵所需的一次训练，且总共只需支付 枚金币（组团训…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P10387 [蓝桥杯 2024 省 A] 训练士兵","headline":"P10387 [蓝桥杯 2024 省 A] 训练士兵 题解","description":"在蓝桥王国中，有 名士兵，这些士兵需要接受一系列特殊的训练，以提升他们的战斗技能。对于第 名士兵来说，进行一次训练所需的成本为 枚金币，而要想成为顶尖战士，他至少需要进行 次训练。 为了确保训练的高效性，王国推出了一种组团训练的方案。该方案包含每位士兵所需的一次训练，且总共只需支付 枚金币（组团训…","url":"https://zymojblog.top/p/P10387/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2024、蓝桥杯省赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P10387</span></div>
+  <h1 class="seo-title">P10387 [蓝桥杯 2024 省 A] 训练士兵</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF%E7%9C%81%E8%B5%9B">蓝桥杯省赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P10387 [蓝桥杯 2024 省 A] 训练士兵</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-09-30</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2024</code>、<code>蓝桥杯省赛</code></p>
+<h2>题目描述</h2>
+<p>在蓝桥王国中，有 $n$ 名士兵，这些士兵需要接受一系列特殊的训练，以提升他们的战斗技能。对于第 $i$ 名士兵来说，进行一次训练所需的成本为 $p_i$ 枚金币，而要想成为顶尖战士，他至少需要进行 $c_i$ 次训练。<br>为了确保训练的高效性，王国推出了一种组团训练的方案。该方案包含每位士兵所需的一次训练，且总共只需支付 $S$ 枚金币（组团训练方案可以多次购买，即士兵可以进行多次组团训练）。<br>作为训练指挥官，请你计算出最少需要花费多少金币，才能使得所有的士兵都成为顶尖战士？</p>
+<h2>输入格式</h2>
+<p>输入的第一行包含两个整数 $n$ 和 $S $，用一个空格分隔，表示士兵的数量和进行一次组团训练所需的金币数。<br>接下来的 $n$ 行，每行包含两个整数 $p_i$ 和 $c_i$，用一个空格分隔，表示第 $i$ 名士兵进行一次训练的金币成本和要成为顶尖战士所需的训练次数。</p>
+<h2>输出格式</h2>
+<p>输出一行包含一个整数，表示使所有士兵成为顶尖战士所需的最少金币数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">6</span>
+<span class="hljs-number">5</span> <span class="hljs-number">2</span>
+<span class="hljs-number">2</span> <span class="hljs-number">4</span>
+<span class="hljs-number">3</span> <span class="hljs-number">2</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>16```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">define</span> int long long</span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> p, c;   <span class="hljs-comment">// p: 单次训练的成本, c: 需要训练的次数</span>
+};
+
+<span class="hljs-comment">// 按需要的训练次数 c 升序排序</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Node x, Node y)</span> </span>{
+    <span class="hljs-keyword">return</span> x.c &lt; y.c;
+}
+
+<span class="hljs-function"><span class="hljs-type">signed</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 题目：P10387 [蓝桥杯 2024 省 A] 训练士兵
+     * 题意：n 个士兵，士兵 i 单独训练一次花 p_i，需要 c_i 次训练。
+     *       可以买组团训练，一次组团让每个士兵都训练一次，共花 S，可多次购买。
+     *       求让所有士兵都达到需要次数的最小总花费。
+     *
+     * 贪心思路：
+     *   1. 把士兵按需要次数 c_i 从小到大排序。
+     *   2. 设当前已经买了 tk 次组团训练。
+     *      对于士兵 i，他还差 (c_i - tk) 次训练。
+     *   3. 用变量 a 记录「从当前士兵到最后一个士兵，每个单独训练一次的总花费」。
+     *      初始时 a = Σp_i（所有士兵各单训一次的总价）。
+     *   4. 对于每个士兵 i（从前往后）：
+     *        - 若 c_i &lt;= tk，说明他已经通过组团训练达标了，
+     *          从 a 中移除他（a -= p_i），跳过。
+     *        - 否则，他还需要 (c_i - tk) 次训练，有两种选择：
+     *            选项A：组团训练，每次花 S，让所有未达标士兵都 +1。
+     *            选项B：让士兵 i 单独训练，每次花 p_i。
+     *          比较 a 和 S：
+     *            - 若 a &gt;= S：组团一次比让所有剩余士兵各单独训练一次更便宜（或相等），
+     *              果断组团。花费 (c_i - tk) * S，tk 更新为 c_i。
+     *            - 若 a &lt; S：组团不划算，让士兵 i 单独训练。
+     *              花费 (c_i - tk) * p_i。
+     *        - 处理完后，士兵 i 达标，从 a 中移除（a -= p_i）。
+     *   5. 输出累计花费 res。
+     *
+     * 为什么 a &gt;= S 就可以放心组团？
+     *   因为 a 只会随着士兵达标而减小，一旦 a &lt; S，后面只会更小，
+     *   所以「a &gt;= S 就组团」的贪心策略是正确的。
+     *
+     * 时间复杂度：O(n log n)（排序） + O(n)（一次扫描），n ≤ 1e5。
+     */</span>
+
+    <span class="hljs-type">int</span> n, S;
+    cin &gt;&gt; n &gt;&gt; S;
+
+    Node a[<span class="hljs-number">100005</span>];
+    <span class="hljs-type">int</span> sumP = <span class="hljs-number">0</span>;   <span class="hljs-comment">// sumP: 所有士兵单独训练一次的总花费 Σp_i</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; a[i].p &gt;&gt; a[i].c;
+        sumP += a[i].p;
+    }
+
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + n + <span class="hljs-number">1</span>, cmp);   <span class="hljs-comment">// 按 c_i 升序排序</span>
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;   <span class="hljs-comment">// ans: 总花费</span>
+    <span class="hljs-type">int</span> tk = <span class="hljs-number">0</span>;    <span class="hljs-comment">// tk: 当前已买的组团训练次数</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-comment">// 若该士兵已通过组团达标，直接从 sumP 中移除</span>
+        <span class="hljs-keyword">if</span> (a[i].c &lt;= tk) {
+            sumP -= a[i].p;
+            <span class="hljs-keyword">continue</span>;
+        }
+
+        <span class="hljs-comment">// 比较组团（每次 S）与让所有剩余士兵各单独训练一次（sumP）</span>
+        <span class="hljs-keyword">if</span> (sumP &gt;= S) {
+            <span class="hljs-comment">// 组团划算：把该士兵缺的次数全部用组团补齐</span>
+            ans += (a[i].c - tk) * S;
+            tk = a[i].c;   <span class="hljs-comment">// 组团次数更新到 a[i].c</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// 单独训练划算：让该士兵自己补满</span>
+            ans += (a[i].c - tk) * a[i].p;
+        }
+
+        <span class="hljs-comment">// 该士兵处理完毕，从 sumP 中移除</span>
+        sumP -= a[i].p;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P10387">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

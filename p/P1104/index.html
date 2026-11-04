@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1104 生日 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="cjf 君想调查学校 OI 组每个同学的生日，并按照年龄从大到小的顺序排序。但 cjf 君最近作业很多，没有时间，所以请你帮她排序。">
+<link rel="canonical" href="https://zymojblog.top/p/P1104/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1104 生日 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="cjf 君想调查学校 OI 组每个同学的生日，并按照年龄从大到小的顺序排序。但 cjf 君最近作业很多，没有时间，所以请你帮她排序。">
+<meta property="og:url" content="https://zymojblog.top/p/P1104/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1104 生日 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="cjf 君想调查学校 OI 组每个同学的生日，并按照年龄从大到小的顺序排序。但 cjf 君最近作业很多，没有时间，所以请你帮她排序。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1104 生日","headline":"P1104 生日 题解","description":"cjf 君想调查学校 OI 组每个同学的生日，并按照年龄从大到小的顺序排序。但 cjf 君最近作业很多，没有时间，所以请你帮她排序。","url":"https://zymojblog.top/p/P1104/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、排序","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1104</span></div>
+  <h1 class="seo-title">P1104 生日</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【算法1-2】排序</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%BA%8F">排序</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1104 生日</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>排序</code></p>
+<h2>题目描述</h2>
+<p>cjf 君想调查学校 OI 组每个同学的生日，并按照年龄从大到小的顺序排序。但 cjf 君最近作业很多，没有时间，所以请你帮她排序。</p>
+<h2>输入格式</h2>
+<p>输入共有 $n + 1$ 行，</p>
+<p>第 $1$ 行为 OI 组总人数 $n$；</p>
+<p>第 $2$ 行至第 $n+1$ 行分别是每人的姓名 $s$、出生年 $y$、月 $m$、日 $d$。</p>
+<h2>输出格式</h2>
+<p>输出共有 $n$ 行，即 $n$ 个年龄从大到小同学的姓名（如果有两个同学年龄相同，输入靠后的同学先输出）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+Yangchu <span class="hljs-number">1992</span> <span class="hljs-number">4</span> <span class="hljs-number">23</span>
+Qiujingya <span class="hljs-number">1993</span> <span class="hljs-number">10</span> <span class="hljs-number">13</span>
+Luowen <span class="hljs-number">1991</span> <span class="hljs-number">8</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">Luowen
+Yangchu
+Qiujingya</code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n;
+<span class="hljs-keyword">struct</span> <span class="hljs-title class_">node</span>
+{
+    string s;
+    <span class="hljs-type">int</span> id, y, m, d;
+} a[<span class="hljs-number">110</span>];
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(node a, node b)</span>
+</span>{
+    <span class="hljs-keyword">if</span> (a.y == b.y)
+    {
+        <span class="hljs-keyword">if</span> (a.m == b.m)
+        {
+            <span class="hljs-keyword">if</span> (a.d == b.d)
+                <span class="hljs-keyword">return</span> a.id &gt; b.id;
+            <span class="hljs-keyword">return</span> a.d &lt; b.d;
+        }
+        <span class="hljs-keyword">return</span> a.m &lt; b.m;
+    }
+    <span class="hljs-keyword">return</span> a.y &lt; b.y;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-number">0</span>), cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>); 
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+    {
+        cin &gt;&gt; a[i].s &gt;&gt; a[i].y &gt;&gt; a[i].m &gt;&gt; a[i].d;
+        a[i].id = i;
+    }
+    <span class="hljs-built_in">sort</span>(a + <span class="hljs-number">1</span>, a + n + <span class="hljs-number">1</span>, cmp);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)
+        cout &lt;&lt; a[i].s &lt;&lt; <span class="hljs-string">&quot;\n&quot;</span>;
+       <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1104">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1109 学生分组 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 组学生，给出初始时每组中的学生个数，再给出每组学生人数的上界 和下界 ，每次你可以在某组中选出一个学生把他安排到另外一组中，问最少要多少次才可以使 组学生的人数都在 中。">
+<link rel="canonical" href="https://zymojblog.top/p/P1109/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1109 学生分组 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 组学生，给出初始时每组中的学生个数，再给出每组学生人数的上界 和下界 ，每次你可以在某组中选出一个学生把他安排到另外一组中，问最少要多少次才可以使 组学生的人数都在 中。">
+<meta property="og:url" content="https://zymojblog.top/p/P1109/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1109 学生分组 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 组学生，给出初始时每组中的学生个数，再给出每组学生人数的上界 和下界 ，每次你可以在某组中选出一个学生把他安排到另外一组中，问最少要多少次才可以使 组学生的人数都在 中。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1109 学生分组","headline":"P1109 学生分组 题解","description":"有 组学生，给出初始时每组中的学生个数，再给出每组学生人数的上界 和下界 ，每次你可以在某组中选出一个学生把他安排到另外一组中，问最少要多少次才可以使 组学生的人数都在 中。","url":"https://zymojblog.top/p/P1109/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1109</span></div>
+  <h1 class="seo-title">P1109 学生分组</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1109 学生分组</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-05-06</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>贪心</code></p>
+<h2>题目描述</h2>
+<p>有 $n$ 组学生，给出初始时每组中的学生个数，再给出每组学生人数的上界 $R$ 和下界 $L\ (L \le R)$，每次你可以在某组中选出一个学生把他安排到另外一组中，问最少要多少次才可以使 $N$ 组学生的人数都在 $[L,R]$ 中。</p>
+<h2>输入格式</h2>
+<p>第一行一个整数 $n$，表示学生组数；</p>
+<p>第二行 $n$ 个整数，表示每组的学生个数；</p>
+<p>第三行两个整数 $L,R$，表示下界和上界。</p>
+<h2>输出格式</h2>
+<p>一个数，表示最少的交换次数，如果不能满足题目条件输出 $-1$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span>
+<span class="hljs-number">10</span> <span class="hljs-number">20</span>
+<span class="hljs-number">10</span> <span class="hljs-number">15</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> n,a[<span class="hljs-number">51</span>],b,c,all,l,r,ans;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        cin&gt;&gt;a[i];
+    }
+    cin&gt;&gt;l&gt;&gt;r;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        all+=a[i];
+    }
+    <span class="hljs-keyword">if</span>(all&lt;n*l||all&gt;n*r)
+    {
+        cout&lt;&lt;<span class="hljs-string">&quot;-1&quot;</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++)
+    {
+        <span class="hljs-keyword">if</span>(a[i]&lt;l)
+        {
+            b+=(l-a[i]);
+        }
+        <span class="hljs-keyword">if</span>(a[i]&gt;r) c+=(a[i]-r);
+    }
+    cout&lt;&lt;<span class="hljs-built_in">max</span>(b,c);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1109">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

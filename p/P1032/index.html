@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1032 [NOIP 2002 提高组] 字串变换（疑似错题） 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="已知有两个字串 及一组字串变换的规则（至多 个规则），形如： 。 。 规则的含义为：在 中的子串 可以变换为 ， 可以变换为 。 例如： ， ， 变换规则为： ， ， 。 则此时， 可以经过一系列的变换变为 ，其变换的过程为： 。 共进行了 次变换，使得 变换为 。">
+<link rel="canonical" href="https://zymojblog.top/p/P1032/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1032 [NOIP 2002 提高组] 字串变换（疑似错题） 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="已知有两个字串 及一组字串变换的规则（至多 个规则），形如： 。 。 规则的含义为：在 中的子串 可以变换为 ， 可以变换为 。 例如： ， ， 变换规则为： ， ， 。 则此时， 可以经过一系列的变换变为 ，其变换的过程为： 。 共进行了 次变换，使得 变换为 。">
+<meta property="og:url" content="https://zymojblog.top/p/P1032/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1032 [NOIP 2002 提高组] 字串变换（疑似错题） 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="已知有两个字串 及一组字串变换的规则（至多 个规则），形如： 。 。 规则的含义为：在 中的子串 可以变换为 ， 可以变换为 。 例如： ， ， 变换规则为： ， ， 。 则此时， 可以经过一系列的变换变为 ，其变换的过程为： 。 共进行了 次变换，使得 变换为 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1032 [NOIP 2002 提高组] 字串变换（疑似错题）","headline":"P1032 [NOIP 2002 提高组] 字串变换（疑似错题） 题解","description":"已知有两个字串 及一组字串变换的规则（至多 个规则），形如： 。 。 规则的含义为：在 中的子串 可以变换为 ， 可以变换为 。 例如： ， ， 变换规则为： ， ， 。 则此时， 可以经过一系列的变换变为 ，其变换的过程为： 。 共进行了 次变换，使得 变换为 。","url":"https://zymojblog.top/p/P1032/","inLanguage":"zh-CN","educationalLevel":"普及+/提高-","learningResourceType":"题解","about":"字符串、搜索、2002、NOIP 提高组、广度优先搜索 BFS、剪枝、折半搜索 meet in the middle","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1032</span></div>
+  <h1 class="seo-title">P1032 [NOIP 2002 提高组] 字串变换（疑似错题）</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及+/提高-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/2002">2002</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20BFS">广度优先搜索 BFS</a><a class="seo-tag" href="/#/tag/%E5%89%AA%E6%9E%9D">剪枝</a><a class="seo-tag" href="/#/tag/%E6%8A%98%E5%8D%8A%E6%90%9C%E7%B4%A2%20meet%20in%20the%20middle">折半搜索 meet in the middle</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1032 [NOIP 2002 提高组] 字串变换（疑似错题）</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及+/提高-| C++14 | 提交时间: 2026-04-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>搜索</code>、<code>2002</code>、<code>NOIP 提高组</code>、<code>广度优先搜索 BFS</code>、<code>剪枝</code>、<code>折半搜索 meet in the middle</code></p>
+<h2>题目背景</h2>
+<p>本题不保证存在靠谱的多项式复杂度的做法。测试数据非常的水，各种做法都可以通过，不代表算法正确。因此本题题目和数据仅供参考。</p>
+<p>本题为搜索题，本题不接受 hack 数据。<a href="https://www.luogu.com.cn/paste/pf94n89x">关于此类题目的详细内容</a></p>
+<h2>题目描述</h2>
+<p>已知有两个字串 $A,B$ 及一组字串变换的规则（至多 $6$ 个规则），形如：</p>
+<ul>
+<li>$A_1\to B_1$。</li>
+<li>$A_2\to B_2$。</li>
+</ul>
+<p>规则的含义为：在 $A$ 中的子串 $A_1$ 可以变换为 $ B_1$，$A_2$ 可以变换为 $B_2\cdots$。</p>
+<p>例如：$A=\texttt{abcd}$，$B＝\texttt{xyz}$，</p>
+<p>变换规则为：</p>
+<ul>
+<li>$\texttt{abc}\rightarrow\texttt{xu}$，$\texttt{ud}\rightarrow\texttt{y}$，$\texttt{y}\rightarrow\texttt{yz}$。</li>
+</ul>
+<p>则此时，$A$ 可以经过一系列的变换变为 $B$，其变换的过程为：</p>
+<ul>
+<li>$\texttt{abcd}\rightarrow\texttt{xud}\rightarrow\texttt{xy}\rightarrow\texttt{xyz}$。</li>
+</ul>
+<p>共进行了 $3$ 次变换，使得 $A$ 变换为 $B$。</p>
+<h2>输入格式</h2>
+<p>第一行有两个字符串 $A,B$。</p>
+<p>接下来若干行，每行有两个字符串 $A_i,B_i$，表示一条变换规则。</p>
+<h2>输出格式</h2>
+<p>若在 $10$ 步（包含 $10$ 步）以内能将 $A$ 变换为 $B$，则输出最少的变换步数；否则输出 <code>NO ANSWER!</code>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">abcd xyz
+abc xu
+ud y
+y yz</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+string A, B;                   <span class="hljs-comment">// 初始串和目标串</span>
+string ru[<span class="hljs-number">10</span>], rv[<span class="hljs-number">10</span>];         <span class="hljs-comment">// 规则：ru[i] -&gt; rv[i]</span>
+<span class="hljs-type">int</span> rt;                        <span class="hljs-comment">// 规则数量 (rule total)</span>
+
+string q[<span class="hljs-number">1000005</span>];             <span class="hljs-comment">// BFS 队列：存储字符串（数组模拟）</span>
+<span class="hljs-type">int</span> ste[<span class="hljs-number">1000005</span>];              <span class="hljs-comment">// 对应的步数</span>
+string vis[<span class="hljs-number">1000005</span>];           <span class="hljs-comment">// 访问过的字符串（去重用）</span>
+<span class="hljs-type">int</span> vcnt;                      <span class="hljs-comment">// 已访问数量</span>
+
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isVis</span><span class="hljs-params">(<span class="hljs-type">const</span> string &amp;s)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; vcnt; i++) {
+        <span class="hljs-keyword">if</span> (vis[i] == s) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">bfs</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> head = <span class="hljs-number">0</span>, tail = <span class="hljs-number">0</span>;
+    q[tail] = A;
+    ste[tail] = <span class="hljs-number">0</span>;
+    tail++;
+    vis[vcnt++] = A;
+
+    <span class="hljs-keyword">while</span> (head &lt; tail) {
+        string cur = q[head];
+        <span class="hljs-type">int</span> step = ste[head];
+        head++;
+
+        <span class="hljs-keyword">if</span> (step &gt; <span class="hljs-number">10</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;           <span class="hljs-comment">// 超过10步，不再扩展</span>
+        <span class="hljs-keyword">if</span> (cur == B) <span class="hljs-keyword">return</span> step;          <span class="hljs-comment">// 找到目标</span>
+
+        <span class="hljs-comment">// 枚举所有规则</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; rt; i++) {
+            <span class="hljs-comment">// 在当前字符串中查找所有匹配 ru[i] 的位置</span>
+            <span class="hljs-type">int</span> pos = <span class="hljs-number">0</span>;
+            <span class="hljs-keyword">while</span> ((pos = cur.<span class="hljs-built_in">find</span>(ru[i], pos)) != string::npos) {
+                string nxt = cur.<span class="hljs-built_in">substr</span>(<span class="hljs-number">0</span>, pos) + rv[i] + cur.<span class="hljs-built_in">substr</span>(pos + ru[i].<span class="hljs-built_in">length</span>());
+                <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">isVis</span>(nxt) &amp;&amp; nxt.<span class="hljs-built_in">length</span>() &lt;= <span class="hljs-number">100</span>) { <span class="hljs-comment">// 限制长度防止无限膨胀</span>
+                    vis[vcnt++] = nxt;
+                    q[tail] = nxt;
+                    ste[tail] = step + <span class="hljs-number">1</span>;
+                    tail++;
+                }
+                pos++; <span class="hljs-comment">// 继续查找下一个匹配位置</span>
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 读入 A 和 B</span>
+    cin &gt;&gt; A &gt;&gt; B;
+    rt = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 读入规则，直到 EOF</span>
+    <span class="hljs-keyword">while</span> (cin &gt;&gt; ru[rt] &gt;&gt; rv[rt]) {
+        rt++;
+        <span class="hljs-keyword">if</span> (rt &gt;= <span class="hljs-number">10</span>) <span class="hljs-keyword">break</span>;      <span class="hljs-comment">// 安全上限</span>
+    }
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-built_in">bfs</span>();
+    <span class="hljs-keyword">if</span> (ans == <span class="hljs-number">-1</span> || ans &gt; <span class="hljs-number">10</span>) {
+        cout &lt;&lt; <span class="hljs-string">&quot;NO ANSWER!&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1032">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1533 小 X 与机器人 (betago) 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 X 最近对战胜韩国围棋大神李世石的 AlphaGo 很感兴趣，所以小 X 自己写了一个叫 做 BetaGo的人工智能程序(简称 AI) ， 这个 BetaGo 会做什么呢？ 小 X 首先想要让 BetaGo 做到自己在棋盘上落子， 这一点 AlphaGo 是由程序员来完成的。小 X 的设想是这…">
+<link rel="canonical" href="https://zymojblog.top/p/1533/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1533 小 X 与机器人 (betago) 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 X 最近对战胜韩国围棋大神李世石的 AlphaGo 很感兴趣，所以小 X 自己写了一个叫 做 BetaGo的人工智能程序(简称 AI) ， 这个 BetaGo 会做什么呢？ 小 X 首先想要让 BetaGo 做到自己在棋盘上落子， 这一点 AlphaGo 是由程序员来完成的。小 X 的设想是这…">
+<meta property="og:url" content="https://zymojblog.top/p/1533/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1533 小 X 与机器人 (betago) 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 X 最近对战胜韩国围棋大神李世石的 AlphaGo 很感兴趣，所以小 X 自己写了一个叫 做 BetaGo的人工智能程序(简称 AI) ， 这个 BetaGo 会做什么呢？ 小 X 首先想要让 BetaGo 做到自己在棋盘上落子， 这一点 AlphaGo 是由程序员来完成的。小 X 的设想是这…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1533 小 X 与机器人 (betago)","headline":"1533 小 X 与机器人 (betago) 题解","description":"小 X 最近对战胜韩国围棋大神李世石的 AlphaGo 很感兴趣，所以小 X 自己写了一个叫 做 BetaGo的人工智能程序(简称 AI) ， 这个 BetaGo 会做什么呢？ 小 X 首先想要让 BetaGo 做到自己在棋盘上落子， 这一点 AlphaGo 是由程序员来完成的。小 X 的设想是这…","url":"https://zymojblog.top/p/1533/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"市赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1533</span></div>
+  <h1 class="seo-title">1533 小 X 与机器人 (betago)</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B8%82%E8%B5%9B">市赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>1533 - 小 X 与机器人 (betago)</h1>
+<h2>题目描述</h2>
+<p>小 X 最近对战胜韩国围棋大神李世石的 AlphaGo 很感兴趣，所以小 X 自己写了一个叫 做 BetaGo的人工智能程序(简称 AI) ， 这个 BetaGo 会做什么呢？</p>
+<p>小 X 首先想要让 BetaGo 做到自己在棋盘上落子， 这一点 AlphaGo 是由程序员来完成的。小 X 的设想是这样的： 在棋盘的边框上放置一个小机器人， 这个小机器人会沿着棋盘的边框移动到最接近落子点的位置，然后伸出它的机械臂将棋子放到棋盘上。 这里面最关键的一步是如何让小机器人在棋盘的边框上沿着最短的路径移动，小 X 想请你帮他编个程序解决这个问题。</p>
+<p>众所周知，围棋棋盘大小为 $19 \times 19$(如下图所示) , 图中加粗的一圈即为边框。</p>
+<p>我们用一对整数 ($x$, $y$) 来表示棋盘上第 $x$ 条横线（从下往上数）与第 $y$ 条竖线（从左往右数）的交叉点，如上图中边框上的 <code>A</code> 点用（ $6$， $1$） 表示， <code>B</code> 点用 ($10$， $19$) 表示，小机器人初始时放置在 ($x1$, $y1$) 这个位置上， 它想要移动到 ($x2$, $y2$) 这个位置上。 ($x1$, $y1$) 和($x2$, $y2$) 一定是棋盘边框上的交叉点每一步小机器人可以从当前位置移动到相邻（上下左右）的某个位置上， 即每次可以从 ($x$, $y$) 移动到 ($x - 1$, $y$) 、 ($x + 1$, $y$) 、 ($x$, $y - 1$) 、 ($x$, $y + 1$) 四个位置中的一个， 但是它不能走出或走进棋盘，也就是说它只能沿着棋盘的边框移动到相邻位置， 这就意味着任一时刻相邻位置都恰好只有两个。</p>
+<p>BetaGo 会告诉小机器人最少需要走多少步， 但小 X 还是很担心 BetaGo 有的时候会失控，从而告诉他一个错误值。</p>
+<p>为此小 X 只好求助你， 希望你编一个程序计算从 ($x1$, $y1$) 沿着棋盘的边框移动到 ($x2$, $y2$) 最少需要走 多少步 。 上 图 中 从 <code>A</code> 点 （ $6$ ， $1$ ） 移 动 到 <code>B</code> 点 ($10$ ， $19$) 最 少需 要 走 $32$ 步 ， 移 动 路线 是 ：<code>（ 6 ， 1 ） → （ 5 ， 1 ） → （ 4 ， 1 ） → （ 3 ， 1 ） → （ 2 ， 1 ） → （ 1 ， 1 ） → (1 ， 2 ） → (1 ， 3 ） →……→(1， 19） →(2， 19） →……→(10， 19）</code></p>
+<h2>输入</h2>
+<p>输入数据仅有一行包含四个用空格隔开的正整数表示 $x1$, $y1$, $x2$,$y2$。</p>
+<p>数据保证 ($x1$, $y1$) ， ($x2$, $y2$) 一定是棋盘边框上的交叉点。</p>
+<h2>输出</h2>
+<p>输出一行包含一个整数 $ans$， 表示小机器人从 ($x1$, $y1$) 移动到 ($x2$, $y2$) 的最少步数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span>   <span class="hljs-comment">// 使用 abs 函数</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 将边框上的点映射到一维坐标（顺时针方向，从 (1,1) 开始）</span>
+<span class="hljs-comment">// 周长：共有 19*4 - 4 = 72 个不同的点（角点不重复计算）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">pos</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> </span>{
+    <span class="hljs-comment">// 下边：x == 1，y 从 1 到 19，坐标从 0 到 18</span>
+    <span class="hljs-keyword">if</span> (x == <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> y - <span class="hljs-number">1</span>;
+    <span class="hljs-comment">// 右边：y == 19，x 从 2 到 19（因为 (1,19) 已算在下边），坐标从 19 到 36</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (y == <span class="hljs-number">19</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">18</span> + (x - <span class="hljs-number">1</span>);   <span class="hljs-comment">// 18 是下边的终点，加上 x-1</span>
+    <span class="hljs-comment">// 上边：x == 19，y 从 18 下降到 1（因为 (19,19) 已在右边），坐标从 37 到 54</span>
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (x == <span class="hljs-number">19</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">36</span> + (<span class="hljs-number">19</span> - y);   <span class="hljs-comment">// 36 是右边的终点，加上 (19-y)</span>
+    <span class="hljs-comment">// 左边：y == 1，x 从 18 下降到 2（因为 (19,1) 已在上边，(1,1) 已在下边），坐标从 55 到 71</span>
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">54</span> + (<span class="hljs-number">19</span> - x);   <span class="hljs-comment">// 54 是上边的终点，加上 (19-x)</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> x1, y1, x2, y2;
+    cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+
+    <span class="hljs-comment">// 获取起点和终点在一维坐标上的位置</span>
+    <span class="hljs-type">int</span> p1 = <span class="hljs-built_in">pos</span>(x1, y1);
+    <span class="hljs-type">int</span> p2 = <span class="hljs-built_in">pos</span>(x2, y2);
+
+    <span class="hljs-comment">// 顺时针方向的距离</span>
+    <span class="hljs-type">int</span> d = <span class="hljs-built_in">abs</span>(p1 - p2);
+    <span class="hljs-comment">// 最短距离 = min(顺时针距离, 逆时针距离)</span>
+    <span class="hljs-comment">// 逆时针距离 = 总周长 - 顺时针距离</span>
+    <span class="hljs-type">int</span> ans = <span class="hljs-built_in">min</span>(d, <span class="hljs-number">72</span> - d);
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1533">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

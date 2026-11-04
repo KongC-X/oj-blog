@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P9750 [CSP-J 2023] 一元二次方程 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="现在给定一个一元二次方程的系数 ，其中 均为整数且 。你需要判断一元二次方程 是否有实数解，并按要求的格式输出。 在本题中输出有理数 时须遵循以下规则： 由有理数的定义，存在唯一的两个整数 和 ，满足 ， 且 。 若 ，则输出 {p}，否则输出 {p}/{q}，其中 {n} 代表整数 的值； 例如…">
+<link rel="canonical" href="https://zymojblog.top/p/P9750/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P9750 [CSP-J 2023] 一元二次方程 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="现在给定一个一元二次方程的系数 ，其中 均为整数且 。你需要判断一元二次方程 是否有实数解，并按要求的格式输出。 在本题中输出有理数 时须遵循以下规则： 由有理数的定义，存在唯一的两个整数 和 ，满足 ， 且 。 若 ，则输出 {p}，否则输出 {p}/{q}，其中 {n} 代表整数 的值； 例如…">
+<meta property="og:url" content="https://zymojblog.top/p/P9750/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P9750 [CSP-J 2023] 一元二次方程 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="现在给定一个一元二次方程的系数 ，其中 均为整数且 。你需要判断一元二次方程 是否有实数解，并按要求的格式输出。 在本题中输出有理数 时须遵循以下规则： 由有理数的定义，存在唯一的两个整数 和 ，满足 ， 且 。 若 ，则输出 {p}，否则输出 {p}/{q}，其中 {n} 代表整数 的值； 例如…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P9750 [CSP-J 2023] 一元二次方程","headline":"P9750 [CSP-J 2023] 一元二次方程 题解","description":"现在给定一个一元二次方程的系数 ，其中 均为整数且 。你需要判断一元二次方程 是否有实数解，并按要求的格式输出。 在本题中输出有理数 时须遵循以下规则： 由有理数的定义，存在唯一的两个整数 和 ，满足 ， 且 。 若 ，则输出 {p}，否则输出 {p}/{q}，其中 {n} 代表整数 的值； 例如…","url":"https://zymojblog.top/p/P9750/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"模拟、数学、2023、O2优化、CSP-J 入门级、分类讨论","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P9750</span></div>
+  <h1 class="seo-title">P9750 [CSP-J 2023] 一元二次方程</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    <span class="seo-badge seo-badge-soft">CSP-J复赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/2023">2023</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/CSP-J%20%E5%85%A5%E9%97%A8%E7%BA%A7">CSP-J 入门级</a><a class="seo-tag" href="/#/tag/%E5%88%86%E7%B1%BB%E8%AE%A8%E8%AE%BA">分类讨论</a></div>
+  <article class="markdown-body seo-article">
+<h1>P9750 [CSP-J 2023] 一元二次方程</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2025-06-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>数学</code>、<code>2023</code>、<code>O2优化</code>、<code>CSP-J 入门级</code>、<code>分类讨论</code></p>
+<h2>题目背景</h2>
+<p>众所周知，对一元二次方程 $ax ^ 2 + bx + c = 0(a \neq 0)$，可以用以下方式求实数解：</p>
+<ul>
+<li>计算 $\Delta = b ^ 2 - 4ac$，则:<ol>
+<li>若 $\Delta &lt; 0$，则该一元二次方程无实数解。<br>2. 否则 $\Delta \geq 0$，此时该一元二次方程有两个实数解 $x _ {1, 2} = \frac{-b \pm \sqrt \Delta}{2a}$。</li>
+</ol>
+</li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>$x ^ 2 + x + 1 = 0$ 无实数解，因为 $\Delta = 1 ^ 2 - 4 \times 1 \times 1 = -3 &lt; 0$。</li>
+<li>$x ^ 2 - 2x + 1 = 0$ 有两相等实数解 $x _ {1, 2} = 1$。</li>
+<li>$x ^ 2 - 3x + 2 = 0$ 有两互异实数解 $x _ 1 = 1, x _ 2 = 2$。</li>
+</ul>
+<p>在题面描述中 $a$ 和 $b$ 的最大公因数使用 $\gcd(a, b)$ 表示。例如 $12$ 和 $18$ 的最大公因数是 $6$，即 $\gcd(12, 18) = 6$。</p>
+<h2>题目描述</h2>
+<p>现在给定一个一元二次方程的系数 $a, b, c$，其中 $a, b, c$ <strong>均为整数且 $a \neq 0$</strong>。你需要判断一元二次方程 $a x ^ 2 + bx + c = 0$ 是否有实数解，并按要求的格式输出。</p>
+<p><strong>在本题中输出有理数 $v$ 时须遵循以下规则：</strong></p>
+<ul>
+<li><p>由有理数的定义，存在唯一的两个整数 $p$ 和 $q$，满足 $q &gt; 0$，$\gcd(p, q) = 1$ 且 $v = \frac pq$。</p>
+</li>
+<li><p>若 $q = 1$，<strong>则输出 <code>{p}</code>，否则输出 <code>{p}/{q}</code></strong>，其中 <code>{n}</code> 代表整数 $n$ 的值；</p>
+</li>
+<li><p>例如：</p>
+<ul>
+<li>当 $v = -0.5$ 时，$p$ 和 $q$ 的值分别为 $-1$ 和 $2$，则应输出 <code>-1/2</code>；</li>
+<li>当 $v = 0$ 时，$p$ 和 $q$ 的值分别为 $0$ 和 $1$，则应输出 <code>0</code>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>对于方程的求解，分两种情况讨论：</strong></p>
+<ol>
+<li><p>若 $\Delta = b ^ 2 - 4ac &lt; 0$，则表明方程无实数解，此时你应当输出 <code>NO</code>；</p>
+</li>
+<li><p>否则 $\Delta \geq 0$，此时方程有两解（可能相等），记其中较大者为 $x$，则：</p>
+<ol>
+<li><p>若 $x$ 为有理数，则按有理数的格式输出 $x$。</p>
+</li>
+<li><p>否则根据上文公式，$x$ 可以被<strong>唯一</strong>表示为 $x = q _ 1 + q _ 2 \sqrt r$ 的形式，其中：</p>
+<pre><code class="hljs language-cpp"> - $q _ <span class="hljs-number">1</span>, q _ <span class="hljs-number">2</span>$ 为有理数，且 $q _ <span class="hljs-number">2</span> &gt; <span class="hljs-number">0</span>$；</code></pre><ul>
+<li>$r$ 为正整数且 $r &gt; 1$，且不存在正整数 $d &gt; 1$ 使 $d ^ 2 \mid r$（即 $r$ 不应是 $d ^ 2$ 的倍数）；</li>
+</ul>
+</li>
+</ol>
+<p>此时：</p>
+<ol>
+<li>若 $q _ 1 \neq 0$，则按有理数的格式输出 $q _ 1$，并再输出一个加号 <code>+</code>；</li>
+<li>否则跳过这一步输出；</li>
+</ol>
+<p>随后：</p>
+<ol>
+<li>若 $q _ 2 = 1$，则输出 <code>sqrt({r})</code>；</li>
+<li>否则若 $q _ 2$ 为整数，则输出 <code>{q2}*sqrt({r})</code>；</li>
+<li>否则若 $q _ 3 = \frac 1{q _ 2}$ 为整数，则输出 <code>sqrt({r})/{q3}</code>；</li>
+<li>否则可以证明存在唯一整数 $c, d$ 满足 $c, d &gt; 1, \gcd(c, d) = 1$ 且 $q _ 2 = \frac cd$，此时输出 <code>{c}*sqrt({r})/{d}</code>；</li>
+</ol>
+<p>上述表示中 <code>{n}</code> 代表整数 <code>{n}</code> 的值，详见样例。</p>
+<p>如果方程有实数解，则按要求的格式输出两个实数解中的较大者。否则若方程没有实数解，则输出 <code>NO</code>。</p>
+</li>
+</ol>
+<h2>输入格式</h2>
+<p>输入的第一行包含两个正整数 $T, M$，分别表示方程数和系数的绝对值上限。</p>
+<p>接下来 $T$ 行，每行包含三个整数 $a, b, c$。</p>
+<h2>输出格式</h2>
+<p>输出 $T$ 行，每行包含一个字符串，表示对应询问的答案，格式如题面所述。</p>
+<p><strong>每行输出的字符串中间不应包含任何空格</strong>。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">9</span> <span class="hljs-number">1000</span>
+<span class="hljs-number">1</span> <span class="hljs-number">-1</span> <span class="hljs-number">0</span>
+<span class="hljs-number">-1</span> <span class="hljs-number">-1</span> <span class="hljs-number">-1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">-2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">4</span>
+<span class="hljs-number">4</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">-432</span>
+<span class="hljs-number">1</span> <span class="hljs-number">-3</span> <span class="hljs-number">1</span>
+<span class="hljs-number">2</span> <span class="hljs-number">-4</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">7</span> <span class="hljs-number">1</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1<br>NO<br>1<br>-1<br>-1/2<br>12<em>sqrt(3)<br>3/2+sqrt(5)/2<br>1+sqrt(2)/2<br>-7/2+3</em>sqrt(5)/2```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// T3大模拟：非常考察思维的缜密性及基本功。</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> t, m, a, b, c;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> </span>{
+    <span class="hljs-type">int</span> u;
+    <span class="hljs-keyword">while</span> (q != <span class="hljs-number">0</span>) {
+        u = p % q;
+        p = q;
+        q = u;
+    }
+    <span class="hljs-keyword">return</span> p;
+}
+
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun1</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> </span>{
+    <span class="hljs-keyword">if</span> (p * q &lt; <span class="hljs-number">0</span>)
+        cout &lt;&lt; <span class="hljs-string">&#x27;-&#x27;</span>;
+    <span class="hljs-keyword">if</span> (p &lt; <span class="hljs-number">0</span>)
+        p = <span class="hljs-number">0</span> - p;
+    <span class="hljs-keyword">if</span> (q &lt; <span class="hljs-number">0</span>)
+        q = <span class="hljs-number">0</span> - q;
+    <span class="hljs-type">int</span> g = <span class="hljs-built_in">gcd</span>(p, q);
+    <span class="hljs-keyword">if</span> (g == q)
+        cout &lt;&lt; p / g;
+    <span class="hljs-keyword">else</span>
+        cout &lt;&lt; p / g &lt;&lt; <span class="hljs-string">&#x27;/&#x27;</span> &lt;&lt; q / g;
+    <span class="hljs-keyword">return</span>;
+}
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">fun2</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> </span>{
+    <span class="hljs-keyword">if</span> (p &lt; <span class="hljs-number">0</span>)
+        p = -p;
+    <span class="hljs-keyword">if</span> (q &lt; <span class="hljs-number">0</span>)
+        q = -q;
+    <span class="hljs-type">int</span> u = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-built_in">sqrt</span>(p); i &gt;= <span class="hljs-number">2</span>; i--) {
+        <span class="hljs-keyword">if</span> (p % (i * i) == <span class="hljs-number">0</span>) {
+            p = p / (i * i);
+            u = u * i;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-type">int</span> g = <span class="hljs-built_in">gcd</span>(u, q);
+    u = u / g;
+    q = q / g;
+    <span class="hljs-keyword">if</span> (u != <span class="hljs-number">1</span>)
+        cout &lt;&lt; u &lt;&lt; <span class="hljs-string">&quot;*&quot;</span>;
+    <span class="hljs-keyword">if</span> (p != <span class="hljs-number">1</span>)
+        cout &lt;&lt; <span class="hljs-string">&quot;sqrt(&quot;</span> &lt;&lt; p &lt;&lt; <span class="hljs-string">&quot;)&quot;</span>;
+    <span class="hljs-keyword">if</span> (q != <span class="hljs-number">1</span>)
+        cout &lt;&lt; <span class="hljs-string">&quot;/&quot;</span> &lt;&lt; q;
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; t &gt;&gt; m;
+    <span class="hljs-keyword">while</span> (t--) {
+        cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+        <span class="hljs-type">int</span> d = b * b - <span class="hljs-number">4</span> * a * c;
+        <span class="hljs-keyword">if</span> (d &lt; <span class="hljs-number">0</span>) {
+            cout &lt;&lt; <span class="hljs-string">&quot;NO&quot;</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-type">int</span> q = <span class="hljs-built_in">sqrt</span>(d);
+            <span class="hljs-keyword">if</span> (q * q == d) {
+                <span class="hljs-type">double</span> ans1 = <span class="hljs-number">1.0</span> * (-b + q) / (<span class="hljs-number">2</span> * a);
+                <span class="hljs-type">double</span> ans2 = <span class="hljs-number">1.0</span> * (-b - q) / (<span class="hljs-number">2</span> * a);
+                <span class="hljs-keyword">if</span> (ans1 &gt; ans2) {
+                    <span class="hljs-keyword">if</span> (-b + q == <span class="hljs-number">0</span>)
+                        cout &lt;&lt; <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">else</span>
+                        <span class="hljs-built_in">fun1</span>(-b + q, <span class="hljs-number">2</span> * a);
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">if</span> (-b - q == <span class="hljs-number">0</span>)
+                        cout &lt;&lt; <span class="hljs-number">0</span>;
+                    <span class="hljs-keyword">else</span>
+                        <span class="hljs-built_in">fun1</span>(-b - q, <span class="hljs-number">2</span> * a);
+                }
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">if</span> (b != <span class="hljs-number">0</span>)
+                    <span class="hljs-built_in">fun1</span>(-b, <span class="hljs-number">2</span> * a);
+                <span class="hljs-keyword">if</span> (b != <span class="hljs-number">0</span>)
+                    cout &lt;&lt; <span class="hljs-string">&quot;+&quot;</span>;
+                <span class="hljs-built_in">fun2</span>(d, <span class="hljs-number">2</span> * a);
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P9750">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

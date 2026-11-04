@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5535 【XR-3】小道消息 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小 X 想探究小道消息传播的速度有多快，于是他做了一个社会实验。 有 个人，其中第 个人的衣服上有一个数 。小 X 发现了一个规律：当一个衣服上的数为 的人在某一天知道了一条信息，他会在第二天把这条信息告诉衣服上的数为 的人，其中 （即 的最大公约数为 ）。在第 天，小 X 把一条小道消息告诉了第…">
+<link rel="canonical" href="https://zymojblog.top/p/P5535/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5535 【XR-3】小道消息 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小 X 想探究小道消息传播的速度有多快，于是他做了一个社会实验。 有 个人，其中第 个人的衣服上有一个数 。小 X 发现了一个规律：当一个衣服上的数为 的人在某一天知道了一条信息，他会在第二天把这条信息告诉衣服上的数为 的人，其中 （即 的最大公约数为 ）。在第 天，小 X 把一条小道消息告诉了第…">
+<meta property="og:url" content="https://zymojblog.top/p/P5535/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5535 【XR-3】小道消息 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小 X 想探究小道消息传播的速度有多快，于是他做了一个社会实验。 有 个人，其中第 个人的衣服上有一个数 。小 X 发现了一个规律：当一个衣服上的数为 的人在某一天知道了一条信息，他会在第二天把这条信息告诉衣服上的数为 的人，其中 （即 的最大公约数为 ）。在第 天，小 X 把一条小道消息告诉了第…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5535 【XR-3】小道消息","headline":"P5535 【XR-3】小道消息 题解","description":"小 X 想探究小道消息传播的速度有多快，于是他做了一个社会实验。 有 个人，其中第 个人的衣服上有一个数 。小 X 发现了一个规律：当一个衣服上的数为 的人在某一天知道了一条信息，他会在第二天把这条信息告诉衣服上的数为 的人，其中 （即 的最大公约数为 ）。在第 天，小 X 把一条小道消息告诉了第…","url":"https://zymojblog.top/p/P5535/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"数学、O2优化、素数判断、最大公约数 gcd","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5535</span></div>
+  <h1 class="seo-title">P5535 【XR-3】小道消息</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/O2%E4%BC%98%E5%8C%96">O2优化</a><a class="seo-tag" href="/#/tag/%E7%B4%A0%E6%95%B0%E5%88%A4%E6%96%AD">素数判断</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E5%A4%A7%E5%85%AC%E7%BA%A6%E6%95%B0%20gcd">最大公约数 gcd</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5535 【XR-3】小道消息</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-29</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>O2优化</code>、<code>素数判断</code>、<code>最大公约数 gcd</code></p>
+<h2>题目描述</h2>
+<p>小 X 想探究小道消息传播的速度有多快，于是他做了一个社会实验。</p>
+<p>有 $n$ 个人，其中第 $i$ 个人的衣服上有一个数 $i+1$。小 X 发现了一个规律：当一个衣服上的数为 $i$ 的人在某一天知道了一条信息，他会在第二天把这条信息告诉衣服上的数为 $j$ 的人，其中 $\gcd(i,j)=1$（即 $i,j$ 的最大公约数为 $1$）。在第 $0$ 天，小 X 把一条小道消息告诉了第 $k$ 个人，小 X 想知道第几天时所有人都会知道这条小道消息。</p>
+<p>可以证明，一定存在所有人都知道了这条小道消息的那一天。</p>
+<p>提示：你可能需要用到的定理——<a href="https://baike.baidu.com/item/%E4%BC%AF%E7%89%B9%E5%85%B0-%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E5%AE%9A%E7%90%86/2053704">伯特兰-切比雪夫定理</a>。</p>
+<h2>输入格式</h2>
+<p>一行 $2$ 个正整数 $n,k$。</p>
+<p><strong>数据范围：</strong></p>
+<ul>
+<li>$2 \le n \le 10^{14}$。</li>
+<li>$1 \le k \le n$。</li>
+</ul>
+<h2>输出格式</h2>
+<p>一行一个正整数，表示答案。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span></code></pre><p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">6</span> <span class="hljs-number">4</span></code></pre><p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 判断一个数是否为素数（试除法）</span>
+<span class="hljs-comment">// 因为只有一组数据，sqrt(1e14)=1e7，运算量可以接受</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isp</span><span class="hljs-params">(<span class="hljs-type">long</span> <span class="hljs-type">long</span> x)</span> </span>{
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> <span class="hljs-type">long</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) {
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> n, k;
+    cin &gt;&gt; n &gt;&gt; k;
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> x = k + <span class="hljs-number">1</span>;          <span class="hljs-comment">// 第 k 个人衣服上的数</span>
+
+    <span class="hljs-comment">// 根据伯特兰-切比雪夫定理：</span>
+    <span class="hljs-comment">// - 若 x 是质数且 x &gt; (n+1)/2，则 x 与所有其他人的数都互质（因为不会出现 x 的倍数）。</span>
+    <span class="hljs-comment">//   这种情况下，第一天 x 就可以直接把消息传给所有人，答案为 1。</span>
+    <span class="hljs-comment">// - 否则，区间 ((n+1)/2, n+1] 内必定存在一个质数 p。</span>
+    <span class="hljs-comment">//   x 不可能等于 p（否则会落入上一种情况），且 p 不整除 x（因为 p &gt; (n+1)/2 ≥ x/2），</span>
+    <span class="hljs-comment">//   所以 gcd(x, p) = 1。因此：</span>
+    <span class="hljs-comment">//     第 1 天：x 传给 p</span>
+    <span class="hljs-comment">//     第 2 天：p 传给其他所有人（p 与所有数都互质）</span>
+    <span class="hljs-comment">//   总天数为 2。</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">isp</span>(x) &amp;&amp; <span class="hljs-number">2</span> * x &gt; n + <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-number">1</span> &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    } <span class="hljs-keyword">else</span> {
+        cout &lt;&lt; <span class="hljs-number">2</span> &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5535">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

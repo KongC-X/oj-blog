@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1513 绝对素数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="如果一个两位数是素数，且它的数字位置经过对换后仍为素数，则称为绝对素数，例如 。 试编程求出所有两位数中的绝对素数。">
+<link rel="canonical" href="https://zymojblog.top/p/1513/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1513 绝对素数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="如果一个两位数是素数，且它的数字位置经过对换后仍为素数，则称为绝对素数，例如 。 试编程求出所有两位数中的绝对素数。">
+<meta property="og:url" content="https://zymojblog.top/p/1513/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1513 绝对素数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="如果一个两位数是素数，且它的数字位置经过对换后仍为素数，则称为绝对素数，例如 。 试编程求出所有两位数中的绝对素数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1513 绝对素数","headline":"1513 绝对素数 题解","description":"如果一个两位数是素数，且它的数字位置经过对换后仍为素数，则称为绝对素数，例如 。 试编程求出所有两位数中的绝对素数。","url":"https://zymojblog.top/p/1513/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数问题","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1513</span></div>
+  <h1 class="seo-title">1513 绝对素数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">函数</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E9%97%AE%E9%A2%98">函数问题</a></div>
+  <article class="markdown-body seo-article">
+<h1>1513 - 绝对素数</h1>
+<h2>题目描述</h2>
+<p>如果一个两位数是素数，且它的数字位置经过对换后仍为素数，则称为绝对素数，例如 $13$ 。</p>
+<p>试编程求出所有两位数中的绝对素数。</p>
+<h2>输入</h2>
+<p>无</p>
+<h2>输出</h2>
+<p>若干行，每行一个绝对素数，从小到大输出。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">//定义函数，判断素数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">sushu</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> </span>{
+    <span class="hljs-comment">//用来标记n是否是素数，假设是素数</span>
+    <span class="hljs-type">bool</span> f = <span class="hljs-literal">true</span>;
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">2</span>; i&lt;=<span class="hljs-built_in">sqrt</span>(n); i++) {
+        <span class="hljs-keyword">if</span>(n%i==<span class="hljs-number">0</span>) {
+            f = <span class="hljs-literal">false</span>;
+            <span class="hljs-keyword">break</span>;
+        }
+    }
+    <span class="hljs-keyword">if</span>(n &lt;= <span class="hljs-number">1</span>) f = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> f;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> i,c=<span class="hljs-number">0</span>,x;
+    <span class="hljs-comment">//循环所有的2位数，逐个判断是否是绝对素数</span>
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">10</span>; i&lt;=<span class="hljs-number">99</span>; i++) {
+        <span class="hljs-comment">//求i倒过来的数</span>
+        x = i % <span class="hljs-number">10</span> * <span class="hljs-number">10</span> + i / <span class="hljs-number">10</span>;
+        <span class="hljs-comment">//cout&lt;&lt;x&lt;&lt;endl;//可以打印测试一下</span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">sushu</span>(i)==<span class="hljs-literal">true</span> &amp;&amp; <span class="hljs-built_in">sushu</span>(x)==<span class="hljs-literal">true</span>) {
+            cout&lt;&lt;i&lt;&lt;endl;
+        }
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1513">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

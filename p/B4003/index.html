@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4003 [GESP202406 三级] 移位 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小杨学习了加密技术移位，所有大写字母都向后按照⼀个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNO…">
+<link rel="canonical" href="https://zymojblog.top/p/B4003/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4003 [GESP202406 三级] 移位 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小杨学习了加密技术移位，所有大写字母都向后按照⼀个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNO…">
+<meta property="og:url" content="https://zymojblog.top/p/B4003/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4003 [GESP202406 三级] 移位 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小杨学习了加密技术移位，所有大写字母都向后按照⼀个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNO…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4003 [GESP202406 三级] 移位","headline":"B4003 [GESP202406 三级] 移位 题解","description":"小杨学习了加密技术移位，所有大写字母都向后按照⼀个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNO…","url":"https://zymojblog.top/p/B4003/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"2024、字符串（入门）、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4003</span></div>
+  <h1 class="seo-title">B4003 [GESP202406 三级] 移位</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">GESP C++ 三级</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/2024">2024</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89">字符串（入门）</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4003 [GESP202406 三级] 移位</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2024-11-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>2024</code>、<code>字符串（入门）</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1151">https://ti.luogu.com.cn/problemset/1151</a></p>
+<h2>题目描述</h2>
+<p>小杨学习了加密技术移位，所有大写字母都向后按照⼀个固定数目进行偏移。偏移过程会将字母表视作首尾相接的环，例如，当偏移量是 $3$ 的时候，大写字母 A 会替换成 D，大写字母 Z 会替换成 C，总体来看，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 会被替换成 DEFGHIJKLMNOPQRSTUVWXYZABC。</p>
+<p>注：当偏移量是 $26$ 的倍数时，每个大写字母经过偏移后会恰好回到原来的位置，即大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 经过偏移后会保持不变。</p>
+<h2>输入格式</h2>
+<p>第一行包含一个正整数 $n$。</p>
+<h2>输出格式</h2>
+<p>输出在偏移量为 $n$ 的情况下，大写字母表 ABCDEFGHIJKLMNOPQRSTUVWXYZ 移位替换后的结果。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>DEFGHIJKLMNOPQRSTUVWXYZABC```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n,i;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++){
+        <span class="hljs-type">char</span> c = <span class="hljs-string">&#x27;A&#x27;</span> + (n + i) % <span class="hljs-number">26</span>;
+        cout &lt;&lt; c;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4003">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P15801 [GESP202603 六级] 完全二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是完全二叉树。">
+<link rel="canonical" href="https://zymojblog.top/p/P15801/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P15801 [GESP202603 六级] 完全二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是完全二叉树。">
+<meta property="og:url" content="https://zymojblog.top/p/P15801/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P15801 [GESP202603 六级] 完全二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是完全二叉树。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P15801 [GESP202603 六级] 完全二叉树","headline":"P15801 [GESP202603 六级] 完全二叉树 题解","description":"给定一棵包含 个结点的有根二叉树，结点依次以 编号，根结点编号为 。 对于结点 ，其左儿子的编号记为 ，右儿子编号记为 。特别地，如果左儿子不存在则 ，如果右儿子不存在则 。 树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 棵子树中，有多少棵子树是完全二叉树。","url":"https://zymojblog.top/p/P15801/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"树形数据结构、树形 DP、树的遍历、2026、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P15801</span></div>
+  <h1 class="seo-title">P15801 [GESP202603 六级] 完全二叉树</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A0%91%E5%BD%A2%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">树形数据结构</a><a class="seo-tag" href="/#/tag/%E6%A0%91%E5%BD%A2%20DP">树形 DP</a><a class="seo-tag" href="/#/tag/%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86">树的遍历</a><a class="seo-tag" href="/#/tag/2026">2026</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P15801 [GESP202603 六级] 完全二叉树</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-16</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>树形数据结构</code>、<code>树形 DP</code>、<code>树的遍历</code>、<code>2026</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1210">https://ti.luogu.com.cn/problemset/1210</a></p>
+<h2>题目描述</h2>
+<p>给定一棵包含 $n$ 个结点的<strong>有根二叉树</strong>，结点依次以 $1,2,\dots,n$ 编号，根结点编号为 $1$。</p>
+<p>对于结点 $i$，其左儿子的编号记为 $l_i$，右儿子编号记为 $r_i$。特别地，如果左儿子不存在则 $l_i=0$，如果右儿子不存在则 $r_i=0$。</p>
+<p>树中每个结点都对应一棵以其为根的子树。请你求出给定有根树的所有 $n$ 棵子树中，有多少棵子树是完全二叉树。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $n$，表示有根二叉树结点数量。</p>
+<p>接下来 $n$ 行，每行两个正整数 $l_i,r_i$，表示结点 $i$ 的左儿子编号和右儿子编号。</p>
+<h2>输出格式</h2>
+<p>输出一行，一个整数，表示所有子树中完全二叉树的数量。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">4</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>4```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>
+<span class="hljs-number">2</span> <span class="hljs-number">3</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>
+<span class="hljs-number">4</span> <span class="hljs-number">0</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> n;                             <span class="hljs-comment">// 节点数</span>
+<span class="hljs-type">int</span> l[MAXN], r[MAXN];              <span class="hljs-comment">// 左右儿子，0 表示空</span>
+<span class="hljs-type">int</span> d[MAXN];                       <span class="hljs-comment">// 子树深度</span>
+<span class="hljs-type">bool</span> full[MAXN], comp[MAXN];       <span class="hljs-comment">// 满二叉树 / 完全二叉树标记</span>
+
+<span class="hljs-comment">/*
+  递归计算每棵子树的信息：
+  d[u] : 以 u 为根的子树深度（叶子深度=1）
+  full[u] : 该子树是否是满二叉树
+  comp[u] : 该子树是否是完全二叉树
+
+  完全二叉树判定（已知左右子树信息）：
+  1. 左子树为满二叉树 且 右子树为完全二叉树 且 左右深度相等   → 完全
+  2. 左子树为完全二叉树 且 右子树为满二叉树 且 左深度 == 右深度 + 1 → 完全
+
+  满二叉树判定：
+  左右子树均为满二叉树 且 深度相等 → 满
+
+  边界：空节点（编号0）视为深度为0的满二叉树+完全二叉树。
+*/</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span> </span>{
+    <span class="hljs-type">int</span> ls = l[u], rs = r[u];
+    <span class="hljs-keyword">if</span> (ls) <span class="hljs-built_in">dfs</span>(ls);               <span class="hljs-comment">// 先递归计算左右子树</span>
+    <span class="hljs-keyword">if</span> (rs) <span class="hljs-built_in">dfs</span>(rs);
+
+    <span class="hljs-comment">// 当前子树深度 = 左右子树最大深度 + 1</span>
+    d[u] = <span class="hljs-built_in">max</span>(d[ls], d[rs]) + <span class="hljs-number">1</span>;
+
+    <span class="hljs-comment">// 判断满二叉树</span>
+    <span class="hljs-keyword">if</span> (full[ls] &amp;&amp; full[rs] &amp;&amp; d[ls] == d[rs])
+        full[u] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-comment">// 判断完全二叉树（两种情况）</span>
+    <span class="hljs-keyword">if</span> (full[ls] &amp;&amp; comp[rs] &amp;&amp; d[ls] == d[rs])
+        comp[u] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (comp[ls] &amp;&amp; full[rs] &amp;&amp; d[ls] - <span class="hljs-number">1</span> == d[rs])
+        comp[u] = <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; l[i] &gt;&gt; r[i];
+    }
+
+    <span class="hljs-comment">// 空节点视为满且完全，深度为0</span>
+    d[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+    full[<span class="hljs-number">0</span>] = comp[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>);                        <span class="hljs-comment">// 从根开始递归</span>
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span> (comp[i]) ans++;        <span class="hljs-comment">// 统计完全二叉树</span>
+    }
+    cout &lt;&lt; ans &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P15801">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

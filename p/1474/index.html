@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1474 FJ的字符串 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="问题描述： FJ在沙盘上写了这样一些字符串： 你能找出其中的规律并写所有的数列 吗？ 输入格式 仅有一个数： 。 输出格式 请输出相应的字符串 ，以一个换行符结束。输出中不得含有多余的空格或换行、回车符。">
+<link rel="canonical" href="https://zymojblog.top/p/1474/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1474 FJ的字符串 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="问题描述： FJ在沙盘上写了这样一些字符串： 你能找出其中的规律并写所有的数列 吗？ 输入格式 仅有一个数： 。 输出格式 请输出相应的字符串 ，以一个换行符结束。输出中不得含有多余的空格或换行、回车符。">
+<meta property="og:url" content="https://zymojblog.top/p/1474/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1474 FJ的字符串 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="问题描述： FJ在沙盘上写了这样一些字符串： 你能找出其中的规律并写所有的数列 吗？ 输入格式 仅有一个数： 。 输出格式 请输出相应的字符串 ，以一个换行符结束。输出中不得含有多余的空格或换行、回车符。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1474 FJ的字符串","headline":"1474 FJ的字符串 题解","description":"问题描述： FJ在沙盘上写了这样一些字符串： 你能找出其中的规律并写所有的数列 吗？ 输入格式 仅有一个数： 。 输出格式 请输出相应的字符串 ，以一个换行符结束。输出中不得含有多余的空格或换行、回车符。","url":"https://zymojblog.top/p/1474/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1474</span></div>
+  <h1 class="seo-title">1474 FJ的字符串</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1474 - FJ的字符串</h1>
+<h2>题目描述</h2>
+<p>问题描述： </p>
+<p>FJ在沙盘上写了这样一些字符串： </p>
+<pre><code class="hljs language-cpp">`A1  =  “A” 
+A2  =  “ABA” 
+A3  =  “ABACABA” 
+A4  =  “ABACABADABACABA”
+`</code></pre><p>$\dots$  </p>
+<p>$\dots$</p>
+<p>你能找出其中的规律并写所有的数列 $AN$ 吗？ </p>
+<p>输入格式</p>
+<p>仅有一个数：$N  \le  26$。 </p>
+<p>输出格式</p>
+<p>请输出相应的字符串 $AN$，以一个换行符结束。输出中不得含有多余的空格或换行、回车符。</p>
+<h2>输入</h2>
+<p>$3$ 。</p>
+<h2>输出</h2>
+<p>$ ABACABA $。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 递归输出 A_k，其中第 k 个字母为 c（c = &#x27;A&#x27; + k - 1）</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">int</span> k, <span class="hljs-type">char</span> c)</span> </span>{
+    <span class="hljs-keyword">if</span> (k == <span class="hljs-number">1</span>) {
+        cout &lt;&lt; <span class="hljs-string">&#x27;A&#x27;</span>;
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-type">char</span> prev = c - <span class="hljs-number">1</span>;          <span class="hljs-comment">// 第 k-1 个字母</span>
+    <span class="hljs-built_in">print</span>(k - <span class="hljs-number">1</span>, prev);         <span class="hljs-comment">// 输出 A_{k-1}</span>
+    cout &lt;&lt; c;                  <span class="hljs-comment">// 输出中间字母</span>
+    <span class="hljs-built_in">print</span>(k - <span class="hljs-number">1</span>, prev);         <span class="hljs-comment">// 再次输出 A_{k-1}</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="hljs-built_in">print</span>(n, <span class="hljs-string">&#x27;A&#x27;</span> + n - <span class="hljs-number">1</span>);
+    cout &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1474">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

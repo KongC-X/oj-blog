@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1432 走出迷宫的最少步数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个迷宫由 行 列格子组成，有的格子里有障碍物，不能走；有的格子是空地，可以走。 给定一个迷宫，求从左上角走到右下角最少需要走多少步（数据保证一定能走到）。只能在水平方向或垂直方向走，不能斜着走。">
+<link rel="canonical" href="https://zymojblog.top/p/1432/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1432 走出迷宫的最少步数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个迷宫由 行 列格子组成，有的格子里有障碍物，不能走；有的格子是空地，可以走。 给定一个迷宫，求从左上角走到右下角最少需要走多少步（数据保证一定能走到）。只能在水平方向或垂直方向走，不能斜着走。">
+<meta property="og:url" content="https://zymojblog.top/p/1432/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1432 走出迷宫的最少步数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个迷宫由 行 列格子组成，有的格子里有障碍物，不能走；有的格子是空地，可以走。 给定一个迷宫，求从左上角走到右下角最少需要走多少步（数据保证一定能走到）。只能在水平方向或垂直方向走，不能斜着走。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1432 走出迷宫的最少步数","headline":"1432 走出迷宫的最少步数 题解","description":"一个迷宫由 行 列格子组成，有的格子里有障碍物，不能走；有的格子是空地，可以走。 给定一个迷宫，求从左上角走到右下角最少需要走多少步（数据保证一定能走到）。只能在水平方向或垂直方向走，不能斜着走。","url":"https://zymojblog.top/p/1432/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜、递归、广搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1432</span></div>
+  <h1 class="seo-title">1432 走出迷宫的最少步数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span><span class="seo-badge seo-badge-soft">广度优先搜索-BFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/%E5%B9%BF%E6%90%9C">广搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1432 - 走出迷宫的最少步数</h1>
+<h2>题目描述</h2>
+<p>一个迷宫由 $R$ 行 $C$ 列格子组成，有的格子里有障碍物，不能走；有的格子是空地，可以走。</p>
+<p>给定一个迷宫，求从左上角走到右下角最少需要走多少步（数据保证一定能走到）。只能在水平方向或垂直方向走，不能斜着走。</p>
+<h2>输入</h2>
+<p>第一行是两个整数，$R$ 和 $C$ ，代表迷宫的行数和列数。（ $1 ≤ R,C ≤ 40$ )</p>
+<p>接下来是 $R$ 行，每行 $C$ 个字符，代表整个迷宫。空地格子用 <code>.</code> 表示，有障碍物的格子用 <code>#</code> 表示。</p>
+<p>迷宫左上角和右下角都是 <code>.</code> 。</p>
+<h2>输出</h2>
+<p>输出从左上角走到右下角至少要经过多少步（即至少要经过多少个空地格子）。</p>
+<p>计算步数要包括起点和终点。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 思路：记录走到每个点需要的步数，由于BFS 首次访问到的点一定就是最短路径，因此，只要走到终点就打印步数即可。</span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// a存储矩阵，q存储队列（遍历过的点）</span>
+<span class="hljs-type">char</span> a[<span class="hljs-number">50</span>][<span class="hljs-number">50</span>];
+<span class="hljs-type">int</span> q[<span class="hljs-number">2500</span>][<span class="hljs-number">4</span>];
+<span class="hljs-type">bool</span> f[<span class="hljs-number">1010</span>][<span class="hljs-number">1010</span>]; <span class="hljs-comment">// 标记是否访问过</span>
+<span class="hljs-type">int</span> n,m,i,j,tx,ty;
+<span class="hljs-comment">// head：头指针，tail：尾指针</span>
+<span class="hljs-type">int</span> head = <span class="hljs-number">1</span>,tail = <span class="hljs-number">1</span>;
+<span class="hljs-comment">// 四个方向,右下左上</span>
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin &gt;&gt; n &gt;&gt; m;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">1</span>;j &lt;= m;j++) {
+            cin &gt;&gt; a[i][j];
+        }
+    }
+    <span class="hljs-comment">// 1,1点存入队列，以1，1为head访问四个方向</span>
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>] = <span class="hljs-number">1</span>;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">3</span>] = <span class="hljs-number">1</span>; <span class="hljs-comment">// 步数</span>
+    <span class="hljs-comment">// 当head &lt;= tail时，说明队列还有点没有尝试标记过四个方向</span>
+    <span class="hljs-keyword">while</span>(head &lt;= tail) {
+        <span class="hljs-comment">// 尝试访问head的四个方向</span>
+        <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++) {
+            <span class="hljs-comment">// 从head对应的点加上四个方向的变化量得到新的点</span>
+            tx = q[head][<span class="hljs-number">1</span>] + fx[i];
+            ty = q[head][<span class="hljs-number">2</span>] + fy[i];
+            <span class="hljs-comment">// 如果新的点在矩阵范围内，且没有被标记过，则标记</span>
+            <span class="hljs-keyword">if</span>(a[tx][ty] == <span class="hljs-string">&#x27;.&#x27;</span>) {
+                a[tx][ty] = <span class="hljs-string">&#x27;#&#x27;</span>; <span class="hljs-comment">// 标记代表走过了</span>
+                <span class="hljs-comment">// 新的点存入队列，以新点为head访问四个方向</span>
+                tail++;
+                q[tail][<span class="hljs-number">1</span>] = tx;
+                q[tail][<span class="hljs-number">2</span>] = ty;
+                q[tail][<span class="hljs-number">3</span>] = q[head][<span class="hljs-number">3</span>] + <span class="hljs-number">1</span>; <span class="hljs-comment">// 步数加一</span>
+
+                <span class="hljs-keyword">if</span>(tx == n &amp;&amp; ty == m) { <span class="hljs-comment">// 如果到达终点，输出步数</span>
+                    cout &lt;&lt; q[tail][<span class="hljs-number">3</span>] &lt;&lt; endl;
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+     <span class="hljs-comment">// 注意：本题不能最后以 q[tail][3] 作为走到右下角的最少步数，因为右下角不一定是最后一个进入队列的点。</span>
+            }
+        }
+        head++; <span class="hljs-comment">// head指向队列头的下一个点</span>
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1432">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

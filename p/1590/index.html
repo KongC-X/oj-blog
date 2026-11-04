@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1590 简单单词接龙 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有 个单词（ ），每个单词由 个小写字母组成，并约定第 个单词为龙头。 例如： 。 个单词为： 接龙的方法为前一个单词的第 个字母和后一个单词的第 个字符相同，此时，可接的方法有： aa-ac-cd-de 长度为 ，即龙上有 个单词。 也可以接： aa-ab-bh-hk，长度为 。 还可以接： a…">
+<link rel="canonical" href="https://zymojblog.top/p/1590/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1590 简单单词接龙 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有 个单词（ ），每个单词由 个小写字母组成，并约定第 个单词为龙头。 例如： 。 个单词为： 接龙的方法为前一个单词的第 个字母和后一个单词的第 个字符相同，此时，可接的方法有： aa-ac-cd-de 长度为 ，即龙上有 个单词。 也可以接： aa-ab-bh-hk，长度为 。 还可以接： a…">
+<meta property="og:url" content="https://zymojblog.top/p/1590/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1590 简单单词接龙 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有 个单词（ ），每个单词由 个小写字母组成，并约定第 个单词为龙头。 例如： 。 个单词为： 接龙的方法为前一个单词的第 个字母和后一个单词的第 个字符相同，此时，可接的方法有： aa-ac-cd-de 长度为 ，即龙上有 个单词。 也可以接： aa-ab-bh-hk，长度为 。 还可以接： a…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1590 简单单词接龙","headline":"1590 简单单词接龙 题解","description":"有 个单词（ ），每个单词由 个小写字母组成，并约定第 个单词为龙头。 例如： 。 个单词为： 接龙的方法为前一个单词的第 个字母和后一个单词的第 个字符相同，此时，可接的方法有： aa-ac-cd-de 长度为 ，即龙上有 个单词。 也可以接： aa-ab-bh-hk，长度为 。 还可以接： a…","url":"https://zymojblog.top/p/1590/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"省赛、回溯、排列组合","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1590</span></div>
+  <h1 class="seo-title">1590 简单单词接龙</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a><a class="seo-tag" href="/#/tag/%E5%9B%9E%E6%BA%AF">回溯</a><a class="seo-tag" href="/#/tag/%E6%8E%92%E5%88%97%E7%BB%84%E5%90%88">排列组合</a></div>
+  <article class="markdown-body seo-article">
+<h1>1590 - 简单单词接龙</h1>
+<h2>题目描述</h2>
+<p>有 $n$ 个单词（ $1≤n≤50$ ），每个单词由 $2$ 个小写字母组成，并约定第 $1$ 个单词为龙头。</p>
+<p>例如：$n=8$。</p>
+<p>$8$ 个单词为：</p>
+<pre><code class="hljs language-cpp">`aa
+ac
+ab
+de
+bh
+hk
+cd
+af
+`</code></pre><p>接龙的方法为前一个单词的第 $2$ 个字母和后一个单词的第 $1$ 个字符相同，此时，可接的方法有：</p>
+<p><code>aa-ac-cd-de</code> 长度为 $4$ ，即龙上有 $4$ 个单词。</p>
+<p>也可以接：</p>
+<p><code>aa-ab-bh-hk</code>，长度为 $4$ 。</p>
+<p>还可以接：</p>
+<p><code>aa-af</code>，长度为 $2$。</p>
+<p>程序要求给出单词之后，求出最长龙的长度。</p>
+<h2>输入</h2>
+<p>第一行一个整数 $n$。</p>
+<p>接下来 $n$ 行，每行 $2$ 个字母表示一个单词（单词字母间无空格）。</p>
+<h2>输出</h2>
+<p>输出一个整数，即最长的接长度（即龙上单词的个数）。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+思路：第1个单词确定的情况下，剩余的单词全排列，求能接龙的最长长度 
+*/</span>
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">60</span>;
+string a[N];<span class="hljs-comment">//读入的字符串 </span>
+<span class="hljs-type">bool</span> f[N];<span class="hljs-comment">//标记第i个字符串是否被使用 </span>
+<span class="hljs-type">int</span> n,ma = <span class="hljs-number">1</span>; 
+
+<span class="hljs-comment">//讨论第k个位置可以放哪个单词 </span>
+<span class="hljs-comment">//char tail：上一个单词的词尾 </span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> k,<span class="hljs-type">char</span> tail)</span></span>{
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= n;i++){
+        <span class="hljs-comment">//第i个单词没有被使用，且该单词的词头==上一个单词的词尾 </span>
+        <span class="hljs-keyword">if</span>(!f[i]&amp;&amp;a[i][<span class="hljs-number">0</span>]==tail){
+            f[i] = <span class="hljs-literal">true</span>;<span class="hljs-comment">//标记占用</span>
+            ma = <span class="hljs-built_in">max</span>(ma,k);
+            
+            <span class="hljs-comment">//如果没填满，尝试填写下一位置 </span>
+            <span class="hljs-built_in">dfs</span>(k+<span class="hljs-number">1</span>,a[i][<span class="hljs-number">1</span>]);
+            f[i] = <span class="hljs-literal">false</span>;<span class="hljs-comment">//回溯，撤销标记 </span>
+        }
+    }
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;a[i];
+    }
+    
+    f[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">2</span>,a[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]);<span class="hljs-comment">//从第2个单词开始填写 </span>
+    cout&lt;&lt;ma;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1590">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

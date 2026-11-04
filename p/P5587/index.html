@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P5587 打字练习 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="R 君在练习打字。 有这样一个打字练习网站，给定一个范文和输入框，会根据你的输入计算准确率和打字速度。可以输入的字符有小写字母、空格和 .（英文句号），输入字符后，光标也会跟着移动。 输入的文本有多行，R 君可以通过换行键来换行，换行后光标移动到下一行的开头。 R 君也可以按退格键（为了方便，退格…">
+<link rel="canonical" href="https://zymojblog.top/p/P5587/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P5587 打字练习 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="R 君在练习打字。 有这样一个打字练习网站，给定一个范文和输入框，会根据你的输入计算准确率和打字速度。可以输入的字符有小写字母、空格和 .（英文句号），输入字符后，光标也会跟着移动。 输入的文本有多行，R 君可以通过换行键来换行，换行后光标移动到下一行的开头。 R 君也可以按退格键（为了方便，退格…">
+<meta property="og:url" content="https://zymojblog.top/p/P5587/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P5587 打字练习 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="R 君在练习打字。 有这样一个打字练习网站，给定一个范文和输入框，会根据你的输入计算准确率和打字速度。可以输入的字符有小写字母、空格和 .（英文句号），输入字符后，光标也会跟着移动。 输入的文本有多行，R 君可以通过换行键来换行，换行后光标移动到下一行的开头。 R 君也可以按退格键（为了方便，退格…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P5587 打字练习","headline":"P5587 打字练习 题解","description":"R 君在练习打字。 有这样一个打字练习网站，给定一个范文和输入框，会根据你的输入计算准确率和打字速度。可以输入的字符有小写字母、空格和 .（英文句号），输入字符后，光标也会跟着移动。 输入的文本有多行，R 君可以通过换行键来换行，换行后光标移动到下一行的开头。 R 君也可以按退格键（为了方便，退格…","url":"https://zymojblog.top/p/P5587/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"字符串、栈、洛谷月赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P5587</span></div>
+  <h1 class="seo-title">P5587 打字练习</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7%E6%9C%88%E8%B5%9B">洛谷月赛</a></div>
+  <article class="markdown-body seo-article">
+<h1>P5587 打字练习</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-26</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>栈</code>、<code>洛谷月赛</code></p>
+<h2>题目描述</h2>
+<p>R 君在练习打字。</p>
+<p>有这样一个打字练习网站，给定一个范文和输入框，会根据你的输入计算准确率和打字速度。可以输入的字符有小写字母、空格和 <code>.</code>（英文句号），输入字符后，光标也会跟着移动。</p>
+<p>输入的文本有多行，R 君可以通过换行键来换行，换行后光标移动到下一行的开头。</p>
+<p>R 君也可以按退格键（为了方便，退格键用 <code>&lt;</code> 表示），以删除上一个打的字符，并将光标回移一格。特殊的，如果此时光标已经在一行的开头，则不能继续退格（即忽略此时输入的退格键）。</p>
+<p>网站的比较方式遵循以下两个原则：</p>
+<ul>
+<li>逐行比较，即对于范文和输入的每一行依次比较，不同行之间不会产生影响，多余的行会被忽略。</li>
+<li>逐位比较，即对于两行的每一个字符依次比较，当且仅当字符相同时才会被算作一次正确，否则会被算作错误。计算答案时，只统计相同的字符个数。</li>
+</ul>
+<p>需要注意的是，回车键不会被计入正确的字符个数。</p>
+<p>R 君看到网站上显示他花了 $T$ 秒完成了这次的打字游戏，请你计算出他的 KPM（Keys per minutes，每分钟输入的字符个数），答案四舍五入保留整数部分。</p>
+<h2>输入格式</h2>
+<p>R 君会依次告诉你网站的范文，他的输入和花费的时间。</p>
+<p>其中范文和输入将会这样读入：给定若干行字符串，以单独的一行 <code>EOF</code> 结束，其中 <code>EOF</code> 不算入输入的文本。</p>
+<p>最后一行一个整数 $T$，表示他打字花费了 $T$ 秒。</p>
+<p>可以参考样例输入输出文件和样例解释辅助理解。</p>
+<h2>输出格式</h2>
+<p>一行一个整数，表示 KPM。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">hello world.
+aaabbbb
+x
+EOF
+heelo world.
+aaacbbbb
+y&lt;x
+EOF
+<span class="hljs-number">60</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>18```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">10005</span>;               <span class="hljs-comment">// 最大行数</span>
+string a[N], b[N];                 <span class="hljs-comment">// a 存范文，b 存输入（都已处理退格）</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-comment">// ---- 读入范文并直接处理退格 ----</span>
+    string s;
+    <span class="hljs-type">int</span> n = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 范文行数（下标从1开始）</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">getline</span>(cin, s) &amp;&amp; s != <span class="hljs-string">&quot;EOF&quot;</span>) {
+        n++;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+            <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;&lt;&#x27;</span>) {
+                <span class="hljs-keyword">if</span> (!a[n].<span class="hljs-built_in">empty</span>()) a[n].<span class="hljs-built_in">pop_back</span>();
+            } <span class="hljs-keyword">else</span> {
+                a[n].<span class="hljs-built_in">push_back</span>(s[i]);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// ---- 读入输入并直接处理退格 ----</span>
+    <span class="hljs-type">int</span> m = <span class="hljs-number">0</span>;                     <span class="hljs-comment">// 输入行数（下标从1开始）</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">getline</span>(cin, s) &amp;&amp; s != <span class="hljs-string">&quot;EOF&quot;</span>) {
+        m++;
+        <span class="hljs-keyword">if</span> (m &gt; n) <span class="hljs-keyword">break</span>;          <span class="hljs-comment">// 多余的行直接忽略（与范文行数对齐）</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; s.<span class="hljs-built_in">size</span>(); i++) {
+            <span class="hljs-keyword">if</span> (s[i] == <span class="hljs-string">&#x27;&lt;&#x27;</span>) {
+                <span class="hljs-keyword">if</span> (!b[m].<span class="hljs-built_in">empty</span>()) b[m].<span class="hljs-built_in">pop_back</span>();
+            } <span class="hljs-keyword">else</span> {
+                b[m].<span class="hljs-built_in">push_back</span>(s[i]);
+            }
+        }
+    }
+
+    <span class="hljs-comment">// ---- 逐行逐位比较，统计正确字符数 ----</span>
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> c = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 正确字符总数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= m; i++) {
+        <span class="hljs-type">int</span> len = <span class="hljs-built_in">min</span>(a[i].<span class="hljs-built_in">size</span>(), b[i].<span class="hljs-built_in">size</span>());
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; len; j++) {
+            <span class="hljs-keyword">if</span> (a[i][j] == b[i][j]) c++;
+        }
+    }
+
+    <span class="hljs-comment">// ---- 计算 KPM（四舍五入） ----</span>
+    <span class="hljs-type">int</span> t;                         <span class="hljs-comment">// 花费时间（秒）</span>
+    cin &gt;&gt; t;
+    <span class="hljs-comment">// 浮点数 +0.5 后强制转 long long，实现四舍五入</span>
+    cout &lt;&lt; (<span class="hljs-type">long</span> <span class="hljs-type">long</span>)(c * <span class="hljs-number">60.0</span> / t + <span class="hljs-number">0.5</span>) &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P5587">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

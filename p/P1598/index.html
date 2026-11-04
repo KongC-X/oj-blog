@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="写一个程序从输入文件中去读取四行大写字母（全都是大写的，每行不超过 个字符），然后用柱状图输出每个字符在输入文件中出现的次数。严格地按照输出样例来安排你的输出格式。">
+<link rel="canonical" href="https://zymojblog.top/p/P1598/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="写一个程序从输入文件中去读取四行大写字母（全都是大写的，每行不超过 个字符），然后用柱状图输出每个字符在输入文件中出现的次数。严格地按照输出样例来安排你的输出格式。">
+<meta property="og:url" content="https://zymojblog.top/p/P1598/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="写一个程序从输入文件中去读取四行大写字母（全都是大写的，每行不超过 个字符），然后用柱状图输出每个字符在输入文件中出现的次数。严格地按照输出样例来安排你的输出格式。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram","headline":"P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram 题解","description":"写一个程序从输入文件中去读取四行大写字母（全都是大写的，每行不超过 个字符），然后用柱状图输出每个字符在输入文件中出现的次数。严格地按照输出样例来安排你的输出格式。","url":"https://zymojblog.top/p/P1598/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2003、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1598</span></div>
+  <h1 class="seo-title">P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    <span class="seo-badge seo-badge-soft">【入门5】字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2003">2003</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1598 [USACO03FEB] 垂直柱状图 Vertical Histogram</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-08-04</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2003</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>写一个程序从输入文件中去读取四行大写字母（全都是大写的，每行不超过 $100$ 个字符），然后用柱状图输出每个字符在输入文件中出现的次数。严格地按照输出样例来安排你的输出格式。</p>
+<h2>输入格式</h2>
+<p>四行字符，由大写字母组成，每行不超过 $100$ 个字符。</p>
+<h2>输出格式</h2>
+<p>由若干行组成，前几行由空格和星号组成，最后一行则是由空格和字母组成的。在任何一行末尾不要打印不需要的多余空格。不要打印任何空行。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG.
+THIS IS AN EXAMPLE TO TEST FOR YOUR
+HISTOGRAM PROGRAM.
+HELLO!</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp">                            *
+                            *
+        *                   *
+        *                   *     *   *
+        *                   *     *   *
+*       *     *             *     *   *
+*       *     * *     * *   *     * * *
+*       *   * * *     * *   * *   * * * *
+*     * * * * * *     * * * * *   * * * *     * *
+* * * * * * * * * * * * * * * * * * * * * * * * * *
+A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> a[<span class="hljs-number">27</span>], maxx;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) {
+        <span class="hljs-built_in">getline</span>(cin, n);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>; j &lt; n.<span class="hljs-built_in">size</span>(); j++) {
+            <span class="hljs-keyword">if</span> (n[j] &gt;= <span class="hljs-string">&#x27;A&#x27;</span> &amp;&amp; n[j] &lt;= <span class="hljs-string">&#x27;Z&#x27;</span>){
+                a[n[j] - <span class="hljs-string">&#x27;A&#x27;</span> + <span class="hljs-number">1</span>]++;  <span class="hljs-comment">// 统计每个字符的出现次数</span>
+            }
+        }
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">26</span>; i++) {
+        maxx = <span class="hljs-built_in">max</span>(a[i], maxx);  <span class="hljs-comment">// 求出最大的出现次数</span>
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = maxx; i &gt; <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">26</span>; j++) {  <span class="hljs-comment">// 枚举每个字母</span>
+            <span class="hljs-keyword">if</span> (a[j]&gt;=i) {  <span class="hljs-comment">// 输出</span>
+                cout &lt;&lt; <span class="hljs-string">&#x27;*&#x27;</span>;
+            } <span class="hljs-keyword">else</span> {
+                cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+            }
+            <span class="hljs-keyword">if</span> (j != <span class="hljs-number">26</span>) {  <span class="hljs-comment">// 非末尾输出空格</span>
+                cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+            }
+        }
+        cout &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) {  <span class="hljs-comment">// 输出最后一行的字母</span>
+        cout &lt;&lt; <span class="hljs-built_in">char</span> (i+<span class="hljs-string">&#x27;A&#x27;</span>);
+        <span class="hljs-keyword">if</span> (i != <span class="hljs-number">25</span>){  <span class="hljs-comment">// 非末尾输出空格</span>
+            cout &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>;
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1598">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

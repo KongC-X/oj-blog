@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1107 求英文句子中的最长单词 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一个英文句子（长度不超过 ），只含有字母和空格，输出最长的一个单词。如有多个长度相同的单词，则输出最前面的一个。">
+<link rel="canonical" href="https://zymojblog.top/p/1107/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1107 求英文句子中的最长单词 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一个英文句子（长度不超过 ），只含有字母和空格，输出最长的一个单词。如有多个长度相同的单词，则输出最前面的一个。">
+<meta property="og:url" content="https://zymojblog.top/p/1107/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1107 求英文句子中的最长单词 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一个英文句子（长度不超过 ），只含有字母和空格，输出最长的一个单词。如有多个长度相同的单词，则输出最前面的一个。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1107 求英文句子中的最长单词","headline":"1107 求英文句子中的最长单词 题解","description":"一个英文句子（长度不超过 ），只含有字母和空格，输出最长的一个单词。如有多个长度相同的单词，则输出最前面的一个。","url":"https://zymojblog.top/p/1107/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1107</span></div>
+  <h1 class="seo-title">1107 求英文句子中的最长单词</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">基础</span>
+    <span class="seo-badge seo-badge-soft">字符串</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1107 - 求英文句子中的最长单词</h1>
+<h2>题目描述</h2>
+<p>一个英文句子（长度不超过 $255$ ），只含有字母和空格，输出最长的一个单词。如有多个长度相同的单词，则输出最前面的一个。</p>
+<h2>输入</h2>
+<p>一个字符串。</p>
+<h2>输出</h2>
+<p>输出最长的单词。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 字符数组相关函数</span>
+<span class="hljs-comment">// sizeof(a) 求字符数组a所占内存空间大小</span>
+<span class="hljs-comment">// strlen(a) 求字符串长度</span>
+<span class="hljs-comment">// gets(a) 从键盘输入字符串</span>
+<span class="hljs-comment">// puts(a) 输出字符串</span>
+<span class="hljs-comment">// strcmp(a,b) 比较字符串大小,s1的字典码⼤返回正数差值；字典码相等返回0；s2的字</span>
+<span class="hljs-comment">// 典码⼤返回负数差值；</span>
+<span class="hljs-comment">// 什么是字典码？两个字符数组从第⼀个字符开始逐位⽐较ascii码的⼤⼩，如果第⼀位有结果，则⽐较结束，如果</span>
+<span class="hljs-comment">// 第⼀位相同则顺序⽐较第⼆位。</span>
+
+<span class="hljs-comment">// strcat(a,b) 将字符串b拼接到字符串a的末尾, 注意，s1要有⾜够的空间存</span>
+
+<span class="hljs-comment">// strcpy(a,b) 将字符串b复制到字符串a中  strcpy(max,s); == max = s;</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">char</span> s[<span class="hljs-number">300</span>],a[<span class="hljs-number">300</span>],b[<span class="hljs-number">300</span>] = {<span class="hljs-string">&#x27;\0&#x27;</span>};
+    <span class="hljs-type">int</span> i ,k = <span class="hljs-number">0</span>;
+    <span class="hljs-built_in">gets</span>(s);
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-built_in">strlen</span>(s);i++) {
+        <span class="hljs-comment">//如果s[i]不是空格，那么就是单词的⼀部分，存到a中</span>
+        <span class="hljs-keyword">if</span>(s[i] != <span class="hljs-string">&#x27; &#x27;</span>) {
+            a[k] = s[i];
+            k++;
+            <span class="hljs-comment">// 如果当前单词结束了</span>
+            <span class="hljs-keyword">if</span>(s[i + <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27; &#x27;</span> || s[i + <span class="hljs-number">1</span>] == <span class="hljs-string">&#x27;\0&#x27;</span>) {
+                a[k] = <span class="hljs-string">&#x27;\0&#x27;</span>;
+                <span class="hljs-keyword">if</span>(<span class="hljs-built_in">strlen</span>(a) &gt; <span class="hljs-built_in">strlen</span>(b)) {
+                    <span class="hljs-built_in">strcpy</span>(b,a);  
+                }
+                <span class="hljs-comment">// if(a[i] &gt; max) {</span>
+                <span class="hljs-comment">//     max = a[i];</span>
+                <span class="hljs-comment">// }</span>
+                k = <span class="hljs-number">0</span>;
+            }
+        }
+    }
+    cout &lt;&lt; b &lt;&lt; endl;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1107">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

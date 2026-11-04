@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2135 单词替换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="输入一个字符串，以回车结束（字符串长度 ）。该字符串由若干个单词组成，单词之间用一个空格隔开，所有单词区分大小写。现需要将其中的某个单词替换成另一个单词，并输出替换之后的字符串。">
+<link rel="canonical" href="https://zymojblog.top/p/B2135/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2135 单词替换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="输入一个字符串，以回车结束（字符串长度 ）。该字符串由若干个单词组成，单词之间用一个空格隔开，所有单词区分大小写。现需要将其中的某个单词替换成另一个单词，并输出替换之后的字符串。">
+<meta property="og:url" content="https://zymojblog.top/p/B2135/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2135 单词替换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="输入一个字符串，以回车结束（字符串长度 ）。该字符串由若干个单词组成，单词之间用一个空格隔开，所有单词区分大小写。现需要将其中的某个单词替换成另一个单词，并输出替换之后的字符串。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2135 单词替换","headline":"B2135 单词替换 题解","description":"输入一个字符串，以回车结束（字符串长度 ）。该字符串由若干个单词组成，单词之间用一个空格隔开，所有单词区分大小写。现需要将其中的某个单词替换成另一个单词，并输出替换之后的字符串。","url":"https://zymojblog.top/p/B2135/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"函数与递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2135</span></div>
+  <h1 class="seo-title">B2135 单词替换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%87%BD%E6%95%B0%E4%B8%8E%E9%80%92%E5%BD%92">函数与递归</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2135 单词替换</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-07-14</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>函数与递归</code></p>
+<h2>题目描述</h2>
+<p>输入一个字符串，以回车结束（字符串长度 $ \le 200$）。该字符串由若干个单词组成，单词之间用一个空格隔开，所有单词区分大小写。现需要将其中的某个单词替换成另一个单词，并输出替换之后的字符串。</p>
+<h2>输入格式</h2>
+<p>第 $1$ 行是包含多个单词的字符串 $s$；</p>
+<p>第 $2$ 行是待替换的单词 $a$（长度 $ \le 100$）；</p>
+<p>第 $3$ 行是 $a$ 将被替换的单词 $b$（长度 $ \le 100$）。</p>
+<p>$s,a,b$ 最前面和最后面都没有空格。</p>
+<h2>输出格式</h2>
+<p>输出只有 $1$ 行，将 $s$ 中所有单词 $a$ 替换成 $b$ 之后的字符串。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">You want someone to help you
+You
+I```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>I want someone to help you</p>
+<pre><code class="hljs language-cpp">
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+string a[<span class="hljs-number">105</span>];            <span class="hljs-comment">// 存放所有单词（句子 + 两个关键词）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s;
+    <span class="hljs-type">int</span> n = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 用 cin 连续读取所有单词，直到输入结束</span>
+    <span class="hljs-keyword">while</span>(cin &gt;&gt; s) {
+        a[++n] = s;       <span class="hljs-comment">// 先让 n 加 1，再把单词放到 a[n]</span>
+                          <span class="hljs-comment">// 相当于 n++; a[n] = s;</span>
+    }
+
+    <span class="hljs-comment">// 遍历句子的部分：从第 1 个到第 n-2 个单词</span>
+    <span class="hljs-comment">// a[n-1] 是被替换的词，a[n] 是替换成的词</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n - <span class="hljs-number">2</span>; i++) {
+        <span class="hljs-keyword">if</span>(a[i] == a[n<span class="hljs-number">-1</span>]) {
+            cout &lt;&lt; a[n] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;    <span class="hljs-comment">// 匹配成功，输出替换后的词</span>
+        } <span class="hljs-keyword">else</span> {
+            cout &lt;&lt; a[i] &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;    <span class="hljs-comment">// 不匹配，输出原词</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2135">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

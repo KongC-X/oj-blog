@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="农夫约翰建造了一座有 间牛舍的小屋，牛舍排在一条直线上，第 间牛舍在 的位置，但是约翰的 头牛对小屋很不满意，因此经常互相攻击。约翰为了防止牛之间互相伤害，因此决定把每头牛都放在离其它牛尽可能远的牛舍。也就是要最大化最近的两头牛之间的距离。 牛们并不喜欢这种布局，而且几头牛放在一个隔间里，它们就要…">
+<link rel="canonical" href="https://zymojblog.top/p/P1824/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="农夫约翰建造了一座有 间牛舍的小屋，牛舍排在一条直线上，第 间牛舍在 的位置，但是约翰的 头牛对小屋很不满意，因此经常互相攻击。约翰为了防止牛之间互相伤害，因此决定把每头牛都放在离其它牛尽可能远的牛舍。也就是要最大化最近的两头牛之间的距离。 牛们并不喜欢这种布局，而且几头牛放在一个隔间里，它们就要…">
+<meta property="og:url" content="https://zymojblog.top/p/P1824/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="农夫约翰建造了一座有 间牛舍的小屋，牛舍排在一条直线上，第 间牛舍在 的位置，但是约翰的 头牛对小屋很不满意，因此经常互相攻击。约翰为了防止牛之间互相伤害，因此决定把每头牛都放在离其它牛尽可能远的牛舍。也就是要最大化最近的两头牛之间的距离。 牛们并不喜欢这种布局，而且几头牛放在一个隔间里，它们就要…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G","headline":"P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G 题解","description":"农夫约翰建造了一座有 间牛舍的小屋，牛舍排在一条直线上，第 间牛舍在 的位置，但是约翰的 头牛对小屋很不满意，因此经常互相攻击。约翰为了防止牛之间互相伤害，因此决定把每头牛都放在离其它牛尽可能远的牛舍。也就是要最大化最近的两头牛之间的距离。 牛们并不喜欢这种布局，而且几头牛放在一个隔间里，它们就要…","url":"https://zymojblog.top/p/P1824/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"贪心、2005、二分、USACO","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1824</span></div>
+  <h1 class="seo-title">P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a><a class="seo-tag" href="/#/tag/2005">2005</a><a class="seo-tag" href="/#/tag/%E4%BA%8C%E5%88%86">二分</a><a class="seo-tag" href="/#/tag/USACO">USACO</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1824 [USACO05FEB] 进击的奶牛 Aggressive Cows G</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-02-08</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>贪心</code>、<code>2005</code>、<code>二分</code>、<code>USACO</code></p>
+<h2>题目描述</h2>
+<p>农夫约翰建造了一座有 $n$ 间牛舍的小屋，牛舍排在一条直线上，第 $i$ 间牛舍在 $x_i$ 的位置，但是约翰的 $m$ 头牛对小屋很不满意，因此经常互相攻击。约翰为了防止牛之间互相伤害，因此决定把每头牛都放在离其它牛尽可能远的牛舍。也就是要最大化最近的两头牛之间的距离。</p>
+<p>牛们并不喜欢这种布局，而且几头牛放在一个隔间里，它们就要发生争斗。为了不让牛互相伤害。约翰决定自己给牛分配隔间，使任意两头牛之间的最小距离尽可能的大，那么，这个最大的最小距离是多少呢？</p>
+<h2>输入格式</h2>
+<p>第一行用空格分隔的两个整数 $n$ 和 $m$；</p>
+<p>下面 $n$ 行为 $n$ 个用空格隔开的整数，表示位置 $x_i$。</p>
+<h2>输出格式</h2>
+<p>一行一个整数，表示最大的最小距离值。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span> <span class="hljs-number">3</span>
+<span class="hljs-number">1</span>
+<span class="hljs-number">2</span>
+<span class="hljs-number">8</span>
+<span class="hljs-number">4</span>
+<span class="hljs-number">9</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>3```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1e5</span> + <span class="hljs-number">10</span>;
+<span class="hljs-type">int</span> a[N],l,r,mid,n,c;
+
+<span class="hljs-comment">//测试距离为mid，可以放几头牛</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">check</span><span class="hljs-params">(<span class="hljs-type">int</span> mid)</span> </span>{
+    <span class="hljs-type">int</span> tot = <span class="hljs-number">1</span>;<span class="hljs-comment">//默认能放1头 </span>
+    <span class="hljs-comment">//last:表示上1个牛栏</span>
+    <span class="hljs-type">int</span> last = <span class="hljs-number">1</span>;<span class="hljs-comment">//第1个牛栏肯定有牛</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= n; i++) {
+        <span class="hljs-keyword">if</span>(a[i] - a[last] &gt;= mid) {
+            tot++;<span class="hljs-comment">//牛栏数自增</span>
+            last = i;
+        }
+    }
+
+    <span class="hljs-keyword">if</span>(tot &gt;= c) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">//n个牛栏，c头要分隔的奶牛</span>
+    cin&gt;&gt;n&gt;&gt;c;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin&gt;&gt;a[i];
+    }
+    <span class="hljs-comment">//排序</span>
+    <span class="hljs-built_in">sort</span>(a+<span class="hljs-number">1</span>,a+<span class="hljs-number">1</span>+n);
+    <span class="hljs-comment">//在[l,r]之间查找最大的最近距离</span>
+    l=<span class="hljs-number">1</span>,r=a[n]-a[<span class="hljs-number">1</span>];
+    <span class="hljs-comment">//找右边界</span>
+    <span class="hljs-keyword">while</span>(l &lt;= r) {
+        mid = (l + r) &gt;&gt; <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">check</span>(mid)) l = mid + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">else</span> r = mid - <span class="hljs-number">1</span>;
+    }
+
+    cout&lt;&lt;l<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1824">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1798 ISBN号码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 位数字、 位识别码和 位分隔符，其规定格式如 x-xxx-xxxxx-x，其中符号 - 就是分隔符（键盘上的减号），最后一位是识别码，例如 0-670-82162-4就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍…">
+<link rel="canonical" href="https://zymojblog.top/p/1798/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1798 ISBN号码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 位数字、 位识别码和 位分隔符，其规定格式如 x-xxx-xxxxx-x，其中符号 - 就是分隔符（键盘上的减号），最后一位是识别码，例如 0-670-82162-4就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍…">
+<meta property="og:url" content="https://zymojblog.top/p/1798/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1798 ISBN号码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 位数字、 位识别码和 位分隔符，其规定格式如 x-xxx-xxxxx-x，其中符号 - 就是分隔符（键盘上的减号），最后一位是识别码，例如 0-670-82162-4就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1798 ISBN号码","headline":"1798 ISBN号码 题解","description":"每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 位数字、 位识别码和 位分隔符，其规定格式如 x-xxx-xxxxx-x，其中符号 - 就是分隔符（键盘上的减号），最后一位是识别码，例如 0-670-82162-4就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍…","url":"https://zymojblog.top/p/1798/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"noip复赛、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1798</span></div>
+  <h1 class="seo-title">1798 ISBN号码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1798 - ISBN号码</h1>
+<h2>题目描述</h2>
+<p>每一本正式出版的图书都有一个 ISBN 号码与之对应，ISBN 码包括 $9$ 位数字、$1$ 位识别码和 $3$ 位分隔符，其规定格式如 <code>x-xxx-xxxxx-x</code>，其中符号 <code>-</code> 就是分隔符（键盘上的减号），最后一位是识别码，例如 <code>0-670-82162-4</code>就是一个标准的 ISBN 码。ISBN 码的首位数字表示书籍的出版语言，例如 $0$ 代表英语；第一个分隔符 <code>-</code> 之后的三位数字代表出版社，例如 $670$ 代表维京出版社；第二个分隔符后的五位数字代表该书在该出版社的编号；最后一位为识别码。</p>
+<p>识别码的计算方法如下：</p>
+<p>首位数字乘以 $1$ 加上次位数字乘以 $2$ ……以此类推，用所得的结果 $ \mod 11$，所得的余数即为识别码，如果余数为 $10$，则识别码为大写字母 $X$。例如 ISBN 号码 <code>0-670-82162-4</code> 中的识别码 $4$ 是这样得到的：对 <code>067082162</code> 这 $9$ 个数字，从左至右，分别乘以 $1,2,\dots,9$ 再求和，即 $0\times 1+6\times 2+……+2\times 9=158$，然后取 $158 \mod 11$ 的结果 $4$ 作为识别码。</p>
+<p>你的任务是编写程序判断输入的 ISBN 号码中识别码是否正确，如果正确，则仅输出 <code>Right</code>；如果错误，则输出你认为是正确的 ISBN 号码。</p>
+<h2>输入</h2>
+<p>一个字符序列，表示一本书的 ISBN 号码（保证输入符合 ISBN 号码的格式要求）。</p>
+<h2>输出</h2>
+<p>一行，假如输入的 ISBN 号码的识别码正确，那么输出 <code>Right</code>，否则，按照规定的格式，输出正确的 ISBN 号码（包括分隔符 <code>-</code>）。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s,s1;
+    cin &gt;&gt; s;
+    s1 = s;
+    s1.<span class="hljs-built_in">erase</span>(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+    s1.<span class="hljs-built_in">erase</span>(<span class="hljs-number">4</span>,<span class="hljs-number">1</span>);
+    s1.<span class="hljs-built_in">erase</span>(<span class="hljs-number">9</span>,<span class="hljs-number">2</span>);
+    <span class="hljs-comment">// cout &lt;&lt; s1;</span>
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">9</span>;i++) {
+        sum += (s1[i<span class="hljs-number">-1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>) * i;
+    }
+    <span class="hljs-comment">// cout &lt;&lt; sum;</span>
+    <span class="hljs-type">char</span> m = sum % <span class="hljs-number">11</span> + <span class="hljs-string">&#x27;0&#x27;</span>;
+    <span class="hljs-keyword">if</span>(sum % <span class="hljs-number">11</span> == <span class="hljs-number">10</span>) m = <span class="hljs-string">&#x27;X&#x27;</span>;
+
+    <span class="hljs-keyword">if</span>(m == s[s.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>]){
+        cout &lt;&lt; <span class="hljs-string">&quot;Right&quot;</span> &lt;&lt; endl;
+    } <span class="hljs-keyword">else</span> {
+        s[s.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>] = m;
+        cout &lt;&lt; s &lt;&lt; endl;
+    }
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1798">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

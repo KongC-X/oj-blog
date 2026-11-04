@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1100 高低位交换 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给出一个小于 的非负整数。这个数可以用一个 位的二进制数表示（不足 位用 补足）。我们称这个二进制数的前 位为“高位”，后 位为“低位”。将它的高低位交换，我们可以得到一个新的数。试问这个新的数是多少（用十进制表示）。 例如，数 用二进制表示为 （添加了 个前导 补足为 位），其中前 位为高位，即…">
+<link rel="canonical" href="https://zymojblog.top/p/P1100/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1100 高低位交换 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给出一个小于 的非负整数。这个数可以用一个 位的二进制数表示（不足 位用 补足）。我们称这个二进制数的前 位为“高位”，后 位为“低位”。将它的高低位交换，我们可以得到一个新的数。试问这个新的数是多少（用十进制表示）。 例如，数 用二进制表示为 （添加了 个前导 补足为 位），其中前 位为高位，即…">
+<meta property="og:url" content="https://zymojblog.top/p/P1100/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1100 高低位交换 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给出一个小于 的非负整数。这个数可以用一个 位的二进制数表示（不足 位用 补足）。我们称这个二进制数的前 位为“高位”，后 位为“低位”。将它的高低位交换，我们可以得到一个新的数。试问这个新的数是多少（用十进制表示）。 例如，数 用二进制表示为 （添加了 个前导 补足为 位），其中前 位为高位，即…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1100 高低位交换","headline":"P1100 高低位交换 题解","description":"给出一个小于 的非负整数。这个数可以用一个 位的二进制数表示（不足 位用 补足）。我们称这个二进制数的前 位为“高位”，后 位为“低位”。将它的高低位交换，我们可以得到一个新的数。试问这个新的数是多少（用十进制表示）。 例如，数 用二进制表示为 （添加了 个前导 补足为 位），其中前 位为高位，即…","url":"https://zymojblog.top/p/P1100/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、数学、进制、位运算","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1100</span></div>
+  <h1 class="seo-title">P1100 高低位交换</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E8%BF%9B%E5%88%B6">进制</a><a class="seo-tag" href="/#/tag/%E4%BD%8D%E8%BF%90%E7%AE%97">位运算</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1100 高低位交换</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-18</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>字符串</code>、<code>数学</code>、<code>进制</code>、<code>位运算</code></p>
+<h2>题目描述</h2>
+<p>给出一个小于 $2^{32}$ 的非负整数。这个数可以用一个 $32$ 位的二进制数表示（不足 $32$ 位用 $0$ 补足）。我们称这个二进制数的前 $16$ 位为“高位”，后 $16$ 位为“低位”。将它的高低位交换，我们可以得到一个新的数。试问这个新的数是多少（用十进制表示）。</p>
+<p>例如，数 $1314520$ 用二进制表示为 $0000,0000,0001,0100,0000,1110,1101,1000$（添加了 $11$ 个前导 $0$ 补足为 $32$ 位），其中前 $16$ 位为高位，即 $0000,0000,0001,0100$；后 $16$ 位为低位，即 $0000,1110,1101,1000$。将它的高低位进行交换，我们得到了一个新的二进制数 $0000,1110,1101,1000,0000,0000,0001,0100$。它即是十进制的 $249036820$。</p>
+<h2>输入格式</h2>
+<p>一个小于 $2^{32}$ 的非负整数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1314520</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">249036820</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span>   <span class="hljs-comment">// scanf, printf</span></span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// ---------- 思路 ----------</span>
+    <span class="hljs-comment">// 题目要求将 32 位二进制数的前 16 位（高位）与后 16 位（低位）交换。</span>
+    <span class="hljs-comment">// 这可以用位运算一步完成，相当于“循环左移 16 位”。</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 假设原数 x，我们想要的操作为：</span>
+    <span class="hljs-comment">//   1. 把低 16 位移到高位：x &lt;&lt; 16</span>
+    <span class="hljs-comment">//   2. 把高 16 位移到低位：x &gt;&gt; 16</span>
+    <span class="hljs-comment">//   3. 合并两部分： (x &lt;&lt; 16) | (x &gt;&gt; 16)</span>
+    <span class="hljs-comment">//</span>
+    <span class="hljs-comment">// 因为 x 是无符号 32 位整数，右移时高位自动补 0；</span>
+    <span class="hljs-comment">// 左移时低 16 位正确移到高位，低位自动补 0；</span>
+    <span class="hljs-comment">// 最后按位或（|）将两部分拼成完整的新数。</span>
+    <span class="hljs-comment">// -------------------------</span>
+
+    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> x;           <span class="hljs-comment">// x: 输入的原数（&lt; 2^32，无符号 32 位）</span>
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%u&quot;</span>, &amp;x);
+
+    <span class="hljs-comment">// 高低位交换</span>
+    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> ans = (x &lt;&lt; <span class="hljs-number">16</span>) | (x &gt;&gt; <span class="hljs-number">16</span>);
+    <span class="hljs-comment">// 注释：</span>
+    <span class="hljs-comment">// (x &lt;&lt; 16)  低 16 位变成高 16 位，低 16 位补 0</span>
+    <span class="hljs-comment">// (x &gt;&gt; 16)  高 16 位变成低 16 位，高 16 位补 0</span>
+    <span class="hljs-comment">// 两者按位或合并，得到交换后的完整 32 位数</span>
+
+    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%u\n&quot;</span>, ans);      <span class="hljs-comment">// 输出十进制结果</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1100">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

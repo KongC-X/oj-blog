@@ -251,8 +251,26 @@
 
   // ========== Theme ==========
   function initTheme() {
-    const saved = localStorage.getItem('oj-theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
+    // 优先用户手动选择；未选择过则跟随系统偏好
+    const saved = localStorage.getItem('oj-theme');
+    if (saved) {
+      document.documentElement.setAttribute('data-theme', saved);
+    } else {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      document.documentElement.setAttribute('data-theme', prefersLight ? 'light' : 'dark');
+    }
+
+    // 系统主题变化时，仅在用户未手动指定过的情况下自动跟随
+    if (window.matchMedia) {
+      const mq = window.matchMedia('(prefers-color-scheme: light)');
+      const onChange = (e) => {
+        if (localStorage.getItem('oj-theme')) return;
+        document.documentElement.setAttribute('data-theme', e.matches ? 'light' : 'dark');
+        updateHljsTheme();
+      };
+      if (mq.addEventListener) mq.addEventListener('change', onChange);
+      else if (mq.addListener) mq.addListener(onChange);
+    }
   }
 
   function toggleTheme() {
@@ -288,10 +306,10 @@
     const admin = isAdmin();
     header.innerHTML = `
       <div class="header-inner">
-        <div class="logo" onclick="location.hash='#/'">
+        <a class="logo" href="#/" aria-label="返回首页">
           <div class="logo-icon">OI</div>
           <span>章老师的OJ题解站</span>
-        </div>
+        </a>
         <button class="mobile-toggle" id="mobileToggle" aria-label="菜单">
           <span></span><span></span><span></span>
         </button>
@@ -305,7 +323,7 @@
           <a class="nav-link" href="#/about" data-nav>关于网站</a>
         </nav>
         <div class="nav-actions" id="navActions">
-          <button class="icon-btn" id="themeToggle" title="切换主题">
+          <button class="icon-btn" id="themeToggle" title="切换主题" aria-label="切换亮色或暗色主题">
             <svg class="icon-svg" id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               ${document.documentElement.getAttribute('data-theme') === 'dark'
                 ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>'
@@ -378,7 +396,8 @@
 
   async function loadIndex() {
     try {
-      const res = await robustFetch('data/index.json?t=' + Date.now(), 2, 15000);
+      // 不带 cache-buster：依赖 CDN 下发的 ETag 做协商缓存，命中返回 304
+      const res = await robustFetch('data/index.json', 2, 15000);
       INDEX = await res.json();
     } catch (e) {
       console.error('Failed to load index.json:', e);
@@ -389,10 +408,68 @@
         app.innerHTML = '<div class="load-error" style="text-align:center;padding:80px 20px;color:var(--text-secondary);">' +
           '<p style="font-size:1.1rem;margin-bottom:12px;">数据加载失败</p>' +
           '<p style="font-size:0.85rem;">网络不稳定，请刷新页面重试</p>' +
-          '<button onclick="location.reload()" style="margin-top:20px;padding:8px 24px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-primary);cursor:pointer;">刷新重试</button>' +
+          '<button data-action="reload" style="margin-top:20px;padding:8px 24px;border-radius:8px;border:1px solid var(--border);background:var(--bg-card);color:var(--text-primary);cursor:pointer;">刷新重试</button>' +
           '</div>';
       }
     }
+  }
+
+  // ========== 页面元信息（SEO / 分享预览） ==========
+  const SITE_URL = 'https://zymojblog.top';
+  const BASE_TITLE = '章老师的OJ题解站';
+  const DEFAULT_DESC = '收录洛谷与东方博宜 2200+ 道信奥赛题解，覆盖 GESP、CSP-J/S、NOIP，含完整 AC 代码与解题思路。';
+
+  function setPageMeta(opts) {
+    const title = opts.title || BASE_TITLE;
+    const desc = opts.description || DEFAULT_DESC;
+    const path = opts.path || '/';
+
+    document.title = title;
+
+    const upsertMeta = (key, value, useProperty) => {
+      const attr = useProperty ? 'property' : 'name';
+      let el = document.head.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', value);
+    };
+
+    upsertMeta('description', desc);
+    upsertMeta('og:title', title, true);
+    upsertMeta('og:description', desc, true);
+    upsertMeta('og:url', SITE_URL + path, true);
+    upsertMeta('twitter:title', title);
+    upsertMeta('twitter:description', desc);
+
+    let link = document.head.querySelector('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      document.head.appendChild(link);
+    }
+    link.setAttribute('href', SITE_URL + path);
+  }
+
+  function findProblem(id) {
+    if (!INDEX || !Array.isArray(INDEX.problems)) return null;
+    return INDEX.problems.find(p => p.id === id) || null;
+  }
+
+  // 只更新描述类 meta（正文加载完成后刷新）
+  function updateMetaDescription(desc) {
+    if (!desc) return;
+    const targets = [
+      'meta[name="description"]',
+      'meta[property="og:description"]',
+      'meta[name="twitter:description"]',
+    ];
+    targets.forEach(sel => {
+      const el = document.head.querySelector(sel);
+      if (el) el.setAttribute('content', desc);
+    });
   }
 
   // ========== Router ==========
@@ -407,44 +484,88 @@
     updateActiveNav(hash);
 
     if (hash === '#/' || hash === '' || hash === '#') {
+      setPageMeta({
+        title: `${BASE_TITLE} — 洛谷 & 东方博宜信奥题解合集`,
+        description: DEFAULT_DESC,
+        path: '/',
+      });
       app.innerHTML = renderHome();
     } else if (hash.startsWith('#/post/')) {
       const id = hash.replace('#/post/', '');
+      const p = findProblem(id);
+      if (p) {
+        const tagStr = (p.tags || []).slice(0, 4).join('、');
+        const desc = `${p.id} ${p.title} — ${p.source}${p.difficulty ? ' ' + p.difficulty : ''}${tagStr ? '，涉及 ' + tagStr : ''} 的题解与 AC 代码。`;
+        setPageMeta({
+          title: `${p.id} ${p.title} 题解 - ${BASE_TITLE}`,
+          description: desc,
+          path: `/p/${encodeURIComponent(p.id)}/`,
+        });
+      } else {
+        setPageMeta({ title: `题解 - ${BASE_TITLE}`, path: '/', description: DEFAULT_DESC });
+      }
       app.innerHTML = renderSolution(id);
     } else if (hash === '#/tags') {
+      setPageMeta({
+        title: `标签分类 - ${BASE_TITLE}`,
+        description: '按 OJ 来源、难度、题单和算法标签浏览全部题解。',
+        path: '/',
+      });
       app.innerHTML = renderTagsPage();
     } else if (hash.startsWith('#/diff/')) {
       // #/diff/luogu/入门 或 #/diff/dfboy/入门
       const parts = hash.replace('#/diff/', '').split('/');
       const source = parts[0];
       const difficulty = decodeURIComponent(parts.slice(1).join('/'));
+      setPageMeta({
+        title: `${difficulty} 难度题解 - ${BASE_TITLE}`,
+        description: `浏览所有「${difficulty}」难度的信奥赛题解。`,
+        path: '/',
+      });
       app.innerHTML = renderDiffFilter(source, difficulty);
     } else if (hash.startsWith('#/training/')) {
       // #/training/luogu/入门1-顺序结构
       const parts = hash.replace('#/training/', '').split('/');
       const source = parts[0];
       const training = decodeURIComponent(parts.slice(1).join('/'));
+      setPageMeta({
+        title: `${training} 题单 - ${BASE_TITLE}`,
+        description: `「${training}」题单包含的全部题解。`,
+        path: '/',
+      });
       app.innerHTML = renderTrainingFilter(source, training);
     } else if (hash.startsWith('#/tag/')) {
       const tag = decodeURIComponent(hash.replace('#/tag/', ''));
+      setPageMeta({
+        title: `${tag} 标签题解 - ${BASE_TITLE}`,
+        description: `所有标注「${tag}」算法的信奥赛题解。`,
+        path: '/',
+      });
       app.innerHTML = renderTagFilter(tag);
     } else if (hash === '#/guide') {
-      if (!isAdmin()) { app.innerHTML = render404(); return; }
+      if (!isAdmin()) { setPageMeta({ title: `页面不存在 - ${BASE_TITLE}` }); app.innerHTML = render404(); return; }
+      setPageMeta({ title: `使用指南 - ${BASE_TITLE}`, path: '/' });
       app.innerHTML = renderGuide();
     } else if (hash === '#/update') {
-      if (!isAdmin()) { app.innerHTML = render404(); return; }
+      if (!isAdmin()) { setPageMeta({ title: `页面不存在 - ${BASE_TITLE}` }); app.innerHTML = render404(); return; }
+      setPageMeta({ title: `更新题解 - ${BASE_TITLE}`, path: '/' });
       app.innerHTML = renderUpdatePage();
       bindUpdateEvents();
     } else if (hash === '#/about') {
+      setPageMeta({ title: `关于网站 - ${BASE_TITLE}`, path: '/' });
       app.innerHTML = renderAbout();
     } else if (hash === '#/courseware') {
+      setPageMeta({ title: `课件资料 - ${BASE_TITLE}`, path: '/' });
       renderCoursewarePage();
     } else if (hash === '#/templates') {
+      setPageMeta({ title: `代码模版 - ${BASE_TITLE}`, path: '/' });
       renderTemplatesPage();
     } else if (hash.startsWith('#/template/')) {
       const tname = decodeURIComponent(hash.replace('#/template/', ''));
+      setPageMeta({ title: `${tname} 模版 - ${BASE_TITLE}`, path: '/' });
       renderTemplateDetail(tname);
     } else {
+      setPageMeta({ title: `页面不存在 - ${BASE_TITLE}`, path: '/' });
       app.innerHTML = render404();
     }
 
@@ -543,11 +664,39 @@
         p.title.toLowerCase().includes(q) ||
         p.tags.some(t => t.toLowerCase().includes(q)) ||
         p.source.toLowerCase().includes(q) ||
-        p.summary.toLowerCase().includes(q)
+        (SEARCH_MAP && SEARCH_MAP[p.id] ? SEARCH_MAP[p.id].toLowerCase().includes(q) : false)
       );
     }
 
     return list;
+  }
+
+  // 搜索摘要懒加载：首屏不下载，用户真正输入关键词时才取
+  let SEARCH_MAP = null;
+  let _searchLoading = null;
+
+  function ensureSearchMap() {
+    if (SEARCH_MAP) return Promise.resolve(SEARCH_MAP);
+    if (_searchLoading) return _searchLoading;
+    _searchLoading = robustFetch('data/search.json', 2, 10000)
+      .then(res => res.json())
+      .then(data => { SEARCH_MAP = data || {}; return SEARCH_MAP; })
+      .catch(() => { SEARCH_MAP = {}; return SEARCH_MAP; });
+    return _searchLoading;
+  }
+
+  // 从 Markdown 正文提取纯文本摘要（详情页 meta description 用）
+  function summaryFromMarkdown(md, maxLen) {
+    const text = String(md || '')
+      .replace(/```[\s\S]*?```/g, ' ')
+      .replace(/^---[\s\S]*?---/, '')
+      .replace(/\$\$[\s\S]*?\$\$/g, ' ')
+      .replace(/\$[^$\n]+\$/g, ' ')
+      .replace(/^#{1,6}\s+.*$/gm, ' ')
+      .replace(/[*_`~>#\[\]()!|-]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return text.length > maxLen ? text.slice(0, maxLen - 1) + '…' : text;
   }
 
   function escapeHtml(str) {
@@ -1119,6 +1268,7 @@
       <div class="page">
         <div class="search-bar">
           <input type="text" class="search-input" id="searchInput" 
+                 aria-label="搜索题号、题名或标签"
                  placeholder="搜索题号、题名、标签…" value="${escapeHtml(searchQuery)}" autocomplete="off">
           <span class="search-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:middle;">
@@ -1169,7 +1319,15 @@
     `;
   }
 
-  function renderProblemList(problems) {
+  // ========== 列表分页（避免一次性渲染 2000+ 节点） ==========
+  const PAGE_SIZE = 50;
+  let listPage = 0;
+  let currentProblems = [];
+
+  function renderProblemList(problems, resetPage) {
+    if (resetPage !== false) listPage = 0;
+    currentProblems = problems;
+
     if (problems.length === 0) {
       return `
         <div class="empty-state">
@@ -1180,13 +1338,18 @@
       `;
     }
 
-    return problems.map(p => {
+    const totalPages = Math.max(1, Math.ceil(problems.length / PAGE_SIZE));
+    if (listPage > totalPages - 1) listPage = totalPages - 1;
+    const start = listPage * PAGE_SIZE;
+    const pageItems = problems.slice(start, start + PAGE_SIZE);
+
+    const cards = pageItems.map(p => {
       const sourceClass = p.source === '洛谷' ? 'luogu' : p.source === '东方博宜' ? 'dfboy' : '';
       const isLuogu = p.source === '洛谷';
       const diffColors = isLuogu ? LUOGU_DIFF_COLORS : DFBOY_DIFF_COLORS;
       const dc = p.difficulty && diffColors[p.difficulty] ? diffColors[p.difficulty] : null;
       return `
-        <div class="problem-card" onclick="location.hash='#/post/${p.id}'">
+        <a class="problem-card" href="#/post/${p.id}">
           <span class="problem-id">${escapeHtml(p.id)}</span>
           <div class="problem-info">
             <div class="problem-title">${escapeHtml(p.title)}</div>
@@ -1199,9 +1362,38 @@
             ${p.training && p.training.length ? `<span class="problem-training-badge">${p.training.map(t => escapeHtml(t)).join(' · ')}</span>` : ''}
             <span class="problem-source ${sourceClass}">${escapeHtml(p.source)}</span>
           </div>
-        </div>
+        </a>
       `;
     }).join('');
+
+    return cards + renderPager(problems.length, totalPages);
+  }
+
+  function renderPager(total, totalPages) {
+    if (totalPages <= 1) {
+      return `<div class="pager pager-single"><span class="pager-info">共 ${total} 题</span></div>`;
+    }
+    const from = listPage * PAGE_SIZE + 1;
+    const to = Math.min(total, (listPage + 1) * PAGE_SIZE);
+    return `
+      <div class="pager">
+        <button class="pager-btn" data-page="prev" ${listPage === 0 ? 'disabled' : ''}>上一页</button>
+        <span class="pager-info">第 ${from}–${to} 题 · 共 ${total} 题 · 第 ${listPage + 1}/${totalPages} 页</span>
+        <button class="pager-btn" data-page="next" ${listPage >= totalPages - 1 ? 'disabled' : ''}>下一页</button>
+      </div>
+    `;
+  }
+
+  function changePage(dir) {
+    const totalPages = Math.max(1, Math.ceil(currentProblems.length / PAGE_SIZE));
+    const next = dir === 'prev' ? listPage - 1 : listPage + 1;
+    if (next < 0 || next >= totalPages) return;
+    listPage = next;
+    const list = document.getElementById('problemList');
+    if (!list) return;
+    list.innerHTML = renderProblemList(currentProblems, false);
+    const top = list.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
   }
 
   function renderSolution(id) {
@@ -1224,7 +1416,7 @@
         <div class="reading-progress"><div class="reading-progress-bar" id="readingBar"></div></div>
 
         <!-- 返回按钮 -->
-        <a class="solution-back" onclick="location.hash='#/'">
+        <a class="solution-back" href="#/">
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
           返回列表
         </a>
@@ -1245,8 +1437,7 @@
                 <div class="solution-tags">
                   ${problem.tags.map(t => {
                     const tc = tagColor(t);
-                    return `<span class="tag" style="background:${tc.bg};color:${tc.color};"
-                      onclick="event.stopPropagation(); location.hash='#/tag/${encodeURIComponent(t)}'">${escapeHtml(t)}</span>`;
+                    return `<a class="tag" href="#/tag/${encodeURIComponent(t)}" style="background:${tc.bg};color:${tc.color};">${escapeHtml(t)}</a>`;
                   }).join('')}
                 </div>
               ` : ''}
@@ -1328,7 +1519,7 @@
     }
 
     try {
-      const res = await robustFetch('solutions/' + problem.filePath + '?t=' + Date.now(), 2, 10000);
+      const res = await robustFetch('solutions/' + problem.filePath, 2, 10000);
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
@@ -1340,6 +1531,10 @@
       body.innerHTML = html;
       addCopyButtons();
       addPrevNextNav(id);
+
+      // 正文加载后用真实内容刷新页面描述（索引里已不含 summary）
+      const realDesc = summaryFromMarkdown(mdContent, 150);
+      if (realDesc) updateMetaDescription(realDesc);
     } catch (e) {
       console.error('loadAndRenderSolution error:', e);
       body.innerHTML = `
@@ -2119,8 +2314,10 @@ int main() { ... }
       let debounce;
       searchInput.addEventListener('input', (e) => {
         clearTimeout(debounce);
-        debounce = setTimeout(() => {
-          searchQuery = e.target.value;
+        const value = e.target.value;
+        debounce = setTimeout(async () => {
+          if (value.trim()) await ensureSearchMap();
+          searchQuery = value;
           const list = document.getElementById('problemList');
           if (list) list.innerHTML = renderProblemList(getProblems());
         }, 200);
@@ -2134,18 +2331,21 @@ int main() { ... }
         let debounce;
         input.addEventListener('input', (e) => {
           clearTimeout(debounce);
-          debounce = setTimeout(() => {
+          const raw = e.target.value;
+          debounce = setTimeout(async () => {
           const list = input.closest('.page').querySelector('#problemList');
           if (!list) return;
           const dataScript = list.querySelector('#problemsData');
           if (!dataScript) return;
           const allProblems = JSON.parse(dataScript.textContent);
-            const q = e.target.value.trim().toLowerCase();
+            const q = raw.trim().toLowerCase();
+            if (q) await ensureSearchMap();
             const filtered = q ? allProblems.filter(p => {
               return (p.id || '').toLowerCase().includes(q) ||
                      (p.title || '').toLowerCase().includes(q) ||
                      (p.numId || '').toLowerCase().includes(q) ||
-                     p.tags.some(t => t.toLowerCase().includes(q));
+                     p.tags.some(t => t.toLowerCase().includes(q)) ||
+                     (SEARCH_MAP && SEARCH_MAP[p.id] ? SEARCH_MAP[p.id].toLowerCase().includes(q) : false);
             }) : allProblems;
             list.innerHTML = renderProblemList(filtered);
             const countEl = list.closest('.page').querySelector('.filter-result-count');
@@ -2179,6 +2379,19 @@ int main() { ... }
         btn.classList.add('active');
         const list = document.getElementById('problemList');
         if (list) list.innerHTML = renderProblemList(getProblems());
+      });
+    }
+
+    // 分页按钮（事件委托挂在列表容器上，innerHTML 替换后依然有效）
+    const pagerHost = document.getElementById('problemList');
+    if (pagerHost && !pagerHost.dataset.pagerBound) {
+      pagerHost.dataset.pagerBound = '1';
+      pagerHost.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-page]');
+        if (!btn || btn.disabled) return;
+        e.preventDefault();
+        e.stopPropagation();
+        changePage(btn.dataset.page);
       });
     }
 
@@ -2238,6 +2451,15 @@ int main() { ... }
   }
 
   // ========== Boot ==========
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', () => {
+    // 全局委托：数据加载失败页的「刷新重试」按钮
+    // （不用内联 onclick，避免被 CSP 的 script-src-attr 拦截）
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-action="reload"]')) {
+        location.reload();
+      }
+    });
+    init();
+  });
 
 })();

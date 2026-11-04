@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1540 [NOIP 2010 提高组] 机器翻译 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。 这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；如果内存中没有，软件就会在外存中的词典内查找，查出…">
+<link rel="canonical" href="https://zymojblog.top/p/P1540/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1540 [NOIP 2010 提高组] 机器翻译 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。 这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；如果内存中没有，软件就会在外存中的词典内查找，查出…">
+<meta property="og:url" content="https://zymojblog.top/p/P1540/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1540 [NOIP 2010 提高组] 机器翻译 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。 这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；如果内存中没有，软件就会在外存中的词典内查找，查出…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1540 [NOIP 2010 提高组] 机器翻译","headline":"P1540 [NOIP 2010 提高组] 机器翻译 题解","description":"小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。 这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；如果内存中没有，软件就会在外存中的词典内查找，查出…","url":"https://zymojblog.top/p/P1540/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、2010、NOIP 提高组、队列","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1540</span></div>
+  <h1 class="seo-title">P1540 [NOIP 2010 提高组] 机器翻译</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/2010">2010</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%8F%90%E9%AB%98%E7%BB%84">NOIP 提高组</a><a class="seo-tag" href="/#/tag/%E9%98%9F%E5%88%97">队列</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1540 [NOIP 2010 提高组] 机器翻译</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2026-05-15</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>2010</code>、<code>NOIP 提高组</code>、<code>队列</code></p>
+<h2>题目背景</h2>
+<p>NOIP2010 提高组 T1</p>
+<h2>题目描述</h2>
+<p>小晨的电脑上安装了一个机器翻译软件，他经常用这个软件来翻译英语文章。</p>
+<p>这个翻译软件的原理很简单，它只是从头到尾，依次将每个英文单词用对应的中文含义来替换。对于每个英文单词，软件会先在内存中查找这个单词的中文含义，如果内存中有，软件就会用它进行翻译；如果内存中没有，软件就会在外存中的词典内查找，查出单词的中文含义然后翻译，并将这个单词和译义放入内存，以备后续的查找和翻译。</p>
+<p>假设内存中有 $M$ 个单元，每单元能存放一个单词和译义。每当软件将一个新单词存入内存前，如果当前内存中已存入的单词数不超过 $M-1$，软件会将新单词存入一个未使用的内存单元；若内存中已存入 $M$ 个单词，软件会清空最早进入内存的那个单词，腾出单元来，存放新单词。</p>
+<p>假设一篇英语文章的长度为 $N$ 个单词。给定这篇待译文章，翻译软件需要去外存查找多少次词典？假设在翻译开始前，内存中没有任何单词。</p>
+<h2>输入格式</h2>
+<p>共 $2$ 行。每行中两个数之间用一个空格隔开。</p>
+<p>第一行为两个正整数 $M,N$，代表内存容量和文章的长度。</p>
+<p>第二行为 $N$ 个非负整数，按照文章的顺序，每个数（大小不超过 $1000$）代表一个英文单词。文章中两个单词是同一个单词，当且仅当它们对应的非负整数相同。</p>
+<h2>输出格式</h2>
+<p>一个整数，为软件需要查词典的次数。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span> <span class="hljs-number">7</span>
+<span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">5</span> <span class="hljs-number">4</span> <span class="hljs-number">4</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+【题目思路与解题过程】
+题意：有一个容量为 M 的内存，能存放最近使用过的单词。
+      当要翻译一个单词时，先在内存中查找：
+      - 如果存在（命中），直接翻译，不需要查词典；
+      - 如果不存在（缺失），需要查词典，并将该单词加入内存。
+      内存满时，淘汰最早进入内存的单词（即先进先出）。
+      要求统计整个翻译过程中查词典的总次数。
+
+解题思路：
+1. 使用队列 q 按顺序存储当前内存中的单词，队首是最早进入的。
+2. 用一个布尔数组 in[1005] 标记某个单词是否在内存中。
+3. 遍历每个单词 x：
+   - 如果 in[x] == true，命中，什么也不做。
+   - 如果 in[x] == false，缺失，查词典次数 cnt++。
+       然后判断内存是否已满：
+       if (q.size() == M)：
+           弹出队首 out，并设置 in[out] = false。
+       将新单词 x 入队，并设置 in[x] = true。
+4. 最后输出 cnt。
+*/</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    
+    <span class="hljs-type">int</span> m, n;                <span class="hljs-comment">// m: 内存容量, n: 文章长度</span>
+    cin &gt;&gt; m &gt;&gt; n;
+    
+    queue&lt;<span class="hljs-type">int</span>&gt; q;            <span class="hljs-comment">// q: 记录内存中单词的进入顺序</span>
+    <span class="hljs-type">bool</span> in[<span class="hljs-number">1005</span>] = {<span class="hljs-literal">false</span>}; <span class="hljs-comment">// in[x]: 单词 x 当前是否在内存中 (单词值≤1000)</span>
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;             <span class="hljs-comment">// cnt: 查词典的次数</span>
+    
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; ++i) {
+        <span class="hljs-type">int</span> x;               <span class="hljs-comment">// x: 当前文章中的单词</span>
+        cin &gt;&gt; x;
+        
+        <span class="hljs-keyword">if</span> (!in[x]) {        <span class="hljs-comment">// 内存中没有，需要查词典</span>
+            ++cnt;           <span class="hljs-comment">// 查词典次数 +1</span>
+            
+            <span class="hljs-keyword">if</span> (q.<span class="hljs-built_in">size</span>() == m) {          <span class="hljs-comment">// 内存已满，需要淘汰最早进入的单词</span>
+                <span class="hljs-type">int</span> out = q.<span class="hljs-built_in">front</span>();       <span class="hljs-comment">// 队首即最早进入的单词</span>
+                q.<span class="hljs-built_in">pop</span>();
+                in[out] = <span class="hljs-literal">false</span>;           <span class="hljs-comment">// 标记该单词已离开内存</span>
+            }
+            
+            q.<span class="hljs-built_in">push</span>(x);        <span class="hljs-comment">// 新单词加入队列</span>
+            in[x] = <span class="hljs-literal">true</span>;     <span class="hljs-comment">// 标记已在内存中</span>
+        }
+        <span class="hljs-comment">// else 命中，无需操作</span>
+    }
+    
+    cout &lt;&lt; cnt &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1540">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

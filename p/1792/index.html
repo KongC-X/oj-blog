@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1792 换钞票 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="将一张一百元的钞票换成 元和 元两种面额的钞票，两种不同的面额都要有，有哪些不同的换法。 请按照 元面额的数量由小到大， 元面额的数量由大到小输出所有的结果。 第 组满足条件的方案为： ，也就是 张 元， 张 元。">
+<link rel="canonical" href="https://zymojblog.top/p/1792/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1792 换钞票 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="将一张一百元的钞票换成 元和 元两种面额的钞票，两种不同的面额都要有，有哪些不同的换法。 请按照 元面额的数量由小到大， 元面额的数量由大到小输出所有的结果。 第 组满足条件的方案为： ，也就是 张 元， 张 元。">
+<meta property="og:url" content="https://zymojblog.top/p/1792/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1792 换钞票 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="将一张一百元的钞票换成 元和 元两种面额的钞票，两种不同的面额都要有，有哪些不同的换法。 请按照 元面额的数量由小到大， 元面额的数量由大到小输出所有的结果。 第 组满足条件的方案为： ，也就是 张 元， 张 元。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1792 换钞票","headline":"1792 换钞票 题解","description":"将一张一百元的钞票换成 元和 元两种面额的钞票，两种不同的面额都要有，有哪些不同的换法。 请按照 元面额的数量由小到大， 元面额的数量由大到小输出所有的结果。 第 组满足条件的方案为： ，也就是 张 元， 张 元。","url":"https://zymojblog.top/p/1792/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"需要找规律的循环","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1792</span></div>
+  <h1 class="seo-title">1792 换钞票</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">穷举</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%9C%80%E8%A6%81%E6%89%BE%E8%A7%84%E5%BE%8B%E7%9A%84%E5%BE%AA%E7%8E%AF">需要找规律的循环</a></div>
+  <article class="markdown-body seo-article">
+<h1>1792 - 换钞票</h1>
+<h2>题目描述</h2>
+<p>将一张一百元的钞票换成 $10$ 元和 $20$ 元两种面额的钞票，两种不同的面额都要有，有哪些不同的换法。</p>
+<p>请按照 $10$ 元面额的数量由小到大，$20$ 元面额的数量由大到小输出所有的结果。</p>
+<p>第 $1$ 组满足条件的方案为：$2$ $4$ ，也就是 $2$ 张 $10$ 元，$4$ 张 $20$ 元。</p>
+<h2>输入</h2>
+<p>无</p>
+<h2>输出</h2>
+<p>输出满足条件的方案，每行 $2$ 个整数，第 $1$ 个整数代表$10$ 元面额的数量，第 $2$ 个整数代表 $20$ 元面额的数量。</p>
+<p>输出时按照 $10$ 元面额数量从小到大，$20$ 元面额数量从大到小输出。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-comment">//使用穷举法猜 可以兑换的张数</span>
+    <span class="hljs-type">int</span> i,j; 
+    <span class="hljs-comment">//i:10元张数 j:20元张数 </span>
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">10</span>;i++) <span class="hljs-comment">//因为10元最多可以换10张 </span>
+    {
+        <span class="hljs-keyword">for</span>(j=<span class="hljs-number">5</span>;j&gt;=<span class="hljs-number">1</span>;j--)<span class="hljs-comment">//5元最多可以换5张,从大到小猜 </span>
+        {
+            <span class="hljs-keyword">if</span>( <span class="hljs-number">10</span>*i + <span class="hljs-number">20</span>*j == <span class="hljs-number">100</span> )
+            {
+                cout&lt;&lt;i&lt;&lt;<span class="hljs-string">&quot; &quot;</span>&lt;&lt;j&lt;&lt;endl;
+            }
+        }   
+    } 
+    <span class="hljs-comment">//注意：每一种面额都要有，都应该从1开始 </span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1792">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

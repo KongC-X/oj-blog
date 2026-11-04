@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4141 [信息与未来 2016] 素数分解 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。">
+<link rel="canonical" href="https://zymojblog.top/p/B4141/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B4141 [信息与未来 2016] 素数分解 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。">
+<meta property="og:url" content="https://zymojblog.top/p/B4141/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B4141 [信息与未来 2016] 素数分解 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4141 [信息与未来 2016] 素数分解","headline":"B4141 [信息与未来 2016] 素数分解 题解","description":"素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。","url":"https://zymojblog.top/p/B4141/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、2016、江苏、枚举、深度优先搜索 DFS、背包 DP、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B4141</span></div>
+  <h1 class="seo-title">B4141 [信息与未来 2016] 素数分解</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%90%9C%E7%B4%A2">搜索</a><a class="seo-tag" href="/#/tag/2016">2016</a><a class="seo-tag" href="/#/tag/%E6%B1%9F%E8%8B%8F">江苏</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2%20DFS">深度优先搜索 DFS</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85%20DP">背包 DP</a><a class="seo-tag" href="/#/tag/%E4%BF%A1%E6%81%AF%E4%B8%8E%E6%9C%AA%E6%9D%A5">信息与未来</a></div>
+  <article class="markdown-body seo-article">
+<h1>B4141 [信息与未来 2016] 素数分解</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-04-21</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>搜索</code>、<code>2016</code>、<code>江苏</code>、<code>枚举</code>、<code>深度优先搜索 DFS</code>、<code>背包 DP</code>、<code>信息与未来</code></p>
+<h2>题目描述</h2>
+<p>素数，又称质数，是指除 $1$ 和其自身之外，没有其他约数的正整数。例如，$2,3,5,7,13$ 都是质数，而 $4,9,12,18$ 则不是。</p>
+<p>虽然素数不能分解成除 $1$ 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。</p>
+<h2>输入格式</h2>
+<p>一行一个正整数 $n$。</p>
+<h2>输出格式</h2>
+<p>一行一个正整数，表示 $n$ 最多能分解成多少个不同的素数的和。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">21</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>4```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">128</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>9```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-type">int</span> num[<span class="hljs-number">50</span>];<span class="hljs-comment">//存储所有的素数 </span>
+<span class="hljs-type">int</span> n;
+<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>;
+<span class="hljs-type">int</span> ans=<span class="hljs-number">0</span>;<span class="hljs-comment">//存储结果</span>
+
+<span class="hljs-comment">//判素数 </span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">prime</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-keyword">if</span>(x &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= <span class="hljs-built_in">sqrt</span>(x);i++){
+        <span class="hljs-keyword">if</span>(x % i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+
+<span class="hljs-comment">//深搜求最多用的素数的数量 </span>
+<span class="hljs-comment">//d为当前下标，sum为总和，cnt为使用的数字的个数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> d,<span class="hljs-type">int</span> sum,<span class="hljs-type">int</span> cnt)</span> </span>{ 
+    <span class="hljs-keyword">if</span> (sum == n) {
+        ans = <span class="hljs-built_in">max</span>(ans,cnt);
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">//剪枝 </span>
+    <span class="hljs-comment">//如果sum超过n，或者下标大于素数个数结束</span>
+    <span class="hljs-keyword">if</span> (sum &gt; n || d &gt; k) { 
+        <span class="hljs-keyword">return</span>;
+    }
+    <span class="hljs-comment">//选当前数 </span>
+    <span class="hljs-built_in">dfs</span>(d+<span class="hljs-number">1</span>,sum+num[d],cnt+<span class="hljs-number">1</span>);
+    <span class="hljs-built_in">dfs</span>(d+<span class="hljs-number">1</span>,sum,cnt);<span class="hljs-comment">//不选当前数 </span>
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">2</span>; i&lt;=n; i++) {
+        <span class="hljs-comment">//如果是素数，将其存进num数组</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">prime</span>(i)) { 
+            num[++k]=i;
+        }
+    }
+    <span class="hljs-comment">//从num数组下标为1开始讨论，默认总和为0，素数个数为0 </span>
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);
+    cout&lt;&lt;ans;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B4141">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

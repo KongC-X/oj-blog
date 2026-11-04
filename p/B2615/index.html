@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2615 【深基1.习7】定期存款 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="银行定期存款年利率是一年定存 ，五年定存 。小 A 和 UIM 手上各有 元。小A 决定每次存一年期，到期后将连本带利再存一年，直到存满 年。UIM 直接存五年定期。请问 年后小 A 和 UIM 分别有多少钱？">
+<link rel="canonical" href="https://zymojblog.top/p/B2615/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2615 【深基1.习7】定期存款 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="银行定期存款年利率是一年定存 ，五年定存 。小 A 和 UIM 手上各有 元。小A 决定每次存一年期，到期后将连本带利再存一年，直到存满 年。UIM 直接存五年定期。请问 年后小 A 和 UIM 分别有多少钱？">
+<meta property="og:url" content="https://zymojblog.top/p/B2615/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2615 【深基1.习7】定期存款 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="银行定期存款年利率是一年定存 ，五年定存 。小 A 和 UIM 手上各有 元。小A 决定每次存一年期，到期后将连本带利再存一年，直到存满 年。UIM 直接存五年定期。请问 年后小 A 和 UIM 分别有多少钱？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2615 【深基1.习7】定期存款","headline":"B2615 【深基1.习7】定期存款 题解","description":"银行定期存款年利率是一年定存 ，五年定存 。小 A 和 UIM 手上各有 元。小A 决定每次存一年期，到期后将连本带利再存一年，直到存满 年。UIM 直接存五年定期。请问 年后小 A 和 UIM 分别有多少钱？","url":"https://zymojblog.top/p/B2615/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"洛谷","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2615</span></div>
+  <h1 class="seo-title">B2615 【深基1.习7】定期存款</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7">洛谷</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2615 【深基1.习7】定期存款</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-03</p>
+</blockquote>
+<h2>题目背景</h2>
+<p><strong>本题来自洛谷编写教材《深入浅出程序设计竞赛 - 基础篇》</strong>，并带有详细的教程和讲解，点击下列链接了解本书详情。<a href="https://item.taobao.com/item.htm?id=637730514783">【官方网店绝赞热卖中！】&gt;&gt;&gt;</a></p>
+<h2>题目描述</h2>
+<p>银行定期存款年利率是一年定存 $3.5%$，五年定存 $4%$。小 A 和 UIM 手上各有 $10000$ 元。小A 决定每次存一年期，到期后将连本带利再存一年，直到存满 $5$ 年。UIM 直接存五年定期。请问 $5$ 年后小 A 和 UIM 分别有多少钱？</p>
+<h2>输出格式</h2>
+<p>请输出两个浮点数表示答案。直接使用 cout 输出答案即可，中间用空格隔开。</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】复利与单利计算
+     * 【核心思路】
+     * 小A：复利，年利率3.5%，5年：A = 10000 * pow(1.035, 5)
+     * UIM：单利，年利率4%，5年：B = 10000 * (1 + 0.04*5)
+     *
+     * 【时间复杂度】O(1)
+     */</span>
+
+    <span class="hljs-type">double</span> a, b;   <span class="hljs-comment">// a: 小A的钱, b: UIM的钱</span>
+    a = <span class="hljs-number">10000</span> * <span class="hljs-built_in">pow</span>(<span class="hljs-number">1.035</span>, <span class="hljs-number">5</span>);
+    b = <span class="hljs-number">10000</span> * (<span class="hljs-number">1</span> + <span class="hljs-number">0.04</span> * <span class="hljs-number">5</span>);
+
+    cout &lt;&lt; a &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; b &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2615">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

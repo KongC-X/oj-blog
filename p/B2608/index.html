@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2608 【深基1.例11】评测机队列 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="洛谷的评测任务是单位时间内均匀增加的。 台评测机 分钟可以刚好把评测队列中的程序评测完毕， 台评测机 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 分钟时刚好把评测队列中的程序评测完毕？">
+<link rel="canonical" href="https://zymojblog.top/p/B2608/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="B2608 【深基1.例11】评测机队列 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="洛谷的评测任务是单位时间内均匀增加的。 台评测机 分钟可以刚好把评测队列中的程序评测完毕， 台评测机 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 分钟时刚好把评测队列中的程序评测完毕？">
+<meta property="og:url" content="https://zymojblog.top/p/B2608/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B2608 【深基1.例11】评测机队列 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="洛谷的评测任务是单位时间内均匀增加的。 台评测机 分钟可以刚好把评测队列中的程序评测完毕， 台评测机 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 分钟时刚好把评测队列中的程序评测完毕？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B2608 【深基1.例11】评测机队列","headline":"B2608 【深基1.例11】评测机队列 题解","description":"洛谷的评测任务是单位时间内均匀增加的。 台评测机 分钟可以刚好把评测队列中的程序评测完毕， 台评测机 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 分钟时刚好把评测队列中的程序评测完毕？","url":"https://zymojblog.top/p/B2608/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"洛谷","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>B2608</span></div>
+  <h1 class="seo-title">B2608 【深基1.例11】评测机队列</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B4%9B%E8%B0%B7">洛谷</a></div>
+  <article class="markdown-body seo-article">
+<h1>B2608 【深基1.例11】评测机队列</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 入门 | C++14 | 提交时间: 2026-08-03</p>
+</blockquote>
+<h2>题目背景</h2>
+<p><strong>本题来自洛谷编写教材《深入浅出程序设计竞赛 - 基础篇》</strong>，并带有详细的教程和讲解，点击下列链接了解本书详情。<a href="https://item.taobao.com/item.htm?id=637730514783">【官方网店绝赞热卖中！】&gt;&gt;&gt;</a></p>
+<h2>题目描述</h2>
+<p>洛谷的评测任务是单位时间内均匀增加的。$8$ 台评测机 $30$ 分钟可以刚好把评测队列中的程序评测完毕，$10$ 台评测机 $6$ 分钟可以刚好把评测队列中的程序评测完毕，请问几台评测机可以在 $10$ 分钟时刚好把评测队列中的程序评测完毕？</p>
+<h2>输出格式</h2>
+<p>请输出一个数字表示答案。这个数字是一个整数。</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+     * 【题目类型】牛吃草问题（匀速增长+匀速消耗）
+     * 【核心思路】
+     * 设初始程序数为 P，每分钟新增 R，每台评测机每分钟评测 1 个。
+     * 根据题意：
+     *   P + 30*R = 8*30   (1)
+     *   P + 6*R  = 10*6   (2)
+     * 由 (1)-(2) 得 24R = 240-60 = 180，所以 R = 7.5
+     * 代回 (2) 得 P = 60 - 6*7.5 = 15
+     * 设需要 x 台，则 P + 10*R = x*10
+     * 代入得 15 + 75 = 10x，所以 x = 9
+     *
+     * 【时间复杂度】O(1)
+     */</span>
+
+    <span class="hljs-comment">// 变量定义（用 double 因为 R 可能是小数）</span>
+    <span class="hljs-type">double</span> p;   <span class="hljs-comment">// p: 初始队列中的程序数</span>
+    <span class="hljs-type">double</span> r;   <span class="hljs-comment">// r: 每分钟新增的程序数</span>
+    <span class="hljs-type">double</span> x;   <span class="hljs-comment">// x: 需要的评测机台数</span>
+
+    <span class="hljs-comment">// 解方程求 R</span>
+    r = (<span class="hljs-number">8.0</span> * <span class="hljs-number">30</span> - <span class="hljs-number">10.0</span> * <span class="hljs-number">6</span>) / (<span class="hljs-number">30.0</span> - <span class="hljs-number">6.0</span>);   <span class="hljs-comment">// 8台30分钟 vs 10台6分钟</span>
+    <span class="hljs-comment">// 求 P</span>
+    p = <span class="hljs-number">10.0</span> * <span class="hljs-number">6</span> - <span class="hljs-number">6.0</span> * r;                      <span class="hljs-comment">// 利用第二个条件</span>
+    <span class="hljs-comment">// 求 x</span>
+    x = (p + <span class="hljs-number">10.0</span> * r) / <span class="hljs-number">10.0</span>;                  <span class="hljs-comment">// 10分钟清空所需台数</span>
+
+    <span class="hljs-comment">// 输出结果（因为 x 一定是整数，直接输出整数部分）</span>
+    cout &lt;&lt; (<span class="hljs-type">int</span>)x &lt;&lt; endl;   <span class="hljs-comment">// 9</span>
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/B2608">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

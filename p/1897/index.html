@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1897 红与黑 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向上下左右四个方向的相邻的黑色瓷砖移动。 请写一个程序，计算你总共能够到达多少块黑色的瓷砖。">
+<link rel="canonical" href="https://zymojblog.top/p/1897/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1897 红与黑 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向上下左右四个方向的相邻的黑色瓷砖移动。 请写一个程序，计算你总共能够到达多少块黑色的瓷砖。">
+<meta property="og:url" content="https://zymojblog.top/p/1897/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1897 红与黑 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向上下左右四个方向的相邻的黑色瓷砖移动。 请写一个程序，计算你总共能够到达多少块黑色的瓷砖。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1897 红与黑","headline":"1897 红与黑 题解","description":"有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向上下左右四个方向的相邻的黑色瓷砖移动。 请写一个程序，计算你总共能够到达多少块黑色的瓷砖。","url":"https://zymojblog.top/p/1897/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1897</span></div>
+  <h1 class="seo-title">1897 红与黑</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span><span class="seo-badge seo-badge-soft">广度优先搜索-BFS</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1897 - 红与黑</h1>
+<h2>题目描述</h2>
+<p>有一间长方形的房子，地上铺了红色、黑色两种颜色的正方形瓷砖。你站在其中一块黑色的瓷砖上，只能向上下左右四个方向的相邻的黑色瓷砖移动。</p>
+<p>请写一个程序，计算你总共能够到达多少块黑色的瓷砖。</p>
+<h2>输入</h2>
+<p>第一行是两个整数 $W$ 和 $H$，分别表示 $x$ 方向和 $y$ 方向瓷砖的数量。$W$ 和 $H$ 都不超过 $20$。</p>
+<p>在接下来的 $H$ 行中，每行包括 $W$ 个字符。每个字符表示一块瓷砖的颜色，规则如下：</p>
+<p>1）<code>.</code>：黑色的瓷砖；</p>
+<p>2）<code>#</code>：红色的瓷砖；</p>
+<p>3）<code>@</code>：黑色的瓷砖，并且你站在这块瓷砖上。该字符唯一出现一次。</p>
+<h2>输出</h2>
+<p>输出一行，显示你从初始位置出发能到达的瓷砖数(记数时包括初始位置的瓷砖)。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">char</span> a[<span class="hljs-number">30</span>][<span class="hljs-number">30</span>];
+<span class="hljs-type">int</span> n,m,i,j,tx,ty,c,q[<span class="hljs-number">1010</span>][<span class="hljs-number">3</span>];
+<span class="hljs-type">int</span> head=<span class="hljs-number">1</span>,tail=<span class="hljs-number">1</span>;
+
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>]={<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>]={<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>};
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y)</span></span>{
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]=x;
+    q[<span class="hljs-number">1</span>][<span class="hljs-number">2</span>]=y;
+    a[x][y]=<span class="hljs-string">&#x27;#&#x27;</span>;
+    <span class="hljs-keyword">while</span>(head&lt;=tail){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=<span class="hljs-number">4</span>;i++){
+            tx=q[head][<span class="hljs-number">1</span>]+fx[i];
+            ty=q[head][<span class="hljs-number">2</span>]+fy[i];
+            <span class="hljs-keyword">if</span>(a[tx][ty]==<span class="hljs-string">&#x27;.&#x27;</span>){
+                tail++;
+                q[tail][<span class="hljs-number">1</span>]=tx;
+                q[tail][<span class="hljs-number">2</span>]=ty;
+                a[tx][ty]=<span class="hljs-string">&#x27;#&#x27;</span>;
+            }
+        }
+        head++;
+    }
+}
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;m&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+            cin&gt;&gt;a[i][j];
+        }
+    }
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span>;i&lt;=n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">1</span>;j&lt;=m;j++){
+            <span class="hljs-keyword">if</span>(a[i][j]==<span class="hljs-string">&#x27;@&#x27;</span>){
+                <span class="hljs-built_in">bfs</span>(i,j);
+            }
+        }
+    }
+    cout&lt;&lt;tail;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1897">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

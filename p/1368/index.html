@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1368 蜜蜂路线 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一只蜜蜂在下图所示的数字蜂房上爬动,已知它只能从标号小的蜂房爬到标号大的相邻蜂房,现在问你：蜜蜂从蜂房 开始爬到蜂房 ，，有多少种爬行路线？">
+<link rel="canonical" href="https://zymojblog.top/p/1368/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1368 蜜蜂路线 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一只蜜蜂在下图所示的数字蜂房上爬动,已知它只能从标号小的蜂房爬到标号大的相邻蜂房,现在问你：蜜蜂从蜂房 开始爬到蜂房 ，，有多少种爬行路线？">
+<meta property="og:url" content="https://zymojblog.top/p/1368/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1368 蜜蜂路线 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一只蜜蜂在下图所示的数字蜂房上爬动,已知它只能从标号小的蜂房爬到标号大的相邻蜂房,现在问你：蜜蜂从蜂房 开始爬到蜂房 ，，有多少种爬行路线？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1368 蜜蜂路线","headline":"1368 蜜蜂路线 题解","description":"一只蜜蜂在下图所示的数字蜂房上爬动,已知它只能从标号小的蜂房爬到标号大的相邻蜂房,现在问你：蜜蜂从蜂房 开始爬到蜂房 ，，有多少种爬行路线？","url":"https://zymojblog.top/p/1368/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"递推","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1368</span></div>
+  <h1 class="seo-title">1368 蜜蜂路线</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">提高</span>
+    <span class="seo-badge seo-badge-soft">高精度运算</span><span class="seo-badge seo-badge-soft">递推</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a></div>
+  <article class="markdown-body seo-article">
+<h1>1368 - 蜜蜂路线</h1>
+<h2>题目描述</h2>
+<p>一只蜜蜂在下图所示的数字蜂房上爬动,已知它只能从标号小的蜂房爬到标号大的相邻蜂房,现在问你：蜜蜂从蜂房$M$开始爬到蜂房$N$，，有多少种爬行路线？</p>
+<h2>输入</h2>
+<p>输入 $M$，$N$ 的值。 （）</p>
+<h2>输出</h2>
+<p>爬行有多少种路线。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-comment">//当n-m的值较大时需要高精度运算 </span>
+<span class="hljs-function">string <span class="hljs-title">he</span><span class="hljs-params">(string s1,string s2)</span></span>{
+     string r;<span class="hljs-comment">//存放总和</span>
+    <span class="hljs-type">int</span> a[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> b[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>};
+    <span class="hljs-type">int</span> c[<span class="hljs-number">1000</span>] = {<span class="hljs-number">0</span>};
+    
+    <span class="hljs-comment">//逆序存入整数数组</span>
+    <span class="hljs-type">int</span> i;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; s1.<span class="hljs-built_in">size</span>();i++){
+        a[i] = s1[s1.<span class="hljs-built_in">size</span>() - i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    } 
+    
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; s2.<span class="hljs-built_in">size</span>();i++){
+        b[i] = s2[s2.<span class="hljs-built_in">size</span>() - i - <span class="hljs-number">1</span>] - <span class="hljs-string">&#x27;0&#x27;</span>;
+    } 
+    
+    <span class="hljs-comment">//逐位相加，逐位进位</span>
+    <span class="hljs-type">int</span> len = s1.<span class="hljs-built_in">size</span>();
+    <span class="hljs-keyword">if</span>(s2.<span class="hljs-built_in">size</span>() &gt; s1.<span class="hljs-built_in">size</span>()) len = s2.<span class="hljs-built_in">size</span>();
+    
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; len;i++){
+        c[i] = c[i] + a[i] + b[i];
+        <span class="hljs-keyword">if</span>(c[i] &gt;= <span class="hljs-number">10</span>){
+            c[i+<span class="hljs-number">1</span>] = c[i+<span class="hljs-number">1</span>] + c[i] / <span class="hljs-number">10</span>;
+            c[i] = c[i] % <span class="hljs-number">10</span>;
+        }
+    } 
+    <span class="hljs-comment">//判断是否多出1位</span>
+    <span class="hljs-keyword">if</span>(c[len] != <span class="hljs-number">0</span>) len++;
+
+    <span class="hljs-comment">//逆序将c数组拼接乘字符串</span>
+    <span class="hljs-keyword">for</span>(i = len<span class="hljs-number">-1</span>;i&gt;=<span class="hljs-number">0</span>;i--){
+        <span class="hljs-comment">//将c[i]+&#x27;0&#x27;这个ascii码强制转换为char类型 </span>
+        r = r + (<span class="hljs-type">char</span>)(c[i] + <span class="hljs-string">&#x27;0&#x27;</span>);
+    } 
+
+    <span class="hljs-keyword">return</span> r; 
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> m,n,i,j;
+    cin&gt;&gt;m&gt;&gt;n;
+    i = n - m;
+    string x,y,z;
+    x = <span class="hljs-string">&quot;1&quot;</span>;
+    y = <span class="hljs-string">&quot;1&quot;</span>;
+    <span class="hljs-keyword">if</span>(i==<span class="hljs-number">1</span>){
+        cout&lt;&lt;<span class="hljs-number">1</span>;
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(i==<span class="hljs-number">2</span>){
+        cout&lt;&lt;<span class="hljs-number">2</span>;
+    }<span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">for</span>(j=<span class="hljs-number">3</span>;j&lt;=i+<span class="hljs-number">1</span>;j++){
+            z = <span class="hljs-built_in">he</span>(x,y);
+            x = y;
+            y = z;
+        }
+        cout&lt;&lt;z;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1368">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

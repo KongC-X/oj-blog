@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1981 [NOIP 2013 普及组] 表达式求值 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一个只包含加法和乘法的算术表达式，请你编程计算表达式的值。">
+<link rel="canonical" href="https://zymojblog.top/p/P1981/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1981 [NOIP 2013 普及组] 表达式求值 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一个只包含加法和乘法的算术表达式，请你编程计算表达式的值。">
+<meta property="og:url" content="https://zymojblog.top/p/P1981/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1981 [NOIP 2013 普及组] 表达式求值 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一个只包含加法和乘法的算术表达式，请你编程计算表达式的值。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1981 [NOIP 2013 普及组] 表达式求值","headline":"P1981 [NOIP 2013 普及组] 表达式求值 题解","description":"给定一个只包含加法和乘法的算术表达式，请你编程计算表达式的值。","url":"https://zymojblog.top/p/P1981/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、2013、NOIP 普及组、栈","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1981</span></div>
+  <h1 class="seo-title">P1981 [NOIP 2013 普及组] 表达式求值</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及-</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%A8%A1%E6%8B%9F">模拟</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a><a class="seo-tag" href="/#/tag/2013">2013</a><a class="seo-tag" href="/#/tag/NOIP%20%E6%99%AE%E5%8F%8A%E7%BB%84">NOIP 普及组</a><a class="seo-tag" href="/#/tag/%E6%A0%88">栈</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1981 [NOIP 2013 普及组] 表达式求值</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及- | C++14 | 提交时间: 2025-06-13</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>2013</code>、<code>NOIP 普及组</code>、<code>栈</code></p>
+<h2>题目背景</h2>
+<p>NOIP2013 普及组 T2</p>
+<h2>题目描述</h2>
+<p>给定一个只包含加法和乘法的算术表达式，请你编程计算表达式的值。</p>
+<h2>输入格式</h2>
+<p>一行，为需要你计算的表达式，表达式中只包含数字、加法运算符 <code>+</code> 和乘法运算符 <code>*</code>，且没有括号，所有参与运算的数字均为 $0$ 到   $2^{31}-1$ 之间的整数。  </p>
+<p>输入数据保证这一行只有 <code>0123456789+*</code> 这 $12$ 种字符。</p>
+<h2>输出格式</h2>
+<p>一个整数，表示这个表达式的值。  </p>
+<p>注意：当答案长度多于 $4$ 位时，请只输出最后 $ 4$ 位，前导 $ 0$ 不输出。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>+<span class="hljs-number">1</span>*<span class="hljs-number">3</span>+<span class="hljs-number">4</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">8</span>```
+
+**样例输入 #<span class="hljs-number">2</span>**</code></pre><p>1+1234567890*1```</p>
+<p><strong>样例输出 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">7891</span>```
+
+**样例输入 #<span class="hljs-number">3</span>**</code></pre><p>1+1000000003*1```</p>
+<p><strong>样例输出 #3</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">4</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">/*
+第一步：分解并存储每个运算数（只存最后4位）、分解并存储每个运算符
+第二步：遍历每个数字，如果对应的运算符是*，先将乘法计算，将结果存储到下一位 
+        本位清零 
+*/</span>
+string s,w = <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> a[N],k1 = <span class="hljs-number">0</span>,k2 = <span class="hljs-number">0</span>,t;<span class="hljs-comment">//运算数 </span>
+<span class="hljs-type">char</span> f[N];<span class="hljs-comment">//运算符</span>
+<span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;<span class="hljs-comment">//结果 </span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;s;
+    <span class="hljs-comment">//分解数字和运算符</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; s.<span class="hljs-built_in">size</span>();i++){
+        <span class="hljs-comment">//如果是数字 </span>
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">isdigit</span>(s[i])){
+            w = w + s[i];
+            <span class="hljs-comment">//判断连续数字结束</span>
+            <span class="hljs-keyword">if</span>(i==s.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>||!<span class="hljs-built_in">isdigit</span>(s[i+<span class="hljs-number">1</span>])){
+                t = <span class="hljs-built_in">atoi</span>(w.<span class="hljs-built_in">c_str</span>());
+                k1++;
+                a[k1] = t % <span class="hljs-number">10000</span>;
+                w = <span class="hljs-string">&quot;&quot;</span>;<span class="hljs-comment">//清空w存放下一个连续的数字 </span>
+            } 
+        }<span class="hljs-keyword">else</span>{
+            k2++;
+            f[k2] = s[i];
+        }
+    } 
+    
+    <span class="hljs-comment">//计算乘法</span>
+    <span class="hljs-comment">//循环运算符 </span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= k2;i++){
+        <span class="hljs-keyword">if</span>(f[i] == <span class="hljs-string">&#x27;*&#x27;</span>){
+            a[i+<span class="hljs-number">1</span>] = (a[i+<span class="hljs-number">1</span>] * a[i]) % <span class="hljs-number">10000</span>;
+            a[i] = <span class="hljs-number">0</span>;
+        }
+    } 
+    
+    <span class="hljs-comment">//求和</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= k1;i++){
+        r = (r + a[i]) % <span class="hljs-number">10000</span>;
+    } 
+    
+    cout&lt;&lt;r;
+}
+
+</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1981">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

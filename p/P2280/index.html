@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P2280 [HNOI2003] 激光炸弹 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="一种新型的激光炸弹，可以摧毁一个边长为 的正方形内的所有目标。现在地图上有 个目标，用整数 , 表示目标在地图上的位置，每个目标都有一个价值 。激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 的边必须与 轴， 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。 现…">
+<link rel="canonical" href="https://zymojblog.top/p/P2280/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P2280 [HNOI2003] 激光炸弹 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="一种新型的激光炸弹，可以摧毁一个边长为 的正方形内的所有目标。现在地图上有 个目标，用整数 , 表示目标在地图上的位置，每个目标都有一个价值 。激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 的边必须与 轴， 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。 现…">
+<meta property="og:url" content="https://zymojblog.top/p/P2280/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P2280 [HNOI2003] 激光炸弹 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="一种新型的激光炸弹，可以摧毁一个边长为 的正方形内的所有目标。现在地图上有 个目标，用整数 , 表示目标在地图上的位置，每个目标都有一个价值 。激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 的边必须与 轴， 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。 现…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2280 [HNOI2003] 激光炸弹","headline":"P2280 [HNOI2003] 激光炸弹 题解","description":"一种新型的激光炸弹，可以摧毁一个边长为 的正方形内的所有目标。现在地图上有 个目标，用整数 , 表示目标在地图上的位置，每个目标都有一个价值 。激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 的边必须与 轴， 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。 现…","url":"https://zymojblog.top/p/P2280/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"动态规划 DP、2003、各省省选、湖南、枚举、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P2280</span></div>
+  <h1 class="seo-title">P2280 [HNOI2003] 激光炸弹</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%20DP">动态规划 DP</a><a class="seo-tag" href="/#/tag/2003">2003</a><a class="seo-tag" href="/#/tag/%E5%90%84%E7%9C%81%E7%9C%81%E9%80%89">各省省选</a><a class="seo-tag" href="/#/tag/%E6%B9%96%E5%8D%97">湖南</a><a class="seo-tag" href="/#/tag/%E6%9E%9A%E4%B8%BE">枚举</a><a class="seo-tag" href="/#/tag/%E5%89%8D%E7%BC%80%E5%92%8C">前缀和</a></div>
+  <article class="markdown-body seo-article">
+<h1>P2280 [HNOI2003] 激光炸弹</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-07-23</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>动态规划 DP</code>、<code>2003</code>、<code>各省省选</code>、<code>湖南</code>、<code>枚举</code>、<code>前缀和</code></p>
+<h2>题目描述</h2>
+<p>一种新型的激光炸弹，可以摧毁一个边长为 $m$ 的正方形内的所有目标。现在地图上有 $n$ 个目标，用整数 $x_i$ , $y_i$ 表示目标在地图上的位置，每个目标都有一个价值 $v_i$。激光炸弹的投放是通过卫星定位的，但其有一个缺点，就是其爆破范围，即那个边长为 $m$ 的边必须与 $x$ 轴，$y$ 轴平行。若目标位于爆破正方形的边上，该目标不会被摧毁。</p>
+<p>现在你的任务是计算一颗炸弹最多能炸掉地图上总价值为多少的目标。</p>
+<p>可能存在多个目标在同一位置上的情况。</p>
+<h2>输入格式</h2>
+<p>输入的第一行为整数 $n$ 和整数 $m$；</p>
+<p>接下来的 $n$ 行，每行有 $3$ 个整数 $x, y, v$，表示一个目标的坐标与价值。</p>
+<h2>输出格式</h2>
+<p>输出仅有一个正整数，表示一颗炸弹最多能炸掉地图上总价值为多少的目标（结果不会超过 $32767$ ）。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">2</span> <span class="hljs-number">1</span>
+<span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">1</span>
+<span class="hljs-number">1</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span></code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>```
+
+## AC 代码
+
+```cpp
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> MAXN = <span class="hljs-number">5005</span>;           <span class="hljs-comment">// 坐标范围 0~5000，多开5</span>
+<span class="hljs-type">int</span> a[MAXN][MAXN];               <span class="hljs-comment">// a[x][y] 存储点(x,y)的价值</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// 思路：二维前缀和</span>
+    <span class="hljs-comment">// 边长为m的正方形，边界上的目标不算，因此实际上覆盖的是 [x, x+m) × [y, y+m) 的区间</span>
+    <span class="hljs-comment">// 即边长为 m 的正方形内部（不含边界）。</span>
+    <span class="hljs-comment">// 但题目坐标从0开始，为方便前缀和，将坐标全部 +1，变成 1~5001。</span>
+    <span class="hljs-comment">// 这样正方形覆盖的范围就是 [x+1, x+m] × [y+1, y+m]。</span>
+    <span class="hljs-comment">// 预处理二维前缀和，然后枚举正方形右下角，O(1) 求区域内价值和，取最大值。</span>
+    <span class="hljs-comment">// 复杂度 O(5000^2)，约 2.5e7，可接受。</span>
+
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> n, m;
+    cin &gt;&gt; n &gt;&gt; m;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">int</span> x, y, v;
+        cin &gt;&gt; x &gt;&gt; y &gt;&gt; v;
+        x++, y++;                 <span class="hljs-comment">// 坐标 +1，方便前缀和处理</span>
+        a[x][y] += v;             <span class="hljs-comment">// 可能有多个目标在同一位置，累加</span>
+    }
+
+    <span class="hljs-comment">// 预处理二维前缀和</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">5001</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= <span class="hljs-number">5001</span>; j++) {
+            a[i][j] += a[i<span class="hljs-number">-1</span>][j] + a[i][j<span class="hljs-number">-1</span>] - a[i<span class="hljs-number">-1</span>][j<span class="hljs-number">-1</span>];
+        }
+    }
+
+    <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// 枚举正方形右下角 (i, j)，则左上角为 (i-m+1, j-m+1)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = m; i &lt;= <span class="hljs-number">5001</span>; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = m; j &lt;= <span class="hljs-number">5001</span>; j++) {
+            <span class="hljs-type">int</span> sum = a[i][j] - a[i-m][j] - a[i][j-m] + a[i-m][j-m];
+            <span class="hljs-keyword">if</span> (sum &gt; ans) ans = sum;
+        }
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P2280">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

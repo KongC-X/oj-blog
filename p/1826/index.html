@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1826 水下探测器：deep.cpp 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="原理： 水下探测器可以潜入湖中在任意水深进行科学探索。 湖水的最大深度为 米,即它在湖底时到水面的距离， ； 探测器最初的水下深度为 米， ； 当探测器不在水面（当前深度大于 ）时，每个 指令可使它上浮 米，而当探测器在水面时， 指令是无效的； 当探测器不在湖底（当前深度小于 ）时，每个 指令可使…">
+<link rel="canonical" href="https://zymojblog.top/p/1826/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1826 水下探测器：deep.cpp 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="原理： 水下探测器可以潜入湖中在任意水深进行科学探索。 湖水的最大深度为 米,即它在湖底时到水面的距离， ； 探测器最初的水下深度为 米， ； 当探测器不在水面（当前深度大于 ）时，每个 指令可使它上浮 米，而当探测器在水面时， 指令是无效的； 当探测器不在湖底（当前深度小于 ）时，每个 指令可使…">
+<meta property="og:url" content="https://zymojblog.top/p/1826/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1826 水下探测器：deep.cpp 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="原理： 水下探测器可以潜入湖中在任意水深进行科学探索。 湖水的最大深度为 米,即它在湖底时到水面的距离， ； 探测器最初的水下深度为 米， ； 当探测器不在水面（当前深度大于 ）时，每个 指令可使它上浮 米，而当探测器在水面时， 指令是无效的； 当探测器不在湖底（当前深度小于 ）时，每个 指令可使…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1826 水下探测器：deep.cpp","headline":"1826 水下探测器：deep.cpp 题解","description":"原理： 水下探测器可以潜入湖中在任意水深进行科学探索。 湖水的最大深度为 米,即它在湖底时到水面的距离， ； 探测器最初的水下深度为 米， ； 当探测器不在水面（当前深度大于 ）时，每个 指令可使它上浮 米，而当探测器在水面时， 指令是无效的； 当探测器不在湖底（当前深度小于 ）时，每个 指令可使…","url":"https://zymojblog.top/p/1826/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1826</span></div>
+  <h1 class="seo-title">1826 水下探测器：deep.cpp</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
+  <article class="markdown-body seo-article">
+<h1>1826 - 水下探测器：deep.cpp</h1>
+<h2>题目描述</h2>
+<p><strong>原理：</strong></p>
+<p>水下探测器可以潜入湖中在任意水深进行科学探索。<br>湖水的最大深度为 $h$ 米,即它在湖底时到水面的距离，$0 \le h \le 100$；</p>
+<p>探测器最初的水下深度为 $s$ 米，$0 \le s \le 100$；</p>
+<p>当探测器不在水面（当前深度大于 $0$）时，每个 $u$ 指令可使它上浮 $1$ 米，而当探测器在水面时，$u$ 指令是无效的；</p>
+<p>当探测器不在湖底（当前深度小于 $h$）时，每个 $d$ 指令可使它下沉 $1$ 米，而当探测器在湖底时，$d$ 指令是无效的；</p>
+<p>在执行到无效指令时，探测器不做任何操作而继续执行下一指令。</p>
+<p><strong>编程实现：</strong></p>
+<p>根据给定的 $h、s$ 和一个指令序列（由字符 $u、d$ 组成的字符串，长度不超过 $100$），求出执行完整的指令序列后，探测器的水下深度。</p>
+<h2>输入</h2>
+<p>第一行：$h$ 和 $s$，以空格分开。$0 \le s \le h \le 100$。</p>
+<p>第二行：长度不超过 $100$ 的指令字符串，串中仅包含字母 $u$ 或 $d$。</p>
+<h2>输出</h2>
+<p>代表探测器在执行指令后的水下深度的数字。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    <span class="hljs-type">int</span> h, s;                     <span class="hljs-comment">// h: 湖的最大深度，s: 初始深度</span>
+    cin &gt;&gt; h &gt;&gt; s;
+
+    string cmd;                   <span class="hljs-comment">// 指令序列</span>
+    cin &gt;&gt; cmd;
+
+    <span class="hljs-comment">// 当前深度</span>
+    <span class="hljs-type">int</span> d = s;
+
+    <span class="hljs-comment">// 逐条执行指令</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; cmd.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">if</span> (cmd[i] == <span class="hljs-string">&#x27;u&#x27;</span>) {      <span class="hljs-comment">// 上浮指令</span>
+            <span class="hljs-keyword">if</span> (d &gt; <span class="hljs-number">0</span>) d--;       <span class="hljs-comment">// 不在水面才有效</span>
+        } <span class="hljs-keyword">else</span> {                  <span class="hljs-comment">// &#x27;d&#x27; 下沉指令</span>
+            <span class="hljs-keyword">if</span> (d &lt; h) d++;       <span class="hljs-comment">// 不在湖底才有效</span>
+        }
+    }
+
+    cout &lt;&lt; d &lt;&lt; <span class="hljs-string">&#x27;\n&#x27;</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1826">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

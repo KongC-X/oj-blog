@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1381 方格取数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在 行、 列的方格矩阵中，每个方格都包含一个数字。小明可以从任意方格出发开始移动。每次移动可以移到与当前方格有一条边相邻的方格(即向上、下、左或右方向移动 格，且不能移出边界)。除此之外，你移动到的方格中的数字必须比当前方格中的数字更大。 请你帮助小明编程规划移动路径，使路径上经过的所有数字之和最…">
+<link rel="canonical" href="https://zymojblog.top/p/1381/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1381 方格取数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在 行、 列的方格矩阵中，每个方格都包含一个数字。小明可以从任意方格出发开始移动。每次移动可以移到与当前方格有一条边相邻的方格(即向上、下、左或右方向移动 格，且不能移出边界)。除此之外，你移动到的方格中的数字必须比当前方格中的数字更大。 请你帮助小明编程规划移动路径，使路径上经过的所有数字之和最…">
+<meta property="og:url" content="https://zymojblog.top/p/1381/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1381 方格取数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在 行、 列的方格矩阵中，每个方格都包含一个数字。小明可以从任意方格出发开始移动。每次移动可以移到与当前方格有一条边相邻的方格(即向上、下、左或右方向移动 格，且不能移出边界)。除此之外，你移动到的方格中的数字必须比当前方格中的数字更大。 请你帮助小明编程规划移动路径，使路径上经过的所有数字之和最…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1381 方格取数","headline":"1381 方格取数 题解","description":"在 行、 列的方格矩阵中，每个方格都包含一个数字。小明可以从任意方格出发开始移动。每次移动可以移到与当前方格有一条边相邻的方格(即向上、下、左或右方向移动 格，且不能移出边界)。除此之外，你移动到的方格中的数字必须比当前方格中的数字更大。 请你帮助小明编程规划移动路径，使路径上经过的所有数字之和最…","url":"https://zymojblog.top/p/1381/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"省赛、深搜","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1381</span></div>
+  <h1 class="seo-title">1381 方格取数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">东方博宜</span>
+    <span class="seo-badge">入门</span>
+    <span class="seo-badge seo-badge-soft">深度优先搜索-DFS</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E7%9C%81%E8%B5%9B">省赛</a><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a></div>
+  <article class="markdown-body seo-article">
+<h1>1381 - 方格取数</h1>
+<h2>题目描述</h2>
+<p>在 $n$ 行、$m$ 列的方格矩阵中，每个方格都包含一个数字。小明可以从任意方格出发开始移动。每次移动可以移到与当前方格有一条边相邻的方格(即向上、下、左或右方向移动 $1$ 格，且不能移出边界)。除此之外，你移动到的方格中的数字必须比当前方格中的数字更大。</p>
+<p>请你帮助小明编程规划移动路径，使路径上经过的所有数字之和最大。</p>
+<p>本题方格中的数据根据输入的初始数字 $s$ 按照如下算法生成:</p>
+<pre><code class="hljs language-cpp">`<span class="hljs-keyword">for</span> i = <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, ... n
+  <span class="hljs-keyword">for</span> j = <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, ... m
+    s ← (s × <span class="hljs-number">345</span>) mod <span class="hljs-number">19997</span>
+    矩阵第 i 行第 j 列方格中的数字为(s mod <span class="hljs-number">10</span>) + <span class="hljs-number">1</span>
+`</code></pre><h2>输入</h2>
+<p>正整数 $n$, $m$ (方格的大小), $s$ (数据生成器的初始数值)。</p>
+<p>$1 ≤ n,m ≤ 100$，$1 ≤ s ≤ 19,997$。</p>
+<h2>输出</h2>
+<p>所有合法路径中的最大数字和。</p>
+<h2>AC代码</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> n,m,s,a[<span class="hljs-number">110</span>][<span class="hljs-number">110</span>]; 
+<span class="hljs-type">int</span> fx[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>};
+<span class="hljs-type">int</span> fy[<span class="hljs-number">5</span>] = {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>}; 
+<span class="hljs-type">int</span> ma;
+
+<span class="hljs-comment">//求从x,y出发，经过的可能的数字和 </span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> x,<span class="hljs-type">int</span> y,<span class="hljs-type">int</span> sum)</span></span>{
+    <span class="hljs-comment">//cout&lt;&lt;x&lt;&lt;&quot;,&quot;&lt;&lt;y&lt;&lt;&quot; sum=&quot;&lt;&lt;sum&lt;&lt;endl;</span>
+    ma = <span class="hljs-built_in">max</span>(sum,ma);<span class="hljs-comment">//求从某个点开始经过的数字和的最大值 </span>
+    <span class="hljs-comment">//尝试四个方向</span>
+    <span class="hljs-type">int</span> tx,ty;<span class="hljs-comment">//表示将要尝试的坐标</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= <span class="hljs-number">4</span>;i++){
+        tx = x + fx[i];
+        ty = y + fy[i];
+        <span class="hljs-comment">//如果那个点可以去（在迷宫内，且比当前点大） </span>
+        <span class="hljs-keyword">if</span>(tx&gt;=<span class="hljs-number">1</span>&amp;&amp;tx&lt;=n&amp;&amp;ty&gt;=<span class="hljs-number">1</span>&amp;&amp;ty&lt;=m&amp;&amp;a[tx][ty]&gt;a[x][y]){
+            <span class="hljs-built_in">dfs</span>(tx,ty,sum+a[tx][ty]);
+        } 
+    } 
+} 
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n&gt;&gt;m&gt;&gt;s;
+    <span class="hljs-comment">//生成数组元素的值</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+            s=(s*<span class="hljs-number">345</span>)%<span class="hljs-number">19997</span>;
+            a[i][j] = (s%<span class="hljs-number">10</span>)+<span class="hljs-number">1</span>;
+            <span class="hljs-comment">//cout&lt;&lt;a[i][j]&lt;&lt;&quot; &quot;;</span>
+        }
+    }
+    
+    <span class="hljs-comment">//测验一下从4,3点出发经过可能的数字和 </span>
+<span class="hljs-comment">//	dfs(4,3,a[4][3]);</span>
+<span class="hljs-comment">//	cout&lt;&lt;ma;</span>
+
+    <span class="hljs-comment">//从每个点开始打擂台，求最大</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= m;j++){
+            <span class="hljs-built_in">dfs</span>(i,j,a[i][j]);
+        }
+    } 
+    
+    cout&lt;&lt;ma;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/1381">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

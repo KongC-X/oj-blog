@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P1246 [ECNA 1995] 编码 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="编码工作常被运用于密文或压缩传输。这里我们用一种最简单的编码方式进行编码：把一些有规律的单词编成数字。 字母表中共有 个字母 ，这些特殊的单词长度不超过 且字母按升序排列。把所有这样的单词放在一起，按字典顺序排列，一个单词的编码就对应着它在字典中的位置。 例如： ； ； ； ； 。 你的任务就是对…">
+<link rel="canonical" href="https://zymojblog.top/p/P1246/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P1246 [ECNA 1995] 编码 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="编码工作常被运用于密文或压缩传输。这里我们用一种最简单的编码方式进行编码：把一些有规律的单词编成数字。 字母表中共有 个字母 ，这些特殊的单词长度不超过 且字母按升序排列。把所有这样的单词放在一起，按字典顺序排列，一个单词的编码就对应着它在字典中的位置。 例如： ； ； ； ； 。 你的任务就是对…">
+<meta property="og:url" content="https://zymojblog.top/p/P1246/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P1246 [ECNA 1995] 编码 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="编码工作常被运用于密文或压缩传输。这里我们用一种最简单的编码方式进行编码：把一些有规律的单词编成数字。 字母表中共有 个字母 ，这些特殊的单词长度不超过 且字母按升序排列。把所有这样的单词放在一起，按字典顺序排列，一个单词的编码就对应着它在字典中的位置。 例如： ； ； ； ； 。 你的任务就是对…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1246 [ECNA 1995] 编码","headline":"P1246 [ECNA 1995] 编码 题解","description":"编码工作常被运用于密文或压缩传输。这里我们用一种最简单的编码方式进行编码：把一些有规律的单词编成数字。 字母表中共有 个字母 ，这些特殊的单词长度不超过 且字母按升序排列。把所有这样的单词放在一起，按字典顺序排列，一个单词的编码就对应着它在字典中的位置。 例如： ； ； ； ； 。 你的任务就是对…","url":"https://zymojblog.top/p/P1246/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"数学、递推、递归、线性递推、ICPC","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P1246</span></div>
+  <h1 class="seo-title">P1246 [ECNA 1995] 编码</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%95%B0%E5%AD%A6">数学</a><a class="seo-tag" href="/#/tag/%E9%80%92%E6%8E%A8">递推</a><a class="seo-tag" href="/#/tag/%E9%80%92%E5%BD%92">递归</a><a class="seo-tag" href="/#/tag/%E7%BA%BF%E6%80%A7%E9%80%92%E6%8E%A8">线性递推</a><a class="seo-tag" href="/#/tag/ICPC">ICPC</a></div>
+  <article class="markdown-body seo-article">
+<h1>P1246 [ECNA 1995] 编码</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-05-22</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>数学</code>、<code>递推</code>、<code>递归</code>、<code>线性递推</code>、<code>ICPC</code></p>
+<h2>题目描述</h2>
+<p>编码工作常被运用于密文或压缩传输。这里我们用一种最简单的编码方式进行编码：把一些有规律的单词编成数字。</p>
+<p>字母表中共有 $26$ 个字母 $\mathtt{a,b,c,\cdots,z}$，这些特殊的单词长度不超过 $6$ 且字母按升序排列。把所有这样的单词放在一起，按字典顺序排列，一个单词的编码就对应着它在字典中的位置。</p>
+<p>例如：</p>
+<ul>
+<li>$\verb!a! \to 1$；</li>
+<li>$\verb!b! \to 2$；</li>
+<li>$\verb!z! \to 26$；</li>
+<li>$\verb!ab! \to 27$；</li>
+<li>$\verb!ac! \to 28$。</li>
+</ul>
+<p>你的任务就是对于所给的单词，求出它的编码。</p>
+<h2>输入格式</h2>
+<p>仅一行，被编码的单词。</p>
+<h2>输出格式</h2>
+<p>仅一行，对应的编码。如果单词不在字母表中，输出 $0$。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp">ab</code></pre><p><strong>样例输出 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">27</span></code></pre><h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 组合数表，C[i][j] 表示从 i 个元素中选 j 个的方案数，i&lt;=26, j&lt;=6</span>
+<span class="hljs-type">int</span> C[<span class="hljs-number">27</span>][<span class="hljs-number">7</span>];
+
+<span class="hljs-comment">// 预处理组合数</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">26</span>; ++i) {
+        C[i][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;                   <span class="hljs-comment">// 边界</span>
+        C[i][i] = <span class="hljs-number">1</span>;                   <span class="hljs-comment">// 但 i&gt;6 时 j 只能到 6，这里无妨</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt; i &amp;&amp; j &lt;= <span class="hljs-number">6</span>; ++j) {
+            C[i][j] = C[i - <span class="hljs-number">1</span>][j - <span class="hljs-number">1</span>] + C[i - <span class="hljs-number">1</span>][j];
+        }
+    }
+    <span class="hljs-comment">// 其余 C[i][j] 未赋值默认为 0（全局变量）</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">init</span>();
+
+    string s;
+    cin &gt;&gt; s;
+    <span class="hljs-type">int</span> len = s.<span class="hljs-built_in">length</span>();
+
+    <span class="hljs-comment">// 合法性检查：长度在 1~6，且严格递增（升序），且全为小写字母</span>
+    <span class="hljs-keyword">if</span> (len == <span class="hljs-number">0</span> || len &gt; <span class="hljs-number">6</span>) {
+        cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; ++i) {
+        <span class="hljs-keyword">if</span> (s[i] &lt; <span class="hljs-string">&#x27;a&#x27;</span> || s[i] &gt; <span class="hljs-string">&#x27;z&#x27;</span>) {   <span class="hljs-comment">// 非小写字母</span>
+            cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+        <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; s[i] &lt;= s[i - <span class="hljs-number">1</span>]) {  <span class="hljs-comment">// 未严格递增</span>
+            cout &lt;&lt; <span class="hljs-number">0</span> &lt;&lt; endl;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        }
+    }
+
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> ans = <span class="hljs-number">0</span>;                    <span class="hljs-comment">// 最终答案</span>
+
+    <span class="hljs-comment">// 1. 所有长度小于 len 的合法单词总数</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; len; ++i) {
+        ans += C[<span class="hljs-number">26</span>][i];
+    }
+
+    <span class="hljs-comment">// 2. 计算长度等于 len 且字典序小于 s 的单词个数</span>
+    <span class="hljs-type">int</span> last = <span class="hljs-number">-1</span>;                        <span class="hljs-comment">// 上一个已固定的字母编号，初始 -1 表示无限制</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; len; ++i) {
+        <span class="hljs-type">int</span> cur = s[i] - <span class="hljs-string">&#x27;a&#x27;</span>;            <span class="hljs-comment">// 当前位的字母编号（0~25）</span>
+        <span class="hljs-comment">// 这一位可以选比 cur 小的字母，但必须大于 last</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = last + <span class="hljs-number">1</span>; j &lt; cur; ++j) {
+            <span class="hljs-type">int</span> remain = len - i - <span class="hljs-number">1</span>;    <span class="hljs-comment">// 剩余需要选择的字母个数</span>
+            ans += C[<span class="hljs-number">25</span> - j][remain];    <span class="hljs-comment">// 从大于 j 的字母（共 25-j 个）中选 remain 个</span>
+        }
+        last = cur;                       <span class="hljs-comment">// 固定当前字母，继续下一位</span>
+    }
+
+    <span class="hljs-comment">// 3. 加上 s 本身，序号 = 排在它前面的单词数 + 1</span>
+    ans += <span class="hljs-number">1</span>;
+    cout &lt;&lt; ans &lt;&lt; endl;
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P1246">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

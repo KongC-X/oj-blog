@@ -1,328 +1,267 @@
-# OJ 题解站 — 项目开发文档
+# OJ 题解站 — 开发文档
 
-> 章老师的 OJ 题解站 — 信奥赛教练的题解合集  
-> 技术栈：纯前端静态站点 + Node.js 本地开发服务器  
-> 部署：Cloudflare Pages（GitHub 自动部署）
-
----
-
-## 一、项目概述
-
-### 1.1 功能
-
-- 展示洛谷（Luogu）和东方博宜（Dfboy）的 OJ 题解
-- 按题号、题名、标签搜索筛选
-- 标签分类浏览
-- 亮/暗主题切换
-- 本地开发模式下：密码登录、更新题解（爬虫 + 重建索引）
-
-### 1.2 架构
-
-```
-┌────────────────────────────────────────────────────┐
-│                   用户浏览器                         │
-│  index.html → js/app.js → 渲染题解列表/详情          │
-└──────────────┬─────────────────────────┬───────────┘
-               │                         │
-    Cloudflare Pages               本地开发
-    (自动部署自 GitHub)          node server.js
-    ┌──────────────┐          ┌──────────────────┐
-    │  静态文件直出   │          │  Express 后端服务    │
-    │  无需后端服务   │          │  - 登录认证          │
-    │  纯前端 SPA    │          │  - 更新题解爬虫      │
-    └──────────────┘          │  - 题解数据 API      │
-                               └──────────────────┘
-```
-
-### 1.3 工作流程
-
-```mermaid
-flowchart LR
-    A[本地运行 server.js] --> B[管理员登录]
-    B --> C[更新题解<br>洛谷/东方博宜]
-    C --> D[git commit & push]
-    D --> E[Cloudflare Pages<br>自动部署]
-    E --> F[用户访问 https://oj-blog.pages.dev]
-```
+> 章老师的 OJ 题解站：洛谷 + 东方博宜信奥赛题解合集
+> 线上地址：https://zymojblog.top
+> 仓库：github.com/KongC-X/oj-blog（master 分支）
 
 ---
 
-## 二、项目结构
+## 一、当前状态（2026-11-04）
+
+| 项目 | 数值 |
+|---|---|
+| 题解总数 | 2222 道（洛谷 1044 + 东方博宜 1178） |
+| 索引体积 | index.json 864KB（brotli 后 48KB） |
+| 搜索索引 | search.json 728KB（brotli 183KB，按需加载） |
+| 预渲染页 | 2222 个（`p/<id>/index.html`，共约 20MB） |
+| 字体 | JetBrains Mono WOFF2 ×4（367KB，按需加载 1–2 个） |
+| 部署 | Cloudflare Pages，git push 自动构建 |
+| 后端 | 仅本地开发用 `server.js`，生产为纯静态 |
+
+---
+
+## 二、架构
 
 ```
-oj-blog/
-├── index.html              # 入口 HTML（加载 CSS/JS）
-├── js/
-│   └── app.js              # 前端主逻辑（SPA 路由、渲染、交互）
-├── css/
-│   └── style.css           # 暗色科技风样式
-├── fonts/                  # JetBrains Mono 等宽字体
-│   └── JetBrainsMono-*.ttf
+用户浏览器
+   │
+   ├─ 常规访问 ──→ Cloudflare Pages 静态托管
+   │                 ├─ index.html + js/app.js（SPA，hash 路由）
+   │                 ├─ data/index.json（列表用，不含 summary）
+   │                 ├─ data/search.json（搜索时懒加载）
+   │                 ├─ solutions/*.md（详情页按需加载）
+   │                 └─ p/<id>/index.html（SEO 预渲染页，无 JS 可读）
+   │
+   └─ 本地开发 ──→ node server.js（Express，端口 8766）
+                     ├─ 登录鉴权（user / admin 双角色）
+                     ├─ 触发爬虫更新题解（SSE 实时日志）
+                     └─ 重建索引 + 预渲染
+```
+
+**为什么是 SPA + 预渲染双轨？**
+hash 路由（`#/post/P1001`）搜索引擎不索引，因此构建期为每题生成
+`/p/<id>/index.html` 静态快照提供索引与分享预览；交互仍走 SPA。
+
+---
+
+## 三、目录结构
+
+```
+blog/
+├── index.html              入口（含 SEO meta、预加载、skip-link）
+├── 404.html                Cloudflare Pages 自动使用的 404 页
+├── manifest.json           PWA 清单
+├── robots.txt / sitemap.xml 由 prerender.js 生成
+├── _headers                Cloudflare Pages 响应头（CSP、缓存策略）
+├── js/app.js               前端全部逻辑（SPA 路由、渲染、搜索）
+├── css/style.css           样式（含 SEO 静态页、分页、可访问性）
+├── vendor/                 marked + highlight.js 打包（bundle.min.js）
+├── fonts/                  JetBrains Mono（.woff2 生效，.ttf 为源文件）
 ├── data/
-│   └── index.json          # 题解索引（由 build.js 生成）
-├── solutions/              # 题解 Markdown 文件
-├── server.js               # 本地开发后端（Express）
-├── build.js                # 重建索引脚本
-├── luogu_fetch.js          # 洛谷爬虫
-├── dfboy_fetch.js          # 东方博宜爬虫（题目描述）
-├── fetch_dfboy_codes.js    # 东方博宜爬虫（AC 代码）
-├── package.json            # Node.js 依赖
-├── .env.example            # 环境变量示例
-└── DEVDOC.md               # ✨ 本开发文档
+│   ├── index.json          题目索引（不含 summary）
+│   ├── search.json         id → 摘要，搜索时懒加载
+│   ├── templates.json      代码模版索引
+│   └── courseware.json     课件索引
+├── solutions/
+│   ├── luogu/*.md          洛谷题解（P1001.md、B2001.md）
+│   └── dfboy/*.md          东方博宜题解（纯数字命名）
+├── p/<id>/index.html       预渲染静态页（构建产物，需提交）
+├── templates/              代码模版 md
+├── courseware/             课件（csp / gesp）
+├── server.js               本地开发后端
+├── build.js                扫描 solutions 生成索引（会自动调用 prerender）
+├── prerender.js            生成静态页 + sitemap + robots
+├── luogu_fetch.js          洛谷爬虫
+├── dfboy_fetch.js          东方博宜题目描述爬虫
+├── fetch_dfboy_codes.js    东方博宜 AC 代码爬虫
+└── scripts/                维护工具（见第七节）
 ```
 
 ---
 
-## 三、技术栈
-
-| 技术 | 用途 | 版本 |
-|------|------|------|
-| HTML5 | 页面骨架 | — |
-| CSS3 | 暗色科技风样式、动画 | — |
-| Vanilla JS (ES6+) | 前端 SPA 路由、逻辑 | — |
-| Node.js | 爬虫、构建、本地服务器 | ≥ 18 |
-| Express | 本地开发后端 | 4.x |
-| Cloudflare Pages | 生产环境托管 | — |
-| GitHub | 源码管理 + 自动部署 | — |
-
----
-
-## 四、本地开发
-
-### 4.1 环境要求
-
-- Node.js ≥ 18
-- npm
-
-### 4.2 安装
+## 四、开发与运行
 
 ```bash
 cd blog
-npm install
+npm install                     # 首次
+node server.js                  # 启动本地服务，默认 8766
 ```
 
-### 4.3 配置
-
-复制 `.env.example` 为 `.env` 并修改：
+环境变量（可选，不设置则使用开发默认密码）：
 
 ```bash
-cp .env.example .env
+PORT=8766
+USER_PASSWORD=...               # 默认 oi2026
+ADMIN_PASSWORD=...              # 默认 zym2026
 ```
 
-必须配置的项：
+访问 http://localhost:8766 ，管理员密码登录后可进入「更新题解」。
 
-```
-PORT=8766                                    # 服务端口
-USER_PASSWORD=oi2026                         # 普通用户密码
-ADMIN_PASSWORD=你的管理员密码                   # 管理员密码
-CORS_ORIGINS=http://localhost:8765,http://localhost:8766
-```
-
-### 4.4 启动
-
-```bash
-# 方式一：直接启动
-node server.js
-
-# 方式二：通过 npm
-npm start
-
-# 方式三：开发模式（后台运行）
-npm run dev
-```
-
-访问 `http://localhost:8766` 即可看到登录页面。
-
-### 4.5 双权限账号
-
-| 账号密码 | 角色 | 权限 |
-|---------|------|------|
-| `oi2026` | 普通用户 | 查看题解、搜索、标签 |
-| `.env` 中 `ADMIN_PASSWORD` 的值 | 管理员 | 以上全部 + 更新题解 |
+> ⚠️ 生产环境是 Cloudflare Pages 纯静态托管，**不运行 server.js**。
+> 所有鉴权与更新能力仅存在于本地开发环境。
 
 ---
 
 ## 五、更新题解流程
 
-### 5.1 本地更新
-
-1. 启动本地服务：`node server.js`
-2. 浏览器访问 `http://localhost:8766`
-3. 使用管理员密码登录
-4. 点击导航栏「更新题解」
-5. 根据需要选择更新源：
-   - **洛谷**：需要提供 Cookie（在洛谷网站登录后从浏览器开发者工具中获取）
-   - **东方博宜**：需要提供账号和密码
-   - **重建索引**：不需要凭证，仅重新生成 `data/index.json`
-   - **全部更新**：同时执行以上所有操作
-6. 等待爬虫运行完成
-
-### 5.2 部署到生产
-
-更新完成后，提交并推送代码：
+### 5.1 洛谷
 
 ```bash
-git add -A
-git commit -m "自动更新题解 $(date '+%Y-%m-%d')"
-git push origin master
+LUOGU_COOKIE='_uid=...; __client_id=...' node luogu_fetch.js
 ```
 
-Cloudflare Pages 检测到 GitHub 更新后会自动重新部署，约 1-2 分钟后生效。
+- 需要登录态 Cookie（浏览器 F12 → Network → 任意请求 → Cookie 整行）
+- **翻页逻辑**：按该账号 AC 总数动态翻完所有页（约 57 页），再逐题取代码与描述
+- 增量：本地已有 `<pid>.md` 的题目会跳过；`--force` 强制全部重抓
 
----
+### 5.2 东方博宜
 
-## 六、部署（Cloudflare Pages）
-
-### 6.1 首次部署
-
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**
-3. 授权 GitHub 并选择 `oj-blog` 仓库
-4. 构建配置：
-
-| 配置项 | 值 |
-|--------|------|
-| Project name | `oj-blog` |
-| Production branch | `master` |
-| Build command | （留空） |
-| Build output directory | （留空） |
-
-5. 点击 **Save and Deploy**
-
-### 6.2 自动部署
-
-每次推送到 `master` 分支，Cloudflare Pages 会自动部署。无需任何额外操作。
-
-### 6.3 绑定自定义域名（可选）
-
-在 Cloudflare Pages 项目 → **Settings** → **Custom domains** 中添加你的域名。
-
----
-
-## 七、爬虫脚本说明
-
-### 洛谷爬虫 (`luogu_fetch.js`)
-
-- 从洛谷公开 API 抓取题解列表
-- 支持 `--force` 参数强制重新抓取所有题目
-- 需要 Cookie（登录态）
-
-### 东方博宜爬虫 (`dfboy_fetch.js`)
-
-- 抓取东方博宜题目描述
-- 支持 `--force` 参数
-- 需要账号和密码
-
-### 东方博宜代码爬虫 (`fetch_dfboy_codes.js`)
-
-- 抓取东方博宜 AC 代码
-- 需要账号和密码
-
-### 索引构建 (`build.js`)
-
-- 扫描 `solutions/` 目录生成 `data/index.json`
-- 由爬虫完成后自动调用，也可单独运行：`npm run build`
-
----
-
-## 八、前端架构
-
-### 8.1 页面路由
-
-基于 URL hash 的单页应用（SPA）路由：
-
-| Hash | 页面 | 说明 |
-|------|------|------|
-| `#/` | 首页 | 题解列表、搜索 |
-| `#/tags` | 标签分类 | 按标签筛选 |
-| `#/post/:id` | 题解详情 | Markdown 渲染 |
-| `#/about` | 关于网站 | 站点信息 |
-| `#/guide` | 使用指南 | 仅管理员可见 |
-| `#/update` | 更新题解 | 仅管理员可见 |
-
-### 8.2 主题系统
-
-- 支持亮色/暗色/跟随系统三种模式
-- 存储在 `localStorage` 中持久化
-- 通过 CSS 变量实现全局切换
-
-### 8.3 搜索
-
-- 客户端搜索，无需后端
-- 支持题号、题名、标签关键词
-- `Ctrl/Cmd + K` 快捷键聚焦搜索框
-
----
-
-## 九、主题定制
-
-### 颜色变量
-
-编辑 `css/style.css` 中的 CSS 变量：
-
-```css
-/* 暗色模式 */
-[data-theme="dark"] {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --text-primary: #e0e0e0;
-  --accent: #6c5ce7;        /* 主色调 */
-  --accent-secondary: #a29bfe; /* 辅助色 */
-  /* ...更多变量 */
-}
-
-/* 亮色模式 */
-[data-theme="light"] {
-  --bg-primary: #f8f9fa;
-  --bg-secondary: #ffffff;
-  --text-primary: #1a1a2e;
-  --accent: #6c5ce7;
-  --accent-secondary: #a29bfe;
-}
+```bash
+DFBOY_USER=账号 DFBOY_PASS=密码 node dfboy_fetch.js --nocodes
+DFBOY_USER=账号 DFBOY_PASS=密码 node fetch_dfboy_codes.js
 ```
 
----
+第一步抓题目描述，第二步补 AC 代码，两步都由后端的「更新题解」按钮串行执行。
 
-## 十、常见问题
+### 5.3 构建与发布
 
-### Q: 前端更新后用户看不到变化？
+```bash
+node build.js          # 重建索引 + 增量预渲染 + sitemap
+node build.js --no-prerender   # 只重建索引（快）
+node prerender.js --clean      # 强制全量重建静态页
 
-Cloudflare Pages 有缓存，重新部署后需要 **硬刷新**（`Ctrl/Cmd + Shift + R`）清除缓存。
+git add -A && git commit -m "更新题解" && git push origin master
+```
 
-### Q: 本地 `npm start` 报错？
-
-检查 Node.js 版本：`node -v` 应 ≥ 18。  
-检查依赖是否安装：`npm install`。
-
-### Q: 爬虫运行失败？
-
-- 洛谷：Cookie 可能过期，重新从洛谷网站获取
-- 东方博宜：账号密码是否正确，网站是否可访问
-- 网络问题：检查代理/VPN 设置
-
-### Q: 如何修改版本号/缓存？
-
-前端资源引用带 `?v=20260424b` 版本号参数。修改 `index.html` 中的版本号可使浏览器重新加载。
+Cloudflare Pages 检测到 master 更新后自动部署，约 1–2 分钟生效。
 
 ---
 
-## 十一、技术备忘
+## 六、关键技术约定
 
-### 前端特点
+### 6.1 洛谷接口（易踩坑）
 
-- **零依赖**：原生 JavaScript，无任何框架/库
-- **Markdown 渲染**：支持代码高亮（highlight.js）、数学公式（MathJax 可选）
-- **响应式**：适配 PC 和移动端
-- **性能**：预加载、懒加载、CSS contain 优化
+洛谷 2025 年改版后，带 `_contentOnly=1` 也返回完整 HTML，数据内联在：
 
-### 本地后端特点
+```html
+<script id="lentille-context" type="application/json">{...}</script>
+```
 
-- Express 4.x
-- bcryptjs 密码哈希
-- helmet 安全头
-- express-rate-limit 频率限制
+结构为 `{instance, template, status, data, user, time}`，业务数据在 `data`：
+
+| 场景 | 路径 |
+|---|---|
+| 记录列表 | `data.records.{perPage,count,result}` |
+| 单条提交 | `data.record.sourceCode` |
+| 题目详情 | `data.problem`（name/difficulty/tags/content/samples） |
+| 标签词典 | `https://www.luogu.com.cn/_lfe/tags` |
+
+注意：题目名是 `problem.name`，**不是** `problem.title`。
+`luogu_fetch.js` 里的 `parseLuoguPayload()` 同时兼容新旧两种格式。
+
+### 6.2 难度体系（新版 8 级）
+
+洛谷已从旧版 7 级改为新版 8 级，数值 ID 对应关系：
+
+| ID | 名称 |
+|---|---|
+| 0 | 暂无评定 |
+| 1 | 入门 |
+| 2 | 普及- |
+| 3 | 普及 |
+| 4 | 普及+/提高- |
+| 5 | 提高 |
+| 6 | 提高+/省选- |
+| 7 | 省选/NOI- |
+| 8 | NOI/NOI+/CTS |
+
+东方博宜是独立体系：入门 / 基础 / 提高。**修改洛谷难度时不要影响博宜。**
+
+### 6.3 缓存策略
+
+| 资源 | 策略 |
+|---|---|
+| `/fonts/*`、`/vendor/*` | 1 年 immutable |
+| `/css/*`、`/js/*` | 7 天，靠 index.html 的 `?v=` 破缓存 |
+| `/data/*`、`/solutions/*`、`/p/*` | `max-age=0, must-revalidate`，走 ETag 协商缓存（304） |
+
+**不要再给 JSON/MD 加 `?t=Date.now()`**，那会让 CDN 缓存完全失效。
+
+改 `css/style.css` 或 `js/app.js` 后，必须同步更新：
+- `index.html` 里的 `?v=`
+- `prerender.js` 里的 `ASSET_VER`
+
+否则浏览器与已生成的静态页会读到旧资源。
+
+### 6.4 前端约定
+
+- 卡片用 `<a href="#/post/<id>">` 而非 `<div onclick>`（键盘可访问）
+- 列表分页 50 条/页（`PAGE_SIZE`），避免一次渲染 2000+ 节点
+- 搜索命中摘要需 `await ensureSearchMap()`，摘要不在主索引里
+- 页面标题/描述由 `setPageMeta()` 在路由切换时更新
 
 ---
 
-*最后更新：2026-05-10*  
-*由 Senior Developer (高级开发工程师) 维护*
+## 七、脚本职责
+
+### 常驻（根目录）
+
+| 脚本 | 用途 |
+|---|---|
+| `server.js` | 本地后端：鉴权、触发爬虫、SSE 日志 |
+| `build.js` | 扫描 solutions → index.json + search.json，并调用预渲染 |
+| `prerender.js` | 生成 `p/<id>/index.html`、sitemap.xml、robots.txt |
+| `luogu_fetch.js` | 洛谷题解抓取 |
+| `dfboy_fetch.js` | 东方博宜题目描述抓取 |
+| `fetch_dfboy_codes.js` | 东方博宜 AC 代码抓取 |
+
+### 维护工具（`scripts/`）
+
+| 脚本 | 用途 |
+|---|---|
+| `scripts/optimize_fonts.js` | TTF → WOFF2（已执行） |
+| `scripts/fix/fix_luogu_tags.js` | 按官方词典批量修正标签 |
+| `scripts/fix/fix_luogu_difficulty.js` | 难度命名迁移（旧 7 级 → 新 8 级） |
+| `scripts/fix/dfboy_difficulty_fix.js` | 修正博宜难度 |
+| `scripts/fetch/luogu_training_fetch.js` | 拉取洛谷题单归属 |
+| `scripts/legacy/code_import.js` | 从本地课程 md 批量导入代码 |
+
+> **待整理**：以下一次性脚本仍在根目录，计划移入 `scripts/legacy/`：
+> `apply_dfboy_training.js`、`apply_training_map.js`、`check_missing.js`、
+> `fix_empty_training.js`、`ftp_sync.py`、`ecosystem.config.js`、
+> `luogu_training_final.js`
+> （移动时需同步修正脚本内 `path.join(__dirname, 'solutions')` 为 `'../solutions'`）
+
+---
+
+## 八、已知限制
+
+1. **详情页 URL 不可索引**：SPA 详情仍是 `#/post/<id>`，能被搜索的是预渲染的 `/p/<id>/`。
+   彻底方案是改 history 路由 + 全站预渲染，工作量大，暂未做。
+2. **数学公式**：题解中的 LaTeX 在预渲染页里以原文显示（未接 KaTeX），
+   SPA 内同样未渲染。如需渲染，建议构建期接 KaTeX 服务端渲染。
+3. **CSP 保留 `unsafe-inline`**：前端仍有内联 style/onclick，需先清理才能移除。
+4. **无自动化测试**：改动靠人工验证 + `node --check` 语法检查。
+5. **登录态会过期**：洛谷 Cookie 有效期有限，抓取失败时优先怀疑 Cookie。
+
+---
+
+## 九、常见问题
+
+**Q：更新后线上没变化？**
+检查是否 push 到 master；Cloudflare 部署约 1–2 分钟；浏览器需硬刷新（Cmd+Shift+R）。
+
+**Q：抓取报「无法解析洛谷返回的数据」？**
+Cookie 失效或未登录。验证方法：带 Cookie 请求
+`/record/list?user=<uid>&status=12&_contentOnly=1`，401 表示未登录。
+
+**Q：预渲染很慢？**
+默认增量（比对 mtime + 资源版本号），只有变更的题会重写。
+首次或改 `ASSET_VER` 后会全量，约 100 秒。
+
+**Q：新增题解后忘记预渲染？**
+直接跑 `node build.js` 即可，它会自动调用 prerender。
+
+---
+
+*最后更新：2026-11-04*

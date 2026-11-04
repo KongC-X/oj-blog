@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P13016 [GESP202506 六级] 最大因数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵有 个结点的有根树，这些结点依次以 编号，根结点的编号为 。对于编号为 （ ）的结点，其父结点的编号为 的因数中除 以外最大的因数。 现在有 组询问，第 （ ）组询问给定 ，请你求出编号分别为 的两个结点在这棵树上的距离。两个结点之间的距离是连接这两个结点的简单路径所包含的边数。">
+<link rel="canonical" href="https://zymojblog.top/p/P13016/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="P13016 [GESP202506 六级] 最大因数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵有 个结点的有根树，这些结点依次以 编号，根结点的编号为 。对于编号为 （ ）的结点，其父结点的编号为 的因数中除 以外最大的因数。 现在有 组询问，第 （ ）组询问给定 ，请你求出编号分别为 的两个结点在这棵树上的距离。两个结点之间的距离是连接这两个结点的简单路径所包含的边数。">
+<meta property="og:url" content="https://zymojblog.top/p/P13016/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P13016 [GESP202506 六级] 最大因数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵有 个结点的有根树，这些结点依次以 编号，根结点的编号为 。对于编号为 （ ）的结点，其父结点的编号为 的因数中除 以外最大的因数。 现在有 组询问，第 （ ）组询问给定 ，请你求出编号分别为 的两个结点在这棵树上的距离。两个结点之间的距离是连接这两个结点的简单路径所包含的边数。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P13016 [GESP202506 六级] 最大因数","headline":"P13016 [GESP202506 六级] 最大因数 题解","description":"给定一棵有 个结点的有根树，这些结点依次以 编号，根结点的编号为 。对于编号为 （ ）的结点，其父结点的编号为 的因数中除 以外最大的因数。 现在有 组询问，第 （ ）组询问给定 ，请你求出编号分别为 的两个结点在这棵树上的距离。两个结点之间的距离是连接这两个结点的简单路径所包含的边数。","url":"https://zymojblog.top/p/P13016/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"图论、2025、数论、最近公共祖先 LCA、GESP","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/">全部题解</a>
+    <a href="/#/tags">标签分类</a>
+  </nav>
+</header>
+<main class="seo-main">
+  <div class="seo-crumb"><a href="/">首页</a> / <span>洛谷</span> / <span>P13016</span></div>
+  <h1 class="seo-title">P13016 [GESP202506 六级] 最大因数</h1>
+  <div class="seo-meta">
+    <span class="seo-badge seo-badge-source">洛谷</span>
+    <span class="seo-badge">普及</span>
+    
+  </div>
+  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%9B%BE%E8%AE%BA">图论</a><a class="seo-tag" href="/#/tag/2025">2025</a><a class="seo-tag" href="/#/tag/%E6%95%B0%E8%AE%BA">数论</a><a class="seo-tag" href="/#/tag/%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88%20LCA">最近公共祖先 LCA</a><a class="seo-tag" href="/#/tag/GESP">GESP</a></div>
+  <article class="markdown-body seo-article">
+<h1>P13016 [GESP202506 六级] 最大因数</h1>
+<blockquote>
+<p><strong>洛谷</strong> | 普及| C++14 | 提交时间: 2026-06-17</p>
+</blockquote>
+<p><strong>算法标签</strong>：<code>图论</code>、<code>2025</code>、<code>数论</code>、<code>最近公共祖先 LCA</code>、<code>GESP</code></p>
+<h2>题目背景</h2>
+<p>对应的选择、判断题：<a href="https://ti.luogu.com.cn/problemset/1186">https://ti.luogu.com.cn/problemset/1186</a></p>
+<h2>题目描述</h2>
+<p>给定一棵有 $10^9$ 个结点的有根树，这些结点依次以 $1, 2, \dots, 10^9$ 编号，根结点的编号为 $1$。对于编号为 $k$（$2 \leq k \leq 10^9$）的结点，其父结点的编号为 $k$ 的因数中除 $k$ 以外最大的因数。</p>
+<p>现在有 $q$ 组询问，第 $i$（$1 \leq i \leq q$）组询问给定 $x_i, y_i$，请你求出编号分别为 $x_i, y_i$ 的两个结点在这棵树上的距离。两个结点之间的距离是连接这两个结点的简单路径所包含的边数。</p>
+<h2>输入格式</h2>
+<p>第一行，一个正整数 $q$，表示询问组数。</p>
+<p>接下来 $q$ 行，每行两个正整数 $x_i, y_i$，表示询问结点的编号。</p>
+<h2>输出格式</h2>
+<p>输出共 $q$ 行，每行一个整数，表示结点 $x_i, y_i$ 之间的距离。</p>
+<h2>样例</h2>
+<p><strong>样例输入 #1</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">3</span>
+<span class="hljs-number">1</span> <span class="hljs-number">3</span>
+<span class="hljs-number">2</span> <span class="hljs-number">5</span>
+<span class="hljs-number">4</span> <span class="hljs-number">8</span>```
+
+**样例输出 #<span class="hljs-number">1</span>**</code></pre><p>1<br>2<br>1```</p>
+<p><strong>样例输入 #2</strong></p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">1</span>
+<span class="hljs-number">120</span> <span class="hljs-number">650</span>```
+
+**样例输出 #<span class="hljs-number">2</span>**</code></pre><p>9```</p>
+<h2>AC 代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 首先，看到树上简单路径，马上想到最近公共祖先，可是本题显然不可以建树，但是可以仿照 LCA 的思想来写。</span>
+<span class="hljs-comment">// 进来的 x 与 y 像求 LCA 一样分别向上跳。因为一个不是 1 的数的最大因数一定比它小。</span>
+<span class="hljs-comment">// 所以我们便可以将较大的那个数向上跳，这样我们在它们没有相遇的时候反复将较大的那个数向上跳，直到它们相遇为止。</span>
+<span class="hljs-comment">// 简单证明一下，因为一个不是 1 的数的最大因数一定比它小，那么较大那个数的在这棵树里的深度一定在这两个数的 LCA 下方，</span>
+<span class="hljs-comment">// 所以我们将大的那个数往上跳就是在不断接近 LCA，所以这样一定是正确的。</span>
+<span class="hljs-comment">// 至于找一个数的最大因数，代码非常简单。只需要找到最小的一个除了 1 以外能被它整除的数。那么这个数就是它的最大因数。</span>
+
+<span class="hljs-comment">// 求 x 的父节点：x 的最大真因数（除了 x 本身的最大因数）</span>
+<span class="hljs-comment">// 即 x 除以它的最小质因数（若 x 为质数则返回 1）</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">ys</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> </span>{
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= x; i++) {   <span class="hljs-comment">// 枚举可能的因数</span>
+        <span class="hljs-keyword">if</span> (x % i == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> x / i;                 <span class="hljs-comment">// i 是最小因数，x/i 就是最大真因数</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;                             <span class="hljs-comment">// x 是质数，父节点为 1</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-type">int</span> q;                                <span class="hljs-comment">// q: 询问组数</span>
+    cin &gt;&gt; q;
+    <span class="hljs-keyword">while</span> (q--) {
+        <span class="hljs-type">int</span> x, y;
+        cin &gt;&gt; x &gt;&gt; y;
+
+        <span class="hljs-comment">// ---------- 思路 ----------</span>
+        <span class="hljs-comment">// 树上每个结点的父节点为其最大真因数（质数的父节点为 1）。</span>
+        <span class="hljs-comment">// 要计算两个结点 x,y 的距离，就是它们到最近公共祖先(LCA)的路径长度之和。</span>
+        <span class="hljs-comment">// 由于树深度很小（每次至少除以 2，深度 ≤ log2(1e9) ≈ 30），可以直接模拟：</span>
+        <span class="hljs-comment">//   不断将较深的结点向上移动到父节点，直到两结点相遇。</span>
+        <span class="hljs-comment">// 移动时累加步数，最终步数即为距离。</span>
+
+        <span class="hljs-type">int</span> ans = <span class="hljs-number">0</span>;                       <span class="hljs-comment">// 距离累加器</span>
+        <span class="hljs-keyword">while</span> (x != y) {
+            <span class="hljs-keyword">if</span> (x &gt; y) {
+                x = <span class="hljs-built_in">ys</span>(x);                 <span class="hljs-comment">// x 向上移动一步</span>
+                ans++;
+            } <span class="hljs-keyword">else</span> {
+                y = <span class="hljs-built_in">ys</span>(y);                 <span class="hljs-comment">// y 向上移动一步</span>
+                ans++;
+            }
+        }
+        cout &lt;&lt; ans &lt;&lt; endl;
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+  </article>
+  <div class="seo-cta">
+    <a href="/#/post/P13016">在交互版中打开</a>
+    <span>支持目录跳转、代码复制、上下篇导航</span>
+  </div>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>
