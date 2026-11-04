@@ -6,7 +6,7 @@
 <title>1371 均分纸牌 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
 <link rel="canonical" href="https://zymojblog.top/p/1371/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="1371 均分纸牌 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1371 均分纸牌","headline":"1371 均分纸牌 题解","description":"有 堆纸牌（ ），排成一行，编号分别为 。 已知每堆纸牌有一定的张数，且张数之和均为 的倍数。移动各堆中的任意张纸牌，使每堆的数量达到相同，且移动次数最少。 移动规则： 每次可以移动任意的张数，第 堆可以移向第 堆，第 堆可以移向第 堆或第 堆， ， 第 堆只可以移向第 堆。 例如，当 时： 移动…","url":"https://zymojblog.top/p/1371/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1371</span></div>
-  <h1 class="seo-title">1371 均分纸牌</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">基础</span>
-    
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/jichu/">基础</a>
+  / <span>1371</span>
+</div>
+<h1 class="seo-title">1371 均分纸牌</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">基础</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E8%B4%AA%E5%BF%83/">贪心</a></div>
+<article class="markdown-body seo-article">
 <h1>1371 - 均分纸牌</h1>
 <h2>题目描述</h2>
 <p>有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 堆纸牌（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>200</mn></mrow><annotation encoding="application/x-tex">2≤n≤200</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">200</span></span></span></span>），排成一行，编号分别为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo separator="true">,</mo><mn>2</mn><mo separator="true">,</mo><mo>…</mo><mo separator="true">,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1,2,\dots,n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner">…</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">n</span></span></span></span> 。</p>
@@ -85,11 +91,25 @@
   cout&lt;&lt;ans&lt;&lt;endl; <span class="hljs-comment">//最后输出最少移动次数</span>
   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 } <span class="hljs-comment">//结束</span></code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/1371">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1371">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1370/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1370 平面分割（II）</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1372/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1372 活动选择</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1007/"><span class="seo-plist-id">P1007</span><span class="seo-plist-title">独木桥</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1012/"><span class="seo-plist-id">P1012</span><span class="seo-plist-title">[NOIP 1998 提高组] 拼数</span><span class="seo-plist-diff">提高</span></a></li>
+  <li><a href="/p/P1031/"><span class="seo-plist-id">P1031</span><span class="seo-plist-title">[NOIP 2002 提高组] 均分纸牌</span><span class="seo-plist-diff">普及-</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

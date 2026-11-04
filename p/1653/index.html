@@ -6,7 +6,7 @@
 <title>1653 取数 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="设有 个正整数（ ），其中每一个均是大于等于 、小于等于 的数。 从这 个数中任取出若干个数（不能取相邻的数），要求得到一种取法，使得到的和为最大。 例如：当 时，有 个数分别为： ； 此时，有许多种取法，如： 和为 ； 和为 ； 和为 ；">
 <link rel="canonical" href="https://zymojblog.top/p/1653/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="1653 取数 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="设有 个正整数（ ），其中每一个均是大于等于 、小于等于 的数。 从这 个数中任取出若干个数（不能取相邻的数），要求得到一种取法，使得到的和为最大。 例如：当 时，有 个数分别为： ； 此时，有许多种取法，如： 和为 ； 和为 ； 和为 ；">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="设有 个正整数（ ），其中每一个均是大于等于 、小于等于 的数。 从这 个数中任取出若干个数（不能取相邻的数），要求得到一种取法，使得到的和为最大。 例如：当 时，有 个数分别为： ； 此时，有许多种取法，如： 和为 ； 和为 ； 和为 ；">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1653 取数","headline":"1653 取数 题解","description":"设有 个正整数（ ），其中每一个均是大于等于 、小于等于 的数。 从这 个数中任取出若干个数（不能取相邻的数），要求得到一种取法，使得到的和为最大。 例如：当 时，有 个数分别为： ； 此时，有许多种取法，如： 和为 ； 和为 ； 和为 ；","url":"https://zymojblog.top/p/1653/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1653</span></div>
-  <h1 class="seo-title">1653 取数</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">基础</span>
-    <span class="seo-badge seo-badge-soft">动态规划-DP</span><span class="seo-badge seo-badge-soft">市赛省赛</span>
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/jichu/">基础</a>
+  / <span>1653</span>
+</div>
+<h1 class="seo-title">1653 取数</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">基础</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a><a class="seo-tag seo-tag-soft" href="/t/dfboy/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-DP/">动态规划-DP</a><a class="seo-tag seo-tag-soft" href="/t/dfboy/%E5%B8%82%E8%B5%9B%E7%9C%81%E8%B5%9B/">市赛省赛</a></div>
+<article class="markdown-body seo-article">
 <h1>1653 - 取数</h1>
 <h2>题目描述</h2>
 <p>设有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个正整数（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>N</mi><mo>≤</mo><mn>50</mn></mrow><annotation encoding="application/x-tex">1 ≤ N ≤ 50</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">50</span></span></span></span>），其中每一个均是大于等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>、小于等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>300</mn></mrow><annotation encoding="application/x-tex">300</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">300</span></span></span></span> 的数。</p>
@@ -78,11 +84,25 @@
     }
     cout &lt;&lt; dp[n];
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/1653">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1653">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1652/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1652 跳格子2</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1654/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1654 全部排列问题</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1216/"><span class="seo-plist-id">1216</span><span class="seo-plist-title">数塔问题</span><span class="seo-plist-diff">基础</span></a></li>
+  <li><a href="/p/1276/"><span class="seo-plist-id">1276</span><span class="seo-plist-title">挖地雷的算法</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1277/"><span class="seo-plist-id">1277</span><span class="seo-plist-title">合唱队形求解</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

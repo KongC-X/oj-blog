@@ -6,7 +6,7 @@
 <title>1483 棋盘（chess） 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="有一个 的棋盘，棋盘上每一个格子可能是红色、黄色或没有任何颜色的。你现在要从棋盘的最左上角走到棋盘的最右下角。 任何一个时刻，你所站在的位置必须是有颜色的（不能是无色的）， 你只能向上、下、左、右四个方向前进。当你从一个格子走向另一个格子时，如果两个格子的颜色相同，那你不需要花费金币；如果不同，则…">
 <link rel="canonical" href="https://zymojblog.top/p/1483/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="1483 棋盘（chess） 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="有一个 的棋盘，棋盘上每一个格子可能是红色、黄色或没有任何颜色的。你现在要从棋盘的最左上角走到棋盘的最右下角。 任何一个时刻，你所站在的位置必须是有颜色的（不能是无色的）， 你只能向上、下、左、右四个方向前进。当你从一个格子走向另一个格子时，如果两个格子的颜色相同，那你不需要花费金币；如果不同，则…">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="有一个 的棋盘，棋盘上每一个格子可能是红色、黄色或没有任何颜色的。你现在要从棋盘的最左上角走到棋盘的最右下角。 任何一个时刻，你所站在的位置必须是有颜色的（不能是无色的）， 你只能向上、下、左、右四个方向前进。当你从一个格子走向另一个格子时，如果两个格子的颜色相同，那你不需要花费金币；如果不同，则…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1483 棋盘（chess）","headline":"1483 棋盘（chess） 题解","description":"有一个 的棋盘，棋盘上每一个格子可能是红色、黄色或没有任何颜色的。你现在要从棋盘的最左上角走到棋盘的最右下角。 任何一个时刻，你所站在的位置必须是有颜色的（不能是无色的）， 你只能向上、下、左、右四个方向前进。当你从一个格子走向另一个格子时，如果两个格子的颜色相同，那你不需要花费金币；如果不同，则…","url":"https://zymojblog.top/p/1483/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"深搜、noip复赛","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1483</span></div>
-  <h1 class="seo-title">1483 棋盘（chess）</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">入门</span>
-    
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E6%B7%B1%E6%90%9C">深搜</a><a class="seo-tag" href="/#/tag/noip%E5%A4%8D%E8%B5%9B">noip复赛</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>1483</span>
+</div>
+<h1 class="seo-title">1483 棋盘（chess）</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E6%B7%B1%E6%90%9C/">深搜</a><a class="seo-tag" href="/tag/noip%E5%A4%8D%E8%B5%9B/">noip复赛</a></div>
+<article class="markdown-body seo-article">
 <h1>1483 - 棋盘（chess）</h1>
 <h2>题目描述</h2>
 <p>有一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>×</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">m \times m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 的棋盘，棋盘上每一个格子可能是红色、黄色或没有任何颜色的。你现在要从棋盘的最左上角走到棋盘的最右下角。</p>
@@ -121,11 +127,25 @@
     
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/1483">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1483">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1482/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1482 花生采摘</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1484/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1484 纪念品分组</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1360/"><span class="seo-plist-id">1360</span><span class="seo-plist-title">卒的遍历</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1362/"><span class="seo-plist-id">1362</span><span class="seo-plist-title">马的遍历</span><span class="seo-plist-diff">提高</span></a></li>
+  <li><a href="/p/1380/"><span class="seo-plist-id">1380</span><span class="seo-plist-title">小X学游泳</span><span class="seo-plist-diff">提高</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

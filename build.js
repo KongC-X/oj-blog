@@ -11,6 +11,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// 拼音库仅用于构建期生成搜索索引，缺失时跳过（不影响主流程）
+let pinyinFn = null;
+try {
+  pinyinFn = require('pinyin-pro').pinyin;
+} catch {
+  // 未安装 pinyin-pro 时静默降级
+}
+
 const SOLUTIONS_DIR = path.join(__dirname, 'solutions');
 const OUTPUT_FILE = path.join(__dirname, 'data', 'index.json');
 
@@ -199,6 +207,26 @@ function build() {
     JSON.stringify(searchMap),
     'utf-8'
   );
+
+  // 标题拼音索引：支持「gaojingdu」也能搜到「高精度」
+  if (pinyinFn) {
+    const pinyinMap = {};
+    for (const p of slimProblems) {
+      try {
+        const full = pinyinFn(p.title, { toneType: 'none', type: 'array' }).join('');
+        const first = pinyinFn(p.title, { pattern: 'first', toneType: 'none', type: 'array' }).join('');
+        pinyinMap[p.id] = `${full} ${first}`;
+      } catch {
+        // 单条失败忽略
+      }
+    }
+    fs.writeFileSync(
+      path.join(__dirname, 'data', 'pinyin.json'),
+      JSON.stringify(pinyinMap),
+      'utf-8'
+    );
+    console.log(`🔤 拼音索引: data/pinyin.json（${Object.keys(pinyinMap).length} 条）`);
+  }
 
   console.log(`✅ 索引构建完成！共 ${problems.length} 道题目`);
   console.log(`📁 输出: ${path.relative(process.cwd(), OUTPUT_FILE)}`);

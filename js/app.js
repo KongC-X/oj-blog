@@ -655,33 +655,83 @@
       list = list.filter(p => p.source === sourceName);
     }
 
-    // Search filter
+    // Search filter：支持别名（dp→动态规划）与标题拼音
     if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
+      const terms = expandQuery(searchQuery.trim());
+      const hit = (text) => {
+        if (!text) return false;
+        const low = String(text).toLowerCase();
+        return terms.some(t => low.includes(t));
+      };
       list = list.filter(p =>
-        p.id.toLowerCase().includes(q) ||
-        p.numId.includes(q) ||
-        p.title.toLowerCase().includes(q) ||
-        p.tags.some(t => t.toLowerCase().includes(q)) ||
-        p.source.toLowerCase().includes(q) ||
-        (SEARCH_MAP && SEARCH_MAP[p.id] ? SEARCH_MAP[p.id].toLowerCase().includes(q) : false)
+        hit(p.id) || hit(p.numId) || hit(p.title) || hit(p.source) ||
+        (Array.isArray(p.tags) && p.tags.some(hit)) ||
+        (SEARCH_MAP && hit(SEARCH_MAP[p.id])) ||
+        (PINYIN_MAP && hit(PINYIN_MAP[p.id]))
       );
     }
 
     return list;
   }
 
-  // 搜索摘要懒加载：首屏不下载，用户真正输入关键词时才取
+  // ========== 搜索增强：别名与拼音 ==========
+  // 学生常用英文缩写或近义词搜索，这里做双向映射
+  const SEARCH_ALIASES = {
+    'dp': ['动态规划'],
+    'bfs': ['广度优先', '广搜'],
+    'dfs': ['深度优先', '深搜'],
+    'gcd': ['最大公约数', '数论'],
+    'lcm': ['最小公倍数'],
+    'lca': ['最近公共祖先'],
+    'rmq': ['区间最值'],
+    'st': ['稀疏表'],
+    'kmp': ['字符串匹配'],
+    'dijkstra': ['最短路'],
+    'spfa': ['最短路'],
+    'floyd': ['最短路'],
+    'dsu': ['并查集'],
+    'knapsack': ['背包'],
+    'greedy': ['贪心'],
+    'sort': ['排序'],
+    'prime': ['素数', '质数'],
+    'bigint': ['高精度', '大数'],
+    'binary': ['二分'],
+    'recursion': ['递归'],
+  };
+
+  // 把查询词扩展成同义集合（任一词命中即算匹配）
+  function expandQuery(q) {
+    const lower = q.toLowerCase();
+    const terms = new Set([lower]);
+    for (const [key, alts] of Object.entries(SEARCH_ALIASES)) {
+      const group = [key, ...alts].map(s => s.toLowerCase());
+      if (group.includes(lower)) {
+        group.forEach(t => terms.add(t));
+      }
+    }
+    return [...terms];
+  }
+
+  let PINYIN_MAP = null;
+
+  // 搜索摘要与标题拼音：首屏不下载，用户真正输入时才取
   let SEARCH_MAP = null;
   let _searchLoading = null;
 
   function ensureSearchMap() {
-    if (SEARCH_MAP) return Promise.resolve(SEARCH_MAP);
+    if (SEARCH_MAP && PINYIN_MAP) return Promise.resolve();
     if (_searchLoading) return _searchLoading;
-    _searchLoading = robustFetch('data/search.json', 2, 10000)
-      .then(res => res.json())
-      .then(data => { SEARCH_MAP = data || {}; return SEARCH_MAP; })
-      .catch(() => { SEARCH_MAP = {}; return SEARCH_MAP; });
+    _searchLoading = Promise.all([
+      robustFetch('data/search.json', 2, 10000)
+        .then(res => res.json())
+        .catch(() => ({})),
+      robustFetch('data/pinyin.json', 2, 10000)
+        .then(res => res.json())
+        .catch(() => ({})),
+    ]).then(([searchMap, pinyinMap]) => {
+      SEARCH_MAP = searchMap || {};
+      PINYIN_MAP = pinyinMap || {};
+    });
     return _searchLoading;
   }
 
@@ -2420,14 +2470,19 @@ int main() { ... }
           const dataScript = list.querySelector('#problemsData');
           if (!dataScript) return;
           const allProblems = JSON.parse(dataScript.textContent);
-            const q = raw.trim().toLowerCase();
+            const q = raw.trim();
             if (q) await ensureSearchMap();
+            const terms = q ? expandQuery(q) : [];
+            const hit = (text) => {
+              if (!text) return false;
+              const low = String(text).toLowerCase();
+              return terms.some(t => low.includes(t));
+            };
             const filtered = q ? allProblems.filter(p => {
-              return (p.id || '').toLowerCase().includes(q) ||
-                     (p.title || '').toLowerCase().includes(q) ||
-                     (p.numId || '').toLowerCase().includes(q) ||
-                     p.tags.some(t => t.toLowerCase().includes(q)) ||
-                     (SEARCH_MAP && SEARCH_MAP[p.id] ? SEARCH_MAP[p.id].toLowerCase().includes(q) : false);
+              return hit(p.id) || hit(p.title) || hit(p.numId) ||
+                     (Array.isArray(p.tags) && p.tags.some(hit)) ||
+                     (SEARCH_MAP && hit(SEARCH_MAP[p.id])) ||
+                     (PINYIN_MAP && hit(PINYIN_MAP[p.id]));
             }) : allProblems;
             list.innerHTML = renderProblemList(filtered);
             const countEl = list.closest('.page').querySelector('.filter-result-count');

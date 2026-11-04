@@ -6,7 +6,7 @@
 <title>2070 道路规划 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
 <link rel="canonical" href="https://zymojblog.top/p/2070/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="2070 道路规划 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2070 道路规划","headline":"2070 道路规划 题解","description":"有 个村庄，编号从 到 ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 和 是相连的，当且仅当有一条公路在 与 之间，或存在一个村庄 ，有一条的道路连接着 和 之间,一条连接着 和 。 我们知道，已经有一些道路在一些村庄之间，你的工作是再建一些道路，使得所有的村庄连接并且所有的道路建造…","url":"https://zymojblog.top/p/2070/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"并查集","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2070</span></div>
-  <h1 class="seo-title">2070 道路规划</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">入门</span>
-    
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86">并查集</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2070</span>
+</div>
+<h1 class="seo-title">2070 道路规划</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a></div>
+<article class="markdown-body seo-article">
 <h1>2070 - 道路规划</h1>
 <h2>题目描述</h2>
 <p>有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个村庄，编号从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> ，请你建立一些道路，使得任意两个村庄可以相连。我们说两个村 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 是相连的，当且仅当有一条公路在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>之间，或存在一个村庄 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span>，有一条的道路连接着 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> 之间,一条连接着 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> 。</p>
@@ -137,11 +143,25 @@
 
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/2070">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2070">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2069/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2069 重建电路</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2072/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2072 公交乘车</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1141/"><span class="seo-plist-id">P1141</span><span class="seo-plist-title">01迷宫</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1525/"><span class="seo-plist-id">P1525</span><span class="seo-plist-title">[NOIP 2010 提高组] 关押罪犯</span><span class="seo-plist-diff">普及+/提高-</span></a></li>
+  <li><a href="/p/P1546/"><span class="seo-plist-id">P1546</span><span class="seo-plist-title">[USACO3.1] 最短网络 Agri-Net</span><span class="seo-plist-diff">普及</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

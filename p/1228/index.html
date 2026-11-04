@@ -6,7 +6,7 @@
 <title>1228 排队打水问题 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="有 个人排队到 个水龙头去打水，他们装满水桶的时间 为整数且各不相等，应如何安排他们的打水顺序才能使他们花费的总时间最少？ 每个人打水的时间 = 排队的时间 + 实际打水的时间，本题假设一个人打好水，排在他后面的人接着打水的这个切换过程不消耗时间。 比如，有 个人 和 ，他们打水的时间分别是 和 …">
 <link rel="canonical" href="https://zymojblog.top/p/1228/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="1228 排队打水问题 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="有 个人排队到 个水龙头去打水，他们装满水桶的时间 为整数且各不相等，应如何安排他们的打水顺序才能使他们花费的总时间最少？ 每个人打水的时间 = 排队的时间 + 实际打水的时间，本题假设一个人打好水，排在他后面的人接着打水的这个切换过程不消耗时间。 比如，有 个人 和 ，他们打水的时间分别是 和 …">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="有 个人排队到 个水龙头去打水，他们装满水桶的时间 为整数且各不相等，应如何安排他们的打水顺序才能使他们花费的总时间最少？ 每个人打水的时间 = 排队的时间 + 实际打水的时间，本题假设一个人打好水，排在他后面的人接着打水的这个切换过程不消耗时间。 比如，有 个人 和 ，他们打水的时间分别是 和 …">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1228 排队打水问题","headline":"1228 排队打水问题 题解","description":"有 个人排队到 个水龙头去打水，他们装满水桶的时间 为整数且各不相等，应如何安排他们的打水顺序才能使他们花费的总时间最少？ 每个人打水的时间 = 排队的时间 + 实际打水的时间，本题假设一个人打好水，排在他后面的人接着打水的这个切换过程不消耗时间。 比如，有 个人 和 ，他们打水的时间分别是 和 …","url":"https://zymojblog.top/p/1228/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"贪心","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1228</span></div>
-  <h1 class="seo-title">1228 排队打水问题</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">基础</span>
-    <span class="seo-badge seo-badge-soft">贪心</span>
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%B4%AA%E5%BF%83">贪心</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/jichu/">基础</a>
+  / <span>1228</span>
+</div>
+<h1 class="seo-title">1228 排队打水问题</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">基础</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E8%B4%AA%E5%BF%83/">贪心</a><a class="seo-tag seo-tag-soft" href="/t/dfboy/%E8%B4%AA%E5%BF%83/">贪心</a></div>
+<article class="markdown-body seo-article">
 <h1>1228 - 排队打水问题</h1>
 <h2>题目描述</h2>
 <p>有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个人排队到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span></span></span></span> 个水龙头去打水，他们装满水桶的时间 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>t</mi><mn>2</mn></msub><mo separator="true">,</mo><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mi mathvariant="normal">.</mi><mo separator="true">,</mo><msub><mi>t</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">t_1,t_2,...,t_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8095em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">t</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 为整数且各不相等，应如何安排他们的打水顺序才能使他们花费的总时间最少？</p>
@@ -71,11 +77,25 @@
     }
     cout &lt;&lt; s &lt;&lt; endl;
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/1228">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1228">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1227/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1227 阿凡提的难题</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1229/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1229 拦截导弹的系统数量求解</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1007/"><span class="seo-plist-id">P1007</span><span class="seo-plist-title">独木桥</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1012/"><span class="seo-plist-id">P1012</span><span class="seo-plist-title">[NOIP 1998 提高组] 拼数</span><span class="seo-plist-diff">提高</span></a></li>
+  <li><a href="/p/P1031/"><span class="seo-plist-id">P1031</span><span class="seo-plist-title">[NOIP 2002 提高组] 均分纸牌</span><span class="seo-plist-diff">普及-</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

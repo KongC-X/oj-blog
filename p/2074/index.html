@@ -6,7 +6,7 @@
 <title>2074 货币问题 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
 <link rel="canonical" href="https://zymojblog.top/p/2074/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="2074 货币问题 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2074 货币问题","headline":"2074 货币问题 题解","description":"某国家有 种不同面值的货币，第 种货币价值 元。 请问：如果每种货币都提供任意多的数量的情况下，如果需要 元金额的货币，有多少种不同的方案？","url":"https://zymojblog.top/p/2074/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"动态规划、背包","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>2074</span></div>
-  <h1 class="seo-title">2074 货币问题</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">入门</span>
-    
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92">动态规划</a><a class="seo-tag" href="/#/tag/%E8%83%8C%E5%8C%85">背包</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2074</span>
+</div>
+<h1 class="seo-title">2074 货币问题</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a><a class="seo-tag" href="/tag/%E8%83%8C%E5%8C%85/">背包</a></div>
+<article class="markdown-body seo-article">
 <h1>2074 - 货币问题</h1>
 <h2>题目描述</h2>
 <p>某国家有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 种不同面值的货币，第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 种货币价值 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">a_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 元。</p>
@@ -69,11 +75,25 @@
      
     <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/2074">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2074">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2073/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2073 码头的集装箱</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2075/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2075 最大卡路里</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1216/"><span class="seo-plist-id">1216</span><span class="seo-plist-title">数塔问题</span><span class="seo-plist-diff">基础</span></a></li>
+  <li><a href="/p/1276/"><span class="seo-plist-id">1276</span><span class="seo-plist-title">挖地雷的算法</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1277/"><span class="seo-plist-id">1277</span><span class="seo-plist-title">合唱队形求解</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>

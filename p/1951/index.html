@@ -6,7 +6,7 @@
 <title>1951 子串统计 题解 - 章老师的OJ题解站</title>
 <meta name="description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
 <link rel="canonical" href="https://zymojblog.top/p/1951/">
-<meta property="og:type" content="article">
+<meta property="og:type" content="website">
 <meta property="og:site_name" content="章老师的OJ题解站">
 <meta property="og:title" content="1951 子串统计 题解 - 章老师的OJ题解站">
 <meta property="og:description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
@@ -16,28 +16,34 @@
 <meta name="twitter:description" content="给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
 <link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1951 子串统计","headline":"1951 子串统计 题解","description":"给定一个长度为 的字符串 ，还有一个数字 ，统计长度大于等于 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。","url":"https://zymojblog.top/p/1951/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯、字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
 <header class="seo-header">
   <a class="seo-logo" href="/">章老师的OJ题解站</a>
   <nav class="seo-nav">
-    <a href="/">全部题解</a>
-    <a href="/#/tags">标签分类</a>
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
   </nav>
 </header>
-<main class="seo-main">
-  <div class="seo-crumb"><a href="/">首页</a> / <span>东方博宜</span> / <span>1951</span></div>
-  <h1 class="seo-title">1951 子串统计</h1>
-  <div class="seo-meta">
-    <span class="seo-badge seo-badge-source">东方博宜</span>
-    <span class="seo-badge">入门</span>
-    <span class="seo-badge seo-badge-soft">蓝桥杯STEAM</span>
-  </div>
-  <div class="seo-tags"><a class="seo-tag" href="/#/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF">蓝桥杯</a><a class="seo-tag" href="/#/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2">字符串</a></div>
-  <article class="markdown-body seo-article">
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>1951</span>
+</div>
+<h1 class="seo-title">1951 子串统计</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E8%93%9D%E6%A1%A5%E6%9D%AF/">蓝桥杯</a><a class="seo-tag" href="/tag/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a><a class="seo-tag seo-tag-soft" href="/t/dfboy/%E8%93%9D%E6%A1%A5%E6%9D%AFSTEAM/">蓝桥杯STEAM</a></div>
+<article class="markdown-body seo-article">
 <h1>1951 - 子串统计</h1>
 <h2>题目描述</h2>
 <p>给定一个长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 的字符串 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span></span></span></span>，还有一个数字 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span>，统计长度大于等于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> 的出现次数最多的子串（不同的出现可以相交），如果有多个，输出最长的，如果仍然有多个，输出第一次出现最早的。</p>
@@ -98,11 +104,25 @@ string r;<span class="hljs-comment">//表示出现次数最多的结果字符串
     
     cout&lt;&lt;r;
 }</code></pre>
-  </article>
-  <div class="seo-cta">
-    <a href="/#/post/1951">在交互版中打开</a>
-    <span>支持目录跳转、代码复制、上下篇导航</span>
-  </div>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1951">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1950/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1950 蓝桥杯赛迷宫</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1952/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1952 邮票</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1474/"><span class="seo-plist-id">1474</span><span class="seo-plist-title">FJ的字符串</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1475/"><span class="seo-plist-id">1475</span><span class="seo-plist-title">字符串对比</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1826/"><span class="seo-plist-id">1826</span><span class="seo-plist-title">水下探测器：deep.cpp</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
 </main>
 <footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
 </body>
