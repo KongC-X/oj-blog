@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="输入一个英文句子，例如：This is a Book.，可以看到句子是以 . 来作为结束符号的，并且单词之间以一个空格来分隔。 接着再输入一个单词 ，请找出首次在句子中出现的与 相同的单词，是句子中的第几个单词，若不存在，则输出该句子中单词字符的总个数。 例如对上句子而言，若输入单词 is，则应输…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1012 我是第几个单词","headline":"1012 我是第几个单词 题解","description":"输入一个英文句子，例如：This is a Book.，可以看到句子是以 . 来作为结束符号的，并且单词之间以一个空格来分隔。 接着再输入一个单词 ，请找出首次在句子中出现的与 相同的单词，是句子中的第几个单词，若不存在，则输出该句子中单词字符的总个数。 例如对上句子而言，若输入单词 is，则应输…","url":"https://zymojblog.top/p/1012/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"字符串","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -40,11 +41,11 @@
 <h1>1012 - 我是第几个单词</h1>
 <h2>题目描述</h2>
 <p>输入一个英文句子，例如：<code>This is a Book.</code>，可以看到句子是以 <code>.</code> 来作为结束符号的，并且单词之间以一个空格来分隔。</p>
-<p>接着再输入一个单词 $A$ ，请找出首次在句子中出现的与 $A$ 相同的单词，是句子中的第几个单词，若不存在，则输出该句子中单词字符的总个数。</p>
-<p>例如对上句子而言，若输入单词 <code>is</code>，则应输出：$2$。 若输入单词 <code>isa</code>，则应输出：$11$。</p>
+<p>接着再输入一个单词 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> ，请找出首次在句子中出现的与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 相同的单词，是句子中的第几个单词，若不存在，则输出该句子中单词字符的总个数。</p>
+<p>例如对上句子而言，若输入单词 <code>is</code>，则应输出：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span>。 若输入单词 <code>isa</code>，则应输出：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>11</mn></mrow><annotation encoding="application/x-tex">11</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">11</span></span></span></span>。</p>
 <h2>输入</h2>
-<p>第一行为以 <code>.</code> 结束的一个词组（仅由若干个大小写字母组成的单词构成，单词间由一空格隔开，除单词和最后的 <code>.</code> 以外，不含其它字符，句子总长度不超过 $800$，每个单词长度不超过 $90$ 个字符）</p>
-<p>第二行是一个单词（不含空格，长度不超过 $90$）。</p>
+<p>第一行为以 <code>.</code> 结束的一个词组（仅由若干个大小写字母组成的单词构成，单词间由一空格隔开，除单词和最后的 <code>.</code> 以外，不含其它字符，句子总长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>800</mn></mrow><annotation encoding="application/x-tex">800</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">800</span></span></span></span>，每个单词长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn></mrow><annotation encoding="application/x-tex">90</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">90</span></span></span></span> 个字符）</p>
+<p>第二行是一个单词（不含空格，长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn></mrow><annotation encoding="application/x-tex">90</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">90</span></span></span></span>）。</p>
 <h2>输出</h2>
 <p>一个整数。</p>
 <h2>AC代码</h2>

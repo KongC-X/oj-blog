@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1449 后缀表达式","headline":"P1449 后缀表达式 题解","description":"所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。 本题中运算符仅包含 。保证对于 运算除数不为 0。特别地，其中 运算的结果需要向 0 取整（即与 C++ / 运算的规则一致）。 如：…","url":"https://zymojblog.top/p/P1449/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"模拟、字符串、线性数据结构、栈","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -44,10 +45,10 @@
 <p><strong>算法标签</strong>：<code>模拟</code>、<code>字符串</code>、<code>线性数据结构</code>、<code>栈</code></p>
 <h2>题目描述</h2>
 <p>所谓后缀表达式是指这样的一个表达式：式中不再引用括号，运算符号放在两个运算对象之后，所有计算按运算符号出现的顺序，严格地由左而右新进行（不用考虑运算符的优先级）。</p>
-<p>本题中运算符仅包含 $\texttt{+-<em>/}$。保证对于 $\texttt{/}$ 运算除数不为 0。特别地，其中 $\texttt{/}$ 运算的结果需要*<em>向 0 取整</em></em>（即与 C++ <code>/</code> 运算的规则一致）。</p>
-<p>如：$\texttt{3*(5-2)+7}$ 对应的后缀表达式为：$\texttt{3.5.2.-*7.+@}$。在该式中，<code>@</code> 为表达式的结束符号。<code>.</code> 为操作数的结束符号。</p>
+<p>本题中运算符仅包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">+-*/</mtext></mrow><annotation encoding="application/x-tex">\texttt{+-*/}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord texttt">+-*/</span></span></span></span></span>。保证对于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">/</mtext></mrow><annotation encoding="application/x-tex">\texttt{/}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord texttt">/</span></span></span></span></span> 运算除数不为 0。特别地，其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">/</mtext></mrow><annotation encoding="application/x-tex">\texttt{/}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord texttt">/</span></span></span></span></span> 运算的结果需要<strong>向 0 取整</strong>（即与 C++ <code>/</code> 运算的规则一致）。</p>
+<p>如：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">3*(5-2)+7</mtext></mrow><annotation encoding="application/x-tex">\texttt{3*(5-2)+7}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord text"><span class="mord texttt">3*(5-2)+7</span></span></span></span></span> 对应的后缀表达式为：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="monospace">3.5.2.-*7.+@</mtext></mrow><annotation encoding="application/x-tex">\texttt{3.5.2.-*7.+@}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6111em;"></span><span class="mord text"><span class="mord texttt">3.5.2.-*7.+@</span></span></span></span></span>。在该式中，<code>@</code> 为表达式的结束符号。<code>.</code> 为操作数的结束符号。</p>
 <h2>输入格式</h2>
-<p>输入一行一个字符串 $s$，表示后缀表达式。</p>
+<p>输入一行一个字符串 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span>，表示后缀表达式。</p>
 <h2>输出格式</h2>
 <p>输出一个整数，表示表达式的值。</p>
 <h2>样例</h2>

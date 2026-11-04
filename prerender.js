@@ -23,7 +23,7 @@ const ROOT = __dirname;
 const OUT_DIR = path.join(ROOT, 'p');
 const INDEX_FILE = path.join(ROOT, 'data', 'index.json');
 const SITE = 'https://zymojblog.top';
-const ASSET_VER = '20261104c';
+const ASSET_VER = '20261104d';
 const LIMIT_ARG = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = LIMIT_ARG ? parseInt(LIMIT_ARG.slice(8), 10) : 0;
 
@@ -77,6 +77,8 @@ function plainText(md, maxLen) {
 function renderPage(p, bodyHtml, description) {
   const pageUrl = `${SITE}/p/${p.id}/`;
   const title = `${p.id} ${p.title} 题解 - 章老师的OJ题解站`;
+  // 仅当正文真的渲染出公式时才引入 KaTeX 样式（28KB），避免无谓下载
+  const hasMath = bodyHtml.includes('class="katex');
   const tagsHtml = (p.tags || [])
     .map(t => `<a class="seo-tag" href="/#/tag/${encodeURIComponent(t)}">${escapeHtml(t)}</a>`)
     .join('');
@@ -121,6 +123,7 @@ function renderPage(p, bodyHtml, description) {
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=${ASSET_VER}">
+${hasMath ? '<link rel="stylesheet" href="/vendor/katex/katex.min.css">' : ''}
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 </head>
 <body>
@@ -158,6 +161,52 @@ ${bodyHtml}
 async function main() {
   const { marked } = await import('marked');
   const hljs = require(path.join(ROOT, 'vendor', 'bundle.min.js'));
+  const katex = require('katex');
+
+  // ---------- LaTeX 公式扩展 ----------
+  // 用 marked 扩展而非正则后处理，这样代码块/行内代码里的 $ 不会被误伤
+  const blockMath = {
+    name: 'blockMath',
+    level: 'block',
+    start(src) {
+      const i = src.indexOf('$$');
+      return i < 0 ? undefined : i;
+    },
+    tokenizer(src) {
+      const m = /^\$\$([\s\S]+?)\$\$/.exec(src);
+      if (m) return { type: 'blockMath', raw: m[0], text: m[1].trim() };
+    },
+    renderer(token) {
+      try {
+        return katex.renderToString(token.text, { throwOnError: false, displayMode: true, strict: false });
+      } catch {
+        return `<pre class="math-error">${escapeHtml(token.text)}</pre>`;
+      }
+    },
+  };
+
+  const inlineMath = {
+    name: 'inlineMath',
+    level: 'inline',
+    start(src) {
+      const i = src.indexOf('$');
+      return i < 0 ? undefined : i;
+    },
+    tokenizer(src) {
+      // (?!\$) 避免把 $$ 当成行内公式开头
+      const m = /^\$(?!\$)([^$\n]+?)\$/.exec(src);
+      if (m) return { type: 'inlineMath', raw: m[0], text: m[1].trim() };
+    },
+    renderer(token) {
+      try {
+        return katex.renderToString(token.text, { throwOnError: false, displayMode: false, strict: false });
+      } catch {
+        return `<code>${escapeHtml(token.raw)}</code>`;
+      }
+    },
+  };
+
+  marked.use({ extensions: [blockMath, inlineMath] });
 
   // 代码块高亮
   marked.use({

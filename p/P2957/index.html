@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P2957 [USACO09OCT] Barn Echoes G","headline":"P2957 [USACO09OCT] Barn Echoes G 题解","description":"奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。 输入两个字符串（长度为 到 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两…","url":"https://zymojblog.top/p/P2957/","inLanguage":"zh-CN","educationalLevel":"普及-","learningResourceType":"题解","about":"字符串、2009、USACO、哈希 hashing、前缀和","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -44,10 +45,10 @@
 <p><strong>算法标签</strong>：<code>字符串</code>、<code>2009</code>、<code>USACO</code>、<code>哈希 hashing</code>、<code>前缀和</code></p>
 <h2>题目描述</h2>
 <p>奶牛们非常享受在牛栏中哞叫，因为她们可以听到她们哞声的回音。虽然有时候并不能完全听到完整的回音。Bessie 曾经是一个出色的秘书，所以她精确地纪录了所有的哞叫声及其回声。她很好奇到底两个声音的重复部分有多长。</p>
-<p>输入两个字符串（长度为 $1$ 到 $80$ 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两个字符串的重复部分指的是同时是一个字符串的前缀和另一个字符串的后缀的字符串。</p>
+<p>输入两个字符串（长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>80</mn></mrow><annotation encoding="application/x-tex">80</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">80</span></span></span></span> 个字母），表示两个哞叫声。你要确定最长的重复部分的长度。两个字符串的重复部分指的是同时是一个字符串的前缀和另一个字符串的后缀的字符串。</p>
 <p>我们通过一个例子来理解题目。考虑下面的两个哞声：</p>
 <pre><code class="hljs language-cpp">moyooyoxyzooo
-yzoooqyasdfljkamo</code></pre><p>第一个串的最后的部分 <code>yzooo</code> 跟第二个串的第一部分重复。第二个串的最后的部分 <code>mo</code> 跟第一个串的第一部分重复。所以 <code>yzooo</code> 跟 <code>mo</code> 都是这 $2$ 个串的重复部分。其中，<code>yzooo</code> 比较长，所以最长的重复部分的长度就是 $5$。</p>
+yzoooqyasdfljkamo</code></pre><p>第一个串的最后的部分 <code>yzooo</code> 跟第二个串的第一部分重复。第二个串的最后的部分 <code>mo</code> 跟第一个串的第一部分重复。所以 <code>yzooo</code> 跟 <code>mo</code> 都是这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 个串的重复部分。其中，<code>yzooo</code> 比较长，所以最长的重复部分的长度就是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span>。</p>
 <h2>输入格式</h2>
 <p>两行字符串，表示一只奶牛的哞叫声及其回声。</p>
 <h2>输出格式</h2>

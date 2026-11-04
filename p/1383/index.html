@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1383 奶牛和草丛","headline":"1383 奶牛和草丛 题解","description":"奶牛Bessie计划好好享受柔软的春季新草。新草分布在 行 列的牧场里。它想计算一下牧场中的草丛数量。 在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。 例如，考虑如下5行6列的牧场地图； 这个牧场有 个草丛：一个在第一行，一个在第三列横跨了…","url":"https://zymojblog.top/p/1383/","inLanguage":"zh-CN","educationalLevel":"提高","learningResourceType":"题解","about":"深搜、递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,7 +40,7 @@
   <article class="markdown-body seo-article">
 <h1>1383 - 奶牛和草丛</h1>
 <h2>题目描述</h2>
-<p>奶牛Bessie计划好好享受柔软的春季新草。新草分布在 $R$ 行 $C$ 列的牧场里。它想计算一下牧场中的草丛数量。</p>
+<p>奶牛Bessie计划好好享受柔软的春季新草。新草分布在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> 列的牧场里。它想计算一下牧场中的草丛数量。</p>
 <p>在牧场地图中，每个草丛要么是单个“#”，要么是有公共边的相邻多个“#”。给定牧场地图，计算有多少个草丛。</p>
 <p>例如，考虑如下5行6列的牧场地图；</p>
 <pre><code class="hljs language-cpp">`.#....
@@ -47,10 +48,10 @@
 ..#..#
 ....##
 .....#
-`</code></pre><p>这个牧场有 $3$ 个草丛：一个在第一行，一个在第三列横跨了二、三行，一个在第三行横跨了三、四、五行。</p>
+`</code></pre><p>这个牧场有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn></mrow><annotation encoding="application/x-tex">3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> 个草丛：一个在第一行，一个在第三列横跨了二、三行，一个在第三行横跨了三、四、五行。</p>
 <h2>输入</h2>
-<p>第一行包含两个整数 $R$ 和 $C$ ，中间用单个空格隔开。</p>
-<p>接下来 $R$ 行，每行 $C$ 个字符，描述牧场地图。字符只有“#”或“.”两种。($1 ≤ R, C ≤ 100 $)</p>
+<p>第一行包含两个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> ，中间用单个空格隔开。</p>
+<p>接下来 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span></span></span></span> 行，每行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> 个字符，描述牧场地图。字符只有“#”或“.”两种。(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>R</mi><mo separator="true">,</mo><mi>C</mi><mo>≤</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">1 ≤ R, C ≤ 100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span>)</p>
 <h2>输出</h2>
 <p>输出一个整数，表示草丛数。</p>
 <h2>解题思路</h2>

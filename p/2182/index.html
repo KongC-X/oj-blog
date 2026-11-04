@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="给出一个 个结点的二叉树，请求出二叉树的前序遍历，中序遍历和后序遍历。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2182 二叉树的遍历","headline":"2182 二叉树的遍历 题解","description":"给出一个 个结点的二叉树，请求出二叉树的前序遍历，中序遍历和后序遍历。","url":"https://zymojblog.top/p/2182/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"二叉树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,11 +40,11 @@
   <article class="markdown-body seo-article">
 <h1>2182 - 二叉树的遍历</h1>
 <h2>题目描述</h2>
-<p>给出一个 $n$ 个结点的二叉树，请求出二叉树的前序遍历，中序遍历和后序遍历。</p>
+<p>给出一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个结点的二叉树，请求出二叉树的前序遍历，中序遍历和后序遍历。</p>
 <h2>输入</h2>
-<p>第一行有一个整数 $n$ ()，表示二叉树有 $n$ 个结点；</p>
-<p>以下 $n$ 行，每行第一个为一个大写字母表示结点的值，第 $i+1$ 行的结点编号为 $i$ ；</p>
-<p>后面为两整数，第一个表示该结点左孩子结点编号，第二个表示该结点右孩子的结点编号，如果该编号为 $0$ 表示没有；（编号为 $1$ 的结点是树的根）</p>
+<p>第一行有一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> ()，表示二叉树有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个结点；</p>
+<p>以下 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行，每行第一个为一个大写字母表示结点的值，第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7429em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 行的结点编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> ；</p>
+<p>后面为两整数，第一个表示该结点左孩子结点编号，第二个表示该结点右孩子的结点编号，如果该编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 表示没有；（编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 的结点是树的根）</p>
 <h2>输出</h2>
 <p>共三行，第一行为二叉树的前序遍历，第二行为中序遍历，第三行为后序遍历；</p>
 <h2>AC代码</h2>

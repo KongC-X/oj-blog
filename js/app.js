@@ -807,14 +807,94 @@
     return content;
   }
 
+  // ========== LaTeX 公式（KaTeX 懒加载） ==========
+  // 仅在当前题解含 $ 时加载，避免所有页面都下载 268KB
+  let _katexPromise = null;
+  let _katexExtRegistered = false;
+
+  function registerKatexExtensions() {
+    if (_katexExtRegistered || typeof marked === 'undefined' || !window.katex) return;
+    _katexExtRegistered = true;
+
+    const blockMath = {
+      name: 'blockMath',
+      level: 'block',
+      start(src) {
+        const i = src.indexOf('$$');
+        return i < 0 ? undefined : i;
+      },
+      tokenizer(src) {
+        const m = /^\$\$([\s\S]+?)\$\$/.exec(src);
+        if (m) return { type: 'blockMath', raw: m[0], text: m[1].trim() };
+      },
+      renderer(token) {
+        try {
+          return window.katex.renderToString(token.text, { throwOnError: false, displayMode: true, strict: false });
+        } catch {
+          return `<pre class="math-fallback">${escapeHtml(token.text)}</pre>`;
+        }
+      },
+    };
+
+    const inlineMath = {
+      name: 'inlineMath',
+      level: 'inline',
+      start(src) {
+        const i = src.indexOf('$');
+        return i < 0 ? undefined : i;
+      },
+      tokenizer(src) {
+        // (?!\$) 避免把块公式的 $$ 当成行内
+        const m = /^\$(?!\$)([^$\n]+?)\$/.exec(src);
+        if (m) return { type: 'inlineMath', raw: m[0], text: m[1].trim() };
+      },
+      renderer(token) {
+        try {
+          return window.katex.renderToString(token.text, { throwOnError: false, displayMode: false, strict: false });
+        } catch {
+          return `<code>${escapeHtml(token.raw)}</code>`;
+        }
+      },
+    };
+
+    marked.use({ extensions: [blockMath, inlineMath] });
+  }
+
+  function ensureKatex() {
+    if (window.katex) {
+      registerKatexExtensions();
+      return Promise.resolve();
+    }
+    if (_katexPromise) return _katexPromise;
+
+    _katexPromise = new Promise((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'vendor/katex/katex.min.css';
+      document.head.appendChild(link);
+
+      const script = document.createElement('script');
+      script.src = 'vendor/katex/katex.min.js';
+      script.async = true;
+      script.onload = () => {
+        registerKatexExtensions();
+        resolve();
+      };
+      script.onerror = () => resolve(); // 加载失败时降级显示原文
+      document.head.appendChild(script);
+    });
+    return _katexPromise;
+  }
+
   function renderMarkdown(content) {
     // 剥离 YAML front matter，避免渲染出原始的 title/tags/difficulty
     content = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
     // 修复爬虫产生的 Markdown 格式：代码块关闭标记和内容在同一行
     // 例如：0-670-82162-4``` → 0-670-82162-4\n```
     content = content.replace(/^(.+)```\s*$/gm, '$1\n```');
-    // 清洗 LaTeX 符号
-    content = cleanLatex(content);
+    // KaTeX 就绪时保留原始 LaTeX 交给 marked 扩展渲染；
+    // 未就绪（加载失败）才降级为纯文本，去掉 $ 只留内容
+    if (!window.katex) content = cleanLatex(content);
     try {
       if (typeof marked !== 'undefined') {
         const instance = getMarkedInstance();
@@ -1527,6 +1607,8 @@
       if (!mdContent || mdContent.trim().length === 0) {
         throw new Error('文件内容为空');
       }
+      // 含公式时先加载 KaTeX（首次约 268KB，之后走浏览器缓存）
+      if (mdContent.includes('$')) await ensureKatex();
       const html = renderMarkdown(mdContent);
       body.innerHTML = html;
       addCopyButtons();

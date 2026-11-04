@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1950 蓝桥杯赛迷宫","headline":"1950 蓝桥杯赛迷宫 题解","description":"把一个 行 列的字符阵列看做一个迷宫，迷宫仅包含 L、Q、B、S 中的大写字母（蓝桥杯赛的汉语拼音首字母）。 初始时，你可以从任意一个 L 字母开始，移向相邻的 Q 字母，然后从此 Q 字母出发，移向相邻的 B 字母，然后从此 B 字母出发，移向相邻的 S 字母……。这样，你就算是走过了一个 LQ…","url":"https://zymojblog.top/p/1950/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,18 +40,18 @@
   <article class="markdown-body seo-article">
 <h1>1950 - 蓝桥杯赛迷宫</h1>
 <h2>题目描述</h2>
-<p>把一个 $n$ 行 $m$ 列的字符阵列看做一个迷宫，迷宫仅包含 <code>L</code>、<code>Q</code>、<code>B</code>、<code>S</code> 中的大写字母（蓝桥杯赛的汉语拼音首字母）。</p>
+<p>把一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 列的字符阵列看做一个迷宫，迷宫仅包含 <code>L</code>、<code>Q</code>、<code>B</code>、<code>S</code> 中的大写字母（蓝桥杯赛的汉语拼音首字母）。</p>
 <p>初始时，你可以从任意一个 <code>L</code> 字母开始，移向相邻的 <code>Q</code> 字母，然后从此 <code>Q</code> 字母出发，移向相邻的 <code>B</code> 字母，然后从此 <code>B</code> 字母出发，移向相邻的 <code>S</code> 字母……。这样，你就算是走过了一个 <code>LQBS</code> 字符序列。</p>
 <p>接下来，仍然可以从此 <code>S</code> 字母出发，移向相邻的 <code>L</code> 字母……，重复上述的动作，你就可以不断地走过 <code>LQBS</code> 序列。</p>
-<p>请注意，所谓相邻仅包含上、下、左、右 $4$ 个方向，且只能从 <code>L-&gt;Q</code>，从 <code>Q-&gt;B</code>，从 <code>B-&gt;S</code>，从 <code>S-&gt;L</code>。</p>
+<p>请注意，所谓相邻仅包含上、下、左、右 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 个方向，且只能从 <code>L-&gt;Q</code>，从 <code>Q-&gt;B</code>，从 <code>B-&gt;S</code>，从 <code>S-&gt;L</code>。</p>
 <p>可以想像，由于选择的出发点不同，我们有可能在迷宫中走过无数次的 <code>LQBS</code> ，或者是有限次的 <code>LQBS</code> ，或者一次也走不了。</p>
 <p>编程实现：请你编写程序，求出在给定的迷宫中，我们最多可以走过多少次 <code>LQBS</code>?</p>
 <h2>输入</h2>
-<p>第一行：正整数 $n,m$，表示迷宫的规模为 $n$ 行 $m$ 列，。</p>
-<p>接下来的 $n$ 行：每行 $m$ 个符合题意的字母，字母间无空格。</p>
+<p>第一行：正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo separator="true">,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n,m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">m</span></span></span></span>，表示迷宫的规模为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 列，。</p>
+<p>接下来的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行：每行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 个符合题意的字母，字母间无空格。</p>
 <h2>输出</h2>
 <p>一个整数。</p>
-<p>即：如果在迷宫中可以无限次的走过 <code>LQBS</code>，输出 $-1$，否则，输出可以走过 <code>LQBS</code> 的最多次数。</p>
+<p>即：如果在迷宫中可以无限次的走过 <code>LQBS</code>，输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span>，否则，输出可以走过 <code>LQBS</code> 的最多次数。</p>
 <h2>AC代码</h2>
 <pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>

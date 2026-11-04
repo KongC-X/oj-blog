@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"P1562 还是 N 皇后","headline":"P1562 还是 N 皇后 题解","description":"一个 的跳棋棋盘，有 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。 求放置棋子的方案总数。","url":"https://zymojblog.top/p/P1562/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、进制、位运算","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -43,12 +44,12 @@
 </blockquote>
 <p><strong>算法标签</strong>：<code>搜索</code>、<code>进制</code>、<code>位运算</code></p>
 <h2>题目背景</h2>
-<p>正如题目所说，这题是著名的 $N$ 皇后问题。</p>
+<p>正如题目所说，这题是著名的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 皇后问题。</p>
 <h2>题目描述</h2>
-<p>一个 $ N×N $ 的跳棋棋盘，有 $ N $ 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。</p>
+<p>一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N×N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 的跳棋棋盘，有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个皇后棋子被放置在棋盘上，使得每行、每列有且只有一个皇后棋子，每条对角线（包括两条主对角线的所有平行线）上至多有一个皇后棋子。棋盘上一部分格子可以放置棋子，而另一部分则不可以。</p>
 <p>求放置棋子的方案总数。</p>
 <h2>输入格式</h2>
-<p>第一行有一个 $N$。接下来有 $N$ 行 $N$ 列描述一个棋盘，<code>*</code> 表示可放，<code>.</code> 表示不可放。</p>
+<p>第一行有一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span>。接下来有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 列描述一个棋盘，<code>*</code> 表示可放，<code>.</code> 表示不可放。</p>
 <h2>样例</h2>
 <p><strong>样例输入 #1</strong></p>
 <pre><code class="hljs language-cpp"><span class="hljs-number">4</span>

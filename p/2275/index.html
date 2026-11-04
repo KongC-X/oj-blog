@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="已知矩阵的大小定义为矩阵中所有元素的和。给定一个矩阵，你的任务是找到最大的非空（大小至少是 ）子矩阵。 比如，如下 子矩阵。 的最大子矩阵是： 这个子矩阵的大小是 。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2275 最大子矩阵","headline":"2275 最大子矩阵 题解","description":"已知矩阵的大小定义为矩阵中所有元素的和。给定一个矩阵，你的任务是找到最大的非空（大小至少是 ）子矩阵。 比如，如下 子矩阵。 的最大子矩阵是： 这个子矩阵的大小是 。","url":"https://zymojblog.top/p/2275/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试、动态规划","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,8 +40,8 @@
   <article class="markdown-body seo-article">
 <h1>2275 - 最大子矩阵</h1>
 <h2>题目描述</h2>
-<p>已知矩阵的大小定义为矩阵中所有元素的和。给定一个矩阵，你的任务是找到最大的非空（大小至少是 $1 \times 1$ ）子矩阵。</p>
-<p>比如，如下 $4 \times 4$ 子矩阵。</p>
+<p>已知矩阵的大小定义为矩阵中所有元素的和。给定一个矩阵，你的任务是找到最大的非空（大小至少是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">1 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> ）子矩阵。</p>
+<p>比如，如下 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 子矩阵。</p>
 <pre><code class="hljs language-cpp">`<span class="hljs-number">0</span> <span class="hljs-number">-2</span> <span class="hljs-number">-7</span> <span class="hljs-number">0</span>
 <span class="hljs-number">9</span> <span class="hljs-number">2</span> <span class="hljs-number">-6</span> <span class="hljs-number">2</span>
 <span class="hljs-number">-4</span> <span class="hljs-number">1</span> <span class="hljs-number">-4</span> <span class="hljs-number">1</span>
@@ -49,13 +50,13 @@
 <pre><code class="hljs language-cpp">`<span class="hljs-number">9</span> <span class="hljs-number">2</span>
 <span class="hljs-number">-4</span> <span class="hljs-number">1</span>
 <span class="hljs-number">-1</span> <span class="hljs-number">8</span>
-`</code></pre><p>这个子矩阵的大小是$15$。</p>
+`</code></pre><p>这个子矩阵的大小是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>15</mn></mrow><annotation encoding="application/x-tex">15</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">15</span></span></span></span>。</p>
 <h2>输入</h2>
-<p>输入是一个$N \times N$的矩阵。</p>
+<p>输入是一个<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N \times N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span>的矩阵。</p>
 <p>输入的第一行给出。</p>
-<p>再后面的若干行中，依次（首先从左到右给出第一行的 $N$ 个整数，再从左到右给出第二行的 $N$ 个整数 $ \dots $）</p>
-<p>给出矩阵中的 $N^2$ 个整数，整数之间由空白字符分隔（空格或者空行）。</p>
-<p>已知矩阵中整数的范围都在$[-127, 127]$。</p>
+<p>再后面的若干行中，依次（首先从左到右给出第一行的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个整数，再从左到右给出第二行的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>…</mo></mrow><annotation encoding="application/x-tex">\dots</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.123em;"></span><span class="minner">…</span></span></span></span>）</p>
+<p>给出矩阵中的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>N</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">N^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span> 个整数，整数之间由空白字符分隔（空格或者空行）。</p>
+<p>已知矩阵中整数的范围都在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>127</mn><mo separator="true">,</mo><mn>127</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-127, 127]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">127</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">127</span><span class="mclose">]</span></span></span></span>。</p>
 <h2>输出</h2>
 <p>输出最大子矩阵的大小。</p>
 <h2>AC代码</h2>

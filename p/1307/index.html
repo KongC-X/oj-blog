@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="输入一个自然数 （ ），然后对自然数按照如下方法进行处理： 在该自然数的左侧加上一个自然数，但加上的数不能超过 的一半； 加上数后继续按此规则处理，直到不能再添加自然数为止； 请问按照这样的方法添加数，能够产生多少个新数？ 例如： ，则左侧添加数的方案有。 共能够产生 个新数。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1307 数的计数","headline":"1307 数的计数 题解","description":"输入一个自然数 （ ），然后对自然数按照如下方法进行处理： 在该自然数的左侧加上一个自然数，但加上的数不能超过 的一半； 加上数后继续按此规则处理，直到不能再添加自然数为止； 请问按照这样的方法添加数，能够产生多少个新数？ 例如： ，则左侧添加数的方案有。 共能够产生 个新数。","url":"https://zymojblog.top/p/1307/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"递归","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,23 +40,23 @@
   <article class="markdown-body seo-article">
 <h1>1307 - 数的计数</h1>
 <h2>题目描述</h2>
-<p>输入一个自然数 $n$（$n \le 100$），然后对自然数按照如下方法进行处理：</p>
+<p>输入一个自然数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n \le 100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span>），然后对自然数按照如下方法进行处理：</p>
 <ul>
-<li><p>在该自然数的左侧加上一个自然数，但加上的数不能超过 $n$ 的一半；</p>
+<li><p>在该自然数的左侧加上一个自然数，但加上的数不能超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 的一半；</p>
 </li>
 <li><p>加上数后继续按此规则处理，直到不能再添加自然数为止；</p>
 </li>
 </ul>
 <p>请问按照这样的方法添加数，能够产生多少个新数？</p>
-<p>例如：$n=6$ ，则左侧添加数的方案有。</p>
+<p>例如：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">n=6</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">6</span></span></span></span> ，则左侧添加数的方案有。</p>
 <pre><code class="hljs language-cpp">`<span class="hljs-number">16</span>
 <span class="hljs-number">26</span>
 <span class="hljs-number">126</span>
 <span class="hljs-number">36</span>
 <span class="hljs-number">136</span>
-`</code></pre><p>共能够产生 $5$ 个新数。</p>
+`</code></pre><p>共能够产生 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> 个新数。</p>
 <h2>输入</h2>
-<p>一个整数 $n$（$n \le 100$）。</p>
+<p>一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n \le 100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span>）。</p>
 <h2>输出</h2>
 <p>按照规则能够产生的新数的个数。</p>
 <h2>解题思路</h2>

@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="给定一个 的矩阵，每行只有一个最大值，每列只有一个最小值，寻找这个矩阵的鞍点。 鞍点指的是矩阵中的一个元素，它是所在行的最大值，并且是所在列的最小值。 例如：在下面的例子中（第 行第 列的元素就是鞍点，值为 ）。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2261 计算鞍点","headline":"2261 计算鞍点 题解","description":"给定一个 的矩阵，每行只有一个最大值，每列只有一个最小值，寻找这个矩阵的鞍点。 鞍点指的是矩阵中的一个元素，它是所在行的最大值，并且是所在列的最小值。 例如：在下面的例子中（第 行第 列的元素就是鞍点，值为 ）。","url":"https://zymojblog.top/p/2261/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试、二维数组","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,14 +40,14 @@
   <article class="markdown-body seo-article">
 <h1>2261 - 计算鞍点</h1>
 <h2>题目描述</h2>
-<p>给定一个 $5 \times 5$ 的矩阵，每行只有一个最大值，每列只有一个最小值，寻找这个矩阵的鞍点。 鞍点指的是矩阵中的一个元素，它是所在行的最大值，并且是所在列的最小值。 例如：在下面的例子中（第 $4$ 行第 $1$ 列的元素就是鞍点，值为 $8$ ）。  </p>
+<p>给定一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> 的矩阵，每行只有一个最大值，每列只有一个最小值，寻找这个矩阵的鞍点。 鞍点指的是矩阵中的一个元素，它是所在行的最大值，并且是所在列的最小值。 例如：在下面的例子中（第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn></mrow><annotation encoding="application/x-tex">4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 行第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 列的元素就是鞍点，值为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> ）。  </p>
 <pre><code class="hljs language-cpp">`<span class="hljs-number">11</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">9</span>
 <span class="hljs-number">12</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span> <span class="hljs-number">8</span> <span class="hljs-number">10</span>
 <span class="hljs-number">10</span> <span class="hljs-number">5</span> <span class="hljs-number">6</span> <span class="hljs-number">9</span> <span class="hljs-number">11</span>
 <span class="hljs-number">8</span>  <span class="hljs-number">6</span> <span class="hljs-number">4</span> <span class="hljs-number">7</span> <span class="hljs-number">2</span>
 <span class="hljs-number">15</span> <span class="hljs-number">10</span> <span class="hljs-number">11</span> <span class="hljs-number">20</span> <span class="hljs-number">25</span>  
 `</code></pre><h2>输入</h2>
-<p>输入包含一个 $5$ 行 $5$ 列的矩阵</p>
+<p>输入包含一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn></mrow><annotation encoding="application/x-tex">5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> 列的矩阵</p>
 <h2>输出</h2>
 <p>如果存在鞍点，输出鞍点所在的行、列及其值，如果不存在，输出&quot; <code>not found</code> &quot;</p>
 <h2>AC代码</h2>

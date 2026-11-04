@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2280 表达式求值","headline":"2280 表达式求值 题解","description":"求一个可能包含加、减、乘、除、乘方运算的中缀表达式的值。 在计算机中，我们常用栈来解决这一问题。 首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。 加、减、乘、除、乘方分别用 +，-，, /, ^ 来表示。表达式可以有圆括号()。","url":"https://zymojblog.top/p/2280/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"电子学会等级考试","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -43,9 +44,9 @@
 <p>首先将中缀表达式转换到后缀表达式，然后对后缀表达式求值。</p>
 <p>加、减、乘、除、乘方分别用 <code>+</code>，<code>-</code>，<code>*</code>, <code>/</code>, <code>^</code> 来表示。表达式可以有圆括号()。</p>
 <h2>输入</h2>
-<p>第一行为测试数据的组数 $N$ 。</p>
-<p>接下来的 $N$ 行，每行是一个中缀表达式。 每个表达式中，圆括号、运算符和运算数相互之间都用空格分隔，运算数是整数。一般运算数可正可负（负数的符号和数字之间无空格），指数一定为自然数($0$ 和正整数)。</p>
-<p>不必考虑除 $0$ 的情况。每个运算数均可由 $int$ 放下。不必考虑溢出。中缀表达式的字符串长度不超过 $600$ 。乘方的优先级比乘除都高，结合性是向左结合，如 <code>2 ^ 3 ^ 4</code> 表示 <code>( 2 ^ 3 ) ^ 4 = 4096</code>。 除法的商向下取整。</p>
+<p>第一行为测试数据的组数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 。</p>
+<p>接下来的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 行，每行是一个中缀表达式。 每个表达式中，圆括号、运算符和运算数相互之间都用空格分隔，运算数是整数。一般运算数可正可负（负数的符号和数字之间无空格），指数一定为自然数(<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 和正整数)。</p>
+<p>不必考虑除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 的情况。每个运算数均可由 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">int</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">in</span><span class="mord mathnormal">t</span></span></span></span> 放下。不必考虑溢出。中缀表达式的字符串长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>600</mn></mrow><annotation encoding="application/x-tex">600</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">600</span></span></span></span> 。乘方的优先级比乘除都高，结合性是向左结合，如 <code>2 ^ 3 ^ 4</code> 表示 <code>( 2 ^ 3 ) ^ 4 = 4096</code>。 除法的商向下取整。</p>
 <h2>输出</h2>
 <p>对每一组测试数据输出一行，为表达式的值</p>
 <h2>AC代码</h2>

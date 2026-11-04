@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="已知一 的迷宫，允许往上、下、左、右四个方向行走，且迷宫中没有任何障碍，所有的点都可以走。 现请你按照右、下、左、上顺序进行搜索，找出从左上角到右下角的所有路径。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1739 迷宫的所有路径","headline":"1739 迷宫的所有路径 题解","description":"已知一 的迷宫，允许往上、下、左、右四个方向行走，且迷宫中没有任何障碍，所有的点都可以走。 现请你按照右、下、左、上顺序进行搜索，找出从左上角到右下角的所有路径。","url":"https://zymojblog.top/p/1739/","inLanguage":"zh-CN","educationalLevel":"基础","learningResourceType":"题解","about":"回溯","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,12 +40,12 @@
   <article class="markdown-body seo-article">
 <h1>1739 - 迷宫的所有路径</h1>
 <h2>题目描述</h2>
-<p>已知一 $N \times N$ 的迷宫，允许往上、下、左、右四个方向行走，且迷宫中没有任何障碍，所有的点都可以走。</p>
+<p>已知一 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N \times N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 的迷宫，允许往上、下、左、右四个方向行走，且迷宫中没有任何障碍，所有的点都可以走。</p>
 <p>现请你<strong>按照右、下、左、上顺序</strong>进行搜索，找出从左上角到右下角的所有路径。</p>
 <h2>输入</h2>
-<p>输入一个整数 $N$（$N≤5$）代表迷宫的大小。</p>
+<p>输入一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≤</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">N≤5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8193em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span>）代表迷宫的大小。</p>
 <h2>输出</h2>
-<p>按右、下、左、上搜索顺序探索迷宫，输出从左上角 $(1,1)$ 点走到右下角 $(N,N)$ 点的所有可能的路径。</p>
+<p>按右、下、左、上搜索顺序探索迷宫，输出从左上角 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1,1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> 点走到右下角 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>N</mi><mo separator="true">,</mo><mi>N</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(N,N)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mclose">)</span></span></span></span> 点的所有可能的路径。</p>
 <h2>AC代码</h2>
 <pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span> </span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;

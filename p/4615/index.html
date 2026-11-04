@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="给定一个仅包含小写字母的字符串 S，用这些字符恰好排成一个 行 列的矩阵（ ），请找出所有符合要求的矩阵中最接近于正方形的那个矩阵。然后从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符。 例如：S = &quot;abcdefgh&quot;。按要求 有如下两种矩阵： 最接近正方形的矩阵是第一种。从第一列开始，逐…">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"4615 字符矩阵","headline":"4615 字符矩阵 题解","description":"给定一个仅包含小写字母的字符串 S，用这些字符恰好排成一个 行 列的矩阵（ ），请找出所有符合要求的矩阵中最接近于正方形的那个矩阵。然后从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符。 例如：S = \"abcdefgh\"。按要求 有如下两种矩阵： 最接近正方形的矩阵是第一种。从第一列开始，逐…","url":"https://zymojblog.top/p/4615/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"蓝桥杯STEMA、字符串、二维数组、模拟","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -39,11 +40,11 @@
   <article class="markdown-body seo-article">
 <h1>4615 - 字符矩阵</h1>
 <h2>题目描述</h2>
-<p>给定一个仅包含小写字母的字符串 S，用这些字符恰好排成一个 $n$ 行 $m$ 列的矩阵（$m \le n$），请找出所有符合要求的矩阵中最接近于正方形的那个矩阵。然后从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符。</p>
-<p>例如：<code>S = &quot;abcdefgh&quot;</code>。按要求 $m \le n$ 有如下两种矩阵：</p>
+<p>给定一个仅包含小写字母的字符串 S，用这些字符恰好排成一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 列的矩阵（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m \le n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>），请找出所有符合要求的矩阵中最接近于正方形的那个矩阵。然后从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符。</p>
+<p>例如：<code>S = &quot;abcdefgh&quot;</code>。按要求 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m \le n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 有如下两种矩阵：</p>
 <p>最接近正方形的矩阵是第一种。从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符，结果为：<code>aebfcgdh</code>。</p>
 <h2>输入</h2>
-<p>输入一个字符串，仅包含小写字母且长度不超过 $200$。</p>
+<p>输入一个字符串，仅包含小写字母且长度不超过 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>200</mn></mrow><annotation encoding="application/x-tex">200</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">200</span></span></span></span>。</p>
 <h2>输出</h2>
 <p>请找出符合题目要求的最接近正方形的字符矩阵，从第一列开始，逐列按照从上到下的顺序输出矩阵中的字符。</p>
 <h2>解题思路</h2>

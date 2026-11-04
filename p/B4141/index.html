@@ -16,7 +16,8 @@
 <meta name="twitter:description" content="素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/vendor/github-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=20261104c">
+<link rel="stylesheet" href="/css/style.css?v=20261104d">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"B4141 [信息与未来 2016] 素数分解","headline":"B4141 [信息与未来 2016] 素数分解 题解","description":"素数，又称质数，是指除 和其自身之外，没有其他约数的正整数。例如， 都是质数，而 则不是。 虽然素数不能分解成除 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。","url":"https://zymojblog.top/p/B4141/","inLanguage":"zh-CN","educationalLevel":"普及","learningResourceType":"题解","about":"搜索、2016、江苏、枚举、深度优先搜索 DFS、背包 DP、信息与未来","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
 </head>
 <body>
@@ -43,12 +44,12 @@
 </blockquote>
 <p><strong>算法标签</strong>：<code>搜索</code>、<code>2016</code>、<code>江苏</code>、<code>枚举</code>、<code>深度优先搜索 DFS</code>、<code>背包 DP</code>、<code>信息与未来</code></p>
 <h2>题目描述</h2>
-<p>素数，又称质数，是指除 $1$ 和其自身之外，没有其他约数的正整数。例如，$2,3,5,7,13$ 都是质数，而 $4,9,12,18$ 则不是。</p>
-<p>虽然素数不能分解成除 $1$ 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。</p>
+<p>素数，又称质数，是指除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 和其自身之外，没有其他约数的正整数。例如，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo separator="true">,</mo><mn>3</mn><mo separator="true">,</mo><mn>5</mn><mo separator="true">,</mo><mn>7</mn><mo separator="true">,</mo><mn>13</mn></mrow><annotation encoding="application/x-tex">2,3,5,7,13</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">13</span></span></span></span> 都是质数，而 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo separator="true">,</mo><mn>9</mn><mo separator="true">,</mo><mn>12</mn><mo separator="true">,</mo><mn>18</mn></mrow><annotation encoding="application/x-tex">4,9,12,18</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">9</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">12</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">18</span></span></span></span> 则不是。</p>
+<p>虽然素数不能分解成除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 和其自身之外整数的乘积，但却可以分解成更多素数的和。你需要编程求出一个正整数最多能分解成多少个互不相同的素数的和。</p>
 <h2>输入格式</h2>
-<p>一行一个正整数 $n$。</p>
+<p>一行一个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>。</p>
 <h2>输出格式</h2>
-<p>一行一个正整数，表示 $n$ 最多能分解成多少个不同的素数的和。</p>
+<p>一行一个正整数，表示 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 最多能分解成多少个不同的素数的和。</p>
 <h2>样例</h2>
 <p><strong>样例输入 #1</strong></p>
 <pre><code class="hljs language-cpp"><span class="hljs-number">21</span>```
