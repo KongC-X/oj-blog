@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const MAPPING_FILE = process.argv[2];
-const LUOGU_DIR = path.join(__dirname, 'solutions', 'luogu');
+const LUOGU_DIR = path.join(__dirname, '..', '..', 'solutions', 'luogu');
 
 if (!MAPPING_FILE) { console.error('用法: node apply_training_map.js <题单分类md路径>'); process.exit(1); }
 

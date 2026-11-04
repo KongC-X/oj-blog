@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'oj-solutions',
     script: 'server.js',
-    cwd: __dirname,
+    cwd: require('path').join(__dirname, '..', '..'),
     instances: 1,
     autorestart: true,
     watch: false,

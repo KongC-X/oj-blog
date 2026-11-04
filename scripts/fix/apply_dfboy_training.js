@@ -10,7 +10,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const CLASSIFY_FILE = '/Users/kongc/Desktop/东方博宜题单分类.md';
-const DFBOY_DIR = path.join(__dirname, 'solutions/dfboy');
+const DFBOY_DIR = path.join(__dirname, '..', '..', 'solutions/dfboy');
 
 // ===== 1. 解析分类文件 =====
 const content = fs.readFileSync(CLASSIFY_FILE, 'utf-8');
@@ -87,5 +87,5 @@ console.log(`🔄 已是最新: ${unchanged} 个文件`);
 
 // ===== 3. 重建索引 =====
 console.log('\n🔨 重建索引...');
-execSync('node build.js', { cwd: __dirname, stdio: 'inherit' });
+execSync('node build.js', { cwd: path.join(__dirname, '..', '..'), stdio: 'inherit' });
 console.log('✅ 完成');

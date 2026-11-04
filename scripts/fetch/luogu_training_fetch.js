@@ -14,7 +14,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const LUOGU_DIR = path.join(__dirname, 'solutions', 'luogu');
+const LUOGU_DIR = path.join(__dirname, '..', '..', 'solutions', 'luogu');
 
 // 洛谷官方题单映射
 const TRAINING_LIST = [

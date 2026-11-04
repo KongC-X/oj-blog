@@ -25,7 +25,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const DIR = path.join(__dirname, 'solutions', 'luogu');
+const DIR = path.join(__dirname, '..', '..', 'solutions', 'luogu');
 const PROGRESS_FILE = '/tmp/lg_tag_progress.json';
 const DRY_RUN = process.argv.includes('--dry-run');
 const ONLY_ARG = process.argv.find(a => a.startsWith('--only='));

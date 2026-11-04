@@ -11,7 +11,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const DFBOY_DIR = path.join(__dirname, 'solutions', 'dfboy');
+const DFBOY_DIR = path.join(__dirname, '..', '..', 'solutions', 'dfboy');
 
 function httpGet(url) {
   return new Promise((resolve, reject) => {

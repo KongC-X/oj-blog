@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dir = path.join(__dirname, 'solutions/dfboy');
+const dir = path.join(__dirname, '..', '..', 'solutions/dfboy');
 const files = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
 
 let fixed = 0;

@@ -24,7 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DIR = path.join(__dirname, 'solutions', 'luogu');
+const DIR = path.join(__dirname, '..', '..', 'solutions', 'luogu');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 // 旧名称 → 新名称

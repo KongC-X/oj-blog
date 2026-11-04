@@ -187,7 +187,7 @@ def upload_one(args):
 def main():
     force_full = '--force' in sys.argv
 
-    project_dir = Path(__file__).parent.resolve()
+    project_dir = Path(__file__).resolve().parent.parent.parent
     config_file = project_dir / 'clawweb-deploy.json'
 
     if not config_file.exists():

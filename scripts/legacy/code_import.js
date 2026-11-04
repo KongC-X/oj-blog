@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SOLUTIONS_DIR = path.join(__dirname, 'solutions', 'dfboy');
+const SOLUTIONS_DIR = path.join(__dirname, '..', '..', 'solutions', 'dfboy');
 const COURSE_DIR = '/Users/kongc/Desktop/课程体系/C++/C++典型例题';
 
 // ===== 手动建立的映射表 =====

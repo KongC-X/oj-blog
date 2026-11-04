@@ -219,18 +219,22 @@ Cloudflare Pages 检测到 master 更新后自动部署，约 1–2 分钟生效
 
 | 脚本 | 用途 |
 |---|---|
-| `scripts/optimize_fonts.js` | TTF → WOFF2（已执行） |
+| `scripts/optimize_fonts.js` | TTF → WOFF2（已执行，字体已转换） |
 | `scripts/fix/fix_luogu_tags.js` | 按官方词典批量修正标签 |
-| `scripts/fix/fix_luogu_difficulty.js` | 难度命名迁移（旧 7 级 → 新 8 级） |
-| `scripts/fix/dfboy_difficulty_fix.js` | 修正博宜难度 |
+| `scripts/fix/fix_luogu_difficulty.js` | 难度命名迁移（旧 7 级 → 新 8 级），支持 `--dry-run` |
+| `scripts/fix/dfboy_difficulty_fix.js` | 修正东方博宜难度 |
+| `scripts/fix/fix_empty_training.js` | 清理空的题单字段 |
+| `scripts/fix/apply_training_map.js` | 按分类文件写入 training 字段 |
+| `scripts/fix/apply_dfboy_training.js` | 批量写入博宜题单归属 |
 | `scripts/fetch/luogu_training_fetch.js` | 拉取洛谷题单归属 |
-| `scripts/legacy/code_import.js` | 从本地课程 md 批量导入代码 |
+| `scripts/fetch/luogu_training_final.js` | 洛谷题单归属最终版处理 |
+| `scripts/legacy/code_import.js` | 从本地课程 md 批量导入代码（依赖 OCR 映射表） |
+| `scripts/legacy/check_missing.js` | 检查缺失题号（**需在 blog 根目录运行**，用相对路径） |
+| `scripts/legacy/ftp_sync.py` | 早期 FTP 同步，已废弃（现由 GitHub + Cloudflare 部署） |
+| `scripts/legacy/ecosystem.config.js` | PM2 配置，cwd 已指向项目根目录 |
 
-> **待整理**：以下一次性脚本仍在根目录，计划移入 `scripts/legacy/`：
-> `apply_dfboy_training.js`、`apply_training_map.js`、`check_missing.js`、
-> `fix_empty_training.js`、`ftp_sync.py`、`ecosystem.config.js`、
-> `luogu_training_final.js`
-> （移动时需同步修正脚本内 `path.join(__dirname, 'solutions')` 为 `'../solutions'`）
+> 所有脚本的 `solutions/`、`data/` 路径都已按新位置修正为 `path.join(__dirname, '..', '..', ...)`。
+> 新加脚本时请沿用同一约定，避免依赖调用时的 cwd。
 
 ---
 

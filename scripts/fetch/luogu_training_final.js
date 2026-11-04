@@ -7,7 +7,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const LUOGU_DIR = path.join(__dirname, 'solutions', 'luogu');
+const LUOGU_DIR = path.join(__dirname, '..', '..', 'solutions', 'luogu');
 const BASE_COOKIE = process.env.LUOGU_COOKIE || '';
 let c3vk = '';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
