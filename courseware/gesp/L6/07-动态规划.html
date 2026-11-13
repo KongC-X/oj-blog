@@ -727,11 +727,11 @@ int jump_dp(int n) {
 <p>0-1背包问题，背包容量是10kg，输入4个物品的重量分别为1，3，4，6，每个物品对应的价值分别为20，30，50，60，函数的输出是什么？</p>
 <div class="code-block"><span class="lang-tag">C++</span>
 <pre><code class="language-cpp">// 0/1背包问题
-int knapsack(int W, const vector<int>& weights, const vector<int>& values, int n) {
-    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
-    for (int i = 1; i <= n; ++i) {
-        for (int w = 0; w <= W; ++w) {
-            if (weights[i - 1] <= w) {
+int knapsack(int W, const vector&lt;int&gt;& weights, const vector&lt;int&gt;& values, int n) {
+    vector&lt;vector&lt;int&gt;&gt; dp(n + 1, vector&lt;int&gt;(W + 1, 0));
+    for (int i = 1; i &lt;= n; ++i) {
+        for (int w = 0; w &lt;= W; ++w) {
+            if (weights[i - 1] &lt;= w) {
                 dp[i][w] = max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] +values[i - 1]);
             }
             else{
@@ -946,15 +946,14 @@ int knapsack(int W, const vector<int>& weights, const vector<int>& values, int n
 <div class="card-title">📝 判断题（2025年6月第10题）</div>
 <p>下面代码采用动态规划求解零钱兑换问题：给定硬币面值，每种硬币可重复选取，求凑出目标金额的最少硬币数（ ）。</p>
 <div class="code-block"><span class="lang-tag">C++</span>
-<pre><code class="language-cpp">int visit(vector&lt;int&gt;&amp; nums) {
-int coinChangeDPComp(vector<int> &coins, int amt) {
+<pre><code class="language-cpp">int coinChangeDPComp(vector&lt;int&gt; &coins, int amt) {
     int n = coins.size();
     int MAX = amt + 1;
-    vector<int> dp(amt + 1, MAX);
+    vector&lt;int&gt; dp(amt + 1, MAX);
     dp[0] = 0;
-    for (int i = 1; i <= n; i++) {
-        for (int a = 1; a <= amt; a++) {
-            if (coins[i - 1] > a)
+    for (int i = 1; i &lt;= n; i++) {
+        for (int a = 1; a &lt;= amt; a++) {
+            if (coins[i - 1] &gt; a)
                 dp[a] = dp[a];
             else
                 dp[a] = min(dp[a], dp[a - coins[i - 1]] + 1);

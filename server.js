@@ -32,25 +32,75 @@ const PORT = process.env.PORT || 8766;
 // 说明：站点仍依赖内联 script/style（47 处内联 style、5 处内联 onclick），
 // 因此 script-src/style-src 保留 'unsafe-inline'，其余指令全部收紧。
 // 生产环境（Cloudflare Pages）由 _headers 文件下同样的策略。
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-      fontSrc: ["'self'"],
-      connectSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      baseUri: ["'self'"],
-      formAction: ["'self'"],
-      frameAncestors: ["'none'"],
-    },
-  },
+//
+// 例外：/courseware/* （课件目录）
+// 课件是独立自包含的教学页面，与其他页面有两处本质差异：
+//   1. 大量使用内联事件属性（onclick="toggleAnswer(this)" 等，共 1316 处）。
+//      CSP 中 script-src-attr 的优先级高于 script-src，helmet 默认下发的
+//      script-src-attr 'none' 会让这些内联处理器全部被拒绝执行
+//      （现象：点「显示答案」无反应）。
+//   2. 语法高亮依赖 CDN 上的 highlight.js（JS + atom-one-dark 主题 CSS）。
+//      严格的 script-src/style-src 会把 cdnjs 请求拦下，代码块退化为纯色文本。
+// 因此这里为课件路径单独下发一份更宽松的 CSP，其余路径保持严格策略。
+const CSP_DIRECTIVES_BASE = {
+  defaultSrc: ["'self'"],
+  scriptSrc: ["'self'", "'unsafe-inline'"],
+  // 内联事件属性（onclick=...）默认禁止
+  scriptSrcAttr: ["'none'"],
+  styleSrc: ["'self'", "'unsafe-inline'"],
+  imgSrc: ["'self'", 'data:', 'https:'],
+  fontSrc: ["'self'"],
+  connectSrc: ["'self'"],
+  objectSrc: ["'none'"],
+  baseUri: ["'self'"],
+  formAction: ["'self'"],
+  frameAncestors: ["'none'"],
+};
+
+const CSP_DIRECTIVES_COURSEWARE = {
+  ...CSP_DIRECTIVES_BASE,
+  // 允许课件引用 cdnjs 上的 highlight.js / 主题样式
+  scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
+  // 允许课件里的内联事件处理器（onclick=...）执行
+  scriptSrcAttr: ["'unsafe-inline'"],
+  styleSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
+  // 与生产环境 _headers 的课件规则保持逐指令一致：课件是独立教学材料，
+  // 将来若内嵌 base64 图标字体（data:），本地与线上都不该被拦。
+  fontSrc: ["'self'", 'data:'],
+};
+
+// helmet 除 CSP 外的公共选项
+const HELMET_COMMON_OPTIONS = {
   crossOriginEmbedderPolicy: false,
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
   xFrameOptions: { action: 'deny' },
-}));
+};
+
+// 预生成两套中间件，避免每个请求都重新构造
+const helmetDefault = helmet({
+  ...HELMET_COMMON_OPTIONS,
+  contentSecurityPolicy: { directives: CSP_DIRECTIVES_BASE },
+});
+const helmetCourseware = helmet({
+  ...HELMET_COMMON_OPTIONS,
+  contentSecurityPolicy: { directives: CSP_DIRECTIVES_COURSEWARE },
+});
+
+// 课件路径：/courseware、/courseware/xxx.html
+// 注意：先归一化再匹配。否则 curl --path-as-is /courseware/../index.html 这类
+// 未归一化路径会被误判成课件，导致主站页面拿到宽松策略（浏览器端会自动归一化，
+// 属逻辑瑕疵而非可利用漏洞，但策略判定本身必须是「解析后」的路径）。
+const COURSEWARE_PATH_RE = /^\/courseware(\/|$)/;
+
+function isCoursewarePath(rawPath) {
+  const normalized = path.posix.normalize(rawPath || '/');
+  return COURSEWARE_PATH_RE.test(normalized);
+}
+
+app.use((req, res, next) => {
+  const middleware = isCoursewarePath(req.path) ? helmetCourseware : helmetDefault;
+  return middleware(req, res, next);
+});
 
 // ========== 账户配置 ==========
 // 密码必须通过环境变量设置，不再硬编码默认值
