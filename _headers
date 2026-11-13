@@ -11,12 +11,13 @@
 # 课件目录：独立自包含的教学页面，需要比全站更宽松的 CSP
 #   1. 课件大量使用内联事件属性（onclick="toggleAnswer(this)" 等，共 1316 处），
 #      而 script-src-attr 的优先级高于 script-src，必须单独放开 'unsafe-inline'；
-#   2. 语法高亮依赖 cdnjs 上的 highlight.js（JS + atom-one-dark 主题 CSS）。
+#   2. 语法高亮已本地化到 /vendor/highlight/，因此不再需要任何外部域名白名单，
+#      script-src / style-src 保持 'self'，这是目前唯一放宽项（内联事件）之外的严格策略。
 # 注意：_headers 中同名头会被「逗号拼接」而不是覆盖（两条 CSP 头浏览器取交集，会更严格），
 #      所以必须先用 ! 摘掉上面 /* 下发的 CSP，再重新设置，且该规则要放在 /* 之后。
 /courseware/*
   ! Content-Security-Policy
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
 # 字体与第三方库：文件名带版本语义，可长缓存
 /fonts/*

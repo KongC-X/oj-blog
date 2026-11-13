@@ -59,11 +59,9 @@ const CSP_DIRECTIVES_BASE = {
 
 const CSP_DIRECTIVES_COURSEWARE = {
   ...CSP_DIRECTIVES_BASE,
-  // 允许课件引用 cdnjs 上的 highlight.js / 主题样式
-  scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
-  // 允许课件里的内联事件处理器（onclick=...）执行
+  // 允许课件里的内联事件处理器（onclick=...）执行。
+  // 课件共 1316 处内联 onclick，批量改造风险远大于收益，这是唯一的放宽项。
   scriptSrcAttr: ["'unsafe-inline'"],
-  styleSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
   // 与生产环境 _headers 的课件规则保持逐指令一致：课件是独立教学材料，
   // 将来若内嵌 base64 图标字体（data:），本地与线上都不该被拦。
   fontSrc: ["'self'", 'data:'],
