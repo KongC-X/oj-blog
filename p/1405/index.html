@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1405 小丽找潜在的素数 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小丽同学在编程中学到了二进制数的概念，她发现，有些二进制数，如果转为 进制，就是素数，小丽把这些数称为潜在的素数；比如 进制 ，转为 进制后为 ，就是素数。 请编程帮小丽找出，哪些二进制数转为 进制后，是素数，计算出这样的数有多少个？">
+<link rel="canonical" href="https://zymojblog.top/p/1405/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="1405 小丽找潜在的素数 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小丽同学在编程中学到了二进制数的概念，她发现，有些二进制数，如果转为 进制，就是素数，小丽把这些数称为潜在的素数；比如 进制 ，转为 进制后为 ，就是素数。 请编程帮小丽找出，哪些二进制数转为 进制后，是素数，计算出这样的数有多少个？">
+<meta property="og:url" content="https://zymojblog.top/p/1405/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1405 小丽找潜在的素数 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小丽同学在编程中学到了二进制数的概念，她发现，有些二进制数，如果转为 进制，就是素数，小丽把这些数称为潜在的素数；比如 进制 ，转为 进制后为 ，就是素数。 请编程帮小丽找出，哪些二进制数转为 进制后，是素数，计算出这样的数有多少个？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"1405 小丽找潜在的素数","headline":"1405 小丽找潜在的素数 题解","description":"小丽同学在编程中学到了二进制数的概念，她发现，有些二进制数，如果转为 进制，就是素数，小丽把这些数称为潜在的素数；比如 进制 ，转为 进制后为 ，就是素数。 请编程帮小丽找出，哪些二进制数转为 进制后，是素数，计算出这样的数有多少个？","url":"https://zymojblog.top/p/1405/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"进制转换","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>1405</span>
+</div>
+<h1 class="seo-title">1405 小丽找潜在的素数</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2/">进制转换</a></div>
+<article class="markdown-body seo-article">
+<h1>1405 - 小丽找潜在的素数</h1>
+<h2>题目描述</h2>
+<p>小丽同学在编程中学到了二进制数的概念，她发现，有些二进制数，如果转为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> 进制，就是素数，小丽把这些数称为潜在的素数；比如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 进制 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1101011</mn></mrow><annotation encoding="application/x-tex">1101011</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1101011</span></span></span></span>，转为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> 进制后为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>107</mn></mrow><annotation encoding="application/x-tex">107</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">107</span></span></span></span> ，就是素数。</p>
+<p>请编程帮小丽找出，哪些二进制数转为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> 进制后，是素数，计算出这样的数有多少个？</p>
+<h2>输入</h2>
+<p>第一行是一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">10 \le n \le 100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span>）。</p>
+<p>接下来 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行，每行是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30</mn></mrow><annotation encoding="application/x-tex">30</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">30</span></span></span></span> 位以内的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 进制数。</p>
+<h2>输出</h2>
+<p>一个整数代表所有转为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn></mrow><annotation encoding="application/x-tex">10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> 进制后是素数的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 进制数的个数。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a, b;                        <span class="hljs-comment">// a,b: 查询区间 [a, b]</span>
+<span class="hljs-type">bool</span> f[<span class="hljs-number">100000010</span>];               <span class="hljs-comment">// f[i]: true 表示 i 是合数（或 0、1），false 表示素数</span>
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">/*
+      思路：
+      1. 先看一个关键性质：
+         除了 11 以外，所有偶数位的回文数都能被 11 整除，所以一定不是素数。
+         结论：偶数位回文数中，只有 11 是素数，其余全是合数。
+         因此 1e8 以内不存在 8 位回文质数，最大只需要考虑 7 位回文数（≤ 9999999）。
+         所以可以把上界 b 截断到 1e7，大幅减少筛法的工作量。
+
+      2. 用埃氏筛筛出 [0, b] 内的所有素数：
+         f[i] = false 表示 i 是素数，f[i] = true 表示 i 是合数。
+         0 和 1 特殊标记为 true（非素数）。
+
+      3. 从 a 到 b 逐个枚举：
+         如果 i 是素数，就把 i 反转得到 r，判断 r 是否等于 i。
+         相等说明 i 是回文数，输出即可。
+
+      时间复杂度：筛法 O(b log log b)，枚举判回文 O((b-a) * 位数)，
+      在 b ≤ 1e7 时完全可行。
+    */</span>
+
+    cin &gt;&gt; a &gt;&gt; b;
+
+    <span class="hljs-comment">// 偶数位回文数（8 位及以上）不可能是素数，截断上界</span>
+    <span class="hljs-keyword">if</span> (b &gt;= <span class="hljs-number">10000000</span>) b = <span class="hljs-number">10000000</span>;
+
+    <span class="hljs-comment">// 0 和 1 不是素数</span>
+    f[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+    f[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+
+    <span class="hljs-comment">// ---------- 埃氏筛 ----------</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= b; i++) {
+        <span class="hljs-keyword">if</span> (!f[i]) {                         <span class="hljs-comment">// i 是素数</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + i; j &lt;= b; j += i) {
+                f[j] = <span class="hljs-literal">true</span>;                 <span class="hljs-comment">// 标记 i 的倍数为合数</span>
+            }
+        }
+    }
+
+    <span class="hljs-comment">// ---------- 枚举区间内每个数，判断素数 + 回文 ----------</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = a; i &lt;= b; i++) {
+        <span class="hljs-keyword">if</span> (!f[i]) {                         <span class="hljs-comment">// i 是素数</span>
+            <span class="hljs-comment">// 反转 i</span>
+            <span class="hljs-type">int</span> t = i;                       <span class="hljs-comment">// t: 临时变量，用于逐位取出</span>
+            <span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;                       <span class="hljs-comment">// r: i 反转后的数</span>
+            <span class="hljs-keyword">while</span> (t != <span class="hljs-number">0</span>) {
+                r = r * <span class="hljs-number">10</span> + t % <span class="hljs-number">10</span>;
+                t /= <span class="hljs-number">10</span>;
+            }
+            <span class="hljs-comment">// 反转后与原数相等，说明是回文数</span>
+            <span class="hljs-keyword">if</span> (r == i) {
+                cout &lt;&lt; i &lt;&lt; endl;
+            }
+        }
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+
+
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-number">0</span>),cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>),cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a,b;
+    cin&gt;&gt;a&gt;&gt;b;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=a;i&lt;=b;i++){
+        <span class="hljs-keyword">if</span>(i%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>){<span class="hljs-comment">//特判偶数</span>
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-type">int</span> w=i,s=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(w!=<span class="hljs-number">0</span>){<span class="hljs-comment">//判断是否为回文数</span>
+            s=s*<span class="hljs-number">10</span>+w%<span class="hljs-number">10</span>;
+            w/=<span class="hljs-number">10</span>;
+        }
+        <span class="hljs-keyword">if</span>(s!=i){
+            <span class="hljs-keyword">continue</span>;
+        }
+        <span class="hljs-type">int</span> f=<span class="hljs-number">0</span>;<span class="hljs-comment">//判断是否为质数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">2</span>;j*j&lt;=i;j++){
+            <span class="hljs-keyword">if</span>(i%j==<span class="hljs-number">0</span>){
+                f=<span class="hljs-number">1</span>;
+                <span class="hljs-keyword">break</span>;
+            }
+        }
+        <span class="hljs-keyword">if</span>(f==<span class="hljs-number">0</span>){
+            cout&lt;&lt;i&lt;&lt;endl;
+        }
+    }
+    
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/1405">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/1404/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">1404 有趣的斜角？</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/1406/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">1406 石头剪刀布？</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1108/"><span class="seo-plist-id">1108</span><span class="seo-plist-title">正整数N转换成一个二进制数</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1141/"><span class="seo-plist-id">1141</span><span class="seo-plist-title">A类多？B类多？</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1288/"><span class="seo-plist-id">1288</span><span class="seo-plist-title">正整数n转换为8进制</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

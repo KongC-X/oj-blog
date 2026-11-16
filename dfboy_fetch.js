@@ -152,13 +152,16 @@ async function fetchProblem(problemId) {
   const res = await httpGet(`/p/${problemId}`, false);
   const html = res.body;
   
-  if (html.includes('Not Found') || html.includes('404') || html.length < 5000) {
-    return null;
-  }
-  
-  // 标题
+  // 判定有效题目页只能靠页面结构，不能靠关键字包含。
+  // 曾经用 html.includes('404') 判断错误页，结果误杀正常题目：
+  //   1083 题目算式里含 14003+30041、1148/1327 配图路径含时间戳 404、
+  //   1403/1405 的"下一题/上一题"链接指向 /p/1404、1404 标题本身含 1404。
+  // 现改为：标题必须匹配「题号 - 题名-东方博宜OJ」格式。
+  if (html.length < 5000) return null;
+
   const titleMatch = html.match(/<title>(\d+)\s*[-–]\s*([^<]+)-东方博宜OJ<\/title>/);
-  const title = titleMatch ? titleMatch[2].trim() : `题目${problemId}`;
+  if (!titleMatch) return null;
+  const title = titleMatch[2].trim();
   
   // 难度
   const difficulty = extractDifficulty(html);
