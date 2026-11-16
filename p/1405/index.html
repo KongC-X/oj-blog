@@ -56,103 +56,38 @@
 <h2>解题思路</h2>
 <h2>AC代码</h2>
 <pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 
-<span class="hljs-type">int</span> a, b;                        <span class="hljs-comment">// a,b: 查询区间 [a, b]</span>
-<span class="hljs-type">bool</span> f[<span class="hljs-number">100000010</span>];               <span class="hljs-comment">// f[i]: true 表示 i 是合数（或 0、1），false 表示素数</span>
-
-<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-comment">/*
-      思路：
-      1. 先看一个关键性质：
-         除了 11 以外，所有偶数位的回文数都能被 11 整除，所以一定不是素数。
-         结论：偶数位回文数中，只有 11 是素数，其余全是合数。
-         因此 1e8 以内不存在 8 位回文质数，最大只需要考虑 7 位回文数（≤ 9999999）。
-         所以可以把上界 b 截断到 1e7，大幅减少筛法的工作量。
-
-      2. 用埃氏筛筛出 [0, b] 内的所有素数：
-         f[i] = false 表示 i 是素数，f[i] = true 表示 i 是合数。
-         0 和 1 特殊标记为 true（非素数）。
-
-      3. 从 a 到 b 逐个枚举：
-         如果 i 是素数，就把 i 反转得到 r，判断 r 是否等于 i。
-         相等说明 i 是回文数，输出即可。
-
-      时间复杂度：筛法 O(b log log b)，枚举判回文 O((b-a) * 位数)，
-      在 b ≤ 1e7 时完全可行。
-    */</span>
-
-    cin &gt;&gt; a &gt;&gt; b;
-
-    <span class="hljs-comment">// 偶数位回文数（8 位及以上）不可能是素数，截断上界</span>
-    <span class="hljs-keyword">if</span> (b &gt;= <span class="hljs-number">10000000</span>) b = <span class="hljs-number">10000000</span>;
-
-    <span class="hljs-comment">// 0 和 1 不是素数</span>
-    f[<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
-    f[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
-
-    <span class="hljs-comment">// ---------- 埃氏筛 ----------</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i * i &lt;= b; i++) {
-        <span class="hljs-keyword">if</span> (!f[i]) {                         <span class="hljs-comment">// i 是素数</span>
-            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = i + i; j &lt;= b; j += i) {
-                f[j] = <span class="hljs-literal">true</span>;                 <span class="hljs-comment">// 标记 i 的倍数为合数</span>
-            }
+<span class="hljs-comment">// 判断一个数字是否是素数</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">isPrime</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> </span>{
+    <span class="hljs-keyword">if</span> (num &lt;= <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>; i &lt;= <span class="hljs-built_in">sqrt</span>(num); i++) {
+        <span class="hljs-keyword">if</span> (num % i == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
-
-    <span class="hljs-comment">// ---------- 枚举区间内每个数，判断素数 + 回文 ----------</span>
-    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = a; i &lt;= b; i++) {
-        <span class="hljs-keyword">if</span> (!f[i]) {                         <span class="hljs-comment">// i 是素数</span>
-            <span class="hljs-comment">// 反转 i</span>
-            <span class="hljs-type">int</span> t = i;                       <span class="hljs-comment">// t: 临时变量，用于逐位取出</span>
-            <span class="hljs-type">int</span> r = <span class="hljs-number">0</span>;                       <span class="hljs-comment">// r: i 反转后的数</span>
-            <span class="hljs-keyword">while</span> (t != <span class="hljs-number">0</span>) {
-                r = r * <span class="hljs-number">10</span> + t % <span class="hljs-number">10</span>;
-                t /= <span class="hljs-number">10</span>;
-            }
-            <span class="hljs-comment">// 反转后与原数相等，说明是回文数</span>
-            <span class="hljs-keyword">if</span> (r == i) {
-                cout &lt;&lt; i &lt;&lt; endl;
-            }
-        }
-    }
-
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 
-
-
-
-<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
-<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
-    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-number">0</span>),cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>),cout.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
-    <span class="hljs-type">long</span> <span class="hljs-type">long</span> a,b;
-    cin&gt;&gt;a&gt;&gt;b;
-    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=a;i&lt;=b;i++){
-        <span class="hljs-keyword">if</span>(i%<span class="hljs-number">2</span>==<span class="hljs-number">0</span>){<span class="hljs-comment">//特判偶数</span>
-            <span class="hljs-keyword">continue</span>;
+    string s;
+    <span class="hljs-type">int</span> n,i,j,x,k,t = <span class="hljs-number">0</span>;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++){
+        cin &gt;&gt; s;
+        k = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(j = s.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;j &gt;= <span class="hljs-number">0</span>;j--) {
+            x = (s[j] - <span class="hljs-string">&#x27;0&#x27;</span>) * <span class="hljs-built_in">pow</span>(<span class="hljs-number">2</span>, s.<span class="hljs-built_in">size</span>() - j - <span class="hljs-number">1</span>);
+            k += x;
         }
-        <span class="hljs-type">int</span> w=i,s=<span class="hljs-number">0</span>;
-        <span class="hljs-keyword">while</span>(w!=<span class="hljs-number">0</span>){<span class="hljs-comment">//判断是否为回文数</span>
-            s=s*<span class="hljs-number">10</span>+w%<span class="hljs-number">10</span>;
-            w/=<span class="hljs-number">10</span>;
-        }
-        <span class="hljs-keyword">if</span>(s!=i){
-            <span class="hljs-keyword">continue</span>;
-        }
-        <span class="hljs-type">int</span> f=<span class="hljs-number">0</span>;<span class="hljs-comment">//判断是否为质数</span>
-        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j=<span class="hljs-number">2</span>;j*j&lt;=i;j++){
-            <span class="hljs-keyword">if</span>(i%j==<span class="hljs-number">0</span>){
-                f=<span class="hljs-number">1</span>;
-                <span class="hljs-keyword">break</span>;
-            }
-        }
-        <span class="hljs-keyword">if</span>(f==<span class="hljs-number">0</span>){
-            cout&lt;&lt;i&lt;&lt;endl;
+        <span class="hljs-keyword">if</span>(<span class="hljs-built_in">isPrime</span>(k)) {
+            t++;
         }
     }
-    
+    cout &lt;&lt; t &lt;&lt; endl;
 }</code></pre>
 </article>
 <div class="seo-cta">

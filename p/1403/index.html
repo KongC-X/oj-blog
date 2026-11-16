@@ -55,83 +55,38 @@
 <p>按照输入的顺序输出满足条件的回文数，每行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 个。</p>
 <h2>解题思路</h2>
 <h2>AC代码</h2>
-<pre><code class="hljs language-cpp"><span class="hljs-comment">// 贪心策略：优先选择结束时间尽可能早的活动，因为结束时间越早，剩余的时间就越多，那么剩余的时间可以排更多的活动</span>
-<span class="hljs-comment">// 解法：按照结束时间升序排序，然后逐个统计哪个活动的开始时间 &gt;= 上一个被选中活动的结束时间  </span>
-
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
 <span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
-
-<span class="hljs-type">int</span> n; <span class="hljs-comment">//活动数量</span>
-<span class="hljs-type">int</span> s[<span class="hljs-number">110</span>],e[<span class="hljs-number">110</span>]; <span class="hljs-comment">//活动起止时间</span>
-<span class="hljs-type">int</span> i,j,c,etime; 
-<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
-    cin&gt;&gt;n;
-    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>;i &lt; n;i++){
-        cin&gt;&gt;s[i]&gt;&gt;e[i];
+<span class="hljs-comment">/*
+    判断是否是回文数 
+*/</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">hws</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>{
+    <span class="hljs-type">bool</span> r = <span class="hljs-literal">false</span>;
+    <span class="hljs-type">int</span> y=<span class="hljs-number">0</span>,m=x;
+    <span class="hljs-comment">//y=x的倒序 </span>
+    <span class="hljs-keyword">while</span>(m!=<span class="hljs-number">0</span>){
+        y = y*<span class="hljs-number">10</span>+m%<span class="hljs-number">10</span>;
+        m = m/<span class="hljs-number">10</span>;
     }
-    <span class="hljs-comment">//按照结束时间升序</span>
-    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n - <span class="hljs-number">1</span>;i++){
-        <span class="hljs-keyword">for</span>(j = <span class="hljs-number">0</span>;j &lt;= n - i - <span class="hljs-number">1</span>;j++){
-            <span class="hljs-keyword">if</span>(e[j] &gt; e[j+<span class="hljs-number">1</span>]){
-                <span class="hljs-built_in">swap</span>(e[j],e[j+<span class="hljs-number">1</span>]);
-                <span class="hljs-built_in">swap</span>(s[j],s[j+<span class="hljs-number">1</span>]);
-            }
-        }
-    } 
     
-    <span class="hljs-comment">//第1个活动必选</span>
-    etime = e[<span class="hljs-number">0</span>];<span class="hljs-comment">//存储第1个活动的结束时间</span>
-    c = <span class="hljs-number">1</span>;<span class="hljs-comment">//已经有1个选中的活动了</span>
-
-    <span class="hljs-comment">//在剩余活动中继续选 </span>
-    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt; n;i++){
-        <span class="hljs-comment">//如果有一个活动的开始时间&gt;=上一个选中活动的结束时间 </span>
-        <span class="hljs-keyword">if</span>(s[i] &gt;= etime){
-            c++;
-            etime = e[i];
-        }
-    } 
-    cout&lt;&lt;c;
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-}
-
-
-
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
-<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iomanip&gt;</span></span>
-<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
-
-<span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span> {
-    <span class="hljs-type">int</span> begin;
-    <span class="hljs-type">int</span> end;
-}a[<span class="hljs-number">110</span>];
-
-<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(Node a, Node b)</span> </span>{
-    <span class="hljs-keyword">if</span>(a.end &lt; b.end) {
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span>(y==x){
+        r = <span class="hljs-literal">true</span>;
     }
+    
+    <span class="hljs-keyword">return</span> r;
 }
 
 <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
-    <span class="hljs-type">int</span> i,j,n,c = <span class="hljs-number">0</span>,e;
-    cin &gt;&gt; n;
-    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; n; i++) {
-        cin &gt;&gt; a[i].begin &gt;&gt; a[i].end;
-    }
-    <span class="hljs-built_in">sort</span>(a,a + n,cmp);
-    c = <span class="hljs-number">1</span>; <span class="hljs-comment">// 第一个活动必须选</span>
-    e = a[<span class="hljs-number">0</span>].end;
-    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt; n;i++) {
-        <span class="hljs-keyword">if</span>(a[i].begin &gt;= e) {
-            c++;
-            e = a[i].end;
+    <span class="hljs-type">int</span> n,m,a[<span class="hljs-number">101</span>][<span class="hljs-number">101</span>],i,j;
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-keyword">for</span>(i=<span class="hljs-number">0</span>;i&lt;n;i++){
+        <span class="hljs-keyword">for</span>(j=<span class="hljs-number">0</span>;j&lt;m;j++){
+            cin&gt;&gt;a[i][j];
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">hws</span>(a[i][j])){
+                cout&lt;&lt;a[i][j]&lt;&lt;endl;
+            } 
         }
-    }
-    cout &lt;&lt; c &lt;&lt; endl;
+    } 
 }</code></pre>
 </article>
 <div class="seo-cta">
