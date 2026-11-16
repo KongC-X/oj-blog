@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 最短路径 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="在带权有向图 中，给定一个源点 ，求从 到 中的其余各顶点的最短路径问题，叫做单源点的最短路径问题。 在常用的单源点最短路径算法中，迪杰斯特拉算法是最为常用的一种，是一种按照路径长度递增的次序产生最短路径的算法。 在本题中，读入一个有向图的带权邻接矩阵（即数组表示），建立有向图并按照以上描述中的算…">
+<link rel="canonical" href="https://zymojblog.top/p/2048/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2048 最短路径 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="在带权有向图 中，给定一个源点 ，求从 到 中的其余各顶点的最短路径问题，叫做单源点的最短路径问题。 在常用的单源点最短路径算法中，迪杰斯特拉算法是最为常用的一种，是一种按照路径长度递增的次序产生最短路径的算法。 在本题中，读入一个有向图的带权邻接矩阵（即数组表示），建立有向图并按照以上描述中的算…">
+<meta property="og:url" content="https://zymojblog.top/p/2048/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2048 最短路径 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="在带权有向图 中，给定一个源点 ，求从 到 中的其余各顶点的最短路径问题，叫做单源点的最短路径问题。 在常用的单源点最短路径算法中，迪杰斯特拉算法是最为常用的一种，是一种按照路径长度递增的次序产生最短路径的算法。 在本题中，读入一个有向图的带权邻接矩阵（即数组表示），建立有向图并按照以上描述中的算…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2048 最短路径","headline":"2048 最短路径 题解","description":"在带权有向图 中，给定一个源点 ，求从 到 中的其余各顶点的最短路径问题，叫做单源点的最短路径问题。 在常用的单源点最短路径算法中，迪杰斯特拉算法是最为常用的一种，是一种按照路径长度递增的次序产生最短路径的算法。 在本题中，读入一个有向图的带权邻接矩阵（即数组表示），建立有向图并按照以上描述中的算…","url":"https://zymojblog.top/p/2048/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2048</span>
+</div>
+<h1 class="seo-title">2048 最短路径</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%9B%BE%E8%AE%BA/">图论</a></div>
+<article class="markdown-body seo-article">
+<h1>2048 - 最短路径</h1>
+<h2>题目描述</h2>
+<p>在带权有向图 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 中，给定一个源点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> ，求从 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">G</span></span></span></span> 中的其余各顶点的最短路径问题，叫做单源点的最短路径问题。</p>
+<p>在常用的单源点最短路径算法中，迪杰斯特拉算法是最为常用的一种，是一种按照路径长度递增的次序产生最短路径的算法。</p>
+<p>在本题中，读入一个有向图的带权邻接矩阵（即数组表示），建立有向图并按照以上描述中的算法求出源点至每一个其它顶点的最短路径长度。</p>
+<h2>输入</h2>
+<p>输入的第一行包含 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> ，表示图中共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个顶点，且源点为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">s</span></span></span></span> 。（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>≤</mo><mi>n</mi><mo>≤</mo><mn>50</mn><mo separator="true">,</mo><mn>1</mn><mo>≤</mo><mi>s</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">2 \le n \le 50,1 \le s \le n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">50</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>）</p>
+<p>以后的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行中每行有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个用空格隔开的整数。</p>
+<p>对于第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 行的第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> 个整数，如果大于 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> ，则表示第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 个顶点有指向第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> 个顶点的有向边，且权值为对应的整数值（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo></mrow><annotation encoding="application/x-tex">0≤</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span></span></span></span>权值<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">≤100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span>）；如果这个整数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> ，则表示没有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 指向 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> 的有向边。</p>
+<p>当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> 相等的时候，保证对应的整数为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 。</p>
+<h2>输出</h2>
+<p>只有一行，共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 个整数，表示源点至其它每一个顶点的最短路径长度。</p>
+<p>如果不存在从源点至相应顶点的路径，输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mord">1</span></span></span></span>。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 这题的判断依据是 s1 + s2 &gt; s2 + s1</span>
+<span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(string a, string b)</span> </span>{
+    <span class="hljs-keyword">if</span>(a + b &gt; b + a) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    string s[<span class="hljs-number">110</span>];
+    <span class="hljs-type">int</span> i,n;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; n; i++) cin &gt;&gt; s[i];
+    <span class="hljs-built_in">sort</span>(s, s + n, cmp);
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">0</span>; i &lt; n; i++) cout &lt;&lt; s[i];
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2048">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2047/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2047 最短距离和路径问题</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2049/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2049 两点之间的最短路径</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1525/"><span class="seo-plist-id">P1525</span><span class="seo-plist-title">[NOIP 2010 提高组] 关押罪犯</span><span class="seo-plist-diff">普及+/提高-</span></a></li>
+  <li><a href="/p/P1546/"><span class="seo-plist-id">P1546</span><span class="seo-plist-title">[USACO3.1] 最短网络 Agri-Net</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1547/"><span class="seo-plist-id">P1547</span><span class="seo-plist-title">[USACO05MAR] Out of Hay S</span><span class="seo-plist-diff">普及</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2044 城市之间的最短路 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="小丁同学准备去A国旅游，他买了一张A国的地图，地图标出了A国著名的 个旅游热门城市，并标注了这 个城市之间有 条双向路线相连以及每条双向路线的长度。 请你编程帮助小丁求出其中两个城市之间的最短距离。">
+<link rel="canonical" href="https://zymojblog.top/p/2044/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2044 城市之间的最短路 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="小丁同学准备去A国旅游，他买了一张A国的地图，地图标出了A国著名的 个旅游热门城市，并标注了这 个城市之间有 条双向路线相连以及每条双向路线的长度。 请你编程帮助小丁求出其中两个城市之间的最短距离。">
+<meta property="og:url" content="https://zymojblog.top/p/2044/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2044 城市之间的最短路 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="小丁同学准备去A国旅游，他买了一张A国的地图，地图标出了A国著名的 个旅游热门城市，并标注了这 个城市之间有 条双向路线相连以及每条双向路线的长度。 请你编程帮助小丁求出其中两个城市之间的最短距离。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2044 城市之间的最短路","headline":"2044 城市之间的最短路 题解","description":"小丁同学准备去A国旅游，他买了一张A国的地图，地图标出了A国著名的 个旅游热门城市，并标注了这 个城市之间有 条双向路线相连以及每条双向路线的长度。 请你编程帮助小丁求出其中两个城市之间的最短距离。","url":"https://zymojblog.top/p/2044/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2044</span>
+</div>
+<h1 class="seo-title">2044 城市之间的最短路</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%9B%BE%E8%AE%BA/">图论</a></div>
+<article class="markdown-body seo-article">
+<h1>2044 - 城市之间的最短路</h1>
+<h2>题目描述</h2>
+<p>小丁同学准备去A国旅游，他买了一张A国的地图，地图标出了A国著名的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个旅游热门城市，并标注了这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个城市之间有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 条双向路线相连以及每条双向路线的长度。</p>
+<p>请你编程帮助小丁求出其中两个城市之间的最短距离。</p>
+<h2>输入</h2>
+<p>输入第一行为两个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">n \le 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span>）和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span>（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi><mo>×</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m \le n \times (n-1)/2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mord">/2</span></span></span></span>），<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 表示城市个数，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 表示线段个数。</p>
+<p>接下来 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 行，每行输入三个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a,b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span> ，表示 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 市与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 市之间存在一条线段，线段长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi></mrow><annotation encoding="application/x-tex">l</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span> 。（ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 不同，且本题的数据中两个城市之间最多只有一条路）</p>
+<p>每组最后一行输入两个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> ，表示问题：<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 市与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 市之间的最短距离是多少。（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 不同）</p>
+<p>城市标号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>∼</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">1 \sim n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>， <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>≤</mo><mi>l</mi><mo>≤</mo><mn>20</mn></mrow><annotation encoding="application/x-tex">1 \le l \le 20</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7804em;vertical-align:-0.136em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8304em;vertical-align:-0.136em;"></span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">20</span></span></span></span> 。</p>
+<h2>输出</h2>
+<p>输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 市与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 市之间的最短距离，如果 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 市与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 市之间非连通，则输出 <code>No path</code>。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 求一个数的各位数字之和</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">numSum</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> </span>{
+    <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span>(num != <span class="hljs-number">0</span>) {
+        sum += num % <span class="hljs-number">10</span>;
+        num = num / <span class="hljs-number">10</span>;
+    }
+    <span class="hljs-keyword">return</span> sum;
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    <span class="hljs-type">int</span> i,n,s,a,sum = <span class="hljs-number">0</span>;
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>;i &lt;= n; i++) {
+        s = <span class="hljs-number">0</span>;
+        a = i;
+        s = <span class="hljs-built_in">numSum</span>(a);
+        <span class="hljs-keyword">if</span>(s == <span class="hljs-number">13</span>) {
+            sum++;
+        }
+    }
+    cout &lt;&lt; sum &lt;&lt; endl;
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2044">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2030/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2030 信息传递  [NOIP2015 提高组]</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2045/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2045 银河英雄传说</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1525/"><span class="seo-plist-id">P1525</span><span class="seo-plist-title">[NOIP 2010 提高组] 关押罪犯</span><span class="seo-plist-diff">普及+/提高-</span></a></li>
+  <li><a href="/p/P1546/"><span class="seo-plist-id">P1546</span><span class="seo-plist-title">[USACO3.1] 最短网络 Agri-Net</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1547/"><span class="seo-plist-id">P1547</span><span class="seo-plist-title">[USACO05MAR] Out of Hay S</span><span class="seo-plist-diff">普及</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

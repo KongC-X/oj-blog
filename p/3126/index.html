@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3126 由中根序列和先根序列重建二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵二叉树的中序遍历和先序遍历，重建该二叉树并输出后序遍历。">
+<link rel="canonical" href="https://zymojblog.top/p/3126/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="3126 由中根序列和先根序列重建二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵二叉树的中序遍历和先序遍历，重建该二叉树并输出后序遍历。">
+<meta property="og:url" content="https://zymojblog.top/p/3126/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3126 由中根序列和先根序列重建二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵二叉树的中序遍历和先序遍历，重建该二叉树并输出后序遍历。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"3126 由中根序列和先根序列重建二叉树","headline":"3126 由中根序列和先根序列重建二叉树 题解","description":"给定一棵二叉树的中序遍历和先序遍历，重建该二叉树并输出后序遍历。","url":"https://zymojblog.top/p/3126/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>3126</span>
+</div>
+<h1 class="seo-title">3126 由中根序列和先根序列重建二叉树</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E6%A0%91/">树</a></div>
+<article class="markdown-body seo-article">
+<h1>3126 - 由中根序列和先根序列重建二叉树</h1>
+<h2>题目描述</h2>
+<p>给定一棵二叉树的中序遍历和先序遍历，重建该二叉树并输出后序遍历。</p>
+<h2>输入</h2>
+<p>第一行输入一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> ，表示二叉树的节点数。</p>
+<p>第二行输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个整数，表示二叉树的先序遍历序列。</p>
+<p>第三行输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个整数，表示二叉树的中序遍历序列。</p>
+<h2>输出</h2>
+<p>输出一行 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个整数，表示重建二叉树后的后序遍历序列。</p>
+<h2>解题思路</h2>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-comment">// 有n个数，可以删除连续的k个数</span>
+<span class="hljs-comment">// 求剩余任务时间和的最小值相当于求连续删除的k个数的和的最大值</span>
+<span class="hljs-type">int</span> n,k;
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1000010</span>;
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> LL;
+LL a[N],b[N],ma;
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d%d&quot;</span>,&amp;n,&amp;k);
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>,&amp;a[i]);
+        b[i] = b[i - <span class="hljs-number">1</span>] + a[i]; <span class="hljs-comment">// 求前缀和</span>
+    }
+    <span class="hljs-comment">// 求从每个数开始连续k个数的和，在所有的和中求最大值</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n - k + <span class="hljs-number">1</span>;i++) {
+        <span class="hljs-comment">// 区间范围：i ~ i + k - 1</span>
+        ma = <span class="hljs-built_in">max</span>(ma,b[i + k - <span class="hljs-number">1</span>] - b[i - <span class="hljs-number">1</span>]);
+    }
+    <span class="hljs-comment">// 求剩余任务时间和的最小值</span>
+    cout &lt;&lt; b[n] - ma &lt;&lt; endl;
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/3126">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/3123/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">3123 由中根序列和后根序列重建二叉树</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/3343/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">3343 每月天数</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1775/"><span class="seo-plist-id">1775</span><span class="seo-plist-title">谁的孙子最多</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1776/"><span class="seo-plist-id">1776</span><span class="seo-plist-title">谁的孙子最多II</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/2164/"><span class="seo-plist-id">2164</span><span class="seo-plist-title">子结点的数量</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3123 由中根序列和后根序列重建二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="我们知道如何按照三种深度优先次序来周游一棵二叉树，来得到中根序列、前根序列和后根序列。 反过来，如果给定二叉树的中根序列和后根序列，或者给定中根序列和前根序列，可以重建一二叉树。 本题输入一棵二叉树的中根序列和后根序列，要求在内存中重建二叉树，最后输出这棵二叉树的前根序列。 用不同的整数来唯一标识…">
+<link rel="canonical" href="https://zymojblog.top/p/3123/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="3123 由中根序列和后根序列重建二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="我们知道如何按照三种深度优先次序来周游一棵二叉树，来得到中根序列、前根序列和后根序列。 反过来，如果给定二叉树的中根序列和后根序列，或者给定中根序列和前根序列，可以重建一二叉树。 本题输入一棵二叉树的中根序列和后根序列，要求在内存中重建二叉树，最后输出这棵二叉树的前根序列。 用不同的整数来唯一标识…">
+<meta property="og:url" content="https://zymojblog.top/p/3123/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3123 由中根序列和后根序列重建二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="我们知道如何按照三种深度优先次序来周游一棵二叉树，来得到中根序列、前根序列和后根序列。 反过来，如果给定二叉树的中根序列和后根序列，或者给定中根序列和前根序列，可以重建一二叉树。 本题输入一棵二叉树的中根序列和后根序列，要求在内存中重建二叉树，最后输出这棵二叉树的前根序列。 用不同的整数来唯一标识…">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"3123 由中根序列和后根序列重建二叉树","headline":"3123 由中根序列和后根序列重建二叉树 题解","description":"我们知道如何按照三种深度优先次序来周游一棵二叉树，来得到中根序列、前根序列和后根序列。 反过来，如果给定二叉树的中根序列和后根序列，或者给定中根序列和前根序列，可以重建一二叉树。 本题输入一棵二叉树的中根序列和后根序列，要求在内存中重建二叉树，最后输出这棵二叉树的前根序列。 用不同的整数来唯一标识…","url":"https://zymojblog.top/p/3123/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>3123</span>
+</div>
+<h1 class="seo-title">3123 由中根序列和后根序列重建二叉树</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E6%A0%91/">树</a></div>
+<article class="markdown-body seo-article">
+<h1>3123 - 由中根序列和后根序列重建二叉树</h1>
+<h2>题目描述</h2>
+<p>我们知道如何按照三种深度优先次序来周游一棵二叉树，来得到中根序列、前根序列和后根序列。</p>
+<p>反过来，如果给定二叉树的中根序列和后根序列，或者给定中根序列和前根序列，可以重建一二叉树。</p>
+<p>本题输入一棵二叉树的中根序列和后根序列，要求在内存中重建二叉树，最后输出这棵二叉树的前根序列。</p>
+<p>用不同的整数来唯一标识二叉树的每一个结点，下面的二叉树：</p>
+<pre><code class="hljs language-cpp"><span class="hljs-number">5</span>
+ /\
+<span class="hljs-number">9</span> <span class="hljs-number">67</span>
+  /
+<span class="hljs-number">32</span></code></pre><p>中根序列是 9 5 32 67<br>后根序列 9 32 67 5<br>前根序列 5 9 67 32</p>
+<h2>输入</h2>
+<p>两行。第一行是二叉树的中根序列，第二行是后根序列。</p>
+<p>每个数字表示的结点之间用空格隔开。</p>
+<p>结点数字范围0～65535。暂不必考虑不合理的输入数据。</p>
+<h2>输出</h2>
+<p>一行。由输入中的中根序列和后根序列重建的二叉树的前根序列。</p>
+<p>每个数字表示的结点之间用空格隔开。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">70000</span>], b[<span class="hljs-number">70000</span>];      <span class="hljs-comment">// a: 后序, b: 中序</span>
+<span class="hljs-type">int</span> pos[<span class="hljs-number">70000</span>];              <span class="hljs-comment">// pos[值] = 该值在中序中的下标（值范围 0~65535）</span>
+<span class="hljs-type">int</span> n;
+
+<span class="hljs-comment">// 把字符串 s 解析成整数数组 arr，返回数字个数</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">parse</span><span class="hljs-params">(<span class="hljs-type">const</span> string &amp;s, <span class="hljs-type">int</span> arr[])</span> </span>{
+    <span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;             <span class="hljs-comment">// 已解析的数字个数</span>
+    <span class="hljs-type">int</span> x = <span class="hljs-number">0</span>;               <span class="hljs-comment">// 当前正在拼的数字</span>
+    <span class="hljs-type">bool</span> has = <span class="hljs-literal">false</span>;        <span class="hljs-comment">// 当前是否正在读一个数字</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; (<span class="hljs-type">int</span>)s.<span class="hljs-built_in">size</span>(); i++) {
+        <span class="hljs-keyword">if</span> (s[i] &gt;= <span class="hljs-string">&#x27;0&#x27;</span> &amp;&amp; s[i] &lt;= <span class="hljs-string">&#x27;9&#x27;</span>) {
+            x = x * <span class="hljs-number">10</span> + (s[i] - <span class="hljs-string">&#x27;0&#x27;</span>);
+            has = <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (has) {
+            arr[cnt++] = x;
+            x = <span class="hljs-number">0</span>;
+            has = <span class="hljs-literal">false</span>;
+        }
+    }
+    <span class="hljs-keyword">if</span> (has) arr[cnt++] = x; <span class="hljs-comment">// 行末可能没有分隔符，收尾</span>
+    <span class="hljs-keyword">return</span> cnt;
+}
+
+<span class="hljs-comment">// 递归：根据后序区间 [l1,r1] 和中序区间 [l2,r2] 求前序（根左右）</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> l1, <span class="hljs-type">int</span> r1, <span class="hljs-type">int</span> l2, <span class="hljs-type">int</span> r2)</span> </span>{
+    <span class="hljs-keyword">if</span> (l1 &gt; r1) <span class="hljs-keyword">return</span>;             <span class="hljs-comment">// 空区间，直接返回</span>
+
+    <span class="hljs-type">int</span> root = a[r1];                <span class="hljs-comment">// 后序最后一个就是当前子树的根</span>
+    <span class="hljs-type">int</span> mid = pos[root];             <span class="hljs-comment">// 根在中序中的位置</span>
+    <span class="hljs-type">int</span> leftSize = mid - l2;         <span class="hljs-comment">// 左子树结点个数</span>
+
+    cout &lt;&lt; root &lt;&lt; <span class="hljs-string">&quot; &quot;</span>;             <span class="hljs-comment">// 前序：先输出根</span>
+
+    <span class="hljs-comment">// 左子树：后序 [l1, l1+leftSize-1]，中序 [l2, mid-1]</span>
+    <span class="hljs-keyword">if</span> (mid &gt; l2)
+        <span class="hljs-built_in">dfs</span>(l1, l1 + leftSize - <span class="hljs-number">1</span>, l2, mid - <span class="hljs-number">1</span>);
+
+    <span class="hljs-comment">// 右子树：后序 [l1+leftSize, r1-1]，中序 [mid+1, r2]</span>
+    <span class="hljs-keyword">if</span> (mid &lt; r2)
+        <span class="hljs-built_in">dfs</span>(l1 + leftSize, r1 - <span class="hljs-number">1</span>, mid + <span class="hljs-number">1</span>, r2);
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    string s;
+
+    <span class="hljs-built_in">getline</span>(cin, s);
+    n = <span class="hljs-built_in">parse</span>(s, b);                 <span class="hljs-comment">// 第一行：中序</span>
+
+    <span class="hljs-built_in">getline</span>(cin, s);
+    <span class="hljs-built_in">parse</span>(s, a);                     <span class="hljs-comment">// 第二行：后序</span>
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) pos[b[i]] = i;
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/3123">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2986/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2986 解密（decode）[CSP-J 2022]</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/3126/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">3126 由中根序列和先根序列重建二叉树</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1775/"><span class="seo-plist-id">1775</span><span class="seo-plist-title">谁的孙子最多</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1776/"><span class="seo-plist-id">1776</span><span class="seo-plist-title">谁的孙子最多II</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/2164/"><span class="seo-plist-id">2164</span><span class="seo-plist-title">子结点的数量</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

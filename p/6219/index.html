@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6219 满二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="给定一棵以 1 号结点为根的二叉树，共有 个结点，结点编号为 到 。第 个结点的左孩子为 ，右孩子为 ，若没有对应孩子则为 0。 对于每个结点，都可以看作一棵以该结点为根的子树。若一棵二叉树所有叶子结点深度相同，且每个非叶子结点都有两个孩子，则称它为满二叉树。请统计这 棵子树中有多少棵是满二叉树。">
+<link rel="canonical" href="https://zymojblog.top/p/6219/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="6219 满二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="给定一棵以 1 号结点为根的二叉树，共有 个结点，结点编号为 到 。第 个结点的左孩子为 ，右孩子为 ，若没有对应孩子则为 0。 对于每个结点，都可以看作一棵以该结点为根的子树。若一棵二叉树所有叶子结点深度相同，且每个非叶子结点都有两个孩子，则称它为满二叉树。请统计这 棵子树中有多少棵是满二叉树。">
+<meta property="og:url" content="https://zymojblog.top/p/6219/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6219 满二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="给定一棵以 1 号结点为根的二叉树，共有 个结点，结点编号为 到 。第 个结点的左孩子为 ，右孩子为 ，若没有对应孩子则为 0。 对于每个结点，都可以看作一棵以该结点为根的子树。若一棵二叉树所有叶子结点深度相同，且每个非叶子结点都有两个孩子，则称它为满二叉树。请统计这 棵子树中有多少棵是满二叉树。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"6219 满二叉树","headline":"6219 满二叉树 题解","description":"给定一棵以 1 号结点为根的二叉树，共有 个结点，结点编号为 到 。第 个结点的左孩子为 ，右孩子为 ，若没有对应孩子则为 0。 对于每个结点，都可以看作一棵以该结点为根的子树。若一棵二叉树所有叶子结点深度相同，且每个非叶子结点都有两个孩子，则称它为满二叉树。请统计这 棵子树中有多少棵是满二叉树。","url":"https://zymojblog.top/p/6219/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"GESP六级、26年6月、树、二叉树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>6219</span>
+</div>
+<h1 class="seo-title">6219 满二叉树</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/GESP%E5%85%AD%E7%BA%A7/">GESP六级</a><a class="seo-tag" href="/tag/26%E5%B9%B46%E6%9C%88/">26年6月</a><a class="seo-tag" href="/tag/%E6%A0%91/">树</a><a class="seo-tag" href="/tag/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></div>
+<article class="markdown-body seo-article">
+<h1>6219 - 满二叉树</h1>
+<h2>题目描述</h2>
+<p>给定一棵以 1 号结点为根的二叉树，共有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个结点，结点编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>。第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 个结点的左孩子为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">l_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8444em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0197em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，右孩子为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>，若没有对应孩子则为 0。</p>
+<p>对于每个结点，都可以看作一棵以该结点为根的子树。若一棵二叉树所有叶子结点深度相同，且每个非叶子结点都有两个孩子，则称它为满二叉树。请统计这 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 棵子树中有多少棵是满二叉树。</p>
+<h2>输入</h2>
+<p>第一行一个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>。</p>
+<p>接下来 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 行，第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi></mrow><annotation encoding="application/x-tex">i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">i</span></span></span></span> 行两个整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mi>i</mi></msub><mo separator="true">,</mo><msub><mi>r</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">l_i,r_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0197em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>。</p>
+<h2>输出</h2>
+<p>输出一个整数，表示满二叉树子树的数量。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;
+<span class="hljs-type">int</span> l[N], r[N];                <span class="hljs-comment">// l[i], r[i]：结点 i 的左、右儿子，0 表示空</span>
+<span class="hljs-type">int</span> n, ans;                    <span class="hljs-comment">// n：结点总数，ans：满二叉树个数</span>
+
+<span class="hljs-comment">// 返回以 u 为根的子树的高度，如果该子树不是满二叉树则返回 -1</span>
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span> </span>{
+    <span class="hljs-keyword">if</span> (u == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;                          <span class="hljs-comment">// 空树高度为 0（满二叉树定义中的辅助边界）</span>
+    <span class="hljs-type">int</span> hl = <span class="hljs-built_in">dfs</span>(l[u]);                            <span class="hljs-comment">// 左子树高度</span>
+    <span class="hljs-type">int</span> hr = <span class="hljs-built_in">dfs</span>(r[u]);                            <span class="hljs-comment">// 右子树高度</span>
+    <span class="hljs-keyword">if</span> (hl != <span class="hljs-number">-1</span> &amp;&amp; hr != <span class="hljs-number">-1</span> &amp;&amp; hl == hr) {        <span class="hljs-comment">// 左右均为满二叉树且高度相等</span>
+        ans++;                                     <span class="hljs-comment">// 当前子树是满二叉树，计数加 1</span>
+        <span class="hljs-keyword">return</span> hl + <span class="hljs-number">1</span>;                             <span class="hljs-comment">// 返回当前子树高度</span>
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;                                     <span class="hljs-comment">// 不是满二叉树，返回 -1</span>
+}
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    ios::<span class="hljs-built_in">sync_with_stdio</span>(<span class="hljs-literal">false</span>);
+    cin.<span class="hljs-built_in">tie</span>(<span class="hljs-number">0</span>);
+
+    cin &gt;&gt; n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++) {
+        cin &gt;&gt; l[i] &gt;&gt; r[i];
+    }
+
+    <span class="hljs-built_in">dfs</span>(<span class="hljs-number">1</span>);
+    cout &lt;&lt; ans &lt;&lt; endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/6219">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/6210/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">6210 完全平方数计数</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/6320/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">6320 新龟兔赛跑</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/3868/"><span class="seo-plist-id">3868</span><span class="seo-plist-title">二叉树</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/4159/"><span class="seo-plist-id">4159</span><span class="seo-plist-title">树上游走</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/4686/"><span class="seo-plist-id">4686</span><span class="seo-plist-title">环线</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

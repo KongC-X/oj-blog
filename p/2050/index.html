@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2050 最少的手续费 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="某商业银行规定，两个银行账户之间转账，银行需要收取一定的手续费，且不同的账户之间转账，手续费可能不同。 现给定 个账户中的某些账户之间互相转账的手续费（转账后另一个账户收到的费用 = 转账费用 - 手续费），请问 如果希望通过转账使得 收到 元，那么 需要准备多少钱？">
+<link rel="canonical" href="https://zymojblog.top/p/2050/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2050 最少的手续费 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="某商业银行规定，两个银行账户之间转账，银行需要收取一定的手续费，且不同的账户之间转账，手续费可能不同。 现给定 个账户中的某些账户之间互相转账的手续费（转账后另一个账户收到的费用 = 转账费用 - 手续费），请问 如果希望通过转账使得 收到 元，那么 需要准备多少钱？">
+<meta property="og:url" content="https://zymojblog.top/p/2050/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2050 最少的手续费 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="某商业银行规定，两个银行账户之间转账，银行需要收取一定的手续费，且不同的账户之间转账，手续费可能不同。 现给定 个账户中的某些账户之间互相转账的手续费（转账后另一个账户收到的费用 = 转账费用 - 手续费），请问 如果希望通过转账使得 收到 元，那么 需要准备多少钱？">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2050 最少的手续费","headline":"2050 最少的手续费 题解","description":"某商业银行规定，两个银行账户之间转账，银行需要收取一定的手续费，且不同的账户之间转账，手续费可能不同。 现给定 个账户中的某些账户之间互相转账的手续费（转账后另一个账户收到的费用 = 转账费用 - 手续费），请问 如果希望通过转账使得 收到 元，那么 需要准备多少钱？","url":"https://zymojblog.top/p/2050/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"图论","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2050</span>
+</div>
+<h1 class="seo-title">2050 最少的手续费</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E5%9B%BE%E8%AE%BA/">图论</a></div>
+<article class="markdown-body seo-article">
+<h1>2050 - 最少的手续费</h1>
+<h2>题目描述</h2>
+<p>某商业银行规定，两个银行账户之间转账，银行需要收取一定的手续费，且不同的账户之间转账，手续费可能不同。</p>
+<p>现给定 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个账户中的某些账户之间互相转账的手续费（转账后另一个账户收到的费用 = 转账费用 - 手续费），请问 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 如果希望通过转账使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 收到 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn></mrow><annotation encoding="application/x-tex">100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span> 元，那么 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 需要准备多少钱？</p>
+<h2>输入</h2>
+<p>第一行输入两个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo separator="true">,</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n,m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">n</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">m</span></span></span></span>，分别表示总人数和可以互相转账的人的对数。</p>
+<p>以下 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 行每行输入三个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo separator="true">,</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x,y,z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span></span></span>，表示编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 的人和编号为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 的人之间互相转账需要扣除 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">z\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8056em;vertical-align:-0.0556em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span><span class="mord">%</span></span></span></span> 的手续费 ()。</p>
+<p>最后一行输入两个正整数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo separator="true">,</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">A,B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">A</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span>。数据保证 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 与 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 之间可以直接或间接地转账。</p>
+<h2>输出</h2>
+<p>输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> 使得 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0502em;">B</span></span></span></span> 到账 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>100</mn></mrow><annotation encoding="application/x-tex">100</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">100</span></span></span></span> 元最少需要的总费用。精确到小数点后 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn></mrow><annotation encoding="application/x-tex">8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">8</span></span></span></span> 位。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-comment">// 假设 x 点向 y 点汇款，汇率为 z% ，也就是 0.0z ，那么如果要使得 y 点收到 100 元，也就是 x 汇出金额*(1-0.0z)=100，那么 x 点汇出金额 =100/(1-0.0z) 。</span>
+<span class="hljs-comment">// 利用这个原理，从终点 B ，反推如果终点 B 要收到 100 元，各个点要汇出的最少费用是多少钱。</span>
+
+<span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-type">int</span> a[<span class="hljs-number">2010</span>][<span class="hljs-number">2010</span>];<span class="hljs-comment">//邻接矩阵</span>
+<span class="hljs-type">int</span> n,m,s,e; <span class="hljs-comment">//s,e表示起止点start，end. </span>
+<span class="hljs-comment">//反推要使得B得到100元，那么每个点至少要汇出多少钱 </span>
+<span class="hljs-type">double</span> d[<span class="hljs-number">2010</span>]; 
+<span class="hljs-type">bool</span> f[<span class="hljs-number">2010</span>];
+
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>{
+    cin&gt;&gt;n&gt;&gt;m;
+    <span class="hljs-type">int</span> x,y,z;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++){
+        cin&gt;&gt;x&gt;&gt;y&gt;&gt;z;
+        a[x][y] = z;
+        a[y][x] = z;
+    }
+    cin&gt;&gt;s&gt;&gt;e;
+    
+    <span class="hljs-comment">//dijkstra求解</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++) d[i] = <span class="hljs-number">0x3f3f3f3f</span>; 
+    d[e] = <span class="hljs-number">100</span>;
+    
+    <span class="hljs-comment">//反推走到每个点最少需要汇出的钱数</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        <span class="hljs-type">int</span> mi = <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= n;j++){
+            <span class="hljs-keyword">if</span>(!f[j]&amp;&amp;(mi==<span class="hljs-number">-1</span>||d[j]&lt;d[mi])){
+                mi = j;
+            }
+        }
+        f[mi] = <span class="hljs-literal">true</span>;
+        <span class="hljs-comment">//更新更短的路径</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= n;j++){
+            <span class="hljs-keyword">if</span>(!f[j]&amp;&amp;a[mi][j]&amp;&amp;d[mi]/(<span class="hljs-number">1</span>-a[mi][j]*<span class="hljs-number">0.01</span>)&lt;d[j]){
+                d[j] = d[mi] / (<span class="hljs-number">1</span> - a[mi][j]*<span class="hljs-number">0.01</span>);
+            }
+        } 
+    }
+    
+    cout&lt;&lt;fixed&lt;&lt;<span class="hljs-built_in">setprecision</span>(<span class="hljs-number">8</span>)&lt;&lt;d[s];
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+     
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2050">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2049/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2049 两点之间的最短路径</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2052/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2052 图的dfs遍历</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/P1525/"><span class="seo-plist-id">P1525</span><span class="seo-plist-title">[NOIP 2010 提高组] 关押罪犯</span><span class="seo-plist-diff">普及+/提高-</span></a></li>
+  <li><a href="/p/P1546/"><span class="seo-plist-id">P1546</span><span class="seo-plist-title">[USACO3.1] 最短网络 Agri-Net</span><span class="seo-plist-diff">普及</span></a></li>
+  <li><a href="/p/P1547/"><span class="seo-plist-id">P1547</span><span class="seo-plist-title">[USACO05MAR] Out of Hay S</span><span class="seo-plist-diff">普及</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>

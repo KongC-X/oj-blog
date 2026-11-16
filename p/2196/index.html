@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2196 最优二叉树 题解 - 章老师的OJ题解站</title>
+<meta name="description" content="现在有 个正整数，每一次去掉其中 个数 和 ，然后加入一个数 ，这样最后只剩下一个数 。 要求求出最大的 记为 ，最小的 记为 ，和他们的差 。 对于给定的数列，编程计算出它的 , 和 。">
+<link rel="canonical" href="https://zymojblog.top/p/2196/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="章老师的OJ题解站">
+<meta property="og:title" content="2196 最优二叉树 题解 - 章老师的OJ题解站">
+<meta property="og:description" content="现在有 个正整数，每一次去掉其中 个数 和 ，然后加入一个数 ，这样最后只剩下一个数 。 要求求出最大的 记为 ，最小的 记为 ，和他们的差 。 对于给定的数列，编程计算出它的 , 和 。">
+<meta property="og:url" content="https://zymojblog.top/p/2196/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2196 最优二叉树 题解 - 章老师的OJ题解站">
+<meta name="twitter:description" content="现在有 个正整数，每一次去掉其中 个数 和 ，然后加入一个数 ，这样最后只剩下一个数 。 要求求出最大的 记为 ，最小的 记为 ，和他们的差 。 对于给定的数列，编程计算出它的 , 和 。">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/vendor/github-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=20261104e">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"2196 最优二叉树","headline":"2196 最优二叉树 题解","description":"现在有 个正整数，每一次去掉其中 个数 和 ，然后加入一个数 ，这样最后只剩下一个数 。 要求求出最大的 记为 ，最小的 记为 ，和他们的差 。 对于给定的数列，编程计算出它的 , 和 。","url":"https://zymojblog.top/p/2196/","inLanguage":"zh-CN","educationalLevel":"入门","learningResourceType":"题解","about":"树","isPartOf":{"@type":"WebSite","name":"章老师的OJ题解站","url":"https://zymojblog.top"},"author":{"@type":"Person","name":"章老师"}}</script>
+</head>
+<body>
+<a class="skip-link" href="#seoMain">跳到主要内容</a>
+<header class="seo-header">
+  <a class="seo-logo" href="/">章老师的OJ题解站</a>
+  <nav class="seo-nav">
+    <a href="/#/">全部题解</a>
+    <a href="/tags/">标签分类</a>
+    <a href="/#/about">关于</a>
+  </nav>
+</header>
+<main class="seo-main" id="seoMain">
+<div class="seo-crumb">
+  <a href="/">首页</a> /
+  <a href="/#/">东方博宜</a>
+  / <a href="/d/dfboy/rumen/">入门</a>
+  / <span>2196</span>
+</div>
+<h1 class="seo-title">2196 最优二叉树</h1>
+<div class="seo-meta">
+  <span class="seo-badge seo-badge-source">东方博宜</span>
+  <span class="seo-badge">入门</span>
+</div>
+<div class="seo-tags"><a class="seo-tag" href="/tag/%E6%A0%91/">树</a></div>
+<article class="markdown-body seo-article">
+<h1>2196 - 最优二叉树</h1>
+<h2>题目描述</h2>
+<p>现在有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span></span></span></span> 个正整数，每一次去掉其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 个数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> ，然后加入一个数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>×</mo><mi>b</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a \times b+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，这样最后只剩下一个数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 。   </p>
+<p>要求求出最大的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">maxp</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mord mathnormal">p</span></span></span></span> ，最小的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> 记为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">minp</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">min</span><span class="mord mathnormal">p</span></span></span></span> ，和他们的差 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mi>p</mi><mo>−</mo><mi>m</mi><mi>i</mi><mi>n</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">K=maxp-minp</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.7778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">min</span><span class="mord mathnormal">p</span></span></span></span> 。</p>
+<p>对于给定的数列，编程计算出它的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">max</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span></span></span></span> , <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">min</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">min</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span></span></span></span> 。</p>
+<h2>输入</h2>
+<p>第一行是数列的长度 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span>（），第二行共 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 个正整数（值）。</p>
+<h2>输出</h2>
+<p>输出一共三行，每行一个整数，依次为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">max</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">ma</span><span class="mord mathnormal">x</span></span></span></span>,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">min</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6595em;"></span><span class="mord mathnormal">min</span></span></span></span>,<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">K</span></span></span></span>。</p>
+<p>注意：本题的计算结果可能会超过<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>31</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{31}-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">31</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，但不超过<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>63</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{63}-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">63</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>。</p>
+<h2>AC代码</h2>
+<pre><code class="hljs language-cpp"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> LL;
+
+<span class="hljs-comment">// 哈夫曼树的构建 </span>
+<span class="hljs-comment">// 大根堆每次取出当前最大的两个数进行合并，而不是为了让最终结果最大。恰恰相反，这个策略会让最终结果最小。</span>
+<span class="hljs-comment">// a * b + 1里的 +1 就像一个“放大项”：它后面被谁乘，就会被放大多少。</span>
+<span class="hljs-comment">// 想让结果最大 → 让 +1 被大数乘 → 先合并小数，把大数留到最后乘</span>
+<span class="hljs-comment">// 想让结果最小 → 让 +1 被小数乘 → 先合并大数，把小数留到最后乘</span>
+priority_queue&lt;LL&gt; q1; <span class="hljs-comment">//大根堆</span>
+priority_queue&lt;LL,vector&lt;LL&gt;,greater&lt;LL&gt; &gt; q2; <span class="hljs-comment">//小根堆 </span>
+
+LL n,x,minp,maxp; 
+<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    cin&gt;&gt;n;
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++){
+        cin&gt;&gt;x;
+        q1.<span class="hljs-built_in">push</span>(x);
+        q2.<span class="hljs-built_in">push</span>(x); 
+    }
+    
+    LL a,b;
+    <span class="hljs-keyword">while</span>(q1.<span class="hljs-built_in">size</span>()!=<span class="hljs-number">1</span>){
+        a = q1.<span class="hljs-built_in">top</span>();
+        q1.<span class="hljs-built_in">pop</span>();
+        b = q1.<span class="hljs-built_in">top</span>();
+        q1.<span class="hljs-built_in">pop</span>();
+        q1.<span class="hljs-built_in">push</span>(a*b+<span class="hljs-number">1</span>); 
+    }
+
+    <span class="hljs-comment">// 最小值</span>
+    minp = q1.<span class="hljs-built_in">top</span>();
+    
+    <span class="hljs-keyword">while</span>(q2.<span class="hljs-built_in">size</span>()!=<span class="hljs-number">1</span>){
+        a = q2.<span class="hljs-built_in">top</span>();
+        q2.<span class="hljs-built_in">pop</span>();
+        b = q2.<span class="hljs-built_in">top</span>();
+        q2.<span class="hljs-built_in">pop</span>();
+        q2.<span class="hljs-built_in">push</span>(a*b+<span class="hljs-number">1</span>); 
+    }
+    
+    <span class="hljs-comment">//最大值</span>
+    maxp = q2.<span class="hljs-built_in">top</span>();
+    
+    cout&lt;&lt;maxp&lt;&lt;endl;
+    cout&lt;&lt;minp&lt;&lt;endl;
+    cout&lt;&lt;maxp-minp&lt;&lt;endl;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}</code></pre>
+</article>
+<div class="seo-cta">
+  <a href="/#/post/2196">在交互版中打开</a>
+  <span>支持站内搜索、标签筛选、代码复制</span>
+</div>
+
+<nav class="seo-pn" aria-label="上下篇题解">
+  <a class="seo-pn-item" href="/p/2195/"><span class="seo-pn-label">← 上一篇</span><span class="seo-pn-title">2195 二叉排序树</span></a>
+  <a class="seo-pn-item seo-pn-next" href="/p/2197/"><span class="seo-pn-label">下一篇 →</span><span class="seo-pn-title">2197 二叉树高度</span></a>
+</nav>
+
+<section class="seo-related">
+  <h2 class="seo-section-title">相关题解</h2>
+  <ul class="seo-problem-list">
+  <li><a href="/p/1775/"><span class="seo-plist-id">1775</span><span class="seo-plist-title">谁的孙子最多</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/1776/"><span class="seo-plist-id">1776</span><span class="seo-plist-title">谁的孙子最多II</span><span class="seo-plist-diff">入门</span></a></li>
+  <li><a href="/p/2164/"><span class="seo-plist-id">2164</span><span class="seo-plist-title">子结点的数量</span><span class="seo-plist-diff">入门</span></a></li>
+</ul>
+</section>
+</main>
+<footer class="seo-footer">© 2026 章老师的OJ题解站 · 信奥赛教练的题解合集</footer>
+</body>
+</html>
